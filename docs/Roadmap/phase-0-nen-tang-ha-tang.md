@@ -63,17 +63,13 @@
 
 ### 0.7 — Khởi tạo project Frontend (React + Vite + TS)
 
+> [!IMPORTANT]
+> **Đã chốt:** Dùng **React + Vite + TypeScript** theo roadmap. Xoá toàn bộ code Next.js template cũ trong repo.
+
 | Hạng mục | Chi tiết |
 |---|---|
-| **Việc cần làm** | Tạo project React + Vite + TypeScript. Cấu trúc thư mục theo trạm: `src/features/kana/`, `src/features/flashcard/`, `src/features/kanji/`, `src/features/grammar/`, `src/features/exam/`. Shared components trong `src/components/`. |
+| **Việc cần làm** | Xoá code Next.js cũ (`app/`, `public/`, `next.config.ts`, `postcss.config.mjs`, `eslint.config.mjs`, `package.json`, `package-lock.json`, `tsconfig.json`, `README.md`). Tạo project mới bằng Vite: `npx -y create-vite@latest ./frontend --template react-ts`. Cấu trúc thư mục theo trạm: `src/features/kana/`, `src/features/flashcard/`, `src/features/kanji/`, `src/features/grammar/`, `src/features/exam/`. Shared components trong `src/components/`. |
 | **Output** | `npm run dev` chạy được, routing cơ bản giữa các trạm hoạt động. |
-
-> [!WARNING]
-> **Xung đột tech stack:** Roadmap nêu **React + Vite + TS**, nhưng repo hiện tại đang có code **Next.js** (template mặc định). Cần quyết định:
-> - **Phương án A:** Xoá code Next.js hiện tại, tạo lại bằng Vite — đúng theo roadmap.
-> - **Phương án B:** Giữ Next.js, cập nhật roadmap — Next.js có SSR/SSG có thể hữu ích cho SEO.
->
-> Quyết định này ảnh hưởng toàn bộ frontend architecture của project.
 
 ### 0.8 — Layout khung Frontend
 
@@ -111,6 +107,5 @@
 
 ## Rủi ro / Cần xác nhận
 
-1. **Tech stack frontend:** Next.js hay Vite? (xem mục 0.7)
-2. **Hosting:** Render free tier có cold start. Có chấp nhận không?
-3. **Admin seed data:** Email/password admin ban đầu cần Thach cung cấp, không tự bịa.
+1. **Hosting:** Render free tier có cold start ~30s. Có chấp nhận không?
+2. **Admin seed data:** Email/password admin ban đầu cần Thach cung cấp, không tự bịa.
