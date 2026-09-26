@@ -60,6 +60,31 @@ npm run dev
 
 ---
 
+## ⚙️ Biến môi trường
+
+| File mẫu | Dùng cho |
+|---|---|
+| `backend/.env.example` | `SPRING_PROFILES_ACTIVE`, `JWT_SECRET`, `DB_*`, `CORS_ALLOWED_ORIGINS`, `PORT` |
+| `frontend/.env.example` | `VITE_API_BASE_URL` (bỏ trống ở dev để dùng Vite proxy) |
+
+- `JWT_SECRET` bắt buộc ở staging/production (backend fail-fast nếu thiếu); dev đã có giá trị mặc định riêng.
+- Không commit file `.env` thật — xem `docs/Internal/deployment-plan.md` để biết secret cần set trên Render/Vercel/GitHub Actions.
+
+---
+
+## 🔁 CI/CD
+
+Pipeline ở `.github/workflows/ci.yml`:
+
+1. **Backend Build & Test (H2)** — `mvn -B clean verify`.
+2. **Backend Migration Check (PostgreSQL + Flyway)** — chạy migration thật trên PostgreSQL 16 + `ddl-auto=validate`
+   để chắc entity khớp schema trước khi merge.
+3. **Frontend Lint & Build** — `npm ci`, `npm run lint`, `npm run build`, upload `dist`.
+4. **Deploy** — backend lên Render (staging tự động, production cần duyệt qua GitHub Environment), frontend lên Vercel.
+   Job deploy tự bỏ qua kèm cảnh báo nếu secret chưa được cấu hình.
+
+---
+
 ## 🔐 Phân quyền & Tài khoản mẫu
 
 Hệ thống được cấu hình sẵn 2 phân quyền RBAC: `ROLE_ADMIN` và `ROLE_USER`.
@@ -68,6 +93,9 @@ Tài khoản Quản trị viên được khởi tạo sẵn qua Flyway Migration
 - **Email Admin:** `admin@heyganba.vn`
 - **Mật khẩu khởi tạo:** `Admin@HeyGanba2026!`
 - **Endpoint kiểm tra quyền:** `GET /api/v1/admin/status` (Chỉ tài khoản ADMIN mới có quyền truy cập, các tài khoản khác bị chặn với mã `403 Forbidden`).
+
+> ⚠️ Đây là tài khoản seed cho local/staging. **Phải đổi mật khẩu** (hoặc tạo admin riêng qua biến môi trường) trước khi public.
+> Nút "Nạp sẵn tài khoản Admin thử nghiệm" ở màn đăng nhập chỉ hiện trong môi trường dev, không lộ ra production.
 
 ---
 

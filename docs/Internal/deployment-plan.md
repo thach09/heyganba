@@ -31,6 +31,23 @@ Pipeline theo 4 bước, chạy cho mọi PR và mọi lần merge:
 - Dùng biến môi trường qua secret manager của Render/Vercel/GitHub Actions, phân biệt rõ theo từng môi trường (staging khác production).
 - Xoay vòng (rotate) JWT signing key và các API key định kỳ, đặc biệt sau khi có nhân sự rời dự án hoặc nghi ngờ rò rỉ.
 
+### Secret cần cấu hình cho pipeline (tên chính xác)
+
+| Nơi cấu hình | Tên | Dùng cho |
+|---|---|---|
+| GitHub → Settings → Secrets and variables → Actions | `RENDER_STAGING_DEPLOY_HOOK_URL` | Job `deploy-backend-staging` (Render Deploy Hook của service staging) |
+| GitHub Actions secrets | `RENDER_PROD_DEPLOY_HOOK_URL` | Job `deploy-backend-production` |
+| GitHub Actions secrets | `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID` | Job `deploy-frontend-staging` / `deploy-frontend-production` |
+| Render (Environment) | `SPRING_PROFILES_ACTIVE`, `JWT_SECRET`, `CORS_ALLOWED_ORIGINS`, `DB_HOST/PORT/NAME/USER/PASSWORD` | Backend runtime — mẫu ở `backend/.env.example` |
+| Vercel (Production + Preview) | `VITE_API_BASE_URL` | Frontend gọi API Render — mẫu ở `frontend/.env.example` |
+
+- `JWT_SECRET` **không có giá trị mặc định** ở staging/production: thiếu là backend fail-fast lúc khởi động
+  (dev vẫn có default riêng trong `application-dev.yml`). Tạo key mới bằng `openssl rand -base64 48`.
+- Job deploy tự bỏ qua kèm `::warning::` khi secret chưa tồn tại → CI xanh trước khi hạ tầng được cấu hình xong.
+- Nếu project Vercel đang bật Git Integration (auto deploy khi push), có thể xoá 2 job `deploy-frontend-*` để tránh
+  deploy trùng; khi đó Vercel tự lo phần frontend, GitHub Actions chỉ còn test + migration check + deploy backend.
+
+
 ## Giám sát & vận hành
 
 - **Uptime & error tracking:** bật health-check endpoint cho backend, tích hợp công cụ theo dõi lỗi (vd Sentry) để bắt exception ở production sớm.
