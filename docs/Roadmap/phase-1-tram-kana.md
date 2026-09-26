@@ -4,12 +4,14 @@
 
 ## Điều kiện hoàn thành (Definition of Done)
 
-- [ ] Bảng kana tương tác hiển thị đầy đủ (gojuon + dakuten + handakuten + youon + sokuon + chōon).
-- [ ] Bấm vào chữ → phát audio phát âm.
-- [ ] Quiz nhận diện kana hoạt động (chọn đáp án đúng).
-- [ ] Canvas viết tay hoạt động (vẽ được, xoá được, submit được).
-- [ ] Onboarding tooltip hiện đúng lần đầu, không lặp lại.
+- [x] Bảng kana tương tác hiển thị đầy đủ (gojuon + dakuten + handakuten + youon + sokuon + chōon).
+- [x] Bấm vào chữ → phát audio phát âm.
+- [x] Quiz nhận diện kana hoạt động (chọn đáp án đúng).
+- [x] Canvas viết tay hoạt động (vẽ được, xoá được, submit được).
+- [x] Onboarding tooltip hiện đúng lần đầu, không lặp lại.
 - [ ] Rate limit endpoint chấm điểm.
+
+> Ghi chú trạng thái: audio hiện dùng Web Speech API (giọng ja-JP) vì chưa có file trên Cloudflare R2 — dữ liệu đã có sẵn field `audioUrl` để chuyển sang file thật. 促音/長音 hiện nằm ở bảng "Katakana ký tự đôi" (theo nội dung đã chốt ở `content-mapping-fpt-curriculum.md`).
 
 ---
 
@@ -92,3 +94,22 @@
 1. **Audio files:** Cần nguồn audio phát âm kana. Tự thu? Dùng API TTS? Hay source miễn phí (JapanesePod101...)?
 2. **Canvas viết tay:** Có cần nhận dạng AI không, hay chỉ cần user tự so sánh mẫu? (Đề xuất: chỉ so sánh mẫu ở phase này)
 3. **Dữ liệu kana:** Cần người biết tiếng Nhật duyệt seed data trước khi lên production.
+
+---
+
+## Trạng thái triển khai (cập nhật gần nhất)
+
+Frontend đã có UI thật cho Trạm Kana (thay cho placeholder Phase 0):
+
+- Tab Hiragana / Katakana; mỗi bảng chia nhóm riêng: Gojūon, Dakuten, Handakuten, Yōon. Katakana có thêm 2 bảng tách riêng: **Mở rộng — tổ hợp âm cho từ mượn** (ファ / フィ / ウィ / ツォ...) và **Ký tự đôi** (促音 ッ, 長音 ー).
+- Bấm chữ → phát audio + panel chi tiết (romaji, nhóm, ghi chú, ví dụ, cảnh báo nhóm dễ nhầm / trợ từ đọc khác).
+- Quiz nhận diện 4 đáp án, phím tắt 1/2/3/4 + Enter, hiện score, chọn phạm vi luyện theo nhóm.
+- Canvas viết tay: chữ mẫu mờ, ô ly, cỡ bút, xoá nét cuối / xoá hết, submit (chưa nhận dạng AI — đúng phạm vi phase này).
+- Dữ liệu kana hiện là bảng nháp frontend `frontend/src/features/kana/kanaData.ts` (247 ký tự), chưa seed PostgreSQL.
+
+Còn thiếu so với phase:
+
+- Audio file trên Cloudflare R2 (hiện fallback Web Speech API ja-JP; field `audioUrl` đã có sẵn trong dữ liệu).
+- API `GET /api/v1/kana`, `GET /api/v1/kana/:id`, `POST /api/v1/kana/quiz/check` (task 1.2) và rate limit (task 1.3).
+- Seed Flyway bảng `kana` + cờ `is_particle_exception` (task 1.1) — chờ duyệt nội dung.
+- 促音/長音 của Hiragana (っ) chưa thêm: hiện chỉ có bảng ký tự đôi cho Katakana theo yêu cầu.
