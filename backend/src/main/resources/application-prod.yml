@@ -1,0 +1,17 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+  jpa:
+    show-sql: false
+
+management:
+  endpoint:
+    health:
+      # Production không trả chi tiết thành phần hạ tầng cho request ẩn danh.
+      show-details: never
+
+logging:
+  level:
+    root: WARN
+    com.heyganba: INFO
