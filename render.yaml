@@ -1,0 +1,32 @@
+# Blueprint Render cho backend HeyGanba (TUỲ CHỌN).
+# - Chỉ được dùng khi tạo service theo kiểu Blueprint trên Render; nếu tạo Web Service thủ công thì bỏ qua file này.
+# - Không chứa secret: các biến `sync: false` phải set trong Render Dashboard (hoặc copy từ backend/.env.example).
+# - autoDeploy: false vì deploy do GitHub Actions gọi Deploy Hook (tránh deploy trùng).
+services:
+  - type: web
+    name: heyganba-backend
+    runtime: docker
+    plan: free
+    region: singapore # đổi sang region khác nếu muốn (oregon / frankfurt / ohio...)
+    branch: main
+    dockerContext: ./backend
+    dockerfilePath: ./backend/Dockerfile
+    healthCheckPath: /api/v1/health
+    autoDeploy: false
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: staging
+      - key: JWT_SECRET
+        sync: false
+      - key: CORS_ALLOWED_ORIGINS
+        sync: false
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        sync: false
+      - key: DB_NAME
+        sync: false
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
