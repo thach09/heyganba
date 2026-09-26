@@ -6,13 +6,13 @@ Nền tảng học tiếng Nhật theo giáo trình **Dekiru Nihongo** (JPD113 &
 
 ## 🏗️ Kiến trúc & Tech Stack
 
-| Thành phần | Công nghệ | Chi tiết |
-|---|---|---|
-| **Backend** | Spring Boot 3.4.3 (Java 21 LTS) | Kiến trúc REST API chuẩn `/api/v1/`, JWT Security, HikariCP, Actuator |
-| **Frontend** | React 19 + Vite + TypeScript | Giao diện Dark Slate / Torii Red, phím tắt chuẩn hóa, Onboarding Tooltip |
-| **Database** | PostgreSQL 16 | Quản lý schema bằng Flyway Migrations |
-| **Cache & Queue** | Redis 7 | Tối ưu hàng đợi ôn tập SRS và Leaderboard Sorted Set |
-| **DevOps** | Docker Compose & GitHub Actions | CI/CD build & test tự động cho cả Backend và Frontend |
+| Thành phần        | Công nghệ                       | Chi tiết                                                                 |
+| ----------------- | ------------------------------- | ------------------------------------------------------------------------ |
+| **Backend**       | Spring Boot 3.4.3 (Java 21 LTS) | Kiến trúc REST API chuẩn `/api/v1/`, JWT Security, HikariCP, Actuator    |
+| **Frontend**      | React 19 + Vite + TypeScript    | Giao diện Dark Slate / Torii Red, phím tắt chuẩn hóa, Onboarding Tooltip |
+| **Database**      | PostgreSQL 16                   | Quản lý schema bằng Flyway Migrations                                    |
+| **Cache & Queue** | Redis 7                         | Tối ưu hàng đợi ôn tập SRS và Leaderboard Sorted Set                     |
+| **DevOps**        | Docker Compose & GitHub Actions | CI/CD build & test tự động cho cả Backend và Frontend                    |
 
 ---
 
@@ -39,16 +39,19 @@ docker compose up -d
 ### Cách 2: Chạy thủ công từng thành phần
 
 #### 1. Backend (Spring Boot)
+
 Yêu cầu: JDK 21+ và Maven 3.9+.
 
 ```bash
 cd backend
 mvn spring-boot:run
 ```
-*API Base Path:* `http://localhost:8080/api/v1`  
-*Health Check:* `http://localhost:8080/api/v1/health`
+
+_API Base Path:_ `http://localhost:8080/api/v1`  
+_Health Check:_ `http://localhost:8080/api/v1/health`
 
 #### 2. Frontend (Vite + React)
+
 Yêu cầu: Node.js 20+.
 
 ```bash
@@ -56,16 +59,17 @@ cd frontend
 npm install
 npm run dev
 ```
-*Truy cập giao diện Web:* `http://localhost:5173`
+
+_Truy cập giao diện Web:_ `http://localhost:5173`
 
 ---
 
 ## ⚙️ Biến môi trường
 
-| File mẫu | Dùng cho |
-|---|---|
-| `backend/.env.example` | `SPRING_PROFILES_ACTIVE`, `JWT_SECRET`, `DB_*`, `CORS_ALLOWED_ORIGINS`, `PORT` |
-| `frontend/.env.example` | `VITE_API_BASE_URL` (bỏ trống ở dev để dùng Vite proxy) |
+| File mẫu                | Dùng cho                                                                       |
+| ----------------------- | ------------------------------------------------------------------------------ |
+| `backend/.env.example`  | `SPRING_PROFILES_ACTIVE`, `JWT_SECRET`, `DB_*`, `CORS_ALLOWED_ORIGINS`, `PORT` |
+| `frontend/.env.example` | `VITE_API_BASE_URL` (bỏ trống ở dev để dùng Vite proxy)                        |
 
 - `JWT_SECRET` bắt buộc ở staging/production (backend fail-fast nếu thiếu); dev đã có giá trị mặc định riêng.
 - Không commit file `.env` thật — xem `docs/Internal/deployment-plan.md` để biết secret cần set trên Render/Vercel/GitHub Actions.
