@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>HeyGanba — mock: hệ nét viết (v11 · dark · nav nhóm)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;600&family=Be+Vietnam+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#151614;
+    --fg:#ECECE6;
+    --fg-60:rgba(236,236,230,.60);
+    --fg-38:rgba(236,236,230,.34);
+    --rule:rgba(236,236,230,.14);
+    --rule-strong:rgba(236,236,230,.30);
+    --rank:#7FA98B;
+    --red:#D96A5C;
+    --card:#1B1C19;
+    --serif:"Noto Serif JP","Noto Serif",serif;
+    --sans:"Be Vietnam Pro","Noto Sans",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--fg)}
+  body{font-family:var(--sans);font-size:14px;line-height:1.65;-webkit-font-smoothing:antialiased}
+  .jp{font-family:var(--serif)}
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .app{display:flex;min-height:100vh}
+
+  /* ---------- Rail ---------- */
+  .rail{width:216px;flex:0 0 216px;padding:40px 28px 40px 40px;display:flex;flex-direction:column;gap:48px}
+  .brand{display:flex;align-items:center;gap:10px}
+  .brand .torii{stroke:var(--fg-60);fill:none;stroke-width:1.1;stroke-linecap:round}
+  .brand b{font-weight:600;font-size:15px}
+  .brand em{display:block;font-style:normal;font-size:10px;letter-spacing:.22em;color:var(--fg-38);text-transform:uppercase}
+  nav{display:flex;flex-direction:column;gap:14px}
+  nav a, .grp-head{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:var(--fg);position:relative;width:100%;
+                   background:none;border:0;padding:0;font:inherit;text-align:left;cursor:pointer}
+  nav a .k, .grp-head .k{font-family:var(--serif);font-size:16px;font-weight:400}
+  nav a .v, .grp-head .v{font-size:11px;color:var(--fg-38)}
+  nav a:hover .k, .grp-head:hover .k{font-weight:600}
+  nav a.active .k, .grp.active .grp-head .k{font-weight:600}
+  nav a.active .v, .grp.active .grp-head .v{color:var(--rank)}
+  nav a.active::before, .grp.active .grp-head::before{content:"";position:absolute;left:-16px;top:7px;bottom:7px;width:2px;background:var(--rank)}
+  nav a:focus-visible, .grp-head:focus-visible, .flyout a:focus-visible{outline:1px solid var(--fg-38);outline-offset:3px}
+
+  /* Nhóm "Chữ cái": hover (desktop) + click/tap (mobile) + focus (bàn phím) */
+  .grp{position:relative}
+  .grp-head .chev{margin-left:auto;color:var(--fg-38);font-size:14px;line-height:1}
+  .flyout{position:absolute;left:100%;top:-12px;margin-left:14px;min-width:188px;background:var(--card);padding:12px 0;z-index:40;
+          opacity:0;visibility:hidden;transition:opacity .12s ease}
+  .flyout::before{content:"";position:absolute;left:-14px;top:0;bottom:0;width:14px} /* cầu nối, chuột không rơi vào khe hở */
+  .grp:hover .flyout, .grp:focus-within .flyout, .grp.open .flyout{opacity:1;visibility:visible}
+  .flyout a{display:flex;align-items:baseline;gap:10px;padding:9px 18px;text-decoration:none;color:var(--fg)}
+  .flyout a .k{font-family:var(--serif);font-size:15px}
+  .flyout a .v{font-size:11px;color:var(--fg-38)}
+  .flyout a:hover{background:rgba(236,236,230,.05)}
+  .flyout a.active .v{color:var(--rank)}
+  .rail-foot{margin-top:auto;font-size:11px;color:var(--fg-38);line-height:1.8}
+  .rail-foot .jp{font-size:12px}
+
+  /* ---------- Main ---------- */
+  main{flex:1;min-height:100vh;display:flex;flex-direction:column;gap:28px;justify-content:space-between;padding:44px 64px 48px}
+
+  /* Hàng đầu: ngày bên trái — cấp độ bên phải, cân hai bên */
+  .top{display:flex;justify-content:space-between;align-items:flex-start;gap:40px}
+  .top .date{font-size:12.5px;color:var(--fg-38);padding-top:3px}
+  .top .date .jp{margin-left:8px}
+  .exp{text-align:right}
+  .exp .lbl{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--fg-38)}
+  .exp .val{margin-top:4px;font-size:13.5px}
+  .exp .val b{font-family:var(--serif);font-size:22px;font-weight:600;margin-right:2px}
+  .exp .bar{margin-top:10px;margin-left:auto;width:220px;max-width:100%;height:2px;background:var(--rule);position:relative}
+  .exp .bar i{position:absolute;left:0;top:0;bottom:0;width:62%;background:var(--rank)}
+
+  /* ---------- Hai hàng phẳng, hai cột đều — khoảng dọc giãn đều ---------- */
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:56px 64px;align-items:stretch}
+  .cap{font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--fg-38)}
+  .cap .jp{font-size:12.5px;letter-spacing:.06em;font-weight:400;margin-left:8px}
+  .cap-row{display:flex;justify-content:space-between;align-items:baseline;gap:24px}
+
+  /* Tracker — mật độ mực theo ngày, 24 tuần, tự giãn kín cột */
+  .heat-grid{display:flex;gap:12px;margin-top:22px}
+  .wd{display:grid;grid-template-rows:repeat(7,1fr);font-size:9px;color:var(--fg-38);line-height:1}
+  .wd span{align-self:center}
+  .cells{flex:1;min-width:0;display:grid;grid-template-rows:repeat(7,auto);grid-auto-flow:column;grid-auto-columns:1fr;gap:3px}
+  .cells i{width:100%;aspect-ratio:1;background:var(--fg)}
+  .legend{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;color:var(--fg-38)}
+  .legend i{display:inline-block;width:8px;height:8px;background:var(--fg)}
+
+  /* Tuần này — ba con số */
+  .week{display:flex;flex-direction:column}
+  .week .rows{margin-top:22px;flex:1;display:flex;flex-direction:column;justify-content:space-between}
+  .week .r{display:flex;justify-content:space-between;align-items:baseline;padding:13px 0}
+  .week .r span{font-size:13px;color:var(--fg-60)}
+  .week .r b{font-size:16px;font-weight:600;font-variant-numeric:tabular-nums}
+
+  /* Đồ thị 30 ngày — cột mực mảnh, giãn đều hết cột */
+  .bars{display:flex;justify-content:space-between;align-items:flex-end;height:88px;margin-top:22px;border-bottom:1px solid var(--rule)}
+  .bars i{width:min(12px,3%);background:var(--fg);opacity:.38}
+  .bars i.recent{opacity:.62}
+  .bars i.today{opacity:.95}
+
+  footer{display:flex;justify-content:space-between;font-size:11px;color:var(--fg-38)}
+  footer .jp{font-size:12px}
+
+  @media (max-width: 860px){
+    .app{flex-direction:column}
+    .rail{width:auto;flex:none;padding:24px 20px 0;gap:24px}
+    nav{flex-direction:row;align-items:baseline;overflow-x:auto;gap:20px}
+    nav a{white-space:nowrap}
+    nav a.active::before, .grp.active .grp-head::before{left:0;right:0;top:auto;bottom:-7px;width:auto;height:2px}
+    .grp{display:flex;align-items:baseline;gap:16px}
+    .grp-head{width:auto;white-space:nowrap}
+    .flyout{position:static;opacity:1;visibility:visible;display:none;background:none;padding:0;margin:0;min-width:0;gap:16px}
+    .grp.open .flyout{display:flex}
+    .flyout::before{display:none}
+    .flyout a{padding:0;width:auto;white-space:nowrap}
+    .flyout a .v{display:none}
+    .rail-foot{display:none}
+    main{padding:28px 20px 40px}
+    .top{flex-direction:column;gap:28px}
+    .exp{text-align:left}
+    .exp .bar{margin-left:0;width:100%}
+    .row{grid-template-columns:1fr;gap:44px}
+    main{justify-content:flex-start}
+    .bars{height:72px}
+    .bars i{width:min(5px,3%)}
+    footer{display:none}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <aside class="rail">
+    <div class="brand">
+      <svg class="torii" width="26" height="24" viewBox="0 0 26 24" aria-hidden="true">
+        <path d="M2 5 H24 M4 9 H22 M6.5 9 V21 M19.5 9 V21 M13 9 V14"/>
+      </svg>
+      <div><b>HeyGanba</b><em>日本語</em></div>
+    </div>
+
+    <nav>
+      <a class="active" href="#"><span class="k">今日</span><span class="v">Hôm nay</span></a>
+      <div class="grp" id="grp-moji">
+        <button class="grp-head" type="button" aria-haspopup="true" aria-expanded="false">
+          <span class="k">文字</span><span class="v">Chữ cái</span><span class="chev">›</span>
+        </button>
+        <div class="flyout" role="menu">
+          <a href="#"><span class="k">ひらがな</span><span class="v">Hiragana</span></a>
+          <a href="#"><span class="k">カタカナ</span><span class="v">Katakana</span></a>
+          <a href="#"><span class="k">漢字</span><span class="v">Kanji</span></a>
+        </div>
+      </div>
+      <a href="#"><span class="k">単語</span><span class="v">Từ vựng</span></a>
+      <a href="#"><span class="k">文法</span><span class="v">Ngữ pháp</span></a>
+      <a href="#"><span class="k">試験</span><span class="v">Thi thử</span></a>
+    </nav>
+
+    <div class="rail-foot">
+      <span class="jp">練習は嘘をつかない</span><br>
+      Luyện tập không nói dối.
+    </div>
+  </aside>
+
+  <main>
+    <h1 class="sr-only">Hôm nay</h1>
+
+    <header class="top">
+      <div class="date">Thứ Bảy, 27/09/2026 <span class="jp">九月二十七日</span></div>
+      <div class="exp">
+        <div class="lbl">Kinh nghiệm</div>
+        <div class="val">Cấp <b>7</b> · 1.240 / 2.000 EXP</div>
+        <div class="bar"><i></i></div>
+      </div>
+    </header>
+
+    <section class="row">
+
+      <div class="heat">
+        <div class="cap-row">
+          <div class="cap">Hoạt động <span class="jp">記録</span></div>
+          <div class="legend">ít
+            <i style="opacity:.06"></i><i style="opacity:.22"></i><i style="opacity:.44"></i><i style="opacity:.66"></i><i style="opacity:.9"></i>
+          nhiều</div>
+        </div>
+        <div class="heat-grid" aria-hidden="true">
+          <div class="wd">
+            <span style="grid-row:1">T2</span>
+            <span style="grid-row:3">T4</span>
+            <span style="grid-row:5">T6</span>
+          </div>
+          <div class="cells" id="cells"></div>
+        </div>
+      </div>
+
+      <div class="week">
+        <div class="cap">Tuần này <span class="jp">今週</span></div>
+        <div class="rows">
+          <div class="r"><span>Thẻ ôn</span><b>184</b></div>
+          <div class="r"><span>Chữ viết</span><b>63</b></div>
+          <div class="r"><span>Phút học</span><b>212</b></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="row">
+
+      <div>
+        <div class="cap-row">
+          <div class="cap">Thẻ ôn <span class="jp">単語</span></div>
+          <div class="legend">798 · 30 ngày</div>
+        </div>
+        <div class="bars" id="bars1" aria-hidden="true"></div>
+      </div>
+
+      <div>
+        <div class="cap-row">
+          <div class="cap">Chữ viết <span class="jp">書き取り</span></div>
+          <div class="legend">271 · 30 ngày</div>
+        </div>
+        <div class="bars" id="bars2" aria-hidden="true"></div>
+      </div>
+
+    </section>
+
+    <footer>
+      <span>HeyGanba — mock hướng “nét viết” · v11 dark · chưa phải bản cuối</span>
+      <span class="jp">一筆 · 一歩</span>
+    </footer>
+  </main>
+
+</div>
+
+<script>
+(function(){
+  var op=[.06,.22,.44,.66,.9];
+  var n=24*7, arr=[];
+  for(var i=0;i<n;i++){
+    var r=(i*97+13)%100, weekend=(i%7>=5), v=0;
+    if(r<24)v=0; else if(r<44)v=1; else if(r<66)v=2; else if(r<85)v=3; else v=4;
+    if(weekend&&v>0)v--;
+    if(i/n>0.55&&v>0&&v<4)v++;
+    arr.push(v);
+  }
+  for(var i=n-12;i<n;i++){ if(arr[i]<2) arr[i]=2+(i%5===0?1:0); }
+  var out='';
+  for(var i=0;i<n;i++) out+='<i style="opacity:'+op[arr[i]]+'"></i>';
+  document.getElementById('cells').innerHTML=out;
+
+  function chart(id,n,seed){
+    var el=document.getElementById(id), h='';
+    for(var i=0;i<n;i++){
+      var v=32+((i*53+seed*17)%46);
+      if(i>=n-12) v+=16;
+      if((i*31+seed*7)%29<2) v=8;
+      if(v>100) v=100;
+      var cls=(i===n-1)?'today':(i>=n-7?'recent':'');
+      h+='<i class="'+cls+'" style="height:'+v+'%"></i>';
+    }
+    el.innerHTML=h;
+  }
+  chart('bars1',30,1);
+  chart('bars2',30,2);
+})();
+</script>
+<script>
+(function(){
+  document.querySelectorAll('.grp-head').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var grp = btn.parentElement;
+      var open = grp.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  });
+  if (location.hash === '#moji') {
+    var g = document.getElementById('grp-moji');
+    if (g) { g.classList.add('open'); }
+  }
+})();
+</script>
+</body>
+</html>
