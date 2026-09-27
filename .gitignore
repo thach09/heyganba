@@ -1,8 +1,8 @@
-# Local agent helper
+﻿# Local agent helper
 powershell.cmd
 cleanup.bat
 
-# Secrets dùng cho agent tự deploy (KHÔNG bao giờ commit)
+# Secrets dÃ¹ng cho agent tá»± deploy (KHÃ”NG bao giá» commit)
 .local-secrets.env
 .secrets/
 
@@ -56,3 +56,5 @@ logs/
 
 # Docker
 docker-data/
+# Vercel CLI (link project cuc bo)
+.vercel/

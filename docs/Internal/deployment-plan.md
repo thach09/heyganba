@@ -160,7 +160,21 @@ thường (coi như cache miss, chỉ log warn).
 **Múi giờ "ngày học"**: `APP_STREAK_ZONE=Asia/Ho_Chi_Minh` ở **mọi môi trường** (local/staging/production) — dùng chung
 cho streak, heatmap, TTL cache SRS và giờ chạy job xoá cache (00:05 giờ VN).
 
-### Troubleshooting deploy Render
+### Tài nguyên đã tạo (production) — thông tin định danh
+
+| Tài nguyên | Nhà cung cấp | ID / định danh | Ghi chú |
+|---|---|---|---|
+| Backend web service | Render | `srv-das95jh7lnhs7385mim0` (`heyganba-backend`) | branch `main`, plan free, region singapore, health `/api/v1/health` |
+| PostgreSQL | Render | `dpg-das94tp7lnhs7385jfh0-a` (`heyganba-postgres`) | plan free, PG16, **hết hạn sau 30 ngày** (xem mục Staging & Database) |
+| Frontend project | Vercel | `prj_uVxZfEsGrpUdWUMwdfJ5Nlf7kXOP` (`heyganba`) | team `team_fcggMXeYL9uzprejNhUBdpB7`; `rootDirectory=frontend`, framework vite, output `dist` |
+| Domain frontend | Vercel | `heyganba.site` + `www.heyganba.site` | alias `https://heyganba.site` |
+| Domain backend | Render | `api.heyganba.site` | CNAME → `heyganba-backend.onrender.com` |
+
+Lưu ý cấu hình đã phải sửa khi tạo Vercel project (để tránh lặp lại):
+- `rootDirectory` **phải** = `frontend` (repo có backend + frontend chung một repo; để trống sẽ build từ repo root → fail).
+- **Deployment Protection**: project mới có thể bật `ssoProtection.deploymentType = all_except_custom_domains` → URL `*.vercel.app` trả trang đăng nhập Vercel.
+  Tắt bằng `PATCH /v9/projects/{id}?teamId=...` với body `{"ssoProtection": null}` nếu muốn preview công khai.
+- Env `VITE_API_BASE_URL` phải set cho cả `production` và `preview` **trước khi build** (Vite nhúng biến lúc build).
 
 | Log gặp phải | Nguyên nhân | Cách sửa |
 |---|---|---|
