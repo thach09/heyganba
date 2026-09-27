@@ -75,7 +75,7 @@
 | Nội dung chờ duyệt không rò rỉ ra ngoài | **Mới siết (27/09)** | `ContentAccess`: user không phải ADMIN chỉ nhận nội dung `APPROVED` (kana/kanji/grammar/flashcard/đề thi); `/content/review-status` chỉ ADMIN; test `ContentReviewVisibilityTest` (7 case) |
 | OWASP ZAP trước khi public | **Đã lên lịch — không thuộc nhóm hoãn vô thời hạn** | Chạy baseline scan trên **staging** (`https://heyganba-backend-staging.onrender.com/api/v1`) trước mốc public launch, tập trung đăng ký/đăng nhập + API chấm điểm. Lệnh và điều kiện tiên quyết: xem `deployment-plan.md` → "Trước khi public rộng". Chỉ tạm hoãn vì cần staging chạy ổn định + nội dung V12/V14 được duyệt trước khi quét. |
 | Diễn tập xoay `JWT_SECRET` | Chưa diễn tập | Cách làm: đổi env `JWT_SECRET` trên Render → mọi access/refresh token cũ vô hiệu (user phải đăng nhập lại), không cần đụng DB |
-| Health endpoint trung thực (không báo động giả) | **Mới sửa (27/09)** | Trước đó `/actuator/health` luôn trả 503 vì `RedisHealthIndicator` (không có Redis ở prod) dù app khoẻ; đã tắt chỉ số này (`management.health.redis.enabled=false`), test `SecurityHardeningTest#actuatorHealth_IsUpWithoutRedis` |
+| Health endpoint trung thực (không báo động giả) | **Đã sửa + deploy (27/09)** | Trước đó `/actuator/health` luôn trả 503 vì `RedisHealthIndicator` (không có Redis ở prod) dù app khoẻ; đã tắt chỉ số này (`management.health.redis.enabled=false`), đã deploy production 10:54:05Z → 200 UP; test `SecurityHardeningTest#actuatorHealth_IsUpWithoutRedis` |
 | Theo dõi log định kỳ | Một phần | Log Render + `GET /v1/logs` API; chưa có Sentry/alerting |
 
 ### Master test 20 điểm bảo mật (chạy thật trên production 27/09/2026)
@@ -124,7 +124,8 @@ Vòng 1: **58 PASS / 7 FAIL**. Soi kỹ 7 FAIL: **1 bug thật** (đã sửa + c
 - **Đã sửa**: `application.yml` → `management.health.redis.enabled: ${MANAGEMENT_HEALTH_REDIS_ENABLED:false}`
   (khi có Redis thật thì set `MANAGEMENT_HEALTH_REDIS_ENABLED=true`), kèm test hồi quy trong `SecurityHardeningTest`
   (health UP; header `nosniff`/`X-Frame-Options`; CORS allow/deny; `/actuator/env|beans` không mở; SQLi ở query param; BCrypt).
-  **Lưu ý: bản sửa mới nằm trên `main`, production vẫn trả 503 cho tới lần deploy kế tiếp.**
+  **Đã deploy production 27/09/2026 (`7302241`, deploy `dep-dasf7o942hec73b650r0` → live 10:54:05Z): `/actuator/health`
+  giờ trả 200 `{"status":"UP"}` và không còn stack trace Redis trong log.**
 
 #### Rủi ro đã chấp nhận (có lý do, không fix ngay)
 

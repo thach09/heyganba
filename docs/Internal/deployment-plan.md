@@ -304,6 +304,29 @@ Remove-Item Env:PGPASSWORD
     ở mọi bảng có `user_id`): `GET /kana` = 247, `/kanji` = 63, `/grammar/rules` = 32, `/grammar/exercises` = 64,
     `/flashcard/stats` → `availableNewWords = 44`; `/content/review-status` → `403` (đúng: chỉ admin).
 
+### Triển khai 27/09/2026 (đợt 3): sửa `/actuator/health` luôn 503 (báo động giả)
+
+**Backend (Render production, `srv-das95jh7lnhs7385mim0`)** — commit `7302241`, deploy `dep-dasf7o942hec73b650r0`
+→ `live` lúc **10:54:05Z** (đợt này CHỈ đổi cấu hình, không có migration):
+
+- Nguyên nhân: `spring-boot-starter-data-redis` trong classpath ⇒ Spring Boot tự bật `RedisHealthIndicator`; production
+  không có Redis (`app.srs.cache=memory`) nên `/actuator/health` trả **503 DOWN** dù app + Postgres khoẻ.
+  Bằng chứng trực tiếp trong log Render của instance CŨ: mỗi lần gọi `/actuator/health` là một stack trace
+  `org.springframework.data.redis.RedisConnectionFailureException: Unable to connect to Redis` /
+  `Connection refused: localhost/127.0.0.1:6379` (lúc 10:50:53Z → 10:52:42Z).
+- Sửa: `management.health.redis.enabled: ${MANAGEMENT_HEALTH_REDIS_ENABLED:false}` trong `application.yml`
+  (khi có Redis thật thì set env `MANAGEMENT_HEALTH_REDIS_ENABLED=true`).
+- Trước khi deploy: `mvn -B verify` → **121 test, 0 fail** (thêm 6 test hồi quy của master test bảo mật).
+- Sau deploy (đã xác minh trên instance MỚI `…-74g8v`):
+  - `GET /api/v1/actuator/health` → **200** `{"status":"UP","groups":["liveness","readiness"]}` (trước: 503).
+  - HSTS / `nosniff` / `X-Frame-Options: DENY` vẫn còn; `GET /api/v1/health` → `UP`.
+  - **0 dòng log** phát sinh sau khi live (trước đó mỗi lần gọi health là ~40 dòng stack trace Redis).
+  - E2E bằng tài khoản user tạm (tạo → xoá, `user_left=0`, `orphan_rows=0`): `/kana` = 247, `/kanji` = 63,
+    `/grammar/rules` = 32, `/grammar/exercises` = 64, `/flashcard/stats` → `availableNewWords = 44`,
+    `/content/review-status` → **403** (đúng: chỉ admin).
+- **Lưu ý cho lần sau**: dùng `clearCache: "clear"` khi trigger qua API — cache build bị xoá nên Maven phải tải lại
+  dependency, build mất ~5 phút (chậm hơn mức thường lệ nhưng tránh được kiểu treo `update_in_progress` đã gặp).
+
 
 
 
