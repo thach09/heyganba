@@ -2,6 +2,10 @@
 powershell.cmd
 cleanup.bat
 
+# Secrets dùng cho agent tự deploy (KHÔNG bao giờ commit)
+.local-secrets.env
+.secrets/
+
 # OS files
 .DS_Store
 Thumbs.db
