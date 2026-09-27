@@ -102,5 +102,14 @@ Sau mỗi phase, agent báo cáo ngắn gọn gồm 3 phần:
 - Test class nào chạm bảng nội dung (kana / vocabulary / kanji / grammar) phải `extends ContentApiTestBase`
   (`src/test/java/com/heyganba/support/`) để xoá dữ liệu theo đúng thứ tự khoá ngoại — nếu không, test sẽ đỏ tuỳ theo
   thứ tự chạy của Surefire chứ không phải do code sai.
+- **Mọi class test đụng bảng người dùng (users / roles / streaks / exam / study_activity) cũng phải extend base class**,
+  kể cả test auth / RBAC / security hardening: đừng tự gọi `userRepository.deleteAll()` vì `mock_exams`, `exam_results`,
+  `study_activities`, `srs_reviews` đều tham chiếu `users` → PostgreSQL/H2 báo
+  `Referential integrity constraint violation ... mock_exams FOREIGN KEY(user_id)`. Lỗi này **chỉ lộ tuỳ thứ tự chạy**
+  (thứ tự trên CI Linux khác Windows) nên local có thể xanh mà CI đỏ.
+  Cách phát hiện sớm ở local (đã dùng để tìm ra lỗi CI thật):
+  ```powershell
+  mvn -B test '-Dsurefire.runOrder=random' '-Dsurefire.runOrder.random.seed=1'   # thử vài seed khác nhau
+  ```
 - Khi chạy test với biến môi trường trỏ DB khác (migration check), nhớ `Remove-Item Env:SPRING_...` sau khi chạy, nếu không
   các lần chạy test sau sẽ dùng nhầm DB và fail với lỗi driver H2.

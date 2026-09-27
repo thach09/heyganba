@@ -38,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-class SecurityHardeningTest {
+class SecurityHardeningTest extends com.heyganba.support.ContentApiTestBase {
 
     private static final String JSON = MediaType.APPLICATION_JSON_VALUE;
 
@@ -48,14 +48,7 @@ class SecurityHardeningTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
-    private StreakRepository streakRepository;
+    // userRepository / roleRepository / streakRepository được kế thừa từ ContentApiTestBase.
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -64,10 +57,8 @@ class SecurityHardeningTest {
 
     @BeforeEach
     void setUp() {
-        streakRepository.deleteAll();
-        userRepository.deleteAll();
-        roleRepository.deleteAll();
-
+        // Không tự xoá users/streaks ở đây: ContentApiTestBase đã xoá theo đúng thứ tự khoá ngoại
+        // (mock_exams, exam_results, study_activities... trước users) nên test không phụ thuộc thứ tự chạy.
         roleRepository.save(Role.builder().name(RoleName.ROLE_ADMIN).description("Admin").build());
         userRole = roleRepository.save(Role.builder().name(RoleName.ROLE_USER).description("User").build());
     }

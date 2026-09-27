@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-class SecurityRbacTest {
+class SecurityRbacTest extends com.heyganba.support.ContentApiTestBase {
 
     @Autowired
     private MockMvc mockMvc;
@@ -38,14 +38,7 @@ class SecurityRbacTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
-    private com.heyganba.repository.StreakRepository streakRepository;
+    // userRepository / roleRepository / streakRepository được kế thừa từ ContentApiTestBase.
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -55,10 +48,7 @@ class SecurityRbacTest {
 
     @BeforeEach
     void setUp() {
-        streakRepository.deleteAll();
-        userRepository.deleteAll();
-        roleRepository.deleteAll();
-
+        // Không tự xoá users/streaks: base class xoá tập trung theo thứ tự khoá ngoại → không phụ thuộc thứ tự chạy test.
         adminRole = roleRepository.save(Role.builder().name(RoleName.ROLE_ADMIN).description("Admin").build());
         userRole = roleRepository.save(Role.builder().name(RoleName.ROLE_USER).description("User").build());
     }

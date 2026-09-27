@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-class AuthIntegrationTest {
+class AuthIntegrationTest extends com.heyganba.support.ContentApiTestBase {
 
     @Autowired
     private MockMvc mockMvc;
@@ -37,21 +37,11 @@ class AuthIntegrationTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
-    private com.heyganba.repository.StreakRepository streakRepository;
+    // userRepository / roleRepository / streakRepository được kế thừa từ ContentApiTestBase.
 
     @BeforeEach
     void setUp() {
-        streakRepository.deleteAll();
-        userRepository.deleteAll();
-        roleRepository.deleteAll();
-
+        // Không tự xoá users/streaks: base class xoá tập trung theo thứ tự khoá ngoại → test không phụ thuộc thứ tự chạy.
         roleRepository.save(Role.builder().name(RoleName.ROLE_ADMIN).description("Admin").build());
         roleRepository.save(Role.builder().name(RoleName.ROLE_USER).description("User").build());
     }

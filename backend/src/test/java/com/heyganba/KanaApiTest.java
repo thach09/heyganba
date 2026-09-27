@@ -38,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-class KanaApiTest {
+class KanaApiTest extends com.heyganba.support.ContentApiTestBase {
 
     @Autowired
     private MockMvc mockMvc;
@@ -49,14 +49,7 @@ class KanaApiTest {
     @Autowired
     private KanaRepository kanaRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
-    private StreakRepository streakRepository;
+    // userRepository / roleRepository / streakRepository được kế thừa từ ContentApiTestBase.
 
     @Autowired
     private RateLimiterService rateLimiterService;
@@ -66,9 +59,7 @@ class KanaApiTest {
     @BeforeEach
     void setUp() {
         rateLimiterService.reset();
-        streakRepository.deleteAll();
-        userRepository.deleteAll();
-        roleRepository.deleteAll();
+        // Chỉ xoá thêm bảng `kana` (base class không quản lý bảng này); users/roles/streaks do base xoá theo FK order.
         kanaRepository.deleteAll();
 
         roleRepository.save(Role.builder().name(RoleName.ROLE_ADMIN).description("Admin").build());
