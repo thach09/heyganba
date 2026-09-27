@@ -230,8 +230,13 @@ Remove-Item Env:PGPASSWORD
 - **UI phải đăng xuất/đăng nhập lại 1 lần**: menu "Khu vực Admin" và trang Admin đọc `user.role` từ `localStorage`
   (`getSavedUser`), giá trị này chỉ được ghi lại ở lần login.
 - Verify: `GET /api/v1/admin/users` bằng token admin → dòng của tài khoản đó phải hiện `ROLE_ADMIN`.
-- Đã áp dụng: `thietthachdo@gmail.com` → `ROLE_ADMIN` trên **production** (admin@heyganba.vn giữ nguyên; production
-  hiện có 2 admin). Staging vẫn chỉ có `admin@heyganba.vn`.
+- Đã áp dụng (27/09/2026): `thietthachdo@gmail.com` → `ROLE_ADMIN` trên **cả production và staging** (`admin@heyganba.vn`
+  giữ nguyên). Lưu ý: staging (branch `develop`) được tạo từ bản copy nên **chưa có** tài khoản này → phải INSERT thêm và
+  **copy hash BCrypt từ production** ⇒ dùng đúng một mật khẩu cho cả 2 môi trường (không tạo và không lưu mật khẩu mới ở đâu).
+  Khi INSERT sang staging nên dọn dữ liệu nháp trước, hoặc dùng khối `do $$ … $$` kiểm tra `uid is null` để chạy lại an toàn.
+- Đã dọn dữ liệu test: xoá 2 tài khoản `leak.chk2235695@heyganba.vn` + `leak.chk2869506@heyganba.vn` (production). Mọi FK
+  trỏ tới `users` đều `ON DELETE CASCADE` (riêng `audit_logs.admin_id` = `SET NULL`) nên không để lại dòng mồ côi —
+  production còn 2 user (`admin@heyganba.vn`, `thietthachdo@gmail.com`).
 
 ### Bảo vệ tầng request (rate limit + payload) — đã bật ở production
 
