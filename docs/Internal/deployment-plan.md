@@ -207,6 +207,32 @@ docker run --rm postgres:16-alpine psql "<neon-uri>" -c "update users set passwo
 Kiểm tra sau khi xoay: `POST /api/v1/auth/login` với email admin + mật khẩu mới → 200 và `role = ROLE_ADMIN`;
 mật khẩu cũ trong README → 401.
 
+### Cấp quyền admin cho một tài khoản có sẵn (đã làm 27/09/2026)
+
+App **không có UI/API tự phong admin** (trang Admin chỉ xem danh sách + trạng thái), nên cách chuẩn là UPDATE
+`users.role_id` trỏ sang role `ROLE_ADMIN` rồi **đăng nhập lại**. Không cần đụng tới mật khẩu của người đó
+(schema: `users.role_id` → `roles.id`; role seed trong V2: `ROLE_ADMIN`, `ROLE_USER`).
+
+```powershell
+# psql qua Docker; mật khẩu truyền bằng biến môi trường nên KHÔNG lộ ra command line
+$uri = <NEON_CONNECTION_URI trong .local-secrets.env>
+$m = [regex]::Match($uri,'://(?<u>[^:]+):(?<p>[^@]+)@(?<h>[^/:?]+)/(?<db>[^?]+)')
+$env:PGPASSWORD = $m.Groups['p'].Value
+docker run --rm -e PGPASSWORD -e "PGHOST=$($m.Groups['h'].Value)" -e "PGDATABASE=$($m.Groups['db'].Value)" `
+  -e "PGUSER=$($m.Groups['u'].Value)" -e PGSSLMODE=require postgres:16-alpine psql -t -A -v ON_ERROR_STOP=1 `
+  -c "update users u set role_id = (select id from roles where name='ROLE_ADMIN'), updated_at = now() where u.email = '<email>'" `
+  -c "select u.email || ' = ' || r.name from users u join roles r on r.id = u.role_id where u.email = '<email>'"
+Remove-Item Env:PGPASSWORD
+```
+
+- **Backend cấp quyền ngay lập tức**: `JwtAuthenticationFilter` nạp lại `UserDetails` (kèm authorities) **từ DB mỗi
+  request**, không tin claim `role` trong token → token cũ vẫn nhận quyền mới, không phải chờ hết hạn.
+- **UI phải đăng xuất/đăng nhập lại 1 lần**: menu "Khu vực Admin" và trang Admin đọc `user.role` từ `localStorage`
+  (`getSavedUser`), giá trị này chỉ được ghi lại ở lần login.
+- Verify: `GET /api/v1/admin/users` bằng token admin → dòng của tài khoản đó phải hiện `ROLE_ADMIN`.
+- Đã áp dụng: `thietthachdo@gmail.com` → `ROLE_ADMIN` trên **production** (admin@heyganba.vn giữ nguyên; production
+  hiện có 2 admin). Staging vẫn chỉ có `admin@heyganba.vn`.
+
 ### Bảo vệ tầng request (rate limit + payload) — đã bật ở production
 
 - `POST /auth/login`: 5 lần SAI/15 phút cho mỗi tài khoản (đăng nhập đúng không bị tính) + 100 lần SAI/15 phút cho mỗi IP.
