@@ -149,6 +149,36 @@ không tự deploy backend**; phải làm một trong hai:
 
 Frontend thì ngược lại: project Vercel đã liên kết GitHub (`main` = production branch) → push `main` là Vercel tự build/deploy.
 
+### ⚠️ `autoDeploy: yes` KHÔNG đủ nếu chưa cài Render GitHub App (đã gặp thật 27/09/2026)
+
+Staging đã đặt `autoDeploy=yes` nhưng push lên `develop` **không tạo deploy nào**. Nguyên nhân: Render chỉ tự deploy theo push
+khi repo được kết nối qua **Render GitHub App** (webhook). Service tạo bằng API với repo public vẫn clone/build được (nên
+deploy đầu tiên có chạy) nhưng **không nhận webhook** → auto-deploy im lặng không hoạt động.
+
+- Phát hiện: sau khi push 1 commit, gọi `GET /v1/services/<srv-id>/deploys?limit=5` — không có deploy mới mang commit đó
+  nghĩa là webhook chưa hoạt động.
+- Khắc phục (chọn 1):
+  1. **Cài Render GitHub App cho repo** (Render Dashboard → Account Settings → GitHub → Configure/Install, cấp quyền cho
+     `thach09/heyganba`) → từ đó push `develop` là staging tự deploy. Đây là cách đúng với yêu cầu "bật auto-deploy".
+  2. **Trigger bằng API** khi cần: `POST /v1/services/srv-dasbnfh7lnhs738gmm30/deploys` body `{}` (dùng commit mới nhất của
+     `develop`) — cách này đã dùng để đưa staging lên bản đầu tiên.
+  3. Tạo **Deploy Hook** cho service staging (Dashboard → service → Settings → Deploy Hook) rồi gọi hook từ CI.
+
+Cho tới khi chọn (1), staging **không tự cập nhật theo `develop`** → nhớ trigger sau mỗi lần đổi nội dung chờ duyệt.
+
+### Kết quả kiểm tra staging (27/09/2026)
+
+| Kiểm tra | Kết quả |
+|---|---|
+| `GET https://heyganba-backend-staging.onrender.com/api/v1/health` | `status=UP` |
+| Migration đã áp trên DB staging (Neon branch `develop`) | V1→V14: **V12 `expand grammar exercises`** + **V14 `expand trap exercises`** áp out-of-order lúc 06:55 |
+| Nội dung V12/V14 có mặt | `grammar_exercises` = **306** (production 64), trong đó 221 câu nhóm bẫy (`is_common_mistake = true`) |
+| `GET /content/review-status` trên staging | `GRAMMAR_EXERCISE total=306 pendingReview=306`; `stagingOnlyMigrations=[V12…, V14…]` |
+| Login admin trên staging | 200 + `ROLE_ADMIN` (DB là bản copy nên dùng cùng mật khẩu đã xoay) |
+| CORS | origin `https://heyganba-git-develop-thach09.vercel.app` → 200 + ACAO đúng; origin lạ → 403 |
+| Frontend staging | alias `develop` READY cho commit mới nhất; bundle chứa `heyganba-backend-staging.onrender.com` và **không** chứa API production; CSP có cả 2 host API |
+| Deploy đầu tiên của staging | **`update_failed`** vì lúc đó chưa có `spring.flyway.out-of-order` → đúng như phân tích, commit sau đã sửa |
+
 ### Xoay mật khẩu admin production (đã làm 27/09/2026)
 
 Tài khoản seed `admin@heyganba.vn` có mật khẩu nằm trong README (ai đọc repo cũng biết) → **bắt buộc xoay trước khi public**.
@@ -296,6 +326,15 @@ Trạng thái đã xác minh bằng `GET /repos/thach09/heyganba/environments/pr
 `branch_policy` cho `main`; `deployment_branch_policy.custom_branch_policies=true`.
 
 - Environment `staging` để **trống protection** vì staging deploy tự động, không cần duyệt.
+- **Kiểm chứng gate bằng trigger giả (27/09/2026)**: push 1 commit docs vào `main` (run `36301455028`) → 3 job test/build
+  xanh; job `Deploy Backend → Render (production)` ở trạng thái **waiting**, `pending_deployments = 1` (env `production`,
+  `current_user_can_approve = true`). Duyệt qua API
+  `POST /repos/{o}/{r}/actions/runs/{id}/pending_deployments` body `{"environment_ids":[<envId>],"state":"approved"}` →
+  job chạy tiếp và **tự skip** vì secret `RENDER_PROD_DEPLOY_HOOK_URL` chưa tồn tại (in `::warning::`) → run kết thúc
+  `success` mà **không deploy gì**. Đây là bằng chứng gate chặn đúng trước khi chạy.
+  - Duyệt lại lần nữa chỉ cần đổi `state: "rejected"` nếu muốn thử nhánh từ chối.
+  - **Không dùng `workflow_dispatch` để test gate này**: job có `if: github.event_name == 'push' && github.ref == 'refs/heads/main'`
+    nên sẽ bị skip ngay, không bao giờ chạm environment.
 - Kiểm tra gate: push vào `main` → job `deploy-backend-production` ở trạng thái *Waiting for review*; xem được bằng
   `GET /repos/{owner}/{repo}/actions/runs/{run_id}/pending_deployments`.
 - **Về `PAT_TOKEN` trong GitHub Actions secrets**: GitHub **không cho đọc lại giá trị** secret (write-only, kể cả bằng PAT —

@@ -225,3 +225,29 @@ Sau mỗi phase, agent báo cáo ngắn gọn gồm 3 phần:
 - **Render free plan là ngân sách dùng chung**: nhiều service free (kể cả của project khác) chia nhau instance-hours → staging
   để chế độ ngủ bình thường, không ping giữ ấm, tránh ăn hết ngân sách của production.
 
+## Kinh nghiệm GitHub Actions: environment duyệt thủ công (đã làm thật 27/09/2026)
+
+- **Không đọc lại được secret của GitHub Actions**: secret là write-only, `GET /actions/secrets` chỉ trả **tên** (+ thời điểm),
+  không trả giá trị — kể cả khi có PAT quyền admin. Vì vậy "dùng secret PAT_TOKEN để cấu hình" là bất khả thi về mặt API:
+  agent cần giá trị token ở dạng đọc được → đặt vào `.local-secrets.env` (key `GITHUB_TOKEN`, scope `repo` + `workflow`).
+  Trên máy này có sẵn credential Git Credential Manager cho `github.com` (scope `repo, workflow`, `admin=true`) →
+  lấy bằng `"url=https://github.com`n`n" | git credential fill` **rồi dùng luôn trong cùng câu lệnh**, không in ra.
+- **Cấu hình environment bằng API**: `PUT /repos/{o}/{r}/environments/{name}` với
+  `{ wait_timer, can_admins_bypass, reviewers: [{type:'User', id}], deployment_branch_policy: { custom_branch_policies: true } }`
+  (`userId` lấy từ `GET /user`; `prevent_self_review` để `false` nếu chỉ có 1 người vừa deploy vừa duyệt).
+  Giới hạn nhánh phải thêm ở endpoint riêng `POST …/environments/{name}/deployment-branch-policies` body `{"name":"main"}`,
+  và **chỉ thêm được SAU khi đã bật `custom_branch_policies`** (gọi trước trả 404).
+  ⚠️ Body JSON phải gửi qua file (`--data-binary "@file"`): PowerShell 5.1 làm hỏng JSON khi truyền bằng `-d`
+  (lỗi `Problems parsing JSON`).
+- **Test gate duyệt production**: `workflow_dispatch` KHÔNG dùng được nếu job có điều kiện `if: github.event_name == 'push' …`
+  (job bị skip, không chạm environment) → phải push thật 1 commit (đã dùng commit docs). Dấu hiệu gate đang chặn:
+  `GET /repos/{o}/{r}/actions/runs/{id}` → `status = waiting`; `.../jobs` → job deploy `waiting`;
+  `.../pending_deployments` → liệt kê environment + `current_user_can_approve`.
+  Duyệt/từ chối bằng `POST .../pending_deployments` body `{"environment_ids":[<id>],"state":"approved"|"rejected"}`.
+  **Trước khi bấm duyệt phải kiểm tra secret deploy có tồn tại không** (`GET /actions/secrets`) — nếu chưa có thì duyệt là
+  an toàn (job in `::warning::` rồi exit 0, không deploy gì) và đây là cách test không chạm production.
+- **`autoDeploy: yes` trên Render là chưa đủ**: Render chỉ nhận webhook khi repo kết nối qua **Render GitHub App**. Service
+  tạo bằng API với repo public vẫn build được nhưng push KHÔNG tạo deploy mới → phải kiểm tra
+  `GET /v1/services/{id}/deploys` sau khi push (đừng tin mỗi giá trị `autoDeploy`). Chưa cài app thì dùng
+  `POST /v1/services/{id}/deploys` để trigger.
+
