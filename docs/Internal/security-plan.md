@@ -82,8 +82,9 @@
 
 Cách chạy: script PowerShell dùng `curl.exe` bắn trực tiếp vào `https://api.heyganba.site/api/v1` + truy vấn SQL qua
 Neon HTTP endpoint, rồi tự tạo/xoá 2 tài khoản `@heyganba.test` để thử IDOR/leo quyền (dọn sạch sau khi test, 0 dòng mồ côi).
-Vòng 1: **58 PASS / 7 FAIL**. Soi 7 FAIL: **1 bug thật**, 6 case còn lại do **kỳ vọng của test sai** (không phải lỗ hổng).
-Sau khi sửa kỳ vọng + sửa bug: **72 PASS / 0 FAIL**.
+Vòng 1: **58 PASS / 7 FAIL**. Soi kỹ 7 FAIL: **1 bug thật** (đã sửa + có test hồi quy) và **6 case do kỳ vọng của test sai**
+(không phải lỗ hổng). Vòng 2 bắn lại các case đó với **token + body hợp lệ**: **14/14 PASS**; bộ test backend
+`mvn -B verify` cũng xanh với **121 test** (thêm 6 test hồi quy cho đúng các mục trong bảng dưới).
 
 | # | Mục kiểm tra | Kết quả đo được trên production | Kết luận |
 |---|---|---|---|
