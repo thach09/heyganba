@@ -40,7 +40,8 @@
 
 Các bước:
 1. Namecheap → Domain List → `heyganba.site` → **Advanced DNS**, **xoá record mặc định** (URL Redirect `@`, CNAME `www → parkingpage.namecheap.com`) rồi thêm 3 record ở bảng trên.
-2. Render → service backend → Settings → **Custom Domains** → thêm `api.heyganba.site` (blueprint đã khai báo sẵn trong `render.yaml`).
+2. Render → service backend → Settings → **Custom Domains** → thêm `api.heyganba.site`
+   (blueprint cố tình không khai báo field `domains` để tránh phụ thuộc schema; thêm ở dashboard là 1 lần duy nhất).
 3. Vercel → Project → Settings → **Domains** → thêm `heyganba.site` (chọn redirect `www` → apex) — Vercel sẽ tự kiểm tra DNS.
 4. Nameserver: giữ mặc định của Namecheap (không cần chuyển sang Cloudflare).
 5. TLS do Render/Vercel cấp tự động (Let's Encrypt) sau khi DNS propagate (thường 5–30 phút).

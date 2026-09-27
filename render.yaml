@@ -6,7 +6,9 @@
 #
 # DOMAIN: production dùng heyganba.site (Namecheap) →
 #   - Frontend (Vercel): apex `heyganba.site` + `www.heyganba.site`
-#   - Backend (Render): subdomain `api.heyganba.site` (khai báo ở `domains:` bên dưới)
+#   - Backend (Render): subdomain `api.heyganba.site`
+#     (thêm trong Render Dashboard → service → Settings → Custom Domains sau khi tạo service;
+#      cố tình KHÔNG khai báo ở đây để blueprint không phụ thuộc field `domains` và không fail validate)
 #   DNS record cụ thể: xem docs/Internal/deployment-plan.md → "Domain heyganba.site".
 services:
   - type: web
@@ -19,8 +21,6 @@ services:
     dockerfilePath: ./backend/Dockerfile
     healthCheckPath: /api/v1/health
     autoDeploy: false
-    domains:
-      - api.heyganba.site
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: staging
