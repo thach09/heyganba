@@ -1,0 +1,22 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+  jpa:
+    show-sql: false
+
+  flyway:
+    # PRODUCTION chỉ chạy migration đã duyệt — KHÔNG include `db/migration-staging` (nội dung chờ duyệt tiếng Nhật).
+    # Muốn promote nội dung đang chờ: chuyển file từ `db/migration-staging/` sang `db/migration/` sau khi có review.
+    locations: classpath:db/migration
+
+management:
+  endpoint:
+    health:
+      # Production không trả chi tiết thành phần hạ tầng cho request ẩn danh.
+      show-details: never
+
+logging:
+  level:
+    root: WARN
+    com.heyganba: INFO

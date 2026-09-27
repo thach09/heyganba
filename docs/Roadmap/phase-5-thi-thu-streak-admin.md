@@ -132,8 +132,48 @@
 
 ## Rủi ro / Cần xác nhận
 
-1. **Streak điều kiện:** Học đủ bao nhiêu mới tính 1 ngày? Đề xuất: ôn ≥ 10 từ HOẶC làm ≥ 5 bài tập HOẶC hoàn thành 1 bài thi thử.
-2. **Leaderboard theo lớp:** User nhập mã lớp khi đăng ký? Hay admin gán? Cần thiết kế flow rõ.
-3. **Mascot assets:** Ai thiết kế? Tự vẽ? Commission? AI generate?
+1. ~~**Streak điều kiện**~~ → **ĐÃ CHỐT**: ≥10 lượt ôn SRS HOẶC 1 bộ quiz/1 lượt thi thử HOẶC ≥10 câu bài tập ngữ pháp.
+2. ~~**Leaderboard theo lớp**~~ → **ĐÃ CHỐT**: user tự nhập `class_code` (text tự do) lúc đăng ký hoặc sửa sau trong Trạm Thi Thử.
+3. ~~**Mascot assets**~~ → **TẠM THỜI**: dùng chuỗi emoji tiến hoá, chờ asset thiết kế thật.
 4. **Load test target:** 50–100 concurrent users đủ cho giai đoạn đầu? Hosting free tier có chịu được không?
 5. **Audit log retention:** Giữ bao lâu? Bao nhiêu storage?
+
+---
+
+## Trạng thái triển khai (cập nhật gần nhất)
+
+**Đã xong:**
+
+- Schema `V10__mock_exam_and_study_activity.sql`: bảng `mock_exams`, `exam_results`, `study_activities` + index
+  (leaderboard dùng index `score_percent`, heatmap dùng `(user_id, activity_date)`).
+- API thi thử: `POST /exam/generate`, `GET /exam/{id}`, `POST /exam/{id}/submit` (rate limit 30/phút/user),
+  `GET /exam/history`, `GET /exam/{id}/result`.
+- **Đề sinh từ nội dung đã có** (40% grammar + 30% kana + 30% từ vựng), đáp án giữ ở server trong
+  `mock_exams.questions_json`; client không bao giờ nhận đáp án trước khi nộp.
+- Chấm điểm hoàn toàn ở server (chuẩn hoá Unicode + trim), thời lượng làm bài bị chặn trần theo thời lượng đề;
+  **nộp lại cùng đề là idempotent** (không cộng điểm/streak 2 lần) — có test cho case này.
+- Streak: tách thành `StreakService` dùng chung cho flashcard + thi thử; mốc "ngày học" cấu hình qua
+  `app.streak.zone` (**mặc định `Asia/Ho_Chi_Minh`** — quyết định đã chốt: mọi môi trường dùng giờ VN, reset streak lúc 00:00 giờ VN).
+- Heatmap: `GET /streak/heatmap?days=90` (ngày không học vẫn trả về ô 0 để UI vẽ đủ lưới) + `GET /streak`.
+- Leaderboard: `GET /leaderboard` chạy trên PostgreSQL, **trả kèm công thức điểm** cho client:
+  `points = số từ đã thuộc + (streak dài nhất × 2) + (điểm thi cao nhất ÷ 10)`.
+- Audit log: `GET /admin/audit-logs` (đọc 50 bản ghi gần nhất, chỉ ADMIN).
+- Frontend `ExamView`: cấu hình số câu/thời gian, phòng thi có đồng hồ đếm ngược (hết giờ tự nộp), phím 1/2/3/4 +
+  Enter, màn kết quả review từng câu, heatmap 91 ngày, bảng xếp hạng và lịch sử thi.
+- Test: `ExamApiTest` 11 case + `StreakServiceTest` 6 case (gồm edge case reset streak đúng 00:00 giờ VN và bẫy "hai lần học trong cùng ngày VN nhưng khác ngày UTC").
+
+**Còn thiếu / cần xác nhận:**
+
+- **Redis chưa bật** (hướng an toàn đã chốt): leaderboard/streak chạy trên Postgres; khi có Redis managed chỉ cần
+  thay implementation, API giữ nguyên.
+- **Đề thi chưa có phần đọc hiểu** theo format FPT (cần nội dung mới). Phần nghe đã có giải pháp tạm bằng TTS.
+- Audit log mới có phần đọc: chưa có endpoint sửa/xoá nội dung nên chưa có chỗ ghi log.
+
+### Các quyết định đã chốt và đã code xong (đợt này)
+
+| Quyết định | Đã triển khai |
+|---|---|
+| Streak chỉ tính khi hoàn thành ≥10 lượt ôn SRS **hoặc** 1 bộ quiz đầy đủ trong ngày (ôn 1 từ không tính) | `StreakPolicy` (ngưỡng cấu hình `app.streak.min-srs-reviews`, `app.streak.min-quiz-questions`) + `StudyActivityService.qualifiesForStreak`. Áp dụng ở `FlashcardService`, `GrammarService` (ghi nhận câu bài tập), `ExamService` (1 lượt thi = 1 bộ quiz đầy đủ). `GET /streak` trả thêm `todaySrsReviews`, `minSrsReviewsForStreak`, `todayQualified` để UI hiện tiến độ |
+| Leaderboard theo lớp | `users.class_code` (V11, text tự do, nullable) + index; nhập khi đăng ký hoặc `PUT /users/me/class-code`; `GET /leaderboard?classCode=…` (so khớp không phân biệt hoa thường, trả `scope = CLASS:<mã>`) |
+| Mascot tạm bằng emoji tiến hoá | `frontend/src/components/MascotBadge.tsx` (🥚 → 🐣 → 🐤 → 🐥 → 🦅 → 🐉 theo streak dài nhất), hiển thị ở Dashboard + Trạm Thi thử; thay asset thật chỉ cần đổi bảng `MILESTONES` |
+| Audio đề thi nghe — giải pháp tạm bằng Web Speech API | BE trả `audioText` cho câu KANA/VOCABULARY (giữ nguyên trong `questions_json`); FE `services/japaneseSpeech.ts` (dùng chung với Trạm Kana) + nút 🔊 Nghe trong phòng thi. ⚠️ Là PLACEHOLDER, khi có audio thu thật thì thay bằng URL R2/CDN |

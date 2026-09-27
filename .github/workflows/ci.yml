@@ -1,0 +1,234 @@
+name: HeyGanba CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main", "develop" ]
+  pull_request:
+    branches: [ "main", "develop" ]
+  workflow_dispatch:
+
+# Huỷ run cũ khi có push mới trên cùng branch → tiết kiệm phút CI.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  JAVA_VERSION: "21"
+  NODE_VERSION: "20"
+
+jobs:
+  backend-test:
+    name: Backend Build & Test (H2)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build and test with Maven
+        working-directory: ./backend
+        run: mvn -B clean verify
+
+      - name: Upload surefire reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-surefire-reports
+          path: backend/target/surefire-reports/
+          if-no-files-found: ignore
+
+  backend-migration-check:
+    name: Backend Migration Check (PostgreSQL + Flyway)
+    runs-on: ubuntu-latest
+    needs: [backend-test]
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: heyganba_migrationcheck
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d heyganba_migrationcheck"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      # Chạy thẳng trên PostgreSQL thật: xác nhận Flyway migration apply được và entity khớp schema.
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/heyganba_migrationcheck
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
+      SPRING_FLYWAY_ENABLED: "true"
+      SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE: "5"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Apply Flyway migrations on PostgreSQL and verify schema
+        working-directory: ./backend
+        run: mvn -B test
+
+  frontend-test:
+    name: Frontend Lint & Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: './frontend/package-lock.json'
+
+      - name: Install dependencies
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: Lint Frontend
+        working-directory: ./frontend
+        run: npm run lint
+
+      - name: Build Frontend
+        working-directory: ./frontend
+        run: npm run build
+
+      - name: Upload build output
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: frontend/dist/
+          if-no-files-found: error
+
+  # ============================================================
+  # Deploy — Staging: tự động sau khi test pass (push lên main/develop).
+  # Bỏ qua an toàn (chỉ warning) nếu secret deploy chưa được cấu hình.
+  # ============================================================
+  deploy-backend-staging:
+    name: Deploy Backend → Render (staging)
+    needs: [backend-test, backend-migration-check]
+    # Staging chỉ deploy từ nhánh `develop` (đúng quy trình: staging tự động sau khi merge develop).
+    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Trigger Render deploy hook
+        env:
+          DEPLOY_HOOK: ${{ secrets.RENDER_STAGING_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$DEPLOY_HOOK" ]; then
+            echo "::warning::Chưa cấu hình RENDER_STAGING_DEPLOY_HOOK_URL — bỏ qua deploy backend staging."
+            exit 0
+          fi
+          curl -fsS -X POST "$DEPLOY_HOOK"
+          echo "Đã trigger deploy backend staging trên Render."
+
+  deploy-frontend-staging:
+    name: Deploy Frontend → Vercel (staging/preview)
+    needs: [frontend-test]
+    # Staging chỉ deploy từ nhánh `develop` (đồng bộ với deploy-backend-staging).
+    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: './frontend/package-lock.json'
+
+      - name: Deploy preview to Vercel
+        working-directory: ./frontend
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          if [ -z "$VERCEL_TOKEN" ] || [ -z "$VERCEL_ORG_ID" ] || [ -z "$VERCEL_PROJECT_ID" ]; then
+            echo "::warning::Thiếu VERCEL_TOKEN / VERCEL_ORG_ID / VERCEL_PROJECT_ID — bỏ qua deploy frontend staging."
+            echo "Nếu project đang bật Vercel Git Integration thì Vercel đã tự deploy, không cần job này."
+            exit 0
+          fi
+          npm ci
+          npx --yes vercel@latest pull --yes --environment=preview --token="$VERCEL_TOKEN"
+          npx --yes vercel@latest build --token="$VERCEL_TOKEN"
+          npx --yes vercel@latest deploy --prebuilt --token="$VERCEL_TOKEN"
+
+  # ============================================================
+  # Deploy — Production: chạy trên main nhưng cần duyệt thủ công.
+  # Bật bằng GitHub: Settings → Environments → production → Required reviewers.
+  # ============================================================
+  deploy-backend-production:
+    name: Deploy Backend → Render (production)
+    needs: [backend-test, backend-migration-check]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Trigger Render deploy hook
+        env:
+          DEPLOY_HOOK: ${{ secrets.RENDER_PROD_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$DEPLOY_HOOK" ]; then
+            echo "::warning::Chưa cấu hình RENDER_PROD_DEPLOY_HOOK_URL — bỏ qua deploy backend production."
+            exit 0
+          fi
+          curl -fsS -X POST "$DEPLOY_HOOK"
+          echo "Đã trigger deploy backend production trên Render."
+
+  deploy-frontend-production:
+    name: Deploy Frontend → Vercel (production)
+    needs: [frontend-test]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: './frontend/package-lock.json'
+
+      - name: Deploy production to Vercel
+        working-directory: ./frontend
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          if [ -z "$VERCEL_TOKEN" ] || [ -z "$VERCEL_ORG_ID" ] || [ -z "$VERCEL_PROJECT_ID" ]; then
+            echo "::warning::Thiếu VERCEL_TOKEN / VERCEL_ORG_ID / VERCEL_PROJECT_ID — bỏ qua deploy frontend production."
+            exit 0
+          fi
+          npm ci
+          npx --yes vercel@latest pull --yes --environment=production --token="$VERCEL_TOKEN"
+          npx --yes vercel@latest build --prod --token="$VERCEL_TOKEN"
+          npx --yes vercel@latest deploy --prebuilt --prod --token="$VERCEL_TOKEN"
+

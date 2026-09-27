@@ -1,0 +1,11 @@
+spring:
+  config:
+    activate:
+      on-profile: staging
+  jpa:
+    show-sql: false
+
+logging:
+  level:
+    root: INFO
+    com.heyganba: INFO

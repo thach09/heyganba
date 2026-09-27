@@ -1,0 +1,236 @@
+# Deployment Plan — Japanese Learning Platform (DevOps)
+
+## Môi trường
+
+| Môi trường | Mục đích | Ghi chú |
+|---|---|---|
+| Local | Dev hàng ngày | Docker Compose: backend + Postgres + Redis chạy local, không phụ thuộc cloud |
+| Staging | Test trước khi lên production | Deploy tự động mỗi khi merge vào `develop`, dữ liệu là bản sao/dữ liệu giả, nơi duyệt nội dung tiếng Nhật trước khi đẩy chính thức |
+| Production | Phục vụ user thật | Deploy khi merge vào `main`, có thêm bước duyệt thủ công (manual approval) trước khi chạy migration DB |
+
+## Hạ tầng
+
+- **Backend:** Spring Boot đóng gói Docker image, deploy trên Render (Web Service).
+- **Frontend:** React + Vite build tĩnh, deploy trên Vercel, hưởng CDN edge sẵn có.
+- **Database:** PostgreSQL managed (Render Postgres hoặc Neon) — bật daily backup tự động, retention tối thiểu 7 ngày.
+- **Cache:** Redis managed (Render Redis hoặc Upstash) cho hàng đợi SRS và leaderboard.
+- **Media:** Audio phát âm lưu Cloudflare R2, phục vụ qua CDN, không đi qua backend.
+- **DNS/HTTPS:** Domain trỏ qua Cloudflare, TLS tự động (Let's Encrypt qua Render/Vercel), bật HSTS.
+
+### Staging & Database (thực tế triển khai)
+
+- **Production**: 1 Web Service Render (branch `main`) + 1 PostgreSQL Render free do blueprint `render.yaml` tạo và tự
+  inject `SPRING_DATASOURCE_URL`; backend ở `api.heyganba.site`; frontend Vercel (branch `main`) ở `heyganba.site`.
+- **Staging**: tạo Web Service thứ 2 trỏ branch `develop`. Database staging chọn 1 trong 2 cách — Neon free (khuyến nghị,
+  không dùng hết hạn mức Render) hoặc nâng plan Render để có Postgres thứ 2 (**không dùng chung DB với production** vì
+  staging chạy thêm nội dung chờ duyệt V12/V14).
+- Gói Render Postgres free **hết hạn sau 30 ngày**, không có backup dài hạn → trước khi public rộng cần nâng plan hoặc
+  chuyển Neon để đáp ứng yêu cầu “backup retention tối thiểu 7 ngày” ở mục Database.
+- CI: push `develop` → deploy staging (tự động); push `main` → deploy production (job dừng ở GitHub Environment
+  `production` để chờ duyệt thủ công).
+
+## Domain `heyganba.site` (mua ở Namecheap) → Render + Vercel
+
+| Bản ghi | Host (Namecheap) | Type | Value | Ghi chú |
+|---|---|---|---|---|
+| Frontend — apex | `@` | A | `76.76.21.21` | IP anycast của Vercel (Vercel → Project → Domains hiển thị giá trị chính xác; nếu khác thì dùng giá trị Vercel báo) |
+| Frontend — www | `www` | CNAME | `cname.vercel-dns.com` | Vercel tự redirect `www` ⇄ apex |
+| Backend API | `api` | CNAME | `<service>.onrender.com` | Render → service → Settings → Custom Domains hiển thị target thật khi thêm domain `api.heyganba.site` |
+| (chỉ khi dashboard yêu cầu) | `_vercel` / `_render` | TXT | giá trị Render/Vercel cấp | Dùng để xác minh quyền sở hữu domain |
+
+Các bước:
+1. Namecheap → Domain List → `heyganba.site` → **Advanced DNS**, **xoá record mặc định** (URL Redirect `@`, CNAME `www → parkingpage.namecheap.com`) rồi thêm 3 record ở bảng trên.
+2. Render → service backend → Settings → **Custom Domains** → thêm `api.heyganba.site`
+   (blueprint cố tình không khai báo field `domains` để tránh phụ thuộc schema; thêm ở dashboard là 1 lần duy nhất).
+3. Vercel → Project → Settings → **Domains** → thêm `heyganba.site` (chọn redirect `www` → apex) — Vercel sẽ tự kiểm tra DNS.
+4. Nameserver: giữ mặc định của Namecheap (không cần chuyển sang Cloudflare).
+5. TLS do Render/Vercel cấp tự động (Let's Encrypt) sau khi DNS propagate (thường 5–30 phút).
+
+Kiểm tra:
+
+```powershell
+curl.exe -s https://api.heyganba.site/api/v1/health          # kỳ vọng: {"success":true,...,"status":"UP",...}
+curl.exe -sI https://heyganba.site | Select-String "HTTP/|strict-transport-security"
+curl.exe -sI https://api.heyganba.site/api/v1/health | Select-String "HTTP/|strict-transport-security"
+```
+
+- Nếu API trả `502/503`: kiểm tra log Render (thiếu `JWT_SECRET` làm app **fail-fast** lúc khởi động).
+- Nếu frontend báo “Máy chủ backend chưa khởi chạy”: `VITE_API_BASE_URL` chưa đúng hoặc chưa redeploy Vercel sau khi set biến.
+- CORS: backend chỉ nhận `https://heyganba.site,https://www.heyganba.site` (khai báo trong `render.yaml`/biến `CORS_ALLOWED_ORIGINS`);
+  tên miền Vercel preview (`*.vercel.app`) chỉ thêm vào biến này khi thật sự cần test qua preview.
+
+## CI/CD (GitHub Actions)
+
+Pipeline theo 4 bước, chạy cho mọi PR và mọi lần merge:
+1. **Build & lint** — biên dịch backend, build frontend, chạy linter, fail sớm nếu lỗi cú pháp/style.
+2. **Test tự động** — unit test backend (đặc biệt logic SRS, tính điểm, phân quyền), test frontend cho component dùng chung.
+3. **Migration check** — chạy Flyway ở môi trường test để đảm bảo migration mới không phá schema cũ; không cho merge nếu migration lỗi.
+4. **Deploy** — staging tự động sau khi merge `develop`; production cần duyệt thủ công (GitHub Environment protection rule) trước khi chạy, đặc biệt cho migration ảnh hưởng bảng có dữ liệu user thật.
+
+## Quản lý secrets & cấu hình
+
+- Không commit secrets vào repo dưới bất kỳ hình thức nào (kể cả file `.env` mẫu chứa giá trị thật).
+- Dùng biến môi trường qua secret manager của Render/Vercel/GitHub Actions, phân biệt rõ theo từng môi trường (staging khác production).
+- Xoay vòng (rotate) JWT signing key và các API key định kỳ, đặc biệt sau khi có nhân sự rời dự án hoặc nghi ngờ rò rỉ.
+
+### Secret cần cấu hình cho pipeline (tên chính xác)
+
+| Nơi cấu hình | Tên | Dùng cho |
+|---|---|---|
+| GitHub → Settings → Secrets and variables → Actions | `RENDER_STAGING_DEPLOY_HOOK_URL` | Job `deploy-backend-staging` (Render Deploy Hook của service staging) |
+| GitHub Actions secrets | `RENDER_PROD_DEPLOY_HOOK_URL` | Job `deploy-backend-production` |
+| GitHub Actions secrets | `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID` | Job `deploy-frontend-staging` / `deploy-frontend-production` |
+| Render (Environment) | `SPRING_PROFILES_ACTIVE`, `JWT_SECRET`, `CORS_ALLOWED_ORIGINS`, `DB_HOST/PORT/NAME/USER/PASSWORD` | Backend runtime — mẫu ở `backend/.env.example` |
+| Vercel (Production + Preview) | `VITE_API_BASE_URL` | Frontend gọi API Render — mẫu ở `frontend/.env.example` |
+
+- `JWT_SECRET` **không có giá trị mặc định** ở staging/production: thiếu là backend fail-fast lúc khởi động
+  (dev vẫn có default riêng trong `application-dev.yml`). Tạo key mới bằng `openssl rand -base64 48`.
+- Job deploy tự bỏ qua kèm `::warning::` khi secret chưa tồn tại → CI xanh trước khi hạ tầng được cấu hình xong.
+- Nếu project Vercel đang bật Git Integration (auto deploy khi push), có thể xoá 2 job `deploy-frontend-*` để tránh
+  deploy trùng; khi đó Vercel tự lo phần frontend, GitHub Actions chỉ còn test + migration check + deploy backend.
+
+
+### Runbook — các bước thủ công còn lại (Phase 0 hạ tầng)
+
+> Phần này liệt kê đúng các thao tác **con người** phải làm trên dashboard (agent không có quyền truy cập secrets).
+> Mọi bước đều kèm lệnh kiểm tra để xác nhận đã xong.
+
+**0. Tạo tài khoản & kết nối (làm 1 lần)**
+
+| Việc | Cách làm |
+|---|---|
+| Render ↔ GitHub | render.com → đăng nhập bằng GitHub → cấp quyền đọc repo `thach09/heyganba` |
+| Tạo backend + DB tự động | Render → **New → Blueprint** → chọn repo (đọc `render.yaml`) → Render tạo Web Service + PostgreSQL free và tự inject `SPRING_DATASOURCE_URL` |
+| Chỉ còn 1 secret phải điền tay | Trong lúc tạo Blueprint, Render hỏi `JWT_SECRET` (vì `sync: false`) → dán key tạo bằng `openssl rand -base64 48` |
+| Vercel ↔ GitHub | vercel.com → Add New → Project → Import repo → Root Directory = `frontend`, Framework = Vite |
+| Domain | Xem mục **“Domain heyganba.site (mua ở Namecheap) → Render + Vercel”** ở trên |
+
+**1. GitHub Actions secrets** (Repo → Settings → Secrets and variables → Actions → New repository secret)
+
+| Tên secret | Lấy từ đâu | Kiểm tra |
+|---|---|---|
+| `RENDER_STAGING_DEPLOY_HOOK_URL` | Render → service staging → Settings → Deploy Hook | Chạy `workflow_dispatch` nhánh `develop`, xem log job `deploy-backend-staging` không còn dòng `::warning::` |
+| `RENDER_PROD_DEPLOY_HOOK_URL` | Render → service production → Settings → Deploy Hook | Push vào `main`, job `deploy-backend-production` phải in `Đã trigger deploy backend production trên Render.` |
+| `VERCEL_TOKEN` | Vercel → Account Settings → Tokens (scope = project) | Job `deploy-frontend-*` không còn `::warning::` thiếu token |
+| `VERCEL_ORG_ID` | `frontend/.vercel/project.json` sau khi chạy `vercel link` | Ở job deploy, `vercel pull` chạy thành công |
+| `VERCEL_PROJECT_ID` | Cùng file `project.json` | Như trên |
+
+**2. GitHub Environment `production` có Required reviewers**
+
+- Settings → Environments → New environment: `production` → bật **Required reviewers** (chọn chính bạn) → lưu.
+- (Tuỳ chọn) Thêm environment `staging` không cần reviewer để deploy staging tự động.
+- Kiểm tra: push thử vào `main` → 2 job `deploy-*-production` phải dừng ở trạng thái *Waiting for review*.
+
+**3. Biến môi trường Render (service backend)**
+
+Nếu tạo bằng **Blueprint** (`render.yaml`): Render đã tự set `SPRING_PROFILES_ACTIVE`, `CORS_ALLOWED_ORIGINS`,
+`SPRING_DATASOURCE_URL` (từ PostgreSQL của blueprint) và các biến `APP_*`; **chỉ cần điền `JWT_SECRET`** (biến `sync: false`).
+Nếu tạo Web Service thủ công thì set tay (xem `backend/.env.example`):
+
+```
+SPRING_PROFILES_ACTIVE=prod           # staging dùng staging
+JWT_SECRET=<openssl rand -base64 48>
+CORS_ALLOWED_ORIGINS=https://heyganba.site,https://www.heyganba.site
+SPRING_DATASOURCE_URL=postgresql://<user>:<password>@<host>:5432/<db>   # Render/Neon cấp
+```
+
+Tuỳ chọn (đã có default an toàn, Phase 5) — **giá trị ĐANG DÙNG theo quyết định đã chốt**:
+
+```
+APP_STREAK_ZONE=Asia/Ho_Chi_Minh      # giờ VN ở MỌI môi trường: streak/heatmap reset lúc 00:00 giờ VN
+APP_STREAK_MIN_SRS_REVIEWS=10         # ngưỡng lượt ôn SRS tối thiểu để tính streak
+APP_STREAK_MIN_QUIZ_QUESTIONS=10      # ngưỡng số câu bài tập ngữ pháp để tính streak
+APP_SRS_CACHE=memory                  # cache SRS: Postgres trực tiếp — Redis CHƯA bật (chưa có managed instance)
+```
+
+Tuỳ chọn — cache SRS bằng Redis (Phase 2): **QUYẾT ĐỊNH: CHƯA BẬT** ở staging/production vì chưa có Redis managed
+instance ⇒ cả 2 môi trường chạy Postgres trực tiếp với `APP_SRS_CACHE=memory`. Code `RedisSrsDueCache` đã viết sẵn,
+khi có Redis managed chỉ cần đổi biến (không sửa code):
+
+```
+APP_SRS_CACHE=redis
+REDIS_HOST=<redis-host>  REDIS_PORT=6379
+SPRING_DATA_REDIS_PASSWORD=<chỉ khi Redis bật auth>
+```
+
+Kiểm tra nhanh sau khi bật: gọi `GET /flashcard/due-today` rồi `redis-cli --scan --pattern 'srs:due:*'`
+phải thấy key `srs:due:<userId>` với TTL tới hết ngày (múi giờ `app.streak.zone`); nếu Redis lỗi thì app vẫn chạy bình
+thường (coi như cache miss, chỉ log warn).
+
+**Múi giờ "ngày học"**: `APP_STREAK_ZONE=Asia/Ho_Chi_Minh` ở **mọi môi trường** (local/staging/production) — dùng chung
+cho streak, heatmap, TTL cache SRS và giờ chạy job xoá cache (00:05 giờ VN).
+
+### Gate nội dung chưa duyệt (không promote nhầm lên production)
+
+| Hạng mục | Cơ chế |
+|---|---|
+| Thư mục migration | `backend/src/main/resources/db/migration` = **đã duyệt** (chạy mọi môi trường); `db/migration-staging` = **chờ duyệt** |
+| Cấu hình Flyway | local/staging: `classpath:db/migration,classpath:db/migration-staging`; **`application-prod.yml` chỉ `classpath:db/migration`** |
+| Đang chờ duyệt | `V12__expand_grammar_exercises.sql` (96 câu), `V14__expand_trap_exercises.sql` (146 câu nhóm bẫy) |
+| Trạng thái trong DB | `review_status` (V13) mặc định `PENDING_REVIEW` cho kana/từ vựng/kanji/ngữ pháp/bài tập |
+| Kiểm tra tự động | `FlywayLocationsConfigTest` (chặn sửa prod yml include staging, chặn đặt file chờ duyệt vào `db/migration`, chặn trùng version) |
+| Kiểm tra thủ công | `GET /content/review-status` → `allApproved=false`, `stagingOnlyMigrations=[V12…, V14…]`; UI Trạm Trợ từ hiện badge "chờ duyệt" |
+| **Promote** | Sau khi người biết tiếng Nhật duyệt: (1) `UPDATE … SET review_status='APPROVED'`, (2) **chuyển file** từ `db/migration-staging/` sang `db/migration/`, (3) chạy lại CI (test sẽ đỏ nếu file còn ở sai thư mục), (4) deploy production |
+
+- Kiểm tra: `curl https://<render-service>.onrender.com/api/v1/health` → `"status":"UP"`.
+- Nếu thiếu `JWT_SECRET`, backend **fail-fast** ngay lúc khởi động (log có `Could not resolve placeholder 'JWT_SECRET'`) — đây là hành vi mong muốn.
+
+**4. Biến môi trường Vercel (frontend)**
+
+```
+VITE_API_BASE_URL=https://api.heyganba.site/api/v1
+```
+
+Đặt cho cả **Production** và **Preview**. Kiểm tra: mở `https://heyganba.site`, banner “Máy chủ backend chưa khởi chạy” không xuất hiện
+(nếu có, nghĩa là VITE_API_BASE_URL sai hoặc backend đang fail-fast vì thiếu `JWT_SECRET`).
+
+**5. Kiểm tra migration trên PostgreSQL thật**
+
+```bash
+# Local (đủ V1 → V14 vì đọc cả db/migration-staging)
+docker exec heyganba-postgres psql -U postgres -d heyganba \
+  -c "select version, description, success from flyway_schema_history order by installed_rank desc limit 3"
+
+# Production (chỉ tới V13 — V12/V14 là nội dung chờ duyệt, KHÔNG chạy ở prod)
+# Render → service → Shell: psql "$SPRING_DATASOURCE_URL" -c "select max(version::int) from flyway_schema_history"
+```
+
+Kỳ vọng: local/staging mới nhất là `14 | expand trap exercises | t`; production dừng ở `13 | add content review status | t`
+và `GET /content/review-status` trên production phải trả `stagingOnlyMigrations` KHÔNG rỗng (đây là bằng chứng gate hoạt động).
+Job `backend-migration-check` trên CI cũng phải xanh (chạy Flyway + `ddl-auto=validate` trên PostgreSQL 16 thật).
+
+**6. Khởi động lại backend local khi đã đổi code**
+
+```powershell
+# Dừng tiến trình đang giữ cổng 8080
+$p = (Get-NetTCPConnection -LocalPort 8080 -State Listen -ErrorAction SilentlyContinue).OwningProcess
+if ($p) { Stop-Process -Id $p -Force }
+
+# Chạy lại (nhớ xoá env DB trỏ sai từ môi trường shell, nếu có)
+cd backend; mvn -B -DskipTests spring-boot:run
+```
+
+- Lưu ý: nếu shell đang có `SPRING_DATASOURCE_URL` (VD từ lệnh migration check) thì tiến trình mới sẽ dùng DB đó và fail với
+  `FATAL: database "..." does not exist` — xoá biến trước khi chạy: `Remove-Item Env:SPRING_DATASOURCE_URL`.
+
+- **Uptime & error tracking:** bật health-check endpoint cho backend, tích hợp công cụ theo dõi lỗi (vd Sentry) để bắt exception ở production sớm.
+- **Log tập trung:** log request lỗi (4xx/5xx) và các thao tác admin (audit log) — không log thông tin nhạy cảm như mật khẩu hay token.
+- **Backup & restore:** kiểm tra định kỳ (không chỉ tin tưởng backup tự động) — thử restore thử trên staging ít nhất 1 lần trước khi public chính thức.
+
+## Kế hoạch scale khi user tăng
+
+1. Giai đoạn đầu: connection pooling (HikariCP tuning) + cache Redis đã đủ giảm tải Postgres.
+2. Khi tải tăng: nâng plan Render (nhiều CPU/RAM hơn) trước khi nghĩ tới kiến trúc phức tạp hơn.
+3. Khi cần scale ngang thật sự: chạy nhiều instance backend sau load balancer (Render hỗ trợ sẵn), đảm bảo backend stateless (session/token không lưu local memory) để scale ngang không vỡ.
+4. Bổ sung read replica cho Postgres chỉ khi có bằng chứng rõ là bottleneck đọc, tránh over-engineer sớm.
+
+## Rollback
+
+- Mỗi lần deploy production gắn với 1 Git tag; nếu lỗi nghiêm trọng, rollback về image trước đó qua Render trong vài phút.
+- Với migration DB: ưu tiên viết migration theo hướng backward-compatible (thêm cột nullable trước, không xoá cột ngay) để rollback code không kéo theo lỗi schema.
+
+## Trước khi public rộng (cuối Phase 5)
+
+- Load test cơ bản (giả lập số lượng user đồng thời dự kiến) để xác nhận cấu hình Hikari/Redis/Render plan đủ đáp ứng.
+- Diễn tập restore backup ít nhất 1 lần.
+- Xác nhận staging đã chạy ổn định ít nhất vài ngày trước khi đẩy production.
