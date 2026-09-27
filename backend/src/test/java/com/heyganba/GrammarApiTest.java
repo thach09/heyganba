@@ -14,7 +14,6 @@ import com.heyganba.repository.RoleRepository;
 import com.heyganba.repository.StreakRepository;
 import com.heyganba.repository.UserRepository;
 import com.heyganba.service.GrammarService;
-import com.heyganba.service.RateLimiterService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -86,15 +85,11 @@ class GrammarApiTest extends com.heyganba.support.ContentApiTestBase {
     @Autowired
     private RoleRepository roleRepository;
 
-    @Autowired
-    private RateLimiterService rateLimiterService;
-
     private GrammarRule particleHaRule;
     private GrammarExercise particleExercise;
 
     @BeforeEach
     void setUp() {
-        rateLimiterService.reset();
         // Xoá theo đúng thứ tự phụ thuộc khoá ngoại để test class chạy độc lập với thứ tự Surefire.
         grammarExerciseRepository.deleteAll();
         grammarRuleRepository.deleteAll();

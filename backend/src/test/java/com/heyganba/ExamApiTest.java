@@ -19,7 +19,6 @@ import com.heyganba.repository.LessonRepository;
 import com.heyganba.repository.RoleRepository;
 import com.heyganba.repository.StudyActivityRepository;
 import com.heyganba.service.ExamService;
-import com.heyganba.service.RateLimiterService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -72,13 +71,8 @@ class ExamApiTest extends com.heyganba.support.ContentApiTestBase {
     @Autowired
     private StudyActivityRepository studyActivityRepository;
 
-    @Autowired
-    private RateLimiterService rateLimiterService;
-
     @BeforeEach
     void setUp() {
-        rateLimiterService.reset();
-
         roleRepository.save(Role.builder().name(RoleName.ROLE_ADMIN).description("Admin").build());
         roleRepository.save(Role.builder().name(RoleName.ROLE_USER).description("User").build());
 

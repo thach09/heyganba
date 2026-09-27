@@ -14,7 +14,6 @@ import com.heyganba.repository.RadicalRepository;
 import com.heyganba.repository.RoleRepository;
 import com.heyganba.repository.StreakRepository;
 import com.heyganba.repository.UserRepository;
-import com.heyganba.service.RateLimiterService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -77,15 +76,11 @@ class KanjiApiTest extends com.heyganba.support.ContentApiTestBase {
     @Autowired
     private RoleRepository roleRepository;
 
-    @Autowired
-    private RateLimiterService rateLimiterService;
-
     private Kanji kanjiHon;
     private Radical radicalKi;
 
     @BeforeEach
     void setUp() {
-        rateLimiterService.reset();
         // Xoá theo đúng thứ tự phụ thuộc khoá ngoại (progress → srs → kanji/vocabulary → radicals → lessons).
         progressRepository.deleteAll();
         srsReviewRepository.deleteAll();

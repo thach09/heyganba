@@ -157,3 +157,41 @@ Sau mỗi phase, agent báo cáo ngắn gọn gồm 3 phần:
   trả trang “Login – Vercel”; tắt bằng `PATCH /v9/projects/{id}` body `{"ssoProtection": null}`.
 - `VITE_*` là biến **build-time**: set env trước khi build, và verify bằng cách tải bundle JS kiểm tra chuỗi API base có mặt.
 
+## Kinh nghiệm domain & TLS (đã gặp thật khi nối `heyganba.site`)
+
+- **Custom domain trên Render phải được VERIFY**, không chỉ trỏ DNS. Kiểm tra `GET /v1/services/{id}/custom-domains`
+  → `verificationStatus`; kích hoạt bằng `POST /v1/services/{id}/custom-domains/{cdm-id}/verify`.
+  Trước khi verify, TLS handshake tới domain đó **bị đóng ngay** (`curl: (35) schannel: SEC_E_ILLEGAL_MESSAGE` trên
+  Windows) dù CNAME đã đúng — đừng chẩn đoán nhầm thành lỗi DNS/mạng.
+- **Vercel `verified: true` ≠ đã có cert**: xem `certs` trong `GET /v4/domains/{domain}?teamId=...`; `certs: []` nghĩa là
+  Let's Encrypt đang phát hành (vài phút). A record apex phải dùng **đúng IP Vercel báo** trong Project → Domains
+  (project này đang dùng `216.198.79.1`, không phải `76.76.21.21` như tài liệu Vercel cũ).
+- **Máy local có thể "không vào được" domain vừa trỏ**: resolver Windows/ISP còn cache NXDOMAIN → đối chiếu bằng
+  `Resolve-DnsName <host> -Server 8.8.8.8` và test trực tiếp bằng `curl.exe --resolve <host>:443:<ip> https://<host>/`.
+  Muốn đọc cert server đang phục vụ mà không phụ thuộc DNS local: dùng .NET `SslStream` trong PowerShell với callback
+  `{ param($a,$b,$c,$d) $true }` rồi in `Subject` của `RemoteCertificate`.
+- **Render service đang để `autoDeploy: no`**: push `main` KHÔNG tự deploy backend → phải gọi
+  `POST /v1/services/{id}/deploys`, hoặc bật lại auto-deploy bằng `PATCH /v1/services/{id}` body `{"autoDeploy":"yes"}`.
+  Frontend Vercel thì tự deploy khi push `main` (project đã liên kết GitHub, production branch `main`).
+- `psql` không có trên Windows này → dùng container: `docker run --rm postgres:16-alpine psql "<uri>" -c "..."`.
+
+## Kinh nghiệm bảo vệ request (rate limit + payload) & test đi kèm
+
+- **State in-memory dùng chung giữa các test class**: `RateLimiterService` là bean singleton của Spring context, mà
+  context được chia sẻ giữa các class test → phải `reset()` trong `ContentApiTestBase.@BeforeEach`. Nếu reset rải rác
+  ở từng class (cách cũ), class thứ 2 sẽ nhận 429 của class thứ 1 tuỳ theo thứ tự chạy Surefire. Đừng khai báo lại
+  field `RateLimiterService` ở từng test class nữa — base class đã lo.
+- Rate limit đăng nhập đếm theo **lần SAI** (`isBlocked()` chỉ "nhìn", `tryConsume()` mới tăng bộ đếm): nếu đếm cả lần
+  đăng nhập đúng thì user tự khoá tài khoản của mình sau vài lần đăng nhập.
+- Khoá theo IP lấy **phần tử cuối** của `X-Forwarded-For` (`ClientIpResolver`): Render ghi IP thật vào cuối chuỗi, còn
+  client có thể tự gửi phần tử đầu. Ngưỡng theo IP phải rộng (NAT trường học/quán net) — lớp chống brute-force chính là
+  theo tài khoản.
+- Test rate limit dùng `@TestPropertySource` để hạ ngưỡng (nhanh, không phụ thuộc con số default) và gắn header
+  `X-Forwarded-For: <spoofed>, <ip thật>` để kiểm chứng luôn hành vi của `ClientIpResolver`.
+- Giới hạn payload: `MaxPayloadSizeFilter` chặn theo `Content-Length` và bọc stream cho trường hợp chunked
+  (`CappedServletInputStream` — unit test riêng vì MockMvc luôn set `Content-Length`, không test được luồng stream).
+- CSP ở `frontend/vercel.json` **phải whitelist Google Fonts** (`fonts.googleapis.com` cho `style-src`,
+  `fonts.gstatic.com` cho `font-src`) vì `index.css` import font qua CDN; `style-src` cũng cần `'unsafe-inline'`
+  do app dùng inline style của React. Nếu thêm dịch vụ ngoài (Sentry, R2 audio…) thì phải cập nhật CSP tương ứng
+  (`connect-src` / `media-src`).
+

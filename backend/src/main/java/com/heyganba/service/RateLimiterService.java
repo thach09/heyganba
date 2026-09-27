@@ -40,6 +40,24 @@ public class RateLimiterService {
         return current.count <= limit;
     }
 
+    /**
+     * Kiểm tra cửa sổ hiện tại ĐÃ vượt giới hạn chưa, <b>không</b> tăng bộ đếm.
+     *
+     * Dùng cho luồng đăng nhập: mỗi lần đăng nhập SAI mới tăng bộ đếm (bằng {@link #tryConsume}),
+     * còn trước khi xác thực thì chỉ "nhìn" để chặn sớm — nhờ vậy user đăng nhập đúng nhiều lần
+     * không bị tính là tấn công (tránh tự khoá tài khoản của mình).
+     */
+    public boolean isBlocked(String key, int limit, Duration window) {
+        Window current = windows.get(key);
+        if (current == null) {
+            return false;
+        }
+        if (System.currentTimeMillis() - current.startMillis >= window.toMillis()) {
+            return false;
+        }
+        return current.count >= limit;
+    }
+
     /** Xoá toàn bộ trạng thái — dùng trong test để cô lập từng case. */
     public void reset() {
         windows.clear();

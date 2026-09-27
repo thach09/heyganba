@@ -15,6 +15,7 @@ import com.heyganba.repository.StreakRepository;
 import com.heyganba.repository.StudyActivityRepository;
 import com.heyganba.repository.UserRepository;
 import com.heyganba.repository.VocabularyRepository;
+import com.heyganba.service.RateLimiterService;
 import com.heyganba.service.srs.SrsDueCache;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,8 +83,17 @@ public abstract class ContentApiTestBase {
     @Autowired
     protected AuditLogRepository auditLogRepository;
 
+    /**
+     * Rate limiter là state trong memory của Spring context — context được chia sẻ giữa các test class,
+     * nên phải reset ở đây. Nếu không, test A đăng ký/đăng nhập nhiều lần sẽ làm test B nhận 429
+     * (lỗi phụ thuộc thứ tự chạy, giống hệt vấn đề khoá ngoại đã gặp trước đây).
+     */
+    @Autowired
+    protected RateLimiterService rateLimiterService;
+
     @BeforeEach
     void cleanContentTables() {
+        rateLimiterService.reset();
         examResultRepository.deleteAll();
         mockExamRepository.deleteAll();
         studyActivityRepository.deleteAll();

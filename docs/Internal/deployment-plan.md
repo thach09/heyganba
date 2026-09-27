@@ -71,12 +71,16 @@ Lưu ý API Neon: endpoint `/projects`, `/roles`, `/databases` **cần `org_id`*
 
 ## Domain `heyganba.site` (mua ở Namecheap) → Render + Vercel
 
-| Bản ghi | Host (Namecheap) | Type | Value | Ghi chú |
+**Trạng thái 27/09/2026: đã thêm đủ 3 record và cả 3 domain hoạt động** (apex + www trên Vercel, api trên Render;
+cert Let's Encrypt đã cấp cho `api.heyganba.site`).
+
+| Bản ghi | Host (Namecheap) | Type | Value (đang dùng thật) | Ghi chú |
 |---|---|---|---|---|
-| Frontend — apex | `@` | A | `76.76.21.21` | IP anycast của Vercel (Vercel → Project → Domains hiển thị giá trị chính xác; nếu khác thì dùng giá trị Vercel báo) |
+| Frontend — apex | `@` | A | `216.198.79.1` | IP anycast Vercel. **Luôn dùng đúng giá trị Vercel hiển thị** ở Project → Domains (Vercel đổi dải IP theo thời gian; giá trị cũ `76.76.21.21` không còn đúng với project này) |
 | Frontend — www | `www` | CNAME | `cname.vercel-dns.com` | Vercel tự redirect `www` ⇄ apex |
-| Backend API | `api` | CNAME | `<service>.onrender.com` | Render → service → Settings → Custom Domains hiển thị target thật khi thêm domain `api.heyganba.site` |
+| Backend API | `api` | CNAME | `heyganba-backend.onrender.com` | Target = hostname của service Render. Phải bấm **Verify** phía Render sau khi DNS propagate (xem bên dưới) |
 | (chỉ khi dashboard yêu cầu) | `_vercel` / `_render` | TXT | giá trị Render/Vercel cấp | Dùng để xác minh quyền sở hữu domain |
+
 
 Các bước:
 1. Namecheap → Domain List → `heyganba.site` → **Advanced DNS**, **xoá record mặc định** (URL Redirect `@`, CNAME `www → parkingpage.namecheap.com`) rồi thêm 3 record ở bảng trên.
@@ -93,6 +97,48 @@ curl.exe -s https://api.heyganba.site/api/v1/health          # kỳ vọng: {"su
 curl.exe -sI https://heyganba.site | Select-String "HTTP/|strict-transport-security"
 curl.exe -sI https://api.heyganba.site/api/v1/health | Select-String "HTTP/|strict-transport-security"
 ```
+
+### Xác minh domain & TLS (đã chạy thật 27/09/2026)
+
+Bước **Verify phía Render là bắt buộc**, và triệu chứng khi chưa verify rất dễ bị chẩn đoán nhầm là lỗi DNS:
+CNAME đã đúng nhưng TLS handshake tới `api.heyganba.site` bị đóng ngay (`curl: (35) schannel: SEC_E_ILLEGAL_MESSAGE`
+trên Windows) vì Render chưa cấp cert cho domain chưa verify. Sau khi gọi verify: `verificationStatus=verified`,
+cert `CN=api.heyganba.site` được cấp (Let's Encrypt, hiệu lực ~90 ngày).
+
+```powershell
+# 1. DNS đúng: A/CNAME trỏ tới Vercel/Render (hỏi resolver công khai để tránh cache DNS của máy)
+Resolve-DnsName heyganba.site     -Type A     -Server 8.8.8.8
+Resolve-DnsName www.heyganba.site -Type CNAME -Server 8.8.8.8
+Resolve-DnsName api.heyganba.site -Type CNAME -Server 8.8.8.8
+
+# 2. Trạng thái domain phía Render (kỳ vọng verificationStatus = verified)
+$rh = @{ Authorization = "Bearer $env:RENDER_API_KEY"; Accept = 'application/json' }
+Invoke-RestMethod 'https://api.render.com/v1/services/<srv-id>/custom-domains' -Headers $rh | ConvertTo-Json -Depth 6
+# Nếu còn 'unverified': kích hoạt verify (hoặc bấm Verify trên dashboard), rồi đợi ~1 phút để Render cấp cert
+Invoke-RestMethod -Method Post 'https://api.render.com/v1/services/<srv-id>/custom-domains/<cdm-id>/verify' -Headers $rh
+
+# 3. Cert phía Vercel (kỳ vọng verified = true; certs[] rỗng nghĩa là cert đang phát hành, đợi vài phút)
+Invoke-RestMethod 'https://api.vercel.com/v4/domains/heyganba.site?teamId=<team>' -Headers @{ Authorization = "Bearer $env:VERCEL_TOKEN" }
+
+# 4. Đọc cert mà server thật sự phục vụ (không phụ thuộc DNS/cache của máy local)
+curl.exe -v -o NUL --max-time 60 https://api.heyganba.site/api/v1/health 2>&1 | Select-String 'subject|issuer|alert|TLSv'
+```
+
+Mẹo debug khi máy local "không vào được" domain mới:
+- Resolver của Windows/ISP có thể còn cache NXDOMAIN → xác nhận bằng `Resolve-DnsName -Server 8.8.8.8`, và test
+  trực tiếp không qua DNS local bằng `curl.exe --resolve <host>:443:<ip> https://<host>/`.
+- PowerShell 5.1/`curl.exe` trên Windows dùng schannel, nên lỗi handshake ở domain chưa có cert **không** có nghĩa
+  là mạng hỏng: kiểm tra lại trạng thái verify/cert của nền tảng trước khi nghi ngờ DNS.
+
+### Deploy backend: service đang tắt auto-deploy
+
+Service production hiện có `autoDeploy: no` (kiểm tra: `GET /v1/services/<srv-id>` → `autoDeploy`). Nghĩa là **push code
+không tự deploy backend**; phải làm một trong hai:
+1. Bật auto-deploy (`PATCH /v1/services/<srv-id>` body `{"autoDeploy":"yes"}`) rồi để Render tự deploy khi push `main`, hoặc
+2. Gọi `POST /v1/services/<srv-id>/deploys` (body rỗng = dùng commit mới nhất của branch) sau mỗi lần push `main`.
+
+Frontend thì ngược lại: project Vercel đã liên kết GitHub (`main` = production branch) → push `main` là Vercel tự build/deploy.
+
 
 - Nếu API trả `502/503`: kiểm tra log Render (thiếu `JWT_SECRET` làm app **fail-fast** lúc khởi động).
 - Nếu frontend báo “Máy chủ backend chưa khởi chạy”: `VITE_API_BASE_URL` chưa đúng hoặc chưa redeploy Vercel sau khi set biến.

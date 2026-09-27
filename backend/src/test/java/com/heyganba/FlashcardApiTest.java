@@ -12,7 +12,6 @@ import com.heyganba.repository.SrsReviewRepository;
 import com.heyganba.repository.StreakRepository;
 import com.heyganba.repository.UserRepository;
 import com.heyganba.repository.VocabularyRepository;
-import com.heyganba.service.RateLimiterService;
 import com.heyganba.service.srs.SrsDueCache;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -75,16 +74,12 @@ class FlashcardApiTest extends com.heyganba.support.ContentApiTestBase {
     private RoleRepository roleRepository;
 
     @Autowired
-    private RateLimiterService rateLimiterService;
-
-    @Autowired
     private SrsDueCache srsDueCache;
 
     private Vocabulary wordBook;
 
     @BeforeEach
     void setUp() {
-        rateLimiterService.reset();
         srsDueCache.clearAll();
         // Xoá theo đúng thứ tự phụ thuộc khoá ngoại để test class chạy độc lập, không phụ thuộc thứ tự Surefire.
         kanjiProgressRepository.deleteAll();

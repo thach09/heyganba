@@ -59,6 +59,18 @@ app:
     refresh-token-expiration-ms: ${JWT_REFRESH_EXPIRATION_MS:604800000} # 7 days
   cors:
     allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://localhost:3000,http://127.0.0.1:5173}
+  # Bảo vệ tầng request (docs/Internal/security-plan.md → "Validate toàn bộ input", "Rate limiting", "Giới hạn kích thước payload").
+  security:
+    # Trần kích thước request body. 64KB là quá đủ cho JSON của app (đăng ký, nộp bài thi, chấm quiz);
+    # app KHÔNG có endpoint upload file. Vượt trần → 413 PAYLOAD_TOO_LARGE (MaxPayloadSizeFilter).
+    max-request-bytes: ${APP_MAX_REQUEST_BYTES:65536}
+    auth:
+      # Lớp chống brute-force CHÍNH là theo tài khoản: 5 lần đăng nhập SAI / 15 phút (đăng nhập đúng không bị tính).
+      login-max-failed-attempts-per-email: ${APP_AUTH_LOGIN_MAX_FAILED_PER_EMAIL:5}
+      # Lớp phụ theo IP: đặt rộng vì cả lớp học/quán net có thể dùng chung 1 IP qua NAT (tránh chặn oan cả lớp).
+      login-max-failed-attempts-per-ip: ${APP_AUTH_LOGIN_MAX_FAILED_PER_IP:100}
+      register-max-attempts-per-ip: ${APP_AUTH_REGISTER_MAX_PER_IP:30}
+      refresh-max-attempts-per-ip: ${APP_AUTH_REFRESH_MAX_PER_IP:300}
   # "Ngày học" dùng chung cho streak + heatmap + refresh cache SRS due (quyết định đã chốt):
   #  - Một ngày chỉ được tính streak khi: ôn >= app.streak.min-srs-reviews lượt SRS, HOẶC nộp 1 lượt thi thử,
   #    HOẶC làm >= app.streak.min-quiz-questions câu bài tập ngữ pháp (ôn 1 từ đơn lẻ KHÔNG tính).
