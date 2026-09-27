@@ -299,4 +299,28 @@ Sau mỗi phase, agent báo cáo ngắn gọn gồm 3 phần:
   (đã gặp 2 class "mồ côi" thật: `.animate-spin` cho spinner của `SubmitButton` và `.w-full`; ngoài ra biến
   `--text-primary` được dùng nhưng chưa từng định nghĩa → phải là `--text-main`).
 
+## Bài học UI mobile: menu phải luôn có "đường thoát" (27/09/2026)
+
+- Lỗi thật người dùng gặp trên điện thoại: mở `heyganba.site` thấy **menu che hết giao diện mà không thể thu nhỏ**.
+  Nguyên nhân: state `isSidebarOpen` khởi tạo `true`, còn CSS `@media (max-width: 900px)` lại xếp sidebar thành overlay
+  (`transform: translateX(-100%)` + `.sidebar.open { translateX(0) }`) ⇒ trên mobile sidebar **hiện ra đè lên nội dung**
+  nhưng *không* có nút X, *không* có lớp phủ để bấm ra ngoài, và nút hamburger nằm dưới sidebar (topbar `z-index: 30`
+  < sidebar `z-index: 100`) nên bấm không tới.
+- Quy tắc rút ra:
+  1. Breakpoint trong JS phải lấy từ **cùng nguồn** với CSS: dùng `window.matchMedia('(max-width: 900px)')`, không dùng
+     `window.innerWidth` (số đo tức thời, còn đổi theo pinch-zoom trên iOS ⇒ JS và CSS lệch pha).
+  2. Mọi trạng thái "che toàn màn hình" phải có **ít nhất 2 đường thoát**: nút X trong chính panel + lớp phủ bấm ra
+     ngoài (thêm `Esc` cho desktop). CSS của nút X và lớp phủ phải ở **top level**, không đặt trong `@media` — nếu JS
+     tưởng desktop mà CSS vẫn vẽ overlay thì vẫn phải còn cách đóng.
+  3. Không giữ state bằng `useState` + `useEffect` để đồng bộ theo breakpoint; **suy ra ngay trong render**
+     (`const isSidebarOpen = sidebarPreference ?? !isMobileLayout`) để xoay màn hình/kéo cửa sổ tự đúng và không thêm
+     warning `react(set-state-in-effect)`.
+- Kiểm tra nhanh 2 nguồn breakpoint phải khớp nhau:
+  ```powershell
+  Select-String -Path frontend\src\App.tsx,frontend\src\index.css -Pattern 'max-width: 900px'
+  ```
+- Kiểm chứng không cần trình duyệt: tạo entry tạm `renderToStaticMarkup(<App/>)` (stub `window.matchMedia`), build SSR
+  bằng `vite build --ssr`, rồi khẳng định **mobile render ở trạng thái đóng + có `.sidebar-close-btn`**, desktop render
+  trạng thái mở. Cách này bắt được đúng lỗi "lệch pha JS/CSS" mà `tsc`/`oxlint` không thấy.
+
 

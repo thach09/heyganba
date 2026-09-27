@@ -21,7 +21,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 }) => {
   return (
     <header className="topbar">
-      <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+      <div className="topbar-left">
         {onToggleSidebar && (
           <button
             type="button"
@@ -40,25 +40,26 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       <div className="topbar-actions">
         {user && (
-          <div className="streak-pill" title="Chuỗi ngày học liên tục">
+          <div className="streak-pill" title={`Chuỗi ngày học liên tục: ${streakCount} ngày`}>
             <Flame size={16} fill="currentColor" />
-            <span>{streakCount} ngày streak</span>
+            <span className="streak-text-full">{streakCount} ngày streak</span>
+            <span className="streak-text-compact">{streakCount} ngày</span>
           </div>
         )}
 
         {user ? (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div style={{ textAlign: 'right' }}>
-              <div style={{ fontSize: '13px', fontWeight: 700 }}>{user.fullName}</div>
-              <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
+          <div className="topbar-user-area">
+            <div className="topbar-user-block">
+              <div className="topbar-user-name" title={user.fullName}>{user.fullName}</div>
+              <div className="topbar-user-role">
                 {user.role === 'ROLE_ADMIN' ? 'Quản trị viên' : 'Học viên'}
               </div>
             </div>
             <button
               onClick={onLogout}
-              className="btn btn-secondary"
-              style={{ padding: '8px 12px' }}
+              className="btn btn-secondary topbar-logout-btn"
               title="Đăng xuất"
+              aria-label="Đăng xuất"
             >
               <LogOut size={16} />
             </button>
@@ -66,8 +67,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         ) : (
           <button
             onClick={onOpenAuthModal}
-            className="btn btn-primary"
-            style={{ padding: '8px 18px', fontSize: '13px' }}
+            className="btn btn-primary topbar-auth-btn"
           >
             <LogIn size={16} />
             <span>Đăng nhập / Đăng ký</span>

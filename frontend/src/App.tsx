@@ -13,14 +13,84 @@ import { ExamView } from './features/exam/ExamView';
 import { getSavedUser, clearTokens, apiRequest } from './services/api';
 import type { AuthResponse } from './services/api';
 
+/** Breakpoint phải khớp đúng `@media (max-width: 900px)` trong index.css. */
+const MOBILE_BREAKPOINT_QUERY = '(max-width: 900px)';
+
+/**
+ * Theo dõi breakpoint mobile bằng matchMedia — cùng nguồn sự thật với CSS media query.
+ *
+ * Trước đây state sidebar tính bằng `window.innerWidth` (số đo tức thời, còn đổi theo pinch-zoom
+ * trên iOS) nên có thể lệch pha với CSS: JS tưởng desktop → sidebar ở trạng thái mở, trong khi CSS
+ * vẫn xếp nó thành overlay trên mobile → menu che hết giao diện mà không có nút đóng/lớp phủ.
+ */
+function useIsMobileLayout(): boolean {
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
+      return false;
+    }
+    return window.matchMedia(MOBILE_BREAKPOINT_QUERY).matches;
+  });
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
+      return;
+    }
+    const mediaQuery = window.matchMedia(MOBILE_BREAKPOINT_QUERY);
+    const handleChange = (event: MediaQueryListEvent) => setIsMobile(event.matches);
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
+
+  return isMobile;
+}
+
 export function App() {
   const [currentStation, setCurrentStation] = useState<StationKey>('dashboard');
   const [user, setUser] = useState<AuthResponse | null>(null);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const isMobileLayout = useIsMobileLayout();
+  /**
+   * Lựa chọn thủ công của người dùng cho thanh menu: `null` = chưa chọn → theo mặc định của từng
+   * breakpoint (desktop mở sẵn dạng cột, mobile đóng). Suy ra ngay trong render nên khi xoay màn
+   * hình / đổi kích thước cửa sổ giá trị tự đúng, không cần effect đồng bộ state.
+   */
+  const [sidebarPreference, setSidebarPreference] = useState<boolean | null>(null);
+  const sidebarDefaultOpen = !isMobileLayout;
+  const isSidebarOpen = sidebarPreference ?? sidebarDefaultOpen;
+  // Overlay chỉ tồn tại trên mobile; desktop là cột cố định nên không cần lớp phủ.
+  const isSidebarOverlay = isMobileLayout && isSidebarOpen;
   const [backendHealthy, setBackendHealthy] = useState<boolean | null>(null);
   // Streak thật của người đang đăng nhập — trước đây topbar hardcode "3 ngày".
   const [streakCount, setStreakCount] = useState(0);
+
+  const closeSidebar = () => setSidebarPreference(false);
+  const toggleSidebar = () => setSidebarPreference(!isSidebarOpen);
+
+  // Khóa cuộn trang nền khi overlay menu đang mở trên thiết bị di động
+  useEffect(() => {
+    if (!isSidebarOverlay) {
+      return;
+    }
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isSidebarOverlay]);
+
+  // Phím Esc đóng overlay menu (tiện khi dùng bàn phím rời hoặc thu nhỏ cửa sổ trên desktop).
+  useEffect(() => {
+    if (!isSidebarOverlay) {
+      return;
+    }
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setSidebarPreference(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isSidebarOverlay]);
 
   useEffect(() => {
     // Check saved user session
@@ -59,6 +129,13 @@ export function App() {
     }
   };
 
+  const handleSelectStation = (station: StationKey) => {
+    setCurrentStation(station);
+    if (isMobileLayout) {
+      closeSidebar();
+    }
+  };
+
   const stationTitles: Record<StationKey, string> = {
     dashboard: 'Bảng Điều Khiển — HeyGanba!',
     kana: 'Bảng Chữ Cái Kana (Hiragana / Katakana)',
@@ -78,10 +155,21 @@ export function App() {
         <div className="blob-3" />
       </div>
 
+      {/* Lớp phủ đóng menu: chỉ render khi sidebar đang mở dạng overlay trên di động */}
+      {isSidebarOverlay && (
+        <div
+          className="sidebar-backdrop"
+          onClick={closeSidebar}
+          aria-hidden="true"
+        />
+      )}
+
       {/* Navigation Sidebar */}
       <Sidebar
         currentStation={currentStation}
-        onSelectStation={(key) => setCurrentStation(key)}
+        onSelectStation={handleSelectStation}
+        onClose={closeSidebar}
+        isOverlay={isMobileLayout}
         user={user}
         isOpen={isSidebarOpen}
       />
@@ -94,7 +182,7 @@ export function App() {
           onLogout={handleLogout}
           streakCount={streakCount}
           activeStationTitle={stationTitles[currentStation]}
-          onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+          onToggleSidebar={toggleSidebar}
         />
 
         <main className="content-body">
@@ -120,7 +208,7 @@ export function App() {
           )}
 
           {currentStation === 'dashboard' && (
-            <DashboardView user={user} onSelectStation={(st) => setCurrentStation(st)} />
+            <DashboardView user={user} onSelectStation={handleSelectStation} />
           )}
 
           {currentStation === 'admin' && (

@@ -7,7 +7,8 @@ import {
   Sparkles, 
   GraduationCap, 
   ShieldCheck,
-  User as UserIcon
+  User as UserIcon,
+  X
 } from 'lucide-react';
 import type { AuthResponse } from '../services/api';
 
@@ -25,6 +26,9 @@ interface SidebarProps {
   onSelectStation: (station: StationKey) => void;
   user: AuthResponse | null;
   isOpen?: boolean;
+  /** Mobile: sidebar nổi trên nội dung (overlay) → cần nút X và tự đóng sau khi chọn trạm. */
+  isOverlay?: boolean;
+  onClose?: () => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -32,6 +36,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onSelectStation,
   user,
   isOpen = true,
+  isOverlay = false,
+  onClose,
 }) => {
   const isAdmin = user?.role === 'ROLE_ADMIN';
 
@@ -44,14 +50,39 @@ export const Sidebar: React.FC<SidebarProps> = ({
     { key: 'exam', label: 'Thi thử Dekiru', icon: GraduationCap, badge: 'P5' },
   ];
 
+  const handleNavClick = (key: StationKey) => {
+    onSelectStation(key);
+    if (isOverlay) {
+      onClose?.();
+    }
+  };
+
+  // Overlay đang đóng: ẩn khỏi bàn phím và screen reader thay vì chỉ dịch ra ngoài màn hình.
   return (
-    <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
+    <aside
+      className={`sidebar ${isOpen ? 'open' : ''}`}
+      aria-label="Thanh điều hướng chính"
+      inert={isOverlay && !isOpen}
+    >
       <div className="brand">
-        <div className="brand-icon">が</div>
-        <div>
-          <div className="brand-title">HeyGanba!</div>
-          <div className="brand-tag">Dekiru Nihongo</div>
+        <div className="brand-header-left">
+          <div className="brand-icon">が</div>
+          <div>
+            <div className="brand-title">HeyGanba!</div>
+            <div className="brand-tag">Dekiru Nihongo</div>
+          </div>
         </div>
+        {isOverlay && onClose && (
+          <button
+            type="button"
+            className="sidebar-close-btn"
+            onClick={onClose}
+            aria-label="Đóng thanh điều hướng"
+            title="Đóng thanh điều hướng"
+          >
+            <X size={20} />
+          </button>
+        )}
       </div>
 
       <nav className="nav-menu">
@@ -61,7 +92,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           return (
             <button
               key={item.key}
-              onClick={() => onSelectStation(item.key as StationKey)}
+              onClick={() => handleNavClick(item.key as StationKey)}
               className={`nav-item ${isActive ? 'active' : ''}`}
             >
               <Icon size={18} />
@@ -78,7 +109,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               Quản trị hệ thống
             </div>
             <button
-              onClick={() => onSelectStation('admin')}
+              onClick={() => handleNavClick('admin')}
               className={`nav-item ${currentStation === 'admin' ? 'active' : ''}`}
             >
               <ShieldCheck size={18} color="#EF4444" />
@@ -95,8 +126,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <UserIcon size={18} />
           </div>
           <div className="user-info">
-            <div className="user-name">{user.fullName}</div>
-            <div className="user-role">{user.email}</div>
+            <div className="user-name" title={user.fullName}>{user.fullName}</div>
+            <div className="user-role" title={user.email}>{user.email}</div>
           </div>
         </div>
       )}
