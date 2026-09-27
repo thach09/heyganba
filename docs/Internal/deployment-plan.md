@@ -267,6 +267,46 @@ Remove-Item Env:PGPASSWORD
 - Mẹo khi test bằng PowerShell 5.1: gửi POST JSON bằng file (`curl.exe --data-binary "@body.json"`) — truyền JSON trực
   tiếp bằng `-d` bị PowerShell làm mất dấu ngoặc kép → server trả `400 invalid JSON format` (không phải lỗi backend).
 - Sau khi bật CSP cần kiểm tra lại các API trình duyệt dùng blob worker (`canvas-confetti` → `worker-src 'self' blob:`).
+### Triển khai 27/09/2026 (đợt 2): fix UI mobile + phê duyệt nội dung core (V15)
+
+**Frontend (Vercel tự deploy khi push `main`)** — commit `bea04e6`:
+
+- Fix lỗi trên điện thoại: menu sidebar che hết giao diện mà không thu nhỏ được. Nguyên nhân: `isSidebarOpen`
+  khởi tạo `true` trong khi CSS `@media (max-width: 900px)` xếp sidebar thành overlay ⇒ không có nút X, không có
+  lớp phủ để bấm ra ngoài, nút hamburger nằm dưới sidebar (topbar `z-index: 30` < sidebar `z-index: 100`).
+- Bằng chứng: asset CSS production đổi từ `index-BDUWIMMT.css` → `index-DHBJHKzP.css`, có `.sidebar-backdrop` +
+  `.sidebar-close-btn`; `<meta name="viewport">` có thêm `viewport-fit=cover`.
+
+**Backend (Render production, service `srv-das95jh7lnhs7385mim0`)** — commit `bea04e6`:
+
+- Trigger bằng Render API theo runbook ở trên (`POST /v1/services/{id}/deploys`), không cần chờ job
+  `deploy-backend-production` của GitHub Actions (job đó yêu cầu duyệt environment `production`).
+- ⚠️ Dockerfile build bằng `mvn clean package -DskipTests` ⇒ **luôn chạy `mvn -B verify` ở local trước khi deploy**
+  (lần này: 115 test, 0 fail).
+- Migration `V15__approve_core_curriculum_content.sql` áp dụng ở production:
+  - Bằng chứng TRƯỚC: `flyway_schema_history` max = `13`; `kana` 247/0 APPROVED, `vocabulary` 44/0, `kanji` 63/0,
+    `grammar_rules` 32/0, `grammar_exercises` 64/0 — và **không có bản ghi `id > 64`** (nên mệnh đề `WHERE id <= 64`
+    chỉ có ý nghĩa giữ lại V12/V14 ở staging).
+  - Sau V15: cả **450 bản ghi core** chuyển `APPROVED` ⇒ user thường thấy nội dung bài 1–7 (trước đó 0 bản ghi
+    APPROVED nên các trạm hiển thị rỗng dù API trả 200).
+- Truy vấn DB production khi không có `psql`: dùng Neon HTTP SQL endpoint `POST https://<neon-host>/sql` với header
+  `Neon-Connection-String: <NEON_CONNECTION_URI>` và body `{"query":"...","params":[]}` (thông tin kết nối nằm trong
+  `.local-secrets.env` ở máy local, KHÔNG commit).
+- Deploy đợt này lâu hơn mức thường lệ (~4 phút): lần đầu chọn `clearCache: do_not_clear` bị treo ở
+  `update_in_progress` (không có log runtime) → đã cancel và deploy lại; **instance cũ vẫn phục vụ request trong suốt
+  quá trình** nên không có downtime.
+- Kết quả sau deploy (đã xác minh):
+  - Render: deploy `dep-daser83ncjis73crq03g` → `live` lúc 10:27:30Z; log Flyway có
+    `Successfully applied 1 migration to schema "public"`; `GET /api/v1/health` → `status=UP`.
+  - DB: version cuối trong `flyway_schema_history` = `15`; `kana` 247/247 APPROVED, `vocabulary` 44/44,
+    `kanji` 63/63, `grammar_rules` 32/32, `grammar_exercises` 64/64 ⇒ tổng **450/450**, `PENDING_REVIEW` = 0.
+  - Kiểm chứng bằng tài khoản user thường tạm thời (tạo rồi xoá ngay trong cùng phiên; sau khi xoá **0 dòng orphan**
+    ở mọi bảng có `user_id`): `GET /kana` = 247, `/kanji` = 63, `/grammar/rules` = 32, `/grammar/exercises` = 64,
+    `/flashcard/stats` → `availableNewWords = 44`; `/content/review-status` → `403` (đúng: chỉ admin).
+
+
+
+
 
 
 
@@ -477,12 +517,13 @@ Invoke-RestMethod -Method Post 'https://api.render.com/v1/services/<srv-id>/cust
 |---|---|
 | Thư mục migration | `backend/src/main/resources/db/migration` = **đã duyệt** (chạy mọi môi trường); `db/migration-staging` = **chờ duyệt** |
 | Cấu hình Flyway | local/staging: `classpath:db/migration,classpath:db/migration-staging`; **`application-prod.yml` chỉ `classpath:db/migration`** |
-| Đang chờ duyệt | `V12__expand_grammar_exercises.sql` (96 câu), `V14__expand_trap_exercises.sql` (146 câu nhóm bẫy) |
+| Đang chờ duyệt | `V12__expand_grammar_exercises.sql` (96 câu), `V14__expand_trap_exercises.sql` (146 câu nhóm bẫy) — **riêng nội dung core bài 1–7 đã được duyệt** bằng `V15` (xem ghi chú bên dưới, áp dụng 27/09/2026) |
 | Trạng thái trong DB | `review_status` (V13) mặc định `PENDING_REVIEW` cho kana/từ vựng/kanji/ngữ pháp/bài tập |
 | Kiểm tra tự động | `FlywayLocationsConfigTest` (chặn sửa prod yml include staging, chặn đặt file chờ duyệt vào `db/migration`, chặn trùng version) |
 | Kiểm tra thủ công | `GET /content/review-status` → `allApproved=false`, `stagingOnlyMigrations=[V12…, V14…]`; UI Trạm Trợ từ hiện badge "chờ duyệt" |
 | **Promote** | Sau khi người biết tiếng Nhật duyệt: (1) `UPDATE … SET review_status='APPROVED'`, (2) **đánh số lại version LỚN HƠN version lớn nhất đang có ở production** (production đang ở V13 → `V12__expand_grammar_exercises.sql` thành `V15__…`, `V14__expand_trap_exercises.sql` thành `V16__…`; giữ nguyên thứ tự tương đối, KHÔNG đổi nội dung) rồi mới chuyển file sang `db/migration/`, (3) chạy lại CI (test đỏ nếu file còn ở sai thư mục hoặc trùng version), (4) deploy production |
 | **Vì sao phải đánh số lại** | Flyway mặc định từ chối migration có version THẤP hơn version mới nhất đã áp. Production đã áp V13 nên nếu promote nguyên số V12, app production sẽ fail-fast lúc khởi động ("Detected resolved migration not applied to database: 12"). Chỉ **staging** bật `spring.flyway.out-of-order: true` (để V12/V14 chạy được trên bản copy); **production không bật** cờ này nên bắt buộc đánh số lại khi promote. |
+| **⚠️ Số `V15` đã bị dùng (27/09/2026)** | `V15__approve_core_curriculum_content.sql` (đã nằm trong `db/migration`) là migration **phê duyệt nội dung core**: `UPDATE kana/vocabulary/kanji/grammar_rules SET review_status='APPROVED'` + `grammar_exercises` (`id <= 64`). Vì vậy khi promote V12/V14 phải đánh số **V16/V17** (KHÔNG dùng V15), giữ nguyên thứ tự tương đối và không đổi nội dung. |
 
 - Kiểm tra: `curl https://<render-service>.onrender.com/api/v1/health` → `"status":"UP"`.
 - Nếu thiếu `JWT_SECRET`, backend **fail-fast** ngay lúc khởi động (log có `Could not resolve placeholder 'JWT_SECRET'`) — đây là hành vi mong muốn.
