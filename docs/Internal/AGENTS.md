@@ -250,4 +250,10 @@ Sau mỗi phase, agent báo cáo ngắn gọn gồm 3 phần:
   tạo bằng API với repo public vẫn build được nhưng push KHÔNG tạo deploy mới → phải kiểm tra
   `GET /v1/services/{id}/deploys` sau khi push (đừng tin mỗi giá trị `autoDeploy`). Chưa cài app thì dùng
   `POST /v1/services/{id}/deploys` để trigger.
+- **Luôn `git status --porcelain` TRƯỚC khi `git add -A`**: một số lệnh verify (curl/PowerShell) có thể ghi nhầm file vào
+  repo root — đã gặp thật: file tên `in` = **bản sao bundle JS 342KB** lọt vào commit trên repo public. Cách xử lý khi thấy
+  file lạ: (1) quét nội dung xem có secret không (`eyJ|npg_|rnd_|vcp_|napi_|ghp_|github_pat_`), (2) nếu sạch thì xoá và
+  commit lại, (3) nếu có secret thì phải xoay secret ngay (không chỉ xoá file — history của repo public vẫn giữ blob).
+  Ghi chú: chuỗi `accessToken`/`refreshToken`/`password` xuất hiện trong bundle là **tên field trong code frontend công khai**,
+  không phải secret.
 
