@@ -268,11 +268,40 @@ Pipeline theo 4 bước, chạy cho mọi PR và mọi lần merge:
 |---|---|---|
 | `RENDER_PROD_DEPLOY_HOOK_URL` | Render → service production → Settings → Deploy Hook | Push vào `main`, job `deploy-backend-production` phải in `Đã trigger deploy backend production trên Render.` |
 
-**2. GitHub Environment `production` có Required reviewers**
+**2. GitHub Environment `production` có Required reviewers — ✅ ĐÃ LÀM (27/09/2026)**
 
-- Settings → Environments → New environment: `production` → bật **Required reviewers** (chọn chính bạn) → lưu.
-- (Tuỳ chọn) Thêm environment `staging` không cần reviewer để deploy staging tự động.
-- Kiểm tra: push thử vào `main` → 2 job `deploy-*-production` phải dừng ở trạng thái *Waiting for review*.
+Cấu hình qua GitHub REST API (token cần scope `repo`; PAT tạo ở GitHub → Settings → Developer settings → Tokens):
+
+```powershell
+$tok = '<PAT scope repo,workflow>'
+$p = "$env:TEMP\gh-env.json"
+'{ "wait_timer": 0, "reviewers": [ { "type": "User", "id": <userId> } ], "deployment_branch_policy": { "protected_branches": false, "custom_branch_policies": true } }' |
+  Set-Content -Path $p -Encoding ASCII -NoNewline
+
+# ⚠️ PowerShell 5.1 làm hỏng JSON khi truyền trực tiếp bằng -d → LUÔN gửi body qua file
+curl.exe -X PUT -H "Authorization: Bearer $tok" -H 'Accept: application/vnd.github+json' `
+  -H 'User-Agent: heyganba-agent' -H 'Content-Type: application/json' --data-binary "@$p" `
+  https://api.github.com/repos/thach09/heyganba/environments/production
+
+# Giới hạn environment chỉ nhận deploy từ nhánh `main`.
+# Policy chỉ thêm được SAU khi bật custom_branch_policies (gọi trước sẽ trả 404).
+curl.exe -X POST -H "Authorization: Bearer $tok" -H 'User-Agent: heyganba-agent' `
+  -H 'Content-Type: application/json' --data-binary '{"name":"main"}' `
+  https://api.github.com/repos/thach09/heyganba/environments/production/deployment-branch-policies
+# userId: GET https://api.github.com/user → thach09 = 211706769
+```
+
+Trạng thái đã xác minh bằng `GET /repos/thach09/heyganba/environments/production`:
+`protection_rules` gồm `required_reviewers` (reviewer `thach09`, `prevent_self_review=false` để chính bạn duyệt được) +
+`branch_policy` cho `main`; `deployment_branch_policy.custom_branch_policies=true`.
+
+- Environment `staging` để **trống protection** vì staging deploy tự động, không cần duyệt.
+- Kiểm tra gate: push vào `main` → job `deploy-backend-production` ở trạng thái *Waiting for review*; xem được bằng
+  `GET /repos/{owner}/{repo}/actions/runs/{run_id}/pending_deployments`.
+- **Về `PAT_TOKEN` trong GitHub Actions secrets**: GitHub **không cho đọc lại giá trị** secret (write-only, kể cả bằng PAT —
+  đây là thiết kế bảo mật, không phải lỗi). Muốn agent tự cấu hình GitHub thì đặt token vào `.local-secrets.env`
+  (key `GITHUB_TOKEN`, đã có sẵn trong `.secrets.template.env`, scope `repo` + `workflow`).
+  Nếu `PAT_TOKEN` chỉ để dành cho workflow thì nên dùng thật hoặc xoá — secret nằm im vẫn là bề mặt rủi ro.
 
 **3. Biến môi trường Render (service backend)**
 
