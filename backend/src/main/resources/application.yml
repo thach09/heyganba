@@ -49,9 +49,12 @@ spring:
 
 app:
   jwt:
-    # KHÔNG có giá trị mặc định: staging/production bắt buộc set JWT_SECRET, thiếu là app fail-fast lúc khởi động.
-    # Giá trị mặc định cho môi trường dev nằm ở application-dev.yml (xem thêm backend/.env.example).
-    secret: ${JWT_SECRET}
+    # Ở staging/production PHẢI set biến môi trường JWT_SECRET (chuỗi Base64 ≥ 32 byte sau khi decode).
+    # - Render Blueprint: đã đặt `generateValue: true` → Render tự sinh secret, KHÔNG cần thao tác tay.
+    # - Tạo Web Service thủ công: dán giá trị `openssl rand -base64 48`.
+    # Để default rỗng có chủ đích: app vẫn fail-fast lúc khởi động nhưng với thông báo rõ ràng
+    # (JwtTokenProvider ném lỗi hướng dẫn) thay vì PlaceholderResolutionException khó đọc.
+    secret: ${JWT_SECRET:}
     access-token-expiration-ms: ${JWT_ACCESS_EXPIRATION_MS:1800000} # 30 minutes
     refresh-token-expiration-ms: ${JWT_REFRESH_EXPIRATION_MS:604800000} # 7 days
   cors:

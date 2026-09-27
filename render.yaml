@@ -22,10 +22,15 @@ services:
     healthCheckPath: /api/v1/health
     autoDeploy: false
     envVars:
+      # Service này deploy từ nhánh `main` ⇒ là PRODUCTION: dùng profile `prod` để application-prod.yml
+      # chỉ đọc `db/migration` (KHÔNG apply V12/V14 là nội dung chờ duyệt tiếng Nhật).
+      # Service staging (nhánh develop) tạo riêng và đặt SPRING_PROFILES_ACTIVE=staging.
       - key: SPRING_PROFILES_ACTIVE
-        value: staging
+        value: prod
+      # Render tự sinh secret Base64 256-bit (JJWT HS256 cần ≥ 32 byte sau decode) → không cần điền tay.
+      # Nếu đã set giá trị thủ công thì Render giữ nguyên giá trị đó.
       - key: JWT_SECRET
-        sync: false
+        generateValue: true
       # Domain thật (Namecheap heyganba.site) — đổi khi domain thay đổi.
       - key: CORS_ALLOWED_ORIGINS
         value: https://heyganba.site,https://www.heyganba.site

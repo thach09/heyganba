@@ -37,10 +37,41 @@ public class JwtTokenProvider {
             @Value("${app.jwt.secret}") String secret,
             @Value("${app.jwt.access-token-expiration-ms:1800000}") long accessTokenExpirationMs,
             @Value("${app.jwt.refresh-token-expiration-ms:604800000}") long refreshTokenExpirationMs) {
-        byte[] keyBytes = Decoders.BASE64.decode(secret);
-        this.key = Keys.hmacShaKeyFor(keyBytes);
+        this.key = buildKey(secret);
         this.accessTokenExpirationMs = accessTokenExpirationMs;
         this.refreshTokenExpirationMs = refreshTokenExpirationMs;
+    }
+
+    /**
+     * Kiểm tra secret ngay lúc khởi động để lỗi cấu hình có thông báo hành động được.
+     *
+     * Thực tế đã gặp trên Render: thiếu biến `JWT_SECRET` → cả context fail với
+     * `Could not resolve placeholder 'JWT_SECRET'`, rất khó đoán cần làm gì. Ở đây (và trong `application.yml`)
+     * ta để default rỗng rồi tự validate → log ra đúng việc cần làm, vẫn fail-fast (không chạy với secret yếu).
+     */
+    private static SecretKey buildKey(String secret) {
+        if (secret == null || secret.isBlank()) {
+            throw new IllegalStateException("""
+                    Thiếu biến môi trường JWT_SECRET — app dừng để không chạy production với secret yếu.
+                    Cách sửa: Render → service → Environment → thêm JWT_SECRET (giá trị `openssl rand -base64 48`),
+                    hoặc deploy bằng Blueprint (render.yaml đã đặt generateValue: true để Render tự sinh).
+                    """);
+        }
+
+        byte[] keyBytes;
+        try {
+            keyBytes = Decoders.BASE64.decode(secret);
+        } catch (Exception ex) {
+            throw new IllegalStateException(
+                    "JWT_SECRET không phải chuỗi Base64 hợp lệ (dùng `openssl rand -base64 48`).", ex);
+        }
+
+        if (keyBytes.length < 32) {
+            throw new IllegalStateException("JWT_SECRET quá ngắn: cần ≥ 32 byte sau khi decode Base64 "
+                    + "(hiện " + keyBytes.length + " byte). Dùng `openssl rand -base64 48`.");
+        }
+
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 
     public String generateAccessToken(Authentication authentication) {
