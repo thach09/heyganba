@@ -2,9 +2,11 @@ package com.heyganba.controller;
 
 import com.heyganba.common.response.ApiResponse;
 import com.heyganba.config.UserPrincipal;
+import com.heyganba.dto.admin.AuditLogResponse;
 import com.heyganba.dto.user.UserProfileResponse;
 import com.heyganba.model.entity.User;
 import com.heyganba.repository.UserRepository;
+import com.heyganba.service.AuditLogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,6 +25,7 @@ import java.util.Map;
 public class AdminController {
 
     private final UserRepository userRepository;
+    private final AuditLogService auditLogService;
 
     @GetMapping("/status")
     public ResponseEntity<ApiResponse<Map<String, Object>>> getAdminStatus(
@@ -51,5 +54,10 @@ public class AdminController {
                 .toList();
 
         return ResponseEntity.ok(ApiResponse.success(dtos));
+    }
+
+    @GetMapping("/audit-logs")
+    public ResponseEntity<ApiResponse<List<AuditLogResponse>>> listAuditLogs() {
+        return ResponseEntity.ok(ApiResponse.success(auditLogService.getRecent()));
     }
 }

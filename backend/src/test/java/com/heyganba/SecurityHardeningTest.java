@@ -27,6 +27,7 @@ import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -96,6 +97,19 @@ class SecurityHardeningTest {
                 .isActive(false)
                 .build();
         return userRepository.save(user);
+    }
+
+    @Test
+    @DisplayName("HSTS: request HTTPS nhận Strict-Transport-Security, request HTTP thường thì không")
+    void hstsHeaderOnlyOnSecureRequests() throws Exception {
+        mockMvc.perform(get("/health").secure(true))
+                .andExpect(status().isOk())
+                .andExpect(header().string("Strict-Transport-Security", "max-age=31536000"));
+
+        // Local dev (http) không nhận HSTS để không ép trình duyệt chuyển HTTPS khi phát triển.
+        mockMvc.perform(get("/health"))
+                .andExpect(status().isOk())
+                .andExpect(header().doesNotExist("Strict-Transport-Security"));
     }
 
     @Test

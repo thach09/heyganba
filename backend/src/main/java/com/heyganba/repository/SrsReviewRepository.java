@@ -19,4 +19,17 @@ public interface SrsReviewRepository extends JpaRepository<SrsReview, Long> {
     List<SrsReview> findDueReviewsForUser(@Param("userId") Long userId, @Param("now") Instant now);
 
     long countByUserIdAndDueDateLessThanEqual(Long userId, Instant now);
+
+    long countByUserId(Long userId);
+
+    long countByUserIdAndRepetitionsGreaterThan(Long userId, Integer repetitions);
+
+    /** Số từ đã thuộc (có ít nhất 1 lần trả lời đúng) của từng user — dùng cho leaderboard. */
+    @Query("""
+            SELECT r.user.id, COUNT(r)
+            FROM SrsReview r
+            WHERE r.repetitions > 0
+            GROUP BY r.user.id
+            """)
+    List<Object[]> countLearnedPerUser();
 }

@@ -20,12 +20,30 @@ public class UserService {
         User user = userRepository.findById(currentUser.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", currentUser.getId()));
 
+        return toProfile(user);
+    }
+
+    /** Cập nhật mã lớp học (text tự do, cho phép xoá bằng chuỗi rỗng/null). */
+    @Transactional
+    public UserProfileResponse updateClassCode(UserPrincipal currentUser, String classCode) {
+        User user = userRepository.findById(currentUser.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("User", "id", currentUser.getId()));
+
+        String normalized = (classCode == null || classCode.isBlank()) ? null : classCode.trim();
+        user.setClassCode(normalized);
+        userRepository.save(user);
+
+        return toProfile(user);
+    }
+
+    private UserProfileResponse toProfile(User user) {
         return UserProfileResponse.builder()
                 .id(user.getId())
                 .email(user.getEmail())
                 .fullName(user.getFullName())
                 .role(user.getRole().getName().name())
                 .isActive(user.getIsActive())
+                .classCode(user.getClassCode())
                 .createdAt(user.getCreatedAt())
                 .build();
     }

@@ -50,6 +50,7 @@ public class AuthService {
                 .passwordHash(passwordEncoder.encode(request.getPassword()))
                 .role(userRole)
                 .isActive(true)
+                .classCode(normalizeClassCode(request.getClassCode()))
                 .build();
 
         User savedUser = userRepository.save(user);
@@ -73,6 +74,7 @@ public class AuthService {
                 .email(savedUser.getEmail())
                 .fullName(savedUser.getFullName())
                 .role(savedUser.getRole().getName().name())
+                .classCode(savedUser.getClassCode())
                 .build();
     }
 
@@ -97,6 +99,7 @@ public class AuthService {
                 .email(userPrincipal.getUsername())
                 .fullName(userPrincipal.getFullName())
                 .role(userPrincipal.getAuthorities().iterator().next().getAuthority())
+                .classCode(userPrincipal.getClassCode())
                 .build();
     }
 
@@ -123,6 +126,15 @@ public class AuthService {
                 .email(userPrincipal.getUsername())
                 .fullName(userPrincipal.getFullName())
                 .role(userPrincipal.getAuthorities().iterator().next().getAuthority())
+                .classCode(userPrincipal.getClassCode())
                 .build();
+    }
+
+    /** Mã lớp là text tự do: chỉ trim, để trống thì lưu null (không gán lớp mặc định). */
+    private static String normalizeClassCode(String classCode) {
+        if (classCode == null || classCode.isBlank()) {
+            return null;
+        }
+        return classCode.trim();
     }
 }

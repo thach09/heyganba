@@ -98,6 +98,18 @@ public class SecurityConfig {
                         .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                         .anyRequest().authenticated()
                 )
+                // HSTS (deployment-plan: "bật HSTS"): chỉ gửi trên request HTTPS (Spring dùng HttpsRequestMatcher
+                // mặc định) nên local dev qua http://localhost:8080 vẫn hoạt động bình thường.
+                .headers(headers -> headers
+                        .httpStrictTransportSecurity(hsts -> hsts
+                                .includeSubDomains(false)
+                                .maxAgeInSeconds(31536000)
+                        )
+                        // API chỉ phục vụ JSON qua fetch từ Vercel → chặn sniffing, chặn nhúng iframe.
+                        .contentTypeOptions(contentTypeOptions -> {
+                        })
+                        .frameOptions(frameOptions -> frameOptions.deny())
+                )
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

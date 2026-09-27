@@ -19,4 +19,6 @@ public class AuthResponse {
     private String email;
     private String fullName;
     private String role;
+    /** Mã lớp học (nullable) — UI dùng để hiển thị lớp + gọi leaderboard theo lớp. */
+    private String classCode;
 }

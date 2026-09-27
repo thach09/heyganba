@@ -2,6 +2,7 @@ package com.heyganba.model.entity;
 
 import com.heyganba.model.enums.KanaGroup;
 import com.heyganba.model.enums.KanaType;
+import com.heyganba.model.enums.ReviewStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -40,6 +41,12 @@ public class Kana {
 
     @Column(name = "stroke_order_svg", columnDefinition = "TEXT")
     private String strokeOrderSvg;
+
+    /** Trạng thái duyệt nội dung — mặc định chờ duyệt (xem {@link com.heyganba.model.enums.ReviewStatus}). */
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    @Column(name = "review_status", nullable = false, length = 20)
+    private ReviewStatus reviewStatus = ReviewStatus.PENDING_REVIEW;
 
     @Builder.Default
     @Column(name = "is_particle_exception", nullable = false)

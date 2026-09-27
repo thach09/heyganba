@@ -1,5 +1,6 @@
 package com.heyganba.model.entity;
 
+import com.heyganba.model.enums.ReviewStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -44,6 +45,12 @@ public class GrammarExercise {
 
     @Column(name = "mistake_category", length = 100)
     private String mistakeCategory;
+
+    /** Trạng thái duyệt nội dung — mặc định chờ duyệt (xem {@link com.heyganba.model.enums.ReviewStatus}). */
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    @Column(name = "review_status", nullable = false, length = 20)
+    private ReviewStatus reviewStatus = ReviewStatus.PENDING_REVIEW;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

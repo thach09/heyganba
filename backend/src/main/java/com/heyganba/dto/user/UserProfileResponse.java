@@ -18,5 +18,7 @@ public class UserProfileResponse {
     private String fullName;
     private String role;
     private Boolean isActive;
+    /** Mã lớp học (text tự do, có thể null) — dùng cho leaderboard theo lớp. */
+    private String classCode;
     private Instant createdAt;
 }

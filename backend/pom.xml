@@ -42,6 +42,15 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
+        <!--
+            Redis (tuỳ chọn): chỉ dùng khi `app.srs.cache=redis` (xem RedisSrsDueCache).
+            Mặc định `app.srs.cache=memory` nên app KHÔNG cần Redis để chạy; Lettuce chỉ mở kết nối khi có request đầu tiên.
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
         <!-- Database & Migration -->
         <dependency>
             <groupId>org.postgresql</groupId>

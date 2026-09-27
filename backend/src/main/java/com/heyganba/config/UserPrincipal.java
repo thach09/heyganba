@@ -25,6 +25,8 @@ public class UserPrincipal implements UserDetails {
     private Collection<? extends GrantedAuthority> authorities;
     /** Tài khoản bị khoá (is_active = false) không được xác thực. */
     private boolean enabled;
+    /** Mã lớp học (nullable) — cần cho leaderboard theo lớp. */
+    private String classCode;
 
     public static UserPrincipal create(User user) {
         GrantedAuthority authority = new SimpleGrantedAuthority(user.getRole().getName().name());
@@ -35,6 +37,7 @@ public class UserPrincipal implements UserDetails {
                 .password(user.getPasswordHash())
                 .authorities(Collections.singletonList(authority))
                 .enabled(Boolean.TRUE.equals(user.getIsActive()))
+                .classCode(user.getClassCode())
                 .build();
     }
 

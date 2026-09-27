@@ -37,6 +37,10 @@ public class User {
     @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;
 
+    /** Mã lớp học dạng text tự do (nullable) — dùng cho leaderboard theo lớp. User có thể chưa thuộc lớp nào. */
+    @Column(name = "class_code", length = 50)
+    private String classCode;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
