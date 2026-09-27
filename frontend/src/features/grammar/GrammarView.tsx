@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Sparkles, TriangleAlert } from 'lucide-react';
+import { SearchX, Sparkles, TriangleAlert } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { OnboardingTooltip } from '../../components/OnboardingTooltip';
 import { FeedbackAlert } from '../../components/FeedbackAlert';
@@ -320,11 +320,31 @@ export const GrammarView: React.FC<GrammarViewProps> = ({ user, onRequireLogin }
               <div className="grammar-rule-explanation">{rule.explanation}</div>
             </button>
           ))}
-          {rules.length === 0 && !error && <div className="kanji-empty">Chưa có điểm ngữ pháp nào cho bộ lọc này.</div>}
+          {rules.length === 0 && !error && (
+            <div className="empty-state">
+              <span className="empty-state-icon">
+                <SearchX size={20} />
+              </span>
+              <span className="empty-state-title">Chưa có điểm ngữ pháp nào cho bộ lọc này</span>
+              <span className="empty-state-desc">
+                Thử chọn bài học khác, hoặc tắt lọc “Chỉ nhóm bẫy thường gặp” để xem toàn bộ điểm ngữ pháp.
+              </span>
+            </div>
+          )}
         </div>
 
         <aside className="grammar-practice">
-          {!current && <div className="kana-detail-empty">Chọn một điểm ngữ pháp ở bên trái để bắt đầu làm bài.</div>}
+          {!current && (
+            <div className="empty-state">
+              <span className="empty-state-icon">
+                <Sparkles size={20} />
+              </span>
+              <span className="empty-state-title">Chọn một điểm ngữ pháp để bắt đầu</span>
+              <span className="empty-state-desc">
+                Danh sách điểm ngữ pháp nằm ở cột bên trái. Chọn đáp án bằng phím 1/2/3/4, Enter để sang câu tiếp theo.
+              </span>
+            </div>
+          )}
 
           {current && (
             <>

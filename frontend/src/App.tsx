@@ -19,6 +19,8 @@ export function App() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [backendHealthy, setBackendHealthy] = useState<boolean | null>(null);
+  // Streak thật của người đang đăng nhập — trước đây topbar hardcode "3 ngày".
+  const [streakCount, setStreakCount] = useState(0);
 
   useEffect(() => {
     // Check saved user session
@@ -36,6 +38,18 @@ export function App() {
         setBackendHealthy(false);
       });
   }, []);
+
+  useEffect(() => {
+    if (!user) {
+      return;
+    }
+
+    void apiRequest<{ currentStreak: number }>('/streak').then((res) => {
+      if (res.success && res.data) {
+        setStreakCount(res.data.currentStreak);
+      }
+    });
+  }, [user]);
 
   const handleLogout = () => {
     clearTokens();
@@ -73,12 +87,12 @@ export function App() {
       />
 
       {/* Main Content Area */}
-      <div className="main-wrapper">
+      <div className={`main-wrapper ${isSidebarOpen ? '' : 'is-collapsed'}`}>
         <Navbar
           user={user}
           onOpenAuthModal={() => setIsAuthModalOpen(true)}
           onLogout={handleLogout}
-          streakCount={3}
+          streakCount={streakCount}
           activeStationTitle={stationTitles[currentStation]}
           onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
         />

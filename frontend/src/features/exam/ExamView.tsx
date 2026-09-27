@@ -335,6 +335,22 @@ export const ExamView: React.FC<ExamViewProps> = ({ user, onRequireLogin }) => {
     return 4;
   };
 
+  /** Huy hiệu thứ hạng: 3 hạng đầu được tô màu riêng để bảng dễ đọc hơn. */
+  const rankBadgeClass = (rank: number): string => {
+    if (rank === 1) {
+      return 'exam-rank is-top1';
+    }
+    if (rank === 2) {
+      return 'exam-rank is-top2';
+    }
+    if (rank === 3) {
+      return 'exam-rank is-top3';
+    }
+    return 'exam-rank';
+  };
+
+  const currentUserId = user?.userId;
+
   if (!user) {
     return (
       <div className="flashcard-shell">
@@ -462,7 +478,7 @@ export const ExamView: React.FC<ExamViewProps> = ({ user, onRequireLogin }) => {
                 <span className="heat-cell level-3" />
                 <span className="heat-cell level-4" />
                 <span>Nhiều</span>
-                <span className="kana-detail-meta">Múi giờ tính streak: {streak?.zone ?? 'UTC'}</span>
+                <span className="kana-detail-meta heat-legend-zone">Múi giờ tính streak: {streak?.zone ?? 'UTC'}</span>
               </div>
             </div>
 
@@ -471,37 +487,45 @@ export const ExamView: React.FC<ExamViewProps> = ({ user, onRequireLogin }) => {
                 <Trophy size={16} color="var(--accent-gold)" />
                 <span>Bảng xếp hạng ({leaderboard?.scope ?? 'ALL'})</span>
               </h3>
-              <table className="exam-table">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Học viên</th>
-                    <th>Từ đã thuộc</th>
-                    <th>Streak</th>
-                    <th>Điểm thi</th>
-                    <th>Điểm xếp hạng</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {(leaderboard?.entries ?? []).map((entry) => (
-                    <tr key={entry.userId}>
-                      <td>{entry.rank}</td>
-                      <td>{entry.fullName}</td>
-                      <td>{entry.learnedWords}</td>
-                      <td>{entry.longestStreak}</td>
-                      <td>{entry.bestExamScore}%</td>
-                      <td>{entry.points}</td>
-                    </tr>
-                  ))}
-                  {(leaderboard?.entries ?? []).length === 0 && (
+              <div className="exam-table-wrap">
+                <table className="exam-table">
+                  <thead>
                     <tr>
-                      <td colSpan={6} style={{ textAlign: 'center', color: 'var(--text-muted)' }}>
-                        Chưa có dữ liệu — hoàn thành 1 lượt thi để xuất hiện trên bảng.
-                      </td>
+                      <th>#</th>
+                      <th>Học viên</th>
+                      <th className="is-num">Từ đã thuộc</th>
+                      <th className="is-num">Streak</th>
+                      <th className="is-num">Điểm thi</th>
+                      <th className="is-num">Điểm xếp hạng</th>
                     </tr>
-                  )}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {(leaderboard?.entries ?? []).map((entry) => (
+                      <tr key={entry.userId} className={entry.userId === currentUserId ? 'is-me' : undefined}>
+                        <td>
+                          <span className={rankBadgeClass(entry.rank)}>{entry.rank}</span>
+                        </td>
+                        <td>
+                          <span className="exam-name" title={entry.fullName}>
+                            {entry.fullName}
+                          </span>
+                        </td>
+                        <td className="is-num">{entry.learnedWords}</td>
+                        <td className="is-num">{entry.longestStreak}</td>
+                        <td className="is-num">{entry.bestExamScore}%</td>
+                        <td className="is-num">{entry.points}</td>
+                      </tr>
+                    ))}
+                    {(leaderboard?.entries ?? []).length === 0 && (
+                      <tr>
+                        <td colSpan={6} className="exam-table-empty">
+                          Chưa có dữ liệu — hoàn thành 1 lượt thi để xuất hiện trên bảng.
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
               {leaderboard && <p className="kana-detail-meta">{leaderboard.pointsFormula}</p>}
 
               <div className="exam-class-controls">
@@ -539,37 +563,41 @@ export const ExamView: React.FC<ExamViewProps> = ({ user, onRequireLogin }) => {
               <GraduationCap size={16} color="#EC4899" />
               <span>Lịch sử thi thử</span>
             </h3>
-            <table className="exam-table">
-              <thead>
-                <tr>
-                  <th>Đề</th>
-                  <th>Đúng</th>
-                  <th>Điểm</th>
-                  <th>Thời gian làm</th>
-                  <th>Nộp lúc</th>
-                </tr>
-              </thead>
-              <tbody>
-                {history.map((item) => (
-                  <tr key={item.examId}>
-                    <td>#{item.examId}</td>
-                    <td>
-                      {item.correctCount}/{item.totalCount}
-                    </td>
-                    <td>{item.scorePercent}%</td>
-                    <td>{item.durationSeconds != null ? formatClock(item.durationSeconds) : '—'}</td>
-                    <td>{new Date(item.submittedAt).toLocaleString('vi-VN')}</td>
-                  </tr>
-                ))}
-                {history.length === 0 && (
+            <div className="exam-table-wrap">
+              <table className="exam-table">
+                <thead>
                   <tr>
-                    <td colSpan={5} style={{ textAlign: 'center', color: 'var(--text-muted)' }}>
-                      Chưa có lượt thi nào.
-                    </td>
+                    <th>Đề</th>
+                    <th className="is-num">Đúng</th>
+                    <th className="is-num">Điểm</th>
+                    <th className="is-num">Thời gian làm</th>
+                    <th>Nộp lúc</th>
                   </tr>
-                )}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {history.map((item) => (
+                    <tr key={item.examId}>
+                      <td>#{item.examId}</td>
+                      <td className="is-num">
+                        {item.correctCount}/{item.totalCount}
+                      </td>
+                      <td className="is-num">{item.scorePercent}%</td>
+                      <td className="is-num">
+                        {item.durationSeconds != null ? formatClock(item.durationSeconds) : '—'}
+                      </td>
+                      <td>{new Date(item.submittedAt).toLocaleString('vi-VN')}</td>
+                    </tr>
+                  ))}
+                  {history.length === 0 && (
+                    <tr>
+                      <td colSpan={5} className="exam-table-empty">
+                        Chưa có lượt thi nào.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         </>
       )}

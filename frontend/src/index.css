@@ -125,6 +125,10 @@ body {
   transition: transform var(--transition-normal);
 }
 
+.sidebar:not(.open) {
+  transform: translateX(-100%);
+}
+
 .brand {
   display: flex;
   align-items: center;
@@ -261,6 +265,12 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  transition: margin-left var(--transition-normal);
+}
+
+/* Sidebar thu gọn (nút hamburger ở topbar) — nội dung chiếm lại toàn bộ chiều ngang. */
+.main-wrapper.is-collapsed {
+  margin-left: 0;
 }
 
 .topbar {
@@ -287,6 +297,26 @@ body {
   display: flex;
   align-items: center;
   gap: 16px;
+}
+
+.topbar-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.topbar-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--border-subtle);
+  color: var(--text-main);
 }
 
 .streak-pill {
@@ -1327,6 +1357,27 @@ body {
   }
 
   .kana-cell-char {
+    font-size: 18px;
+  }
+
+  .kana-cell-romaji {
+    font-size: 10px;
+  }
+
+  .kana-detail-char {
+    font-size: 48px;
+    min-width: 68px;
+  }
+
+  .quiz-char {
+    font-size: 78px;
+  }
+
+  .kana-hero {
+    padding: 18px 16px;
+  }
+}
+
 /* ===== Trạm Flashcard & SRS (Phase 2) ===== */
 .flashcard-shell {
   display: flex;
@@ -1677,7 +1728,6 @@ body {
   padding-top: 12px;
 }
 
-@media (max-width: 1100px) {
 /* ===== Trạm Trợ từ & Ngữ pháp (Phase 4) ===== */
 .grammar-shell {
   display: flex;
@@ -1788,13 +1838,6 @@ body {
   justify-content: flex-end;
 }
 
-@media (max-width: 1100px) {
-  .grammar-layout {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .grammar-practice {
-    position: static;
 /* ===== Trạm Thi thử & Đấu trường (Phase 5) ===== */
 .exam-shell {
   display: flex;
@@ -1806,7 +1849,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 14px;
+  gap: 14px 22px;
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
@@ -1815,8 +1858,14 @@ body {
 
 .exam-config-group {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 8px;
+}
+
+/* Nút chính luôn nằm cuối hàng, không bị nhảy xuống dưới nhóm chip. */
+.exam-config > .btn {
+  margin-left: auto;
 }
 
 .exam-panels {
@@ -1841,6 +1890,11 @@ body {
   margin-bottom: 14px;
 }
 
+.exam-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
 .exam-table {
   width: 100%;
   border-collapse: collapse;
@@ -1852,13 +1906,79 @@ body {
   padding: 8px 10px;
   font-size: 11px;
   text-transform: uppercase;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
   color: var(--text-muted);
   border-bottom: 1px solid var(--border-subtle);
 }
 
+.exam-table th.is-num,
+.exam-table td.is-num {
+  text-align: right;
+  white-space: nowrap;
+}
+
 .exam-table td {
-  padding: 8px 10px;
+  padding: 9px 10px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  vertical-align: middle;
+}
+
+.exam-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.exam-table tbody tr:hover td {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* Dòng của chính người đang xem — dễ nhận ra thứ hạng của mình. */
+.exam-table tbody tr.is-me td {
+  background: var(--primary-light);
+}
+
+.exam-table .exam-name {
+  display: block;
+  max-width: 190px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.exam-rank {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 22px;
+  padding: 0 7px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.exam-rank.is-top1 {
+  background: rgba(245, 158, 11, 0.18);
+  color: var(--accent-gold);
+}
+
+.exam-rank.is-top2 {
+  background: rgba(203, 213, 225, 0.16);
+  color: #cbd5e1;
+}
+
+.exam-rank.is-top3 {
+  background: rgba(217, 119, 6, 0.2);
+  color: #e08b3c;
+}
+
+.exam-table .exam-table-empty {
+  padding: 22px 10px;
+  text-align: center;
+  color: var(--text-muted);
 }
 
 .heatmap-grid {
@@ -1894,10 +2014,17 @@ body {
 .heat-legend {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 6px;
   margin-top: 12px;
   font-size: 11px;
   color: var(--text-muted);
+}
+
+/* Múi giờ luôn xuống dòng riêng thay vì dính vào "Ít/Nhiều". */
+.heat-legend-zone {
+  flex-basis: 100%;
+  margin-top: 2px;
 }
 
 .exam-timer-bar {
@@ -1978,19 +2105,22 @@ body {
   font-size: 13px;
 }
 
+/* =========================================================
+   Responsive: Trạm Kanji / Trợ từ & Ngữ pháp (≤1100px)
+   ========================================================= */
+@media (max-width: 1100px) {
+  .kanji-layout,
+  .grammar-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .kanji-detail,
+  .grammar-practice {
+    position: static;
   }
 
   .grammar-rules {
     max-height: none;
-  }
-}
-
-  .kanji-layout {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .kanji-detail {
-    position: static;
   }
 }
 
@@ -2099,27 +2229,6 @@ body {
   }
 }
 
-    font-size: 18px;
-  }
-
-  .kana-cell-romaji {
-    font-size: 10px;
-  }
-
-  .kana-detail-char {
-    font-size: 48px;
-    min-width: 68px;
-  }
-
-  .quiz-char {
-    font-size: 78px;
-  }
-
-  .kana-hero {
-    padding: 18px 16px;
-  }
-}
-
 /* =========================================================
    Mascot tạm (emoji tiến hoá theo streak — components/MascotBadge.tsx)
    ========================================================= */
@@ -2144,7 +2253,7 @@ body {
 .mascot-label {
   font-size: 15px;
   font-weight: 800;
-  color: var(--text-primary, #f9fafb);
+  color: var(--text-main);
 }
 
 .mascot-badge .kana-detail-meta {
@@ -2185,4 +2294,88 @@ body {
 
 
 
+
+
+/* =========================================================
+   Tiện ích dùng chung: spinner, full-width, vùng cuộn mảnh
+   ========================================================= */
+.w-full {
+  width: 100%;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Nút submit dùng Loader2 + .animate-spin khi đang xử lý. */
+.animate-spin {
+  animation: spin 0.8s linear infinite;
+}
+
+.grammar-rules,
+.exam-result-list,
+.kana-picker {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+}
+
+.grammar-rules::-webkit-scrollbar,
+.exam-result-list::-webkit-scrollbar,
+.kana-picker::-webkit-scrollbar {
+  width: 8px;
+}
+
+.grammar-rules::-webkit-scrollbar-thumb,
+.exam-result-list::-webkit-scrollbar-thumb,
+.kana-picker::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: var(--radius-full);
+}
+
+.grammar-rules::-webkit-scrollbar-thumb:hover,
+.exam-result-list::-webkit-scrollbar-thumb:hover,
+.kana-picker::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.28);
+}
+
+/* =========================================================
+   Trạng thái rỗng dùng chung (không có dữ liệu / chưa chọn gì)
+   ========================================================= */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 34px 22px;
+  text-align: center;
+  border: 1px dashed var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.empty-state-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-full);
+  background: var(--primary-light);
+  color: var(--primary);
+}
+
+.empty-state-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.empty-state-desc {
+  max-width: 360px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
 

@@ -15,7 +15,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   user,
   onOpenAuthModal,
   onLogout,
-  streakCount = 1,
+  streakCount = 0,
   activeStationTitle,
   onToggleSidebar,
 }) => {
@@ -24,17 +24,13 @@ export const Navbar: React.FC<NavbarProps> = ({
       <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
         {onToggleSidebar && (
           <button
+            type="button"
             onClick={onToggleSidebar}
-            style={{
-              background: 'none',
-              border: 'none',
-              color: 'var(--text-main)',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-            }}
+            className="topbar-icon-btn"
+            title="Ẩn/hiện thanh điều hướng"
+            aria-label="Ẩn/hiện thanh điều hướng"
           >
-            <Menu size={22} />
+            <Menu size={20} />
           </button>
         )}
         <div className="page-title-group">

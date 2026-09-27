@@ -275,3 +275,28 @@ Sau mỗi phase, agent báo cáo ngắn gọn gồm 3 phần:
   Ghi chú: chuỗi `accessToken`/`refreshToken`/`password` xuất hiện trong bundle là **tên field trong code frontend công khai**,
   không phải secret.
 
+## Bài học CSS frontend: một dấu `}` thiếu làm mất style gần nửa app (27/09/2026)
+
+- `frontend/src/index.css` là **1 file ~2300 dòng, không có CSS linter**: `vite build` và `tsc` **không** báo lỗi cấu trúc
+  dấu ngoặc. Vì CSS nesting là hợp lệ, khi một rule/`@media` quên đóng thì **toàn bộ đoạn CSS phía sau bị nhốt vào bên
+  trong** → style chỉ còn áp dụng khi khớp điều kiện của rule/`@media` đó.
+- Đã xảy ra thật: `@media (max-width: 720px) {` + `.kana-cell-char {` để hở → CSS Phase 2–5 (flashcard, kanji, grammar,
+  exam) nằm hết trong `@media ≤720px`; một `@media (max-width: 1100px) {` thứ hai nhốt thêm cả Phase 4–5. Triệu chứng
+  người dùng thấy: bảng xếp hạng mất kẻ ô và dính cột, chữ dính nhau, các panel xếp sai, **chỉ đúng khi thu nhỏ cửa sổ
+  ≤720px**. Sửa bằng cách đóng đúng rule và gom mọi override responsive vào **một `@media` duy nhất ở cuối file**.
+- Kiểm tra nhanh trước khi commit (in ra `depth` của các selector Phase 2–5 + tổng depth, **phải kết thúc bằng 0**,
+  selector top-level phải in `depth=0`):
+  ```powershell
+  $d=0; Get-Content frontend\src\index.css | ForEach-Object {
+    if ($_ -match '^\s*(\.(exam-table|grammar-shell|grammar-layout|flashcard-shell|kanji-layout|heat-legend|mascot-badge)[^\w-])') { "depth=$d  $($_.Trim())" }
+    $d += ([regex]::Matches($_,'\{')).Count - ([regex]::Matches($_,'\}')).Count
+  }; "final depth=$d"
+  ```
+- Quy tắc: section mới luôn viết ở **top level**; `@media` chỉ đặt ở cuối file, chỉ chứa override responsive, và phải
+  đóng trước khi bắt đầu section kế tiếp. Thêm CSS xong phải chạy `npm run build` (không chỉ `npm run dev`) để chắc chắn
+  asset CSS production sinh ra bình thường.
+- Khi polish UI: **kiểm tra class có CSS tương ứng** bằng cách so `className` trong `.tsx` với selector trong `index.css`
+  (đã gặp 2 class "mồ côi" thật: `.animate-spin` cho spinner của `SubmitButton` và `.w-full`; ngoài ra biến
+  `--text-primary` được dùng nhưng chưa từng định nghĩa → phải là `--text-main`).
+
+
