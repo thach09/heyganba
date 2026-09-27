@@ -19,15 +19,55 @@
 
 ### Staging & Database (thực tế triển khai)
 
-- **Production**: 1 Web Service Render (branch `main`) + 1 PostgreSQL Render free do blueprint `render.yaml` tạo và tự
-  inject `SPRING_DATASOURCE_URL`; backend ở `api.heyganba.site`; frontend Vercel (branch `main`) ở `heyganba.site`.
-- **Staging**: tạo Web Service thứ 2 trỏ branch `develop`. Database staging chọn 1 trong 2 cách — Neon free (khuyến nghị,
-  không dùng hết hạn mức Render) hoặc nâng plan Render để có Postgres thứ 2 (**không dùng chung DB với production** vì
-  staging chạy thêm nội dung chờ duyệt V12/V14).
-- Gói Render Postgres free **hết hạn sau 30 ngày**, không có backup dài hạn → trước khi public rộng cần nâng plan hoặc
-  chuyển Neon để đáp ứng yêu cầu “backup retention tối thiểu 7 ngày” ở mục Database.
+- **Production**: 1 Web Service Render (branch `main`) ở `https://heyganba-backend.onrender.com` + domain `api.heyganba.site`;
+  frontend Vercel (branch `main`) ở `heyganba.site`. **Database: Neon Postgres** (không dùng Render Postgres nữa).
+- **Staging**: tạo Web Service thứ 2 trỏ branch `develop`, dùng **branch riêng trong Neon** (`develop` branch của project Neon
+  → Neon free cho ~10 branch, tách dữ liệu staging khỏi production, chạy được cả V12/V14 là nội dung chờ duyệt).
+- **Neon free**: 0.5GB storage, **không hết hạn theo thời gian** (khác Render Postgres free hết hạn sau 30 ngày), có
+  *point-in-time restore* trong 6 giờ (bản mới) → đáp ứng nhu cầu "backup retention tối thiểu 7 ngày" tốt hơn; muốn giữ lâu hơn thì nâng plan hoặc `pg_dump` định kỳ (xem `backups/`, đã gitignore).
 - CI: push `develop` → deploy staging (tự động); push `main` → deploy production (job dừng ở GitHub Environment
   `production` để chờ duyệt thủ công).
+
+### Database trên Neon
+
+Project Neon: `cinevora` (org `org-dark-butterfly-46484287`, region `aws-ap-southeast-1`), **database riêng cho HeyGanba**:
+`heyganba` (owner role `heyganba_owner`) trên branch `production` (`br-patient-silence-b3qbzvq9`).
+Lý do dùng chung project: **Neon free chỉ cho 1 project/org** — nhưng tách riêng database + role nên dữ liệu HeyGanba
+không lẫn với app khác. Khi cần tách hẳn: tạo project Neon mới rồi `pg_dump | psql` sang (quy trình y hệt bên dưới).
+
+Env Render cần set (JDBC URL, **không** dùng dạng `postgresql://`):
+
+```
+SPRING_DATASOURCE_URL=jdbc:postgresql://<neon-host>/heyganba?sslmode=require
+SPRING_DATASOURCE_USERNAME=heyganba_owner
+SPRING_DATASOURCE_PASSWORD=<neon role password>
+```
+
+Quy trình migrate Render Postgres → Neon (đã chạy thật, dùng lại khi cần):
+
+```powershell
+# 0. Lấy connection string Neon (direct, không pooler) qua API
+$nh = @{ Authorization = "Bearer $env:NEON_API_KEY"; Accept='application/json' }
+Invoke-RestMethod "https://console.neon.tech/api/v2/projects/<proj>/connection_uri?org_id=<org>&branch_id=<branch>&database_name=heyganba&role_name=heyganba_owner&pooled=false" -Headers $nh
+
+# 1. Dump từ Render (dùng client cùng version PG16 trong Docker)
+docker run --rm -v "$env:TEMP:/dump" postgres:16-alpine pg_dump "<render-external-url>?sslmode=require" `
+  --no-owner --no-acl --clean --if-exists -f /dump/heyganba-dump.sql
+
+# 2. Restore sang Neon (xoá schema cũ trước cho sạch)
+docker run --rm -v "$env:TEMP:/dump" postgres:16-alpine sh -c `
+  "psql '<neon-uri>' -v ON_ERROR_STOP=1 -c 'DROP SCHEMA IF EXISTS public CASCADE' -c 'CREATE SCHEMA public' -f /dump/heyganba-dump.sql"
+
+# 3. Verify
+docker run --rm postgres:16-alpine psql "<neon-uri>" -c "select max(version::int) from flyway_schema_history" -c "select count(*) from grammar_exercises"
+
+# 4. Trỏ Render sang Neon rồi deploy (xem mục Bootstrap/Vận hành qua Render API)
+# 5. Chỉ xoá Render Postgres SAU khi verify (DELETE /v1/postgres/{id})
+```
+
+Lưu ý API Neon: endpoint `/projects`, `/roles`, `/databases` **cần `org_id`** (nếu không sẽ trả 400 `org_id is required`),
+`roles`/`databases` là **branch-scoped** (`/projects/{id}/branches/{branchId}/roles`), thao tác tạo database có thể trả `423 Locked`
+(nếu project đang bận) → thử lại sau ~20s. Neon bắt buộc SSL nên JDBC URL phải có `?sslmode=require`.
 
 ## Domain `heyganba.site` (mua ở Namecheap) → Render + Vercel
 
@@ -165,7 +205,8 @@ cho streak, heatmap, TTL cache SRS và giờ chạy job xoá cache (00:05 giờ 
 | Tài nguyên | Nhà cung cấp | ID / định danh | Ghi chú |
 |---|---|---|---|
 | Backend web service | Render | `srv-das95jh7lnhs7385mim0` (`heyganba-backend`) | branch `main`, plan free, region singapore, health `/api/v1/health` |
-| PostgreSQL | Render | `dpg-das94tp7lnhs7385jfh0-a` (`heyganba-postgres`) | plan free, PG16, **hết hạn sau 30 ngày** (xem mục Staging & Database) |
+| PostgreSQL (production) | **Neon** | project `cinevora` (`steep-sea-83851655`), branch `production` (`br-patient-silence-b3qbzvq9`), database `heyganba`, role `heyganba_owner`, host `ep-small-morning-b3ofxx3h.c-4.ap-southeast-1.aws.neon.tech` | org `org-dark-butterfly-46484287`; `?sslmode=require`; free không hết hạn |
+| ~~PostgreSQL~~ | ~~Render~~ | ~~`dpg-das94tp7lnhs7385jfh0-a`~~ | **ĐÃ XOÁ** sau khi migrate sang Neon (dump lưu ở `backups/heyganba-renderpg-2026-09-27.sql`, đã gitignore) |
 | Frontend project | Vercel | `prj_uVxZfEsGrpUdWUMwdfJ5Nlf7kXOP` (`heyganba`) | team `team_fcggMXeYL9uzprejNhUBdpB7`; `rootDirectory=frontend`, framework vite, output `dist` |
 | Domain frontend | Vercel | `heyganba.site` + `www.heyganba.site` | alias `https://heyganba.site` |
 | Domain backend | Render | `api.heyganba.site` | CNAME → `heyganba-backend.onrender.com` |
@@ -175,6 +216,8 @@ Lưu ý cấu hình đã phải sửa khi tạo Vercel project (để tránh l�
 - **Deployment Protection**: project mới có thể bật `ssoProtection.deploymentType = all_except_custom_domains` → URL `*.vercel.app` trả trang đăng nhập Vercel.
   Tắt bằng `PATCH /v9/projects/{id}?teamId=...` với body `{"ssoProtection": null}` nếu muốn preview công khai.
 - Env `VITE_API_BASE_URL` phải set cho cả `production` và `preview` **trước khi build** (Vite nhúng biến lúc build).
+
+### Troubleshooting deploy
 
 | Log gặp phải | Nguyên nhân | Cách sửa |
 |---|---|---|

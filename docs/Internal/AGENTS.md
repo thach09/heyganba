@@ -131,3 +131,29 @@ Sau mỗi phase, agent báo cáo ngắn gọn gồm 3 phần:
   ```
 - Khi chạy test với biến môi trường trỏ DB khác (migration check), nhớ `Remove-Item Env:SPRING_...` sau khi chạy, nếu không
   các lần chạy test sau sẽ dùng nhầm DB và fail với lỗi driver H2.
+
+## Kinh nghiệm vận hành Neon (đã gặp thật)
+
+- API v2: `/projects`, `/roles`, `/databases` **phải kèm `org_id`** (lấy từ `GET /api/v2/users/me/organizations`) — thiếu thì trả
+  `400 {"message":"org_id is required..."}`. Lưu ý `Invoke-RestMethod` **nuốt body lỗi** → khi debug phải đọc stream hoặc dùng `curl.exe -s` mới thấy message thật.
+- `roles`/`databases` là **branch-scoped**: `/projects/{id}/branches/{branchId}/roles|databases` (gọi ở cấp project trả **404**);
+  `GET /projects/{id}` cũng chỉ trả `project`, không kèm roles/databases.
+- Tạo database có thể trả **`423 Locked`** khi project đang bận → retry sau ~20s là thành công.
+- Free plan: **1 project/org** → nếu hết slot, cách đúng là tạo **database + role riêng trong project sẵn có**
+  (không đụng dữ liệu app khác) thay vì cố tạo project mới.
+- Connection string: `GET /projects/{id}/connection_uri?...&pooled=false` (dùng direct, không pooler, để Flyway migrate an toàn).
+  Neon **bắt buộc SSL** → JDBC URL phải có `?sslmode=require`.
+- `pg_dump`/`psql` chạy bằng container `postgres:16-alpine` (`-v "$env:TEMP:/dump"`) → không cần cài client Postgres trên Windows.
+  Sau khi dump/restore phải **verify bằng SQL** (max version Flyway + số bản ghi) **và tạo 1 user thật qua API rồi tìm trong DB mới**
+  trước khi xoá DB cũ. Giữ dump ở `backups/` (đã gitignore).
+
+## Kinh nghiệm vận hành Vercel (đã gặp thật)
+
+- Token dạng `vcp_...` có thể là **team-scoped** → phải kèm `?teamId=<team>` cho mọi API; riêng `/v9/projects` vẫn chạy không cần teamId.
+  Token sai/hết hạn: REST trả 403 (hoặc 404 với `/v2/user`), CLI báo `The token provided via --token argument is not valid`.
+- Project trong monorepo **phải** set `rootDirectory` (VD `frontend`); nếu không Vercel build từ repo root → fail. Khi chạy CLI phải
+  chạy từ **repo root** (khớp `rootDirectory`), không chạy trong thư mục con (`...\frontend\frontend does not exist`).
+- Project mới có thể bật Deployment Protection (`ssoProtection.deploymentType = all_except_custom_domains`) → URL `*.vercel.app`
+  trả trang “Login – Vercel”; tắt bằng `PATCH /v9/projects/{id}` body `{"ssoProtection": null}`.
+- `VITE_*` là biến **build-time**: set env trước khi build, và verify bằng cách tải bundle JS kiểm tra chuỗi API base có mặt.
+

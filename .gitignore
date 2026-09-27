@@ -58,3 +58,6 @@ logs/
 docker-data/
 # Vercel CLI (link project cuc bo)
 .vercel/
+
+# DB dump sao luu truoc khi doi nha cung cap (KHONG commit - chua du lieu user)
+backups/

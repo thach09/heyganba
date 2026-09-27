@@ -1,8 +1,9 @@
 # Blueprint Render cho backend HeyGanba (TUỲ CHỌN).
-# - Dùng khi tạo service theo kiểu Blueprint (New → Blueprint → chọn repo). Khi đó Render tự tạo cả PostgreSQL
-#   và tự inject `SPRING_DATASOURCE_URL`, giảm thao tác tay xuống chỉ còn `JWT_SECRET`.
+# - Dùng khi tạo service theo kiểu Blueprint (New → Blueprint → chọn repo).
+# - Database KHÔNG tạo ở đây: production dùng **Neon Postgres** (`heyganba` trong project Neon `cinevora`).
+#   Vì vậy chỉ cần điền `JWT_SECRET` (tự sinh) + 3 biến `SPRING_DATASOURCE_*` của Neon trong Dashboard.
 # - Không chứa secret: biến `sync: false` phải set trong Render Dashboard (hoặc copy từ backend/.env.example).
-# - autoDeploy: false vì deploy do GitHub Actions gọi Deploy Hook (tránh deploy trùng).
+# - autoDeploy: false vì deploy do GitHub Actions gọi Deploy Hook / agent gọi Render API (tránh deploy trùng).
 #
 # DOMAIN: production dùng heyganba.site (Namecheap) →
 #   - Frontend (Vercel): apex `heyganba.site` + `www.heyganba.site`
@@ -34,31 +35,16 @@ services:
       # Domain thật (Namecheap heyganba.site) — đổi khi domain thay đổi.
       - key: CORS_ALLOWED_ORIGINS
         value: https://heyganba.site,https://www.heyganba.site
-      # Database lấy tự động từ Render Postgres khai báo ở `databases:` bên dưới.
-      # ⚠️ KHÔNG map `fromDatabase.property: connectionString` vào SPRING_DATASOURCE_URL: Render trả dạng
-      # `postgresql://user:pass@host/db` trong khi Spring cần JDBC URL (`jdbc:postgresql://host:port/db`) →
-      # app fail với "Driver org.postgresql.Driver claims to not accept jdbcUrl".
-      # Vì `application.yml` tự ghép JDBC URL từ DB_HOST/DB_PORT/DB_NAME, ta map từng phần:
-      - key: DB_HOST
-        fromDatabase:
-          name: heyganba-postgres
-          property: host
-      - key: DB_PORT
-        fromDatabase:
-          name: heyganba-postgres
-          property: port
-      - key: DB_NAME
-        fromDatabase:
-          name: heyganba-postgres
-          property: database
-      - key: DB_USER
-        fromDatabase:
-          name: heyganba-postgres
-          property: user
-      - key: DB_PASSWORD
-        fromDatabase:
-          name: heyganba-postgres
-          property: password
+      # Database: Neon Postgres (ngoài Render) — xem docs/Internal/deployment-plan.md → "Database trên Neon".
+      # ⚠️ Phải là JDBC URL, KHÔNG phải connection string dạng `postgresql://` của Render/Neon:
+      #   SPRING_DATASOURCE_URL=jdbc:postgresql://<neon-host>/heyganba?sslmode=require
+      # (Neon bắt buộc SSL nên cần `?sslmode=require`.)
+      - key: SPRING_DATASOURCE_URL
+        sync: false
+      - key: SPRING_DATASOURCE_USERNAME
+        sync: false
+      - key: SPRING_DATASOURCE_PASSWORD
+        sync: false
       # Múi giờ "ngày học" = giờ VN ở mọi môi trường (quyết định đã chốt) → streak/heatmap reset lúc 00:00 giờ VN.
       - key: APP_STREAK_ZONE
         value: Asia/Ho_Chi_Minh
@@ -71,12 +57,3 @@ services:
       # Code cache Redis đã viết sẵn, khi có Redis managed chỉ cần đổi value thành redis + thêm REDIS_HOST/REDIS_PORT.
       - key: APP_SRS_CACHE
         value: memory
-
-# PostgreSQL managed của Render (gói free) — service backend ở trên tự lấy connection string qua `fromDatabase`.
-# LƯU Ý gói free: 1 database/workspace, hết hạn sau 30 ngày (Render sẽ thông báo) → khi lên thật nên nâng plan
-# hoặc chuyển sang Neon free (xem docs/Internal/deployment-plan.md mục "Staging & Database").
-databases:
-  - name: heyganba-postgres
-    plan: free
-    region: singapore
-    postgresMajorVersion: "16"
