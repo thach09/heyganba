@@ -167,8 +167,37 @@ cho streak, heatmap, TTL cache SRS và giờ chạy job xoá cache (00:05 giờ 
 | `Could not resolve placeholder 'JWT_SECRET' in value "${JWT_SECRET}"` hoặc `IllegalStateException: Thiếu biến môi trường JWT_SECRET` | Service chưa có biến `JWT_SECRET` (biến `sync: false` bị bỏ trống khi tạo Blueprint, hoặc tạo Web Service thủ công) | Render → service → **Environment** → thêm `JWT_SECRET` = `openssl rand -base64 48` → Save (Render tự redeploy). Hoặc deploy lại bằng Blueprint: `render.yaml` đã đặt `generateValue: true` nên Render tự sinh secret. |
 | `RuntimeException: Driver org.postgresql.Driver claims to not accept jdbcUrl, postgresql://...` | `SPRING_DATASOURCE_URL` đang nhận connection string của Render (`postgresql://user:pass@host/db`) — Spring cần **JDBC URL** | Đặt `DB_HOST/DB_PORT/DB_NAME/DB_USER/DB_PASSWORD` (hoặc `SPRING_DATASOURCE_URL=jdbc:postgresql://<host>:5432/<db>`) rồi **xoá** `SPRING_DATASOURCE_URL` dạng `postgresql://`. Blueprint hiện đã map đúng 5 biến `DB_*` từ database |
 | App start OK nhưng `GET /content/review-status` trên production trả `stagingOnlyMigrations` **rỗng** và bảng `grammar_exercises` có 306 câu | Service production đang chạy nhầm profile `staging` ⇒ Flyway đọc cả `db/migration-staging` (áp V12/V14 là nội dung chờ duyệt) | Đặt `SPRING_PROFILES_ACTIVE=prod` rồi xoá nội dung chờ duyệt đã lỡ áp: `DELETE FROM flyway_schema_history WHERE version IN ('12','14')` + xoá các câu bẫy mới (SQL đầy đủ ở mục dưới) — hoặc đơn giản nhất với DB còn trắng: `DROP SCHEMA public CASCADE; CREATE SCHEMA public;` rồi để Flyway chạy lại từ V1 |
+| Deploy treo mãi ở `update_in_progress`, log app im lặng rồi health check fail | Free tier Render = **512MB RAM**, JVM mặc định chỉ lấy 25% (~128MB heap) cho Spring Boot + Hibernate → khởi động rất chậm/bị kill; ngoài ra Dockerfile hardcode `ENV PORT=8080` trong khi Render set `PORT=10000` | Dockerfile hiện đã có `ENV JAVA_TOOL_OPTIONS="-XX:MaxRAMPercentage=75"`, **không** hardcode `ENV PORT`, `EXPOSE 10000`; app đọc `server.port: ${PORT:8080}` |
 | `502/503` khi gọi `/api/v1/health` sau khi deploy | App đang fail-fast (thiếu env) hoặc health check sai path | Xem log Render; health check phải là `/api/v1/health` (đã set trong `render.yaml`) |
 | Free web service bị “spun down” rồi request đầu tiên chậm ~30–60s | Giới hạn gói free của Render | Chấp nhận ở giai đoạn đầu; nâng plan khi có user thật |
+
+### Bootstrap/Vận hành qua Render API (đã dùng thực tế)
+
+```powershell
+$rh = @{ Authorization = "Bearer $env:RENDER_API_KEY"; Accept = 'application/json' }
+
+# 1. Liệt kê service + database (lấy id)
+Invoke-RestMethod 'https://api.render.com/v1/services?limit=20' -Headers $rh
+Invoke-RestMethod 'https://api.render.com/v1/postgres?limit=20' -Headers $rh
+
+# 2. Đặt env vars — ⚠️ endpoint này THAY THẾ TOÀN BỘ env vars, phải gửi đủ bộ:
+#    SPRING_PROFILES_ACTIVE, JWT_SECRET, DB_HOST/PORT/NAME/USER/PASSWORD, CORS_ALLOWED_ORIGINS, APP_*
+Invoke-RestMethod -Method Put 'https://api.render.com/v1/services/<srv-id>/env-vars' -Headers $rh `
+  -ContentType 'application/json' -Body (@(@{key='SPRING_PROFILES_ACTIVE';value='prod'}, @{key='JWT_SECRET';value=$jwt}) | ConvertTo-Json -Depth 3)
+
+# 3. Deploy + theo dõi
+Invoke-RestMethod -Method Post 'https://api.render.com/v1/services/<srv-id>/deploys' -Headers $rh -ContentType 'application/json' -Body '{"clearCache":"clear"}'
+Invoke-RestMethod 'https://api.render.com/v1/services/<srv-id>/deploys?limit=3' -Headers $rh
+Invoke-RestMethod -Method Post 'https://api.render.com/v1/services/<srv-id>/deploys/<deploy-id>/cancel' -Headers $rh
+
+# 4. Đọc log (cần ownerId lấy từ /v1/owners)
+$ownerId = (Invoke-RestMethod 'https://api.render.com/v1/owners?limit=1' -Headers $rh)[0].owner.id
+Invoke-RestMethod "https://api.render.com/v1/logs?ownerId=$ownerId&resource=<srv-id>&limit=100&direction=backward" -Headers $rh
+
+# 5. Custom domain
+Invoke-RestMethod -Method Post 'https://api.render.com/v1/services/<srv-id>/custom-domains' -Headers $rh `
+  -ContentType 'application/json' -Body '{"name":"api.heyganba.site"}'
+```
 
 ### Gate nội dung chưa duyệt (không promote nhầm lên production)
 

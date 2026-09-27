@@ -97,6 +97,24 @@ Sau mỗi phase, agent báo cáo ngắn gọn gồm 3 phần:
 - **Redis chưa bật** (chưa có managed instance): giữ `APP_SRS_CACHE=memory`. Code `RedisSrsDueCache` đã viết sẵn,
   không xoá; khi có Redis managed chỉ đổi biến môi trường.
 
+## Kinh nghiệm vận hành Render (đã gặp thật khi deploy lần đầu)
+
+- **`PUT /v1/services/{id}/env-vars` của Render API THAY THẾ toàn bộ env vars** (không phải upsert): gọi API với 2 biến
+  đã làm mất `SPRING_DATASOURCE_URL`, `CORS_ALLOWED_ORIGINS`, `APP_*`. Luôn gửi **đủ bộ** trong 1 lần gọi.
+- **`SPRING_DATASOURCE_URL` phải là JDBC URL** (`jdbc:postgresql://host:5432/db`). Map `fromDatabase.property: connectionString`
+  sẽ ra `postgresql://...` → app chết với `Driver org.postgresql.Driver claims to not accept jdbcUrl`. Đúng cách: map
+  `DB_HOST/DB_PORT/DB_NAME/DB_USER/DB_PASSWORD` để `application.yml` tự ghép JDBC URL.
+- **Free tier 512MB RAM**: JVM mặc định chỉ lấy ~25% heap → app khởi động treo/lâu, health check fail. Đặt
+  `ENV JAVA_TOOL_OPTIONS="-XX:MaxRAMPercentage=75"`.
+- **Không hardcode `ENV PORT` trong Dockerfile**: Render set `PORT` (mặc định 10000) và route vào port đó; app đọc
+  `server.port: ${PORT:8080}`. Cũng không cần `HEALTHCHECK` trong Dockerfile — Render dùng `healthCheckPath`.
+- **`application-prod.yml` để `root: WARN` từng làm deploy treo mà không có log nào** → giữ `INFO` cho
+  `org.springframework.boot` (thấy `Tomcat started on port(s)`), `org.flywaydb` (tiến trình migration), `com.zaxxer.hikari`.
+- Đọc log qua API: `GET /v1/logs?ownerId=<ownerId>&resource=<srv-id>&direction=backward` (ownerId lấy từ `/v1/owners`);
+  **nhật ký API này không đọc được khi ẩn danh** (403) nên cần API key.
+- Deploy đang chạy mà trigger deploy mới sẽ bị chặn → `POST /v1/services/{id}/deploys/{deployId}/cancel` trước.
+- `commitId` sai trong body deploy trả **404** (không tạo deploy rác) — nhưng tốt nhất bỏ trống để dùng commit mới nhất của branch.
+
 ## Kinh nghiệm viết integration test
 
 - Test class nào chạm bảng nội dung (kana / vocabulary / kanji / grammar) phải `extends ContentApiTestBase`
