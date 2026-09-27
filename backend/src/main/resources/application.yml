@@ -87,6 +87,14 @@ app:
     cache-sync-cron: ${APP_SRS_CACHE_SYNC_CRON:0 5 0 * * *}
 
 management:
+  health:
+    redis:
+      # Redis là TUỲ CHỌN (`app.srs.cache=memory` ở mọi môi trường hiện tại — chưa có managed instance).
+      # Nhưng `spring-boot-starter-data-redis` nằm trong classpath nên Spring tự bật RedisHealthIndicator,
+      # nó thử kết nối localhost:6379 → DOWN → /actuator/health trả 503 dù app + Postgres hoàn toàn khoẻ
+      # (phát hiện khi chạy master test 27/09/2026). Tắt chỉ số này cho tới khi bật Redis thật:
+      # khi có Redis thì set MANAGEMENT_HEALTH_REDIS_ENABLED=true.
+      enabled: ${MANAGEMENT_HEALTH_REDIS_ENABLED:false}
   endpoints:
     web:
       exposure:

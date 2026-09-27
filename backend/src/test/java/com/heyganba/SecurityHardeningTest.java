@@ -25,7 +25,10 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.options;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -101,6 +104,87 @@ class SecurityHardeningTest extends com.heyganba.support.ContentApiTestBase {
         mockMvc.perform(get("/health"))
                 .andExpect(status().isOk())
                 .andExpect(header().doesNotExist("Strict-Transport-Security"));
+    }
+
+    @Test
+    @DisplayName("Security headers: nosniff + X-Frame-Options DENY (chống sniffing & clickjacking)")
+    void securityHeaders_NoSniffAndFrameDeny() throws Exception {
+        mockMvc.perform(get("/health"))
+                .andExpect(status().isOk())
+                .andExpect(header().string("X-Content-Type-Options", "nosniff"))
+                .andExpect(header().string("X-Frame-Options", "DENY"));
+    }
+
+    @Test
+    @DisplayName("Actuator health: KHÔNG báo DOWN khi chưa bật Redis (chỉ số Redis phải bị tắt)")
+    void actuatorHealth_IsUpWithoutRedis() throws Exception {
+        // Bug đã gặp thật trên production 27/09/2026: `/actuator/health` trả 503 vì RedisHealthIndicator
+        // thử kết nối localhost:6379 (không có Redis) → cả health DOWN dù app + Postgres khoẻ.
+        mockMvc.perform(get("/actuator/health"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status", is("UP")));
+    }
+
+    @Test
+    @DisplayName("Actuator: env/beans KHÔNG mở, kể cả khi đã đăng nhập (chỉ health/info)")
+    void actuatorSensitiveEndpoints_AreNotExposed() throws Exception {
+        JsonNode data = registerAndGetData("hard.actuator@heyganba.vn", "Password123!", "Hard Actuator");
+        String bearer = "Bearer " + data.get("accessToken").asText();
+
+        // Ẩn danh: filter chain chặn trước (mặc định là authenticated) → 401.
+        mockMvc.perform(get("/actuator/env"))
+                .andExpect(status().isUnauthorized());
+
+        // Đã đăng nhập nhưng endpoint không nằm trong exposure.include → 404 (không rò cấu hình).
+        mockMvc.perform(get("/actuator/env").header("Authorization", bearer))
+                .andExpect(status().isNotFound());
+        mockMvc.perform(get("/actuator/beans").header("Authorization", bearer))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("CORS: chỉ origin cấu hình được phép; origin lạ bị từ chối, không dùng wildcard")
+    void cors_AllowsOnlyConfiguredOrigins() throws Exception {
+        mockMvc.perform(options("/health")
+                        .header("Origin", "http://localhost:5173")
+                        .header("Access-Control-Request-Method", "GET"))
+                .andExpect(status().isOk())
+                .andExpect(header().string("Access-Control-Allow-Origin", "http://localhost:5173"));
+
+        mockMvc.perform(options("/health")
+                        .header("Origin", "https://evil-attacker.example")
+                        .header("Access-Control-Request-Method", "GET"))
+                .andExpect(status().isForbidden())
+                .andExpect(header().doesNotExist("Access-Control-Allow-Origin"));
+    }
+
+    @Test
+    @DisplayName("SQLi ở query param enum -> 400 (không đi vào DB, không 500)")
+    void queryParamSqlInjection_IsRejected() throws Exception {
+        JsonNode data = registerAndGetData("hard.sqli@heyganba.vn", "Password123!", "Hard Sqli");
+
+        mockMvc.perform(get("/kana")
+                        .param("group", "' OR '1'='1")
+                        .header("Authorization", "Bearer " + data.get("accessToken").asText()))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.success", is(false)));
+    }
+
+    @Test
+    @DisplayName("Mật khẩu lưu dạng BCrypt và KHÔNG bao giờ trả về trong response")
+    void password_IsBcryptHashedAndNeverReturned() throws Exception {
+        JsonNode data = registerAndGetData("hard.bcrypt@heyganba.vn", "Password123!", "Hard Bcrypt");
+
+        User user = userRepository.findByEmail("hard.bcrypt@heyganba.vn").orElseThrow();
+        assertTrue(user.getPasswordHash().startsWith("$2a$") || user.getPasswordHash().startsWith("$2b$"),
+                "password_hash phải là BCrypt: " + user.getPasswordHash());
+        assertFalse(user.getPasswordHash().contains("Password123!"));
+
+        mockMvc.perform(get("/users/me")
+                        .header("Authorization", "Bearer " + data.get("accessToken").asText()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.passwordHash").doesNotExist())
+                .andExpect(jsonPath("$.data.password").doesNotExist());
     }
 
     @Test

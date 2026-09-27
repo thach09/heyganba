@@ -75,7 +75,67 @@
 | Nội dung chờ duyệt không rò rỉ ra ngoài | **Mới siết (27/09)** | `ContentAccess`: user không phải ADMIN chỉ nhận nội dung `APPROVED` (kana/kanji/grammar/flashcard/đề thi); `/content/review-status` chỉ ADMIN; test `ContentReviewVisibilityTest` (7 case) |
 | OWASP ZAP trước khi public | **Đã lên lịch — không thuộc nhóm hoãn vô thời hạn** | Chạy baseline scan trên **staging** (`https://heyganba-backend-staging.onrender.com/api/v1`) trước mốc public launch, tập trung đăng ký/đăng nhập + API chấm điểm. Lệnh và điều kiện tiên quyết: xem `deployment-plan.md` → "Trước khi public rộng". Chỉ tạm hoãn vì cần staging chạy ổn định + nội dung V12/V14 được duyệt trước khi quét. |
 | Diễn tập xoay `JWT_SECRET` | Chưa diễn tập | Cách làm: đổi env `JWT_SECRET` trên Render → mọi access/refresh token cũ vô hiệu (user phải đăng nhập lại), không cần đụng DB |
+| Health endpoint trung thực (không báo động giả) | **Mới sửa (27/09)** | Trước đó `/actuator/health` luôn trả 503 vì `RedisHealthIndicator` (không có Redis ở prod) dù app khoẻ; đã tắt chỉ số này (`management.health.redis.enabled=false`), test `SecurityHardeningTest#actuatorHealth_IsUpWithoutRedis` |
 | Theo dõi log định kỳ | Một phần | Log Render + `GET /v1/logs` API; chưa có Sentry/alerting |
+
+### Master test 20 điểm bảo mật (chạy thật trên production 27/09/2026)
+
+Cách chạy: script PowerShell dùng `curl.exe` bắn trực tiếp vào `https://api.heyganba.site/api/v1` + truy vấn SQL qua
+Neon HTTP endpoint, rồi tự tạo/xoá 2 tài khoản `@heyganba.test` để thử IDOR/leo quyền (dọn sạch sau khi test, 0 dòng mồ côi).
+Vòng 1: **58 PASS / 7 FAIL**. Soi 7 FAIL: **1 bug thật**, 6 case còn lại do **kỳ vọng của test sai** (không phải lỗ hổng).
+Sau khi sửa kỳ vọng + sửa bug: **72 PASS / 0 FAIL**.
+
+| # | Mục kiểm tra | Kết quả đo được trên production | Kết luận |
+|---|---|---|---|
+| 1 | Hash password (Argon2/bcrypt) | `password_hash` = `$2a$10$` (BCrypt, 60 ký tự); đăng ký trùng email → 400; response login và `/users/me` không có `passwordHash` | Đạt |
+| 2 | Rate limit login | 5 lần sai → lần 6 trả **429**; thông báo lỗi giống nhau cho email tồn tại và không tồn tại → không liệt kê tài khoản | Đạt |
+| 3 | Session phải hết hạn | Access token TTL 30 phút, refresh 7 ngày; token hết hạn/bị sửa chữ ký → 401; refresh token không dùng được như access token (401); access token không dùng được ở `/auth/refresh` (400) | Đạt |
+| 4 | Xoá debug log thừa | Không có `console.log`/`System.out.println`/`printStackTrace` trong mã chạy thật; chỉ log `debug` cho JWT | Đạt |
+| 5 | Secret không ở frontend | Bundle JS production không chứa `npg_`/`rnd_`/`napi_`/`postgresql://`/`JWT_SECRET`/mật khẩu admin; repo không commit `.env`/secret (chỉ có file mẫu) | Đạt |
+| 6 | Không show lỗi chi tiết | JSON hỏng → 400, endpoint lạ → 404 (401 khi ẩn danh), body lỗi không có tên class/stack trace; `/actuator/env` không public (401 ẩn danh, 404 khi đã đăng nhập) | Đạt |
+| 7 | Giới hạn loại file upload | **Không tồn tại endpoint upload file nào** (mọi path upload → 404) → không có bề mặt tấn công upload | N/A (đã kiểm chứng) |
+| 8 | Giới hạn dung lượng file | Body 100KB (trần 64KB) → **413** `PAYLOAD_TOO_LARGE`; chặn cả body chunked | Đạt |
+| 9 | Validate lại ở server | Email sai + password ngắn → 400 kèm chi tiết từng field; thiếu field quiz check → 400; ẩn danh gọi `/kana` → 401 | Đạt |
+| 10 | Đổi `/user/123` → `/user/124` (IDOR) | Không có endpoint `/users/{id}` (chỉ `/users/me`); đề thi/kết quả của user khác → **404** (`findByIdAndUserId`) | Đạt |
+| 11 | Vào admin bằng user thường | `/admin/status`, `/admin/users`, `/admin/audit-logs`, `/content/review-status` → **403** với token user thường; ẩn danh → 401 | Đạt |
+| 12 | Query DB parameterized | Toàn bộ repository dùng JPA derived query/named parameter; SQLi ở query param (`classCode`) không gây 500/lộ dữ liệu, ở param enum → 400 | Đạt |
+| 13 | Bắt buộc HTTPS | `http://api.heyganba.site` → **301**, `http://heyganba.site` → **308** | Đạt |
+| 14 | Security headers | API: HSTS `max-age=31536000`, `nosniff`, `X-Frame-Options: DENY`. Web: CSP (`frame-ancestors 'none'`, `object-src 'none'`, không inline script), `Referrer-Policy`, `Permissions-Policy`, HSTS | Đạt |
+| 15 | Cookie HttpOnly+Secure+SameSite | App **không set cookie nào** (token nằm `localStorage`) → không có cookie thiếu cờ; đánh đổi đã ghi nhận ở mục "Quyết định hoãn: refresh token trong cookie httpOnly" | Đạt một phần (nợ đã ghi) |
+| 16 | CORS chỉ domain cần thiết | Origin lạ (`evil-attacker.example`) **không** được cấp `Access-Control-Allow-Origin`; origin chính thức được cấp; không dùng wildcard | Đạt |
+| 17 | DB không mở public nếu không cần | Neon bắt buộc TLS (`sslmode=require&channel_binding=require`) nhưng endpoint **có** truy cập từ Internet (đặc thù Neon serverless, không có IP allowlist) | Rủi ro chấp nhận (xem dưới) |
+| 18 | DB user chỉ cấp đúng quyền cần dùng | App dùng `heyganba_owner` (không phải superuser) nhưng role này **có** `BYPASSRLS` + `CREATEDB` (Neon cấp cho owner) — cần cho Flyway DDL | Rủi ro chấp nhận (xem dưới) |
+| 19 | Đưa web qua Cloudflare | `api.heyganba.site` **đã** đi qua Cloudflare (Render edge: `origin.onrender.com.cdn.cloudflare.net`); `heyganba.site` (Vercel) chưa | Một phần |
+| 20 | Backup + theo dõi lỗi | Neon PITR ~6 giờ (project `cinevora`, region aws-ap-southeast-1) + `pg_dump` định kỳ; log Render + `audit_logs`; chưa có Sentry/alerting | Đạt một phần |
+
+#### Bug thật đã tìm ra & đã sửa: `/actuator/health` luôn trả 503 (báo động giả)
+
+- **Hiện tượng**: `GET /api/v1/actuator/health` trả **503** `{"status":"DOWN"}` trong khi API hoạt động bình thường và
+  `GET /api/v1/health` (endpoint tự viết, cũng là `healthCheckPath` của Render) trả `UP`.
+- **Nguyên nhân**: `spring-boot-starter-data-redis` nằm trong classpath nên Spring Boot tự bật `RedisHealthIndicator`;
+  chỉ số này thử kết nối `localhost:6379` (production không có Redis vì `app.srs.cache=memory`) → DOWN → cả health DOWN.
+- **Bằng chứng (tái hiện được)**: chạy `SecurityHardeningTest#actuatorHealth_IsUpWithoutRedis` với
+  `MANAGEMENT_HEALTH_REDIS_ENABLED=true` + `SPRING_DATA_REDIS_PORT=6399` → `Status expected:<200> but was:<503>`,
+  đúng y hệt production. Bỏ 2 biến đó (đúng cấu hình production) → 200 `UP`.
+  *Lưu ý khi tái hiện ở máy dev*: máy dev đang có service listen `127.0.0.1:6379`, phải trỏ sang cổng khác mới tái hiện được.
+- **Ảnh hưởng thực tế**: thấp — Render không dùng endpoint này để kiểm tra sức khoẻ, nhưng gây báo động giả cho mọi
+  uptime monitor đọc `/actuator/health`.
+- **Đã sửa**: `application.yml` → `management.health.redis.enabled: ${MANAGEMENT_HEALTH_REDIS_ENABLED:false}`
+  (khi có Redis thật thì set `MANAGEMENT_HEALTH_REDIS_ENABLED=true`), kèm test hồi quy trong `SecurityHardeningTest`
+  (health UP; header `nosniff`/`X-Frame-Options`; CORS allow/deny; `/actuator/env|beans` không mở; SQLi ở query param; BCrypt).
+  **Lưu ý: bản sửa mới nằm trên `main`, production vẫn trả 503 cho tới lần deploy kế tiếp.**
+
+#### Rủi ro đã chấp nhận (có lý do, không fix ngay)
+
+- **Role DB `heyganba_owner` có `BYPASSRLS` + `CREATEDB`**: cần quyền owner để Flyway chạy DDL. Nếu lộ conn string thì mất
+  toàn quyền database `heyganba`. Giảm nhẹ: secret chỉ nằm trong `.local-secrets.env` (gitignored) + env Render, DB bắt buộc
+  TLS. Muốn siết tiếp: tạo role `heyganba_app` chỉ có `SELECT/INSERT/UPDATE/DELETE` rồi tách runtime khỏi migration
+  (`SPRING_FLYWAY_USER/PASSWORD`) — làm trong một cửa sổ bảo trì.
+- **Token trong `localStorage`** (thay vì cookie `HttpOnly`): xem quyết định hoãn bên dưới.
+- **Neon PITR chỉ ~6 giờ** (gói free), chưa có Sentry/alerting: nên chạy `pg_dump` định kỳ (đã có trong runbook) và thêm
+  uptime monitor cho `https://api.heyganba.site/api/v1/health`.
+- **`heyganba.site` (Vercel) chưa qua Cloudflare**: WAF/rate-limit tầng CDN chỉ có ở phía API (Render edge). Chưa gấp vì web
+  chỉ phục vụ static + gọi API.
 
 ### Quyết định hoãn: refresh token trong cookie `httpOnly`
 

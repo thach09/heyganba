@@ -324,3 +324,22 @@ Sau mỗi phase, agent báo cáo ngắn gọn gồm 3 phần:
   trạng thái mở. Cách này bắt được đúng lỗi "lệch pha JS/CSS" mà `tsc`/`oxlint` không thấy.
 
 
+
+## Bài học khi chạy "master test" bảo mật thật trên production (27/09/2026)
+
+- **Health endpoint phải phản ánh đúng sự thật**: chỉ cần `spring-boot-starter-data-redis` nằm trong classpath là Spring
+  tự bật `RedisHealthIndicator`; production không có Redis (`app.srs.cache=memory`) nên `/actuator/health` **luôn trả 503**
+  dù app + Postgres khoẻ. Đã tắt bằng `management.health.redis.enabled=${MANAGEMENT_HEALTH_REDIS_ENABLED:false}`.
+  Bài học chung: **mọi dependency TUỲ CHỌN đều có thể kéo theo health indicator** làm sai lệch trạng thái dịch vụ.
+- **Tái hiện lỗi health ở máy dev phải trỏ cổng khác**: máy dev đang có service listen `127.0.0.1:6379` nên
+  `RedisHealthIndicator` báo UP → không tái hiện được. Dùng `SPRING_DATA_REDIS_PORT=6399` (cổng đóng) +
+  `MANAGEMENT_HEALTH_REDIS_ENABLED=true` là tái hiện đúng `503` của production; bỏ 2 biến đó (đúng cấu hình prod) → `UP`.
+- **Trong master test, phải phân biệt lỗi THẬT với kỳ vọng SAI của test**: 7 FAIL vòng đầu chỉ có **1 bug thật**; 6 case còn
+  lại do test kỳ vọng sai — endpoint lạ trả **401** vì `anyRequest().authenticated()` (không phải 404), validate body chạy
+  TRƯỚC kiểm tra sở hữu nên IDOR trả **400** khi body rỗng, và path upload lạ bị chặn **401** trước khi tới 404.
+  Luôn bắn lại probe với **token + body hợp lệ** trước khi kết luận có lỗ hổng.
+- **Test bảo mật phải tự dọn dữ liệu**: tạo tài khoản `sec_audit*@heyganba.test`, xoá theo danh sách khoá ngoại trỏ tới
+  `users` lấy từ `information_schema` rồi khẳng định lại tổng số dòng mồ côi = 0 (không để rác trong DB production).
+- **Không chạm tài khoản của phiên làm việc khác**: prod có sẵn các tài khoản `*@heyganba.test` của phiên song song —
+  chỉ xoá đúng email do mình tạo, không quét `delete ... like '%@heyganba.test'`.
+
