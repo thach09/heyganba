@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   Languages, 
   Layers, 
@@ -10,12 +10,38 @@ import {
   Clock
 } from 'lucide-react';
 import type { StationKey } from '../../components/Sidebar';
+import { MascotBadge } from '../../components/MascotBadge';
+import { apiRequest } from '../../services/api';
+import type { AuthResponse } from '../../services/api';
+
+interface StreakDto {
+  currentStreak: number;
+  longestStreak: number;
+  activeDays: number;
+}
 
 interface DashboardViewProps {
   onSelectStation: (station: StationKey) => void;
+  user?: AuthResponse | null;
 }
 
-export const DashboardView: React.FC<DashboardViewProps> = ({ onSelectStation }) => {
+export const DashboardView: React.FC<DashboardViewProps> = ({ onSelectStation, user }) => {
+  const [streak, setStreak] = useState<StreakDto | null>(null);
+
+  useEffect(() => {
+    if (!user) {
+      // Không setState đồng bộ trong effect (tránh warning react-hooks): chỉ fetch khi đã đăng nhập,
+      // mascot được render có điều kiện theo `user` nên không cần reset state khi logout.
+      return;
+    }
+
+    void apiRequest<StreakDto>('/streak').then((res) => {
+      if (res.success && res.data) {
+        setStreak(res.data);
+      }
+    });
+  }, [user]);
+
   const stations = [
     {
       key: 'kana' as StationKey,
@@ -107,6 +133,12 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onSelectStation })
         </div>
 
         <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+          {user && (
+            <div style={{ background: 'rgba(255, 255, 255, 0.04)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-md)', padding: '16px 20px' }}>
+              {/* Mascot tạm: emoji tiến hoá theo streak — xem components/MascotBadge.tsx */}
+              <MascotBadge longestStreak={streak?.longestStreak ?? 0} currentStreak={streak?.currentStreak ?? 0} />
+            </div>
+          )}
           <div style={{ background: 'rgba(255, 255, 255, 0.04)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-md)', padding: '16px 20px', minWidth: '130px' }}>
             <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Cấu trúc</div>
             <div style={{ fontSize: '22px', fontWeight: 800, color: 'var(--primary)' }}>5 Trạm</div>

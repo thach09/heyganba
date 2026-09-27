@@ -6,6 +6,13 @@ import { OnboardingTooltip } from '../../components/OnboardingTooltip';
 import { Check, Sparkles } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
+/**
+ * ⚠️ KHÔNG CÒN ĐƯỢC WIRE VÀO APP.
+ *
+ * Component này là demo chuẩn UX dùng ở Phase 0 (nút submit thống nhất, loading, toast đúng/sai, onboarding).
+ * Từ khi cả 5 trạm đều có UI thật (Phase 1–5), nó không còn được render ở đâu; giữ lại làm tài liệu tham chiếu
+ * cho các màn hình mới cần dựng nhanh theo đúng pattern UX.
+ */
 interface StationPlaceholderViewProps {
   stationKey: string;
   stationTitle: string;

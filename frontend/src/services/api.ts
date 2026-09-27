@@ -14,6 +14,8 @@ export interface AuthResponse {
   email: string;
   fullName: string;
   role: string;
+  /** Mã lớp học (nullable) — dùng cho leaderboard theo lớp. */
+  classCode: string | null;
 }
 
 export interface UserProfileResponse {
@@ -22,6 +24,7 @@ export interface UserProfileResponse {
   fullName: string;
   role: string;
   isActive: boolean;
+  classCode: string | null;
   createdAt: string;
 }
 
@@ -65,6 +68,18 @@ export const getSavedUser = (): AuthResponse | null => {
 
 export const saveUser = (user: AuthResponse) => {
   localStorage.setItem('heyganba_user', JSON.stringify(user));
+};
+
+/**
+ * Cập nhật mã lớp học của user đang đăng nhập (text tự do, gửi chuỗi rỗng để xoá lớp).
+ * Trả về profile mới để nơi gọi đồng bộ lại localStorage.
+ */
+export const updateClassCode = async (classCode: string): Promise<UserProfileResponse | null> => {
+  const res = await apiRequest<UserProfileResponse>('/users/me/class-code', {
+    method: 'PUT',
+    body: JSON.stringify({ classCode }),
+  });
+  return res.success && res.data ? res.data : null;
 };
 
 export async function apiRequest<T>(

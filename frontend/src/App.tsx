@@ -5,8 +5,11 @@ import { Navbar } from './components/Navbar';
 import { AuthModal } from './features/auth/AuthModal';
 import { DashboardView } from './features/dashboard/DashboardView';
 import { AdminView } from './features/admin/AdminView';
-import { StationPlaceholderView } from './features/common/StationPlaceholderView';
 import { KanaStationView } from './features/kana/KanaStationView';
+import { FlashcardView } from './features/flashcard/FlashcardView';
+import { KanjiStationView } from './features/kanji/KanjiStationView';
+import { GrammarView } from './features/grammar/GrammarView';
+import { ExamView } from './features/exam/ExamView';
 import { getSavedUser, clearTokens, apiRequest } from './services/api';
 import type { AuthResponse } from './services/api';
 
@@ -103,7 +106,7 @@ export function App() {
           )}
 
           {currentStation === 'dashboard' && (
-            <DashboardView onSelectStation={(st) => setCurrentStation(st)} />
+            <DashboardView user={user} onSelectStation={(st) => setCurrentStation(st)} />
           )}
 
           {currentStation === 'admin' && (
@@ -120,71 +123,19 @@ export function App() {
           {currentStation === 'kana' && <KanaStationView />}
 
           {currentStation === 'flashcard' && (
-            <StationPlaceholderView
-              stationKey="flashcard"
-              stationTitle="Flashcard Từ Vựng & SRS Engine"
-              phaseTag="Phase 2"
-              badgeColor="#10B981"
-              description="Thuật toán lặp lại ngắt quãng SM-2 rút gọn tính toán chính xác chu kỳ ôn tập. Giao diện lật thẻ chỉ hiển thị đúng số từ cần ôn hôm nay với cache Redis hiệu năng cao."
-              modules={[
-                'Engine SRS SM-2 rút gọn (Dễ / Được / Khó / Quên)',
-                'Truy vấn "Từ cần ôn hôm nay" tối ưu qua Redis cache',
-                'Job @Scheduled 00:05 tự động đồng bộ hàng ngày',
-                'Mapping từ vựng theo bài học Dekiru Nihongo Bài 1–7',
-                'Kiểm soát bảo mật user_id nghiêm ngặt ở tầng service',
-              ]}
-            />
+            <FlashcardView user={user} onRequireLogin={() => setIsAuthModalOpen(true)} />
           )}
 
           {currentStation === 'kanji' && (
-            <StationPlaceholderView
-              stationKey="kanji"
-              stationTitle="Bộ Thủ & Hán Tự (Kanji)"
-              phaseTag="Phase 3"
-              badgeColor="#F59E0B"
-              description="Kanji sắp xếp tuần tự theo đúng bài học Dekiru (JPD113/123), không tải ngẫu nhiên theo độ khó. Kết hợp bộ thủ, Hán Việt và mnemonic hình ảnh giúp ghi nhớ lâu bền."
-              modules={[
-                'Tra cứu Kanji theo bài học và theo 214 bộ thủ',
-                'Hiển thị song song Onyomi, Kunyomi và âm Hán Việt',
-                'Canvas luyện viết chữ Hán kế thừa từ Trạm Kana',
-                'Lưu trữ tiến độ luyện tập riêng cho từng tài khoản',
-                'Dữ liệu thứ tự nét Stroke Order animation',
-              ]}
-            />
+            <KanjiStationView user={user} onRequireLogin={() => setIsAuthModalOpen(true)} />
           )}
 
           {currentStation === 'grammar' && (
-            <StationPlaceholderView
-              stationKey="grammar"
-              stationTitle="Trợ Từ & Ngữ Pháp (Bẫy Thường Gặp)"
-              phaseTag="Phase 4"
-              badgeColor="#8B5CF6"
-              description="17 điểm ngữ pháp JPD113 và cấu trúc JPD123. Phân hệ bài tập điền khuyết với trọng tâm là các bẫy thường gặp trong đề thi Dekiru FPT."
-              modules={[
-                'Bộ bài tập cho nhóm bẫy trợ từ: は (wa), へ (e), を (o)',
-                'Bẫy số đếm biến âm: ngày 14/20/24, giờ 4/7/9, phút ふん/ぷん',
-                'Chấm điểm phía Server và chuẩn hóa Unicode',
-                'Giải thích chi tiết nguyên nhân bẫy sau mỗi câu trả lời',
-                'Nghe audio ngữ cảnh trước khi chọn trợ từ',
-              ]}
-            />
+            <GrammarView user={user} onRequireLogin={() => setIsAuthModalOpen(true)} />
           )}
 
           {currentStation === 'exam' && (
-            <StationPlaceholderView
-              stationKey="exam"
-              stationTitle="Thi Thử, Streak Heatmap & Leaderboard"
-              phaseTag="Phase 5"
-              badgeColor="#EC4899"
-              description="Hệ thống thi thử mô phỏng đề thi JPD FPT University. Chuỗi streak học tập hàng ngày với heatmap kiểu GitHub và linh vật mascot tiến hóa theo cấp độ."
-              modules={[
-                'Sinh đề thi thử ngẫu nhiên từ kho câu hỏi chuẩn format FPT',
-                'Streak Heatmap hiển thị biểu đồ nhiệt tương tác',
-                'Mascot tiến hóa qua các mốc học tập',
-                'Bảng xếp hạng Redis Sorted Set theo từng mã lớp học',
-                'Audit log ghi lại toàn bộ lịch sử chỉnh sửa nội dung',
-              ]}
-            />
+            <ExamView user={user} onRequireLogin={() => setIsAuthModalOpen(true)} />
           )}
         </main>
       </div>

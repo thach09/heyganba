@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Lock, Mail, User as UserIcon } from 'lucide-react';
+import { X, Lock, Mail, User as UserIcon, Users } from 'lucide-react';
 import { apiRequest, saveTokens, saveUser } from '../../services/api';
 import type { AuthResponse } from '../../services/api';
 import { SubmitButton } from '../../components/SubmitButton';
@@ -19,6 +19,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
+  const [classCode, setClassCode] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -31,8 +32,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
     try {
       const endpoint = isRegister ? '/auth/register' : '/auth/login';
-      const body = isRegister 
-        ? { email, password, fullName }
+      const body = isRegister
+        ? { email, password, fullName, classCode: classCode.trim() || null }
         : { email, password };
 
       const res = await apiRequest<AuthResponse>(endpoint, {
@@ -100,6 +101,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
         <form onSubmit={handleSubmit}>
           {isRegister && (
+            <>
             <div className="form-group">
               <label className="form-label">Họ và tên</label>
               <div style={{ position: 'relative' }}>
@@ -115,6 +117,23 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 />
               </div>
             </div>
+            <div className="form-group">
+              <label className="form-label">Mã lớp (không bắt buộc)</label>
+              <div style={{ position: 'relative' }}>
+                <Users size={16} style={{ position: 'absolute', left: '14px', top: '14px', color: 'var(--text-muted)' }} />
+                <input
+                  type="text"
+                  maxLength={50}
+                  placeholder="VD: JPD113-A"
+                  value={classCode}
+                  onChange={(e) => setClassCode(e.target.value)}
+                  className="form-input"
+                  style={{ paddingLeft: '40px' }}
+                  title="Dùng để xếp hạng theo lớp; có thể bổ sung sau trong Trạm Thi Thử."
+                />
+              </div>
+            </div>
+            </>
           )}
 
           <div className="form-group">
