@@ -72,6 +72,7 @@
 | Dependabot cho Maven + npm | **Mới thêm (27/09)** | `.github/dependabot.yml` (maven, npm, github-actions, docker), gom nhóm theo tuần |
 | Refresh token trong cookie `httpOnly` | **Chưa làm — có lý do, xem bên dưới** | Xem "Quyết định hoãn: refresh token httpOnly" |
 | 2FA cho admin | Chưa làm | Admin hiện chỉ có 1 tài khoản seed; nên làm cùng trang quản trị thật (Phase 5+) |
+| Nội dung chờ duyệt không rò rỉ ra ngoài | **Mới siết (27/09)** | `ContentAccess`: user không phải ADMIN chỉ nhận nội dung `APPROVED` (kana/kanji/grammar/flashcard/đề thi); `/content/review-status` chỉ ADMIN; test `ContentReviewVisibilityTest` (7 case) |
 | OWASP ZAP trước khi public | **Đã lên lịch — không thuộc nhóm hoãn vô thời hạn** | Chạy baseline scan trên **staging** (`https://heyganba-backend-staging.onrender.com/api/v1`) trước mốc public launch, tập trung đăng ký/đăng nhập + API chấm điểm. Lệnh và điều kiện tiên quyết: xem `deployment-plan.md` → "Trước khi public rộng". Chỉ tạm hoãn vì cần staging chạy ổn định + nội dung V12/V14 được duyệt trước khi quét. |
 | Diễn tập xoay `JWT_SECRET` | Chưa diễn tập | Cách làm: đổi env `JWT_SECRET` trên Render → mọi access/refresh token cũ vô hiệu (user phải đăng nhập lại), không cần đụng DB |
 | Theo dõi log định kỳ | Một phần | Log Render + `GET /v1/logs` API; chưa có Sentry/alerting |
@@ -90,6 +91,24 @@ Plan ưu tiên cookie `httpOnly` cho refresh token. Hiện cả access + refresh
 **Khi nào làm:** khi có domain preview cùng site (`*.preview.heyganba.site` hoặc `develop.heyganba.site`),
 chuyển `/auth/login|refresh` sang set cookie `HttpOnly; Secure; SameSite=Lax; Path=/api/v1/auth`, bỏ `refreshToken`
 khỏi response body, và frontend đổi sang `credentials: 'include'`.
+
+### Quy tắc "nội dung chờ duyệt KHÔNG ra ngoài" (siết ngày 27/09/2026)
+
+Bug đã gặp thật: database production có 100% nội dung ở `PENDING_REVIEW` (chưa được giáo viên tiếng Nhật duyệt) nhưng API
+vẫn trả đầy đủ cho user thường (kana 247, kanji 63, rules 32, exercises 64) — UI chỉ thêm banner cảnh báo, còn dữ liệu
+vẫn ra tới client. Đã sửa ở **tầng service** (`com.heyganba.common.security.ContentAccess`):
+
+- Danh sách: user không phải ADMIN chỉ nhận bản ghi `APPROVED`; truy cập theo id bản nháp → **404** (không trả 403 để
+  không xác nhận sự tồn tại của nội dung nháp).
+- Áp dụng cho: kana (list/detail/chấm quiz), kanji (list/detail/bộ thủ/luyện viết), grammar (rules/exercises/check +
+  `exerciseCount` chỉ đếm câu đã duyệt), flashcard (due-today/review/stats), thi thử (cả 3 pool sinh câu hỏi).
+- `/content/review-status` là công cụ NỘI BỘ → chỉ ADMIN (user thường nhận 403).
+- Guard test: `ContentReviewVisibilityTest` (user thường không thấy/không chấm được nội dung nháp; admin vẫn thấy đủ).
+- **Hệ quả vận hành cần biết**: production hiện **không trả nội dung nào cho user thường** (mọi nội dung còn
+  `PENDING_REVIEW`). Muốn mở nội dung cho học viên phải hoàn tất duyệt tiếng Nhật rồi promote
+  (`review_status='APPROVED'` + chuyển migration, lưu ý đánh số lại version — xem `deployment-plan.md`).
+
+
 
 ### Đánh đổi đã biết của rate limit theo tài khoản (NỢ KỸ THUẬT — chuyển sang Redis khi bật Redis)
 

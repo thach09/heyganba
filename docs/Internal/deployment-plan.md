@@ -263,7 +263,7 @@ Pipeline theo 4 bước, chạy cho mọi PR và mọi lần merge:
 
 | Nơi cấu hình | Tên | Dùng cho |
 |---|---|---|
-| GitHub Actions secrets | `RENDER_PROD_DEPLOY_HOOK_URL` | Job `deploy-backend-production` (**secret deploy DUY NHẤT** mà CI cần) |
+| GitHub Actions secrets | `RENDER_PROD_DEPLOY_HOOK_URL` | Job `deploy-backend-production` (**secret deploy DUY NHẤT** mà CI cần) — ✅ đã cấu hình 27/09/2026; giá trị chỉ nằm trong GitHub secrets (không lưu trong repo/docs) |
 | Render (Environment) — production | `SPRING_PROFILES_ACTIVE=prod`, `JWT_SECRET`, `CORS_ALLOWED_ORIGINS=…heyganba.site`, `SPRING_DATASOURCE_URL/USERNAME/PASSWORD` | Backend runtime — mẫu ở `backend/.env.example` |
 | Render (Environment) — staging | như trên nhưng `SPRING_PROFILES_ACTIVE=staging`, DB = Neon branch `develop`, `CORS_ALLOWED_ORIGINS=https://heyganba-git-develop-thach09.vercel.app`, `HIKARI_MAX_POOL_SIZE=5` | Đã set sẵn qua API lúc tạo service staging |
 | Vercel — Production | `VITE_API_BASE_URL=https://api.heyganba.site/api/v1` | Frontend production |
@@ -326,13 +326,13 @@ Trạng thái đã xác minh bằng `GET /repos/thach09/heyganba/environments/pr
 `branch_policy` cho `main`; `deployment_branch_policy.custom_branch_policies=true`.
 
 - Environment `staging` để **trống protection** vì staging deploy tự động, không cần duyệt.
-- **Kiểm chứng gate bằng trigger giả (27/09/2026)**: push 1 commit docs vào `main` (run `36301455028`) → 3 job test/build
-  xanh; job `Deploy Backend → Render (production)` ở trạng thái **waiting**, `pending_deployments = 1` (env `production`,
-  `current_user_can_approve = true`). Duyệt qua API
-  `POST /repos/{o}/{r}/actions/runs/{id}/pending_deployments` body `{"environment_ids":[<envId>],"state":"approved"}` →
-  job chạy tiếp và **tự skip** vì secret `RENDER_PROD_DEPLOY_HOOK_URL` chưa tồn tại (in `::warning::`) → run kết thúc
-  `success` mà **không deploy gì**. Đây là bằng chứng gate chặn đúng trước khi chạy.
-  - Duyệt lại lần nữa chỉ cần đổi `state: "rejected"` nếu muốn thử nhánh từ chối.
+- **Đã chạy thật end-to-end (27/09/2026)**: sau khi cấu hình secret `RENDER_PROD_DEPLOY_HOOK_URL`, push commit `53e89ea`
+  vào `main` → run chờ duyệt → duyệt qua API → job `Deploy Backend → Render (production)` **gọi hook thành công**
+  (log có `{"deploy":{"id":"dep-…"}}` + dòng `Đã trigger deploy backend production trên Render.`) → Render tạo deploy
+  `trigger=deploy_hook` → `live` → `GET /api/v1/health` = `UP`.
+  ⚠️ **Từ giờ duyệt = deploy production THẬT** (trước đây khi chưa có secret thì duyệt chỉ là no-op).
+  - Duyệt/từ chối qua API: `POST /repos/{o}/{r}/actions/runs/{id}/pending_deployments` body
+    `{"environment_ids":[<envId>],"state":"approved"|"rejected"}`.
   - **Không dùng `workflow_dispatch` để test gate này**: job có `if: github.event_name == 'push' && github.ref == 'refs/heads/main'`
     nên sẽ bị skip ngay, không bao giờ chạm environment.
 - Kiểm tra gate: push vào `main` → job `deploy-backend-production` ở trạng thái *Waiting for review*; xem được bằng

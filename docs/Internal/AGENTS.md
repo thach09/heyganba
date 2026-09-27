@@ -250,6 +250,24 @@ Sau mỗi phase, agent báo cáo ngắn gọn gồm 3 phần:
   tạo bằng API với repo public vẫn build được nhưng push KHÔNG tạo deploy mới → phải kiểm tra
   `GET /v1/services/{id}/deploys` sau khi push (đừng tin mỗi giá trị `autoDeploy`). Chưa cài app thì dùng
   `POST /v1/services/{id}/deploys` để trigger.
+
+## Quy tắc nội dung chờ duyệt + bài học khi sửa hàng loạt (27/09/2026)
+
+- **Mọi endpoint trả nội dung học phải lọc qua `ContentAccess`**: thêm/sửa endpoint đọc kana/kanji/grammar/vocabulary/đề thi
+  thì phải dùng `ContentAccess.visibleOnly(list, Entity::getReviewStatus)` (danh sách) hoặc
+  `ContentAccess.requireVisible(status, "Entity", id)` (theo id → 404 khi là bản nháp và không phải admin).
+  Guard test: `ContentReviewVisibilityTest`. Quên bước này = rò rỉ nội dung chưa duyệt ra ngoài (đã xảy ra thật).
+- **Seed nội dung trong test phải dùng `persistApproved*`** của `ContentApiTestBase` (set APPROVED). Nếu tự gọi
+  `repository.save(...)`, entity mặc định `PENDING_REVIEW` → mọi test API cho user thường sẽ thấy danh sách rỗng.
+  Test cần bản nháp thì set `PENDING_REVIEW` tường minh. Test cần quyền admin thì dùng `adminAccessToken(email)`.
+- ⚠️ **Sửa file Java hàng loạt bằng script phải ghi UTF-8 KHÔNG BOM**: `[IO.File]::WriteAllText` với
+  `New-Object System.Text.UTF8Encoding($true)` (có BOM) làm **javac báo `illegal character: '\ufeff'`** ở dòng 1 và
+  test-compile đỏ. Luôn dùng `UTF8Encoding($false)` cho file `.java` (file .md/docs thì không quan trọng).
+- **Set GitHub Actions secret qua API phải mã hoá bằng public key của repo** (libsodium sealed box):
+  `GET /repos/{o}/{r}/actions/secrets/public-key` → mã hoá value → `PUT /repos/{o}/{r}/actions/secrets/{name}` với
+  `{encrypted_value, key_id}`. Trên Windows nhanh nhất là `npm i tweetsodium` rồi
+  `seal(Buffer.from(value), Buffer.from(pubKey,'base64'))`. Secret **không đọc lại được** → chỉ kiểm tra bằng **tên +
+  `updated_at`**, và phải **xoá file tạm chứa plaintext** sau khi set. Không dán giá trị secret vào docs/report/log.
 - **Luôn `git status --porcelain` TRƯỚC khi `git add -A`**: một số lệnh verify (curl/PowerShell) có thể ghi nhầm file vào
   repo root — đã gặp thật: file tên `in` = **bản sao bundle JS 342KB** lọt vào commit trên repo public. Cách xử lý khi thấy
   file lạ: (1) quét nội dung xem có secret không (`eyJ|npg_|rnd_|vcp_|napi_|ghp_|github_pat_`), (2) nếu sạch thì xoá và
