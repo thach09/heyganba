@@ -30,6 +30,9 @@ public interface GrammarExerciseRepository extends JpaRepository<GrammarExercise
 
     long countByGrammarRuleId(Long ruleId);
 
+    /** Đếm bài tập theo trạng thái duyệt — user thường chỉ được thấy số câu đã APPROVED. */
+    long countByGrammarRuleIdAndReviewStatus(Long ruleId, ReviewStatus reviewStatus);
+
     /** Đếm theo trạng thái duyệt nội dung — dùng cho GET /content/review-status. */
     long countByReviewStatus(ReviewStatus reviewStatus);
 }

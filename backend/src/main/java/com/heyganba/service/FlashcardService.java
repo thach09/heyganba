@@ -1,6 +1,7 @@
 package com.heyganba.service;
 
 import com.heyganba.common.exception.ResourceNotFoundException;
+import com.heyganba.common.security.ContentAccess;
 import com.heyganba.dto.flashcard.FlashcardDueResponse;
 import com.heyganba.dto.flashcard.FlashcardReviewRequest;
 import com.heyganba.dto.flashcard.FlashcardReviewResponse;
@@ -9,6 +10,7 @@ import com.heyganba.model.entity.SrsReview;
 import com.heyganba.model.entity.Streak;
 import com.heyganba.model.entity.User;
 import com.heyganba.model.entity.Vocabulary;
+import com.heyganba.model.enums.ReviewStatus;
 import com.heyganba.repository.SrsReviewRepository;
 import com.heyganba.repository.StreakRepository;
 import com.heyganba.repository.UserRepository;
@@ -76,6 +78,9 @@ public class FlashcardService {
         Vocabulary vocabulary = vocabularyRepository.findById(request.vocabularyId())
                 .orElseThrow(() -> new ResourceNotFoundException("Vocabulary", "id", request.vocabularyId()));
 
+        // Không cho ôn (đọc/chấm) từ vựng còn chờ duyệt khi không phải admin.
+        ContentAccess.requireVisible(vocabulary.getReviewStatus(), "Vocabulary", request.vocabularyId());
+
         Instant now = Instant.now();
         SrsReview review = srsReviewRepository.findByUserIdAndVocabularyId(userId, vocabulary.getId())
                 .orElseGet(() -> SrsReview.builder()
@@ -128,7 +133,11 @@ public class FlashcardService {
         long learnedWords = srsReviewRepository.countByUserIdAndRepetitionsGreaterThan(userId, 0);
         long dueToday = srsReviewRepository.countByUserIdAndDueDateLessThanEqual(userId, Instant.now());
         long reviewedWords = srsReviewRepository.countByUserId(userId);
-        long availableNewWords = Math.max(0, vocabularyRepository.count() - reviewedWords);
+        // Tổng số từ "có thể học" cũng phải theo quy tắc hiển thị: user thường chỉ thấy từ đã duyệt.
+        long visibleTotalWords = ContentAccess.canSeePendingReview()
+                ? vocabularyRepository.count()
+                : vocabularyRepository.countByReviewStatus(ReviewStatus.APPROVED);
+        long availableNewWords = Math.max(0, visibleTotalWords - reviewedWords);
 
         Streak streak = streakRepository.findByUserId(userId).orElse(null);
 
@@ -146,12 +155,17 @@ public class FlashcardService {
 
         List<FlashcardDueResponse> items = new ArrayList<>();
         dueReviews.stream()
+                // Từ vựng còn chờ duyệt không được đưa vào phiên ôn của user thường (xem ContentAccess).
+                .filter(review -> ContentAccess.isVisible(review.getVocabulary().getReviewStatus()))
                 .limit(MAX_DUE_PER_SESSION)
                 .map(FlashcardDueResponse::fromReview)
                 .forEach(items::add);
 
         if (newLimit > 0) {
-            vocabularyRepository.findNewForUser(userId, PageRequest.of(0, newLimit)).stream()
+            ContentAccess.visibleOnly(
+                            vocabularyRepository.findNewForUser(userId, PageRequest.of(0, newLimit)),
+                            Vocabulary::getReviewStatus)
+                    .stream()
                     .map(FlashcardDueResponse::fromNewVocabulary)
                     .forEach(items::add);
         }

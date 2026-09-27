@@ -1,6 +1,7 @@
 package com.heyganba.service;
 
 import com.heyganba.common.exception.ResourceNotFoundException;
+import com.heyganba.common.security.ContentAccess;
 import com.heyganba.dto.kana.KanaQuizCheckResponse;
 import com.heyganba.dto.kana.KanaResponse;
 import com.heyganba.model.entity.Kana;
@@ -67,13 +68,16 @@ public class KanaService {
             kana = kanaRepository.findAllByOrderByIdAsc();
         }
 
-        return kana.stream().map(KanaResponse::from).toList();
+        return ContentAccess.visibleOnly(kana, Kana::getReviewStatus).stream().map(KanaResponse::from).toList();
     }
 
     @Transactional(readOnly = true)
     public KanaResponse getKanaById(Long id) {
         Kana kana = kanaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Kana", "id", id));
+
+        // Nội dung chờ duyệt chỉ admin được xem (xem ContentAccess).
+        ContentAccess.requireVisible(kana.getReviewStatus(), "Kana", id);
 
         return KanaResponse.from(kana);
     }
@@ -86,6 +90,9 @@ public class KanaService {
     public KanaQuizCheckResponse checkQuizAnswer(Long kanaId, String userAnswer) {
         Kana kana = kanaRepository.findById(kanaId)
                 .orElseThrow(() -> new ResourceNotFoundException("Kana", "id", kanaId));
+
+        // Không cho chấm điểm (và qua đó là "đọc" nội dung) ký tự còn chờ duyệt khi không phải admin.
+        ContentAccess.requireVisible(kana.getReviewStatus(), "Kana", kanaId);
 
         String submitted = normalize(userAnswer);
         boolean correct = acceptedAnswers(kana.getRomaji()).contains(submitted);

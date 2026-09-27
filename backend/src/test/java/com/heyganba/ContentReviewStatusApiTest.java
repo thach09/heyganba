@@ -100,7 +100,7 @@ class ContentReviewStatusApiTest extends ContentApiTestBase {
                 .mistakeCategory("particle-ha")
                 .build());
 
-        String token = registerAndGetToken("content.review@heyganba.vn");
+        String token = adminAccessToken("content.review.admin@heyganba.vn");
 
         MvcResult result = mockMvc.perform(get("/content/review-status").header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk())
@@ -126,5 +126,20 @@ class ContentReviewStatusApiTest extends ContentApiTestBase {
     void requiresAuthentication() throws Exception {
         mockMvc.perform(get("/content/review-status"))
                 .andExpect(status().isUnauthorized());
+    }
+
+    /**
+     * Endpoint này là công cụ NỘI BỘ để rà soát nội dung, không phải dữ liệu cho học viên:
+     * user thường gọi vào phải bị chặn (403), tránh lộ thông tin về nội dung nháp.
+     */
+    @Test
+    @DisplayName("GET /content/review-status: user thường bị chặn 403")
+    void standardUserIsForbidden() throws Exception {
+        String userToken = registerAndGetToken("content.review.user@heyganba.vn");
+
+        mockMvc.perform(get("/content/review-status").header("Authorization", "Bearer " + userToken))
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.success", is(false)))
+                .andExpect(jsonPath("$.error", is("FORBIDDEN")));
     }
 }

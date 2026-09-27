@@ -2,11 +2,13 @@ package com.heyganba.service;
 
 import com.heyganba.common.exception.BadRequestException;
 import com.heyganba.common.exception.ResourceNotFoundException;
+import com.heyganba.common.security.ContentAccess;
 import com.heyganba.dto.kanji.KanjiProgressResponse;
 import com.heyganba.dto.kanji.KanjiResponse;
 import com.heyganba.dto.kanji.RadicalResponse;
 import com.heyganba.model.entity.Kanji;
 import com.heyganba.model.entity.KanjiPracticeProgress;
+import com.heyganba.model.entity.Radical;
 import com.heyganba.model.entity.User;
 import com.heyganba.repository.KanjiPracticeProgressRepository;
 import com.heyganba.repository.KanjiRepository;
@@ -20,6 +22,8 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -63,6 +67,9 @@ public class KanjiService {
             kanji = kanjiRepository.findAllWithDetails();
         }
 
+        // Nội dung chờ duyệt chỉ admin thấy (xem ContentAccess) — chặn ở đây thay vì ẩn ở UI.
+        kanji = ContentAccess.visibleOnly(kanji, Kanji::getReviewStatus);
+
         Map<Long, Integer> practiceCounts = practiceCountsByKanjiId(userId);
         return kanji.stream()
                 .map(item -> KanjiResponse.from(item, practiceCounts.getOrDefault(item.getId(), 0)))
@@ -73,6 +80,8 @@ public class KanjiService {
     public KanjiResponse getKanjiById(Long userId, Long kanjiId) {
         Kanji kanji = kanjiRepository.findById(kanjiId)
                 .orElseThrow(() -> new ResourceNotFoundException("Kanji", "id", kanjiId));
+
+        ContentAccess.requireVisible(kanji.getReviewStatus(), "Kanji", kanjiId);
 
         int practiceCount = progressRepository.findByUserIdAndKanjiId(userId, kanjiId)
                 .map(KanjiPracticeProgress::getPracticeCount)
@@ -85,13 +94,30 @@ public class KanjiService {
     public List<RadicalResponse> getRadicals(Long radicalIdFilter) {
         if (radicalIdFilter != null) {
             return radicalRepository.findById(radicalIdFilter)
+                    .filter(radical -> ContentAccess.canSeePendingReview()
+                            || visibleRadicalIds().contains(radical.getId()))
                     .map(radical -> List.of(RadicalResponse.from(radical)))
                     .orElseGet(List::of);
         }
 
-        return radicalRepository.findAllByOrderByStrokeCountAscIdAsc().stream()
+        List<Radical> radicals = radicalRepository.findAllByOrderByStrokeCountAscIdAsc();
+        if (!ContentAccess.canSeePendingReview()) {
+            // Bộ thủ chỉ có trong kanji chờ duyệt cũng không được trả ra (nếu không sẽ lộ nội dung nháp).
+            Set<Long> visibleIds = visibleRadicalIds();
+            radicals = radicals.stream().filter(radical -> visibleIds.contains(radical.getId())).toList();
+        }
+
+        return radicals.stream()
                 .map(RadicalResponse::from)
                 .toList();
+    }
+
+    /** Id các bộ thủ xuất hiện trong kanji ĐÃ DUYỆT. */
+    private Set<Long> visibleRadicalIds() {
+        return ContentAccess.visibleOnly(kanjiRepository.findAllWithDetails(), Kanji::getReviewStatus).stream()
+                .flatMap(kanji -> kanji.getRadicals().stream())
+                .map(Radical::getId)
+                .collect(Collectors.toSet());
     }
 
     /**
@@ -102,6 +128,8 @@ public class KanjiService {
     public KanjiProgressResponse recordPractice(Long userId, Long kanjiId) {
         Kanji kanji = kanjiRepository.findById(kanjiId)
                 .orElseThrow(() -> new ResourceNotFoundException("Kanji", "id", kanjiId));
+
+        ContentAccess.requireVisible(kanji.getReviewStatus(), "Kanji", kanjiId);
 
         KanjiPracticeProgress progress = progressRepository.findByUserIdAndKanjiId(userId, kanjiId)
                 .orElseGet(() -> KanjiPracticeProgress.builder()

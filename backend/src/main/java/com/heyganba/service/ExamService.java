@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.heyganba.common.exception.BadRequestException;
 import com.heyganba.common.exception.ResourceNotFoundException;
+import com.heyganba.common.security.ContentAccess;
 import com.heyganba.dto.exam.ExamGenerateRequest;
 import com.heyganba.dto.exam.ExamHistoryResponse;
 import com.heyganba.dto.exam.ExamQuestionResponse;
@@ -282,7 +283,8 @@ public class ExamService {
             return List.of();
         }
 
-        List<GrammarExercise> pool = new ArrayList<>(grammarExerciseRepository.findAll());
+        List<GrammarExercise> pool = new ArrayList<>(
+                ContentAccess.visibleOnly(grammarExerciseRepository.findAll(), GrammarExercise::getReviewStatus));
         Collections.shuffle(pool, random);
 
         List<Question> questions = new ArrayList<>();
@@ -305,7 +307,7 @@ public class ExamService {
             return List.of();
         }
 
-        List<Kana> pool = new ArrayList<>(kanaRepository.findAll());
+        List<Kana> pool = new ArrayList<>(ContentAccess.visibleOnly(kanaRepository.findAll(), Kana::getReviewStatus));
         pool.removeIf(kana -> kana.getRomaji() == null
                 || kana.getRomaji().contains("(")
                 || kana.getRomaji().contains(" "));
@@ -333,7 +335,8 @@ public class ExamService {
             return List.of();
         }
 
-        List<Vocabulary> pool = new ArrayList<>(vocabularyRepository.findAll());
+        List<Vocabulary> pool = new ArrayList<>(
+                ContentAccess.visibleOnly(vocabularyRepository.findAll(), Vocabulary::getReviewStatus));
         Collections.shuffle(pool, random);
 
         List<String> meaningPool = pool.stream().map(Vocabulary::getMeaning).distinct().toList();

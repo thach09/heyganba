@@ -65,7 +65,7 @@ class KanaApiTest extends com.heyganba.support.ContentApiTestBase {
         roleRepository.save(Role.builder().name(RoleName.ROLE_ADMIN).description("Admin").build());
         roleRepository.save(Role.builder().name(RoleName.ROLE_USER).description("User").build());
 
-        hiraganaShi = kanaRepository.save(Kana.builder()
+        hiraganaShi = persistApprovedKana(Kana.builder()
                 .character("し")
                 .romaji("shi")
                 .kanaType(KanaType.HIRAGANA)
@@ -74,7 +74,7 @@ class KanaApiTest extends com.heyganba.support.ContentApiTestBase {
                 .notes("Đọc \"shi\", không đọc \"si\".")
                 .build());
 
-        kanaRepository.save(Kana.builder()
+        persistApprovedKana(Kana.builder()
                 .character("は")
                 .romaji("ha")
                 .kanaType(KanaType.HIRAGANA)
@@ -83,7 +83,7 @@ class KanaApiTest extends com.heyganba.support.ContentApiTestBase {
                 .notes("Khi làm trợ từ đọc \"wa\".")
                 .build());
 
-        kanaRepository.save(Kana.builder()
+        persistApprovedKana(Kana.builder()
                 .character("ツォ")
                 .romaji("tso")
                 .kanaType(KanaType.KATAKANA)
@@ -92,7 +92,7 @@ class KanaApiTest extends com.heyganba.support.ContentApiTestBase {
                 .notes("Phiên âm \"tso\" — thường gặp khi phiên âm tiếng Ý.")
                 .build());
 
-        kanaRepository.save(Kana.builder()
+        persistApprovedKana(Kana.builder()
                 .character("ヂ")
                 .romaji("ji (di)")
                 .kanaType(KanaType.KATAKANA)

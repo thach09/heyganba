@@ -93,7 +93,7 @@ class ExamApiTest extends com.heyganba.support.ContentApiTestBase {
         for (String[] item : items) {
             // Idempotent: khi chạy trên PostgreSQL có Flyway seed sẵn 247 kana thì tái sử dụng bản ghi cũ
             // (tránh vi phạm unique index uq_kana_character_type).
-            kanaRepository.findByCharacterAndKanaType(item[0], KanaType.HIRAGANA).orElseGet(() -> kanaRepository.save(Kana.builder()
+            kanaRepository.findByCharacterAndKanaType(item[0], KanaType.HIRAGANA).orElseGet(() -> persistApprovedKana(Kana.builder()
                     .character(item[0])
                     .romaji(item[1])
                     .kanaType(KanaType.HIRAGANA)
@@ -105,7 +105,7 @@ class ExamApiTest extends com.heyganba.support.ContentApiTestBase {
     }
 
     private void seedGrammar(Lesson lesson) {
-        GrammarRule rule = grammarRuleRepository.save(GrammarRule.builder()
+        GrammarRule rule = persistApprovedRule(GrammarRule.builder()
                 .title("N1 は N2 です")
                 .structure("N1 は N2 です")
                 .explanation("は đánh dấu chủ đề.")
@@ -114,7 +114,7 @@ class ExamApiTest extends com.heyganba.support.ContentApiTestBase {
                 .orderIndex(1)
                 .build());
 
-        grammarExerciseRepository.save(GrammarExercise.builder()
+        persistApprovedExercise(GrammarExercise.builder()
                 .grammarRule(rule)
                 .questionText("わたし __ がくせい です。")
                 .optionsJson("[\"は\",\"を\",\"に\",\"で\"]")
@@ -124,7 +124,7 @@ class ExamApiTest extends com.heyganba.support.ContentApiTestBase {
                 .mistakeCategory("particle-ha")
                 .build());
 
-        grammarExerciseRepository.save(GrammarExercise.builder()
+        persistApprovedExercise(GrammarExercise.builder()
                 .grammarRule(rule)
                 .questionText("これ __ 本です。")
                 .optionsJson("[\"は\",\"が\",\"の\",\"と\"]")
@@ -135,9 +135,9 @@ class ExamApiTest extends com.heyganba.support.ContentApiTestBase {
     }
 
     private void seedVocabulary(Lesson lesson) {
-        vocabularyRepository.save(Vocabulary.builder().word("本").reading("ほん").meaning("sách, gốc rễ").sinoVietnamese("BẢN").lesson(lesson).build());
-        vocabularyRepository.save(Vocabulary.builder().word("車").reading("くるま").meaning("xe hơi").sinoVietnamese("XA").lesson(lesson).build());
-        vocabularyRepository.save(Vocabulary.builder().word("花").reading("はな").meaning("hoa").sinoVietnamese("HOA").lesson(lesson).build());
+        persistApprovedVocabulary(Vocabulary.builder().word("本").reading("ほん").meaning("sách, gốc rễ").sinoVietnamese("BẢN").lesson(lesson).build());
+        persistApprovedVocabulary(Vocabulary.builder().word("車").reading("くるま").meaning("xe hơi").sinoVietnamese("XA").lesson(lesson).build());
+        persistApprovedVocabulary(Vocabulary.builder().word("花").reading("はな").meaning("hoa").sinoVietnamese("HOA").lesson(lesson).build());
     }
 
     private String registerAndGetToken(String email) throws Exception {

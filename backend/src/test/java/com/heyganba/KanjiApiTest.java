@@ -130,7 +130,7 @@ class KanjiApiTest extends com.heyganba.support.ContentApiTestBase {
                 .meaning("miệng")
                 .build());
 
-        kanjiHon = kanjiRepository.save(Kanji.builder()
+        kanjiHon = persistApprovedKanji(Kanji.builder()
                 .character("本")
                 .strokeCount(5)
                 .onyomi("ホン")
@@ -142,7 +142,7 @@ class KanjiApiTest extends com.heyganba.support.ContentApiTestBase {
                 .radicals(Set.of(radicalMoku))
                 .build());
 
-        kanjiRepository.save(Kanji.builder()
+        persistApprovedKanji(Kanji.builder()
                 .character("日")
                 .strokeCount(4)
                 .onyomi("ニチ、ジツ")
@@ -154,7 +154,7 @@ class KanjiApiTest extends com.heyganba.support.ContentApiTestBase {
                 .radicals(Set.of(radicalKi))
                 .build());
 
-        kanjiRepository.save(Kanji.builder()
+        persistApprovedKanji(Kanji.builder()
                 .character("名")
                 .strokeCount(6)
                 .onyomi("メイ、ミョウ")

@@ -120,7 +120,7 @@ class GrammarApiTest extends com.heyganba.support.ContentApiTestBase {
                 .orderIndex(2)
                 .build());
 
-        particleHaRule = grammarRuleRepository.save(GrammarRule.builder()
+        particleHaRule = persistApprovedRule(GrammarRule.builder()
                 .title("N1 は N2 です")
                 .structure("N1 は N2 です")
                 .explanation("は đánh dấu chủ đề của câu, khi làm trợ từ đọc là wa.")
@@ -131,7 +131,7 @@ class GrammarApiTest extends com.heyganba.support.ContentApiTestBase {
                 .orderIndex(1)
                 .build());
 
-        GrammarRule particleMoRule = grammarRuleRepository.save(GrammarRule.builder()
+        GrammarRule particleMoRule = persistApprovedRule(GrammarRule.builder()
                 .title("N も")
                 .structure("N も ～です")
                 .explanation("も thay cho は khi muốn nói cũng.")
@@ -141,7 +141,7 @@ class GrammarApiTest extends com.heyganba.support.ContentApiTestBase {
                 .orderIndex(2)
                 .build());
 
-        particleExercise = grammarExerciseRepository.save(GrammarExercise.builder()
+        particleExercise = persistApprovedExercise(GrammarExercise.builder()
                 .grammarRule(particleHaRule)
                 .questionText("わたし __ がくせい です。")
                 .optionsJson("[\"は\",\"を\",\"に\",\"で\"]")
@@ -151,7 +151,7 @@ class GrammarApiTest extends com.heyganba.support.ContentApiTestBase {
                 .mistakeCategory("particle-ha")
                 .build());
 
-        grammarExerciseRepository.save(GrammarExercise.builder()
+        persistApprovedExercise(GrammarExercise.builder()
                 .grammarRule(particleMoRule)
                 .questionText("リンさん __ ベトナム人です。")
                 .optionsJson("[\"は\",\"も\",\"を\",\"が\"]")
@@ -201,8 +201,8 @@ class GrammarApiTest extends com.heyganba.support.ContentApiTestBase {
                 .andExpect(jsonPath("$.data[0].number", is(1)))
                 .andExpect(jsonPath("$.data[0].exerciseCount", is(1)))
                 .andExpect(jsonPath("$.data[1].number", is(2)))
-                // Nội dung là bản nháp → luôn báo PENDING_REVIEW để UI không hiển thị như đã duyệt.
-                .andExpect(jsonPath("$.data[0].reviewStatus", is("PENDING_REVIEW")))
+                // Nội dung seed trong test là ĐÃ DUYỆT; nội dung chờ duyệt thì user thường KHÔNG thấy (xem ContentReviewVisibilityTest).
+                .andExpect(jsonPath("$.data[0].reviewStatus", is("APPROVED")))
                 // Số gốc (source_ref) là metadata nội bộ, không được trả ra API.
                 .andExpect(jsonPath("$.data[0].sourceRef").doesNotExist())
                 .andExpect(jsonPath("$.data[0].originalNumber").doesNotExist());
@@ -251,7 +251,7 @@ class GrammarApiTest extends com.heyganba.support.ContentApiTestBase {
                 .andExpect(jsonPath("$.data[0].options", hasSize(4)))
                 .andExpect(jsonPath("$.data[0].options[0]", is("は")))
                 .andExpect(jsonPath("$.data[0].isCommonMistake", is(true)))
-                .andExpect(jsonPath("$.data[0].reviewStatus", is("PENDING_REVIEW")))
+                .andExpect(jsonPath("$.data[0].reviewStatus", is("APPROVED")))
                 .andExpect(jsonPath("$.data[0].correctAnswer").doesNotExist())
                 .andExpect(jsonPath("$.data[0].explanation").doesNotExist());
     }

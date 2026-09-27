@@ -102,7 +102,7 @@ class FlashcardApiTest extends com.heyganba.support.ContentApiTestBase {
                 .orderIndex(1)
                 .build());
 
-        wordBook = vocabularyRepository.save(Vocabulary.builder()
+        wordBook = persistApprovedVocabulary(Vocabulary.builder()
                 .word("本")
                 .reading("ほん")
                 .meaning("sách")
@@ -113,7 +113,7 @@ class FlashcardApiTest extends com.heyganba.support.ContentApiTestBase {
                 .lesson(lesson)
                 .build());
 
-        vocabularyRepository.save(Vocabulary.builder()
+        persistApprovedVocabulary(Vocabulary.builder()
                 .word("車")
                 .reading("くるま")
                 .meaning("xe hơi")

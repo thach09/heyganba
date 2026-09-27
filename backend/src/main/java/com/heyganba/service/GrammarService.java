@@ -3,12 +3,14 @@ package com.heyganba.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.heyganba.common.exception.ResourceNotFoundException;
+import com.heyganba.common.security.ContentAccess;
 import com.heyganba.dto.grammar.GrammarCheckResponse;
 import com.heyganba.dto.grammar.GrammarExerciseResponse;
 import com.heyganba.dto.grammar.GrammarRuleResponse;
 import com.heyganba.model.entity.GrammarExercise;
 import com.heyganba.model.entity.GrammarRule;
 import com.heyganba.model.entity.User;
+import com.heyganba.model.enums.ReviewStatus;
 import com.heyganba.repository.GrammarExerciseRepository;
 import com.heyganba.repository.GrammarRuleRepository;
 import com.heyganba.repository.UserRepository;
@@ -48,8 +50,11 @@ public class GrammarService {
                 ? grammarRuleRepository.findAllWithLesson()
                 : grammarRuleRepository.findByLessonSlug(lessonSlug);
 
+        // Nội dung chờ duyệt chỉ admin thấy (xem ContentAccess) — không trả bản nháp cho user thường.
+        rules = ContentAccess.visibleOnly(rules, GrammarRule::getReviewStatus);
+
         return rules.stream()
-                .map(rule -> GrammarRuleResponse.from(rule, grammarExerciseRepository.countByGrammarRuleId(rule.getId())))
+                .map(rule -> GrammarRuleResponse.from(rule, visibleExerciseCount(rule.getId())))
                 .toList();
     }
 
@@ -58,7 +63,19 @@ public class GrammarService {
         GrammarRule rule = grammarRuleRepository.findById(ruleId)
                 .orElseThrow(() -> new ResourceNotFoundException("GrammarRule", "id", ruleId));
 
-        return GrammarRuleResponse.from(rule, grammarExerciseRepository.countByGrammarRuleId(ruleId));
+        ContentAccess.requireVisible(rule.getReviewStatus(), "GrammarRule", ruleId);
+
+        return GrammarRuleResponse.from(rule, visibleExerciseCount(ruleId));
+    }
+
+    /**
+     * Số bài tập ĐƯỢC PHÉP thấy của 1 điểm ngữ pháp: user thường chỉ đếm câu đã duyệt,
+     * nếu không con số hiển thị trên UI cũng là một dạng rò rỉ thông tin về nội dung nháp.
+     */
+    private long visibleExerciseCount(Long ruleId) {
+        return ContentAccess.canSeePendingReview()
+                ? grammarExerciseRepository.countByGrammarRuleId(ruleId)
+                : grammarExerciseRepository.countByGrammarRuleIdAndReviewStatus(ruleId, ReviewStatus.APPROVED);
     }
 
     @Transactional(readOnly = true)
@@ -77,6 +94,8 @@ public class GrammarService {
             exercises = exercises.stream().filter(exercise -> Boolean.TRUE.equals(exercise.getIsCommonMistake())).toList();
         }
 
+        exercises = ContentAccess.visibleOnly(exercises, GrammarExercise::getReviewStatus);
+
         return exercises.stream().map(this::toResponse).toList();
     }
 
@@ -91,6 +110,9 @@ public class GrammarService {
     public GrammarCheckResponse checkAnswer(Long userId, Long exerciseId, String userAnswer) {
         GrammarExercise exercise = grammarExerciseRepository.findById(exerciseId)
                 .orElseThrow(() -> new ResourceNotFoundException("GrammarExercise", "id", exerciseId));
+
+        // Không cho chấm điểm bài tập còn chờ duyệt khi không phải admin (tránh lộ cả câu hỏi lẫn đáp án).
+        ContentAccess.requireVisible(exercise.getReviewStatus(), "GrammarExercise", exerciseId);
 
         String submitted = normalize(userAnswer);
         String correct = normalize(exercise.getCorrectAnswer());
