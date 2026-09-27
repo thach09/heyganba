@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -53,25 +54,33 @@ public class JwtTokenProvider {
         if (secret == null || secret.isBlank()) {
             throw new IllegalStateException("""
                     Thiếu biến môi trường JWT_SECRET — app dừng để không chạy production với secret yếu.
-                    Cách sửa: Render → service → Environment → thêm JWT_SECRET (giá trị `openssl rand -base64 48`),
-                    hoặc deploy bằng Blueprint (render.yaml đã đặt generateValue: true để Render tự sinh).
+                    Cách sửa: Render → service → Environment → thêm JWT_SECRET (bấm nút Generate của Render,
+                    hoặc dán giá trị `openssl rand -base64 48`), rồi Save để Render deploy lại.
                     """);
         }
 
-        byte[] keyBytes;
-        try {
-            keyBytes = Decoders.BASE64.decode(secret);
-        } catch (Exception ex) {
-            throw new IllegalStateException(
-                    "JWT_SECRET không phải chuỗi Base64 hợp lệ (dùng `openssl rand -base64 48`).", ex);
-        }
+        // Ưu tiên hiểu secret là Base64 (JJWT Decoders.BASE64) để giữ tương thích với secret đang dùng;
+        // nếu không phải Base64 hoặc decode ra < 32 byte (như secret Render UI sinh dạng chuỗi ký tự ngẫu nhiên)
+        // thì dùng thẳng byte UTF-8 — vẫn đảm bảo ≥ 32 byte khoá cho HS256 mà không bắt người vận hành đổi định dạng secret.
+        byte[] base64Bytes = tryDecodeBase64(secret);
+        byte[] keyBytes = (base64Bytes != null && base64Bytes.length >= 32)
+                ? base64Bytes
+                : secret.getBytes(StandardCharsets.UTF_8);
 
         if (keyBytes.length < 32) {
-            throw new IllegalStateException("JWT_SECRET quá ngắn: cần ≥ 32 byte sau khi decode Base64 "
-                    + "(hiện " + keyBytes.length + " byte). Dùng `openssl rand -base64 48`.");
+            throw new IllegalStateException("JWT_SECRET quá ngắn: cần ≥ 32 byte khoá "
+                    + "(hiện " + keyBytes.length + " byte). Bấm Generate trong Render hoặc dùng `openssl rand -base64 48`.");
         }
 
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    private static byte[] tryDecodeBase64(String secret) {
+        try {
+            return Decoders.BASE64.decode(secret);
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
     public String generateAccessToken(Authentication authentication) {
