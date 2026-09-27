@@ -5,6 +5,15 @@ spring:
   jpa:
     show-sql: false
 
+  flyway:
+    # Vì sao cần `out-of-order`: DB staging là BẢN COPY của production (đã áp V13), còn V12 nằm trong
+    # `db/migration-staging` (nội dung chờ duyệt tiếng Nhật) nên chưa được áp ở đâu cả. Flyway mặc định coi
+    # "migration có version thấp hơn version mới nhất đã áp" là lỗi → app staging sẽ KHÔNG khởi động được.
+    # Bật out-of-order ở RIÊNG profile staging để V12/V14 chạy được trên bản copy đó.
+    # ⚠️ Production KHÔNG bật cờ này (application-prod.yml) — khi promote nội dung sang production phải
+    #    đánh số version lớn hơn version lớn nhất đang có, xem deployment-plan.md → "Promote nội dung chờ duyệt".
+    out-of-order: true
+
 logging:
   level:
     root: INFO

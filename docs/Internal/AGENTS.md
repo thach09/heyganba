@@ -197,3 +197,31 @@ Sau mỗi phase, agent báo cáo ngắn gọn gồm 3 phần:
   có hiệu ứng chúc mừng (Kana quiz, Flashcard, Grammar, Exam, Station placeholder) sẽ lỗi khi hoàn thành bài.
   Nếu thêm dịch vụ ngoài (Sentry, R2 audio…) thì phải cập nhật CSP tương ứng (`connect-src` / `media-src`).
 
+## Kinh nghiệm tạo môi trường staging (đã làm thật 27/09/2026)
+
+- **Tạo service Render bằng API** (`POST /v1/services`): `ownerId` lấy từ `GET /v1/owners`; body cần `type`, `name`, `repo`,
+  `branch`, `autoDeploy`, `serviceDetails.env=docker`, `serviceDetails.envSpecificDetails.dockerfilePath/dockerContext`,
+  `serviceDetails.plan/region/healthCheckPath` và `envVars` (truyền ngay lúc tạo → deploy đầu tiên đã đúng cấu hình).
+  Cách nhanh để lấy đúng giá trị: `GET /v1/services/<prod-id>` rồi mirror (`dockerContext=./backend`,
+  `dockerfilePath=./backend/Dockerfile`, `healthCheckPath=/api/v1/health`, region `singapore`).
+  Staging để `autoDeploy=yes`; production giữ `autoDeploy=no` (duyệt thủ công).
+- **Neon branch là bản copy của parent**: database + role được copy **kèm mật khẩu của role**. API `GET .../branches/{id}/roles`
+  **không trả `password`** cho role đã tồn tại → dùng lại mật khẩu role của parent (đã kiểm chứng bằng psql thật), đừng mất
+  thời gian đi tìm cách "lấy lại mật khẩu".
+- **Flyway với bản copy đã có version cao hơn**: staging copy production (đã áp V13) trong khi V12 nằm ở `db/migration-staging`
+  → Flyway báo `Detected resolved migration not applied to database: 12` và **app không khởi động**. Cách xử lý đã chọn: bật
+  `spring.flyway.out-of-order: true` **chỉ trong `application-staging.yml`** (production không bật). Kéo theo: khi promote nội
+  dung chờ duyệt lên production phải **đánh số lại version** (V12→V15, V14→V16) — đã ghi trong `deployment-plan.md`.
+- **Vercel env tách theo target**: cùng một key có thể tồn tại 2 entry (`target=production`, `target=preview`). Staging cần
+  `VITE_API_BASE_URL` của **Preview** trỏ về API staging — nếu để chung với production thì mọi preview sẽ gọi API production
+  (thao tác thử nghiệm đụng dữ liệu thật). Cách sửa: `PATCH /v9/projects/{id}/env/{envId}` (đổi `target`) + `POST /v10/projects/{id}/env`.
+- **URL staging frontend = alias branch của Vercel**: `https://<project>-git-<branch>-<team>.vercel.app` (đã kiểm tra 200) và
+  ổn định qua các lần deploy → dùng làm origin cho `CORS_ALLOWED_ORIGINS` của staging. Các alias dạng
+  `heyganba-<hash>-…vercel.app` đổi sau MỖI deploy nên tuyệt đối không đưa vào cấu hình CORS.
+- **CSP phải whitelist host API staging** trong `connect-src` (`frontend/vercel.json`); nếu không, frontend staging bị trình
+  duyệt chặn dù CORS đã đúng (lỗi nhìn giống hệt "backend không chạy").
+- **CI không deploy staging nữa**: `autoDeploy=yes` (Render) + Vercel Git Integration đã tự lo → để thêm job CI là deploy trùng
+  2 lần. Job deploy duy nhất còn lại: `deploy-backend-production` (Deploy Hook + Environment `production`).
+- **Render free plan là ngân sách dùng chung**: nhiều service free (kể cả của project khác) chia nhau instance-hours → staging
+  để chế độ ngủ bình thường, không ping giữ ấm, tránh ăn hết ngân sách của production.
+

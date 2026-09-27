@@ -21,12 +21,22 @@
 
 - **Production**: 1 Web Service Render (branch `main`) ở `https://heyganba-backend.onrender.com` + domain `api.heyganba.site`;
   frontend Vercel (branch `main`) ở `heyganba.site`. **Database: Neon Postgres** (không dùng Render Postgres nữa).
-- **Staging**: tạo Web Service thứ 2 trỏ branch `develop`, dùng **branch riêng trong Neon** (`develop` branch của project Neon
-  → Neon free cho ~10 branch, tách dữ liệu staging khỏi production, chạy được cả V12/V14 là nội dung chờ duyệt).
+- **Staging** (đã tạo 27/09/2026, auto-deploy BẬT):
+  - Backend: Render Web Service #2 `heyganba-backend-staging` (`srv-dasbnfh7lnhs738gmm30`, branch `develop`,
+    `autoDeploy=yes`, plan free, region singapore) → `https://heyganba-backend-staging.onrender.com`, profile `staging`.
+  - Frontend: preview của Vercel cho branch `develop` → **`https://heyganba-git-develop-thach09.vercel.app`**
+    (Vercel Git Integration tự build; `VITE_API_BASE_URL` của target **Preview** trỏ về API staging).
+  - DB: **branch `develop` trong Neon** (`br-green-morning-b3gt14sr`, endpoint `ep-frosty-leaf-b3fb5xv7.c-4.ap-southeast-1.aws.neon.tech`,
+    database `heyganba`) = bản copy của production tại thời điểm tạo branch → staging có sẵn nội dung V1→V13 và chạy tiếp V12/V14.
+  - ⚠️ Vì bản copy đã áp V13 còn V12 thì chưa, `application-staging.yml` bật `spring.flyway.out-of-order: true`
+    (chỉ staging; production KHÔNG bật — xem "Gate nội dung chưa duyệt" → mục Promote).
+  - CORS staging chỉ nhận đúng origin của preview `develop`; CSP frontend đã thêm host API staging vào `connect-src`.
+
 - **Neon free**: 0.5GB storage, **không hết hạn theo thời gian** (khác Render Postgres free hết hạn sau 30 ngày), có
   *point-in-time restore* trong 6 giờ (bản mới) → đáp ứng nhu cầu "backup retention tối thiểu 7 ngày" tốt hơn; muốn giữ lâu hơn thì nâng plan hoặc `pg_dump` định kỳ (xem `backups/`, đã gitignore).
-- CI: push `develop` → deploy staging (tự động); push `main` → deploy production (job dừng ở GitHub Environment
-  `production` để chờ duyệt thủ công).
+- CI: push `develop` → Render **tự deploy** staging (`autoDeploy=yes`) + Vercel **tự build** preview; push `main` → frontend
+  Vercel tự deploy production, còn **backend production phải duyệt thủ công** (job `deploy-backend-production` dừng ở GitHub
+  Environment `production`; service production để `autoDeploy: no`).
 
 ### Database trên Neon
 
@@ -223,17 +233,18 @@ Pipeline theo 4 bước, chạy cho mọi PR và mọi lần merge:
 
 | Nơi cấu hình | Tên | Dùng cho |
 |---|---|---|
-| GitHub → Settings → Secrets and variables → Actions | `RENDER_STAGING_DEPLOY_HOOK_URL` | Job `deploy-backend-staging` (Render Deploy Hook của service staging) |
-| GitHub Actions secrets | `RENDER_PROD_DEPLOY_HOOK_URL` | Job `deploy-backend-production` |
-| GitHub Actions secrets | `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID` | Job `deploy-frontend-staging` / `deploy-frontend-production` |
-| Render (Environment) | `SPRING_PROFILES_ACTIVE`, `JWT_SECRET`, `CORS_ALLOWED_ORIGINS`, `DB_HOST/PORT/NAME/USER/PASSWORD` | Backend runtime — mẫu ở `backend/.env.example` |
-| Vercel (Production + Preview) | `VITE_API_BASE_URL` | Frontend gọi API Render — mẫu ở `frontend/.env.example` |
+| GitHub Actions secrets | `RENDER_PROD_DEPLOY_HOOK_URL` | Job `deploy-backend-production` (**secret deploy DUY NHẤT** mà CI cần) |
+| Render (Environment) — production | `SPRING_PROFILES_ACTIVE=prod`, `JWT_SECRET`, `CORS_ALLOWED_ORIGINS=…heyganba.site`, `SPRING_DATASOURCE_URL/USERNAME/PASSWORD` | Backend runtime — mẫu ở `backend/.env.example` |
+| Render (Environment) — staging | như trên nhưng `SPRING_PROFILES_ACTIVE=staging`, DB = Neon branch `develop`, `CORS_ALLOWED_ORIGINS=https://heyganba-git-develop-thach09.vercel.app`, `HIKARI_MAX_POOL_SIZE=5` | Đã set sẵn qua API lúc tạo service staging |
+| Vercel — Production | `VITE_API_BASE_URL=https://api.heyganba.site/api/v1` | Frontend production |
+| Vercel — Preview | `VITE_API_BASE_URL=https://heyganba-backend-staging.onrender.com/api/v1` | Preview/staging dùng API staging (không đụng dữ liệu production) |
 
 - `JWT_SECRET` **không có giá trị mặc định** ở staging/production: thiếu là backend fail-fast lúc khởi động
   (dev vẫn có default riêng trong `application-dev.yml`). Tạo key mới bằng `openssl rand -base64 48`.
 - Job deploy tự bỏ qua kèm `::warning::` khi secret chưa tồn tại → CI xanh trước khi hạ tầng được cấu hình xong.
-- Nếu project Vercel đang bật Git Integration (auto deploy khi push), có thể xoá 2 job `deploy-frontend-*` để tránh
-  deploy trùng; khi đó Vercel tự lo phần frontend, GitHub Actions chỉ còn test + migration check + deploy backend.
+- **Vercel Git Integration đang bật** → đã xoá khỏi CI các job `deploy-frontend-*` và `deploy-backend-staging`
+  (staging đã có autoDeploy + Vercel preview nên job CI chỉ gây deploy trùng). GitHub Actions hiện chỉ còn: backend
+  test, migration check, frontend test/build, và `deploy-backend-production` (chờ Deploy Hook + Required reviewers).
 
 
 ### Runbook — các bước thủ công còn lại (Phase 0 hạ tầng)
@@ -255,11 +266,7 @@ Pipeline theo 4 bước, chạy cho mọi PR và mọi lần merge:
 
 | Tên secret | Lấy từ đâu | Kiểm tra |
 |---|---|---|
-| `RENDER_STAGING_DEPLOY_HOOK_URL` | Render → service staging → Settings → Deploy Hook | Chạy `workflow_dispatch` nhánh `develop`, xem log job `deploy-backend-staging` không còn dòng `::warning::` |
 | `RENDER_PROD_DEPLOY_HOOK_URL` | Render → service production → Settings → Deploy Hook | Push vào `main`, job `deploy-backend-production` phải in `Đã trigger deploy backend production trên Render.` |
-| `VERCEL_TOKEN` | Vercel → Account Settings → Tokens (scope = project) | Job `deploy-frontend-*` không còn `::warning::` thiếu token |
-| `VERCEL_ORG_ID` | `frontend/.vercel/project.json` sau khi chạy `vercel link` | Ở job deploy, `vercel pull` chạy thành công |
-| `VERCEL_PROJECT_ID` | Cùng file `project.json` | Như trên |
 
 **2. GitHub Environment `production` có Required reviewers**
 
@@ -316,6 +323,9 @@ cho streak, heatmap, TTL cache SRS và giờ chạy job xoá cache (00:05 giờ 
 | Frontend project | Vercel | `prj_uVxZfEsGrpUdWUMwdfJ5Nlf7kXOP` (`heyganba`) | team `team_fcggMXeYL9uzprejNhUBdpB7`; `rootDirectory=frontend`, framework vite, output `dist` |
 | Domain frontend | Vercel | `heyganba.site` + `www.heyganba.site` | alias `https://heyganba.site` |
 | Domain backend | Render | `api.heyganba.site` | CNAME → `heyganba-backend.onrender.com` |
+| Backend web service (staging) | Render | `srv-dasbnfh7lnhs738gmm30` (`heyganba-backend-staging`) | branch `develop`, plan free, region singapore, **autoDeploy=yes**, profile `staging`, health `/api/v1/health` |
+| PostgreSQL (staging) | **Neon** | project `cinevora` (`steep-sea-83851655`), branch `develop` (`br-green-morning-b3gt14sr`), endpoint `ep-frosty-leaf-b3fb5xv7.c-4.ap-southeast-1.aws.neon.tech`, database `heyganba` | Bản copy của production lúc tạo branch; role `heyganba_owner` copy kèm **mật khẩu gốc** (API không trả lại password của role đã có) |
+| Frontend staging | Vercel | preview branch `develop` → `https://heyganba-git-develop-thach09.vercel.app` | Alias ổn định của branch; `VITE_API_BASE_URL` target Preview = API staging |
 
 Lưu ý cấu hình đã phải sửa khi tạo Vercel project (để tránh lặp lại):
 - `rootDirectory` **phải** = `frontend` (repo có backend + frontend chung một repo; để trống sẽ build từ repo root → fail).
@@ -372,7 +382,8 @@ Invoke-RestMethod -Method Post 'https://api.render.com/v1/services/<srv-id>/cust
 | Trạng thái trong DB | `review_status` (V13) mặc định `PENDING_REVIEW` cho kana/từ vựng/kanji/ngữ pháp/bài tập |
 | Kiểm tra tự động | `FlywayLocationsConfigTest` (chặn sửa prod yml include staging, chặn đặt file chờ duyệt vào `db/migration`, chặn trùng version) |
 | Kiểm tra thủ công | `GET /content/review-status` → `allApproved=false`, `stagingOnlyMigrations=[V12…, V14…]`; UI Trạm Trợ từ hiện badge "chờ duyệt" |
-| **Promote** | Sau khi người biết tiếng Nhật duyệt: (1) `UPDATE … SET review_status='APPROVED'`, (2) **chuyển file** từ `db/migration-staging/` sang `db/migration/`, (3) chạy lại CI (test sẽ đỏ nếu file còn ở sai thư mục), (4) deploy production |
+| **Promote** | Sau khi người biết tiếng Nhật duyệt: (1) `UPDATE … SET review_status='APPROVED'`, (2) **đánh số lại version LỚN HƠN version lớn nhất đang có ở production** (production đang ở V13 → `V12__expand_grammar_exercises.sql` thành `V15__…`, `V14__expand_trap_exercises.sql` thành `V16__…`; giữ nguyên thứ tự tương đối, KHÔNG đổi nội dung) rồi mới chuyển file sang `db/migration/`, (3) chạy lại CI (test đỏ nếu file còn ở sai thư mục hoặc trùng version), (4) deploy production |
+| **Vì sao phải đánh số lại** | Flyway mặc định từ chối migration có version THẤP hơn version mới nhất đã áp. Production đã áp V13 nên nếu promote nguyên số V12, app production sẽ fail-fast lúc khởi động ("Detected resolved migration not applied to database: 12"). Chỉ **staging** bật `spring.flyway.out-of-order: true` (để V12/V14 chạy được trên bản copy); **production không bật** cờ này nên bắt buộc đánh số lại khi promote. |
 
 - Kiểm tra: `curl https://<render-service>.onrender.com/api/v1/health` → `"status":"UP"`.
 - Nếu thiếu `JWT_SECRET`, backend **fail-fast** ngay lúc khởi động (log có `Could not resolve placeholder 'JWT_SECRET'`) — đây là hành vi mong muốn.
@@ -436,3 +447,16 @@ cd backend; mvn -B -DskipTests spring-boot:run
 - Load test cơ bản (giả lập số lượng user đồng thời dự kiến) để xác nhận cấu hình Hikari/Redis/Render plan đủ đáp ứng.
 - Diễn tập restore backup ít nhất 1 lần.
 - Xác nhận staging đã chạy ổn định ít nhất vài ngày trước khi đẩy production.
+- **Quét bảo mật OWASP ZAP trên staging — đã lên lịch, KHÔNG nằm trong nhóm hoãn vô thời hạn**: chạy trước mốc public
+  launch, nhắm vào API staging, tập trung luồng đăng ký/đăng nhập và các API chấm điểm. Điều kiện: staging chạy ổn định và
+  nội dung V12/V14 đã được duyệt.
+- Sau khi quét: rà lại bảng "Trạng thái triển khai" trong `security-plan.md` — chỉ còn được phép ở trạng thái hoãn những
+  mục đã ghi rõ lý do (cookie httpOnly cross-domain, 2FA admin, Sentry, Redis scale).
+
+```powershell
+# Baseline scan (Docker có sẵn, không cần cài ZAP trên máy)
+docker run --rm -t ghcr.io/zaproxy/zaproxy:stable zap-baseline.py `
+  -t https://heyganba-backend-staging.onrender.com/api/v1/health -m 2 -I
+# -I: không fail vì cảnh báo mức thấp; lưu report HTML vào docs/Internal/security-scan-<ngày>.html
+# Lưu ý: staging free tier ngủ sau ~15 phút → gọi /health trước để đánh thức rồi mới quét.
+```

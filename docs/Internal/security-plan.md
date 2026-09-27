@@ -72,7 +72,7 @@
 | Dependabot cho Maven + npm | **Mới thêm (27/09)** | `.github/dependabot.yml` (maven, npm, github-actions, docker), gom nhóm theo tuần |
 | Refresh token trong cookie `httpOnly` | **Chưa làm — có lý do, xem bên dưới** | Xem "Quyết định hoãn: refresh token httpOnly" |
 | 2FA cho admin | Chưa làm | Admin hiện chỉ có 1 tài khoản seed; nên làm cùng trang quản trị thật (Phase 5+) |
-| OWASP ZAP trước khi public | Chưa chạy | Cần chạy trên staging; các case thủ công tương đương đã kiểm: RBAC 403, CORS chặn domain lạ, 429 brute-force, 413 payload |
+| OWASP ZAP trước khi public | **Đã lên lịch — không thuộc nhóm hoãn vô thời hạn** | Chạy baseline scan trên **staging** (`https://heyganba-backend-staging.onrender.com/api/v1`) trước mốc public launch, tập trung đăng ký/đăng nhập + API chấm điểm. Lệnh và điều kiện tiên quyết: xem `deployment-plan.md` → "Trước khi public rộng". Chỉ tạm hoãn vì cần staging chạy ổn định + nội dung V12/V14 được duyệt trước khi quét. |
 | Diễn tập xoay `JWT_SECRET` | Chưa diễn tập | Cách làm: đổi env `JWT_SECRET` trên Render → mọi access/refresh token cũ vô hiệu (user phải đăng nhập lại), không cần đụng DB |
 | Theo dõi log định kỳ | Một phần | Log Render + `GET /v1/logs` API; chưa có Sentry/alerting |
 
@@ -91,10 +91,20 @@ Plan ưu tiên cookie `httpOnly` cho refresh token. Hiện cả access + refresh
 chuyển `/auth/login|refresh` sang set cookie `HttpOnly; Secure; SameSite=Lax; Path=/api/v1/auth`, bỏ `refreshToken`
 khỏi response body, và frontend đổi sang `credentials: 'include'`.
 
-### Đánh đổi đã biết của rate limit theo tài khoản
+### Đánh đổi đã biết của rate limit theo tài khoản (NỢ KỸ THUẬT — chuyển sang Redis khi bật Redis)
 
 Kẻ tấn công biết email admin (`admin@heyganba.vn`) có thể cố tình đăng nhập sai 5 lần để tạm khoá đường đăng nhập của
 admin trong 15 phút (self-DoS). Đổi lại, đây cũng chính là cơ chế chặn brute-force cho tài khoản quyền cao nhất.
-Giảm nhẹ hiện có: bộ đếm nằm trong memory của instance nên **restart service Render là xoá sạch**. Khi số lượng admin
-tăng, nên bổ sung exponential backoff theo IP và thông báo (email/log) cho admin mỗi khi có chuỗi đăng nhập sai.
+
+**Đây là nợ kỹ thuật đã được ghi nhận, KHÔNG cần fix ngay.** Gốc rễ là bộ đếm rate limit nằm trong memory của instance
+(`RateLimiterService`) nên không chia sẻ giữa các instance và mất khi restart/ngủ.
+
+- Cách giảm nhẹ hiện tại: **restart service Render là xoá sạch bộ đếm** → mở khoá ngay không cần chờ 15 phút.
+- **Trigger để trả nợ: khi bật Redis** (`APP_SRS_CACHE=redis` / `REDIS_HOST` được cấu hình — cùng lúc với việc chuyển
+  `SrsDueCache` sang Redis). Khi đó:
+  1. Thay `RateLimiterService` bằng bucket trên Redis (giữ nguyên chữ ký `tryConsume`/`isBlocked`/`reset` để không phải sửa
+     `AuthController`, `ExamController`, `KanaController`…).
+  2. Thêm exponential backoff theo IP và thông báo (log/email) cho admin mỗi khi có chuỗi đăng nhập sai.
+- Bài học đi kèm: **mọi state in-memory dùng cho bảo mật (rate limit, cache) phải ghi vào danh sách nợ kỹ thuật này**
+  vì nó phụ thuộc số instance — xem thêm mục Redis trong `deployment-plan.md`.
 

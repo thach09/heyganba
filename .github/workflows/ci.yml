@@ -120,66 +120,21 @@ jobs:
           if-no-files-found: error
 
   # ============================================================
-  # Deploy — Staging: tự động sau khi test pass (push lên main/develop).
-  # Bỏ qua an toàn (chỉ warning) nếu secret deploy chưa được cấu hình.
+  # Deploy — Staging: KHÔNG cần job trong CI (tránh deploy trùng 2 lần).
+  # - Backend staging: Render Web Service `heyganba-backend-staging` (branch develop, autoDeploy=yes)
+  #   → push lên `develop` là Render tự build/deploy.
+  # - Frontend staging: Vercel Git Integration tự tạo preview cho branch `develop`
+  #   → https://heyganba-git-develop-thach09.vercel.app (dùng VITE_API_BASE_URL = API staging).
+  # CI ở đây chỉ chạy test + migration check.
   # ============================================================
-  deploy-backend-staging:
-    name: Deploy Backend → Render (staging)
-    needs: [backend-test, backend-migration-check]
-    # Staging chỉ deploy từ nhánh `develop` (đúng quy trình: staging tự động sau khi merge develop).
-    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
-    runs-on: ubuntu-latest
-    environment: staging
-    steps:
-      - name: Trigger Render deploy hook
-        env:
-          DEPLOY_HOOK: ${{ secrets.RENDER_STAGING_DEPLOY_HOOK_URL }}
-        run: |
-          if [ -z "$DEPLOY_HOOK" ]; then
-            echo "::warning::Chưa cấu hình RENDER_STAGING_DEPLOY_HOOK_URL — bỏ qua deploy backend staging."
-            exit 0
-          fi
-          curl -fsS -X POST "$DEPLOY_HOOK"
-          echo "Đã trigger deploy backend staging trên Render."
-
-  deploy-frontend-staging:
-    name: Deploy Frontend → Vercel (staging/preview)
-    needs: [frontend-test]
-    # Staging chỉ deploy từ nhánh `develop` (đồng bộ với deploy-backend-staging).
-    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
-    runs-on: ubuntu-latest
-    environment: staging
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          cache-dependency-path: './frontend/package-lock.json'
-
-      - name: Deploy preview to Vercel
-        working-directory: ./frontend
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        run: |
-          if [ -z "$VERCEL_TOKEN" ] || [ -z "$VERCEL_ORG_ID" ] || [ -z "$VERCEL_PROJECT_ID" ]; then
-            echo "::warning::Thiếu VERCEL_TOKEN / VERCEL_ORG_ID / VERCEL_PROJECT_ID — bỏ qua deploy frontend staging."
-            echo "Nếu project đang bật Vercel Git Integration thì Vercel đã tự deploy, không cần job này."
-            exit 0
-          fi
-          npm ci
-          npx --yes vercel@latest pull --yes --environment=preview --token="$VERCEL_TOKEN"
-          npx --yes vercel@latest build --token="$VERCEL_TOKEN"
-          npx --yes vercel@latest deploy --prebuilt --token="$VERCEL_TOKEN"
 
   # ============================================================
-  # Deploy — Production: chạy trên main nhưng cần duyệt thủ công.
-  # Bật bằng GitHub: Settings → Environments → production → Required reviewers.
+  # Deploy — Production (BACKEND): job deploy DUY NHẤT còn lại trong CI.
+  # - Render service production đang để `autoDeploy: no` → push `main` KHÔNG tự deploy backend.
+  # - Cần: GitHub Environment `production` + Required reviewers, và secret
+  #   `RENDER_PROD_DEPLOY_HOOK_URL` (tạo Deploy Hook ở Render dashboard).
+  # - Chưa cấu hình secret → job tự skip kèm ::warning:: (CI vẫn xanh).
+  # Frontend production do Vercel Git Integration tự deploy khi push `main` (production branch = main).
   # ============================================================
   deploy-backend-production:
     name: Deploy Backend → Render (production)
@@ -199,36 +154,7 @@ jobs:
           curl -fsS -X POST "$DEPLOY_HOOK"
           echo "Đã trigger deploy backend production trên Render."
 
-  deploy-frontend-production:
-    name: Deploy Frontend → Vercel (production)
-    needs: [frontend-test]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    environment: production
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          cache-dependency-path: './frontend/package-lock.json'
-
-      - name: Deploy production to Vercel
-        working-directory: ./frontend
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        run: |
-          if [ -z "$VERCEL_TOKEN" ] || [ -z "$VERCEL_ORG_ID" ] || [ -z "$VERCEL_PROJECT_ID" ]; then
-            echo "::warning::Thiếu VERCEL_TOKEN / VERCEL_ORG_ID / VERCEL_PROJECT_ID — bỏ qua deploy frontend production."
-            exit 0
-          fi
-          npm ci
-          npx --yes vercel@latest pull --yes --environment=production --token="$VERCEL_TOKEN"
-          npx --yes vercel@latest build --prod --token="$VERCEL_TOKEN"
-          npx --yes vercel@latest deploy --prebuilt --prod --token="$VERCEL_TOKEN"
+  # Frontend production: KHÔNG cần job CI — Vercel Git Integration tự deploy khi push `main`
+  # (production branch = main). Job deploy bằng Vercel CLI đã được xoá để tránh deploy trùng
+  # và để không phải cấp VERCEL_TOKEN cho GitHub Actions.
 
