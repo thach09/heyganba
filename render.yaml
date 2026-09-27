@@ -34,11 +34,31 @@ services:
       # Domain thật (Namecheap heyganba.site) — đổi khi domain thay đổi.
       - key: CORS_ALLOWED_ORIGINS
         value: https://heyganba.site,https://www.heyganba.site
-      # Database lấy tự động từ Render Postgres khai báo ở `databases:` bên dưới (không cần điền tay).
-      - key: SPRING_DATASOURCE_URL
+      # Database lấy tự động từ Render Postgres khai báo ở `databases:` bên dưới.
+      # ⚠️ KHÔNG map `fromDatabase.property: connectionString` vào SPRING_DATASOURCE_URL: Render trả dạng
+      # `postgresql://user:pass@host/db` trong khi Spring cần JDBC URL (`jdbc:postgresql://host:port/db`) →
+      # app fail với "Driver org.postgresql.Driver claims to not accept jdbcUrl".
+      # Vì `application.yml` tự ghép JDBC URL từ DB_HOST/DB_PORT/DB_NAME, ta map từng phần:
+      - key: DB_HOST
         fromDatabase:
           name: heyganba-postgres
-          property: connectionString
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: heyganba-postgres
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: heyganba-postgres
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: heyganba-postgres
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: heyganba-postgres
+          property: password
       # Múi giờ "ngày học" = giờ VN ở mọi môi trường (quyết định đã chốt) → streak/heatmap reset lúc 00:00 giờ VN.
       - key: APP_STREAK_ZONE
         value: Asia/Ho_Chi_Minh
