@@ -20,3 +20,9 @@ logging:
   level:
     root: WARN
     com.heyganba: INFO
+    # Giữ đủ log để vận hành deploy: thấy "Tomcat started on port(s)" (Render route theo PORT),
+    # tiến trình Flyway, và trạng thái HikariCP khi kết nối Postgres — trước đây prod để WARN nên
+    # deploy treo mà không có manh mối nào trong log.
+    org.springframework.boot: INFO
+    org.flywaydb: INFO
+    com.zaxxer.hikari: INFO
