@@ -16,7 +16,7 @@
 | Backend | Spring Boot (Java), REST API `/api/v1/`, JWT qua Spring Security |
 | Frontend | React + Vite + TypeScript |
 | Database | PostgreSQL (managed) + Flyway migration |
-| Cache/Queue nhẹ | Redis (SRS due-queue, leaderboard streak) |
+| Cache/Queue nhẹ | Redis (SRS due-queue, leaderboard streak) — ⚠️ **CHƯA KÍCH HOẠT**: chưa có managed instance nên staging/production chạy Postgres trực tiếp (`APP_SRS_CACHE=memory`); code `RedisSrsDueCache` đã viết sẵn, bật bằng biến môi trường khi có Redis |
 | Lưu trữ media | Cloudflare R2 (audio phát âm) + CDN |
 | CI/CD | Docker + GitHub Actions |
 | Hosting | Render (backend) + Vercel (frontend) |
@@ -90,7 +90,7 @@
 **Security**
 - Đảm bảo user chỉ đọc/ghi được review của chính mình (kiểm tra `user_id` ở tầng service, không chỉ dựa vào frontend).
 
-**Hoàn thành khi:** SRS chạy đúng logic giãn cách, Redis cache giảm tải rõ rệt cho Postgres.
+**Hoàn thành khi:** SRS chạy đúng logic giãn cách; cache SRS hoạt động đúng (khi có Redis managed: `APP_SRS_CACHE=redis`).
 
 ---
 
@@ -138,7 +138,8 @@
 **Backend**
 - Endpoint thi thử mô phỏng format đề JPD113/JPD123.
 - Streak: cập nhật khi user học đủ điều kiện trong ngày, reset qua job định kỳ.
-- Leaderboard: Redis sorted set theo streak/điểm, theo mã lớp.
+- Leaderboard theo streak/điểm và theo mã lớp: **đang chạy trên PostgreSQL** (Redis sorted set là phương án tối ưu sau,
+  khi đã có Redis managed — API đã tách sẵn nên đổi implementation không ảnh hưởng client).
 - Admin API: CRUD nội dung (kana/kanji/vocab/grammar), không cần deploy lại khi sửa nhỏ.
 
 **Frontend**

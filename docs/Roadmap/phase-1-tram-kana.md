@@ -99,17 +99,30 @@
 
 ## Trạng thái triển khai (cập nhật gần nhất)
 
-Frontend đã có UI thật cho Trạm Kana (thay cho placeholder Phase 0):
+**Backend — đã xong:**
 
-- Tab Hiragana / Katakana; mỗi bảng chia nhóm riêng: Gojūon, Dakuten, Handakuten, Yōon. Katakana có thêm 2 bảng tách riêng: **Mở rộng — tổ hợp âm cho từ mượn** (ファ / フィ / ウィ / ツォ...) và **Ký tự đôi** (促音 ッ, 長音 ー).
+- `GET /api/v1/kana` (lọc theo `type` / `group`), `GET /api/v1/kana/{id}`, `POST /api/v1/kana/quiz/check`
+  (chấm điểm phía server: chuẩn hoá Unicode + chấp nhận biến thể romaji Hepburn/Kunrei, ví dụ `si`→`shi`).
+- Rate limit 60 request/phút/user cho endpoint chấm điểm → request thứ 61 trả `429 TOO_MANY_REQUESTS`
+  (in-memory `RateLimiterService`, chưa cần Redis; khi scale ngang sẽ thay bằng bucket trên Redis).
+- Flyway `V3__seed_kana.sql` sinh tự động từ `frontend/src/features/kana/kanaData.ts`: **247 ký tự**
+  (46+20+5+33 Hiragana; 46+20+5+33 Katakana; 37 Katakana mở rộng; 1 促音; 1 長音), **3 cờ `is_particle_exception`**
+  cho は/へ/を. Có unique index `(character, kana_type)` để seed chạy lại không tạo dữ liệu trùng.
+- Test: `KanaApiTest` 10 case + `SecurityHardeningTest` 10 case; tổng bộ test backend **31 case pass**
+  trên cả H2 và PostgreSQL 16 (Flyway + `ddl-auto=validate`).
+
+**Frontend — đã xong (Phase 1):**
+
+- Tab Hiragana / Katakana; mỗi bảng chia nhóm riêng: Gojūon, Dakuten, Handakuten, Yōon. Katakana có thêm 2 bảng
+  tách riêng: **Mở rộng — tổ hợp âm cho từ mượn** (ファ / フィ / ウィ / ツォ...) và **Ký tự đôi** (促音 ッ, 長音 ー).
 - Bấm chữ → phát audio + panel chi tiết (romaji, nhóm, ghi chú, ví dụ, cảnh báo nhóm dễ nhầm / trợ từ đọc khác).
 - Quiz nhận diện 4 đáp án, phím tắt 1/2/3/4 + Enter, hiện score, chọn phạm vi luyện theo nhóm.
 - Canvas viết tay: chữ mẫu mờ, ô ly, cỡ bút, xoá nét cuối / xoá hết, submit (chưa nhận dạng AI — đúng phạm vi phase này).
-- Dữ liệu kana hiện là bảng nháp frontend `frontend/src/features/kana/kanaData.ts` (247 ký tự), chưa seed PostgreSQL.
 
-Còn thiếu so với phase:
+**Còn thiếu:**
 
-- Audio file trên Cloudflare R2 (hiện fallback Web Speech API ja-JP; field `audioUrl` đã có sẵn trong dữ liệu).
-- API `GET /api/v1/kana`, `GET /api/v1/kana/:id`, `POST /api/v1/kana/quiz/check` (task 1.2) và rate limit (task 1.3).
-- Seed Flyway bảng `kana` + cờ `is_particle_exception` (task 1.1) — chờ duyệt nội dung.
-- 促音/長音 của Hiragana (っ) chưa thêm: hiện chỉ có bảng ký tự đôi cho Katakana theo yêu cầu.
+- Audio file trên Cloudflare R2 (hiện fallback Web Speech API ja-JP; field `audioUrl` có sẵn trong dữ liệu + API).
+- Quiz trên UI đang chấm tại client với feedback tức thì; endpoint server-side đã sẵn sàng để chuyển sang khi cần
+  chống gian lận điểm (chưa cần cho phase này vì quiz kana không tính vào leaderboard).
+- Nội dung kana trong `V3__seed_kana.sql` **chờ người biết tiếng Nhật duyệt** trước khi coi là dữ liệu chính thức.
+- 促音/長音 của Hiragana (っ) chưa thêm — hiện chỉ có bảng ký tự đôi cho Katakana theo yêu cầu ban đầu.

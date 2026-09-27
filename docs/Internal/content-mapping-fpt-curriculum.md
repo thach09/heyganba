@@ -58,6 +58,26 @@ Bảng nháp phía frontend: `frontend/src/features/kana/kanaData.ts` (agent t�
 - Nhóm dễ nhầm khi đọc (し / つ / そ / ん và シ / ツ / ソ / ン) gắn cờ `isCommonMistake` để highlight trong bảng và xuất hiện trong quiz nhận diện.
 - Mục cần duyệt kỹ: cách đọc của ヴ (v/b), nhóm スィ / ズィ (ít dùng), chính tả các từ mượn trong ví dụ (ウィンドウ, カルツォーネ...).
 
+### Seed đã tạo từ mapping này
+
+| Migration | Nội dung | Trạng thái | Chạy ở đâu |
+|---|---|---|---|
+| `V3__seed_kana.sql` | 247 ký tự kana (Hiragana/Katakana đầy đủ + Katakana mở rộng + 促音/長音), 3 cờ `is_particle_exception` | Nháp — chờ duyệt (`review_status = PENDING_REVIEW`) | `db/migration` (mọi môi trường) |
+| `V4__seed_vocabulary.sql` | 44 từ vựng khởi điểm trải 7 bài (jpd113-b1 → jpd123-b7), có reading/nghĩa/Hán Việt/ví dụ | Nháp — chờ duyệt | `db/migration` (mọi môi trường) |
+| `V7__seed_kanji.sql` + `V6__seed_radicals.sql` | 63 kanji + 70 bộ thủ + 101 liên kết | Nháp — chờ duyệt | `db/migration` (mọi môi trường) |
+| `V8__seed_grammar_rules.sql` | 32 điểm ngữ pháp (số hiển thị liên tục 1..32; số gốc `doc:#N` giấu ở `source_ref`) | Nháp — chờ duyệt | `db/migration` (mọi môi trường) |
+| `V9__seed_grammar_exercises.sql` | 64 câu bài tập (29 câu cờ bẫy) | Nháp — chờ duyệt | `db/migration` (mọi môi trường) |
+| `V12__expand_grammar_exercises.sql` | +96 câu (đạt 5 câu/điểm), 46 câu cờ bẫy | **Nháp — CHỜ DUYỆT, KHÔNG promote** | `db/migration-staging` (**chỉ local/staging**) |
+| `V14__expand_trap_exercises.sql` | +146 câu cho nhóm bẫy (mọi nhóm ≥10 câu; tổng 221 câu cờ bẫy) | **Nháp — CHỜ DUYỆT, KHÔNG promote** | `db/migration-staging` (**chỉ local/staging**) |
+
+- Trạng thái duyệt được lưu **trong DB** ở cột `review_status` (migration V13, mặc định `PENDING_REVIEW`) và phơi ra qua
+  `GET /content/review-status`; UI Trạm Trợ từ hiện badge "chờ duyệt".
+- `V12`/`V14` nằm ở `db/migration-staging` nên **production không nhận** — chỉ promote sau khi có người biết tiếng Nhật duyệt
+  (xem `docs/Internal/deployment-plan.md` → "Gate nội dung chưa duyệt").
+
+Các file seed đều ghi rõ trong header rằng nội dung **chưa qua người biết tiếng Nhật duyệt** và phải hoàn tất review trước khi
+coi là dữ liệu chính thức.
+
 ## Việc cần người biết tiếng Nhật duyệt trước khi lên bảng chính thức
 
 - Toàn bộ cách đọc/âm biến đổi (đã liệt kê ở trên) — vì đây là chỗ agent trích xuất tự động dễ sai nhất nếu không hiểu ngữ cảnh.

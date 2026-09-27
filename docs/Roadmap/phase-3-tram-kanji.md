@@ -74,3 +74,29 @@
 1. **Stroke order data:** Nguồn nào? KanjiVG miễn phí nhưng cần verify license cho commercial use.
 2. **Mnemonic:** Ai viết mnemonic? Tự sáng tạo hay dùng nguồn có sẵn? Mnemonic tốt là yếu tố then chốt để user nhớ kanji.
 3. **Kanji data:** Cần người biết tiếng Nhật duyệt cách đọc + Hán Việt trước khi lên production.
+
+---
+
+## Trạng thái triển khai (cập nhật gần nhất)
+
+**Đã xong:**
+
+- Schema: `V5__kanji_practice_progress.sql` (bảng tiến độ luyện viết theo user, unique `(user_id, kanji_id)`).
+- Seed `V6__seed_radicals.sql`: **70 bộ thủ** (bộ thủ dùng trong kanji bài 1–7 + một số bộ thông dụng), có tên tiếng Nhật + nghĩa tiếng Việt.
+- Seed `V7__seed_kanji.sql`: **63 kanji** trải đủ 7 bài (b1: 8, b2: 9, b3: 8, b4: 6, b5: 10, b6: 9, b7: 13), mỗi chữ có
+  stroke count, onyomi, kunyomi, Hán Việt, nghĩa, mnemonic + **101 liên kết kanji ↔ bộ thủ**.
+- API: `GET /kanji` (lọc `lesson` / `radical` / `search` theo nghĩa & Hán Việt & cách đọc), `GET /kanji/{id}`,
+  `GET /radicals`, `POST /kanji/{id}/progress` (rate limit 120/phút).
+- Bảo mật: `POST progress` **server tự +1 theo user trong JWT**, không nhận số đếm từ client (khác đề xuất ban đầu trong roadmap
+  là gửi `{userId, practiceCount}` — cố tình đổi để tránh user tự bơm số liệu).
+- Frontend `KanjiStationView`: tab theo bài học, lọc theo bộ thủ, ô tìm kiếm, grid card kanji, panel chi tiết
+  (onyomi/kunyomi/Hán Việt/nghĩa/mnemonic/bộ thủ/số lần đã luyện) + luyện viết bằng canvas tái sử dụng từ Phase 1.
+- Test: `KanjiApiTest` 9 case (lọc bài/bộ thủ/tìm kiếm, chi tiết 404, tiến độ riêng theo user, validate, 401).
+
+**Còn thiếu / cần xác nhận:**
+
+- **Stroke order animation: chưa làm** vì đã tra cứu và xác nhận **KanjiVG là CC BY-SA 3.0** (share-alike + bắt buộc attribution),
+  không phù hợp để nhúng thẳng vào sản phẩm thương mại. Hiện UI cho luyện viết tự do theo mẫu mờ (đúng phương án dự phòng
+  trong roadmap). Cần Thach quyết: tự vẽ dữ liệu nét, mua nguồn khác, hay chấp nhận share-alike.
+- Mnemonic do agent tự viết (vai trò giáo viên tiếng Nhật) — cần review lại chất lượng sư phạm.
+- Chưa seed đủ 214 bộ thủ (chỉ 70 bộ đang dùng) — nếu muốn tra cứu toàn bộ 214 thì cần bổ sung sau.

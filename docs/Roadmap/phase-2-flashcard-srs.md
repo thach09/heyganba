@@ -90,3 +90,41 @@
 1. **SM-2 variant:** Dùng SM-2 nguyên bản hay rút gọn (3–4 mức thay vì 6)? Đề xuất: 4 mức (Dễ/Được/Khó/Quên).
 2. **Redis hosting:** Free tier Redis có đủ memory cho giai đoạn đầu không? Render Redis starter = 25MB — đủ cho vài trăm user.
 3. **Vocabulary data:** Cần người biết tiếng Nhật duyệt trước khi lên production.
+
+---
+
+## Trạng thái triển khai (cập nhật gần nhất)
+
+**Đã xong:**
+
+- `SrsEngine` (SM-2 rút gọn, thuần logic, không phụ thuộc Spring): 4 mức Dễ(5) / Được(4) / Khó(3) / Quên(1);
+  interval tiến triển 1 → 6 → `interval × ease`; Quên thì reset `repetitions = 0` và ôn lại sau 1 ngày;
+  ease factor chặn dưới 1.3; interval chặn trần 365 ngày. Unit test `SrsEngineTest` 7 case (gồm cả 2 edge case).
+- API: `GET /api/v1/flashcard/due-today` (từ đến hạn + tối đa 10 từ mới/ngày, có `newLimit` để chỉnh và tắt từ mới),
+  `POST /api/v1/flashcard/review` (`{ vocabularyId, rating }` → trả interval mới, due date mới, streak),
+  `GET /api/v1/flashcard/stats`. Rate limit 120 request/phút/user cho endpoint chấm điểm.
+- Bảo mật: mọi truy vấn đều lấy `userId` từ JWT, không có tham số userId từ client; `FlashcardApiTest` có case
+  kiểm tra user B không thấy dữ liệu ôn tập của user A.
+- Cache (task 2.4): `SrsDueCache` + `InMemorySrsDueCache` (TTL = hết ngày theo `app.streak.zone`, mặc định giờ VN); review thành công → invalidate cache.
+- **Redis cache (task 2.4) đã có implementation thật**: `RedisSrsDueCache` (key `srs:due:{userId}`, TTL hết ngày theo `app.streak.zone`,
+  JSON danh sách từ) **bật bằng `APP_SRS_CACHE=redis`**; mặc định vẫn `memory` nên app/staging **không bắt buộc Redis**
+  (hướng an toàn đã chốt). Mọi lỗi Redis đều bị nuốt + log warn (coi như cache miss) để sự cố cache không làm hỏng việc học.
+  Đã verify local với container `heyganba-redis` của `docker-compose.yml` (key xuất hiện + TTL ~21h).
+- Job (task 2.5): `SrsCacheSyncJob` cron `0 5 0 * * *` xoá cache; nếu job fail thì endpoint vẫn chạy bằng Postgres.
+- Seed `V4__seed_vocabulary.sql`: 44 từ khởi điểm trải đủ 7 bài (b1→b7), có reading / nghĩa / Hán Việt / ví dụ,
+  idempotent bằng unique index `(word, lesson_id)`.
+- Frontend `FlashcardView`: lật thẻ bằng Space hoặc click, 4 nút đánh giá (phím 1/2/3/4), progress bar, hiện
+  số từ đã thuộc / từ mới còn lại / streak, empty state "đã ôn xong hôm nay", trạng thái yêu cầu đăng nhập, nút tải lại.
+- Test: `FlashcardApiTest` 8 case (interval 1→6→16, Quên reset chu kỳ, cache invalidate sau khi ôn, cách ly giữa 2 user,
+  validate 400, vocabularyId lạ 404, anonymous 401).
+
+**Còn thiếu / cần xác nhận:**
+
+- **Redis cache (task 2.4)**: implementation đã có thật (`RedisSrsDueCache`, key `srs:due:{userId}`, bật bằng
+  `APP_SRS_CACHE=redis`) và đã verify với container `heyganba-redis` local. Việc còn lại là **quyết định bật ở
+  staging/production** khi có Redis managed dùng chung với leaderboard Phase 5 — mặc định `memory` nên app không phụ thuộc Redis.
+- Nội dung 44 từ trong `V4` là **bản nháp agent soạn** — cần người biết tiếng Nhật review và bổ sung đủ danh sách bài 1–7.
+- Audio phát âm từ vựng chưa có (field `audioUrl` đã sẵn trong bảng/entity/DTO).
+- **Timezone:** ~~streak và due date tính theo UTC~~ → **ĐÃ CHỐT: `app.streak.zone = Asia/Ho_Chi_Minh` ở mọi môi trường**
+  (local/staging/production). Streak, heatmap, TTL cache SRS và job xoá cache (00:05) đều theo giờ VN.
+  Riêng `due_date` của SRS là mốc timestamp (`now + intervalDays`) nên không phụ thuộc múi giờ.

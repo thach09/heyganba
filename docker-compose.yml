@@ -45,6 +45,10 @@ services:
       DB_USER: postgres
       DB_PASSWORD: postgres
       CORS_ALLOWED_ORIGINS: http://localhost:5173,http://localhost:3000
+      # "Ngày học" theo giờ VN ở mọi môi trường (quyết định đã chốt).
+      APP_STREAK_ZONE: Asia/Ho_Chi_Minh
+      # Cache SRS: giữ memory (Postgres trực tiếp) — Redis chưa bật vì chưa có managed instance.
+      APP_SRS_CACHE: memory
     depends_on:
       postgres:
         condition: service_healthy

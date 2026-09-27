@@ -126,7 +126,8 @@ jobs:
   deploy-backend-staging:
     name: Deploy Backend → Render (staging)
     needs: [backend-test, backend-migration-check]
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
+    # Staging chỉ deploy từ nhánh `develop` (đúng quy trình: staging tự động sau khi merge develop).
+    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
     environment: staging
     steps:
@@ -144,7 +145,8 @@ jobs:
   deploy-frontend-staging:
     name: Deploy Frontend → Vercel (staging/preview)
     needs: [frontend-test]
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
+    # Staging chỉ deploy từ nhánh `develop` (đồng bộ với deploy-backend-staging).
+    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
     environment: staging
     steps:

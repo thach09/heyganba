@@ -14,6 +14,11 @@ Agent phải tự đóng đồng thời các vai trò sau trong mọi tác vụ,
 
 **QA / Tester** — với mỗi tính năng, viết test cho luồng chính và ít nhất 1 edge case; test riêng cho phân quyền (user thường không gọi được API admin).
 
+**Giáo viên tiếng Nhật** — với nội dung học thuật (kana / kanji / từ vựng / ngữ pháp / ví dụ / mnemonic), agent tự soạn nội dung
+thay vì chờ người duyệt từng câu, nhưng phải: bám đúng ngữ pháp tiếng Nhật, viết lại bằng lời của mình (không copy nguyên văn
+nguồn có bản quyền), gắn cảnh báo `DRAFT — chờ duyệt` ở đầu mỗi file seed, và **tự tra cứu nguồn ngoài khi không chắc chắn**
+(cách đọc hiếm, số nét, license dữ liệu bên thứ ba...) rồi ghi lại kết quả kiểm chứng trong báo cáo tiến độ.
+
 ## Quyền hạn
 
 **Được phép:**
@@ -42,3 +47,60 @@ Sau mỗi phase, agent báo cáo ngắn gọn gồm 3 phần:
 1. Đã hoàn thành gì (đối chiếu với mục "Hoàn thành khi" trong roadmap).
 2. Còn thiếu/chưa làm gì.
 3. Rủi ro hoặc quyết định cần Thach xác nhận trước khi qua phase tiếp theo.
+
+## Kinh nghiệm bắt buộc nhớ khi viết seed SQL (Flyway)
+
+Đã từng làm vỡ migration 2 lần, các điểm sau phải tự kiểm trước khi commit:
+
+- **Không được để dấu `;` bên trong chuỗi** (kể cả tiếng Việt/Nhật): Flyway tách statement theo `;` nên file sẽ vỡ với lỗi
+  `syntax error at or near ")"`. Dùng dấu phẩy hoặc chữ "và".
+- **Dòng cuối trong danh sách `VALUES` không có dấu phẩy thừa** trước `)`.
+- **Thứ tự cột phải khớp giữa danh sách giá trị và alias** `AS x(col1, col2, ...)` — hay sai khi vừa thêm cột `slug` vừa thêm
+  `order_index`.
+- Luôn tạo unique index + `ON CONFLICT ... DO NOTHING` để seed chạy lại không sinh dữ liệu trùng.
+- **Nối thêm row vào file `VALUES` đã có (viết theo từng chunk) rất dễ sai dấu phẩy**: dòng cuối của chunk đã ghi phải có `,`
+  thì chunk mới mới nối được, và dòng cuối cùng của cả danh sách thì KHÔNG được có `,`. Lỗi này chỉ lộ khi chạy migration
+  (`syntax error at or near "("` hoặc `")"`) — không thấy khi chỉ đọc code.
+- Verify bằng cách chạy migration thật trên PostgreSQL local + **đếm số bản ghi** sau khi apply (không chỉ tin "migration chạy không lỗi").
+  Cách nhanh, không cần restart app:
+  ```powershell
+  docker cp backend/src/main/resources/db/migration/V12__*.sql heyganba-postgres:/tmp/v12.sql
+  docker exec heyganba-postgres psql -U postgres -d heyganba -v ON_ERROR_STOP=1 -c 'BEGIN' -f /tmp/v12.sql `
+    -c 'SELECT count(*) FROM grammar_exercises' -c 'ROLLBACK'
+  ```
+  (BEGIN + ROLLBACK để thử cú pháp/dữ liệu trước rồi mới để Flyway apply thật khi restart backend.)
+
+## Kinh nghiệm khi smoke test trên PostgreSQL thật (H2 trong test KHÔNG bắt được)
+
+- **`@Transactional(readOnly = true)` + ghi dữ liệu = 500 trên PostgreSQL**: `GrammarService.checkAnswer` từng được chấm điểm
+  trong transaction readOnly nên INSERT `study_activities` bị PostgreSQL chặn (`cannot execute INSERT in a read-only transaction`).
+  Test H2 không phát hiện. Vì vậy: sau khi **thêm ghi dữ liệu vào một method đang readOnly**, phải đổi annotation thành `@Transactional`
+  (mặc định) và **gọi thử endpoint thật**. Hiện có guard test `checkAnswerMustStayWritableTransaction` cho case này.
+- **Biến môi trường `SPRING_*` rò rỉ giữa các lệnh trong cùng terminal**: nếu trước đó đã chạy `SPRING_DATASOURCE_URL=...migrationcheck mvn test`
+  thì mọi lệnh sau (kể cả `mvn spring-boot:run`) sẽ dùng DB đó → app fail với `FATAL: database "..." does not exist`, hoặc
+  **toàn bộ test đỏ 68 case** vì mất context. Luôn `Remove-Item Env:SPRING_DATASOURCE_URL,...` ở **cùng lệnh** trước khi chạy lại.
+- **Trên Windows, `mvn clean` fail khi app đang chạy** (`Failed to delete ...\target\classes\...`) vì file bị khoá.
+  Dừng tiến trình đang giữ cổng 8080 trước khi build/clean, rồi mới `spring-boot:run`.
+
+## Quy tắc nội dung chờ duyệt & múi giờ (quyết định của Thach — bắt buộc tuân thủ)
+
+- **Nội dung CHƯA được duyệt tiếng Nhật phải nằm ở `backend/src/main/resources/db/migration-staging`**, không được
+  đặt vào `db/migration` (thư mục đó chạy ở CẢ production). `application-prod.yml` chỉ trỏ `classpath:db/migration`;
+  local/staging trỏ cả 2 thư mục. Guard test: `FlywayLocationsConfigTest` (kiểm tra cả version trùng giữa 2 thư mục).
+  Promote = chuyển file sang `db/migration` + `UPDATE review_status='APPROVED'` sau khi có người duyệt.
+- **Mọi bản ghi nội dung mới phải để `review_status = 'PENDING_REVIEW'`** (mặc định từ V13). Khi thêm bảng/bảng mới có
+  nội dung học thuật, thêm cột `review_status` + index và khai báo trong `ContentReviewStatusService` để
+  `GET /content/review-status` phản ánh đúng (đừng để nội dung nháp bị coi là đã sẵn sàng).
+- **Múi giờ "ngày học" là `Asia/Ho_Chi_Minh` ở mọi môi trường** (`app.streak.zone`, mặc định trong `StreakService.DEFAULT_ZONE`).
+  Mọi logic "một ngày" (streak, heatmap, TTL cache SRS, cron job) phải lấy theo zone này, KHÔNG hardcode UTC
+  (trước đây heatmap/cache dùng UTC nên user học 0h–7h sáng giờ VN bị tính sang ngày hôm trước).
+- **Redis chưa bật** (chưa có managed instance): giữ `APP_SRS_CACHE=memory`. Code `RedisSrsDueCache` đã viết sẵn,
+  không xoá; khi có Redis managed chỉ đổi biến môi trường.
+
+## Kinh nghiệm viết integration test
+
+- Test class nào chạm bảng nội dung (kana / vocabulary / kanji / grammar) phải `extends ContentApiTestBase`
+  (`src/test/java/com/heyganba/support/`) để xoá dữ liệu theo đúng thứ tự khoá ngoại — nếu không, test sẽ đỏ tuỳ theo
+  thứ tự chạy của Surefire chứ không phải do code sai.
+- Khi chạy test với biến môi trường trỏ DB khác (migration check), nhớ `Remove-Item Env:SPRING_...` sau khi chạy, nếu không
+  các lần chạy test sau sẽ dùng nhầm DB và fail với lỗi driver H2.

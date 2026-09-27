@@ -85,3 +85,48 @@
 1. **Bài tập:** Ai viết câu hỏi + đáp án? Agent tạo draft → người biết tiếng Nhật duyệt? Hay Thach tự viết?
 2. **Số lượng bài tập:** Cần bao nhiêu câu mỗi điểm ngữ pháp? Đề xuất: tối thiểu 5 câu/điểm, nhóm bẫy cần 10+ câu.
 3. **Audio cho bài tập:** Nguồn audio? TTS hay thu riêng?
+
+---
+
+## Trạng thái triển khai (cập nhật gần nhất)
+
+**Đã xong:**
+
+- Seed `V8__seed_grammar_rules.sql`: **32 điểm ngữ pháp** — 17 điểm JPD113 (bài 1–3) + 15 mục JPD123 (bài 4–7),
+  **giữ đúng `original_number` của tài liệu gốc: nhảy từ 5 sang 7 (không có mục 6)** để đối chiếu ngược lại nguồn.
+- Seed `V9__seed_grammar_exercises.sql`: **64 bài tập** (2 câu/điểm), trong đó **29 câu gắn `is_common_mistake = TRUE`**
+  với `mistake_category` (`particle-ha`, `particle-he`, `particle-wo`, `counter-time`, `counter-date`, `adjective-i`,
+  `adjective-na`, `te-form`, `comparison`, `verb-tai`, `polite-negative`, `particle-ga`, `particle-de`, `transport`).
+- API: `GET /grammar/rules` (lọc `lesson`), `GET /grammar/rules/{id}`, `GET /grammar/exercises` (lọc `ruleId`, `mistakeOnly`),
+  `POST /grammar/exercises/{id}/check` (chấm điểm phía server, chuẩn hoá Unicode + trim, rate limit 120/phút/user).
+- **Không lộ đáp án**: DTO trả cho UI cố tình bỏ `correctAnswer`/`explanation`; đáp án chỉ về sau khi gọi endpoint check
+  (có test `exercisesDoNotLeakCorrectAnswer` để chốt hành vi này).
+- Seed `V12__expand_grammar_exercises.sql` (**staging-only**): **+96 bài tập**, trong đó **46 câu gắn `is_common_mistake = TRUE`**.
+- Seed `V14__expand_trap_exercises.sql` (**staging-only**): **+146 câu cho nhóm bẫy** để **mọi nhóm đều ≥ 10 câu**.
+  Lưu ý: taxonomy thực tế hiện có **22 nhóm bẫy** (tài liệu giai đoạn đầu ghi 14 vì lúc đó mới có 14 giá trị
+  `mistake_category`); V14 nâng cả 22 nhóm lên ≥10. Tổng bài tập: **306 câu / 32 điểm**, trong đó **221 câu gắn cờ bẫy**.
+- **Gate "chờ duyệt nội dung tiếng Nhật" (V13)**: cột `review_status` (mặc định `PENDING_REVIEW`) cho
+  `kana`, `vocabulary`, `kanji`, `grammar_rules`, `grammar_exercises`; API `GET /content/review-status` trả số bản ghi
+  chờ duyệt theo từng loại + danh sách migration**staging-only** (`V12`, `V14`); `GrammarView` hiện banner + badge
+  "chờ duyệt"; DTO ngữ pháp trả `reviewStatus`.
+- **Nội dung chờ duyệt KHÔNG lên production**: Flyway local/staging đọc
+  `classpath:db/migration,classpath:db/migration-staging`, còn `application-prod.yml` chỉ đọc `classpath:db/migration`
+  (promote = chuyển file sang `db/migration` sau khi review). Có guard test `FlywayLocationsConfigTest`.
+- **Đánh số ngữ pháp liên tục (V11)**: UI hiển thị số 1..32 theo đúng thứ tự dạy; số gốc của tài liệu (có khoảng trống 5→7)
+  được giữ nội bộ ở `grammar_rules.source_ref` (dạng `doc:#N`) và **không trả ra API** — có test
+  `listRulesUsesContinuousNumbering` chốt việc không lộ `sourceRef`/`originalNumber`.
+- Frontend `GrammarView`: chọn bài học, bật lọc "Chỉ nhóm bẫy thường gặp", danh sách điểm ngữ pháp kèm **số thứ tự liên tục**,
+  luyện điền khuyết 4 lựa chọn với phím 1/2/3/4 + Enter, hiện giải thích sau khi chấm, đếm đúng/tổng.
+- Mỗi câu bài tập chấm xong được ghi vào `study_activities` (nguồn `GRAMMAR`) → tính vào streak heatmap và ngưỡng streak
+  (≥10 câu/ngày). ⚠️ `GrammarService.checkAnswer` là transaction **ghi** — nếu ai đổi thành `readOnly = true` thì PostgreSQL
+  chặn INSERT và endpoint trả 500 (test H2 không bắt được); có guard test `checkAnswerMustStayWritableTransaction`.
+- Test: `GrammarApiTest` 9 case (numbering liên tục, lọc bài, chi tiết 404, không lộ đáp án, lọc nhóm bẫy, chấm đúng/sai,
+  validate, 401, guard transaction readOnly).
+
+**Còn thiếu / cần xác nhận:**
+
+- **Duyệt nội dung tiếng Nhật**: toàn bộ 306 câu + 32 điểm ngữ pháp vẫn ở trạng thái `PENDING_REVIEW`; **V12/V14 chỉ
+  chạy ở local/staging**, chưa promote lên production. Promote khi nào duyệt xong (xem deployment-plan → "Gate nội dung chưa duyệt").
+- Nhóm bẫy hiện 22 nhóm × ≥10 câu (221 câu), phân bố không đều (nhóm nhiều nhất 14 câu) — nếu muốn mỗi nhóm đúng chuẩn
+  ≥10 câu cho từng chủ đề nhỏ hơn thì cần tách taxonomy chi tiết hơn.
+- Audio cho bài tập chưa có (schema đã có sẵn `grammar_exercises.audio_url`).
