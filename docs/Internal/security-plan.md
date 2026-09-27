@@ -91,3 +91,10 @@ Plan ưu tiên cookie `httpOnly` cho refresh token. Hiện cả access + refresh
 chuyển `/auth/login|refresh` sang set cookie `HttpOnly; Secure; SameSite=Lax; Path=/api/v1/auth`, bỏ `refreshToken`
 khỏi response body, và frontend đổi sang `credentials: 'include'`.
 
+### Đánh đổi đã biết của rate limit theo tài khoản
+
+Kẻ tấn công biết email admin (`admin@heyganba.vn`) có thể cố tình đăng nhập sai 5 lần để tạm khoá đường đăng nhập của
+admin trong 15 phút (self-DoS). Đổi lại, đây cũng chính là cơ chế chặn brute-force cho tài khoản quyền cao nhất.
+Giảm nhẹ hiện có: bộ đếm nằm trong memory của instance nên **restart service Render là xoá sạch**. Khi số lượng admin
+tăng, nên bổ sung exponential backoff theo IP và thông báo (email/log) cho admin mỗi khi có chuỗi đăng nhập sai.
+
