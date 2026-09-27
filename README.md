@@ -100,6 +100,11 @@ Tài khoản Quản trị viên được khởi tạo sẵn qua Flyway Migration
 
 > ⚠️ Đây là tài khoản seed cho local/staging. **Phải đổi mật khẩu** (hoặc tạo admin riêng qua biến môi trường) trước khi public.
 > Nút "Nạp sẵn tài khoản Admin thử nghiệm" ở màn đăng nhập chỉ hiện trong môi trường dev, không lộ ra production.
+>
+> 🔐 **Production (27/09/2026): mật khẩu admin đã được xoay** — giá trị ở trên **không** còn dùng được trên production.
+> Mật khẩu production lưu trong `.local-secrets.env` (gitignored, key `PROD_ADMIN_PASSWORD`); khi cần đổi tiếp thì
+> `UPDATE users SET password_hash = <bcrypt-hash>, updated_at = now() WHERE email = 'admin@heyganba.vn';`
+> (hash BCrypt tạo bằng `BCryptPasswordEncoder` — xem `docs/Internal/deployment-plan.md`).
 
 ---
 

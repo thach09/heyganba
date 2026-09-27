@@ -192,6 +192,8 @@ Sau mỗi phase, agent báo cáo ngắn gọn gồm 3 phần:
   (`CappedServletInputStream` — unit test riêng vì MockMvc luôn set `Content-Length`, không test được luồng stream).
 - CSP ở `frontend/vercel.json` **phải whitelist Google Fonts** (`fonts.googleapis.com` cho `style-src`,
   `fonts.gstatic.com` cho `font-src`) vì `index.css` import font qua CDN; `style-src` cũng cần `'unsafe-inline'`
-  do app dùng inline style của React. Nếu thêm dịch vụ ngoài (Sentry, R2 audio…) thì phải cập nhật CSP tương ứng
-  (`connect-src` / `media-src`).
+  do app dùng inline style của React. **Bắt buộc có `worker-src 'self' blob:`** (kèm `child-src` cho Safari cũ) vì
+  `canvas-confetti` tạo worker từ `URL.createObjectURL(new Blob(...))` — thiếu `worker-src blob:` thì 5 màn hình
+  có hiệu ứng chúc mừng (Kana quiz, Flashcard, Grammar, Exam, Station placeholder) sẽ lỗi khi hoàn thành bài.
+  Nếu thêm dịch vụ ngoài (Sentry, R2 audio…) thì phải cập nhật CSP tương ứng (`connect-src` / `media-src`).
 

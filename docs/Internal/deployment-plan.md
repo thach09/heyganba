@@ -139,6 +139,66 @@ không tự deploy backend**; phải làm một trong hai:
 
 Frontend thì ngược lại: project Vercel đã liên kết GitHub (`main` = production branch) → push `main` là Vercel tự build/deploy.
 
+### Xoay mật khẩu admin production (đã làm 27/09/2026)
+
+Tài khoản seed `admin@heyganba.vn` có mật khẩu nằm trong README (ai đọc repo cũng biết) → **bắt buộc xoay trước khi public**.
+Không có endpoint đổi mật khẩu, và `psql` không có trên Windows, nên quy trình là: tạo hash BCrypt rồi UPDATE qua container Postgres.
+
+```powershell
+# 1. Tạo hash BCrypt (dùng chính thư viện của backend, KHÔNG tự viết lại thuật toán)
+cd backend
+mvn -q dependency:build-classpath "-Dmdep.outputFile=target/cp.txt"
+@'
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+public class BcryptHash {
+  public static void main(String[] args) {
+    System.out.println(new BCryptPasswordEncoder().encode(args[0]));
+  }
+}
+'@ | Set-Content -Encoding ASCII "$env:TEMP\BcryptHash.java"
+$pw = 'Hg!' + (-join ((48..57)+(65..90)+(97..122) | Get-Random -Count 22 | ForEach-Object { [char]$_ }))
+$hash = (java -cp (Get-Content target/cp.txt -Raw) "$env:TEMP\BcryptHash.java" $pw).Trim()
+
+# 2. Cập nhật DB (JDBC URL của Neon: xem docs/Internal/deployment-plan.md → Database trên Neon)
+docker run --rm postgres:16-alpine psql "<neon-uri>" -c "update users set password_hash = '$hash', updated_at = now() where email = 'admin@heyganba.vn'"
+
+# 3. Lưu mật khẩu mới vào .local-secrets.env (gitignored) với key PROD_ADMIN_PASSWORD
+```
+Kiểm tra sau khi xoay: `POST /api/v1/auth/login` với email admin + mật khẩu mới → 200 và `role = ROLE_ADMIN`;
+mật khẩu cũ trong README → 401.
+
+### Bảo vệ tầng request (rate limit + payload) — đã bật ở production
+
+- `POST /auth/login`: 5 lần SAI/15 phút cho mỗi tài khoản (đăng nhập đúng không bị tính) + 100 lần SAI/15 phút cho mỗi IP.
+- `POST /auth/register`: 30 lần/giờ cho mỗi IP; `POST /auth/refresh`: 300 lần/15 phút cho mỗi IP.
+- Body > 64KB → `413 PAYLOAD_TOO_LARGE` (đổi ngưỡng bằng `APP_MAX_REQUEST_BYTES`).
+- Ngưỡng auth đổi được không cần sửa code: `APP_AUTH_LOGIN_MAX_FAILED_PER_EMAIL`, `APP_AUTH_LOGIN_MAX_FAILED_PER_IP`,
+  `APP_AUTH_REGISTER_MAX_PER_IP`, `APP_AUTH_REFRESH_MAX_PER_IP`.
+- **Lưu ý vận hành**: bộ đếm nằm trong memory của instance (chưa có Redis). Render free tier tự ngủ sau ~15 phút không có
+  request → bộ đếm reset theo; khi scale nhiều instance thì phải chuyển sang Redis (đã có sẵn `RedisSrsDueCache` làm mẫu).
+
+### Kết quả kiểm tra production sau khi bật hardening (27/09/2026)
+
+| Kiểm tra | Kết quả |
+|---|---|
+| `GET /api/v1/health` | `status=UP`, `service=heyganba-backend` |
+| Header của API | `strict-transport-security: max-age=31536000`, `x-content-type-options: nosniff`, `x-frame-options: DENY` |
+| `https://heyganba.site` | 200 + `Content-Security-Policy`, HSTS, `X-Frame-Options: DENY`; cert Let's Encrypt (`certs=2` ở Vercel) |
+| `https://www.heyganba.site` | 308 → `https://heyganba.site/` (đặt qua `PATCH /v9/projects/{id}/domains/www.heyganba.site` body `{"redirect":"heyganba.site","redirectStatusCode":308}`) |
+| Admin login (mật khẩu đã xoay) | 200 + `role=ROLE_ADMIN`; mật khẩu cũ trong README → 401 |
+| RBAC | user thường `GET /admin/status` → 403; admin → 200 |
+| CORS preflight | `Origin: https://evil.example` → 403 (không trả `access-control-allow-origin`); `Origin: https://heyganba.site` → 200 + `access-control-allow-origin: https://heyganba.site` |
+| Body 70KB | `413 PAYLOAD_TOO_LARGE` |
+| Brute-force login | 5 lần sai → lần thứ 6 `429 TOO_MANY_REQUESTS` |
+| Gate nội dung chờ duyệt | `GET /content/review-status` → `stagingOnlyMigrations: [V12, V14]`, `totalPendingReview: 450` |
+| Dữ liệu production | chỉ còn 1 user (`admin@heyganba.vn`); 4 user test đã xoá (cascade `streaks`/`srs_reviews`/`exam_results` sạch) |
+
+- Mẹo khi test bằng PowerShell 5.1: gửi POST JSON bằng file (`curl.exe --data-binary "@body.json"`) — truyền JSON trực
+  tiếp bằng `-d` bị PowerShell làm mất dấu ngoặc kép → server trả `400 invalid JSON format` (không phải lỗi backend).
+- Sau khi bật CSP cần kiểm tra lại các API trình duyệt dùng blob worker (`canvas-confetti` → `worker-src 'self' blob:`).
+
+
+
 
 - Nếu API trả `502/503`: kiểm tra log Render (thiếu `JWT_SECRET` làm app **fail-fast** lúc khởi động).
 - Nếu frontend báo “Máy chủ backend chưa khởi chạy”: `VITE_API_BASE_URL` chưa đúng hoặc chưa redeploy Vercel sau khi set biến.
