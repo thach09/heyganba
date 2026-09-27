@@ -265,7 +265,9 @@ export const ExamView: React.FC<ExamViewProps> = ({ user, onRequireLogin }) => {
   }, [exam, answers, loadProgress]);
 
   const submitRef = useRef(submitExam);
-  submitRef.current = submitExam;
+  useEffect(() => {
+    submitRef.current = submitExam;
+  }, [submitExam]);
 
   useEffect(() => {
     if (phase !== 'TAKING' || !exam) {

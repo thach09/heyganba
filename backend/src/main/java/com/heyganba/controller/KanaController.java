@@ -8,8 +8,10 @@ import com.heyganba.dto.kana.KanaQuizCheckResponse;
 import com.heyganba.dto.kana.KanaResponse;
 import com.heyganba.model.enums.KanaGroup;
 import com.heyganba.model.enums.KanaType;
+import com.heyganba.common.util.ClientIpResolver;
 import com.heyganba.service.KanaService;
 import com.heyganba.service.RateLimiterService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -54,9 +56,12 @@ public class KanaController {
     @PostMapping("/quiz/check")
     public ResponseEntity<ApiResponse<KanaQuizCheckResponse>> checkQuiz(
             @Valid @RequestBody KanaQuizCheckRequest request,
-            @AuthenticationPrincipal UserPrincipal currentUser
+            @AuthenticationPrincipal UserPrincipal currentUser,
+            HttpServletRequest httpRequest
     ) {
-        String rateLimitKey = currentUser != null ? "kana-quiz:" + currentUser.getId() : "kana-quiz:anonymous";
+        String rateLimitKey = currentUser != null
+                ? "kana-quiz:user:" + currentUser.getId()
+                : "kana-quiz:ip:" + ClientIpResolver.resolve(httpRequest);
 
         if (!rateLimiterService.tryConsume(rateLimitKey, QUIZ_RATE_LIMIT, QUIZ_RATE_WINDOW)) {
             throw new TooManyRequestsException(

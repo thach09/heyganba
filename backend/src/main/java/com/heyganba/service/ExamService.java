@@ -247,7 +247,9 @@ public class ExamService {
     }
 
     private int currentStreak(Long userId) {
-        return streakRepository.findByUserId(userId).map(Streak::getCurrentStreak).orElse(0);
+        return streakRepository.findByUserId(userId)
+                .map(s -> streakService.calculateEffectiveCurrentStreak(s, streakService.today(Instant.now())))
+                .orElse(0);
     }
 
     // -----------------------------------------------------------------

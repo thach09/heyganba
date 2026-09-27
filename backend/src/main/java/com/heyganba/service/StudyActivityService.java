@@ -85,10 +85,12 @@ public class StudyActivityService {
     public StreakResponse getStreak(Long userId) {
         Streak streak = streakRepository.findByUserId(userId).orElse(null);
         Instant now = Instant.now();
-        int todaySrsReviews = sumItems(userId, streakService.today(now), SOURCE_FLASHCARD);
+        LocalDate today = streakService.today(now);
+        int todaySrsReviews = sumItems(userId, today, SOURCE_FLASHCARD);
+        int currentStreak = streakService.calculateEffectiveCurrentStreak(streak, today);
 
         return new StreakResponse(
-                streak != null ? streak.getCurrentStreak() : 0,
+                currentStreak,
                 streak != null ? streak.getLongestStreak() : 0,
                 streak != null ? streak.getLastActiveDate() : null,
                 studyActivityRepository.countByUserId(userId),

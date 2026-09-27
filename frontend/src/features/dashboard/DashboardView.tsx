@@ -68,7 +68,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onSelectStation, u
       features: ['Thuật toán SM-2 rút gọn', 'Hàng đợi ôn tập theo ngày', 'Cache Redis tối ưu', 'Từ vựng theo bài 1–7'],
       icon: Layers,
       color: '#10B981',
-      status: 'Planned',
+      status: 'Ready',
     },
     {
       key: 'kanji' as StationKey,
@@ -78,7 +78,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onSelectStation, u
       features: ['214 Bộ thủ thông dụng', 'Thứ tự bài học Dekiru', 'Hán Việt + Onyomi/Kunyomi', 'Luyện viết Kanji'],
       icon: BookOpen,
       color: '#F59E0B',
-      status: 'Planned',
+      status: 'Ready',
     },
     {
       key: 'grammar' as StationKey,
@@ -88,7 +88,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onSelectStation, u
       features: ['Bẫy trợ từ は/へ/を', 'Số đếm biến âm ngoại lệ', 'Chấm điểm phía Server', 'Audio ngữ cảnh'],
       icon: Sparkles,
       color: '#8B5CF6',
-      status: 'Planned',
+      status: 'Ready',
     },
     {
       key: 'exam' as StationKey,
@@ -98,7 +98,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onSelectStation, u
       features: ['Mô phỏng đề JPD113/123', 'Streak Heatmap', 'Mascot tiến hóa', 'Leaderboard theo lớp'],
       icon: GraduationCap,
       color: '#EC4899',
-      status: 'Planned',
+      status: 'Ready',
     },
   ];
 

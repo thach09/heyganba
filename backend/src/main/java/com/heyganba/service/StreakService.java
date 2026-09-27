@@ -46,6 +46,21 @@ public class StreakService {
         return streakRepository.findByUserId(userId);
     }
 
+    /**
+     * Tính streak hiện tại thực tế: nếu ngày học gần nhất trước hôm qua (đã bỏ lỡ ít nhất 1 ngày),
+     * streak hiện tại đã bị đứt và trở về 0.
+     */
+    public int calculateEffectiveCurrentStreak(Streak streak, LocalDate today) {
+        if (streak == null || streak.getLastActiveDate() == null) {
+            return 0;
+        }
+        LocalDate lastActive = streak.getLastActiveDate();
+        if (lastActive.equals(today) || lastActive.equals(today.minusDays(1))) {
+            return streak.getCurrentStreak();
+        }
+        return 0;
+    }
+
     /** Ghi nhận user có hoạt động học hôm nay và trả về streak sau khi cập nhật. */
     public Streak touch(User user, Instant now) {
         Streak streak = streakRepository.findByUserId(user.getId())

@@ -129,4 +129,32 @@ class StreakServiceTest {
         assertEquals(1, second.getCurrentStreak());
         assertEquals(LocalDate.of(2026, 9, 28), second.getLastActiveDate());
     }
+
+    @Test
+    @DisplayName("calculateEffectiveCurrentStreak: trả về 0 nếu user đã bỏ lỡ ngày hôm qua")
+    void effectiveStreakCalculatesZeroWhenYesterdayWasMissed() {
+        StreakService service = new StreakService(null, "UTC");
+        LocalDate today = LocalDate.of(2026, 9, 30);
+
+        // streak null hoặc chưa từng học
+        assertEquals(0, service.calculateEffectiveCurrentStreak(null, today));
+        assertEquals(0, service.calculateEffectiveCurrentStreak(
+                Streak.builder().currentStreak(5).lastActiveDate(null).build(), today));
+
+        // Đã học hôm nay
+        assertEquals(5, service.calculateEffectiveCurrentStreak(
+                Streak.builder().currentStreak(5).lastActiveDate(today).build(), today));
+
+        // Đã học hôm qua (hôm nay chưa học nhưng streak vẫn còn sống)
+        assertEquals(5, service.calculateEffectiveCurrentStreak(
+                Streak.builder().currentStreak(5).lastActiveDate(today.minusDays(1)).build(), today));
+
+        // Nghỉ học từ 2 ngày trước → streak bị đứt về 0
+        assertEquals(0, service.calculateEffectiveCurrentStreak(
+                Streak.builder().currentStreak(5).lastActiveDate(today.minusDays(2)).build(), today));
+
+        // Nghỉ học lâu ngày (10 ngày) → 0
+        assertEquals(0, service.calculateEffectiveCurrentStreak(
+                Streak.builder().currentStreak(10).lastActiveDate(today.minusDays(10)).build(), today));
+    }
 }

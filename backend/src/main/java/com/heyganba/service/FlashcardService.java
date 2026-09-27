@@ -140,12 +140,13 @@ public class FlashcardService {
         long availableNewWords = Math.max(0, visibleTotalWords - reviewedWords);
 
         Streak streak = streakRepository.findByUserId(userId).orElse(null);
+        int currentStreak = streakService.calculateEffectiveCurrentStreak(streak, streakService.today(Instant.now()));
 
         return new FlashcardStatsResponse(
                 learnedWords,
                 dueToday,
                 availableNewWords,
-                streak != null ? streak.getCurrentStreak() : 0,
+                currentStreak,
                 streak != null ? streak.getLongestStreak() : 0
         );
     }
