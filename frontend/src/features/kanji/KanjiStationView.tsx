@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { BookOpen, PenLine, Search, Sparkles } from 'lucide-react';
+import { PenLine, Search, X } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import { OnboardingTooltip } from '../../components/OnboardingTooltip';
 import { FeedbackAlert } from '../../components/FeedbackAlert';
 import type { FeedbackType } from '../../components/FeedbackAlert';
 import { SubmitButton } from '../../components/SubmitButton';
@@ -54,6 +53,26 @@ const LESSON_OPTIONS = [
   { slug: 'jpd123-b7', label: 'Bài 7' },
 ];
 
+const STATION_TABS: { key: 'BROWSE' | 'WRITE'; label: string }[] = [
+  { key: 'BROWSE', label: 'Tra cứu' },
+  { key: 'WRITE', label: 'Luyện viết' },
+];
+
+const chipClass = (active: boolean) =>
+  `cursor-pointer border px-3 py-1.5 text-[11.5px] transition-colors ${
+    active ? 'border-fg bg-fg text-bg' : 'border-rule-strong bg-transparent text-fg-60 hover:border-fg hover:text-fg'
+  }`;
+
+const labelClass = 'text-[10.5px] font-semibold uppercase tracking-[0.18em] text-fg-38';
+
+/** Mnemonic nổi hơn phần còn lại của panel: nền `tint` thay cho vạch kẻ. */
+const MnemonicBlock: React.FC<{ text: string }> = ({ text }) => (
+  <div className="bg-tint px-4 py-3">
+    <span className={labelClass}>Mnemonic</span>
+    <p className="mt-1 text-[12.5px] leading-[1.8] text-fg-60">{text}</p>
+  </div>
+);
+
 export const KanjiStationView: React.FC<KanjiStationViewProps> = ({ user, onRequireLogin }) => {
   const [kanjiList, setKanjiList] = useState<KanjiDto[]>([]);
   const [radicals, setRadicals] = useState<RadicalDto[]>([]);
@@ -62,9 +81,10 @@ export const KanjiStationView: React.FC<KanjiStationViewProps> = ({ user, onRequ
   const [search, setSearch] = useState<string>('');
   const [searchInput, setSearchInput] = useState<string>('');
   const [selected, setSelected] = useState<KanjiDto | null>(null);
-  const [practiceOpen, setPracticeOpen] = useState(false);
+  const [mode, setMode] = useState<'BROWSE' | 'WRITE'>('BROWSE');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [helpOpen, setHelpOpen] = useState(false);
   const [feedback, setFeedback] = useState<{ type: FeedbackType; title: string; message: string } | null>(null);
 
   const loadKanji = useCallback(async () => {
@@ -147,13 +167,13 @@ export const KanjiStationView: React.FC<KanjiStationViewProps> = ({ user, onRequ
 
   if (!user) {
     return (
-      <div className="flashcard-shell">
-        <div className="flashcard-login-required">
-          <BookOpen size={26} color="var(--accent-gold)" />
-          <h2 style={{ fontSize: '18px', fontWeight: 800 }}>Đăng nhập để tra cứu & luyện viết Kanji</h2>
-          <p style={{ fontSize: '14px', color: 'var(--text-secondary)', maxWidth: '520px', textAlign: 'center' }}>
-            Tiến độ luyện viết được lưu theo tài khoản để bạn theo dõi số lần đã luyện từng chữ.
-          </p>
+      <div className="mx-auto flex w-full max-w-[560px] flex-col items-center pt-16 text-center">
+        <span className="font-serif text-[34px] font-light leading-none text-fg">漢字</span>
+        <p className="mt-5 text-[13px] leading-[1.9] text-fg-60">
+          Đăng nhập để tra cứu Kanji và luyện viết. Tiến độ luyện viết được lưu theo tài khoản để bạn theo dõi số lần
+          đã luyện từng chữ.
+        </p>
+        <div className="mt-7">
           <SubmitButton onClick={onRequireLogin}>Đăng nhập / Đăng ký</SubmitButton>
         </div>
       </div>
@@ -161,195 +181,358 @@ export const KanjiStationView: React.FC<KanjiStationViewProps> = ({ user, onRequ
   }
 
   return (
-    <div className="kanji-shell">
-      <OnboardingTooltip
-        storageKey="kanji"
-        title="Hướng dẫn tra cứu Kanji"
-        description="Lọc theo bài học, bộ thủ hoặc tìm theo nghĩa/Hán Việt. Bấm vào chữ để xem cách đọc, mnemonic và luyện viết."
-      />
-
-      <div className="kana-hero">
-        <span className="kana-phase-badge">
-          <Sparkles size={13} />
-          <span>Phase 3</span>
-        </span>
-        <h2 className="kana-hero-title">Bộ Thủ &amp; Hán Tự (Kanji)</h2>
-        <p className="kana-hero-desc">
-          Kanji xếp theo đúng thứ tự bài học JPD113/JPD123, kèm bộ thủ, âm Hán Việt, onyomi/kunyomi và mnemonic
-          ghi nhớ. Bấm vào chữ để luyện viết theo mẫu.
-        </p>
-        <div className="kana-hero-stats">
-          <span className="kana-stat">
-            Đang hiển thị <strong>{kanjiList.length}</strong> chữ
-          </span>
-          <span className="kana-stat">
-            Đã luyện <strong>{kanjiList.filter((item) => item.practiceCount > 0).length}</strong> chữ
-          </span>
-          <span className="kana-stat">
-            Bộ thủ tra cứu <strong>{radicals.length}</strong>
-          </span>
+    <div className="mx-auto flex w-full max-w-[1100px] flex-col">
+      {/* Station header */}
+      <div className="flex items-center justify-between gap-6">
+        <div className={labelClass}>
+          Kanji <span className="ml-2 font-serif text-[12.5px] font-normal normal-case tracking-[0.06em]">漢字</span>
         </div>
+        <button
+          type="button"
+          onClick={() => setHelpOpen(true)}
+          aria-label="Hướng dẫn tra cứu Kanji"
+          title="Hướng dẫn tra cứu Kanji"
+          className="inline-flex h-6 w-6 cursor-pointer items-center justify-center border border-rule bg-transparent font-sans text-[11px] font-semibold text-fg-38 transition-colors hover:border-rule-strong hover:text-fg"
+        >
+          !
+        </button>
       </div>
 
-      <div className="kanji-filters">
-        <div className="kana-tabs">
-          <button type="button" className={`kana-tab ${lesson === '' ? 'active' : ''}`} onClick={() => setLesson('')}>
-            Tất cả bài
-          </button>
-          {LESSON_OPTIONS.map((option) => (
-            <button
-              key={option.slug}
-              type="button"
-              className={`kana-tab ${lesson === option.slug ? 'active' : ''}`}
-              onClick={() => setLesson(option.slug)}
-            >
-              {option.label}
-            </button>
-          ))}
-        </div>
-
-        <div className="kanji-filter-row">
-          <div className="kanji-search">
-            <Search size={14} />
-            <input
-              className="form-input kanji-search-input"
-              placeholder="Tìm theo nghĩa, Hán Việt, chữ Hán hoặc cách đọc..."
-              value={searchInput}
-              onChange={(event) => setSearchInput(event.target.value)}
-              onKeyDown={(event) => {
-                if (event.key === 'Enter') {
-                  setSearch(searchInput.trim());
-                }
-              }}
-            />
-            <SubmitButton variant="secondary" onClick={() => setSearch(searchInput.trim())}>
-              Tìm
-            </SubmitButton>
-            {search && (
-              <SubmitButton
-                variant="secondary"
-                onClick={() => {
-                  setSearch('');
-                  setSearchInput('');
-                }}
-              >
-                Xoá lọc
-              </SubmitButton>
-            )}
-          </div>
-
-          <select
-            className="form-input kanji-radical-select"
-            value={radicalId}
-            onChange={(event) => setRadicalId(event.target.value)}
+      {/* Mode tabs */}
+      <div className="mt-7 flex gap-6 border-b border-rule">
+        {STATION_TABS.map((tab) => (
+          <button
+            key={tab.key}
+            type="button"
+            onClick={() => setMode(tab.key)}
+            className={`cursor-pointer border-0 border-b-2 bg-transparent px-0.5 pb-2 text-[12.5px] transition-colors ${
+              mode === tab.key ? 'border-fg font-semibold text-fg' : 'border-transparent text-fg-38 hover:text-fg'
+            }`}
           >
-            <option value="">Mọi bộ thủ</option>
-            {radicals.map((radical) => (
-              <option key={radical.id} value={radical.id}>
-                {radical.radical} ({radical.strokeCount} nét) — {radical.meaning}
-              </option>
-            ))}
-          </select>
-        </div>
+            {tab.label}
+          </button>
+        ))}
       </div>
 
-      {error && <div className="flashcard-note is-error">{error}</div>}
+      {mode === 'BROWSE' && (
+        <>
+      {/* Lesson filter */}
+      <div className="mt-7 flex flex-wrap items-center gap-2">
+        <button type="button" className={chipClass(lesson === '')} onClick={() => setLesson('')}>
+          Tất cả bài
+        </button>
+        {LESSON_OPTIONS.map((option) => (
+          <button
+            key={option.slug}
+            type="button"
+            className={chipClass(lesson === option.slug)}
+            onClick={() => setLesson(option.slug)}
+          >
+            {option.label}
+          </button>
+        ))}
+      </div>
 
-      <div className="kanji-layout">
-        <div className="kanji-grid">
-          {kanjiList.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              className={`kanji-card ${selected?.id === item.id ? 'is-active' : ''}`}
-              onClick={() => {
-                setSelected(item);
-                setPracticeOpen(false);
-              }}
-            >
-              <span className="kanji-card-char">{item.character}</span>
-              <span className="kanji-card-sino">{item.sinoVietnamese}</span>
-              <span className="kanji-card-meaning">{item.meaning}</span>
-              {item.practiceCount > 0 && <span className="kanji-card-progress">Đã luyện {item.practiceCount}×</span>}
-            </button>
+      {/* Search + radical filter */}
+      <div className="mt-4 flex flex-wrap items-center gap-2.5">
+        <div className="relative">
+          <Search size={14} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-fg-38" />
+          <input
+            value={searchInput}
+            onChange={(event) => setSearchInput(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') {
+                setSearch(searchInput.trim());
+              }
+            }}
+            placeholder="Tìm theo nghĩa, Hán Việt, chữ Hán hoặc cách đọc..."
+            aria-label="Tìm kanji"
+            className="h-10 w-full min-w-[260px] border border-rule-strong bg-transparent pl-9 pr-3 text-[12.5px] text-fg outline-none transition-colors placeholder:text-fg-38 focus:border-fg"
+          />
+        </div>
+        <SubmitButton variant="secondary" onClick={() => setSearch(searchInput.trim())}>
+          Tìm
+        </SubmitButton>
+        {search && (
+          <SubmitButton
+            variant="secondary"
+            onClick={() => {
+              setSearch('');
+              setSearchInput('');
+            }}
+          >
+            Xoá lọc
+          </SubmitButton>
+        )}
+
+        <select
+          value={radicalId}
+          onChange={(event) => setRadicalId(event.target.value)}
+          aria-label="Lọc theo bộ thủ"
+          className="h-10 cursor-pointer border border-rule-strong bg-transparent px-3 text-[12.5px] text-fg outline-none transition-colors focus:border-fg"
+        >
+          <option value="">Mọi bộ thủ</option>
+          {radicals.map((radical) => (
+            <option key={radical.id} value={radical.id}>
+              {radical.radical} ({radical.strokeCount} nét) — {radical.meaning}
+            </option>
           ))}
+        </select>
+      </div>
+
+      <p className="mt-6 text-[11.5px] text-fg-38">
+        Đang hiển thị <span className="text-fg-60">{kanjiList.length}</span> chữ · đã luyện{' '}
+        <span className="text-fg-60">{kanjiList.filter((item) => item.practiceCount > 0).length}</span> chữ · bộ thủ tra
+        cứu <span className="text-fg-60">{radicals.length}</span>
+      </p>
+
+      {error && <p className="mt-4 text-[12.5px] text-red">{error}</p>}
+
+      <div className="mt-8 grid grid-cols-[minmax(0,1fr)_320px] items-start gap-16 max-[1100px]:grid-cols-1 max-[1100px]:gap-10">
+        {/* On mobile the detail panel comes first so a pick does not require scrolling back up */}
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(94px,1fr))] gap-2 max-[1100px]:order-2">
+          {kanjiList.map((item) => {
+            const active = selected?.id === item.id;
+            return (
+              <button
+                key={item.id}
+                type="button"
+                data-kanji-card={item.character}
+                onClick={() => setSelected(item)}
+                className={`flex cursor-pointer flex-col items-center gap-1 border px-2 py-3 transition-colors ${
+                  active ? 'border-fg bg-card' : 'border-rule-strong bg-transparent hover:border-fg'
+                }`}
+              >
+                <span className="font-serif text-[30px] font-light leading-none text-fg">{item.character}</span>
+                <span className="text-[11px] text-fg-60">{item.sinoVietnamese}</span>
+                <span className="max-w-full truncate text-[11px] text-fg-38">{item.meaning}</span>
+                {item.practiceCount > 0 && <span className="text-[10px] text-fg-38">Đã luyện {item.practiceCount}×</span>}
+              </button>
+            );
+          })}
           {kanjiList.length === 0 && !error && (
-            <div className="kanji-empty">Không có kanji nào khớp bộ lọc hiện tại.</div>
+            <div className="col-span-full border border-rule px-4 py-10 text-center text-[12.5px] text-fg-38">
+              Không có kanji nào khớp bộ lọc hiện tại.
+            </div>
           )}
         </div>
 
-        <aside className="kanji-detail">
-          {!selected && <div className="kana-detail-empty">Chọn một chữ Hán để xem chi tiết.</div>}
+        <aside data-kanji-detail className="sticky top-10 max-[1100px]:static max-[1100px]:order-1">
+          <div className="bg-card px-6 py-7">
+            {!selected && <p className="text-[12.5px] text-fg-38">Chọn một chữ Hán để xem chi tiết.</p>}
 
-          {selected && (
-            <>
-              <div className="kanji-detail-head">
-                <span className="kanji-detail-char">{selected.character}</span>
-                <div>
-                  <div className="kana-detail-romaji">{selected.sinoVietnamese}</div>
-                  <div className="kana-detail-meta">
-                    {selected.strokeCount} nét
-                    {selected.lessonTitle ? ` · ${selected.lessonTitle}` : ''}
+            {selected && (
+              <>
+                <div className="flex items-start gap-5">
+                  <span className="font-serif text-[54px] font-light leading-none text-fg">{selected.character}</span>
+                  <div className="min-w-0">
+                    <div className="text-[13px] text-fg-60">{selected.sinoVietnamese}</div>
+                    <div className="mt-1 text-[11.5px] text-fg-38">
+                      {selected.strokeCount} nét
+                      {selected.lessonTitle ? ` · ${selected.lessonTitle}` : ''}
+                    </div>
+                    <div className="text-[11.5px] text-fg-38">Đã luyện: {selected.practiceCount} lần</div>
                   </div>
-                  <div className="kana-detail-meta">Đã luyện: {selected.practiceCount} lần</div>
                 </div>
-              </div>
 
-              <div className="kanji-readings">
-                <span>
-                  <strong>Onyomi:</strong> {selected.onyomi || '—'}
-                </span>
-                <span>
-                  <strong>Kunyomi:</strong> {selected.kunyomi || '—'}
-                </span>
-              </div>
-
-              <p className="kana-detail-note">
-                <strong>Nghĩa:</strong> {selected.meaning}
-              </p>
-
-              {selected.mnemonic && (
-                <div className="kana-inline-note">
-                  <strong>Mnemonic:</strong> {selected.mnemonic}
+                <div className="mt-6 space-y-1.5 text-[13px] leading-[1.7]">
+                  <div className="text-fg-60">
+                    <span className={labelClass}>Onyomi</span>{' '}
+                    <span className="ml-1 font-serif text-[13px] text-fg">{selected.onyomi || '—'}</span>
+                  </div>
+                  <div className="text-fg-60">
+                    <span className={labelClass}>Kunyomi</span>{' '}
+                    <span className="ml-1 font-serif text-[13px] text-fg">{selected.kunyomi || '—'}</span>
+                  </div>
                 </div>
-              )}
 
-              <div className="kanji-radicals">
-                <div className="canvas-tool-label">Bộ thủ</div>
-                <div className="kanji-radical-chips">
-                  {selected.radicals.map((radical) => (
-                    <span key={radical.id} className="kanji-radical-chip" title={radical.meaning}>
-                      {radical.radical} · {radical.name} ({radical.strokeCount})
-                    </span>
-                  ))}
-                  {selected.radicals.length === 0 && <span className="kana-detail-meta">Chưa gắn bộ thủ.</span>}
+                <p className="mt-5 text-[13px] leading-[1.8] text-fg-60">
+                  <span className={labelClass}>Nghĩa</span>
+                  <br />
+                  {selected.meaning}
+                </p>
+
+                {selected.mnemonic && (
+                  <div className="mt-4">
+                    <MnemonicBlock text={selected.mnemonic} />
+                  </div>
+                )}
+
+                <div className="mt-6">
+                  <span className={labelClass}>Bộ thủ</span>
+                  <div className="mt-2 flex flex-wrap gap-1.5">
+                    {selected.radicals.map((radical) => (
+                      <span
+                        key={radical.id}
+                        title={radical.meaning}
+                        className="border border-rule px-2 py-1 text-[11px] text-fg-60"
+                      >
+                        {radical.radical} · {radical.name} ({radical.strokeCount})
+                      </span>
+                    ))}
+                    {selected.radicals.length === 0 && <span className="text-[11.5px] text-fg-38">Chưa gắn bộ thủ.</span>}
+                  </div>
                 </div>
-              </div>
 
-              <div className="kana-detail-actions">
-                <SubmitButton onClick={() => setPracticeOpen((previous) => !previous)}>
-                  <PenLine size={15} />
-                  <span>{practiceOpen ? 'Đóng luyện viết' : 'Luyện viết chữ này'}</span>
+                <div className="mt-7">
+                  <SubmitButton onClick={() => setMode('WRITE')}>
+                    <PenLine size={14} />
+                    <span>Luyện viết chữ này</span>
+                  </SubmitButton>
+                </div>
+              </>
+            )}
+          </div>
+        </aside>
+      </div>
+        </>
+      )}
+
+      {mode === 'WRITE' && (
+        <div className="mt-10 grid grid-cols-[300px_minmax(0,1fr)] items-start gap-16 max-[1100px]:grid-cols-1 max-[1100px]:gap-10">
+          <div>
+            <div className={labelClass}>Chọn bài</div>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <button type="button" className={chipClass(lesson === '')} onClick={() => setLesson('')}>
+                Tất cả bài
+              </button>
+              {LESSON_OPTIONS.map((option) => (
+                <button
+                  key={option.slug}
+                  type="button"
+                  className={chipClass(lesson === option.slug)}
+                  onClick={() => setLesson(option.slug)}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
+
+            <div className={`${labelClass} mt-6`}>Tìm chữ</div>
+            <div className="relative mt-3">
+              <Search size={14} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-fg-38" />
+              <input
+                value={searchInput}
+                onChange={(event) => setSearchInput(event.target.value)}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter') {
+                    setSearch(searchInput.trim());
+                  }
+                }}
+                placeholder="Nghĩa, Hán Việt, chữ Hán, cách đọc..."
+                aria-label="Tìm kanji để luyện viết"
+                className="h-10 w-full border border-rule-strong bg-transparent pl-9 pr-3 text-[12.5px] text-fg outline-none transition-colors placeholder:text-fg-38 focus:border-fg"
+              />
+            </div>
+            <div className="mt-2 flex flex-wrap items-center gap-2">
+              <SubmitButton variant="secondary" onClick={() => setSearch(searchInput.trim())}>
+                Tìm
+              </SubmitButton>
+              {search && (
+                <SubmitButton
+                  variant="secondary"
+                  onClick={() => {
+                    setSearch('');
+                    setSearchInput('');
+                  }}
+                >
+                  Xoá lọc
                 </SubmitButton>
-              </div>
+              )}
+              <span className="text-[11.5px] text-fg-38">{kanjiList.length} chữ</span>
+            </div>
 
-              {practiceOpen && (
-                <div className="kanji-practice">
+            <div className="mt-6 grid grid-cols-[repeat(auto-fill,minmax(64px,1fr))] gap-2">
+              {kanjiList.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  data-kanji-write-pick={item.character}
+                  onClick={() => setSelected(item)}
+                  title={`${item.character} — ${item.sinoVietnamese}`}
+                  className={`cursor-pointer px-1 py-2 text-center transition-colors ${
+                    selected?.id === item.id ? 'bg-card' : 'bg-transparent hover:bg-[rgba(236,236,230,0.05)]'
+                  }`}
+                >
+                  <span className="block font-serif text-[22px] font-light leading-none text-fg">
+                    {item.character}
+                  </span>
+                  <span className="mt-1 block text-[10px] text-fg-38">{item.sinoVietnamese}</span>
+                </button>
+              ))}
+              {kanjiList.length === 0 && (
+                <p className="col-span-full text-[12px] text-fg-38">Không có chữ nào khớp bộ lọc.</p>
+              )}
+            </div>
+          </div>
+
+          <div>
+            {!selected && <p className="text-[12.5px] text-fg-38">Chọn một chữ bên trái để luyện viết.</p>}
+
+            {selected && (
+              <>
+                <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+                  <span className="font-serif text-[34px] font-light leading-none text-fg">{selected.character}</span>
+                  <span className="text-[12.5px] text-fg-60">
+                    {selected.sinoVietnamese} · {selected.meaning}
+                  </span>
+                  <span className="text-[11.5px] text-fg-38">Đã luyện: {selected.practiceCount} lần</span>
+                </div>
+
+                <div className="mt-6">
                   <KanaCanvas
                     key={selected.id}
                     referenceChar={selected.character}
-                    maxSize={360}
+                    maxSize={420}
                     submitLabel="Lưu tiến độ luyện"
                     onSubmit={handlePracticeSubmit}
                   />
-                  {submitting && <div className="kana-detail-meta">Đang lưu tiến độ...</div>}
                 </div>
-              )}
-            </>
-          )}
-        </aside>
+                {submitting && <p className="mt-3 text-[11.5px] text-fg-38">Đang lưu tiến độ...</p>}
 
-      </div>
+                {selected.mnemonic && (
+                  <div className="mt-6">
+                    <MnemonicBlock text={selected.mnemonic} />
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Help panel */}
+      {helpOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(12,12,11,0.72)] p-5"
+          onClick={() => setHelpOpen(false)}
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Hướng dẫn tra cứu Kanji"
+            className="w-full max-w-[420px] bg-card px-7 py-8"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="flex items-start justify-between gap-4">
+              <h3 className="text-[15px] font-semibold">Hướng dẫn tra cứu Kanji</h3>
+              <button
+                type="button"
+                onClick={() => setHelpOpen(false)}
+                aria-label="Đóng hướng dẫn"
+                title="Đóng hướng dẫn"
+                className="inline-flex h-7 w-7 cursor-pointer items-center justify-center border border-rule bg-transparent text-fg-60 transition-colors hover:border-rule-strong hover:text-fg"
+              >
+                <X size={15} />
+              </button>
+            </div>
+            <p className="mt-4 text-[13px] leading-[1.9] text-fg-60">
+              Lọc theo bài học, bộ thủ hoặc tìm theo nghĩa / Hán Việt / chữ Hán / cách đọc. Bấm vào một chữ để xem
+              onyomi, kunyomi, mnemonic và bộ thủ, rồi luyện viết theo chữ mẫu. Tiến độ luyện lưu theo tài khoản.
+            </p>
+          </div>
+        </div>
+      )}
 
       {feedback && (
         <FeedbackAlert
