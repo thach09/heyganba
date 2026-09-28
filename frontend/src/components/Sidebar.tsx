@@ -1,19 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ChevronLeft, X } from 'lucide-react';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import type { AuthResponse } from '../services/api';
 
-export type StationKey =
-  | 'dashboard'
-  | 'kana'
-  | 'flashcard'
-  | 'kanji'
-  | 'grammar'
-  | 'exam'
-  | 'admin';
-
 interface SidebarProps {
-  currentStation: StationKey;
-  onSelectStation: (station: StationKey) => void;
+  /** Mobile: đóng drawer sau khi chọn mục nav (desktop giữ nguyên). */
+  onNavigate?: () => void;
   user: AuthResponse | null;
   isOpen?: boolean;
   /** Mobile: the sidebar floats above content (overlay) - needs a close button and auto-closes after picking a station. */
@@ -92,9 +84,30 @@ const NavButton: React.FC<NavButtonProps> = ({
   </button>
 );
 
+interface NavItemProps {
+  to: string;
+  k: string;
+  v: string;
+  onNavigate?: () => void;
+  badge?: React.ReactNode;
+}
+
+/** Mục nav là link thật (đổi URL), giữ nguyên dáng cũ của nút. */
+const NavItem: React.FC<NavItemProps> = ({ to, k, v, onNavigate, badge }) => (
+  <NavLink end={to === '/'} to={to} onClick={onNavigate} className={itemBase}>
+    {({ isActive }) => (
+      <>
+        {isActive && <ActiveTick />}
+        <span className={`font-serif text-base ${isActive ? 'font-semibold' : ''}`}>{k}</span>
+        <span className={`text-[11px] ${isActive ? 'text-rank' : 'text-fg-38'}`}>{v}</span>
+        {badge}
+      </>
+    )}
+  </NavLink>
+);
+
 export const Sidebar: React.FC<SidebarProps> = ({
-  currentStation,
-  onSelectStation,
+  onNavigate,
   user,
   isOpen = true,
   isOverlay = false,
@@ -106,8 +119,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
   streakCount = 0,
 }) => {
   const isAdmin = user?.role === 'ROLE_ADMIN';
+  const location = useLocation();
   const [charGroupOpen, setCharGroupOpen] = useState(false);
-  const charGroupActive = currentStation === 'kana' || currentStation === 'kanji';
+  const charGroupActive = location.pathname.startsWith('/kana') || location.pathname.startsWith('/kanji');
   const charGroupRef = useRef<HTMLDivElement | null>(null);
 
   /**
@@ -140,12 +154,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     };
   }, [charGroupOpen]);
 
-  const go = (key: StationKey) => {
-    onSelectStation(key);
-    if (isOverlay) {
-      onClose?.();
-    }
-  };
+  const closeFlyout = () => setCharGroupOpen(false);
 
   return (
     <aside
@@ -190,7 +199,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       )}
 
       <nav className="mt-11 flex flex-1 flex-col gap-3.5">
-        <NavButton k="今日" v="Hôm nay" active={currentStation === 'dashboard'} onClick={() => go('dashboard')} />
+        <NavItem to="/" k="今日" v="Hôm nay" onNavigate={onNavigate} />
 
         <div
           ref={charGroupRef}
@@ -227,8 +236,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
             }`}
           >
             <span aria-hidden="true" className="absolute -left-3.5 top-0 bottom-0 w-3.5 max-[900px]:hidden" />
-            <button
-              type="button"
+            <Link
+              to="/kana"
               role="menuitem"
               onClick={(event) => {
                 // Pointer click: drop focus so group-focus-within stops keeping the flyout open.
@@ -236,59 +245,59 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 if (event.detail > 0) {
                   event.currentTarget.blur();
                 }
-                setCharGroupOpen(false);
+                closeFlyout();
                 onSelectKanaScript?.('HIRAGANA');
-                go('kana');
+                onNavigate?.();
               }}
               className="flex w-full cursor-pointer items-baseline gap-2.5 border-0 bg-transparent px-4 py-2 text-left font-sans text-fg hover:bg-[rgba(236,236,230,0.05)]"
             >
               <span className="font-serif text-sm">ひらがな</span>
               <span className="text-[10.5px] text-fg-38">Hiragana</span>
-            </button>
-            <button
-              type="button"
+            </Link>
+            <Link
+              to="/kana"
               role="menuitem"
               onClick={(event) => {
                 if (event.detail > 0) {
                   event.currentTarget.blur();
                 }
-                setCharGroupOpen(false);
+                closeFlyout();
                 onSelectKanaScript?.('KATAKANA');
-                go('kana');
+                onNavigate?.();
               }}
               className="flex w-full cursor-pointer items-baseline gap-2.5 border-0 bg-transparent px-4 py-2 text-left font-sans text-fg hover:bg-[rgba(236,236,230,0.05)]"
             >
               <span className="font-serif text-sm">カタカナ</span>
               <span className="text-[10.5px] text-fg-38">Katakana</span>
-            </button>
-            <button
-              type="button"
+            </Link>
+            <Link
+              to="/kanji"
               role="menuitem"
               onClick={(event) => {
                 if (event.detail > 0) {
                   event.currentTarget.blur();
                 }
-                setCharGroupOpen(false);
-                go('kanji');
+                closeFlyout();
+                onNavigate?.();
               }}
               className="flex w-full cursor-pointer items-baseline gap-2.5 border-0 bg-transparent px-4 py-2 text-left font-sans text-fg hover:bg-[rgba(236,236,230,0.05)]"
             >
               <span className="font-serif text-sm">漢字</span>
               <span className="text-[10.5px] text-fg-38">Kanji</span>
-            </button>
+            </Link>
           </div>
         </div>
 
-        <NavButton k="単語" v="Từ vựng" active={currentStation === 'flashcard'} onClick={() => go('flashcard')} />
-        <NavButton k="文法" v="Ngữ pháp" active={currentStation === 'grammar'} onClick={() => go('grammar')} />
-        <NavButton k="試験" v="Thi thử" active={currentStation === 'exam'} onClick={() => go('exam')} />
+        <NavItem to="/vocabulary" k="単語" v="Từ vựng" onNavigate={onNavigate} />
+        <NavItem to="/grammar" k="文法" v="Ngữ pháp" onNavigate={onNavigate} />
+        <NavItem to="/exam" k="試験" v="Thi thử" onNavigate={onNavigate} />
 
         {isAdmin && (
-          <NavButton
+          <NavItem
+            to="/admin"
             k="管理"
             v="Quản trị"
-            active={currentStation === 'admin'}
-            onClick={() => go('admin')}
+            onNavigate={onNavigate}
             badge={<span className="ml-auto text-[10px] uppercase tracking-[0.12em] text-red">Admin</span>}
           />
         )}

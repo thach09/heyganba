@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Menu } from 'lucide-react';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { Sidebar } from './components/Sidebar';
-import type { StationKey } from './components/Sidebar';
 import { AuthModal } from './features/auth/AuthModal';
 import { DashboardView } from './features/dashboard/DashboardView';
 import { AdminView } from './features/admin/AdminView';
@@ -9,6 +9,7 @@ import { KanaStationView } from './features/kana/KanaStationView';
 import { FlashcardView } from './features/flashcard/FlashcardView';
 import { KanjiStationView } from './features/kanji/KanjiStationView';
 import { GrammarView } from './features/grammar/GrammarView';
+import { GrammarRulePage } from './features/grammar/GrammarRulePage';
 import { ExamView } from './features/exam/ExamView';
 import { getSavedUser, clearTokens, apiRequest } from './services/api';
 import type { AuthResponse } from './services/api';
@@ -46,7 +47,7 @@ function useIsMobileLayout(): boolean {
 }
 
 export function App() {
-  const [currentStation, setCurrentStation] = useState<StationKey>('dashboard');
+  const navigate = useNavigate();
   // Owned here so the sidebar dropdown can target Hiragana or Katakana directly.
   const [kanaScript, setKanaScript] = useState<'HIRAGANA' | 'KATAKANA'>('HIRAGANA');
   const [user, setUser] = useState<AuthResponse | null>(null);
@@ -127,13 +128,11 @@ export function App() {
   const handleLogout = () => {
     clearTokens();
     setUser(null);
-    if (currentStation === 'admin') {
-      setCurrentStation('dashboard');
-    }
+    navigate('/');
   };
 
-  const handleSelectStation = (station: StationKey) => {
-    setCurrentStation(station);
+  /** Mobile: picking a nav item closes the drawer (desktop keeps it open as a column). */
+  const handleNavigate = () => {
     if (isMobileLayout) {
       closeSidebar();
     }
@@ -144,7 +143,7 @@ export function App() {
       {/* Menu backdrop: only rendered while the sidebar is open as a mobile overlay */}
       {isSidebarOverlay && (
         <div
-          className="fixed inset-0 z-[95] bg-[rgba(12,12,11,0.66)]"
+          className="fixed inset-0 z-[95] bg-scrim"
           onClick={closeSidebar}
           aria-hidden="true"
         />
@@ -152,17 +151,13 @@ export function App() {
 
       {/* Navigation Sidebar */}
       <Sidebar
-        currentStation={currentStation}
-        onSelectStation={handleSelectStation}
+        onNavigate={handleNavigate}
         onClose={closeSidebar}
         isOverlay={isMobileLayout}
         user={user}
         isOpen={isSidebarOpen}
         onToggleSidebar={toggleSidebar}
-        onSelectKanaScript={(next) => {
-          setKanaScript(next);
-          handleSelectStation('kana');
-        }}
+        onSelectKanaScript={setKanaScript}
         onOpenAuthModal={() => setIsAuthModalOpen(true)}
         onLogout={handleLogout}
         streakCount={streakCount}
@@ -209,38 +204,44 @@ export function App() {
             </div>
           )}
 
-          {currentStation === 'dashboard' && <DashboardView user={user} />}
-
-          {currentStation === 'admin' && (
-            user?.role === 'ROLE_ADMIN' ? (
-              <AdminView />
-            ) : (
-              <div style={{ padding: '32px', textAlign: 'center', background: 'var(--bg-card)', borderRadius: 'var(--radius-lg)' }}>
-                <h3 style={{ color: '#EF4444', marginBottom: '8px' }}>Không có quyền truy cập (403 Forbidden)</h3>
-                <p style={{ color: 'var(--text-secondary)' }}>Vui lòng đăng nhập bằng tài khoản Administrator để truy cập khu vực này.</p>
-              </div>
-            )
-          )}
-
-          {currentStation === 'kana' && (
-            <KanaStationView script={kanaScript} onScriptChange={setKanaScript} />
-          )}
-
-          {currentStation === 'flashcard' && (
-            <FlashcardView user={user} onRequireLogin={() => setIsAuthModalOpen(true)} />
-          )}
-
-          {currentStation === 'kanji' && (
-            <KanjiStationView user={user} onRequireLogin={() => setIsAuthModalOpen(true)} />
-          )}
-
-          {currentStation === 'grammar' && (
-            <GrammarView user={user} onRequireLogin={() => setIsAuthModalOpen(true)} />
-          )}
-
-          {currentStation === 'exam' && (
-            <ExamView user={user} onRequireLogin={() => setIsAuthModalOpen(true)} />
-          )}
+          <Routes>
+            <Route path="/" element={<DashboardView user={user} />} />
+            <Route
+              path="/kana"
+              element={<KanaStationView script={kanaScript} onScriptChange={setKanaScript} />}
+            />
+            <Route
+              path="/vocabulary"
+              element={<FlashcardView user={user} onRequireLogin={() => setIsAuthModalOpen(true)} />}
+            />
+            <Route
+              path="/kanji"
+              element={<KanjiStationView user={user} onRequireLogin={() => setIsAuthModalOpen(true)} />}
+            />
+            <Route
+              path="/grammar"
+              element={<GrammarView user={user} onRequireLogin={() => setIsAuthModalOpen(true)} />}
+            />
+            <Route
+              path="/grammar/:ruleId"
+              element={<GrammarRulePage user={user} onRequireLogin={() => setIsAuthModalOpen(true)} />}
+            />
+            <Route path="/exam" element={<ExamView user={user} onRequireLogin={() => setIsAuthModalOpen(true)} />} />
+            <Route
+              path="/admin"
+              element={
+                user?.role === 'ROLE_ADMIN' ? (
+                  <AdminView />
+                ) : (
+                  <div style={{ padding: '32px', textAlign: 'center', background: 'var(--bg-card)', borderRadius: 'var(--radius-lg)' }}>
+                    <h3 style={{ color: '#EF4444', marginBottom: '8px' }}>Không có quyền truy cập (403 Forbidden)</h3>
+                    <p style={{ color: 'var(--text-secondary)' }}>Vui lòng đăng nhập bằng tài khoản Administrator để truy cập khu vực này.</p>
+                  </div>
+                )
+              }
+            />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
         </main>
       </div>
 
