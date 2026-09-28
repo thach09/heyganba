@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
+import { Menu } from 'lucide-react';
 import { Sidebar } from './components/Sidebar';
 import type { StationKey } from './components/Sidebar';
-import { Navbar } from './components/Navbar';
 import { AuthModal } from './features/auth/AuthModal';
 import { DashboardView } from './features/dashboard/DashboardView';
 import { AdminView } from './features/admin/AdminView';
@@ -13,15 +13,16 @@ import { ExamView } from './features/exam/ExamView';
 import { getSavedUser, clearTokens, apiRequest } from './services/api';
 import type { AuthResponse } from './services/api';
 
-/** Breakpoint phải khớp đúng `@media (max-width: 900px)` trong index.css. */
+/** The breakpoint must match the `@media (max-width: 900px)` query in index.css. */
 const MOBILE_BREAKPOINT_QUERY = '(max-width: 900px)';
 
 /**
- * Theo dõi breakpoint mobile bằng matchMedia — cùng nguồn sự thật với CSS media query.
+ * Track the mobile breakpoint with matchMedia - same source of truth as the CSS media query.
  *
- * Trước đây state sidebar tính bằng `window.innerWidth` (số đo tức thời, còn đổi theo pinch-zoom
- * trên iOS) nên có thể lệch pha với CSS: JS tưởng desktop → sidebar ở trạng thái mở, trong khi CSS
- * vẫn xếp nó thành overlay trên mobile → menu che hết giao diện mà không có nút đóng/lớp phủ.
+ * The sidebar state used to be derived from `window.innerWidth` (an instant measurement that also
+ * changes under pinch-zoom on iOS), so it could drift from CSS: JS assumed desktop and kept the
+ * sidebar open while CSS still rendered it as a mobile overlay - the menu covered the whole screen
+ * with no close button and no backdrop.
  */
 function useIsMobileLayout(): boolean {
   const [isMobile, setIsMobile] = useState(() => {
@@ -50,23 +51,23 @@ export function App() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const isMobileLayout = useIsMobileLayout();
   /**
-   * Lựa chọn thủ công của người dùng cho thanh menu: `null` = chưa chọn → theo mặc định của từng
-   * breakpoint (desktop mở sẵn dạng cột, mobile đóng). Suy ra ngay trong render nên khi xoay màn
-   * hình / đổi kích thước cửa sổ giá trị tự đúng, không cần effect đồng bộ state.
+   * Manual user preference for the menu: `null` = not chosen yet -> follow the breakpoint default
+   * (desktop starts open as a column, mobile closed). Derived directly during render, so rotating
+   * the screen or resizing the window keeps it correct without a state-sync effect.
    */
   const [sidebarPreference, setSidebarPreference] = useState<boolean | null>(null);
   const sidebarDefaultOpen = !isMobileLayout;
   const isSidebarOpen = sidebarPreference ?? sidebarDefaultOpen;
-  // Overlay chỉ tồn tại trên mobile; desktop là cột cố định nên không cần lớp phủ.
+  // The overlay only exists on mobile; on desktop the sidebar is a fixed column, so no backdrop is needed.
   const isSidebarOverlay = isMobileLayout && isSidebarOpen;
   const [backendHealthy, setBackendHealthy] = useState<boolean | null>(null);
-  // Streak thật của người đang đăng nhập — trước đây topbar hardcode "3 ngày".
+  // Real streak of the signed-in user - the topbar used to hardcode "3 ngày".
   const [streakCount, setStreakCount] = useState(0);
 
   const closeSidebar = () => setSidebarPreference(false);
   const toggleSidebar = () => setSidebarPreference(!isSidebarOpen);
 
-  // Khóa cuộn trang nền khi overlay menu đang mở trên thiết bị di động
+  // Lock background scrolling while the menu overlay is open on mobile
   useEffect(() => {
     if (!isSidebarOverlay) {
       return;
@@ -78,7 +79,7 @@ export function App() {
     };
   }, [isSidebarOverlay]);
 
-  // Phím Esc đóng overlay menu (tiện khi dùng bàn phím rời hoặc thu nhỏ cửa sổ trên desktop).
+  // Esc closes the menu overlay (handy with an external keyboard or a resized desktop window).
   useEffect(() => {
     if (!isSidebarOverlay) {
       return;
@@ -136,29 +137,12 @@ export function App() {
     }
   };
 
-  const stationTitles: Record<StationKey, string> = {
-    dashboard: 'Bảng Điều Khiển — HeyGanba!',
-    kana: 'Bảng Chữ Cái Kana (Hiragana / Katakana)',
-    flashcard: 'Flashcard Từ Vựng & SRS',
-    kanji: 'Bộ Thủ & Hán Tự (Kanji)',
-    grammar: 'Trợ Từ & Ngữ Pháp',
-    exam: 'Thi Thử & Đấu Trường',
-    admin: 'Khu Vực Quản Trị Hệ Thống',
-  };
-
   return (
-    <div className="app-container">
-      {/* Ambient background glows */}
-      <div className="ambient-bg">
-        <div className="blob-1" />
-        <div className="blob-2" />
-        <div className="blob-3" />
-      </div>
-
-      {/* Lớp phủ đóng menu: chỉ render khi sidebar đang mở dạng overlay trên di động */}
+    <div className="relative z-[1] flex min-h-screen">
+      {/* Menu backdrop: only rendered while the sidebar is open as a mobile overlay */}
       {isSidebarOverlay && (
         <div
-          className="sidebar-backdrop"
+          className="fixed inset-0 z-[95] bg-[rgba(12,12,11,0.66)]"
           onClick={closeSidebar}
           aria-hidden="true"
         />
@@ -172,20 +156,32 @@ export function App() {
         isOverlay={isMobileLayout}
         user={user}
         isOpen={isSidebarOpen}
+        onToggleSidebar={toggleSidebar}
+        onOpenAuthModal={() => setIsAuthModalOpen(true)}
+        onLogout={handleLogout}
+        streakCount={streakCount}
       />
 
-      {/* Main Content Area */}
-      <div className={`main-wrapper ${isSidebarOpen ? '' : 'is-collapsed'}`}>
-        <Navbar
-          user={user}
-          onOpenAuthModal={() => setIsAuthModalOpen(true)}
-          onLogout={handleLogout}
-          streakCount={streakCount}
-          activeStationTitle={stationTitles[currentStation]}
-          onToggleSidebar={toggleSidebar}
-        />
+      {/* Mobile: drawer opener button (desktop uses the edge tab attached to the sidebar) */}
+      {isMobileLayout && !isSidebarOpen && (
+        <button
+          type="button"
+          onClick={toggleSidebar}
+          title="Mở thanh điều hướng"
+          aria-label="Mở thanh điều hướng"
+          className="fixed left-2 top-2 z-40 inline-flex h-8 w-8 cursor-pointer items-center justify-center border-0 bg-transparent text-fg-38 transition-colors hover:text-fg"
+        >
+          <Menu size={18} />
+        </button>
+      )}
 
-        <main className="content-body">
+      {/* Main Content Area */}
+      <div
+        className={`flex min-h-screen flex-1 flex-col transition-[margin] duration-150 ${
+          isSidebarOpen ? 'ml-[216px] max-[900px]:ml-0' : 'ml-0'
+        }`}
+      >
+        <main className="w-full flex-1 px-14 pb-14 pt-10 max-[900px]:px-5 max-[900px]:pb-10 max-[900px]:pt-16">
           {backendHealthy === false && (
             <div
               style={{
@@ -207,9 +203,7 @@ export function App() {
             </div>
           )}
 
-          {currentStation === 'dashboard' && (
-            <DashboardView user={user} onSelectStation={handleSelectStation} />
-          )}
+          {currentStation === 'dashboard' && <DashboardView user={user} />}
 
           {currentStation === 'admin' && (
             user?.role === 'ROLE_ADMIN' ? (
