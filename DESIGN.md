@@ -1,7 +1,7 @@
 # Design — HeyGanba
 
 Hệ thị giác "mực trên giấy", đảo tối. Chữ Nhật là nhân vật chính, chữ Việt là sàn đọc.
-Mock tham chiếu: [`docs/Design/mock-dashboard.html`](docs/Design/mock-dashboard.html) · [`docs/Design/mock-flashcard.html`](docs/Design/mock-flashcard.html)
+Mock tham chiếu: [`docs/Design/mock-dashboard.html`](docs/Design/mock-dashboard.html) · ảnh màn thật trong [`docs/Design/`](docs/Design/)
 
 ![Dashboard](docs/Design/mock-dashboard-desktop.png)
 
@@ -71,7 +71,9 @@ Không dùng font mảnh ở cỡ nhỏ — body tối thiểu 12.5px; nét mả
 
 **Cấp độ** — số serif `22px` + thanh EXP cao `2px`, track `--rule`, fill `--rank`. EXP chỉ cộng từ hoạt động học thật (thẻ ôn, chữ viết, câu trả lời đúng).
 
-**Thẻ học & phiên ôn** — thẻ nền `--card`, padding `60px 56px 52px`; từ `76px` serif, furigana `15px --fg-38`, nghĩa `18px`, ví dụ `21px`, dịch `13px --fg-60`. Chấm điểm: 4 nút `Quên / Khó / Được / Dễ` ngang hàng, viền `1px --rule-strong`, hover đảo mực/giấy. Phím tắt hiện dưới dạng gợi ý nhỏ: `Space để lật thẻ · 1–4 để chấm điểm`.
+**Thông thạo từng chữ** — không hiện thanh trên lưới bảng chữ; chi tiết (âm đọc, thông thạo…) hiện khi chọn một chữ. Trên lưới, mức thông thạo thể hiện bằng **nền ô**: không có dữ liệu = không nền → "Từ mới" = xám nhạt → đậm dần theo mức. Trong danh sách từ, dùng gạch mảnh `2px` màu mực (không dùng xanh — xanh vẫn chỉ thuộc cấp tài khoản).
+
+**Phiên ôn từ vựng — trắc nghiệm** — thẻ nền `--card`; từ hiển thị serif `clamp(44px,9vw,68px)`. Câu hỏi ngẫu nhiên *nghĩa tiếng Việt* hoặc *cách đọc (kana)*; từ thuần kana luôn hỏi nghĩa. 4 đáp án xếp dọc (phím 1–4, nhiễu lấy từ các từ trong phiên). Sau khi chọn, kết quả hiện trong **popup**: kết quả → danh tính của từ (furigana → từ → nghĩa) → khối `Ví dụ` có nhãn → nút `Tiếp theo (Space)`; đáp án sai chọn viền đỏ (`--red`). Đúng → SRS `GOOD`; sai → `FORGOT` (ôn lại phiên sau). Nút `!` cạnh số tiến độ mở panel hướng dẫn.
 
 **Nút & focus** — viền `1px`, radius 0; hover đảo mực/giấy. Focus bàn phím: viền mảnh `1px --fg-38`, offset `3px`.
 
@@ -79,9 +81,10 @@ Không dùng font mảnh ở cỡ nhỏ — body tối thiểu 12.5px; nét mả
 
 ![Dashboard — nav nhóm mở](docs/Design/mock-dashboard-desktop-nav-open.png)
 ![Dashboard — mobile](docs/Design/mock-dashboard-mobile.png)
-![Phiên ôn thẻ](docs/Design/mock-flashcard-desktop.png)
+![Phiên ôn — câu hỏi](docs/Design/mock-flashcard-desktop.png)
+![Phiên ôn — sau khi trả lời](docs/Design/mock-flashcard-answered.png)
 
-*Mock phiên ôn là bản tham chiếu cũ (chưa có nav nhóm) — cập nhật khi build màn đó.*
+*Ảnh phiên ôn chụp từ màn thật (trắc nghiệm) — mock html bản cũ (lật thẻ + tự chấm) đã gỡ.*
 
 ## 5. Còn để ngỏ
 
@@ -93,5 +96,6 @@ Không dùng font mảnh ở cỡ nhỏ — body tối thiểu 12.5px; nét mả
 ## 6. Làm việc với hệ này
 
 - Đọc `PRODUCT.md` (sự thật sản phẩm) trước khi sửa UI
+- Style màn mới bằng **Tailwind v4** với token trong `@theme` (`frontend/src/index.css`): `text-fg-60`, `border-rule`, `font-serif`… — palette/radius/shadow mặc định đã bị xoá khỏi theme, không thể dùng
 - Trước khi đổi bố cục: so với mock trong `docs/Design/`
 - Sau khi sửa UI: chạy detector `.opencode/skills/impeccable/scripts/impeccable detect <đường dẫn>`

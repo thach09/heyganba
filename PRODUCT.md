@@ -38,6 +38,8 @@ Kết hợp đồng thời 3 thứ sản phẩm lân cận khó sao chép cùng 
 - Phân quyền RBAC `ROLE_ADMIN` / `ROLE_USER`; đăng nhập JWT.
 - Quy trình duyệt nội dung + endpoint `content/review-status`.
 - Hệ cấp độ + EXP: EXP chỉ cộng từ hoạt động học thật (thẻ ôn, chữ viết, câu trả lời đúng); hiển thị bằng thanh EXP màu đai.
+- Thông thạo từng chữ: mức độ trải nghiệm + độ chính xác theo từng chữ, suy từ dữ liệu học tập hiện có (SRS cho từ vựng, số lần luyện cho kanji; kana bổ sung sau). Về sau dùng để điều chỉnh interval SRS và gợi ý phương pháp nâng cao theo mức thông thạo.
+- Phiên ôn từ vựng là trắc nghiệm (chọn nghĩa tiếng Việt hoặc cách đọc kana); chấm tự động vào SRS: đúng `GOOD`, sai `FORGOT`.
 
 Chưa quyết (không được tự suy diễn):
 

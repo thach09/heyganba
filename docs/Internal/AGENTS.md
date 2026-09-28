@@ -298,6 +298,24 @@ Sau mỗi phase, agent báo cáo ngắn gọn gồm 3 phần:
 - Khi polish UI: **kiểm tra class có CSS tương ứng** bằng cách so `className` trong `.tsx` với selector trong `index.css`
   (đã gặp 2 class "mồ côi" thật: `.animate-spin` cho spinner của `SubmitButton` và `.w-full`; ngoài ra biến
   `--text-primary` được dùng nhưng chưa từng định nghĩa → phải là `--text-main`).
+- **Cập nhật 28/09/2026 — dự án chuyển sang Tailwind v4:** UI mới viết bằng utility class + token `@theme` trong
+  `frontend/src/index.css` (palette/radius/shadow mặc định đã bị xoá khỏi theme). `index.css` chỉ còn CSS cũ,
+  teo dần theo từng màn — các luật cấu trúc ở trên áp dụng cho tới khi màn cuối cùng chuyển xong.
+- **Cập nhật 28/09/2026 — bẫy cascade layer Tailwind v4 (đã gặp thật):** utility của Tailwind nằm trong layer, còn
+  CSS viết tay không-layer sẽ **thắng** utility bất kể specificity. Triệu chứng đã gặp: `* { margin:0; padding:0 }`
+  cũ nuốt hết `ml-[216px]`, `px-7`, `pt-10` → layout chui dưới sidebar, banner bị cắt, nav mất padding. Cách sửa đang
+  dùng: khai báo `@layer legacy;` **trước** `@import "tailwindcss"` rồi bọc toàn bộ CSS cũ trong `@layer legacy { ... }`.
+  Khi thêm CSS tay mới: viết trong layer (hoặc dùng utility), đừng để ngoài layer.
+
+## Bài học reset dữ liệu test khi SRS dùng cache in-memory (28/09/2026)
+
+- Khi chưa có Redis, backend chạy `app.srs.cache=memory` — `InMemorySrsDueCache` giữ danh sách từ đến hạn theo user
+  **trong RAM**. Reset DB (xoá/seed lại `srs_reviews`) **không** xoá cache → `/flashcard/due-today` vẫn trả danh sách cũ.
+  Triệu chứng đã gặp: stats nói "Còn N từ đến hạn" nhưng phiên trả rỗng ("Xong phiên hôm nay", đã ôn 0 từ).
+  Fix: `docker restart heyganba-backend` sau khi reset DB.
+- Reset nhanh phiên ôn cho user test ở DB local: `DELETE FROM srs_reviews WHERE user_id=<id>` → seed lại `srs_reviews`
+  (một phần `due_date <= now()` để có từ đến hạn) → trả `streaks` + `study_activities` về trạng thái seed.
+  Luôn kiểm tra lại bằng SQL (`count(*) FILTER (WHERE due_date <= now())`) **trước khi** restart backend.
 
 ## Bài học UI mobile: menu phải luôn có "đường thoát" (27/09/2026)
 
