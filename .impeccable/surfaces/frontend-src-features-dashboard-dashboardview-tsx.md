@@ -31,5 +31,4 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
 - Công thức EXP (cộng bao nhiêu mỗi hoạt động)
 - Màu cấp độ: một màu xanh cho mọi cấp, hay mỗi cấp một màu
-- Nhãn nhóm nav: "Chữ cái" (hiện tại) vs "Ký tự"/"Chữ viết"
 - Khối gợi nhớ / nhiệm vụ kế tiếp: đã gỡ khỏi dashboard; để dành cho phiên học/từng trạm

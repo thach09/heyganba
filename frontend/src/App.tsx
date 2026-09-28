@@ -47,6 +47,8 @@ function useIsMobileLayout(): boolean {
 
 export function App() {
   const [currentStation, setCurrentStation] = useState<StationKey>('dashboard');
+  // Owned here so the sidebar dropdown can target Hiragana or Katakana directly.
+  const [kanaScript, setKanaScript] = useState<'HIRAGANA' | 'KATAKANA'>('HIRAGANA');
   const [user, setUser] = useState<AuthResponse | null>(null);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const isMobileLayout = useIsMobileLayout();
@@ -157,6 +159,10 @@ export function App() {
         user={user}
         isOpen={isSidebarOpen}
         onToggleSidebar={toggleSidebar}
+        onSelectKanaScript={(next) => {
+          setKanaScript(next);
+          handleSelectStation('kana');
+        }}
         onOpenAuthModal={() => setIsAuthModalOpen(true)}
         onLogout={handleLogout}
         streakCount={streakCount}
@@ -216,7 +222,9 @@ export function App() {
             )
           )}
 
-          {currentStation === 'kana' && <KanaStationView />}
+          {currentStation === 'kana' && (
+            <KanaStationView script={kanaScript} onScriptChange={setKanaScript} />
+          )}
 
           {currentStation === 'flashcard' && (
             <FlashcardView user={user} onRequireLogin={() => setIsAuthModalOpen(true)} />

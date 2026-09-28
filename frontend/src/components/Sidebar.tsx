@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ChevronLeft, X } from 'lucide-react';
 import type { AuthResponse } from '../services/api';
 
@@ -21,6 +21,8 @@ interface SidebarProps {
   onClose?: () => void;
   /** Desktop: collapse / reopen the sidebar. */
   onToggleSidebar?: () => void;
+  /** Nav dropdown: jump straight to Hiragana or Katakana inside the kana station. */
+  onSelectKanaScript?: (script: 'HIRAGANA' | 'KATAKANA') => void;
   onOpenAuthModal?: () => void;
   onLogout?: () => void;
   streakCount?: number;
@@ -98,6 +100,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   isOverlay = false,
   onClose,
   onToggleSidebar,
+  onSelectKanaScript,
   onOpenAuthModal,
   onLogout,
   streakCount = 0,
@@ -105,6 +108,37 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const isAdmin = user?.role === 'ROLE_ADMIN';
   const [charGroupOpen, setCharGroupOpen] = useState(false);
   const charGroupActive = currentStation === 'kana' || currentStation === 'kanji';
+  const charGroupRef = useRef<HTMLDivElement | null>(null);
+
+  /**
+   * The flyout can be opened by click/tap and would otherwise stay stuck:
+   * close it on outside click or Escape. Hover open/close is handled by pointer
+   * events (see the group handlers) instead of CSS `@media (hover: hover)`, which
+   * some environments (touch-primary devices, headless browsers) never match.
+   */
+  useEffect(() => {
+    if (!charGroupOpen) {
+      return;
+    }
+
+    const handlePointerDown = (event: PointerEvent) => {
+      if (charGroupRef.current && !charGroupRef.current.contains(event.target as Node)) {
+        setCharGroupOpen(false);
+      }
+    };
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setCharGroupOpen(false);
+      }
+    };
+
+    document.addEventListener('pointerdown', handlePointerDown);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [charGroupOpen]);
 
   const go = (key: StationKey) => {
     onSelectStation(key);
@@ -158,19 +192,37 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <nav className="mt-11 flex flex-1 flex-col gap-3.5">
         <NavButton k="今日" v="Hôm nay" active={currentStation === 'dashboard'} onClick={() => go('dashboard')} />
 
-        <div className="group relative">
+        <div
+          ref={charGroupRef}
+          className="relative"
+          onPointerEnter={(event) => {
+            if (event.pointerType === 'mouse') {
+              setCharGroupOpen(true);
+            }
+          }}
+          onPointerLeave={(event) => {
+            if (event.pointerType === 'mouse') {
+              setCharGroupOpen(false);
+            }
+          }}
+          onBlur={(event) => {
+            if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+              setCharGroupOpen(false);
+            }
+          }}
+        >
           <NavButton
             k="文字"
-            v="Chữ cái"
+            v="Chữ viết"
             active={charGroupActive}
             chev
             ariaHasPopup
             ariaExpanded={charGroupOpen}
-            onClick={() => setCharGroupOpen((open) => !open)}
+            onClick={() => setCharGroupOpen(true)}
           />
           <div
             role="menu"
-            className={`absolute left-full top-[-10px] z-40 ml-3.5 min-w-[180px] bg-card py-2.5 transition-opacity group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100 max-[900px]:static max-[900px]:z-auto max-[900px]:ml-0 max-[900px]:mt-2 max-[900px]:min-w-0 max-[900px]:bg-transparent max-[900px]:pl-4 ${
+            className={`absolute left-full top-[-10px] z-40 ml-3.5 min-w-[180px] bg-card py-2.5 transition-opacity max-[900px]:static max-[900px]:z-auto max-[900px]:ml-0 max-[900px]:mt-2 max-[900px]:min-w-0 max-[900px]:bg-transparent max-[900px]:pl-4 ${
               charGroupOpen ? 'visible opacity-100 max-[900px]:block' : 'invisible opacity-0 max-[900px]:hidden'
             }`}
           >
@@ -178,7 +230,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <button
               type="button"
               role="menuitem"
-              onClick={() => go('kana')}
+              onClick={(event) => {
+                // Pointer click: drop focus so group-focus-within stops keeping the flyout open.
+                // Keyboard activation (detail === 0) keeps focus for further tabbing.
+                if (event.detail > 0) {
+                  event.currentTarget.blur();
+                }
+                setCharGroupOpen(false);
+                onSelectKanaScript?.('HIRAGANA');
+                go('kana');
+              }}
               className="flex w-full cursor-pointer items-baseline gap-2.5 border-0 bg-transparent px-4 py-2 text-left font-sans text-fg hover:bg-[rgba(236,236,230,0.05)]"
             >
               <span className="font-serif text-sm">ひらがな</span>
@@ -187,7 +248,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <button
               type="button"
               role="menuitem"
-              onClick={() => go('kana')}
+              onClick={(event) => {
+                if (event.detail > 0) {
+                  event.currentTarget.blur();
+                }
+                setCharGroupOpen(false);
+                onSelectKanaScript?.('KATAKANA');
+                go('kana');
+              }}
               className="flex w-full cursor-pointer items-baseline gap-2.5 border-0 bg-transparent px-4 py-2 text-left font-sans text-fg hover:bg-[rgba(236,236,230,0.05)]"
             >
               <span className="font-serif text-sm">カタカナ</span>
@@ -196,7 +264,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <button
               type="button"
               role="menuitem"
-              onClick={() => go('kanji')}
+              onClick={(event) => {
+                if (event.detail > 0) {
+                  event.currentTarget.blur();
+                }
+                setCharGroupOpen(false);
+                go('kanji');
+              }}
               className="flex w-full cursor-pointer items-baseline gap-2.5 border-0 bg-transparent px-4 py-2 text-left font-sans text-fg hover:bg-[rgba(236,236,230,0.05)]"
             >
               <span className="font-serif text-sm">漢字</span>
