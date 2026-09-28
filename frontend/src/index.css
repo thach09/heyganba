@@ -15,6 +15,7 @@
   --color-rule: rgba(236, 236, 230, 0.14);
   --color-rule-strong: rgba(236, 236, 230, 0.30);
   --color-card: #1B1C19;
+  --color-tint: rgba(236, 236, 230, 0.06);
   --color-rank: #7FA98B;
   --color-red: #D96A5C;
   --color-transparent: transparent;
@@ -28,6 +29,7 @@
   --shadow-*: initial;
 
   --animate-caret: caret-blink 1.1s steps(1, end) infinite;
+  --animate-toast-in: toast-in 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 
   @keyframes caret-blink {
     0%,
@@ -37,6 +39,17 @@
     50%,
     100% {
       opacity: 0;
+    }
+  }
+
+  @keyframes toast-in {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
     }
   }
 }

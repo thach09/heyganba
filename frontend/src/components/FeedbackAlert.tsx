@@ -10,48 +10,37 @@ interface FeedbackAlertProps {
   onClose?: () => void;
 }
 
-export const FeedbackAlert: React.FC<FeedbackAlertProps> = ({
-  type,
-  title,
-  message,
-  onClose,
-}) => {
-  const getIcon = () => {
-    switch (type) {
-      case 'success':
-        return <CheckCircle2 size={20} color="#10B981" />;
-      case 'error':
-        return <XCircle size={20} color="#EF4444" />;
-      default:
-        return <AlertCircle size={20} color="#3B82F6" />;
-    }
-  };
+/**
+ * Toast dưới góc phải. Chỉ dùng 2 màu có việc: lỗi `--red`, còn lại là mực
+ * (thành công = mực đậm, thông tin = mực mờ) — không có xanh dương/xanh lá riêng.
+ */
+export const FeedbackAlert: React.FC<FeedbackAlertProps> = ({ type, title, message, onClose }) => {
+  const Icon = type === 'error' ? XCircle : type === 'success' ? CheckCircle2 : AlertCircle;
+  const tone =
+    type === 'error'
+      ? 'border-l-red text-red'
+      : type === 'success'
+        ? 'border-l-fg text-fg'
+        : 'border-l-fg-38 text-fg-60';
 
   return (
-    <div className={`feedback-alert feedback-${type}`} id="feedback-alert-toast">
-      <div style={{ flexShrink: 0 }}>{getIcon()}</div>
-      <div style={{ flex: 1 }}>
-        <div style={{ fontWeight: 700, fontSize: '14px' }}>{title}</div>
-        {message && (
-          <div style={{ fontSize: '13px', opacity: 0.9, marginTop: '2px' }}>
-            {message}
-          </div>
-        )}
+    <div
+      id="feedback-alert-toast"
+      className={`animate-toast-in fixed bottom-6 right-6 z-[100] flex min-w-[320px] max-w-[440px] items-start gap-3 border border-l-2 border-rule bg-card p-4 ${tone}`}
+    >
+      <Icon size={18} className="mt-0.5 shrink-0" />
+      <div className="flex-1">
+        <div className="text-[13px] font-semibold text-fg">{title}</div>
+        {message && <div className="mt-0.5 text-[12.5px] leading-[1.6] text-fg-60">{message}</div>}
       </div>
       {onClose && (
         <button
+          type="button"
           onClick={onClose}
-          style={{
-            background: 'none',
-            border: 'none',
-            color: 'inherit',
-            cursor: 'pointer',
-            opacity: 0.7,
-            padding: '2px',
-          }}
           aria-label="Đóng"
+          className="cursor-pointer border-0 bg-transparent p-0 text-fg-38 transition-colors hover:text-fg"
         >
-          <X size={16} />
+          <X size={15} />
         </button>
       )}
     </div>

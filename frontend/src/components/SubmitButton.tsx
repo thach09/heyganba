@@ -24,35 +24,31 @@ export const SubmitButton: React.FC<SubmitButtonProps> = ({
   id = 'submit-action-btn',
   fullWidth = false,
 }) => {
+  const variantClass =
+    variant === 'primary'
+      ? 'border-0 bg-fg text-bg hover:opacity-90'
+      : 'border border-rule-strong bg-transparent text-fg hover:bg-fg hover:text-bg';
+
   return (
     <button
       id={id}
       type={type}
       onClick={onClick}
       disabled={disabled || loading}
-      className={`btn btn-${variant} ${fullWidth ? 'w-full' : ''}`}
-      style={{ width: fullWidth ? '100%' : 'auto' }}
+      className={`inline-flex items-center justify-center gap-2 px-4 py-2 text-[11.5px] font-semibold uppercase tracking-[0.12em] transition-colors disabled:cursor-not-allowed disabled:opacity-35 ${
+        disabled || loading ? '' : 'cursor-pointer'
+      } ${variantClass} ${fullWidth ? 'w-full' : ''}`}
     >
       {loading ? (
         <>
-          <Loader2 className="animate-spin" size={16} />
+          <Loader2 className="animate-spin" size={14} />
           <span>Đang xử lý...</span>
         </>
       ) : (
         <>
           <span>{children}</span>
           {shortcutHint && (
-            <kbd
-              style={{
-                fontSize: '11px',
-                padding: '2px 6px',
-                borderRadius: '4px',
-                background: 'rgba(255, 255, 255, 0.2)',
-                color: 'currentColor',
-                marginLeft: '6px',
-                fontWeight: 600,
-              }}
-            >
+            <kbd className="border border-current px-1.5 text-[10px] font-semibold leading-4 opacity-70">
               {shortcutHint}
             </kbd>
           )}
