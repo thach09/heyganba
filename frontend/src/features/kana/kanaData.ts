@@ -1,19 +1,19 @@
 /**
- * Dữ liệu Kana cho Trạm Kana (Phase 1).
+ * Kana data for the Kana station (Phase 1).
  *
- * Nguồn tham chiếu: docs/Internal/content-mapping-fpt-curriculum.md
- * (giáo trình Dekiru Nihongo — JPD113 bài 1-3 / JPD123 bài 4-7).
+ * Reference source: docs/Internal/content-mapping-fpt-curriculum.md
+ * (Dekiru Nihongo curriculum — JPD113 lessons 1-3 / JPD123 lessons 4-7).
  *
- * ⚠️ DRAFT: theo AGENTS.md, agent KHÔNG tự seed nội dung tiếng Nhật vào bảng chính thức.
- * Tập dữ liệu này là bảng nháp phía frontend, cần người biết tiếng Nhật duyệt
- * (cách đọc, âm biến đổi, ví dụ từ mượn) trước khi đưa vào Flyway seed / bảng production.
+ * ⚠️ DRAFT: per AGENTS.md, agents must NOT seed Japanese content into official tables.
+ * This dataset is a frontend-side draft and needs review by a Japanese speaker
+ * (readings, sound changes, loanword examples) before a Flyway seed / production table.
  *
- * Bố cục nhóm hiển thị:
- *  - Hiragana : GOJUON (46 chữ cơ bản) + DAKUTEN + HANDAKUTEN + YOON
- *  - Katakana : GOJUON (46 chữ cơ bản) + DAKUTEN + HANDAKUTEN + YOON
- *               + EXTENDED_KATAKANA (tổ hợp âm cho từ mượn: ファ / フィ / ウィ / ツォ ...)
- *               + DOUBLE_KATAKANA   (ký tự đôi: 促音 ッ / 長音 ー)
- * Katakana mở rộng và ký tự đôi là bảng riêng, không trộn vào 46 chữ cơ bản.
+ * Display grouping:
+ *  - Hiragana : GOJUON (46 base characters) + DAKUTEN + HANDAKUTEN + YOON
+ *  - Katakana : GOJUON (46 base characters) + DAKUTEN + HANDAKUTEN + YOON
+ *               + EXTENDED_KATAKANA (loanword sound combos: ファ / フィ / ウィ / ツォ ...)
+ *               + DOUBLE_KATAKANA   (double marks: 促音 ッ / 長音 ー)
+ * Extended katakana and double marks are separate charts, never mixed into the 46 base characters.
  */
 
 export type KanaScript = 'HIRAGANA' | 'KATAKANA';
@@ -39,15 +39,15 @@ export interface KanaEntry {
   script: KanaScript;
   group: KanaGroupKey;
   row: string;
-  /** Ghi chú hiển thị ở panel chi tiết (cách đọc, lưu ý, nhóm dễ nhầm...). */
+  /** Notes shown in the detail panel (reading, pitfalls, easily confused groups...). */
   notes?: string;
-  /** Nhóm ký tự dễ nhầm khi đọc (シ/ツ/ソ/ン...) → highlight trong bảng. */
+  /** Characters easily confused when reading (シ/ツ/ソ/ン...) → highlighted in the chart. */
   isCommonMistake?: boolean;
-  /** 3 trợ từ は / へ / を: viết không đổi, chỉ đọc khác khi làm trợ từ. */
+  /** The 3 particles は / へ / を: same spelling, read differently as particles. */
   isParticleException?: boolean;
-  /** Audio trên Cloudflare R2 + CDN. Bỏ trống → fallback Web Speech API (ja-JP). */
+  /** Audio on Cloudflare R2 + CDN. Empty → falls back to the Web Speech API (ja-JP). */
   audioUrl?: string;
-  /** Từ dùng để phát âm khi ký tự không đọc độc lập được (ッ → ベッド, ー → コーヒー). */
+  /** Pronunciation fallback word when the character cannot stand alone (ッ → ベッド, ー → コーヒー). */
   audioText?: string;
   examples?: KanaExample[];
 }
@@ -59,7 +59,7 @@ export interface KanaGroupMeta {
   color: string;
 }
 
-/** Ô trống giữ đúng cột a / i / u / e / o của bảng ngũ âm truyền thống. */
+/** Empty slot that keeps the traditional gojūon a / i / u / e / o columns aligned. */
 export type KanaCellSpec = [string, string] | null;
 
 export interface KanaRowSpec {
@@ -133,12 +133,12 @@ export const KANA_SCRIPT_LABEL: Record<KanaScript, string> = {
 };
 
 /**
- * Metadata theo từng ký tự, khoá là chính ký tự đó (không trùng giữa 2 bảng chữ).
- * は / へ / を chỉ có isParticleException — KHÔNG tách thành ký tự riêng,
- * đúng theo content-mapping: "viết không đổi, chỉ đọc đổi khi làm trợ từ".
+ * Per-character metadata keyed by the character itself (unique across both scripts).
+ * は / へ / を only carry isParticleException — they are NOT split into separate characters,
+ * per the content mapping: "same spelling, only read differently as particles".
  */
 const KANA_CELL_META: Record<string, KanaCellMeta> = {
-  // ---------- Hiragana: nhóm dễ nhầm ----------
+  // ---------- Hiragana: easily confused group ----------
   'し': { isCommonMistake: true, notes: 'Đọc "shi", không đọc "si".' },
   'つ': { isCommonMistake: true, notes: 'Đọc "tsu". Nhóm dễ nhầm し / つ / そ / ん — chú ý hướng nét cong.' },
   'そ': { isCommonMistake: true, notes: 'Nhóm dễ nhầm し / つ / そ / ん — chú ý nét ngang trên cùng.' },
@@ -155,7 +155,7 @@ const KANA_CELL_META: Record<string, KanaCellMeta> = {
     notes: 'Đọc giống ず. Chỉ dùng trong vài từ (VD: つづく, みかづき).',
   },
 
-  // ---------- Hiragana: trợ từ đọc khác ----------
+  // ---------- Hiragana: particle readings ----------
   'は': {
     isParticleException: true,
     notes: 'Viết là は nhưng khi làm trợ từ thì đọc "wa". Là trợ từ đứng sau chủ đề câu.',
@@ -174,7 +174,7 @@ const KANA_CELL_META: Record<string, KanaCellMeta> = {
     examples: [{ word: 'ごはん を たべます', reading: 'gohan o tabemasu', meaning: 'Tôi ăn cơm.' }],
   },
 
-  // ---------- Katakana: nhóm dễ nhầm ----------
+  // ---------- Katakana: easily confused group ----------
   'シ': {
     isCommonMistake: true,
     notes: 'Nhóm dễ nhầm シ / ツ / ソ / ン. シ có 2 nét nhỏ hướng vào trong, nét dài cong từ dưới lên.',
@@ -190,7 +190,7 @@ const KANA_CELL_META: Record<string, KanaCellMeta> = {
   'ヂ': { isCommonMistake: true, notes: 'Đọc giống ジ, hầu như không dùng ở katakana.' },
   'ヅ': { isCommonMistake: true, notes: 'Đọc giống ズ, hầu như không dùng ở katakana.' },
 
-  // ---------- Katakana mở rộng: tổ hợp âm cho từ mượn ----------
+  // ---------- Extended katakana: loanword sound combos ----------
   'イェ': { notes: 'Phiên âm "ye" trong từ ngoại lai (VD: イェール = Yale).' },
   'ウィ': {
     notes: 'Phiên âm "wi". Tiếng Nhật không có âm wi riêng nên ghép ウ + ィ nhỏ.',
@@ -308,7 +308,7 @@ const KANA_CELL_META: Record<string, KanaCellMeta> = {
   'グェ': { notes: 'Phiên âm "gwe", ít gặp.' },
   'グォ': { notes: 'Phiên âm "gwo", ít gặp.' },
 
-  // ---------- Katakana ký tự đôi (促音・長音) ----------
+  // ---------- Katakana double marks (促音・長音) ----------
   'ッ': {
     notes:
       '促音 (sokuon): viết nhỏ hơn ツ, KHÔNG đọc thành "tsu" mà gấp đôi phụ âm đứng sau (ベッド = be-ddo).',
@@ -333,7 +333,7 @@ const KANA_CELL_META: Record<string, KanaCellMeta> = {
   },
 };
 
-// ---------- Hiragana: bảng chữ ----------
+// ---------- Hiragana: charts ----------
 const HIRAGANA_GOJUON_ROWS: KanaRowSpec[] = [
   { row: 'あ行 (A)', cells: [['あ', 'a'], ['い', 'i'], ['う', 'u'], ['え', 'e'], ['お', 'o']] },
   { row: 'か行 (KA)', cells: [['か', 'ka'], ['き', 'ki'], ['く', 'ku'], ['け', 'ke'], ['こ', 'ko']] },
@@ -373,7 +373,7 @@ const HIRAGANA_YOON_ROWS: KanaRowSpec[] = [
   { row: 'ぴゃ行 (PYA)', cells: [['ぴゃ', 'pya'], ['ぴゅ', 'pyu'], ['ぴょ', 'pyo']] },
 ];
 
-// ---------- Katakana: bảng chữ cơ bản (46 chữ) ----------
+// ---------- Katakana: base chart (46 characters) ----------
 const KATAKANA_GOJUON_ROWS: KanaRowSpec[] = [
   { row: 'ア行 (A)', cells: [['ア', 'a'], ['イ', 'i'], ['ウ', 'u'], ['エ', 'e'], ['オ', 'o']] },
   { row: 'カ行 (KA)', cells: [['カ', 'ka'], ['キ', 'ki'], ['ク', 'ku'], ['ケ', 'ke'], ['コ', 'ko']] },
@@ -413,7 +413,7 @@ const KATAKANA_YOON_ROWS: KanaRowSpec[] = [
   { row: 'ピャ行 (PYA)', cells: [['ピャ', 'pya'], ['ピュ', 'pyu'], ['ピョ', 'pyo']] },
 ];
 
-// ---------- Katakana mở rộng: tổ hợp âm cho từ mượn (bảng riêng) ----------
+// ---------- Extended katakana: loanword sound combos (separate chart) ----------
 const KATAKANA_EXTENDED_ROWS: KanaRowSpec[] = [
   { row: 'イェ (YE)', cells: [['イェ', 'ye']] },
   { row: 'ウィ行 (WI / WE / WO)', cells: [['ウィ', 'wi'], ['ウェ', 'we'], ['ウォ', 'wo']] },
@@ -428,7 +428,7 @@ const KATAKANA_EXTENDED_ROWS: KanaRowSpec[] = [
   { row: 'グァ行 (GWA)', cells: [['グァ', 'gwa'], ['グィ', 'gwi'], ['グェ', 'gwe'], ['グォ', 'gwo']] },
 ];
 
-// ---------- Katakana ký tự đôi: 促音 (ッ) & 長音 (ー) (bảng riêng) ----------
+// ---------- Katakana double marks: 促音 (ッ) & 長音 (ー) (separate chart) ----------
 const KATAKANA_DOUBLE_ROWS: KanaRowSpec[] = [
   { row: '促音 (sokuon)', cells: [['ッ', 'gấp đôi phụ âm']] },
   { row: '長音 (chōon)', cells: [['ー', 'kéo dài nguyên âm']] },
@@ -484,9 +484,66 @@ export function getKanaById(id: string): KanaEntry | undefined {
   return KANA_ENTRIES.find((entry) => entry.id === id);
 }
 
-/** Pool cho quiz nhận diện: bỏ nhóm "ký tự đôi" vì romaji của nhóm này là mô tả, không phải cách đọc. */
+/** Pool for the typing drill: excludes "double characters" because their romaji is a description, not a reading. */
 export function getKanaQuizPool(script: KanaScript): KanaEntry[] {
   return KANA_ENTRIES.filter((entry) => entry.script === script && entry.group !== 'DOUBLE_KATAKANA');
+}
+
+/**
+ * Extra accepted romanizations per character (Hepburn vs Kunrei-shiki): a typing drill
+ * must accept both or learners get marked wrong for a correct reading.
+ */
+export const ROMAJI_ALIASES: Record<string, string[]> = {
+  'し': ['si'],
+  'シ': ['si'],
+  'ち': ['ti'],
+  'チ': ['ti'],
+  'つ': ['tu'],
+  'ツ': ['tu'],
+  'ふ': ['hu'],
+  'フ': ['hu'],
+  'じ': ['zi'],
+  'ジ': ['zi'],
+  'ぢ': ['di'],
+  'ヂ': ['di'],
+  'づ': ['du'],
+  'ヅ': ['du'],
+  'を': ['o'],
+  'ヲ': ['o'],
+  'ん': ['nn'],
+  'ン': ['nn'],
+  // Yoon: accept Kunrei-style variants too (sya, tya, zya…) alongside Hepburn.
+  'しゃ': ['sya'],
+  'シャ': ['sya'],
+  'しゅ': ['syu'],
+  'シュ': ['syu'],
+  'しょ': ['syo'],
+  'ショ': ['syo'],
+  'ちゃ': ['tya', 'cya'],
+  'チャ': ['tya', 'cya'],
+  'ちゅ': ['tyu', 'cyu'],
+  'チュ': ['tyu', 'cyu'],
+  'ちょ': ['tyo', 'cyo'],
+  'チョ': ['tyo', 'cyo'],
+  'じゃ': ['zya', 'jya'],
+  'ジャ': ['zya', 'jya'],
+  'じゅ': ['zyu', 'jyu'],
+  'ジュ': ['zyu', 'jyu'],
+  'じょ': ['zyo', 'jyo'],
+  'ジョ': ['zyo', 'jyo'],
+};
+
+/**
+ * Every typing a learner may reasonably enter for one entry: the primary romaji with any
+ * parenthetical variant unwrapped ("ji (di)" -> "ji", "di") plus the alias list above.
+ */
+export function acceptedRomaji(entry: Pick<KanaEntry, 'character' | 'romaji'>): string[] {
+  const primary = entry.romaji.trim().toLowerCase();
+  const match = /^([^()]+?)\s*\(([^()]*)\)$/.exec(primary);
+  const base = match
+    ? [match[1].trim(), ...match[2].split(/[,/]/).map((part) => part.trim())]
+    : [primary];
+  return [...new Set([...base.filter(Boolean), ...(ROMAJI_ALIASES[entry.character] ?? [])])];
 }
 
 export const KANA_COUNTS: Record<KanaScript, number> = {
