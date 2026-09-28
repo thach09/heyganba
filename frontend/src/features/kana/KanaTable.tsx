@@ -16,11 +16,11 @@ interface KanaTableProps {
 }
 
 /**
- * Bảng kana dạng grid, mỗi nhóm (Gojūon / Dakuten / Handakuten / Yōon /
- * Katakana mở rộng / Ký tự đôi) là một bảng riêng, giữ đúng cột a-i-u-e-o.
+ * Kana chart as a grid: one block per group (gojuon, dakuten, yoon,
+ * extended katakana, double characters), keeping the a-i-u-e-o columns.
  */
 export const KanaTable: React.FC<KanaTableProps> = ({ script, selectedId, onSelect }) => (
-  <div>
+  <div className="flex flex-col gap-14">
     {KANA_GROUP_ORDER[script].map((group) => (
       <KanaGroupTable
         key={`${script}-${group}`}
@@ -39,45 +39,52 @@ const KanaGroupTable: React.FC<KanaGroupTableProps> = ({ script, group, selected
   const entries = getKanaEntriesByGroup(script, group);
 
   return (
-    <section className="kana-section">
-      <div className="kana-section-head">
+    <section>
+      <div className="flex items-baseline justify-between gap-6">
         <div>
-          <h3 className="kana-section-title">
-            <span className="kana-section-dot" style={{ background: meta.color }} />
-            <span>{meta.label}</span>
-          </h3>
-          <p className="kana-section-desc">{meta.description}</p>
+          <h3 className="text-[13px] font-semibold">{meta.label}</h3>
+          <p className="mt-1 text-[12px] text-fg-38">{meta.description}</p>
         </div>
-        <span className="kana-count-badge" style={{ background: `${meta.color}22`, color: meta.color }}>
-          {entries.length} ký tự
-        </span>
+        <span className="shrink-0 text-[11px] text-fg-38">{entries.length} ký tự</span>
       </div>
 
-      <div className="kana-rows">
+      <div className="mt-5 flex flex-col gap-2">
         {rows.map((rowDef) => (
-          <div className="kana-row" key={`${script}-${group}-${rowDef.row}`}>
-            <span className="kana-row-label">{rowDef.row}</span>
+          <div className="flex gap-2" key={`${script}-${group}-${rowDef.row}`}>
+            <span className="w-12 shrink-0 pt-1.5 text-right text-[10px] leading-[1.35] text-fg-38">
+              {rowDef.row}
+            </span>
             {rowDef.cells.map((cell, index) => {
               const entry = cell ? entries.find((item) => item.character === cell[0]) : undefined;
               if (!entry) {
-                return <span className="kana-cell is-spacer" key={`${rowDef.row}-${index}`} aria-hidden="true" />;
+                return <span className="flex-1" key={`${rowDef.row}-${index}`} aria-hidden="true" />;
               }
 
-              const classNames = ['kana-cell'];
-              if (entry.id === selectedId) classNames.push('is-active');
-              if (entry.isCommonMistake) classNames.push('is-mistake');
-              if (entry.isParticleException) classNames.push('is-particle');
+              const isSelected = entry.id === selectedId;
+              const needsAttention = entry.isCommonMistake || entry.isParticleException;
 
               return (
                 <button
                   key={entry.id}
                   type="button"
-                  className={classNames.join(' ')}
+                  className={`relative flex-1 cursor-pointer px-1 py-2 text-center transition-colors ${
+                    isSelected ? 'bg-card' : 'bg-transparent hover:bg-[rgba(236,236,230,0.05)]'
+                  }`}
                   onClick={() => onSelect(entry)}
                   title={`${entry.character} — ${entry.romaji} (bấm để nghe phát âm)`}
                 >
-                  <span className="kana-cell-char">{entry.character}</span>
-                  <span className="kana-cell-romaji">{entry.romaji}</span>
+                  {needsAttention && (
+                    <span
+                      aria-hidden="true"
+                      className="absolute right-1.5 top-1.5 h-[3px] w-[3px] bg-fg opacity-60"
+                    />
+                  )}
+                  <span className="block font-serif text-[clamp(20px,2.4vw,26px)] font-light leading-none">
+                    {entry.character}
+                  </span>
+                  <span className={`mt-1.5 block text-[10.5px] ${isSelected ? 'text-fg-60' : 'text-fg-38'}`}>
+                    {entry.romaji}
+                  </span>
                 </button>
               );
             })}

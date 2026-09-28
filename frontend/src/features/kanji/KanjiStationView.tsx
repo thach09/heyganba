@@ -338,7 +338,7 @@ export const KanjiStationView: React.FC<KanjiStationViewProps> = ({ user, onRequ
                   <KanaCanvas
                     key={selected.id}
                     referenceChar={selected.character}
-                    canvasSize={360}
+                    maxSize={360}
                     submitLabel="Lưu tiến độ luyện"
                     onSubmit={handlePracticeSubmit}
                   />
