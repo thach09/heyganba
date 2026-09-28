@@ -407,7 +407,7 @@ export const FlashcardView: React.FC<FlashcardViewProps> = ({ user, onRequireLog
 
       {/* Result popup after answering */}
       {choice && current && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(12,12,11,0.72)] p-5">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-scrim p-5">
           <div
             role="dialog"
             aria-modal="true"
@@ -462,7 +462,7 @@ export const FlashcardView: React.FC<FlashcardViewProps> = ({ user, onRequireLog
       {/* Help panel */}
       {helpOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(12,12,11,0.72)] p-5"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-scrim p-5"
           onClick={() => setHelpOpen(false)}
         >
           <div

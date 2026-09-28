@@ -236,7 +236,7 @@ export const KanaStationView: React.FC<KanaStationViewProps> = ({ script, onScri
       {/* Help panel */}
       {helpOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(12,12,11,0.72)] p-5"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-scrim p-5"
           onClick={() => setHelpOpen(false)}
         >
           <div
