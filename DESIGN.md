@@ -63,7 +63,7 @@ Không dùng font mảnh ở cỡ nhỏ — body tối thiểu 12.5px; nét mả
 
 ## 3. Thành phần
 
-**Sidebar** — 5 mục: `今日 · 文字 · 単語 · 文法 · 試験`. Nhóm `文字 · Chữ cái` mở dropdown `ひらがな / カタカナ / 漢字` bằng hover (desktop), tap (mobile), focus (bàn phím). Flyout: nền `--card`, rộng tối thiểu `188px`, mục cách `9px 18px`, hover tint `rgba(236,236,230,.05)`. Mục đang xem: vạch xanh `2px` bên trái mục cha + chữ JP đậm + nhãn VI màu `--rank`.
+**Sidebar** — 5 mục: `今日 · 文字 · 単語 · 文法 · 試験`. Nhóm `文字 · Chữ viết` mở dropdown `ひらがな / カタカナ / 漢字` bằng hover (chuột — qua pointer events, không dựa vào `@media (hover:hover)`), tap (mobile) hoặc click; đóng bằng rời chuột, click ngoài, Esc hoặc blur. Flyout: nền `--card`, rộng tối thiểu `188px`, mục cách `9px 18px`, hover tint `rgba(236,236,230,.05)`. Mục đang xem: vạch xanh `2px` bên trái mục cha + chữ JP đậm + nhãn VI màu `--rank`.
 
 **Tracker** — heatmap mật độ mực 24 tuần × 7 ngày. Ô vuông (`aspect-ratio:1`), gap `3px`, tự giãn kín cột. Mật độ = opacity mực: `0.06 / 0.22 / 0.44 / 0.66 / 0.9`. Nhãn thứ `9px` ở hàng T2/T4/T6; legend ô `8px` "ít → nhiều".
 
@@ -76,6 +76,8 @@ Không dùng font mảnh ở cỡ nhỏ — body tối thiểu 12.5px; nét mả
 **Phiên ôn từ vựng — trắc nghiệm** — thẻ nền `--card`; từ hiển thị serif `clamp(44px,9vw,68px)`. Câu hỏi ngẫu nhiên *nghĩa tiếng Việt* hoặc *cách đọc (kana)*; từ thuần kana luôn hỏi nghĩa. 4 đáp án xếp dọc (phím 1–4, nhiễu lấy từ các từ trong phiên). Sau khi chọn, kết quả hiện trong **popup**: kết quả → danh tính của từ (furigana → từ → nghĩa) → khối `Ví dụ` có nhãn → nút `Tiếp theo (Space)`; đáp án sai chọn viền đỏ (`--red`). Đúng → SRS `GOOD`; sai → `FORGOT` (ôn lại phiên sau). Nút `!` cạnh số tiến độ mở panel hướng dẫn.
 
 **Nút & focus** — viền `1px`, radius 0; hover đảo mực/giấy. Focus bàn phím: viền mảnh `1px --fg-38`, offset `3px`.
+
+**Luyện gõ kana** — mở tab là màn **setup**: chọn ký tự theo **nhóm → hàng → từng chữ**, dàn thẳng trên nền tab (không khung): nhãn nhóm viết hoa, mỗi hàng là nhãn trái `96px` + các ô chữ `42px` (serif 19px), bấm nhãn nhóm/hàng để chọn hoặc bỏ cả cụm, bấm ô để chọn lẻ — mặc định chọn sẵn nhóm Cơ bản. Thanh dưới **sticky** (`bottom-0`, nền giấy): trái là *số ký tự · ký tự hay gõ sai sẽ lặp nhiều hơn*, phải là nút `Bắt đầu` — dính trong màn khi cuộn. Phiên gõ kiểu typekana.com: **khung dãy** viền `1px --rule`, rộng tối đa `880px`, một hàng ngang không xuống hàng — **thanh trượt**: chữ **đang gõ ghim giữa khung**, dãy trượt ngang (`translateX`, transition `300ms`) khi sang chữ kế; chữ serif `clamp(32px,7.5vw,50px)`. Gõ romaji tự do bằng bàn phím, **Enter mới chấm** (Backspace xoá lùi; máy cảm ứng chạm vào dãy để mở bàn phím); **ô nhập** dưới khung nền `--card` `240×44px` hiện romaji đang gõ + **caret nhấp nháy** (`animate-caret` 1.1s steps), dưới cùng là dòng gợi ý. Chữ hiện tại có **gạch chân mực** `2px`, chữ đã gõ mờ `fg-38`, chữ chưa tới `fg-60`. Enter khớp đáp án → chữ done; sai → chữ **hoá đỏ**, hiện **cách đọc đúng ngay trên chữ đó**, lượt đi tiếp ngay (không chặn), và một bản sao **được nhét lại cuối dãy** (không animation), tối đa **10 + 5 chữ** mỗi dãy. Không có nút nghe lại / đặt lại / đếm đúng-sai; chỉ có `Kết thúc` góc phải về màn setup. Cơ chế typekana: **Leitner 5 hộp** — ký tự hay gõ sai lặp nhiều hơn (hộp 1 nặng gấp 16 lần hộp 5), đúng lên hộp, sai về hộp 1; lưu trong `localStorage` (`heyganba_kana_typing`).
 
 ## 4. Ảnh tham chiếu
 
@@ -90,7 +92,7 @@ Không dùng font mảnh ở cỡ nhỏ — body tối thiểu 12.5px; nét mả
 
 - Công thức EXP (cộng bao nhiêu mỗi hoạt động)
 - Màu cấp độ: một màu xanh cho mọi cấp, hay mỗi cấp một màu
-- Nhãn nhóm nav: "Chữ cái" (hiện tại) vs "Ký tự" / "Chữ viết"
+
 - Khối gợi nhớ / nhiệm vụ kế tiếp: đã gỡ khỏi dashboard; để dành cho phiên học/từng trạm
 
 ## 6. Làm việc với hệ này
