@@ -1,4 +1,34 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;600&family=Be+Vietnam+Pro:wght@400;500;600&display=swap');
+/* Legacy CSS lives in the "legacy" layer (declared BEFORE tailwind) so it stops overriding
+   utilities - Tailwind v4 puts utilities in a layer, and unlayered CSS beats layers. */
+@layer legacy;
+@import "tailwindcss";
+
+/* "Ink on paper" tokens for Tailwind - see DESIGN.md.
+   Wipe the default namespaces so generic palette/radius/shadow utilities cannot be used. */
+@theme {
+  --color-*: initial;
+  --color-bg: #151614;
+  --color-fg: #ECECE6;
+  --color-fg-60: rgba(236, 236, 230, 0.60);
+  --color-fg-38: rgba(236, 236, 230, 0.34);
+  --color-rule: rgba(236, 236, 230, 0.14);
+  --color-rule-strong: rgba(236, 236, 230, 0.30);
+  --color-card: #1B1C19;
+  --color-rank: #7FA98B;
+  --color-red: #D96A5C;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  --font-*: initial;
+  --font-sans: 'Be Vietnam Pro', 'Noto Sans', system-ui, sans-serif;
+  --font-serif: 'Noto Serif JP', 'Noto Serif', serif;
+
+  --radius-*: initial;
+  --shadow-*: initial;
+}
+
+@layer legacy {
 
 :root {
   --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
@@ -49,56 +79,62 @@
   padding: 0;
 }
 
+/* ===== "Ink on paper" system - new tokens (override the old :root; see DESIGN.md) ===== */
+:root {
+  --bg: #151614;
+  --fg: #ECECE6;
+  --fg-60: rgba(236, 236, 230, 0.60);
+  --fg-38: rgba(236, 236, 230, 0.34);
+  --rule: rgba(236, 236, 230, 0.14);
+  --rule-strong: rgba(236, 236, 230, 0.30);
+  --card: #1B1C19;
+  --rank: #7FA98B;
+  --red: #D96A5C;
+  --serif: 'Noto Serif JP', 'Noto Serif', serif;
+  --sans: 'Be Vietnam Pro', 'Noto Sans', system-ui, sans-serif;
+
+  /* Temporary compatibility for screens not migrated yet - removed phase by phase */
+  --font-main: var(--sans);
+  --font-jp: var(--serif);
+  --bg-main: var(--bg);
+  --bg-card: var(--card);
+  --bg-card-hover: var(--card);
+  --bg-surface: var(--bg);
+  --bg-glass: var(--card);
+  --border-subtle: var(--rule);
+  --border-active: var(--rule-strong);
+  --border-glow: var(--rule);
+  --primary: var(--fg);
+  --primary-hover: var(--fg);
+  --primary-light: rgba(236, 236, 230, 0.06);
+  --primary-gradient: var(--fg);
+  --accent-gold: var(--fg-60);
+  --accent-emerald: var(--rank);
+  --accent-blue: var(--fg-60);
+  --accent-purple: var(--fg-60);
+  --text-main: var(--fg);
+  --text-secondary: var(--fg-60);
+  --text-muted: var(--fg-38);
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+  --shadow-glow: none;
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-full: 0px;
+  --transition-fast: 0.12s ease;
+  --transition-normal: 0.12s ease;
+}
+
 body {
-  font-family: var(--font-main);
-  background-color: var(--bg-main);
-  color: var(--text-main);
-  line-height: 1.5;
+  font-family: var(--sans);
+  background-color: var(--bg);
+  color: var(--fg);
+  line-height: 1.65;
   min-height: 100vh;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
-}
-
-/* Background gradient blobs */
-.ambient-bg {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-  z-index: 0;
-  overflow: hidden;
-}
-
-.blob-1 {
-  position: absolute;
-  top: -10%;
-  left: 15%;
-  width: 550px;
-  height: 550px;
-  background: radial-gradient(circle, rgba(255, 75, 85, 0.08) 0%, transparent 70%);
-  filter: blur(60px);
-}
-
-.blob-2 {
-  position: absolute;
-  top: 40%;
-  right: -5%;
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(circle, rgba(59, 130, 246, 0.06) 0%, transparent 70%);
-  filter: blur(60px);
-}
-
-.blob-3 {
-  position: absolute;
-  bottom: -10%;
-  left: 30%;
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(245, 158, 11, 0.05) 0%, transparent 70%);
-  filter: blur(80px);
 }
 
 /* App Container */
@@ -109,14 +145,13 @@ body {
   min-height: 100vh;
 }
 
-/* Sidebar */
+/* Sidebar — cột mực, không khung */
 .sidebar {
-  width: 260px;
-  background: var(--bg-surface);
-  border-right: 1px solid var(--border-subtle);
+  width: 216px;
+  background: var(--bg);
   display: flex;
   flex-direction: column;
-  padding: 24px 16px;
+  padding: 40px 28px 32px 40px;
   position: fixed;
   top: 0;
   bottom: 0;
@@ -141,9 +176,7 @@ body {
   right: 0;
   bottom: 0;
   left: 0;
-  background: rgba(4, 7, 15, 0.72);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  background: rgba(12, 12, 11, 0.66);
   z-index: 95;
   animation: fadeIn 0.2s ease-out;
 }
@@ -152,8 +185,15 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 4px 20px;
-  border-bottom: 1px solid var(--border-subtle);
+  gap: 10px;
+}
+
+.brand .torii {
+  stroke: var(--fg-60);
+  fill: none;
+  stroke-width: 1.1;
+  stroke-linecap: round;
+  flex: 0 0 auto;
 }
 
 .brand-header-left {
@@ -168,140 +208,196 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-subtle);
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--text-secondary);
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--rule);
+  background: transparent;
+  color: var(--fg-60);
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: color var(--transition-fast), border-color var(--transition-fast);
 }
 
 .sidebar-close-btn:hover {
-  background: rgba(255, 255, 255, 0.12);
-  color: var(--text-main);
-}
-
-.brand-icon {
-  width: 40px;
-  height: 40px;
-  background: var(--primary-gradient);
-  border-radius: var(--radius-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: 800;
-  font-size: 20px;
-  box-shadow: var(--shadow-glow);
+  color: var(--fg);
+  border-color: var(--rule-strong);
 }
 
 .brand-title {
-  font-size: 19px;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-  color: var(--text-main);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--fg);
+  letter-spacing: 0.01em;
 }
 
 .brand-tag {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--primary);
+  display: block;
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--fg-38);
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.22em;
 }
 
 .nav-menu {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  margin-top: 24px;
+  gap: 14px;
+  margin-top: 44px;
   flex: 1;
 }
 
 .nav-item {
   display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 12px 14px;
-  border-radius: var(--radius-md);
-  color: var(--text-secondary);
-  background: transparent;
+  align-items: baseline;
+  gap: 10px;
+  padding: 2px 0;
   border: none;
+  background: none;
+  color: var(--fg);
+  font-family: var(--sans);
   font-size: 14px;
-  font-weight: 600;
   cursor: pointer;
-  transition: all var(--transition-fast);
   text-align: left;
   width: 100%;
+  position: relative;
 }
 
-.nav-item:hover {
-  color: var(--text-main);
-  background: rgba(255, 255, 255, 0.04);
+.nav-item .k {
+  font-family: var(--serif);
+  font-size: 16px;
+  font-weight: 400;
 }
 
-.nav-item.active {
-  color: #fff;
-  background: var(--primary-light);
-  border-left: 3px solid var(--primary);
+.nav-item .v {
+  font-size: 11px;
+  color: var(--fg-38);
+}
+
+.nav-item:hover .k {
+  font-weight: 600;
+}
+
+.nav-item.active .k {
+  font-weight: 600;
+}
+
+.nav-item.active .v {
+  color: var(--rank);
+}
+
+.nav-item.active::before {
+  content: "";
+  position: absolute;
+  left: -16px;
+  top: 4px;
+  bottom: 4px;
+  width: 2px;
+  background: var(--rank);
+}
+
+.nav-item:focus-visible,
+.nav-flyout button:focus-visible {
+  outline: 1px solid var(--fg-38);
+  outline-offset: 3px;
 }
 
 .nav-badge {
   margin-left: auto;
-  font-size: 11px;
-  padding: 2px 7px;
-  border-radius: var(--radius-full);
-  font-weight: 700;
-  background: rgba(255, 255, 255, 0.08);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-38);
 }
 
 .nav-badge.admin {
-  background: rgba(239, 68, 68, 0.2);
-  color: #f87171;
+  color: var(--red);
 }
 
-.user-snippet {
-  padding: 16px 12px;
-  border-top: 1px solid var(--border-subtle);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+/* Nhóm "文字 · Chữ cái": hover (desktop) + click/tap + focus (bàn phím) */
+.nav-group {
+  position: relative;
 }
 
-.avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-full);
-  background: var(--bg-card-hover);
-  border: 1px solid var(--border-subtle);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 14px;
-  color: var(--primary);
-}
-
-.user-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.user-name {
+.nav-group-head .chev {
+  margin-left: auto;
+  color: var(--fg-38);
   font-size: 13px;
-  font-weight: 600;
-  color: var(--text-main);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  line-height: 1;
 }
 
-.user-role {
+.nav-flyout {
+  position: absolute;
+  left: 100%;
+  top: -10px;
+  margin-left: 14px;
+  min-width: 180px;
+  background: var(--card);
+  padding: 10px 0;
+  z-index: 40;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition-fast);
+}
+
+.nav-flyout::before {
+  content: "";
+  position: absolute;
+  left: -14px;
+  top: 0;
+  bottom: 0;
+  width: 14px;
+}
+
+.nav-group:hover .nav-flyout,
+.nav-group:focus-within .nav-flyout,
+.nav-group.open .nav-flyout {
+  opacity: 1;
+  visibility: visible;
+}
+
+.nav-flyout button {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 8px 16px;
+  width: 100%;
+  background: none;
+  border: 0;
+  color: var(--fg);
+  cursor: pointer;
+  font-family: var(--sans);
+  text-align: left;
+}
+
+.nav-flyout button .k {
+  font-family: var(--serif);
+  font-size: 14px;
+}
+
+.nav-flyout button .v {
+  font-size: 10.5px;
+  color: var(--fg-38);
+}
+
+.nav-flyout button:hover {
+  background: rgba(236, 236, 230, 0.05);
+}
+
+.nav-flyout button.active .v {
+  color: var(--rank);
+}
+
+.rail-foot {
+  margin-top: auto;
+  padding-top: 24px;
   font-size: 11px;
-  color: var(--text-muted);
+  color: var(--fg-38);
+  line-height: 1.8;
+}
+
+.rail-foot .jp {
+  font-family: var(--serif);
+  font-size: 12px;
 }
 
 /* Main Content Area */
@@ -2730,4 +2826,6 @@ body {
   line-height: 1.6;
   color: var(--text-muted);
 }
+
+} /* @layer legacy */
 
