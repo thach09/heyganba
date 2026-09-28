@@ -1,215 +1,259 @@
-import React, { useEffect, useState } from 'react';
-import { 
-  Languages, 
-  Layers, 
-  BookOpen, 
-  Sparkles, 
-  GraduationCap, 
-  ArrowRight,
-  CheckCircle,
-  Clock
-} from 'lucide-react';
-import type { StationKey } from '../../components/Sidebar';
-import { MascotBadge } from '../../components/MascotBadge';
+import React, { useEffect, useMemo, useState } from 'react';
 import { apiRequest } from '../../services/api';
 import type { AuthResponse } from '../../services/api';
 
-interface StreakDto {
+/**
+ * Dashboard - the reflection surface (see DESIGN.md):
+ * 24-week ink-density tracker, "This week", two 30-day charts, level/EXP.
+ *
+ * Real data: `/streak/heatmap` (itemCount, correctCount) + `/flashcard/stats`.
+ * EXP is computed client-side from itemCount (not in the DB yet): 10 EXP per study item, 2,000 per level.
+ */
+
+interface HeatmapDay {
+  date: string;
+  itemCount: number;
+  correctCount: number;
+}
+
+interface FlashcardStats {
+  learnedWords: number;
+  dueToday: number;
+  availableNewWords: number;
   currentStreak: number;
   longestStreak: number;
-  activeDays: number;
 }
 
 interface DashboardViewProps {
-  onSelectStation: (station: StationKey) => void;
   user?: AuthResponse | null;
 }
 
-export const DashboardView: React.FC<DashboardViewProps> = ({ onSelectStation, user }) => {
-  const [streak, setStreak] = useState<StreakDto | null>(null);
+const TRACKER_DAYS = 24 * 7;
+const CHART_DAYS = 30;
+const EXP_PER_ITEM = 10;
+const EXP_PER_LEVEL = 2000;
+const INTENSITY = [0.06, 0.22, 0.44, 0.66, 0.9];
 
-  useEffect(() => {
-    if (!user) {
-      // Không setState đồng bộ trong effect (tránh warning react-hooks): chỉ fetch khi đã đăng nhập,
-      // mascot được render có điều kiện theo `user` nên không cần reset state khi logout.
-      return;
+const formatNumber = (value: number) => value.toLocaleString('vi-VN');
+
+const toLocalDate = (isoDate: string) => {
+  const [year, month, day] = isoDate.split('-').map(Number);
+  return new Date(year, (month ?? 1) - 1, day ?? 1);
+};
+
+/** 0 = Monday ... 6 = Sunday (heatmap columns run Mon -> Sun) */
+const mondayFirstIndex = (date: Date) => (date.getDay() + 6) % 7;
+
+const Caption: React.FC<{ vi: string; jp: string }> = ({ vi, jp }) => (
+  <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-fg-38">
+    {vi}{' '}
+    <span className="ml-2 font-serif text-[12.5px] font-normal normal-case tracking-[0.06em]">{jp}</span>
+  </div>
+);
+
+const StatRow: React.FC<{ label: string; value: number | null }> = ({ label, value }) => (
+  <div className="flex items-baseline justify-between gap-4 py-3">
+    <span className="text-[13px] text-fg-60">{label}</span>
+    <b className="text-base font-semibold tabular-nums">{value === null ? '—' : formatNumber(value)}</b>
+  </div>
+);
+
+/** Tracker: per-day ink density - the more you study, the brighter the cell */
+const Tracker: React.FC<{ days: HeatmapDay[] }> = ({ days }) => {
+  const cells = useMemo<(HeatmapDay | null)[]>(() => {
+    if (days.length === 0) {
+      return Array.from({ length: TRACKER_DAYS }, () => null);
     }
+    const pad = mondayFirstIndex(toLocalDate(days[0].date));
+    return [...Array.from({ length: pad }, () => null), ...days];
+  }, [days]);
 
-    void apiRequest<StreakDto>('/streak').then((res) => {
-      if (res.success && res.data) {
-        setStreak(res.data);
-      }
-    });
-  }, [user]);
-
-  const stations = [
-    {
-      key: 'kana' as StationKey,
-      phase: 'Phase 1',
-      title: 'Bảng Chữ Cái Kana',
-      desc: 'Bảng Hiragana, Katakana tương tác, audio phát âm chuẩn và canvas viết tay. Katakana có bảng riêng cho tổ hợp âm từ mượn và ký tự đôi.',
-      features: [
-        '46 Hiragana + 46 Katakana',
-        'Biến âm & Âm ghép',
-        'Katakana mở rộng (ファ / ウィ / ツォ)',
-        'Ký tự đôi ッ / ー',
-        'Canvas luyện viết tay',
-        'Audio phát âm',
-      ],
-      icon: Languages,
-      color: '#3B82F6',
-      status: 'Ready',
-    },
-    {
-      key: 'flashcard' as StationKey,
-      phase: 'Phase 2',
-      title: 'Flashcard Từ Vựng & SRS',
-      desc: 'Học từ vựng theo giáo trình Dekiru Nihongo (JPD113/JPD123) với thuật toán lặp lại ngắt quãng SM-2.',
-      features: ['Thuật toán SM-2 rút gọn', 'Hàng đợi ôn tập theo ngày', 'Cache Redis tối ưu', 'Từ vựng theo bài 1–7'],
-      icon: Layers,
-      color: '#10B981',
-      status: 'Ready',
-    },
-    {
-      key: 'kanji' as StationKey,
-      phase: 'Phase 3',
-      title: 'Bộ Thủ & Hán Tự (Kanji)',
-      desc: 'Tra cứu theo bộ thủ, mnemonic ghi nhớ hình ảnh, âm Hán Việt và animation thứ tự nét vẽ.',
-      features: ['214 Bộ thủ thông dụng', 'Thứ tự bài học Dekiru', 'Hán Việt + Onyomi/Kunyomi', 'Luyện viết Kanji'],
-      icon: BookOpen,
-      color: '#F59E0B',
-      status: 'Ready',
-    },
-    {
-      key: 'grammar' as StationKey,
-      phase: 'Phase 4',
-      title: 'Trợ Từ & Ngữ Pháp',
-      desc: '17 điểm ngữ pháp JPD113 + ngữ pháp JPD123. Bộ bài tập chuyên sâu cho nhóm bẫy dễ mất điểm.',
-      features: ['Bẫy trợ từ は/へ/を', 'Số đếm biến âm ngoại lệ', 'Chấm điểm phía Server', 'Audio ngữ cảnh'],
-      icon: Sparkles,
-      color: '#8B5CF6',
-      status: 'Ready',
-    },
-    {
-      key: 'exam' as StationKey,
-      phase: 'Phase 5',
-      title: 'Thi Thử & Đấu Trường',
-      desc: 'Đề thi mô phỏng định dạng kỳ thi JPD FPT University, streak heatmap, và bảng xếp hạng lớp học.',
-      features: ['Mô phỏng đề JPD113/123', 'Streak Heatmap', 'Mascot tiến hóa', 'Leaderboard theo lớp'],
-      icon: GraduationCap,
-      color: '#EC4899',
-      status: 'Ready',
-    },
-  ];
+  const level = useMemo(() => {
+    const max = Math.max(1, ...days.map((day) => day.itemCount));
+    return (count: number) => (count <= 0 ? 0 : Math.min(4, Math.ceil((count / max) * 4)));
+  }, [days]);
 
   return (
     <div>
-      <div
-        style={{
-          background: 'linear-gradient(135deg, rgba(255, 75, 85, 0.15) 0%, rgba(19, 27, 46, 0.9) 100%)',
-          border: '1px solid var(--border-active)',
-          borderRadius: 'var(--radius-lg)',
-          padding: '32px',
-          marginBottom: '32px',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          gap: '24px',
-        }}
-      >
-        <div style={{ maxWidth: '640px' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '4px 12px', borderRadius: 'var(--radius-full)', background: 'var(--primary-light)', color: 'var(--primary)', fontSize: '12px', fontWeight: 700, marginBottom: '12px' }}>
-            <Sparkles size={14} />
-            <span>Nền tảng học tiếng Nhật Dekiru Nihongo FPT</span>
-          </div>
-          <h2 style={{ fontSize: '28px', fontWeight: 800, letterSpacing: '-0.5px', marginBottom: '10px' }}>
-            Chào mừng bạn đến với HeyGanba! 🎌
-          </h2>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '15px', lineHeight: 1.6 }}>
-            Hệ thống 5 trạm học tập toàn diện được thiết kế bám sát giáo trình JPD113/JPD123.
-            Nền tảng hạ tầng Phase 0 đã hoàn tất với REST API chuẩn hóa, bảo mật JWT và cơ sở dữ liệu PostgreSQL.
-          </p>
-        </div>
-
-        <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-          {user && (
-            <div style={{ background: 'rgba(255, 255, 255, 0.04)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-md)', padding: '16px 20px' }}>
-              {/* Mascot tạm: emoji tiến hoá theo streak — xem components/MascotBadge.tsx */}
-              <MascotBadge longestStreak={streak?.longestStreak ?? 0} currentStreak={streak?.currentStreak ?? 0} />
-            </div>
-          )}
-          <div style={{ background: 'rgba(255, 255, 255, 0.04)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-md)', padding: '16px 20px', minWidth: '130px' }}>
-            <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Cấu trúc</div>
-            <div style={{ fontSize: '22px', fontWeight: 800, color: 'var(--primary)' }}>5 Trạm</div>
-          </div>
-          <div style={{ background: 'rgba(255, 255, 255, 0.04)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-md)', padding: '16px 20px', minWidth: '130px' }}>
-            <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Học phần</div>
-            <div style={{ fontSize: '22px', fontWeight: 800, color: '#3B82F6' }}>JPD113/123</div>
-          </div>
+      <div className="flex items-baseline justify-between gap-6">
+        <Caption vi="Hoạt động" jp="記録" />
+        <div className="inline-flex items-center gap-1.5 text-[10.5px] text-fg-38">
+          ít
+          {INTENSITY.map((opacity) => (
+            <i key={opacity} className="inline-block h-2 w-2 bg-fg" style={{ opacity }} />
+          ))}
+          nhiều
         </div>
       </div>
-
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
-        <div>
-          <h3 style={{ fontSize: '18px', fontWeight: 700 }}>Bản đồ 5 Trạm học tập</h3>
-          <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Học tập tuần tự từ nhận diện bảng chữ cái đến thi thử tổng hợp</p>
+      <div className="mt-[22px] flex gap-3">
+        <div
+          aria-hidden="true"
+          className="grid grid-rows-[repeat(7,minmax(0,1fr))] gap-[3px] text-[9px] leading-none text-fg-38"
+        >
+          <span className="self-center" style={{ gridRow: 1 }}>T2</span>
+          <span className="self-center" style={{ gridRow: 3 }}>T4</span>
+          <span className="self-center" style={{ gridRow: 5 }}>T6</span>
+        </div>
+        <div
+          aria-hidden="true"
+          className="grid min-w-0 flex-1 auto-cols-fr grid-flow-col grid-rows-[repeat(7,minmax(0,1fr))] gap-[3px]"
+        >
+          {cells.map((cell, index) => (
+            <i
+              key={index}
+              className="block aspect-square w-full bg-fg"
+              style={{ opacity: INTENSITY[cell ? level(cell.itemCount) : 0] }}
+            />
+          ))}
         </div>
       </div>
+    </div>
+  );
+};
 
-      <div className="stations-grid">
-        {stations.map((st) => {
-          const Icon = st.icon;
+const WeekStats: React.FC<{ items: number | null; correct: number | null; learned: number | null }> = ({
+  items,
+  correct,
+  learned,
+}) => (
+  <div className="flex h-full flex-col">
+    <Caption vi="Tuần này" jp="今週" />
+    <div className="mt-[22px] flex flex-1 flex-col justify-between">
+      <StatRow label="Lượt học" value={items} />
+      <StatRow label="Trả lời đúng" value={correct} />
+      <StatRow label="Từ đã thuộc" value={learned} />
+    </div>
+  </div>
+);
+
+/** 30-day ink bar chart - today is the brightest, the last 7 days are brighter than the rest */
+const ActivityChart: React.FC<{ days: HeatmapDay[]; metric: 'itemCount' | 'correctCount'; vi: string; jp: string }> = ({
+  days,
+  metric,
+  vi,
+  jp,
+}) => {
+  const values = useMemo(() => days.map((day) => day[metric]), [days, metric]);
+  const max = Math.max(1, ...values);
+  const total = values.reduce((sum, value) => sum + value, 0);
+
+  return (
+    <div>
+      <div className="flex items-baseline justify-between gap-6">
+        <Caption vi={vi} jp={jp} />
+        <div className="text-[10.5px] text-fg-38">
+          {values.length === 0 ? '—' : `${formatNumber(total)} · 30 ngày`}
+        </div>
+      </div>
+      <div className="mt-[22px] flex h-[88px] items-end justify-between border-b border-rule">
+        {values.map((value, index) => {
+          const opacity =
+            index === values.length - 1
+              ? 'opacity-[0.95]'
+              : index >= values.length - 7
+                ? 'opacity-[0.62]'
+                : 'opacity-[0.38]';
+          const height = value <= 0 ? '2px' : `${Math.max(6, Math.round((value / max) * 100))}%`;
           return (
-            <div
-              key={st.key}
-              className="station-card"
-              onClick={() => onSelectStation(st.key)}
-            >
-              <div className="station-card-header">
-                <div className="station-icon-box" style={{ background: `${st.color}15`, color: st.color }}>
-                  <Icon size={24} />
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <span style={{ fontSize: '11px', padding: '2px 8px', borderRadius: '4px', background: 'rgba(255, 255, 255, 0.06)', color: 'var(--text-muted)' }}>
-                    {st.phase}
-                  </span>
-                </div>
-              </div>
-
-              <div className="station-card-title">{st.title}</div>
-              <p className="station-card-desc">{st.desc}</p>
-
-              <div className="station-features">
-                {st.features.map((feat, idx) => (
-                  <span key={idx} className="feature-tag">
-                    {feat}
-                  </span>
-                ))}
-              </div>
-
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto', paddingTop: '16px', borderTop: '1px solid var(--border-subtle)' }}>
-                <span style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-muted)' }}>
-                  {st.status.includes('Ready') ? (
-                    <>
-                      <CheckCircle size={14} color="#10B981" />
-                      <span style={{ color: '#10B981', fontWeight: 600 }}>Sẵn sàng</span>
-                    </>
-                  ) : (
-                    <>
-                      <Clock size={14} />
-                      <span>{st.status}</span>
-                    </>
-                  )}
-                </span>
-                <span style={{ color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '13px', fontWeight: 600 }}>
-                  Khám phá <ArrowRight size={14} />
-                </span>
-              </div>
-            </div>
+            <i
+              key={index}
+              aria-hidden="true"
+              className={`block w-[min(12px,3%)] bg-fg ${opacity}`}
+              style={{ height }}
+            />
           );
         })}
       </div>
     </div>
+  );
+};
+
+export const DashboardView: React.FC<DashboardViewProps> = ({ user }) => {
+  const [heatmap, setHeatmap] = useState<HeatmapDay[]>([]);
+  const [flashStats, setFlashStats] = useState<FlashcardStats | null>(null);
+
+  useEffect(() => {
+    if (!user) {
+      return;
+    }
+
+    void apiRequest<HeatmapDay[]>(`/streak/heatmap?days=${TRACKER_DAYS}`).then((res) => {
+      if (res.success && res.data) {
+        setHeatmap(res.data);
+      }
+    });
+
+    void apiRequest<FlashcardStats>('/flashcard/stats').then((res) => {
+      if (res.success && res.data) {
+        setFlashStats(res.data);
+      }
+    });
+  }, [user]);
+
+  const { weekItems, weekCorrect, level, expIntoLevel, hasExp } = useMemo(() => {
+    const total = heatmap.reduce((sum, day) => sum + day.itemCount, 0);
+    const last7 = heatmap.slice(-7);
+    const exp = total * EXP_PER_ITEM;
+    return {
+      weekItems: last7.reduce((sum, day) => sum + day.itemCount, 0),
+      weekCorrect: last7.reduce((sum, day) => sum + day.correctCount, 0),
+      level: Math.floor(exp / EXP_PER_LEVEL) + 1,
+      expIntoLevel: exp % EXP_PER_LEVEL,
+      hasExp: exp > 0,
+    };
+  }, [heatmap]);
+
+  const chartDays = useMemo(() => (user ? heatmap.slice(-CHART_DAYS) : []), [heatmap, user]);
+
+  const now = new Date();
+  const viDate = now.toLocaleDateString('vi-VN', {
+    weekday: 'long',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  });
+  const jpDate = new Intl.DateTimeFormat('ja-JP', { month: 'long', day: 'numeric' }).format(now);
+
+  return (
+    <>
+      <header className="flex items-start justify-between gap-10 max-[900px]:flex-col max-[900px]:gap-7">
+        <div className="pt-0.5 text-[12.5px] text-fg-38">
+          {viDate} <span className="ml-2 font-serif">{jpDate}</span>
+        </div>
+
+        <div className="text-right max-[900px]:text-left">
+          <div className="text-[10.5px] uppercase tracking-[0.16em] text-fg-38">Kinh nghiệm</div>
+          {user ? (
+            <>
+              <div className="mt-1 text-[13.5px]">
+                Cấp{' '}
+                <b className="mr-0.5 font-serif text-[22px] font-semibold">{level}</b> ·{' '}
+                {formatNumber(expIntoLevel)} / {formatNumber(EXP_PER_LEVEL)} EXP
+              </div>
+              <div className="relative ml-auto mt-2.5 h-[2px] w-[220px] max-w-full bg-rule max-[900px]:ml-0 max-[900px]:w-full">
+                <i
+                  aria-hidden="true"
+                  className="absolute inset-y-0 left-0 bg-rank"
+                  style={{ width: hasExp ? `${Math.round((expIntoLevel / EXP_PER_LEVEL) * 100)}%` : '0%' }}
+                />
+              </div>
+            </>
+          ) : (
+            <div className="mt-1 text-[13.5px] text-fg-60">Đăng nhập để theo dõi tiến độ</div>
+          )}
+        </div>
+      </header>
+
+      <section className="mt-12 grid grid-cols-2 gap-x-16 gap-y-12 max-[900px]:grid-cols-1 max-[900px]:gap-11">
+        <Tracker days={heatmap} />
+        <WeekStats
+          items={user ? weekItems : null}
+          correct={user ? weekCorrect : null}
+          learned={user ? (flashStats?.learnedWords ?? null) : null}
+        />
+        <ActivityChart days={chartDays} metric="itemCount" vi="Lượt học" jp="学習" />
+        <ActivityChart days={chartDays} metric="correctCount" vi="Trả lời đúng" jp="正解" />
+      </section>
+    </>
   );
 };
