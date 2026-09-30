@@ -95,6 +95,14 @@ Không dùng font mảnh ở cỡ nhỏ — body tối thiểu 12.5px; nét mả
 
 **Trang chi tiết điểm ngữ pháp** (`/grammar/:ruleId`) — mặt đọc rộng `720px` trong vùng nội dung, sidebar vẫn đứng: link `← Danh sách ngữ pháp`, tiêu đề = cấu trúc (serif `32px`), meta `#số · bài · N câu`, rồi giải thích cỡ đọc (`14px/2`), khối `Lưu ý` nền `tint`, cuối là `Luyện tập phần này` → về `/grammar?practice=<id>` (query được xoá sau khi áp). Cuối trang có khối **`Ngữ pháp khác`**: lưới card ngang (desktop `auto-fill minmax(220px)`, mobile 2 cột), card = cấu trúc serif `15px` + `#số · bài · N câu`, viền `--rule` hover viền mực + nền `tint`; gợi ý ưu tiên **cùng bài**, thiếu thì lấp các điểm liền kề, tối đa 6, kèm link `Xem tất cả →`; bấm card thì sang trang đó và **cuộn lên đầu**. Đây là chỗ để nhét 例文 sau này mà không phải sửa layout.
 
+**Trạm Thi thử** — header `Exam 試験` + nút `(!)`; hàng thống kê `fg-38` (*streak hiện tại · dài nhất · đã học · hôm nay x/y lượt ôn · N lượt thi*); đề sinh từ ngân hàng đã duyệt và chấm hoàn toàn ở server. Card đề: chip `Số câu` (10/20/30) + `Thời gian` (10/20/30) + `Bắt đầu thi thử`; hai cột `Mascot & điều kiện tính streak` và `Streak heatmap` (ô `12px`, đậm theo thang tracker `0.06–0.9`, legend mờ, ghi múi giờ); `Bảng xếp hạng` bảng viền `--rule`: **hạng 1 = đặc mực, 2–3 = viền mực, còn lại `fg-38`** (không vàng/bạc/đồng), hàng `is-me` nền `tint`, số căn phải `tabular-nums`; quản lý mã lớp dưới bảng. `Lịch sử thi thử` bảng cùng kiểu. **Đang thi**: bar sticky (`Câu i/n` · đồng hồ serif `tabular-nums` · chú thích TTS · `Nộp bài`), thẻ câu: meta (type + `Nghe` TTS + `Đã chọn`), câu serif `20px`, đáp án hàng `kbd 1–4` — hàng được chọn viền mực; card đang làm viền mực + nền `--card`. **Kết quả**: card `--card`, review từng câu có **vạch trái `2px`** (đúng mực / sai đỏ) kèm lựa chọn + đáp án + giải thích.
+
+**Auth modal** — overlay `bg-scrim` (z `110`, trên mobile drawer), card nền `--card`, `max-w 380px`; field nền `--bg` + viền `--rule-strong`, label `fg-38`, icon `fg-38`; lỗi dùng `tint` + vạch trái `--red`; link chuyển Login/Register gạch chân; nút nạp admin dev viền nét đứt.
+
+**Admin** — số liệu trong card nền `--card`; bảng dùng header hoa nhỏ `fg-38`, hàng kẻ `--rule`, số `tabular-nums`; role ADMIN đặc mực, USER viền; trạng thái hoạt động dùng mực mờ, bị khoá dùng `--red`. Bảng rộng nằm trong `overflow-x-auto`; vùng main có `min-w-0` để không kéo tràn viewport mobile.
+
+**403 / backend offline** — 403 là một trạng thái trống gọn (số serif + lý do + link về `/`); banner backend dùng `tint` + vạch trái `--red`, lời người dùng nói "tạm thời không kết nối được"; chi tiết chạy `mvn`/Docker chỉ hiện trong `import.meta.env.DEV`.
+
 ## 4. Ảnh tham chiếu
 
 ![Dashboard — nav nhóm mở](docs/Design/mock-dashboard-desktop-nav-open.png)
