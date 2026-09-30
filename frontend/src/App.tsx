@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Menu } from 'lucide-react';
-import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import { Link, Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { Sidebar } from './components/Sidebar';
 import { AuthModal } from './features/auth/AuthModal';
 import { DashboardView } from './features/dashboard/DashboardView';
@@ -138,6 +138,14 @@ export function App() {
     }
   };
 
+  /** Open sign-in and close the mobile drawer; otherwise its higher z-index hides the modal. */
+  const openAuthModal = () => {
+    setIsAuthModalOpen(true);
+    if (isMobileLayout) {
+      closeSidebar();
+    }
+  };
+
   return (
     <div className="relative z-[1] flex min-h-screen">
       {/* Menu backdrop: only rendered while the sidebar is open as a mobile overlay */}
@@ -158,7 +166,7 @@ export function App() {
         isOpen={isSidebarOpen}
         onToggleSidebar={toggleSidebar}
         onSelectKanaScript={setKanaScript}
-        onOpenAuthModal={() => setIsAuthModalOpen(true)}
+        onOpenAuthModal={openAuthModal}
         onLogout={handleLogout}
         streakCount={streakCount}
       />
@@ -178,29 +186,21 @@ export function App() {
 
       {/* Main Content Area */}
       <div
-        className={`flex min-h-screen flex-1 flex-col transition-[margin] duration-150 ${
+        className={`flex min-h-screen min-w-0 flex-1 flex-col transition-[margin] duration-150 ${
           isSidebarOpen ? 'ml-[216px] max-[900px]:ml-0' : 'ml-0'
         }`}
       >
-        <main className="w-full flex-1 px-14 pb-14 pt-10 max-[900px]:px-5 max-[900px]:pb-10 max-[900px]:pt-16">
+        <main className="w-full min-w-0 flex-1 px-14 pb-14 pt-10 max-[900px]:px-5 max-[900px]:pb-10 max-[900px]:pt-16">
           {backendHealthy === false && (
-            <div
-              style={{
-                background: 'rgba(245, 158, 11, 0.12)',
-                border: '1px solid rgba(245, 158, 11, 0.3)',
-                borderRadius: 'var(--radius-md)',
-                padding: '12px 18px',
-                fontSize: '13px',
-                color: 'var(--accent-gold)',
-                marginBottom: '20px',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}
-            >
-              <span>
-                ⚠️ Máy chủ backend (Spring Boot) chưa khởi chạy hoặc đang cold start. Để kích hoạt toàn bộ tính năng API, chạy: <code>mvn spring-boot:run</code> tại thư mục <code>backend</code> hoặc dùng Docker Compose.
-              </span>
+            <div className="mb-5 border-l-2 border-l-red bg-tint px-4 py-3 text-[12.5px] leading-[1.8] text-fg-60">
+              Tạm thời không kết nối được với máy chủ. Vui lòng thử lại sau ít phút.
+              {import.meta.env.DEV && (
+                <span className="mt-1 block text-fg-38">
+                  Dev: backend chưa chạy hoặc đang cold start — <code className="border border-rule px-1 text-[12px]">mvn
+                  spring-boot:run</code> trong <code className="border border-rule px-1 text-[12px]">backend</code> hoặc
+                  Docker Compose.
+                </span>
+              )}
             </div>
           )}
 
@@ -212,30 +212,39 @@ export function App() {
             />
             <Route
               path="/vocabulary"
-              element={<FlashcardView user={user} onRequireLogin={() => setIsAuthModalOpen(true)} />}
+              element={<FlashcardView user={user} onRequireLogin={openAuthModal} />}
             />
             <Route
               path="/kanji"
-              element={<KanjiStationView user={user} onRequireLogin={() => setIsAuthModalOpen(true)} />}
+              element={<KanjiStationView user={user} onRequireLogin={openAuthModal} />}
             />
             <Route
               path="/grammar"
-              element={<GrammarView user={user} onRequireLogin={() => setIsAuthModalOpen(true)} />}
+              element={<GrammarView user={user} onRequireLogin={openAuthModal} />}
             />
             <Route
               path="/grammar/:ruleId"
-              element={<GrammarRulePage user={user} onRequireLogin={() => setIsAuthModalOpen(true)} />}
+              element={<GrammarRulePage user={user} onRequireLogin={openAuthModal} />}
             />
-            <Route path="/exam" element={<ExamView user={user} onRequireLogin={() => setIsAuthModalOpen(true)} />} />
+            <Route path="/exam" element={<ExamView user={user} onRequireLogin={openAuthModal} />} />
             <Route
               path="/admin"
               element={
                 user?.role === 'ROLE_ADMIN' ? (
                   <AdminView />
                 ) : (
-                  <div style={{ padding: '32px', textAlign: 'center', background: 'var(--bg-card)', borderRadius: 'var(--radius-lg)' }}>
-                    <h3 style={{ color: '#EF4444', marginBottom: '8px' }}>Không có quyền truy cập (403 Forbidden)</h3>
-                    <p style={{ color: 'var(--text-secondary)' }}>Vui lòng đăng nhập bằng tài khoản Administrator để truy cập khu vực này.</p>
+                  <div className="mx-auto flex w-full max-w-[520px] flex-col items-center pt-16 text-center">
+                    <span className="font-serif text-[30px] font-light leading-none text-fg-38">403</span>
+                    <h3 className="mt-4 text-[15px] font-semibold text-fg">Không có quyền truy cập</h3>
+                    <p className="mt-2 text-[12.5px] leading-[1.9] text-fg-60">
+                      Vui lòng đăng nhập bằng tài khoản Administrator để truy cập khu vực này.
+                    </p>
+                    <Link
+                      to="/"
+                      className="mt-6 text-[11.5px] text-fg-38 underline underline-offset-2 transition-colors hover:text-fg"
+                    >
+                      ← Về trang chủ
+                    </Link>
                   </div>
                 )
               }

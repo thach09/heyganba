@@ -65,7 +65,7 @@ const chipClass = (active: boolean) =>
 
 const labelClass = 'text-[10.5px] font-semibold uppercase tracking-[0.18em] text-fg-38';
 
-/** Mnemonic nổi hơn phần còn lại của panel: nền `tint` thay cho vạch kẻ. */
+/** The mnemonic block uses a tint background to stand out without a decorative rule. */
 const MnemonicBlock: React.FC<{ text: string }> = ({ text }) => (
   <div className="bg-tint px-4 py-3">
     <span className={labelClass}>Mnemonic</span>
@@ -451,7 +451,7 @@ export const KanjiStationView: React.FC<KanjiStationViewProps> = ({ user, onRequ
                   onClick={() => setSelected(item)}
                   title={`${item.character} — ${item.sinoVietnamese}`}
                   className={`cursor-pointer px-1 py-2 text-center transition-colors ${
-                    selected?.id === item.id ? 'bg-card' : 'bg-transparent hover:bg-[rgba(236,236,230,0.05)]'
+                    selected?.id === item.id ? 'bg-card' : 'bg-transparent hover:bg-tint'
                   }`}
                 >
                   <span className="block font-serif text-[22px] font-light leading-none text-fg">

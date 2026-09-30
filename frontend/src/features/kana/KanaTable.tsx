@@ -68,7 +68,7 @@ const KanaGroupTable: React.FC<KanaGroupTableProps> = ({ script, group, selected
                   key={entry.id}
                   type="button"
                   className={`relative flex-1 cursor-pointer px-1 py-2 text-center transition-colors ${
-                    isSelected ? 'bg-card' : 'bg-transparent hover:bg-[rgba(236,236,230,0.05)]'
+                    isSelected ? 'bg-card' : 'bg-transparent hover:bg-tint'
                   }`}
                   onClick={() => onSelect(entry)}
                   title={`${entry.character} — ${entry.romaji} (bấm để nghe phát âm)`}

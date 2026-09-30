@@ -4,7 +4,7 @@ import { Link, NavLink, useLocation } from 'react-router-dom';
 import type { AuthResponse } from '../services/api';
 
 interface SidebarProps {
-  /** Mobile: đóng drawer sau khi chọn mục nav (desktop giữ nguyên). */
+  /** Mobile: close the drawer after choosing a nav item; desktop keeps it open. */
   onNavigate?: () => void;
   user: AuthResponse | null;
   isOpen?: boolean;
@@ -92,7 +92,7 @@ interface NavItemProps {
   badge?: React.ReactNode;
 }
 
-/** Mục nav là link thật (đổi URL), giữ nguyên dáng cũ của nút. */
+/** Render a real URL link while keeping the previous navigation-item styling. */
 const NavItem: React.FC<NavItemProps> = ({ to, k, v, onNavigate, badge }) => (
   <NavLink end={to === '/'} to={to} onClick={onNavigate} className={itemBase}>
     {({ isActive }) => (
@@ -249,7 +249,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 onSelectKanaScript?.('HIRAGANA');
                 onNavigate?.();
               }}
-              className="flex w-full cursor-pointer items-baseline gap-2.5 border-0 bg-transparent px-4 py-2 text-left font-sans text-fg hover:bg-[rgba(236,236,230,0.05)]"
+              className="flex w-full cursor-pointer items-baseline gap-2.5 border-0 bg-transparent px-4 py-2 text-left font-sans text-fg hover:bg-tint"
             >
               <span className="font-serif text-sm">ひらがな</span>
               <span className="text-[10.5px] text-fg-38">Hiragana</span>
@@ -265,7 +265,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 onSelectKanaScript?.('KATAKANA');
                 onNavigate?.();
               }}
-              className="flex w-full cursor-pointer items-baseline gap-2.5 border-0 bg-transparent px-4 py-2 text-left font-sans text-fg hover:bg-[rgba(236,236,230,0.05)]"
+              className="flex w-full cursor-pointer items-baseline gap-2.5 border-0 bg-transparent px-4 py-2 text-left font-sans text-fg hover:bg-tint"
             >
               <span className="font-serif text-sm">カタカナ</span>
               <span className="text-[10.5px] text-fg-38">Katakana</span>
@@ -280,7 +280,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 closeFlyout();
                 onNavigate?.();
               }}
-              className="flex w-full cursor-pointer items-baseline gap-2.5 border-0 bg-transparent px-4 py-2 text-left font-sans text-fg hover:bg-[rgba(236,236,230,0.05)]"
+              className="flex w-full cursor-pointer items-baseline gap-2.5 border-0 bg-transparent px-4 py-2 text-left font-sans text-fg hover:bg-tint"
             >
               <span className="font-serif text-sm">漢字</span>
               <span className="text-[10.5px] text-fg-38">Kanji</span>

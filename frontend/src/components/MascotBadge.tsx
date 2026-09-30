@@ -1,8 +1,8 @@
 import React from 'react';
 
 /**
- * Mascot tạm: chuỗi emoji tiến hoá theo streak dài nhất (quyết định đã chốt — chưa chờ asset thiết kế).
- * Khi có bộ hình chính thức chỉ cần thay bảng MILESTONES bên dưới, không đổi nơi gọi component.
+ * Temporary emoji mascot that evolves with the longest streak.
+ * Replace the MILESTONES assets later without changing the component call sites.
  */
 const MILESTONES = [
   { minStreak: 30, emoji: '🐉', label: 'Rồng Nhật', note: 'Bậc thầy kiên trì' },
@@ -23,18 +23,18 @@ export const MascotBadge: React.FC<MascotBadgeProps> = ({ longestStreak, current
   const nextMilestone = [...MILESTONES].reverse().find((item) => item.minStreak > longestStreak);
 
   return (
-    <div className="mascot-badge">
-      <span className="mascot-emoji" title={milestone.note}>
+    <div className="flex items-center gap-4">
+      <span className="text-[32px] leading-none" title={milestone.note} aria-hidden="true">
         {milestone.emoji}
       </span>
-      <div className="mascot-info">
-        <span className="mascot-label">{milestone.label}</span>
-        <span className="kana-detail-meta">
+      <div className="flex flex-col gap-0.5">
+        <span className="text-[13px] font-semibold text-fg">{milestone.label}</span>
+        <span className="text-[11.5px] text-fg-38">
           Streak dài nhất {longestStreak} ngày
           {typeof currentStreak === 'number' ? ` · hiện tại ${currentStreak} ngày` : ''}
         </span>
         {nextMilestone && (
-          <span className="kana-detail-meta">
+          <span className="text-[11.5px] text-fg-38">
             Còn {nextMilestone.minStreak - longestStreak} ngày để tiến hoá thành {nextMilestone.emoji}{' '}
             {nextMilestone.label}
           </span>

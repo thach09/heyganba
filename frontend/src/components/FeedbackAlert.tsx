@@ -11,8 +11,8 @@ interface FeedbackAlertProps {
 }
 
 /**
- * Toast dưới góc phải. Chỉ dùng 2 màu có việc: lỗi `--red`, còn lại là mực
- * (thành công = mực đậm, thông tin = mực mờ) — không có xanh dương/xanh lá riêng.
+ * Bottom-right toast. Use only the two semantic palette colors: `--red` for errors,
+ * ink for success and muted ink for information; no separate blue/green colors.
  */
 export const FeedbackAlert: React.FC<FeedbackAlertProps> = ({ type, title, message, onClose }) => {
   const Icon = type === 'error' ? XCircle : type === 'success' ? CheckCircle2 : AlertCircle;

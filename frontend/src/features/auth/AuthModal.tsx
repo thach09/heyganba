@@ -10,6 +10,10 @@ interface AuthModalProps {
   onAuthSuccess: (user: AuthResponse) => void;
 }
 
+const fieldLabel = 'block text-[11.5px] text-fg-38 mb-1.5';
+const inputClass =
+  'h-10 w-full border border-rule-strong bg-bg px-4 text-[12.5px] text-fg outline-none transition-colors placeholder:text-fg-38 focus:border-fg';
+
 export const AuthModal: React.FC<AuthModalProps> = ({
   isOpen,
   onClose,
@@ -64,36 +68,33 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-card">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-          <h2 style={{ fontSize: '18px', fontWeight: 800 }}>
+    <div className="fixed inset-0 z-[110] flex items-center justify-center bg-scrim p-5" onClick={onClose}>
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label={isRegister ? 'Tạo tài khoản HeyGanba' : 'Đăng nhập vào HeyGanba'}
+        className="w-full max-w-[380px] bg-card px-7 py-8"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div className="flex items-start justify-between gap-4">
+          <h2 className="text-[16px] font-semibold text-fg">
             {isRegister ? 'Tạo tài khoản HeyGanba' : 'Đăng nhập vào HeyGanba'}
           </h2>
           <button
+            type="button"
             onClick={onClose}
-            style={{
-              background: 'none',
-              border: 'none',
-              color: 'var(--text-muted)',
-              cursor: 'pointer',
-            }}
+            aria-label="Đóng"
+            title="Đóng"
+            className="inline-flex h-7 w-7 shrink-0 cursor-pointer items-center justify-center border border-rule bg-transparent text-fg-60 transition-colors hover:border-rule-strong hover:text-fg"
           >
-            <X size={20} />
+            <X size={15} />
           </button>
         </div>
 
         {error && (
           <div
-            style={{
-              background: 'rgba(239, 68, 68, 0.15)',
-              border: '1px solid #ef4444',
-              borderRadius: 'var(--radius-sm)',
-              padding: '10px 14px',
-              fontSize: '13px',
-              color: '#f87171',
-              marginBottom: '16px',
-            }}
+            id="auth-error"
+            className="mt-4 border-l-2 border-l-red bg-tint px-3 py-2 text-[12.5px] leading-[1.7] text-red"
           >
             {error}
           </div>
@@ -102,92 +103,99 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         <form onSubmit={handleSubmit}>
           {isRegister && (
             <>
-            <div className="form-group">
-              <label className="form-label">Họ và tên</label>
-              <div style={{ position: 'relative' }}>
-                <UserIcon size={16} style={{ position: 'absolute', left: '14px', top: '14px', color: 'var(--text-muted)' }} />
-                <input
-                  type="text"
-                  required
-                  placeholder="Nguyễn Văn A"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  className="form-input"
-                  style={{ paddingLeft: '40px' }}
-                />
+              <div className="mt-5">
+                <label htmlFor="auth-full-name" className={fieldLabel}>
+                  Họ và tên
+                </label>
+                <div className="relative">
+                  <UserIcon size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-fg-38" />
+                  <input
+                    id="auth-full-name"
+                    type="text"
+                    required
+                    placeholder="Nguyễn Văn A"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    className={`${inputClass} pl-9`}
+                  />
+                </div>
               </div>
-            </div>
-            <div className="form-group">
-              <label className="form-label">Mã lớp (không bắt buộc)</label>
-              <div style={{ position: 'relative' }}>
-                <Users size={16} style={{ position: 'absolute', left: '14px', top: '14px', color: 'var(--text-muted)' }} />
-                <input
-                  type="text"
-                  maxLength={50}
-                  placeholder="VD: JPD113-A"
-                  value={classCode}
-                  onChange={(e) => setClassCode(e.target.value)}
-                  className="form-input"
-                  style={{ paddingLeft: '40px' }}
-                  title="Dùng để xếp hạng theo lớp; có thể bổ sung sau trong Trạm Thi Thử."
-                />
+
+              <div className="mt-4">
+                <label htmlFor="auth-class-code" className={fieldLabel}>
+                  Mã lớp (không bắt buộc)
+                </label>
+                <div className="relative">
+                  <Users size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-fg-38" />
+                  <input
+                    id="auth-class-code"
+                    type="text"
+                    maxLength={50}
+                    placeholder="VD: JPD113-A"
+                    value={classCode}
+                    onChange={(e) => setClassCode(e.target.value)}
+                    title="Dùng để xếp hạng theo lớp; có thể bổ sung sau trong Trạm Thi Thử."
+                    className={`${inputClass} pl-9`}
+                  />
+                </div>
               </div>
-            </div>
             </>
           )}
 
-          <div className="form-group">
-            <label className="form-label">Email</label>
-            <div style={{ position: 'relative' }}>
-              <Mail size={16} style={{ position: 'absolute', left: '14px', top: '14px', color: 'var(--text-muted)' }} />
+          <div className="mt-4">
+            <label htmlFor="auth-email" className={fieldLabel}>
+              Email
+            </label>
+            <div className="relative">
+              <Mail size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-fg-38" />
               <input
+                id="auth-email"
                 type="email"
                 required
                 placeholder="name@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="form-input"
-                style={{ paddingLeft: '40px' }}
+                className={`${inputClass} pl-9`}
               />
             </div>
           </div>
 
-          <div className="form-group">
-            <label className="form-label">Mật khẩu</label>
-            <div style={{ position: 'relative' }}>
-              <Lock size={16} style={{ position: 'absolute', left: '14px', top: '14px', color: 'var(--text-muted)' }} />
+          <div className="mt-4">
+            <label htmlFor="auth-password" className={fieldLabel}>
+              Mật khẩu
+            </label>
+            <div className="relative">
+              <Lock size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-fg-38" />
               <input
+                id="auth-password"
                 type="password"
                 required
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="form-input"
-                style={{ paddingLeft: '40px' }}
+                className={`${inputClass} pl-9`}
               />
             </div>
           </div>
 
-          <div style={{ marginTop: '24px' }}>
-            <SubmitButton
-              type="submit"
-              loading={loading}
-              fullWidth
-              id="auth-submit-btn"
-            >
+          <div className="mt-7">
+            <SubmitButton type="submit" loading={loading} fullWidth id="auth-submit-btn">
               {isRegister ? 'Tạo tài khoản' : 'Đăng nhập'}
             </SubmitButton>
           </div>
         </form>
 
-        <div style={{ marginTop: '20px', textAlign: 'center', fontSize: '13px', color: 'var(--text-secondary)' }}>
+        <div className="mt-6 text-center text-[12.5px] text-fg-60">
           {isRegister ? (
             <div>
               Đã có tài khoản?{' '}
               <button
                 type="button"
-                onClick={() => { setIsRegister(false); setError(null); }}
-                style={{ background: 'none', border: 'none', color: 'var(--primary)', fontWeight: 700, cursor: 'pointer' }}
+                onClick={() => {
+                  setIsRegister(false);
+                  setError(null);
+                }}
+                className="cursor-pointer border-0 bg-transparent p-0 text-[12.5px] font-semibold text-fg underline underline-offset-2 transition-colors hover:text-fg-60"
               >
                 Đăng nhập ngay
               </button>
@@ -197,8 +205,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               Chưa có tài khoản?{' '}
               <button
                 type="button"
-                onClick={() => { setIsRegister(true); setError(null); }}
-                style={{ background: 'none', border: 'none', color: 'var(--primary)', fontWeight: 700, cursor: 'pointer' }}
+                onClick={() => {
+                  setIsRegister(true);
+                  setError(null);
+                }}
+                className="cursor-pointer border-0 bg-transparent p-0 text-[12.5px] font-semibold text-fg underline underline-offset-2 transition-colors hover:text-fg-60"
               >
                 Đăng ký miễn phí
               </button>
@@ -206,21 +217,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           )}
         </div>
 
-        {/* Nút nạp sẵn tài khoản admin chỉ hiện ở môi trường dev — không đưa credential mẫu lên production. */}
+        {/* The prefilled admin account is development-only; never expose sample credentials in production. */}
         {import.meta.env.DEV && (
-          <div style={{ marginTop: '20px', paddingTop: '16px', borderTop: '1px solid var(--border-subtle)', display: 'flex', justifyContent: 'center' }}>
+          <div className="mt-6 flex justify-center border-t border-rule pt-5">
             <button
               type="button"
               onClick={handlePrefillAdmin}
-              style={{
-                background: 'none',
-                border: '1px dashed var(--border-subtle)',
-                borderRadius: 'var(--radius-sm)',
-                color: 'var(--text-muted)',
-                fontSize: '11px',
-                padding: '6px 12px',
-                cursor: 'pointer',
-              }}
+              className="cursor-pointer border border-dashed border-rule bg-transparent px-3 py-1.5 text-[11px] text-fg-38 transition-colors hover:text-fg hover:border-rule-strong"
             >
               Nạp sẵn tài khoản Admin thử nghiệm
             </button>

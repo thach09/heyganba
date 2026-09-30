@@ -211,7 +211,7 @@ export const KanaStationView: React.FC<KanaStationViewProps> = ({ script, onScri
                   onClick={() => setPracticeEntry(entry)}
                   title={`${entry.character} — ${entry.romaji}`}
                   className={`cursor-pointer px-1 py-2 text-center transition-colors ${
-                    practiceEntrySafe.id === entry.id ? 'bg-card' : 'bg-transparent hover:bg-[rgba(236,236,230,0.05)]'
+                    practiceEntrySafe.id === entry.id ? 'bg-card' : 'bg-transparent hover:bg-tint'
                   }`}
                 >
                   <span className="block font-serif text-[22px] font-light leading-none">{entry.character}</span>

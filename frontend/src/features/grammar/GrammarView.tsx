@@ -36,7 +36,7 @@ const chipClass = (active: boolean) =>
     active ? 'border-fg bg-fg text-bg' : 'border-rule-strong bg-transparent text-fg-60 hover:border-fg hover:text-fg'
   }`;
 
-/** Bỏ dấu tiếng Việt để gõ "phu dinh" vẫn ra "phủ định" (đ không tách được bằng NFD nên thay tay). */
+/** Strip Vietnamese diacritics so "phu dinh" also matches "phủ định" (đ needs explicit replacement). */
 const normalizeText = (value: string) =>
   value
     .toLowerCase()
@@ -64,10 +64,10 @@ export const GrammarView: React.FC<GrammarViewProps> = ({ user, onRequireLogin }
   const [error, setError] = useState<string | null>(null);
   const [helpOpen, setHelpOpen] = useState(false);
   const [feedback, setFeedback] = useState<{ type: FeedbackType; title: string; message: string } | null>(null);
-  // Số điểm ngữ pháp còn là bản nháp chờ duyệt tiếng Nhật (hiện cảnh báo để không bị nhầm là nội dung đã duyệt).
+  // Count draft rules so users can distinguish pending Japanese content from approved content.
   const pendingReviewRules = rules.filter((rule) => rule.reviewStatus !== 'APPROVED').length;
 
-  /** Màn hẹp: chi tiết mở dạng popup, nên chỉ render popup khi thật sự hẹp (không để markup thừa trong DOM). */
+  /** On narrow screens, render the detail as a popup instead of leaving hidden dialog markup in the DOM. */
   const [isNarrow, setIsNarrow] = useState(() => window.matchMedia('(max-width: 1100px)').matches);
   useEffect(() => {
     const media = window.matchMedia('(max-width: 1100px)');
@@ -214,7 +214,7 @@ export const GrammarView: React.FC<GrammarViewProps> = ({ user, onRequireLogin }
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [mode, current, result, submitAnswer, goNext]);
 
-  // `/grammar?practice=<id>` (đến từ trang chi tiết) mở thẳng tab luyện tập với điểm đó, rồi xoá query.
+  // `/grammar?practice=<id>` from a rule page opens that rule in the practice tab, then clears the query.
   useEffect(() => {
     const practiceId = searchParams.get('practice');
     if (!practiceId || rules.length === 0) {
@@ -249,7 +249,7 @@ export const GrammarView: React.FC<GrammarViewProps> = ({ user, onRequireLogin }
       ? 'toàn bộ nhóm bẫy'
       : 'tất cả điểm ngữ pháp';
 
-  /** Nội dung chi tiết dùng chung cho panel desktop và popup trên màn nhỏ. */
+  /** Shared rule-detail content for the desktop panel and narrow-screen popup. */
   const detailBody = selectedRule ? (
     <>
       <div className="font-serif text-[22px] leading-[1.5] text-fg">{selectedRule.structure}</div>

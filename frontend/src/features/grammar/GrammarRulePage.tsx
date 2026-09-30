@@ -12,13 +12,13 @@ interface GrammarRulePageProps {
 
 const labelClass = 'text-[10.5px] font-semibold uppercase tracking-[0.18em] text-fg-38';
 
-/** Số điểm ngữ pháp gợi ý ở cuối trang. */
+/** Maximum number of related grammar points shown at the bottom of the page. */
 const OTHERS_LIMIT = 6;
 
 /**
- * Trang chi tiết một điểm ngữ pháp (`/grammar/:ruleId`) — mặt đọc riêng, không phải popup:
- * có URL riêng, F5 giữ nguyên trang, back/forward của trình duyệt chạy đúng.
- * Cuối trang là "Ngữ pháp khác": cùng bài trước, thiếu thì lấy các điểm liền kề theo số thứ tự.
+ * Standalone grammar rule reader at `/grammar/:ruleId`, not a popup: deep links,
+ * refresh, and browser back/forward all work. Related rules prefer the same lesson,
+ * then fill from adjacent rule numbers.
  */
 export const GrammarRulePage: React.FC<GrammarRulePageProps> = ({ user, onRequireLogin }) => {
   const { ruleId } = useParams();
@@ -57,7 +57,7 @@ export const GrammarRulePage: React.FC<GrammarRulePageProps> = ({ user, onRequir
       return;
     }
 
-    // Bài ít điểm quá thì lấp thêm các điểm liền kề theo số thứ tự cho phần gợi ý khỏi trống.
+    // Fill short lessons with adjacent rules so the related section does not look empty.
     const picked = [...sameLesson];
     const pickedIds = new Set([current.id, ...picked.map((item) => item.id)]);
     for (const item of all) {
@@ -76,7 +76,7 @@ export const GrammarRulePage: React.FC<GrammarRulePageProps> = ({ user, onRequir
     void loadRule();
   }, [loadRule]);
 
-  // Đổi sang điểm khác qua link trong "Ngữ pháp khác" thì bắt đầu từ đầu trang.
+  // Start at the top when navigating to another rule from the related-rules section.
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [ruleId]);
