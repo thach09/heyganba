@@ -5,6 +5,7 @@ import com.heyganba.config.UserPrincipal;
 import com.heyganba.dto.admin.AdminExerciseRequest;
 import com.heyganba.dto.admin.AdminKanjiRequest;
 import com.heyganba.dto.admin.AdminVocabularyRequest;
+import com.heyganba.dto.admin.AdminPasswordConfirmRequest;
 import com.heyganba.dto.admin.AuditLogResponse;
 import com.heyganba.dto.auth.TwoFactorCodeRequest;
 import com.heyganba.dto.auth.TwoFactorSetupResponse;
@@ -105,6 +106,22 @@ public class AdminController {
     ) {
         authService.disableTwoFactor(admin.getId(), request.code());
         return ResponseEntity.ok(ApiResponse.success(null, "Đã huỷ kích hoạt 2FA"));
+    }
+
+    /**
+     * Reset 2FA khi admin MẤT thiết bị Authenticator: xác thực lại bằng mật khẩu hiện tại (KHÔNG cần mã TOTP),
+     * sau đó tắt 2FA + xoá secret ⇒ lần setup sau sinh secret mới hoàn toàn.
+     */
+    @PostMapping("/2fa/reset")
+    public ResponseEntity<ApiResponse<Void>> resetTwoFactor(
+            @AuthenticationPrincipal UserPrincipal admin,
+            @Valid @RequestBody AdminPasswordConfirmRequest request
+    ) {
+        authService.resetTwoFactor(admin.getId(), request.password());
+        auditLogService.logAction(userRepository.getReferenceById(admin.getId()), "users", admin.getId(),
+                "RESET_2FA", "isTwoFactorEnabled=true", "isTwoFactorEnabled=false, secret=null");
+        return ResponseEntity.ok(ApiResponse.success(null,
+                "Đã tắt 2FA. Vui lòng thiết lập lại từ đầu bằng /admin/2fa/setup."));
     }
 
     // ================= CRUD TỪ VỰNG =================

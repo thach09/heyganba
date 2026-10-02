@@ -184,6 +184,30 @@ public class AuthService {
         userRepository.save(user);
     }
 
+    /**
+     * Reset 2FA bằng MẬT KHẨU hiện tại của chính admin (dùng khi mất thiết bị Authenticator).
+     *
+     * Vì sao xác thực bằng mật khẩu chứ không bằng mã TOTP: khi đã mất điện thoại thì không thể sinh mã TOTP —
+     * đòi TOTP sẽ khoá admin ra khỏi chính tài khoản của mình. Bù lại, vẫn phải xác thực LẠI (không tin mỗi JWT
+     * còn hạn) để một token bị lộ không đủ để tắt 2FA.
+     *
+     * Sau khi reset: `isTwoFactorEnabled = false` + `twoFactorSecret = null` ⇒ lần setup tiếp theo sinh secret
+     * MỚI hoàn toàn (không giữ secret cũ), nên phải quét lại QR từ đầu.
+     */
+    @Transactional
+    public void resetTwoFactor(Long userId, String password) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BadRequestException("User not found"));
+
+        if (password == null || password.isBlank() || !passwordEncoder.matches(password, user.getPasswordHash())) {
+            throw new BadRequestException("Mật khẩu không chính xác");
+        }
+
+        user.setIsTwoFactorEnabled(false);
+        user.setTwoFactorSecret(null);
+        userRepository.save(user);
+    }
+
     @Transactional(readOnly = true)
     public TwoFactorSetupResponse getTwoFactorStatus(Long userId) {
         User user = userRepository.findById(userId)

@@ -64,6 +64,8 @@
 | Postgres: không dùng superuser | Đã có | Role `heyganba_owner` trên Neon (không phải superuser). Role này là owner của database `heyganba` vì Flyway cần quyền DDL; app chỉ dùng đúng database này |
 | Backup + mã hoá at-rest | Đã có (managed) | Neon PITR 6 giờ + `pg_dump` định kỳ lưu `backups/` (gitignore) |
 | Audit log thao tác admin | Đã có | bảng `audit_logs` + `GET /admin/audit-logs` |
+| Hàng đợi duyệt "cần kiểm" (`needs_human_check`) | **Mới (27/09)** | `GET /admin/review-queue` (chỉ ADMIN): item AI soạn mà CHƯA đối chiếu được nguồn được xếp LÊN ĐẦU kèm lý do; `/content/review-status` trả thêm `totalNeedsHumanCheck`; test `AdminReviewQueueApiTest` (5 case) |
+| Audio TTS qua server (`/audio/tts`) | **Mới (27/09)** | Yêu cầu đăng nhập (không nằm trong danh sách permitAll), rate limit 120 req/phút/user, chỉ nhận chuỗi kana/kanji ≤ 64 ký tự, **cache bắt buộc** (`tts_audio`) để không lạm dụng endpoint Google không chính thức; test `TtsAudioServiceTest` |
 | Thu thập dữ liệu tối thiểu | Đã có | chỉ email, họ tên, mã lớp, tiến độ học |
 | Chống XSS | Đã có + siết thêm | Không dùng `dangerouslySetInnerHTML`/`eval`; React escape mặc định; thêm `Content-Security-Policy` + `Permissions-Policy` ở `frontend/vercel.json` |
 | HTTPS toàn bộ + HSTS | Đã có | HSTS ở cả backend (`SecurityConfig`) và frontend (`vercel.json`); cert Let's Encrypt qua Render (`api.heyganba.site`) và Vercel (`heyganba.site`) |
@@ -191,6 +193,24 @@ admin trong 15 phút (self-DoS). Đổi lại, đây cũng chính là cơ chế 
   2. Thêm exponential backoff theo IP và thông báo (log/email) cho admin mỗi khi có chuỗi đăng nhập sai.
 - Bài học đi kèm: **mọi state in-memory dùng cho bảo mật (rate limit, cache) phải ghi vào danh sách nợ kỹ thuật này**
   vì nó phụ thuộc số instance — xem thêm mục Redis trong `deployment-plan.md`.
+
+### Nợ kỹ thuật: `two_factor_secret` lưu PLAINTEXT trong DB — trigger: **TRƯỚC KHI THÊM ADMIN ACCOUNT THỨ 2**
+
+- **Hiện trạng**: `users.two_factor_secret` lưu secret TOTP (Base32) **không mã hoá**. Ai đọc được bảng `users` (dump DB, log
+  câu SQL, hoặc một lỗ hổng SQL injection) là tự sinh được mã TOTP hợp lệ ⇒ vô hiệu hoá lớp bảo vệ thứ hai.
+- **Vì sao chưa fix đợt này**: hiện chỉ có **1 tài khoản admin**; để lấy được secret phải đã có quyền truy cập DB (bản thân
+  đã là quyền cao nhất). Mã hoá tại chỗ cần thêm quản lý khoá (env riêng) + migrate dữ liệu + luồng buộc setup lại ⇒ vượt
+  phạm vi, rủi ro thực tế thấp nên ghi thành nợ có điều kiện.
+- **Trigger bắt buộc trả nợ: TRƯỚC KHI THÊM ADMIN ACCOUNT THỨ 2** (không phải mốc thời gian chung chung). Lý do: khi có ≥2
+  admin, một secret bị lộ cho phép giả mạo admin khác, và xử lý sự cố sẽ phải xoay secret của nhiều tài khoản cùng lúc.
+  Khi đó phải làm đủ 3 việc:
+  1. Lưu secret ở dạng mã hoá (`AES-GCM`, khoá riêng trong env `TWO_FACTOR_ENC_KEY` — **không** dùng chung `JWT_SECRET`).
+  2. Migration: thêm cột lưu bản mã hoá + backfill + **buộc mọi admin setup lại 2FA** (xoá secret cũ).
+  3. Cập nhật `AuthService.setupTwoFactor`/`enableTwoFactor`/`verifyCode` + test hồi quy khẳng định log/response **không**
+     chứa secret thô (đã có tiền lệ: status endpoint bị bịt rò rỉ secret ngày 02/10/2026).
+- Đường thoát khi mất thiết bị (đã có từ 27/09/2026): `POST /api/v1/admin/2fa/reset` xác thực lại bằng **mật khẩu hiện tại**,
+  sau đó xoá hẳn secret ⇒ không còn secret cũ nào tồn tại sau khi reset (phải setup lại từ đầu).
+
 
 ### Khắc phục sự cố rò rỉ Render API key qua terminal buffer (xử lý ngày 02/10/2026)
 
