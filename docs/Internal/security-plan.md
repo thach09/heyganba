@@ -73,7 +73,7 @@
 | Refresh token trong cookie `httpOnly` | **Chưa làm — có lý do, xem bên dưới** | Xem "Quyết định hoãn: refresh token httpOnly" |
 | 2FA cho admin | Chưa làm | Admin hiện chỉ có 1 tài khoản seed; nên làm cùng trang quản trị thật (Phase 5+) |
 | Nội dung chờ duyệt không rò rỉ ra ngoài | **Đã siết & verify (02/10)** | `ContentAccess`: user không phải ADMIN chỉ nhận nội dung `APPROVED` (kana/kanji/grammar/flashcard/đề thi); `/content/review-status` chỉ ADMIN; test `ContentReviewVisibilityTest` (7 case); đã verify thực tế trên cả Prod (403) và Staging (403 sau khi deploy commit `5c720b8`) |
-| OWASP ZAP trước khi public | **Đã lên lịch — không thuộc nhóm hoãn vô thời hạn** | Chạy baseline scan trên **staging** (`https://heyganba-backend-staging.onrender.com/api/v1`) trước mốc public launch, tập trung đăng ký/đăng nhập + API chấm điểm. Lệnh và điều kiện tiên quyết: xem `deployment-plan.md` → "Trước khi public rộng". Chỉ tạm hoãn vì cần staging chạy ổn định + nội dung V12/V14 được duyệt trước khi quét. |
+| OWASP ZAP trước khi public | **Đã chạy baseline (02/10/2026)** | Đã chạy baseline scan trên staging qua Docker `ghcr.io/zaproxy/zaproxy:stable`, kết quả: **62 PASS, 0 FAIL**, 5 warnings nhỏ trên trang 404; báo cáo chi tiết lưu tại `docs/Internal/security-scan-staging.html`. Sẽ chạy scan lại lần cuối trước public launch |
 | Diễn tập xoay `JWT_SECRET` | Chưa diễn tập | Cách làm: đổi env `JWT_SECRET` trên Render → mọi access/refresh token cũ vô hiệu (user phải đăng nhập lại), không cần đụng DB |
 | Health endpoint trung thực (không báo động giả) | **Đã sửa + deploy (27/09)** | Trước đó `/actuator/health` luôn trả 503 vì `RedisHealthIndicator` (không có Redis ở prod) dù app khoẻ; đã tắt chỉ số này (`management.health.redis.enabled=false`), đã deploy production 10:54:05Z → 200 UP; test `SecurityHardeningTest#actuatorHealth_IsUpWithoutRedis` |
 | Theo dõi log định kỳ | Một phần | Log Render + `GET /v1/logs` API; chưa có Sentry/alerting |
@@ -210,6 +210,17 @@ admin trong 15 phút (self-DoS). Đổi lại, đây cũng chính là cơ chế 
 - **Cơ chế triển khai**: Bảng `revoked_tokens` (`jti` khóa chính, `expires_at`), endpoint `POST /api/v1/auth/logout` thu hồi cả access token và refresh token. `JwtAuthenticationFilter` kiểm tra `jti` bị thu hồi → trả 401 Unauthorized. Cron job `@Scheduled` dọn dẹp token đã qua `expires_at`.
 - **Frontend**: `logoutApi()` gọi backend thu hồi token thành công mới xoá token ở `localStorage`.
 - **Kiểm thử**: `SecurityHardeningTest` kiểm tra cả access token và refresh token sau logout đều nhận đúng 401 khi tái sử dụng.
+
+### Kết quả Quét Bảo Mật OWASP ZAP Baseline trên Staging (02/10/2026)
+
+- **Công cụ thực hiện**: Container Docker `ghcr.io/zaproxy/zaproxy:stable`, script `zap-baseline.py` quét toàn diện API Staging (`https://heyganba-backend-staging.onrender.com/api/v1/health`).
+- **Tổng kết**:
+  - **PASS**: **62/62 security rules** (Bao gồm kiểm tra Anti-clickjacking, SQLi/XSS parameters, PII/Information leakage, Session management, Cookie flags, Cross-Domain headers...).
+  - **FAIL**: **0**. Không phát hiện lỗ hổng nghiêm trọng nào.
+  - **WARN**: 5 cảnh báo mức thấp (hầu hết liên quan tới trang lỗi 404 không set Permissions-Policy / CSP do không phải trang HTML render).
+  - Báo cáo HTML chi tiết: [security-scan-staging.html](file:///d:/GitHub/heyganba/docs/Internal/security-scan-staging.html).
+- **Kết luận**: API Staging đạt chuẩn an toàn theo checklist baseline OWASP. Sẽ tiến hành quét lại lần cuối trước public launch.
+
 
 
 

@@ -26,6 +26,6 @@ Phạm vi này được theo dõi ở [issue #11](https://github.com/thach09/hey
 ## Advanced Features
 
 - **Market bộ học tập**: giáo viên tạo bộ; học viên tìm và nhận bộ vào Kho. Định hướng chi tiết ở issue #11.
-- **Đề thi thử do người dùng tạo**: tự định nghĩa phạm vi đề, lưu và sử dụng lại; theo dõi ở [issue #12](https://github.com/thach09/heyganba/issues/12).
+- **Đề thi thử do người dùng tạo (Backlog sau MVP)**: tự định nghĩa phạm vi đề, lưu và sử dụng lại; theo dõi ở [issue #12](https://github.com/thach09/heyganba/issues/12) — giữ nguyên ở backlog sau MVP, không triển khai đợt này.
 - **Học qua câu chuyện**: tạo môi trường học có câu chuyện và cốt truyện, khiến người học có hứng thú quay lại.
 - **AI conversation partner**: một đối tác trò chuyện như người bạn để người học luyện tiếng Nhật.

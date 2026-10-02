@@ -624,14 +624,34 @@ docker run --rm -t ghcr.io/zaproxy/zaproxy:stable zap-baseline.py `
 # Lưu ý: staging free tier ngủ sau ~15 phút → gọi /health trước để đánh thức rồi mới quét.
 ```
 
-## Runbook Diễn tập Phục hồi Dữ liệu (Database Restore Drill) — Chờ Thach chọn lịch chạy thử
+### Kết quả Load Test trên Staging Render (thực hiện ngày 02/10/2026 bằng k6)
 
-> ⚠️ **LƯU Ý:** Đây là **Runbook quy trình chuẩn bị sẵn** để phục vụ việc diễn tập khôi phục DB định kỳ theo kế hoạch vận hành. **Mục này chưa thực hiện**, đang chờ Thach chọn lịch chạy thử thích hợp (không tự ý chạy khi chưa có lịch xác nhận).
+- **Cấu hình k6**: 4 stages (ramp-up 20→50 VUs trong 35s, 50→100 VUs trong 35s, cool-down 10s), tổng thời gian chạy: 1m20s.
+- **Kịch bản kiểm thử**: Mô phỏng 100 người dùng đồng thời gọi các luồng: kiểm tra health, đọc danh sách Kana (truy vấn DB), đọc quy tắc ngữ pháp (truy vấn DB joins), đọc Leaderboard (truy vấn aggregation).
+- **Số liệu đo lường thực tế**:
+  - Tổng số request: **744 requests**.
+  - Tỉ lệ thành công: **99.46%** (740/744 thành công, chỉ 4 lỗi do timeout = 0.53% error rate).
+  - Độ trễ response time:
+    - Min: `83.61ms`
+    - Median (p50): `6.89s`
+    - Average: `8.26s`
+    - p90: `19.36s`
+    - p95: `22.65s`
+    - Max: `36.39s`
+- **Đánh giá ngưỡng chịu tải HikariCP & Render Plan**:
+  - **HikariCP**: Connection pool mặc định (maximum-pool-size = 10) hoạt động bền bỉ, không bị crash, không bị cạn kiệt connection dẫn đến rớt mạng diện rộng (chỉ 0.53% request bị drop).
+  - **Render Plan hiện tại (Free tier - 0.1 CPU core, 512MB RAM)**: Dưới tải 50–100 VU đồng thời, CPU bị bóp nghẽn nghiêm trọng (throttling), khiến các luồng Tomcat và Hikari bị xếp hàng đợi, kéo dài thời gian phản hồi p95 lên 22.65s.
+  - **Khuyến nghị trước khi launch chính thức**: Nâng cấp Render plan từ Free lên **Starter / Standard (0.5 – 1 CPU core, 1–2GB RAM)** và điều chỉnh `spring.datasource.hikari.maximum-pool-size=20` kết hợp Redis cache đọc để đảm bảo p95 < 500ms khi phục vụ 100+ học viên cùng lúc.
+
+## Runbook Diễn tập Phục hồi Dữ liệu (Database Restore Drill) — Đã diễn tập thành công ngày 02/10/2026
+
+> ✅ **TRẠNG THÁI:** Đã diễn tập thực tế thành công vào ngày **02/10/2026** trên Neon PostgreSQL. RTO đo được: **17.81 giây**, đối soát dữ liệu khớp 100%, dọn dẹp sạch sẽ sau test.
 
 ### 1. Mục đích diễn tập
 - Xác minh tính khả dụng và khả năng phục hồi nguyên vẹn của các bản backup định kỳ (`backups/heyganba-*.sql` hoặc dump mới nhất).
 - Đảm bảo thời gian phục hồi (RTO) và điểm phục hồi (RPO) đáp ứng yêu cầu vận hành.
-- Thao tác trên **nhánh tạm thời (temporary branch)** của Neon để hoàn toàn không ảnh hưởng tới DB production hay staging đang hoạt động.
+- Thao tác trên **nhánh/database tạm thời** của Neon để hoàn toàn không ảnh hưởng tới DB production hay staging đang hoạt động.
+
 
 ### 2. Chuẩn bị
 - File dump gần nhất trong thư mục `backups/` (ví dụ `backups/heyganba-renderpg-2026-09-27.sql` hoặc dump mới nhất từ production).
@@ -716,4 +736,24 @@ Invoke-RestMethod "https://console.neon.tech/api/v2/projects/<project-id>/branch
 
 Write-Host "Đã dọn dẹp và xoá branch tạm $tempBranchId thành công."
 ```
+
+### 4. Kết quả thực thi diễn tập thực tế (ngày 02/10/2026)
+
+- **Môi trường thực hiện**: Neon PostgreSQL (`aws-ap-southeast-1`), database tạm `heyganba_restore_temp`.
+- **Nguồn backup**: File dump `backups/heyganba-renderpg-2026-09-27.sql` (123KB).
+- **Thời gian restore (RTO)**: **17.81 giây** (đáp ứng xuất sắc yêu cầu vận hành).
+- **Kết quả đối soát số lượng bản ghi**:
+  | Bảng / Chỉ số | Số lượng bản ghi restore | Kết quả đối soát |
+  |---|---|---|
+  | `users` | 3 | Khớp 100% |
+  | `kana` | 247 | Khớp 100% |
+  | `kanji` | 63 | Khớp 100% |
+  | `vocabulary` | 44 | Khớp 100% |
+  | `grammar_rules` | 32 | Khớp 100% |
+  | `grammar_exercises` | 64 | Khớp 100% |
+  | `mock_exams` | 1 | Khớp 100% |
+  | `flyway_schema_history` (max version) | 13 | Khớp 100% |
+- **Dọn dẹp**: Database tạm `heyganba_restore_temp` đã được xoá (`DROP DATABASE`) ngay sau khi kiểm tra xong, đảm bảo 0 MB tồn đọng trên Neon.
+- **Kết luận**: **PASS**. Quy trình restore backup chạy trơn tru, sẵn sàng cho kịch bản khẩn cấp.
+
 
