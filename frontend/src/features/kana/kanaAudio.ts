@@ -4,10 +4,9 @@ import { isJapaneseSpeechSupported, speakJapanese, stopJapaneseSpeech } from '..
 /**
  * Phát âm một ký tự kana.
  *
- * - Ưu tiên file audio trên Cloudflare R2 + CDN (`entry.audioUrl`, đặt tên theo romaji — xem
- *   phase-1-tram-kana.md mục 1.4).
- * - Chưa cấu hình CDN (môi trường local hiện tại) → fallback Web Speech API giọng ja-JP
- *   (logic TTS nằm ở `services/japaneseSpeech.ts`, dùng chung với phần nghe của đề thi thử).
+ * - Ưu tiên file audio trên Cloudflare R2 + CDN (`entry.audioUrl`).
+ * - Chưa cấu hình CDN → fallback Web Speech API giọng ja-JP
+ *   (logic TTS ở `services/japaneseSpeech.ts`, dùng chung với phần nghe của đề thi thử).
  */
 export type KanaAudioSource = 'file' | 'tts' | 'none';
 
