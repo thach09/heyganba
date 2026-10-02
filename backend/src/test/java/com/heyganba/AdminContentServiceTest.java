@@ -25,6 +25,8 @@ import static org.mockito.Mockito.*;
 class AdminContentServiceTest {
 
     @Mock
+    private KanaRepository kanaRepository;
+    @Mock
     private VocabularyRepository vocabularyRepository;
     @Mock
     private KanjiRepository kanjiRepository;
@@ -43,6 +45,7 @@ class AdminContentServiceTest {
     @BeforeEach
     void setUp() {
         adminContentService = new AdminContentService(
+                kanaRepository,
                 vocabularyRepository,
                 kanjiRepository,
                 grammarExerciseRepository,

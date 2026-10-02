@@ -35,7 +35,9 @@ public class ContentReviewStatusService {
 
     private static final String NOTE = "Nội dung seed là BẢN NHÁP do người soạn tự viết, CHƯA được duyệt bởi người "
             + "biết tiếng Nhật. Migration trong db/migration-staging chỉ chạy ở local/staging — production chỉ nhận "
-            + "migration trong db/migration sau khi nội dung được duyệt (promote = chuyển file sang db/migration).";
+            + "migration trong db/migration sau khi nội dung được duyệt (promote = chuyển file sang db/migration). "
+            + "Số `needsHumanCheck` là các item AI tự soạn nhưng CHƯA đối chiếu được nguồn (hoặc có thể có hơn 1 đáp "
+            + "án đúng theo ngữ cảnh) — xem tab \"Cần kiểm\" trong admin panel (GET /admin/review-queue).";
 
     private final KanaRepository kanaRepository;
     private final VocabularyRepository vocabularyRepository;
@@ -46,23 +48,31 @@ public class ContentReviewStatusService {
     @Transactional(readOnly = true)
     public ContentReviewStatusResponse getStatus() {
         List<ContentTypeReviewStatus> types = List.of(
-                statusOf("KANA", kanaRepository.count(), kanaRepository.countByReviewStatus(ReviewStatus.PENDING_REVIEW)),
+                statusOf("KANA", kanaRepository.count(), kanaRepository.countByReviewStatus(ReviewStatus.PENDING_REVIEW),
+                        kanaRepository.countByNeedsHumanCheckTrue()),
                 statusOf("VOCABULARY", vocabularyRepository.count(),
-                        vocabularyRepository.countByReviewStatus(ReviewStatus.PENDING_REVIEW)),
-                statusOf("KANJI", kanjiRepository.count(), kanjiRepository.countByReviewStatus(ReviewStatus.PENDING_REVIEW)),
+                        vocabularyRepository.countByReviewStatus(ReviewStatus.PENDING_REVIEW),
+                        vocabularyRepository.countByNeedsHumanCheckTrue()),
+                statusOf("KANJI", kanjiRepository.count(),
+                        kanjiRepository.countByReviewStatus(ReviewStatus.PENDING_REVIEW),
+                        kanjiRepository.countByNeedsHumanCheckTrue()),
+                // grammar_rules không có cột needs_human_check (nội dung luật do người soạn theo tài liệu gốc)
                 statusOf("GRAMMAR_RULE", grammarRuleRepository.count(),
-                        grammarRuleRepository.countByReviewStatus(ReviewStatus.PENDING_REVIEW)),
+                        grammarRuleRepository.countByReviewStatus(ReviewStatus.PENDING_REVIEW), 0L),
                 statusOf("GRAMMAR_EXERCISE", grammarExerciseRepository.count(),
-                        grammarExerciseRepository.countByReviewStatus(ReviewStatus.PENDING_REVIEW))
+                        grammarExerciseRepository.countByReviewStatus(ReviewStatus.PENDING_REVIEW),
+                        grammarExerciseRepository.countByNeedsHumanCheckTrue())
         );
 
         long totalPending = types.stream().mapToLong(ContentTypeReviewStatus::pendingReview).sum();
+        long totalNeedsCheck = types.stream().mapToLong(ContentTypeReviewStatus::needsHumanCheck).sum();
 
-        return new ContentReviewStatusResponse(types, totalPending, totalPending == 0, stagingOnlyMigrations(), NOTE);
+        return new ContentReviewStatusResponse(types, totalPending, totalNeedsCheck, totalPending == 0,
+                stagingOnlyMigrations(), NOTE);
     }
 
-    private static ContentTypeReviewStatus statusOf(String contentType, long total, long pendingReview) {
-        return new ContentTypeReviewStatus(contentType, total, pendingReview, total - pendingReview);
+    private static ContentTypeReviewStatus statusOf(String contentType, long total, long pendingReview, long needsHumanCheck) {
+        return new ContentTypeReviewStatus(contentType, total, pendingReview, total - pendingReview, needsHumanCheck);
     }
 
     /** File migration nằm trong thư mục staging-only (chưa promote lên production). */

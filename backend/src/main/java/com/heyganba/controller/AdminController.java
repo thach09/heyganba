@@ -6,6 +6,7 @@ import com.heyganba.dto.admin.AdminExerciseRequest;
 import com.heyganba.dto.admin.AdminKanjiRequest;
 import com.heyganba.dto.admin.AdminVocabularyRequest;
 import com.heyganba.dto.admin.AdminPasswordConfirmRequest;
+import com.heyganba.dto.admin.AdminReviewQueueItem;
 import com.heyganba.dto.admin.AuditLogResponse;
 import com.heyganba.dto.auth.TwoFactorCodeRequest;
 import com.heyganba.dto.auth.TwoFactorSetupResponse;
@@ -74,6 +75,23 @@ public class AdminController {
         return ResponseEntity.ok(ApiResponse.success(auditLogService.getRecent()));
     }
 
+    // ================= TAB "CẦN KIỂM" (hàng đợi duyệt nội dung) =================
+
+    /**
+     * Danh sách cho tab "Cần kiểm" của admin panel: các item `needs_human_check = TRUE` được đưa LÊN ĐẦU,
+     * sau đó mới tới phần đã đối chiếu được nguồn (để người biết tiếng Nhật không phải lọc thủ công).
+     *
+     * @param limit          số dòng tối đa (trần 200)
+     * @param onlyNeedsCheck true = chỉ trả các item cần người kiểm
+     */
+    @GetMapping("/review-queue")
+    public ResponseEntity<ApiResponse<List<AdminReviewQueueItem>>> reviewQueue(
+            @RequestParam(required = false, defaultValue = "50") int limit,
+            @RequestParam(required = false, defaultValue = "false") boolean onlyNeedsCheck
+    ) {
+        return ResponseEntity.ok(ApiResponse.success(adminContentService.reviewQueue(limit, onlyNeedsCheck)));
+    }
+
     // ================= 2FA QUẢN TRỊ VIÊN =================
 
     @GetMapping("/2fa/status")
@@ -108,6 +126,8 @@ public class AdminController {
         return ResponseEntity.ok(ApiResponse.success(null, "Đã huỷ kích hoạt 2FA"));
     }
 
+    // ================= CRUD TỪ VỰNG =================
+
     /**
      * Reset 2FA khi admin MẤT thiết bị Authenticator: xác thực lại bằng mật khẩu hiện tại (KHÔNG cần mã TOTP),
      * sau đó tắt 2FA + xoá secret ⇒ lần setup sau sinh secret mới hoàn toàn.
@@ -123,8 +143,6 @@ public class AdminController {
         return ResponseEntity.ok(ApiResponse.success(null,
                 "Đã tắt 2FA. Vui lòng thiết lập lại từ đầu bằng /admin/2fa/setup."));
     }
-
-    // ================= CRUD TỪ VỰNG =================
 
     @GetMapping("/vocabulary")
     public ResponseEntity<ApiResponse<List<Vocabulary>>> listVocabulary(

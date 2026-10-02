@@ -14,21 +14,24 @@ import java.util.List;
 public record ContentReviewStatusResponse(
         List<ContentTypeReviewStatus> types,
         long totalPendingReview,
+        long totalNeedsHumanCheck,
         boolean allApproved,
         List<String> stagingOnlyMigrations,
         String note
 ) {
     /**
-     * @param contentType    tên loại nội dung (KANA / VOCABULARY / KANJI / GRAMMAR_RULE / GRAMMAR_EXERCISE)
-     * @param total          tổng số bản ghi
-     * @param pendingReview  số bản ghi chờ duyệt
-     * @param approved       số bản ghi đã duyệt
+     * @param contentType     tên loại nội dung (KANA / VOCABULARY / KANJI / GRAMMAR_RULE / GRAMMAR_EXERCISE)
+     * @param total           tổng số bản ghi
+     * @param pendingReview   số bản ghi chờ duyệt
+     * @param approved        số bản ghi đã duyệt
+     * @param needsHumanCheck số bản ghi AI soạn nhưng CHƯA đối chiếu được nguồn (cần người biết tiếng Nhật kiểm)
      */
     public record ContentTypeReviewStatus(
             String contentType,
             long total,
             long pendingReview,
-            long approved
+            long approved,
+            long needsHumanCheck
     ) {
     }
 }

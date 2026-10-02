@@ -54,6 +54,18 @@ public class Vocabulary {
     @Column(name = "review_status", nullable = false, length = 20)
     private ReviewStatus reviewStatus = ReviewStatus.PENDING_REVIEW;
 
+    /**
+     * TRUE = nội dung do AI soạn nhưng CHƯA đối chiếu được nguồn (cách đọc/nghĩa Hán Việt chưa tra chéo được
+     * từ điển uy tín) — phải để người biết tiếng Nhật kiểm trước.
+     */
+    @Builder.Default
+    @Column(name = "needs_human_check", nullable = false)
+    private Boolean needsHumanCheck = false;
+
+    /** Nguồn đã dùng để đối chiếu (vd: `jisho:八百 = はっぴゃく`) — để truy vết về sau. */
+    @Column(name = "source_ref", length = 160)
+    private String sourceRef;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;

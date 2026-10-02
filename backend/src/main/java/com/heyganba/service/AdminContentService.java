@@ -3,6 +3,7 @@ package com.heyganba.service;
 import com.heyganba.common.exception.BadRequestException;
 import com.heyganba.dto.admin.AdminExerciseRequest;
 import com.heyganba.dto.admin.AdminKanjiRequest;
+import com.heyganba.dto.admin.AdminReviewQueueItem;
 import com.heyganba.dto.admin.AdminVocabularyRequest;
 import com.heyganba.model.entity.*;
 import com.heyganba.model.enums.ReviewStatus;
@@ -13,18 +14,74 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class AdminContentService {
 
+    private final KanaRepository kanaRepository;
     private final VocabularyRepository vocabularyRepository;
     private final KanjiRepository kanjiRepository;
     private final GrammarExerciseRepository grammarExerciseRepository;
     private final GrammarRuleRepository grammarRuleRepository;
     private final LessonRepository lessonRepository;
     private final AuditLogService auditLogService;
+
+    /** Trần số dòng trả về của tab "Cần kiểm" (admin panel) — tránh trả cả bảng khi dữ liệu lớn. */
+    private static final int MAX_REVIEW_QUEUE_SIZE = 200;
+
+    // ================= HÀNG ĐỢI KIỂM NỘI DUNG (needs_human_check) =================
+
+    /**
+     * Hàng đợi cho tab "Cần kiểm" của admin panel (GET /admin/review-queue).
+     *
+     * Thứ tự: mọi item `needs_human_check = TRUE` lên ĐẦU (đúng yêu cầu quy trình duyệt), sau đó mới tới phần
+     * đã đối chiếu được nguồn — nhờ vậy người biết tiếng Nhật không phải tự lọc thủ công.
+     *
+     * @param limit          số dòng tối đa (chặn trần {@value #MAX_REVIEW_QUEUE_SIZE})
+     * @param onlyNeedsCheck true = chỉ trả các item cần người kiểm
+     */
+    @Transactional(readOnly = true)
+    public List<AdminReviewQueueItem> reviewQueue(int limit, boolean onlyNeedsCheck) {
+        int capped = Math.min(MAX_REVIEW_QUEUE_SIZE, Math.max(1, limit));
+        List<AdminReviewQueueItem> queue = new ArrayList<>(collectQueue(true, capped));
+        if (!onlyNeedsCheck && queue.size() < capped) {
+            queue.addAll(collectQueue(false, capped - queue.size()));
+        }
+        return queue;
+    }
+
+    private List<AdminReviewQueueItem> collectQueue(boolean needsCheck, int limit) {
+        if (limit <= 0) {
+            return List.of();
+        }
+        Pageable pageable = PageRequest.of(0, limit);
+        List<AdminReviewQueueItem> items = new ArrayList<>();
+
+        for (Kana kana : kanaRepository.findByNeedsHumanCheckOrderByIdAsc(needsCheck, pageable)) {
+            items.add(new AdminReviewQueueItem("KANA", kana.getId(), kana.getCharacter(),
+                    kana.getRomaji() + " · " + kana.getKanaType(), Boolean.TRUE.equals(kana.getNeedsHumanCheck()),
+                    kana.getReviewStatus().name(), kana.getSourceRef(), null));
+        }
+        for (Vocabulary vocab : vocabularyRepository.findByNeedsHumanCheckOrderByIdAsc(needsCheck, pageable)) {
+            items.add(new AdminReviewQueueItem("VOCABULARY", vocab.getId(), vocab.getWord(),
+                    vocab.getReading() + " · " + vocab.getMeaning(), Boolean.TRUE.equals(vocab.getNeedsHumanCheck()),
+                    vocab.getReviewStatus().name(), vocab.getSourceRef(), null));
+        }
+        for (Kanji kanjiItem : kanjiRepository.findByNeedsHumanCheckOrderByIdAsc(needsCheck, pageable)) {
+            items.add(new AdminReviewQueueItem("KANJI", kanjiItem.getId(), kanjiItem.getCharacter(),
+                    kanjiItem.getMeaning(), Boolean.TRUE.equals(kanjiItem.getNeedsHumanCheck()),
+                    kanjiItem.getReviewStatus().name(), kanjiItem.getSourceRef(), null));
+        }
+        for (GrammarExercise exercise : grammarExerciseRepository.findByNeedsHumanCheckOrderByIdAsc(needsCheck, pageable)) {
+            items.add(new AdminReviewQueueItem("GRAMMAR_EXERCISE", exercise.getId(), exercise.getQuestionText(),
+                    exercise.getCorrectAnswer(), Boolean.TRUE.equals(exercise.getNeedsHumanCheck()),
+                    exercise.getReviewStatus().name(), exercise.getSourceRef(), exercise.getReviewNote()));
+        }
+        return items;
+    }
 
     // ================= VOCABULARY CRUD =================
 

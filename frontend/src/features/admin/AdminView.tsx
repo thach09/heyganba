@@ -15,6 +15,7 @@ import {
 import { apiRequest } from '../../services/api';
 import type { UserProfileResponse } from '../../services/api';
 import { SubmitButton } from '../../components/SubmitButton';
+import { ReviewQueuePanel } from './ReviewQueuePanel';
 
 interface AdminStatusData {
   authorizedAdmin: string;
@@ -74,7 +75,7 @@ const thClass = 'border-b border-rule pb-2 text-left text-[10.5px] font-semibold
 const tdClass = 'border-b border-rule py-2.5 text-fg-60 text-[12.5px]';
 
 export const AdminView: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'OVERVIEW' | '2FA' | 'VOCAB' | 'KANJI' | 'EXERCISES'>('OVERVIEW');
+  const [activeTab, setActiveTab] = useState<'OVERVIEW' | '2FA' | 'VOCAB' | 'KANJI' | 'EXERCISES' | 'REVIEW'>('OVERVIEW');
 
   // Overview state
   const [statusData, setStatusData] = useState<AdminStatusData | null>(null);
@@ -448,6 +449,18 @@ export const AdminView: React.FC = () => {
         </button>
         <button
           type="button"
+          onClick={() => setActiveTab('REVIEW')}
+          className={`flex items-center gap-1.5 cursor-pointer border-b-2 px-4 py-2 text-[12.5px] font-medium transition-colors ${
+            activeTab === 'REVIEW'
+              ? 'border-fg font-semibold text-fg'
+              : 'border-transparent text-fg-60 hover:text-fg'
+          }`}
+        >
+          <ShieldAlert size={13} />
+          <span>Cần kiểm</span>
+        </button>
+        <button
+          type="button"
           onClick={() => setActiveTab('EXERCISES')}
           className={`flex items-center gap-1.5 cursor-pointer border-b-2 px-4 py-2 text-[12.5px] font-medium transition-colors ${
             activeTab === 'EXERCISES'
@@ -459,6 +472,9 @@ export const AdminView: React.FC = () => {
           <span>Quản lý Bài tập</span>
         </button>
       </div>
+
+      {/* TAB: CẦN KIỂM (hàng đợi duyệt nội dung do AI soạn) */}
+      {activeTab === 'REVIEW' && <ReviewQueuePanel />}
 
       {/* TAB: OVERVIEW */}
       {activeTab === 'OVERVIEW' && (
