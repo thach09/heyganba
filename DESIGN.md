@@ -112,12 +112,16 @@ Không dùng font mảnh ở cỡ nhỏ — body tối thiểu 12.5px; nét mả
 
 *Ảnh phiên ôn chụp từ màn thật (trắc nghiệm) — mock html bản cũ (lật thẻ + tự chấm) đã gỡ.*
 
-## 5. Còn để ngỏ
+## 5. Quyết định thị giác & Game hóa (Đã chốt 02/10/2026)
 
-- Công thức EXP (cộng bao nhiêu mỗi hoạt động)
-- Màu cấp độ: một màu xanh cho mọi cấp, hay mỗi cấp một màu
+- **Công thức EXP (dạng config backend):**
+  - Trả lời đúng 1 câu bài tập / quiz: **+10 EXP** (`app.exp.exercise-correct`)
+  - Hoàn thành 1 phiên ôn flashcard SRS: **+50 EXP** (`app.exp.srs-session`)
+  - Hoàn thành 1 đề thi thử: **100 EXP × hệ số điểm** (`app.exp.exam-base * (score / total)`)
+  - Cấu hình qua `ExpConfig`, không hardcode để dễ dàng tinh chỉnh chỉ số vận hành.
+- **Màu cấp độ:** Áp dụng **1 màu chủ đạo duy nhất (`#7FA98B` — rank green)** xuyên suốt cho toàn bộ các cấp độ. Không đổi màu lung tung giữa các cấp, chỉ thay đổi sắc độ (lightness / tone) đậm dần theo rank từ sơ cấp đến bậc thầy.
 
-- Khối gợi nhớ / nhiệm vụ kế tiếp: đã gỡ khỏi dashboard; để dành cho phiên học/từng trạm
+- Khối gợi nhớ / nhiệm vụ kế tiếp: đã gỡ khỏi dashboard; để dành cho phiên học/từng trạm.
 
 ## 6. Làm việc với hệ này
 

@@ -5,6 +5,8 @@ import com.heyganba.config.UserPrincipal;
 import com.heyganba.dto.leaderboard.LeaderboardResponse;
 import com.heyganba.dto.streak.StreakResponse;
 import com.heyganba.dto.streak.StudyActivityDayResponse;
+import com.heyganba.dto.progress.UserExpResponse;
+import com.heyganba.service.ExpService;
 import com.heyganba.service.LeaderboardService;
 import com.heyganba.service.StudyActivityService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.Instant;
 import java.util.List;
 
-/** Streak + heatmap + bảng xếp hạng (Phase 5). */
+/** Streak + heatmap + bảng xếp hạng + EXP/Rank (Phase 5). */
 @RestController
 @RequiredArgsConstructor
 public class ProgressController {
@@ -26,6 +28,7 @@ public class ProgressController {
 
     private final StudyActivityService studyActivityService;
     private final LeaderboardService leaderboardService;
+    private final ExpService expService;
 
     @GetMapping("/streak")
     public ResponseEntity<ApiResponse<StreakResponse>> getStreak(
@@ -49,5 +52,12 @@ public class ProgressController {
             @RequestParam(required = false) String classCode
     ) {
         return ResponseEntity.ok(ApiResponse.success(leaderboardService.getLeaderboard(limit, classCode)));
+    }
+
+    @GetMapping("/exp")
+    public ResponseEntity<ApiResponse<UserExpResponse>> getExp(
+            @AuthenticationPrincipal UserPrincipal currentUser
+    ) {
+        return ResponseEntity.ok(ApiResponse.success(expService.calculateUserExp(currentUser.getId())));
     }
 }

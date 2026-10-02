@@ -24,15 +24,35 @@ interface FlashcardStats {
   longestStreak: number;
 }
 
+interface UserExp {
+  totalExp: number;
+  level: number;
+  expIntoLevel: number;
+  expForNextLevel: number;
+  rankName: string;
+  rankTier: number;
+  config: {
+    exerciseCorrect: number;
+    srsSession: number;
+    examBase: number;
+  };
+}
+
 interface DashboardViewProps {
   user?: AuthResponse | null;
 }
 
 const TRACKER_DAYS = 24 * 7;
 const CHART_DAYS = 30;
-const EXP_PER_ITEM = 10;
-const EXP_PER_LEVEL = 2000;
 const INTENSITY = [0.06, 0.22, 0.44, 0.66, 0.9];
+
+const RANK_TONES: Record<number, { bg: string; text: string; fill: string; border: string }> = {
+  1: { bg: 'bg-rank-1/15', text: 'text-rank-1', fill: 'bg-rank-1', border: 'border-rank-1/40' },
+  2: { bg: 'bg-rank-2/15', text: 'text-rank-2', fill: 'bg-rank-2', border: 'border-rank-2/40' },
+  3: { bg: 'bg-rank-3/15', text: 'text-rank-3', fill: 'bg-rank-3', border: 'border-rank-3/40' },
+  4: { bg: 'bg-rank-4/15', text: 'text-rank-4', fill: 'bg-rank-4', border: 'border-rank-4/40' },
+  5: { bg: 'bg-rank-5/20', text: 'text-rank-5', fill: 'bg-rank-5', border: 'border-rank-5/50' },
+};
 
 const formatNumber = (value: number) => value.toLocaleString('vi-VN');
 
@@ -171,6 +191,7 @@ const ActivityChart: React.FC<{ days: HeatmapDay[]; metric: 'itemCount' | 'corre
 export const DashboardView: React.FC<DashboardViewProps> = ({ user }) => {
   const [heatmap, setHeatmap] = useState<HeatmapDay[]>([]);
   const [flashStats, setFlashStats] = useState<FlashcardStats | null>(null);
+  const [userExp, setUserExp] = useState<UserExp | null>(null);
 
   useEffect(() => {
     if (!user) {
@@ -188,20 +209,29 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ user }) => {
         setFlashStats(res.data);
       }
     });
+
+    void apiRequest<UserExp>('/exp').then((res) => {
+      if (res.success && res.data) {
+        setUserExp(res.data);
+      }
+    });
   }, [user]);
 
-  const { weekItems, weekCorrect, level, expIntoLevel, hasExp } = useMemo(() => {
-    const total = heatmap.reduce((sum, day) => sum + day.itemCount, 0);
+  const { weekItems, weekCorrect } = useMemo(() => {
     const last7 = heatmap.slice(-7);
-    const exp = total * EXP_PER_ITEM;
     return {
       weekItems: last7.reduce((sum, day) => sum + day.itemCount, 0),
       weekCorrect: last7.reduce((sum, day) => sum + day.correctCount, 0),
-      level: Math.floor(exp / EXP_PER_LEVEL) + 1,
-      expIntoLevel: exp % EXP_PER_LEVEL,
-      hasExp: exp > 0,
     };
   }, [heatmap]);
+
+  const currentLevel = userExp?.level ?? 1;
+  const currentExp = userExp?.expIntoLevel ?? 0;
+  const nextLevelExp = userExp?.expForNextLevel ?? 1000;
+  const rankTier = userExp?.rankTier ?? 1;
+  const rankName = userExp?.rankName ?? 'Sơ khởi';
+  const rankTone = RANK_TONES[rankTier] ?? RANK_TONES[1];
+  const expPercent = Math.min(100, Math.round((currentExp / nextLevelExp) * 100));
 
   const chartDays = useMemo(() => (user ? heatmap.slice(-CHART_DAYS) : []), [heatmap, user]);
 
@@ -222,19 +252,24 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ user }) => {
         </div>
 
         <div className="text-right max-[900px]:text-left">
-          <div className="text-[10.5px] uppercase tracking-[0.16em] text-fg-38">Kinh nghiệm</div>
+          <div className="flex items-center justify-end gap-2 max-[900px]:justify-start">
+            <span className={`inline-flex items-center px-1.5 py-0.5 text-[10px] font-medium tracking-[0.1em] border ${rankTone.border} ${rankTone.bg} ${rankTone.text}`}>
+              {rankName} (Tier {rankTier})
+            </span>
+            <span className="text-[10.5px] uppercase tracking-[0.16em] text-fg-38">Kinh nghiệm</span>
+          </div>
           {user ? (
             <>
               <div className="mt-1 text-[13.5px]">
                 Cấp{' '}
-                <b className="mr-0.5 font-serif text-[22px] font-semibold">{level}</b> ·{' '}
-                {formatNumber(expIntoLevel)} / {formatNumber(EXP_PER_LEVEL)} EXP
+                <b className="mr-0.5 font-serif text-[22px] font-semibold">{currentLevel}</b> ·{' '}
+                {formatNumber(currentExp)} / {formatNumber(nextLevelExp)} EXP
               </div>
               <div className="relative ml-auto mt-2.5 h-[2px] w-[220px] max-w-full bg-rule max-[900px]:ml-0 max-[900px]:w-full">
                 <i
                   aria-hidden="true"
-                  className="absolute inset-y-0 left-0 bg-rank"
-                  style={{ width: hasExp ? `${Math.round((expIntoLevel / EXP_PER_LEVEL) * 100)}%` : '0%' }}
+                  className={`absolute inset-y-0 left-0 ${rankTone.fill}`}
+                  style={{ width: `${expPercent}%` }}
                 />
               </div>
             </>

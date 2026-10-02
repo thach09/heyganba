@@ -79,6 +79,11 @@ app:
     zone: ${APP_STREAK_ZONE:Asia/Ho_Chi_Minh}
     min-srs-reviews: ${APP_STREAK_MIN_SRS_REVIEWS:10}
     min-quiz-questions: ${APP_STREAK_MIN_QUIZ_QUESTIONS:10}
+  # Công thức EXP dạng config (10 EXP/câu đúng, 50 EXP/phiên SRS, 100 EXP * hệ số điểm/đề thi)
+  exp:
+    exercise-correct: ${APP_EXP_EXERCISE_CORRECT:10}
+    srs-session: ${APP_EXP_SRS_SESSION:50}
+    exam-base: ${APP_EXP_EXAM_BASE:100}
   srs:
     # Cache danh sách từ cần ôn: memory (ĐANG DÙNG ở mọi môi trường — quyết định: chưa bật Redis vì chưa có
     # managed instance) | redis (implementation đã viết sẵn trong RedisSrsDueCache, chỉ cần đổi biến này khi có Redis).
