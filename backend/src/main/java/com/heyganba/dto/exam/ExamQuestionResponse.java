@@ -5,9 +5,9 @@ import java.util.List;
 /**
  * Câu hỏi trong đề gửi cho client — KHÔNG chứa đáp án (đáp án giữ ở server).
  *
- * `audioText`: text để frontend đọc bằng Web Speech API (browser TTS).
- * ⚠️ PLACEHOLDER: đây là giải pháp tạm cho phần "nghe" khi chưa có file audio thu thật;
- * khi có audio thật sẽ thay bằng URL file (field `audioUrl`) và bỏ TTS.
+ * `audioText`: CHUỖI KANA để phát bằng audio TTS của server (`GET /api/v1/audio/tts`, Google Translate TTS +
+ * cache). Với từ vựng phải là `reading` (kana) chứ KHÔNG phải chữ kanji — TTS nhận kanji sẽ đọc theo cách đọc
+ * phổ biến nhất và sai với từ ghép.
  */
 public record ExamQuestionResponse(
         int index,

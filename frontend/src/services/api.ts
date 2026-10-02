@@ -37,6 +37,9 @@ export interface UserProfileResponse {
  */
 const API_BASE = import.meta.env.VITE_API_BASE_URL?.replace(/\/+$/, '') || '/api/v1';
 
+/** Base URL của backend — dùng cho các tài nguyên không đi qua `apiRequest` (ví dụ audio TTS). */
+export const API_BASE_URL = API_BASE;
+
 export const getAccessToken = (): string | null => {
   return localStorage.getItem('heyganba_access_token');
 };

@@ -383,18 +383,27 @@ class ExamApiTest extends com.heyganba.support.ContentApiTestBase {
     }
 
     @Test
-    @DisplayName("Câu hỏi kana/từ vựng mang audioText cho TTS tạm (placeholder chờ audio thu thật)")
-    void questionsCarryAudioTextForTtsPlaceholder() throws Exception {
+    @DisplayName("Câu hỏi mang audioText: kana = ký tự, từ vựng = CÁCH ĐỌC (kana, không truyền kanji)")
+    void questionsCarryKanaAudioTextForTts() throws Exception {
         String token = registerAndGetToken("exam.audio@heyganba.vn");
         long examId = generateExam(token);
 
         boolean foundKanaWithAudio = false;
+        boolean foundVocabWithKanaAudio = false;
         for (JsonNode question : storedQuestions(examId)) {
             if ("KANA".equals(question.get("type").asText())) {
                 assertEquals(question.get("questionText").asText(), question.get("audioText").asText());
                 foundKanaWithAudio = true;
             }
+            if ("VOCABULARY".equals(question.get("type").asText())) {
+                // TTS phải nhận chuỗi KANA: truyền chữ kanji thô thì TTS đọc theo cách đọc phổ biến nhất (sai với từ ghép).
+                String audioText = question.get("audioText").asText();
+                assertEquals(true, audioText.matches("[\\p{IsHiragana}\\p{IsKatakana}ー]+"),
+                        "audioText của từ vựng phải là kana: " + audioText);
+                foundVocabWithKanaAudio = true;
+            }
         }
+        assertEquals(true, foundVocabWithKanaAudio, "Đề phải có câu VOCABULARY để kiểm tra audioText là kana");
         assertEquals(true, foundKanaWithAudio, "Đề phải có câu KANA để kiểm tra audioText");
     }
 
