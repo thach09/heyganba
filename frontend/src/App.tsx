@@ -11,6 +11,7 @@ import { KanjiStationView } from './features/kanji/KanjiStationView';
 import { GrammarView } from './features/grammar/GrammarView';
 import { GrammarRulePage } from './features/grammar/GrammarRulePage';
 import { ExamView } from './features/exam/ExamView';
+import { DictionaryNotebookView } from './features/dictionary/DictionaryNotebookView';
 import { getSavedUser, clearTokens, apiRequest, logoutApi } from './services/api';
 import type { AuthResponse } from './services/api';
 
@@ -216,6 +217,10 @@ export function App() {
             <Route
               path="/vocabulary"
               element={<FlashcardView user={user} onRequireLogin={openAuthModal} />}
+            />
+            <Route
+              path="/dictionary"
+              element={<DictionaryNotebookView user={user} onRequireLogin={openAuthModal} />}
             />
             <Route
               path="/kanji"

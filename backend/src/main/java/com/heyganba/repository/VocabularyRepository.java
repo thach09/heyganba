@@ -28,4 +28,15 @@ public interface VocabularyRepository extends JpaRepository<Vocabulary, Long> {
 
     /** Đếm theo trạng thái duyệt nội dung — dùng cho GET /content/review-status. */
     long countByReviewStatus(ReviewStatus reviewStatus);
+
+    @Query("""
+            SELECT v FROM Vocabulary v
+            LEFT JOIN FETCH v.lesson
+            WHERE LOWER(v.word) LIKE LOWER(CONCAT('%', :query, '%'))
+               OR LOWER(v.reading) LIKE LOWER(CONCAT('%', :query, '%'))
+               OR LOWER(v.meaning) LIKE LOWER(CONCAT('%', :query, '%'))
+               OR LOWER(v.sinoVietnamese) LIKE LOWER(CONCAT('%', :query, '%'))
+            ORDER BY v.id ASC
+            """)
+    List<Vocabulary> searchVocabulary(@Param("query") String query, Pageable pageable);
 }

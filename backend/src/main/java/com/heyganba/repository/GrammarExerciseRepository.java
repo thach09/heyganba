@@ -35,4 +35,13 @@ public interface GrammarExerciseRepository extends JpaRepository<GrammarExercise
 
     /** Đếm theo trạng thái duyệt nội dung — dùng cho GET /content/review-status. */
     long countByReviewStatus(ReviewStatus reviewStatus);
+
+    @Query("""
+            SELECT e FROM GrammarExercise e
+            JOIN FETCH e.grammarRule r
+            WHERE LOWER(e.questionText) LIKE LOWER(CONCAT('%', :query, '%'))
+               OR LOWER(e.correctAnswer) LIKE LOWER(CONCAT('%', :query, '%'))
+            ORDER BY e.id ASC
+            """)
+    List<GrammarExercise> searchExercises(@Param("query") String query, org.springframework.data.domain.Pageable pageable);
 }
