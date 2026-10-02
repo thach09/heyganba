@@ -41,6 +41,13 @@ public class User {
     @Column(name = "class_code", length = 50)
     private String classCode;
 
+    @Column(name = "two_factor_secret", length = 64)
+    private String twoFactorSecret;
+
+    @Builder.Default
+    @Column(name = "is_two_factor_enabled", nullable = false)
+    private Boolean isTwoFactorEnabled = false;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;

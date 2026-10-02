@@ -21,4 +21,7 @@ public class AuthResponse {
     private String role;
     /** Mã lớp học (nullable) — UI dùng để hiển thị lớp + gọi leaderboard theo lớp. */
     private String classCode;
+    @Builder.Default
+    private Boolean twoFactorRequired = false;
+    private Boolean twoFactorEnabled;
 }

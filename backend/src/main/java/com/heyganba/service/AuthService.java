@@ -7,6 +7,7 @@ import com.heyganba.dto.auth.AuthResponse;
 import com.heyganba.dto.auth.LoginRequest;
 import com.heyganba.dto.auth.RefreshTokenRequest;
 import com.heyganba.dto.auth.RegisterRequest;
+import com.heyganba.dto.auth.TwoFactorSetupResponse;
 import com.heyganba.model.entity.Role;
 import com.heyganba.model.entity.Streak;
 import com.heyganba.model.entity.User;
@@ -35,6 +36,7 @@ public class AuthService {
     private final JwtTokenProvider tokenProvider;
     private final CustomUserDetailsService userDetailsService;
     private final TokenRevocationService tokenRevocationService;
+    private final TwoFactorAuthService twoFactorAuthService;
 
     @Transactional
     public AuthResponse register(RegisterRequest request) {
@@ -80,16 +82,35 @@ public class AuthService {
     }
 
     public AuthResponse login(LoginRequest request) {
+        String email = request.getEmail().toLowerCase().trim();
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getEmail().toLowerCase().trim(),
+                        email,
                         request.getPassword()
                 )
         );
 
+        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+        User user = userRepository.findById(userPrincipal.getId())
+                .orElseThrow(() -> new BadRequestException("User not found"));
+
+        if (Boolean.TRUE.equals(user.getIsTwoFactorEnabled())) {
+            if (request.getTwoFactorCode() == null || request.getTwoFactorCode().isBlank()) {
+                return AuthResponse.builder()
+                        .twoFactorRequired(true)
+                        .twoFactorEnabled(true)
+                        .email(user.getEmail())
+                        .build();
+            }
+
+            boolean valid = twoFactorAuthService.verifyCode(user.getTwoFactorSecret(), request.getTwoFactorCode().trim());
+            if (!valid) {
+                throw new org.springframework.security.authentication.BadCredentialsException("Mã xác thực 2FA không chính xác");
+            }
+        }
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
         String accessToken = tokenProvider.generateAccessToken(authentication);
         String refreshToken = tokenProvider.generateRefreshToken(userPrincipal);
 
@@ -101,6 +122,77 @@ public class AuthService {
                 .fullName(userPrincipal.getFullName())
                 .role(userPrincipal.getAuthorities().iterator().next().getAuthority())
                 .classCode(userPrincipal.getClassCode())
+                .twoFactorRequired(false)
+                .twoFactorEnabled(user.getIsTwoFactorEnabled())
+                .build();
+    }
+
+    @Transactional
+    public TwoFactorSetupResponse setupTwoFactor(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BadRequestException("User not found"));
+
+        String secret = user.getTwoFactorSecret();
+        if (secret == null || secret.isBlank() || !Boolean.TRUE.equals(user.getIsTwoFactorEnabled())) {
+            secret = twoFactorAuthService.generateSecret();
+            user.setTwoFactorSecret(secret);
+            userRepository.save(user);
+        }
+
+        String otpAuthUrl = twoFactorAuthService.getOtpAuthUrl(user.getEmail(), secret);
+        return TwoFactorSetupResponse.builder()
+                .secret(secret)
+                .otpAuthUrl(otpAuthUrl)
+                .enabled(Boolean.TRUE.equals(user.getIsTwoFactorEnabled()))
+                .build();
+    }
+
+    @Transactional
+    public void enableTwoFactor(Long userId, String code) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BadRequestException("User not found"));
+
+        if (user.getTwoFactorSecret() == null) {
+            throw new BadRequestException("Vui lòng khởi tạo mã 2FA trước khi kích hoạt");
+        }
+
+        boolean valid = twoFactorAuthService.verifyCode(user.getTwoFactorSecret(), code != null ? code.trim() : "");
+        if (!valid) {
+            throw new BadRequestException("Mã xác thực 2FA không chính xác");
+        }
+
+        user.setIsTwoFactorEnabled(true);
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void disableTwoFactor(Long userId, String code) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BadRequestException("User not found"));
+
+        if (!Boolean.TRUE.equals(user.getIsTwoFactorEnabled())) {
+            return;
+        }
+
+        boolean valid = twoFactorAuthService.verifyCode(user.getTwoFactorSecret(), code != null ? code.trim() : "");
+        if (!valid) {
+            throw new BadRequestException("Mã xác thực 2FA không chính xác");
+        }
+
+        user.setIsTwoFactorEnabled(false);
+        user.setTwoFactorSecret(null);
+        userRepository.save(user);
+    }
+
+    @Transactional(readOnly = true)
+    public TwoFactorSetupResponse getTwoFactorStatus(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BadRequestException("User not found"));
+        boolean enabled = Boolean.TRUE.equals(user.getIsTwoFactorEnabled());
+        return TwoFactorSetupResponse.builder()
+                .enabled(enabled)
+                .secret(enabled ? "********" : user.getTwoFactorSecret())
+                .otpAuthUrl(null)
                 .build();
     }
 

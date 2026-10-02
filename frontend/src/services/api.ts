@@ -16,6 +16,8 @@ export interface AuthResponse {
   role: string;
   /** Mã lớp học (nullable) — dùng cho leaderboard theo lớp. */
   classCode: string | null;
+  twoFactorRequired?: boolean;
+  twoFactorEnabled?: boolean;
 }
 
 export interface UserProfileResponse {
