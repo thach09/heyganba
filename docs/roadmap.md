@@ -19,6 +19,7 @@
 - [ ] **Từ điển + Kho học tập**: tìm từ, thêm từ vào kho, tạo nhóm cá nhân và chọn từ vào nhóm.
 - [ ] **Nhóm mẫu cơ bản**: học viên nhận bộ mẫu vào kho rồi học nhóm bằng trắc nghiệm nghĩa/âm đọc.
 - [ ] **Chỉ số luyện tập theo từ** để nhận ra từ cần ôn; phiên nhóm không đẩy lịch SRS ra xa.
+- [ ] **Đổi mật khẩu người dùng (Phase 5 Polish)**: endpoint `PUT /api/v1/auth/password` + UI đổi mật khẩu. Khi đổi mật khẩu thành công, nối vào cơ chế `revoked_tokens` để thu hồi toàn bộ token cũ của user trên tất cả các thiết bị.
 
 Phạm vi này được theo dõi ở [issue #11](https://github.com/thach09/heyganba/issues/11). Câu hỏi cloze/ngữ cảnh chưa thuộc MVP.
 

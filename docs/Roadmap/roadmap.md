@@ -141,6 +141,7 @@
 - Leaderboard theo streak/điểm và theo mã lớp: **đang chạy trên PostgreSQL** (Redis sorted set là phương án tối ưu sau,
   khi đã có Redis managed — API đã tách sẵn nên đổi implementation không ảnh hưởng client).
 - Admin API: CRUD nội dung (kana/kanji/vocab/grammar), không cần deploy lại khi sửa nhỏ.
+- **Tính năng đổi mật khẩu (Security & Polish):** `PUT /api/v1/auth/password` (xác thực mật khẩu cũ, mã hoá mật khẩu mới qua BCrypt). **Nối trực tiếp vào cơ chế `revoked_tokens`**: khi đổi mật khẩu thành công, hệ thống phải tự động revoke toàn bộ token cũ (access token & refresh token) của user đó để huỷ phiên làm việc trên tất cả các thiết bị.
 
 **Frontend**
 - Trạm thi thử dạng đề thi thật.
@@ -148,15 +149,18 @@
 - Mascot/nhân vật tiến hoá theo streak/level.
 - Admin panel: giao diện CRUD đơn giản, chỉ hiện với role ADMIN.
 - Rà soát UX toàn bộ 5 trạm: đảm bảo thao tác nhất quán, tooltip onboarding không lặp lại sau lần đầu.
+- **Giao diện đổi mật khẩu (Polish):** Modal/Form đổi mật khẩu trong cài đặt tài khoản (nhập mật khẩu hiện tại, mật khẩu mới, xác nhận), tự động điều hướng về đăng nhập sau khi backend xác nhận thu hồi token thành công.
 
 **Database**
 - Bảng `mock_exams`, `exam_results`, `leaderboard_snapshot` (nếu cần lưu lịch sử ngoài Redis).
+- Bảng `revoked_tokens` (đã có từ V16): lưu trữ danh sách `jti` của các token bị thu hồi khi logout hoặc đổi mật khẩu.
 
 **Security**
 - Admin panel: audit log các thay đổi nội dung (ai sửa, sửa gì, khi nào).
+- Cơ chế thu hồi token (`revoked_tokens`) cho cả luồng Logout và Đổi mật khẩu.
 - Load test trước khi public để xác nhận cấu hình HikariCP/Redis chịu được tải dự kiến.
 
-**Hoàn thành khi:** Toàn bộ 5 trạm hoạt động nhất quán, admin sửa nội dung không cần deploy, hệ thống qua load test cơ bản, sẵn sàng public.
+**Hoàn thành khi:** Toàn bộ 5 trạm hoạt động nhất quán, admin sửa nội dung không cần deploy, tính năng đổi mật khẩu gắn liền thu hồi phiên cũ hoàn tất, hệ thống qua load test cơ bản, sẵn sàng public.
 
 ---
 

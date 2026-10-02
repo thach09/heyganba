@@ -113,6 +113,14 @@
 | **Mục tiêu** | Response time p95 < 500ms. Không lỗi 5xx. HikariCP không hết connection. Redis không timeout. |
 | **Output** | Báo cáo load test + khuyến nghị tuning nếu cần. |
 
+### 5.12 — Đổi mật khẩu người dùng & Thu hồi toàn bộ token (Security & Polish)
+
+| Hạng mục | Chi tiết |
+|---|---|
+| **Backend** | Endpoint `PUT /api/v1/auth/password`: nhận `{ currentPassword, newPassword }`, xác minh BCrypt mật khẩu cũ, hash mật khẩu mới. |
+| **Bảo mật** | **Nối trực tiếp vào cơ chế `revoked_tokens`**: Khi đổi mật khẩu thành công, ghi `jti` của access token và refresh token hiện tại (cũng như thu hồi mọi phiên hoạt động cũ của user) vào bảng `revoked_tokens` để vô hiệu hoá triệt để mọi thiết bị/phiên làm việc trước đó. |
+| **Frontend** | Modal / Form đổi mật khẩu trong trang cài đặt tài khoản (yêu cầu mật khẩu cũ, mật khẩu mới, xác nhận), tự động logout và chuyển hướng về trang đăng nhập sau khi hoàn tất. |
+
 ---
 
 ## Thứ tự thực hiện đề xuất
