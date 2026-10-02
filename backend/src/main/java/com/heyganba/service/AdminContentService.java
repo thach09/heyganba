@@ -92,8 +92,9 @@ public class AdminContentService {
         Vocabulary vocab = vocabularyRepository.findById(id)
                 .orElseThrow(() -> new BadRequestException("Không tìm thấy từ vựng ID: " + id));
         String before = vocab.getWord();
-        vocabularyRepository.delete(vocab);
-        auditLogService.logAction(admin, "vocabulary", id, "DELETE", before, null);
+        vocab.setReviewStatus(ReviewStatus.ARCHIVED);
+        vocabularyRepository.save(vocab);
+        auditLogService.logAction(admin, "vocabulary", id, "ARCHIVE", before, "ARCHIVED");
     }
 
     // ================= KANJI CRUD =================
@@ -162,8 +163,9 @@ public class AdminContentService {
         Kanji kanji = kanjiRepository.findById(id)
                 .orElseThrow(() -> new BadRequestException("Không tìm thấy Kanji ID: " + id));
         String before = kanji.getCharacter();
-        kanjiRepository.delete(kanji);
-        auditLogService.logAction(admin, "kanji", id, "DELETE", before, null);
+        kanji.setReviewStatus(ReviewStatus.ARCHIVED);
+        kanjiRepository.save(kanji);
+        auditLogService.logAction(admin, "kanji", id, "ARCHIVE", before, "ARCHIVED");
     }
 
     // ================= GRAMMAR EXERCISE CRUD =================
@@ -229,7 +231,8 @@ public class AdminContentService {
         GrammarExercise exercise = grammarExerciseRepository.findById(id)
                 .orElseThrow(() -> new BadRequestException("Không tìm thấy bài tập ID: " + id));
         String before = exercise.getQuestionText();
-        grammarExerciseRepository.delete(exercise);
-        auditLogService.logAction(admin, "grammar_exercises", id, "DELETE", before, null);
+        exercise.setReviewStatus(ReviewStatus.ARCHIVED);
+        grammarExerciseRepository.save(exercise);
+        auditLogService.logAction(admin, "grammar_exercises", id, "ARCHIVE", before, "ARCHIVED");
     }
 }

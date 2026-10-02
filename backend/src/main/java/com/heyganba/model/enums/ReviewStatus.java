@@ -9,5 +9,7 @@ package com.heyganba.model.enums;
  */
 public enum ReviewStatus {
     PENDING_REVIEW,
-    APPROVED
+    APPROVED,
+    /** Soft-deleted bởi Admin — không hiển thị cho user, nhưng giữ nguyên FK để không vỡ srs_reviews. */
+    ARCHIVED
 }

@@ -106,18 +106,22 @@ class AdminContentServiceTest {
     }
 
     @Test
-    @DisplayName("Admin xoá bài tập thành công và ghi nhận audit log")
-    void deleteExercise_logsAction() {
+    @DisplayName("Admin xoá bài tập thành công (soft-delete ARCHIVED) và ghi nhận audit log")
+    void deleteExercise_softDeletesAndLogsAction() {
         GrammarExercise existing = GrammarExercise.builder()
                 .id(20L)
                 .questionText("テスト問題")
                 .build();
 
         when(grammarExerciseRepository.findById(20L)).thenReturn(Optional.of(existing));
+        when(grammarExerciseRepository.save(any(GrammarExercise.class))).thenReturn(existing);
 
         adminContentService.deleteExercise(admin, 20L);
 
-        verify(grammarExerciseRepository).delete(existing);
-        verify(auditLogService).logAction(eq(admin), eq("grammar_exercises"), eq(20L), eq("DELETE"), eq("テスト問題"), isNull());
+        // Phải là soft-delete: save() với ARCHIVED, KHÔNG gọi delete()
+        verify(grammarExerciseRepository, never()).delete(any());
+        verify(grammarExerciseRepository).save(existing);
+        assertThat(existing.getReviewStatus()).isEqualTo(com.heyganba.model.enums.ReviewStatus.ARCHIVED);
+        verify(auditLogService).logAction(eq(admin), eq("grammar_exercises"), eq(20L), eq("ARCHIVE"), eq("テスト問題"), eq("ARCHIVED"));
     }
 }

@@ -189,9 +189,10 @@ public class AuthService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BadRequestException("User not found"));
         boolean enabled = Boolean.TRUE.equals(user.getIsTwoFactorEnabled());
+        // Chỉ tiết lộ trạng thái bật/tắt, KHÔNG BAO GIỜ trả về secret qua status endpoint
         return TwoFactorSetupResponse.builder()
                 .enabled(enabled)
-                .secret(enabled ? "********" : user.getTwoFactorSecret())
+                .secret(null)
                 .otpAuthUrl(null)
                 .build();
     }
