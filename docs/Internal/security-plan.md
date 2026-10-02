@@ -72,11 +72,14 @@
 | Dependabot cho Maven + npm | **Mới thêm (27/09)** | `.github/dependabot.yml` (maven, npm, github-actions, docker), gom nhóm theo tuần |
 | Refresh token trong cookie `httpOnly` | **Chưa làm — có lý do, xem bên dưới** | Xem "Quyết định hoãn: refresh token httpOnly" |
 | 2FA cho admin | Chưa làm | Admin hiện chỉ có 1 tài khoản seed; nên làm cùng trang quản trị thật (Phase 5+) |
-| Nội dung chờ duyệt không rò rỉ ra ngoài | **Mới siết (27/09)** | `ContentAccess`: user không phải ADMIN chỉ nhận nội dung `APPROVED` (kana/kanji/grammar/flashcard/đề thi); `/content/review-status` chỉ ADMIN; test `ContentReviewVisibilityTest` (7 case) |
+| Nội dung chờ duyệt không rò rỉ ra ngoài | **Đã siết & verify (02/10)** | `ContentAccess`: user không phải ADMIN chỉ nhận nội dung `APPROVED` (kana/kanji/grammar/flashcard/đề thi); `/content/review-status` chỉ ADMIN; test `ContentReviewVisibilityTest` (7 case); đã verify thực tế trên cả Prod (403) và Staging (403 sau khi deploy commit `5c720b8`) |
 | OWASP ZAP trước khi public | **Đã lên lịch — không thuộc nhóm hoãn vô thời hạn** | Chạy baseline scan trên **staging** (`https://heyganba-backend-staging.onrender.com/api/v1`) trước mốc public launch, tập trung đăng ký/đăng nhập + API chấm điểm. Lệnh và điều kiện tiên quyết: xem `deployment-plan.md` → "Trước khi public rộng". Chỉ tạm hoãn vì cần staging chạy ổn định + nội dung V12/V14 được duyệt trước khi quét. |
 | Diễn tập xoay `JWT_SECRET` | Chưa diễn tập | Cách làm: đổi env `JWT_SECRET` trên Render → mọi access/refresh token cũ vô hiệu (user phải đăng nhập lại), không cần đụng DB |
 | Health endpoint trung thực (không báo động giả) | **Đã sửa + deploy (27/09)** | Trước đó `/actuator/health` luôn trả 503 vì `RedisHealthIndicator` (không có Redis ở prod) dù app khoẻ; đã tắt chỉ số này (`management.health.redis.enabled=false`), đã deploy production 10:54:05Z → 200 UP; test `SecurityHardeningTest#actuatorHealth_IsUpWithoutRedis` |
 | Theo dõi log định kỳ | Một phần | Log Render + `GET /v1/logs` API; chưa có Sentry/alerting |
+| Khắc phục rò rỉ key terminal buffer | **Đã xử lý (02/10/2026)** | Thach đã revoke API key Render cũ và tạo key mới trên Render Dashboard |
+| Cơ chế thu hồi token (logout / đổi mật khẩu) | **Đã triển khai (02/10/2026)** | Bảng `revoked_tokens` + `POST /auth/logout` + `JwtAuthenticationFilter` chặn 401; test `SecurityHardeningTest` (2 case); FE xoá localStorage sau khi BE thành công |
+
 
 ### Master test 20 điểm bảo mật (chạy thật trên production 27/09/2026)
 
@@ -188,4 +191,25 @@ admin trong 15 phút (self-DoS). Đổi lại, đây cũng chính là cơ chế 
   2. Thêm exponential backoff theo IP và thông báo (log/email) cho admin mỗi khi có chuỗi đăng nhập sai.
 - Bài học đi kèm: **mọi state in-memory dùng cho bảo mật (rate limit, cache) phải ghi vào danh sách nợ kỹ thuật này**
   vì nó phụ thuộc số instance — xem thêm mục Redis trong `deployment-plan.md`.
+
+### Khắc phục sự cố rò rỉ Render API key qua terminal buffer (xử lý ngày 02/10/2026)
+
+- **Sự cố (High severity - CVSS 7.5)**: Trong đợt rà soát bảo mật toàn diện ngày 02/10/2026, phát hiện chuỗi key Render API cũ (`rnd_...`) xuất hiện trong stdout dòng lệnh do từng bị dán nhầm vào terminal buffer trên máy phát triển.
+- **Biện pháp xử lý**: Thach đã tiến hành xoay (rotate) key: vào Render Dashboard (Account Settings → API Keys), bấm **Revoke** khoá cũ và tạo API key mới an toàn vào ngày 02/10/2026.
+- **Trạng thái**: Đã khắc phục hoàn toàn. Không cần kiểm tra lại key cũ; mặc định coi là đã vô hiệu hoá.
+
+### Xác nhận đồng bộ Staging Render & Phân quyền RBAC (02/10/2026)
+
+- **Bối cảnh**: Staging Render (`heyganba-backend-staging`, branch `develop`) trước đó chạy commit cũ khiến endpoint `GET /api/v1/content/review-status` trả 200 OK cho học viên thông thường.
+- **Hành động**: Thach đã thực hiện Manual Deploy bản mới nhất từ Dashboard Render (commit `5c720b8`, sau commit `53e89ea`).
+- **Kết quả kiểm thử thực tế**: Gửi request `GET /api/v1/content/review-status` với Bearer token của tài khoản học viên thông thường tới `https://heyganba-backend-staging.onrender.com/api/v1/content/review-status` → **HTTP 403 Forbidden** (`{"success":false,"error":"FORBIDDEN","message":"Access denied: You do not have permission to access this resource"}`).
+- **Kết luận**: **PASS**. Cả Production và Staging hiện đều đồng nhất chặn rò rỉ thông tin review nội dung với role không phải `ROLE_ADMIN`.
+
+### Cơ chế thu hồi token (Token Revocation / Logout) (02/10/2026)
+
+- **Cơ chế triển khai**: Bảng `revoked_tokens` (`jti` khóa chính, `expires_at`), endpoint `POST /api/v1/auth/logout` thu hồi cả access token và refresh token. `JwtAuthenticationFilter` kiểm tra `jti` bị thu hồi → trả 401 Unauthorized. Cron job `@Scheduled` dọn dẹp token đã qua `expires_at`.
+- **Frontend**: `logoutApi()` gọi backend thu hồi token thành công mới xoá token ở `localStorage`.
+- **Kiểm thử**: `SecurityHardeningTest` kiểm tra cả access token và refresh token sau logout đều nhận đúng 401 khi tái sử dụng.
+
+
 
