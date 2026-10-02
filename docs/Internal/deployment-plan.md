@@ -623,3 +623,97 @@ docker run --rm -t ghcr.io/zaproxy/zaproxy:stable zap-baseline.py `
 # -I: không fail vì cảnh báo mức thấp; lưu report HTML vào docs/Internal/security-scan-<ngày>.html
 # Lưu ý: staging free tier ngủ sau ~15 phút → gọi /health trước để đánh thức rồi mới quét.
 ```
+
+## Runbook Diễn tập Phục hồi Dữ liệu (Database Restore Drill) — Chờ Thach chọn lịch chạy thử
+
+> ⚠️ **LƯU Ý:** Đây là **Runbook quy trình chuẩn bị sẵn** để phục vụ việc diễn tập khôi phục DB định kỳ theo kế hoạch vận hành. **Mục này chưa thực hiện**, đang chờ Thach chọn lịch chạy thử thích hợp (không tự ý chạy khi chưa có lịch xác nhận).
+
+### 1. Mục đích diễn tập
+- Xác minh tính khả dụng và khả năng phục hồi nguyên vẹn của các bản backup định kỳ (`backups/heyganba-*.sql` hoặc dump mới nhất).
+- Đảm bảo thời gian phục hồi (RTO) và điểm phục hồi (RPO) đáp ứng yêu cầu vận hành.
+- Thao tác trên **nhánh tạm thời (temporary branch)** của Neon để hoàn toàn không ảnh hưởng tới DB production hay staging đang hoạt động.
+
+### 2. Chuẩn bị
+- File dump gần nhất trong thư mục `backups/` (ví dụ `backups/heyganba-renderpg-2026-09-27.sql` hoặc dump mới nhất từ production).
+- Token Neon API: `$env:NEON_API_KEY` (hoặc cấu hình trong `.local-secrets.env`).
+- Project Neon ID (`cinevora`), Org ID (`org-dark-butterfly-46484287`).
+
+### 3. Các bước thực hiện
+
+#### Bước 1: Tạo branch tạm thời trên Neon (`restore-drill-temp`)
+Sử dụng Neon API để tạo branch mới rỗng hoặc tách từ root:
+```powershell
+$nh = @{ 
+  Authorization = "Bearer $env:NEON_API_KEY"
+  "Content-Type" = "application/json"
+  Accept = "application/json" 
+}
+
+$body = @{
+  branch = @{
+    name = "restore-drill-temp"
+  }
+} | ConvertTo-Json
+
+# Tạo branch tạm
+$branchRes = Invoke-RestMethod "https://console.neon.tech/api/v2/projects/<project-id>/branches?org_id=<org-id>" `
+  -Method Post -Headers $nh -Body $body
+
+$tempBranchId = $branchRes.branch.id
+Write-Host "Đã tạo branch tạm: $tempBranchId"
+
+# Lấy connection URI của branch tạm (direct connection, pooled=false)
+$connRes = Invoke-RestMethod "https://console.neon.tech/api/v2/projects/<project-id>/connection_uri?org_id=<org-id>&branch_id=$tempBranchId&database_name=heyganba&role_name=heyganba_owner&pooled=false" `
+  -Headers $nh
+$tempNeonUri = $connRes.uri
+```
+
+#### Bước 2: Restore từ file pg_dump vào branch tạm
+Sử dụng container Docker client Postgres 16 (đồng nhất version với database engine Neon):
+```powershell
+# Lưu ý: mount thư mục backups chứa file dump vào container
+docker run --rm -v "${PWD}/backups:/dump" postgres:16-alpine sh -c `
+  "psql '$tempNeonUri' -v ON_ERROR_STOP=1 -c 'DROP SCHEMA IF EXISTS public CASCADE' -c 'CREATE SCHEMA public' -f /dump/heyganba-renderpg-2026-09-27.sql"
+```
+
+#### Bước 3: Verify tính toàn vẹn và số lượng bản ghi so với bản gốc
+Chạy câu lệnh kiểm tra version migration và số lượng bản ghi tại các bảng cốt lõi trên **cả 2 database** (DB gốc và DB nhánh tạm vừa restore):
+
+```powershell
+# 1. Kiểm tra Flyway migration version
+docker run --rm postgres:16-alpine psql "$tempNeonUri" `
+  -c "SELECT max(version::int) AS latest_migration FROM flyway_schema_history;"
+
+# 2. Đếm số lượng bản ghi ở các bảng chính
+docker run --rm postgres:16-alpine psql "$tempNeonUri" -c "
+  SELECT 'users' AS table_name, count(*) AS record_count FROM users
+  UNION ALL
+  SELECT 'kana', count(*) FROM kana
+  UNION ALL
+  SELECT 'kanji', count(*) FROM kanji
+  UNION ALL
+  SELECT 'vocabulary', count(*) FROM vocabulary
+  UNION ALL
+  SELECT 'grammar_rules', count(*) FROM grammar_rules
+  UNION ALL
+  SELECT 'grammar_exercises', count(*) FROM grammar_exercises
+  UNION ALL
+  SELECT 'mock_exams', count(*) FROM mock_exams
+  UNION ALL
+  SELECT 'revoked_tokens', count(*) FROM revoked_tokens
+  UNION ALL
+  SELECT 'user_progress', count(*) FROM user_progress
+  ORDER BY table_name;
+"
+```
+So sánh kết quả đếm giữa 2 DB: số lượng bản ghi tại thời điểm tạo dump phải khớp 100%.
+
+#### Bước 4: Dọn dẹp DB nhánh tạm sau khi kiểm thử xong
+Sau khi ghi nhận kết quả diễn tập thành công, xoá ngay branch tạm để giải phóng quota (0.5GB) của Neon free tier:
+```powershell
+Invoke-RestMethod "https://console.neon.tech/api/v2/projects/<project-id>/branches/$tempBranchId?org_id=<org-id>" `
+  -Method Delete -Headers $nh
+
+Write-Host "Đã dọn dẹp và xoá branch tạm $tempBranchId thành công."
+```
+
