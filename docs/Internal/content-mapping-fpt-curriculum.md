@@ -2,7 +2,67 @@
 
 Tài liệu này map nội dung từ blog tổng hợp của Min Thep sang schema đã định nghĩa trong `roadmap.md`, để agent biết seed nội dung nào vào bảng nào, theo đúng thứ tự bài học thay vì theo độ khó chữ Kanji ngẫu nhiên.
 
-## Lưu ý về nguồn trước khi seed
+## Quy trình duyệt nội dung (chốt 27/09/2026) — `needs_human_check` + `source_ref`
+
+Đây là quy trình CHÍNH THỨC thay cho cách làm cũ ("agent tự soạn rồi để `PENDING_REVIEW` chờ duyệt tay"). Áp dụng cho
+mọi nội dung tiếng Nhật do AI soạn.
+
+**Tiêu chí đối chiếu (bắt buộc với TỪNG câu/ từng thẻ trước khi gắn `needs_human_check = FALSE`):**
+
+1. **Ngữ pháp** phải đối chiếu được với ít nhất 1 nguồn: tài liệu gốc của môn (số gốc `doc:#N` trong
+   `grammar_rules.source_ref`), Minna no Nihongo (phần tương đương), hoặc **danh sách ngữ pháp JLPT N5/N4 công khai**.
+   Không chấp nhận chỉ dựa vào suy luận của mô hình.
+2. **Từ vựng/kanji**: tra chéo cách đọc (onyomi/kunyomi) và nghĩa Hán Việt qua từ điển uy tín (Jisho/Weblio hoặc
+   tương đương) — không tự suy ra cách đọc.
+3. **Câu trắc nghiệm**: chỉ được có DUY NHẤT 1 đáp án đúng (cả ngữ pháp lẫn ngữ nghĩa). Câu có thể chấp nhận 2 đáp án
+   tuỳ ngữ cảnh **phải** gắn `needs_human_check = TRUE` — nhóm hay sai nhất là trợ từ gần nghĩa (は/が, に/で, に/へ, を/が, も/は).
+4. **Nhóm "bẫy"** (trợ từ đọc khác は/へ/を, biến âm số đếm ふん/ぷん, giờ 4/7/9, ngày 1/4/8/14/20/24...) kiểm kỹ hơn: ví dụ phải
+   phản ánh đúng ngữ cảnh dùng biến âm, không bịa tình huống gượng ép.
+
+**Cơ chế lưu trữ:** mỗi bảng nội dung có 3 cột (migration `V19__add_needs_human_check.sql`):
+`needs_human_check` (BOOL, mặc định false), `source_ref` (nguồn đã dùng để đối chiếu), `review_note` (lý do cần kiểm).
+Câu không đối chiếu được nguồn: giữ `review_status = PENDING_REVIEW` + `needs_human_check = TRUE`.
+
+**Nơi duyệt (Admin panel):** tab **"Cần kiểm"** trong `/admin` — gọi `GET /api/v1/admin/review-queue` (ADMIN):
+các item `needs_human_check = TRUE` được xếp LÊN ĐẦU kèm `reviewNote` + `sourceRef`; `?onlyNeedsCheck=true` để chỉ xem
+nhóm cần kiểm. Số tổng hợp theo loại nằm ở `GET /api/v1/content/review-status` (`totalNeedsHumanCheck` +
+`needsHumanCheck` từng loại).
+
+### Kết quả đợt kiểm đầu tiên — nội dung V12/V14 (27/09/2026)
+
+| Chỉ số | Giá trị | Cách đo |
+|---|---|---|
+| Tổng số câu bài tập | 306 | `select count(*) from grammar_exercises` (64 từ V9 + 242 từ V12/V14) |
+| Câu V12/V14 được gắn `source_ref` | **242 / 242** | `id > 64 and source_ref is not null` → 0 dòng thiếu |
+| Câu **đối chiếu được nguồn** (`needs_human_check = FALSE`) | **179 / 242** | `not needs_human_check` |
+| Câu **cần người biết tiếng Nhật kiểm** (`needs_human_check = TRUE`) | **63 / 242** | `needs_human_check and review_status = 'PENDING_REVIEW'` (đều có `review_note`) |
+| Câu thiếu đáp án trong `options_json` | **0** | `options_json not like '%"' || correct_answer || '"%'` |
+| Câu trùng (rule + câu hỏi) | **0** | `group by grammar_rule_id, question_text having count(*) > 1` |
+| Câu có đồng thời では + じゃ trong lựa chọn | **0** | nhóm phủ định vì thế không bị 2 đáp án |
+
+63 câu bị gắn cờ gồm 2 nhóm, đều CÓ LÝ DO ghi trong `review_note`:
+
+- **Nhóm (a) — chỉ định từ こ/そ/あ** (câu hội thoại / có chú thích ngữ cảnh): đáp án phụ thuộc vị trí người nói – người
+  nghe nên có thể có 2 phương án đúng nếu không nói rõ ai đang cầm vật.
+- **Nhóm (b) — đáp án nằm trong CẶP TRỢ TỪ GẦN NGHĨA**, cả 2 đều có trong lựa chọn (は/が, に/へ, に/で, を/が, も/は):
+  63 câu này là các câu thoả điều kiện "đáp án ∈ cặp và cả 2 có trong options" (đã lọc bằng SQL trên staging).
+
+Nguồn dùng để đối chiếu (đã đọc trực tiếp, không suy đoán):
+
+- **JLPT N5 grammar list công khai** — https://jlptsensei.com/jlpt-n5-grammar-list/ (3 trang, 84 mục). Nhãn trong
+  `source_ref` ghi đúng nhãn của danh sách này, ví dụ `jlpt-n5: tai たい`, `jlpt-n5: te wa ikenai てはいけない`,
+  `jlpt-n5: wa ~yori... desu は〜より`, `jlpt-n5: no naka de [A] ga ichiban の中で[A]が一番`.
+- **Số gốc tài liệu môn học** `doc:#N` (từ `grammar_rules.source_ref`, migration V11) — giữ để đối chiếu ngược lại
+  giáo trình Dekiru dạy ở FPT (JPD113 bài 1–3, JPD123 bài 4–7).
+- **Jisho** cho cách đọc của nhóm số đếm/ngày/tháng — đã tra và khớp: `四日 = よっか` (JLPT N5, "4th day/four days"),
+  `八百 = はっぴゃく`. Các mục biến âm khác (9時 = くじ, 4時 = よじ, 30分 = さんじゅっぷん, 1日 = ついたち, 14日 = じゅうよっか...)
+  đối chiếu theo bảng số đếm JLPT N5 chuẩn và khớp với nội dung V12/V14.
+
+**Việc còn lại của người biết tiếng Nhật**: mở tab "Cần kiểm" và chốt 63 câu trên (mỗi câu có sẵn `reviewNote` nói rõ
+vì sao cần chốt). Sau khi chốt: sửa `needs_human_check = FALSE` (hoặc sửa lại câu cho rõ ngữ cảnh rồi mới hạ cờ) bằng
+một migration mới — **không sửa file V12/V14** vì staging đã áp chúng (Flyway lưu checksum).
+
+### Nguồn tài liệu trước khi seed (giữ nguyên từ bản gốc)
 
 Nguồn gốc: `thepkz.github.io/minthep-portfolio` (tác giả Min Thep), tổng hợp giáo trình **Dekiru Nihongo** dạy tại FPT (JPD113 = bài 1–3, JPD123 = bài 4–7). Tác giả có ghi rõ trên trang: cấm dùng để dạy học/kinh doanh tài liệu vì mục đích kiếm tiền — chỉ để học phi thương mại. Vì web của m sẽ có user thật, nên trước khi seed dữ liệu vào bảng chính thức:
 - Ghi rõ nguồn tham khảo trong seed script/CHANGELOG.
@@ -83,3 +143,40 @@ coi là dữ liệu chính thức.
 - Toàn bộ cách đọc/âm biến đổi (đã liệt kê ở trên) — vì đây là chỗ agent trích xuất tự động dễ sai nhất nếu không hiểu ngữ cảnh.
 - Nghĩa Hán Việt và cách đọc onyomi/kunyomi của từng kanji theo bài.
 - Đúng theo quy trình đã nêu trong `agent-guidelines.md`: agent chỉ đưa vào bảng staging, không tự động lên bảng production.
+
+## Audio — Google Translate TTS + cache (chốt 27/09/2026)
+
+- Endpoint dùng: `https://translate.google.com/translate_tts` với **`tl=ja`** (đúng language code tiếng Nhật) +
+  `client=tw-ob` + User-Agent thật. Đây là endpoint **KHÔNG chính thức** (không SLA, không API key) ⇒ **bắt buộc cache**:
+  mỗi chuỗi kana chỉ được gọi Google **1 lần**, các lần sau đọc từ cache (tránh rate-limit/chặn IP).
+- Cache: bảng `tts_audio` (migration `V21__tts_audio_cache.sql`), khoá `sha256(kana_text)`. Nếu cấu hình Cloudflare R2
+  (`R2_ACCOUNT_ID` + `R2_API_TOKEN` + `R2_BUCKET` + `R2_PUBLIC_BASE_URL`) thì file được đẩy lên R2 và `public_url` là
+  URL CDN (frontend phát trực tiếp, backend trả 302). Chưa cấu hình R2 thì file nằm trong DB và phục vụ qua
+  `GET /api/v1/audio/tts?text=<kana>` (yêu cầu đăng nhập + rate limit 120 req/phút/user + chỉ nhận chuỗi kana/kanji ≤ 64 ký tự).
+- Frontend: `services/ttsAudio.ts` — fetch kèm `Authorization` rồi phát **blob URL** (thẻ `<audio>` không gửi được header,
+  nên không thể trỏ thẳng vào endpoint có auth). Web Speech API của trình duyệt chỉ còn là **fallback** khi server lỗi.
+- **Quy tắc ngữ âm (bắt buộc)**: TTS nhận **chuỗi KANA**, không nhận kanji thô. Đã sửa đề thi thử để `audioText` của câu
+  từ vựng là `vocabulary.reading` (trước đây truyền chữ kanji), và kana ッ/ー dùng `audioText` là từ mượn đầy đủ
+  (ベッド / コーヒー). Có test `ExamApiTest` chặn hồi quy: `audioText` của câu VOCABULARY phải khớp `[hiragana/katakana/ー]`.
+- **Nhóm bẫy biến âm** (ふん/ぷん, giờ 4/7/9, ngày 1/4/8/14/20/24, 20歳...): vẫn phải **nghe thử lại bằng tai** sau khi
+  generate. Nếu Google TTS đọc sai (hay gặp với số đếm đặc biệt) thì **ghi đè bằng audio thu tay** cho riêng nhóm đó:
+  đặt file thật vào `audio_url` của bản ghi — `playKanaAudio` ưu tiên `audioUrl` nên TTS sẽ bị bỏ qua.
+
+## Stroke order Kanji — kết quả tìm nguồn thay KanjiVG (27/09/2026)
+
+**Kết luận: KHÔNG tìm được nguồn license permissive ⇒ KHÔNG tích hợp animation nét viết** (theo đúng phương án dự phòng
+đã chốt trước khi làm). Đã tắt animation và hiển thị badge rõ ràng trên UI.
+
+| Nguồn ứng viên | License (đã đọc điều khoản, không đoán theo tên) | Kết luận |
+|---|---|---|
+| **KanjiVG** (bộ dữ liệu nét vẽ SVG mà phần lớn từ điển/tool dùng) | **CC BY-SA 3.0** — share-alike. Xác nhận trực tiếp trên chân trang Jisho.org: *"Kanji stroke diagrams are based on data from KanjiVG, which is copyright © 2009-2012 Ulrich Apel and released under the Creative Commons Attribution-Share Alike 3.0 license."* | **Loại** — share-alike không phù hợp nhúng vào sản phẩm đóng |
+| Bản đóng gói lại/dẫn xuất từ KanjiVG (kể cả trong thư viện JS) | Thừa hưởng CC BY-SA của dữ liệu gốc | **Loại** |
+| Make Me a Hanzi / Hanzi Writer | Dữ liệu nét viết thiên về chữ Hán (không phải kanji Nhật) và ràng buộc giấy phép của font gốc | **Loại** (không dùng được cho kanji tiếng Nhật) |
+
+Vì vậy: **không có animation stroke order**. UI luyện viết hiển thị badge **"Stroke order: Chưa hỗ trợ"**
+(`KanaCanvas` → prop `strokeOrderSupported`, mặc định `false`) kèm ghi chú "xem thứ tự nét trong sách/giáo trình", và
+giữ nguyên luồng chính hiện có: **vẽ tự do trên chữ mẫu mờ** (`showTemplate`). Badge nằm ngay trên khung vẽ nên không gây
+hiểu nhầm là lỗi.
+
+Khi nào tìm được nguồn permissive (MIT / OFL / CC0 / CC-BY): truyền `strokeOrderSupported={true}`, **ghi nguồn + license
+vào chính mục này trước khi tích hợp**, rồi mới bật animation.

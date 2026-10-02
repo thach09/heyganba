@@ -6,7 +6,8 @@
 
 - [ ] SRS engine chạy đúng logic SM-2 rút gọn (giãn cách tăng dần khi trả lời đúng, reset khi sai).
 - [ ] Endpoint "từ cần ôn hôm nay" trả đúng danh sách.
-- [ ] Redis cache hoạt động — đọc từ cache trước, fallback Postgres.
+- [~] Redis cache hoạt động — **đã hoãn có điều kiện (27/09/2026)**: implementation có sẵn (`RedisSrsDueCache`, bật bằng
+  `APP_SRS_CACHE=redis`) nhưng KHÔNG setup đợt này; chỉ bật khi load test chứng minh Postgres là bottleneck thật (xem mục 2.4).
 - [ ] Job đồng bộ cache chạy đúng lịch.
 - [ ] Giao diện flashcard lật thẻ hoạt động.
 - [ ] User chỉ truy cập được review của chính mình.
@@ -40,7 +41,14 @@
 | **Endpoint** | `GET /api/v1/flashcard/stats` — thống kê: tổng từ đã học, từ cần ôn hôm nay, streak ôn tập. |
 | **Security** | Service layer kiểm tra `user_id` từ JWT — user KHÔNG thể xem/sửa review của người khác. Test riêng cho case này. |
 
-### 2.4 — Redis Cache Layer
+### 2.4 — Redis Cache Layer · **ĐÃ HOÃN CÓ ĐIỀU KIỆN (27/09/2026)**
+
+> **Trạng thái: KHÔNG làm đợt này.** Không setup Redis, **không** đổi `APP_SRS_CACHE` (giữ `memory`). Implementation đã
+> có sẵn (`RedisSrsDueCache`) nhưng chỉ bật khi điều kiện dưới đây xảy ra — xem `docs/roadmap.md` → "Chốt gần đây".
+>
+> **Điều kiện xem xét lại**: load test (`docs/Internal/deployment-plan.md` → "Trước khi public rộng") cho thấy **Postgres là
+> bottleneck thật** (p95 vượt mục tiêu, HikariCP hết connection) hoặc phải chạy > 1 instance khiến rate-limit/`SrsDueCache`
+> in-memory mất tác dụng. Không bật trước thời điểm đó.
 
 | Hạng mục | Chi tiết |
 |---|---|

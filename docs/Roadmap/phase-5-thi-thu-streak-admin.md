@@ -142,7 +142,7 @@
 
 1. ~~**Streak điều kiện**~~ → **ĐÃ CHỐT**: ≥10 lượt ôn SRS HOẶC 1 bộ quiz/1 lượt thi thử HOẶC ≥10 câu bài tập ngữ pháp.
 2. ~~**Leaderboard theo lớp**~~ → **ĐÃ CHỐT**: user tự nhập `class_code` (text tự do) lúc đăng ký hoặc sửa sau trong Trạm Thi Thử.
-3. ~~**Mascot assets**~~ → **TẠM THỜI**: dùng chuỗi emoji tiến hoá, chờ asset thiết kế thật.
+3. **Mascot assets**: CHỐT (27/09/2026) — chuỗi emoji tiến hoá (🥚→🐣→🐤→🐥→🦅→🐉) là mascot CHÍNH THỨC lâu dài, không chờ asset khác; logo cổng Torii là biểu tượng thương hiệu chính.
 4. **Load test target:** 50–100 concurrent users đủ cho giai đoạn đầu? Hosting free tier có chịu được không?
 5. **Audit log retention:** Giữ bao lâu? Bao nhiêu storage?
 
@@ -183,5 +183,5 @@
 |---|---|
 | Streak chỉ tính khi hoàn thành ≥10 lượt ôn SRS **hoặc** 1 bộ quiz đầy đủ trong ngày (ôn 1 từ không tính) | `StreakPolicy` (ngưỡng cấu hình `app.streak.min-srs-reviews`, `app.streak.min-quiz-questions`) + `StudyActivityService.qualifiesForStreak`. Áp dụng ở `FlashcardService`, `GrammarService` (ghi nhận câu bài tập), `ExamService` (1 lượt thi = 1 bộ quiz đầy đủ). `GET /streak` trả thêm `todaySrsReviews`, `minSrsReviewsForStreak`, `todayQualified` để UI hiện tiến độ |
 | Leaderboard theo lớp | `users.class_code` (V11, text tự do, nullable) + index; nhập khi đăng ký hoặc `PUT /users/me/class-code`; `GET /leaderboard?classCode=…` (so khớp không phân biệt hoa thường, trả `scope = CLASS:<mã>`) |
-| Mascot tạm bằng emoji tiến hoá | `frontend/src/components/MascotBadge.tsx` (🥚 → 🐣 → 🐤 → 🐥 → 🦅 → 🐉 theo streak dài nhất), hiển thị ở Dashboard + Trạm Thi thử; thay asset thật chỉ cần đổi bảng `MILESTONES` |
-| Audio đề thi nghe — giải pháp tạm bằng Web Speech API | BE trả `audioText` cho câu KANA/VOCABULARY (giữ nguyên trong `questions_json`); FE `services/japaneseSpeech.ts` (dùng chung với Trạm Kana) + nút 🔊 Nghe trong phòng thi. ⚠️ Là PLACEHOLDER, khi có audio thu thật thì thay bằng URL R2/CDN |
+| Mascot chính thức: emoji tiến hoá | `frontend/src/components/MascotBadge.tsx` (🥚 → 🐣 → 🐤 → 🐥 → 🦅 → 🐉 theo streak dài nhất), hiển thị ở Dashboard + Trạm Thi thử; mỗi bậc có `alt` cho screen reader. Không còn là "tạm": đây là mascot chính thức (27/09/2026), muốn đổi bậc thì sửa bảng `MILESTONES` |
+| Audio nghe — Google Translate TTS + cache (27/09/2026) | BE: `audioText` (KANA) trong `questions_json` + `GET /api/v1/audio/tts?text=<kana>` (cache bảng `tts_audio`, đẩy Cloudflare R2 nếu cấu hình); FE: `services/ttsAudio.ts` + `japaneseSpeech.ts` (Web Speech chỉ còn là fallback). Với câu VOCABULARY, `audioText` là `reading` (kana) — không truyền kanji thô |
