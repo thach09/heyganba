@@ -107,12 +107,14 @@ class SecurityHardeningTest extends com.heyganba.support.ContentApiTestBase {
     }
 
     @Test
-    @DisplayName("Security headers: nosniff + X-Frame-Options DENY (chống sniffing & clickjacking)")
+    @DisplayName("Security headers: nosniff + X-Frame-Options DENY + Referrer-Policy + CSP")
     void securityHeaders_NoSniffAndFrameDeny() throws Exception {
         mockMvc.perform(get("/health"))
                 .andExpect(status().isOk())
                 .andExpect(header().string("X-Content-Type-Options", "nosniff"))
-                .andExpect(header().string("X-Frame-Options", "DENY"));
+                .andExpect(header().string("X-Frame-Options", "DENY"))
+                .andExpect(header().string("Referrer-Policy", "strict-origin-when-cross-origin"))
+                .andExpect(header().string("Content-Security-Policy", "default-src 'none'; frame-ancestors 'none'"));
     }
 
     @Test
@@ -327,5 +329,69 @@ class SecurityHardeningTest extends com.heyganba.support.ContentApiTestBase {
                 .andExpect(status().isMethodNotAllowed())
                 .andExpect(jsonPath("$.success", is(false)))
                 .andExpect(jsonPath("$.error", is("METHOD_NOT_ALLOWED")));
+    }
+
+    @Test
+    @DisplayName("Logout vô hiệu hoá access token: gọi API protected sau logout nhận 401 Unauthorized")
+    void logout_RevokesAccessToken_ApiReturns401() throws Exception {
+        JsonNode data = registerAndGetData("hard.logout@heyganba.vn", "Password123!", "Hard Logout");
+        String accessToken = data.get("accessToken").asText();
+        String refreshToken = data.get("refreshToken").asText();
+
+        // Kiểm tra trước: access token hợp lệ gọi /users/me nhận 200 OK
+        mockMvc.perform(get("/users/me")
+                        .header("Authorization", "Bearer " + accessToken))
+                .andExpect(status().isOk());
+
+        // Gọi POST /auth/logout thu hồi cả access token và refresh token
+        com.heyganba.dto.auth.LogoutRequest logoutRequest = com.heyganba.dto.auth.LogoutRequest.builder()
+                .refreshToken(refreshToken)
+                .build();
+
+        mockMvc.perform(post("/auth/logout")
+                        .header("Authorization", "Bearer " + accessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(logoutRequest)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success", is(true)))
+                .andExpect(jsonPath("$.message", is("Logged out successfully")));
+
+        // Dùng lại access token cũ gọi /users/me -> bị chặn 401 Unauthorized
+        mockMvc.perform(get("/users/me")
+                        .header("Authorization", "Bearer " + accessToken))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.success", is(false)))
+                .andExpect(jsonPath("$.error", is("UNAUTHORIZED")));
+    }
+
+    @Test
+    @DisplayName("Logout vô hiệu hoá refresh token: gọi /auth/refresh sau logout nhận 401 Unauthorized")
+    void logout_RevokesRefreshToken_RefreshEndpointReturns401() throws Exception {
+        JsonNode data = registerAndGetData("hard.logout.refresh@heyganba.vn", "Password123!", "Hard Refresh Logout");
+        String accessToken = data.get("accessToken").asText();
+        String refreshToken = data.get("refreshToken").asText();
+
+        // Gọi POST /auth/logout
+        com.heyganba.dto.auth.LogoutRequest logoutRequest = com.heyganba.dto.auth.LogoutRequest.builder()
+                .refreshToken(refreshToken)
+                .build();
+
+        mockMvc.perform(post("/auth/logout")
+                        .header("Authorization", "Bearer " + accessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(logoutRequest)))
+                .andExpect(status().isOk());
+
+        // Thử dùng refresh token cũ để refresh -> nhận 401 Unauthorized
+        RefreshTokenRequest refreshRequest = RefreshTokenRequest.builder()
+                .refreshToken(refreshToken)
+                .build();
+
+        mockMvc.perform(post("/auth/refresh")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(refreshRequest)))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.success", is(false)))
+                .andExpect(jsonPath("$.error", is("UNAUTHORIZED")));
     }
 }

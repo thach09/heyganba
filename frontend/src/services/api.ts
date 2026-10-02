@@ -54,6 +54,41 @@ export const clearTokens = () => {
   localStorage.removeItem('heyganba_user');
 };
 
+/**
+ * Gửi yêu cầu đăng xuất tới backend để đưa access token và refresh token vào danh sách revoked_tokens.
+ * Trả về true nếu backend xác nhận thành công.
+ */
+export const logoutApi = async (): Promise<boolean> => {
+  const token = getAccessToken();
+  const refreshToken = getRefreshToken();
+  if (!token && !refreshToken) {
+    return true;
+  }
+
+  const headers = new Headers();
+  headers.set('Content-Type', 'application/json');
+  if (token) {
+    headers.set('Authorization', `Bearer ${token}`);
+  }
+
+  try {
+    const response = await fetch(`${API_BASE}/auth/logout`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ refreshToken: refreshToken || undefined }),
+    });
+
+    if (response.ok) {
+      const data: ApiResponse<void> = await response.json();
+      return Boolean(data.success);
+    }
+    return false;
+  } catch (error) {
+    console.error('Logout request failed:', error);
+    return false;
+  }
+};
+
 export const getSavedUser = (): AuthResponse | null => {
   const saved = localStorage.getItem('heyganba_user');
   if (saved) {

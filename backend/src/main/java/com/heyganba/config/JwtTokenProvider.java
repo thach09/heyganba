@@ -168,4 +168,29 @@ public class JwtTokenProvider {
         }
         return false;
     }
+
+    public String getJtiFromJwt(String token) {
+        Claims claims = parseClaimsAllowExpired(token);
+        return claims != null ? claims.getId() : null;
+    }
+
+    public Date getExpirationFromJwt(String token) {
+        Claims claims = parseClaimsAllowExpired(token);
+        return claims != null ? claims.getExpiration() : null;
+    }
+
+    public Claims parseClaimsAllowExpired(String token) {
+        try {
+            return Jwts.parser()
+                    .verifyWith(key)
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+        } catch (ExpiredJwtException ex) {
+            return ex.getClaims();
+        } catch (Exception ex) {
+            log.debug("Cannot parse claims from token: {}", ex.getMessage());
+            return null;
+        }
+    }
 }

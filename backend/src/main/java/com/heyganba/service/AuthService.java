@@ -34,6 +34,7 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider tokenProvider;
     private final CustomUserDetailsService userDetailsService;
+    private final TokenRevocationService tokenRevocationService;
 
     @Transactional
     public AuthResponse register(RegisterRequest request) {
@@ -109,6 +110,11 @@ public class AuthService {
             throw new BadRequestException("Invalid or expired refresh token");
         }
 
+        String jti = tokenProvider.getJtiFromJwt(token);
+        if (jti != null && tokenRevocationService.isRevoked(jti)) {
+            throw new org.springframework.security.authentication.BadCredentialsException("Refresh token has been revoked");
+        }
+
         String username = tokenProvider.getUsernameFromJwt(token);
         UserPrincipal userPrincipal = (UserPrincipal) userDetailsService.loadUserByUsername(username);
 
@@ -128,6 +134,10 @@ public class AuthService {
                 .role(userPrincipal.getAuthorities().iterator().next().getAuthority())
                 .classCode(userPrincipal.getClassCode())
                 .build();
+    }
+
+    public void logout(String accessToken, String refreshToken) {
+        tokenRevocationService.revokeTokens(accessToken, refreshToken);
     }
 
     /** Mã lớp là text tự do: chỉ trim, để trống thì lưu null (không gán lớp mặc định). */

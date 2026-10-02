@@ -111,4 +111,19 @@ public class AuthController {
         AuthResponse response = authService.refreshToken(request);
         return ResponseEntity.ok(ApiResponse.success(response, "Token refreshed successfully"));
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<ApiResponse<Void>> logout(
+            @RequestBody(required = false) com.heyganba.dto.auth.LogoutRequest request,
+            HttpServletRequest httpRequest
+    ) {
+        String bearer = httpRequest.getHeader("Authorization");
+        String accessToken = (bearer != null && bearer.startsWith("Bearer "))
+                ? bearer.substring(7)
+                : null;
+        String refreshToken = request != null ? request.getRefreshToken() : null;
+
+        authService.logout(accessToken, refreshToken);
+        return ResponseEntity.ok(ApiResponse.success(null, "Logged out successfully"));
+    }
 }

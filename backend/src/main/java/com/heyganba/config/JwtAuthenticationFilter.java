@@ -26,6 +26,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider tokenProvider;
     private final CustomUserDetailsService customUserDetailsService;
+    private final com.heyganba.service.TokenRevocationService tokenRevocationService;
 
     @Override
     protected void doFilterInternal(
@@ -39,6 +40,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
                 if (!tokenProvider.isAccessToken(jwt)) {
                     log.warn("Rejected non-access token for protected request: {}", request.getRequestURI());
+                    filterChain.doFilter(request, response);
+                    return;
+                }
+
+                String jti = tokenProvider.getJtiFromJwt(jwt);
+                if (jti != null && tokenRevocationService.isRevoked(jti)) {
+                    log.warn("Rejected revoked token for request: {}", request.getRequestURI());
                     filterChain.doFilter(request, response);
                     return;
                 }
