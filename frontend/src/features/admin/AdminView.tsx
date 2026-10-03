@@ -47,6 +47,7 @@ interface VocabularyAdminItem {
   exampleSentence?: string;
   exampleReading?: string;
   exampleMeaning?: string;
+  reviewStatus?: string;
 }
 
 interface KanjiAdminItem {
@@ -260,12 +261,14 @@ export const AdminView: React.FC = () => {
   };
 
   const handleDeleteVocab = async (id: number) => {
-    if (!confirm('Bạn có chắc chắn muốn xoá từ vựng này?')) return;
+    if (!confirm('Bạn có chắc chắn muốn lưu trữ (archive) từ vựng này?')) return;
     const res = await apiRequest(`/admin/vocabulary/${id}`, { method: 'DELETE' });
     if (res.success) {
-      showToast('Đã xoá từ vựng');
+      showToast('Đã lưu trữ từ vựng (ARCHIVED)');
       fetchVocabulary();
       fetchAdminData();
+    } else {
+      showToast(res.message || 'Lỗi khi lưu trữ từ vựng');
     }
   };
 
@@ -752,17 +755,31 @@ export const AdminView: React.FC = () => {
                   <th className={thClass}>Cách đọc</th>
                   <th className={thClass}>Hán Việt</th>
                   <th className={thClass}>Ý nghĩa</th>
+                  <th className={thClass}>Trạng thái</th>
                   <th className={`${thClass} text-right`}>Thao tác</th>
                 </tr>
               </thead>
               <tbody>
                 {vocabList.map((v) => (
-                  <tr key={v.id}>
+                  <tr key={v.id} className={v.reviewStatus === 'ARCHIVED' ? 'opacity-60' : ''}>
                     <td className={`${tdClass} tabular-nums`}>#{v.id}</td>
                     <td className={`${tdClass} font-serif font-semibold text-fg text-[14px]`}>{v.word}</td>
                     <td className={`${tdClass} font-serif text-fg-60`}>{v.reading}</td>
                     <td className={`${tdClass} text-fg-38`}>{v.sinoVietnamese || '—'}</td>
                     <td className={`${tdClass} text-fg`}>{v.meaning}</td>
+                    <td className={tdClass}>
+                      <span
+                        className={`inline-block px-1.5 py-0.5 text-[10.5px] font-medium ${
+                          v.reviewStatus === 'ARCHIVED'
+                            ? 'border border-red text-red bg-tint'
+                            : v.reviewStatus === 'APPROVED'
+                            ? 'border border-rank text-rank'
+                            : 'border border-rule text-fg-38'
+                        }`}
+                      >
+                        {v.reviewStatus || 'APPROVED'}
+                      </span>
+                    </td>
                     <td className={`${tdClass} text-right`}>
                       <div className="inline-flex gap-2">
                         <button

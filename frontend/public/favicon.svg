@@ -1,12 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="HeyGanba!">
-  <defs>
-    <linearGradient id="heyganbaPrimary" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#ff4b55"/>
-      <stop offset="1" stop-color="#ff708f"/>
-    </linearGradient>
-  </defs>
-  <rect width="64" height="64" rx="15" fill="url(#heyganbaPrimary)"/>
-  <text x="32" y="46" text-anchor="middle"
-        font-family="'Noto Sans JP','Yu Gothic','Hiragino Kaku Gothic ProN',Meiryo,'MS Gothic',sans-serif"
-        font-size="40" font-weight="800" fill="#ffffff">が</text>
+  <rect width="64" height="64" rx="14" fill="#151614"/>
+  <path d="M10 18 H54 M14 26 H50 M20 26 V52 M44 26 V52 M32 26 V36" 
+        stroke="#E64A19" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
 </svg>

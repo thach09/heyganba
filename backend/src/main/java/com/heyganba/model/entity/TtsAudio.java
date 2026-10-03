@@ -40,7 +40,6 @@ public class TtsAudio {
     private String contentType = "audio/mpeg";
 
     /** File audio (chỉ dùng khi storageKind = 'db'). */
-    @Lob
     @Column(name = "audio_bytes")
     private byte[] audioBytes;
 

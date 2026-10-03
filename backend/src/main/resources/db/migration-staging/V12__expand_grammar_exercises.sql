@@ -1,7 +1,7 @@
 -- =========================================================
 -- V12: Mở rộng ngân hàng bài tập ngữ pháp (Phase 4)
 --
--- Mục tiêu: mỗi điểm ngữ pháp đạt >= 5 câu (V9 mới có 2 câu/điểm — xem docs/Roadmap/phase-4-tro-tu-ngu-phap.md).
+-- Mục tiêu: mỗi điểm ngữ pháp đạt >= 5 câu (V9 mới có 2 câu/điểm).
 -- Nhóm bẫy thường gặp (trợ từ は/が/へ/を/で, số đếm biến âm, tính từ い/な, so sánh, thể て) được gắn
 -- is_common_mistake = TRUE để Trạm Trợ từ lọc riêng được nhiều câu hơn.
 --

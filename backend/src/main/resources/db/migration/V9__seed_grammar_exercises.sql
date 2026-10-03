@@ -6,7 +6,7 @@
 -- is_common_mistake = TRUE + mistake_category để lọc riêng ở Trạm Trợ từ.
 --
 -- ⚠️ TODO sau review nội dung: bổ sung lên tối thiểu 5 câu/điểm và 10+ câu cho nhóm bẫy
---    (theo docs/Roadmap/phase-4-tro-tu-ngu-phap.md). Nội dung do người soạn tự viết, chưa copy nguồn.
+--    (kế hoạch bổ sung nội dung sau review). Nội dung do người soạn tự viết, chưa copy nguồn.
 -- =========================================================
 
 CREATE UNIQUE INDEX IF NOT EXISTS uq_grammar_exercise_rule_question ON grammar_exercises (grammar_rule_id, question_text);

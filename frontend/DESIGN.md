@@ -1,9 +1,6 @@
 # Design — HeyGanba
 
 Hệ thị giác "mực trên giấy", đảo tối. Chữ Nhật là nhân vật chính, chữ Việt là sàn đọc.
-Mock tham chiếu: [`docs/Design/mock-dashboard.html`](docs/Design/mock-dashboard.html) · ảnh màn thật trong [`docs/Design/`](docs/Design/)
-
-![Dashboard](docs/Design/mock-dashboard-desktop.png)
 
 ---
 
@@ -103,16 +100,7 @@ Không dùng font mảnh ở cỡ nhỏ — body tối thiểu 12.5px; nét mả
 
 **403 / backend offline** — 403 là một trạng thái trống gọn (số serif + lý do + link về `/`); banner backend dùng `tint` + vạch trái `--red`, lời người dùng nói "tạm thời không kết nối được"; chi tiết chạy `mvn`/Docker chỉ hiện trong `import.meta.env.DEV`.
 
-## 4. Ảnh tham chiếu
-
-![Dashboard — nav nhóm mở](docs/Design/mock-dashboard-desktop-nav-open.png)
-![Dashboard — mobile](docs/Design/mock-dashboard-mobile.png)
-![Phiên ôn — câu hỏi](docs/Design/mock-flashcard-desktop.png)
-![Phiên ôn — sau khi trả lời](docs/Design/mock-flashcard-answered.png)
-
-*Ảnh phiên ôn chụp từ màn thật (trắc nghiệm) — mock html bản cũ (lật thẻ + tự chấm) đã gỡ.*
-
-## 5. Quyết định thị giác & Game hóa (Đã chốt 02/10/2026)
+## 4. Quyết định thị giác & Game hóa (Đã chốt 02/10/2026)
 
 - **Công thức EXP (dạng config backend):**
   - Trả lời đúng 1 câu bài tập / quiz: **+10 EXP** (`app.exp.exercise-correct`)
@@ -123,9 +111,8 @@ Không dùng font mảnh ở cỡ nhỏ — body tối thiểu 12.5px; nét mả
 
 - Khối gợi nhớ / nhiệm vụ kế tiếp: đã gỡ khỏi dashboard; để dành cho phiên học/từng trạm.
 
-## 6. Làm việc với hệ này
+## 5. Làm việc với hệ này
 
 - Đọc `PRODUCT.md` (sự thật sản phẩm) trước khi sửa UI
-- Style màn mới bằng **Tailwind v4** với token trong `@theme` (`frontend/src/index.css`): `text-fg-60`, `border-rule`, `font-serif`… — palette/radius/shadow mặc định đã bị xoá khỏi theme, không thể dùng
-- Trước khi đổi bố cục: so với mock trong `docs/Design/`
-- Sau khi sửa UI: chạy detector `.opencode/skills/impeccable/scripts/impeccable detect <đường dẫn>`
+- Style màn mới bằng **Tailwind v4** với token trong `@theme` (`src/index.css`): `text-fg-60`, `border-rule`, `font-serif`… — palette/radius/shadow mặc định đã bị xoá khỏi theme, không thể dùng
+- Sau khi sửa UI: chạy detector `.opencode/skills/impeccable/scripts/impeccable detect <đường dẫn>` (từ `frontend/`)

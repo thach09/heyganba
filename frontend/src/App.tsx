@@ -127,8 +127,11 @@ export function App() {
   }, [user]);
 
   const handleLogout = async () => {
-    const success = await logoutApi();
-    if (success) {
+    try {
+      await logoutApi();
+    } catch {
+      // Ignore network/server errors during logout
+    } finally {
       clearTokens();
       setUser(null);
       navigate('/');

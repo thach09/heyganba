@@ -1,7 +1,7 @@
 ---
 version: 1
-slug: "frontend-src-features-dashboard-dashboardview-tsx"
-primary_target: "frontend/src/features/dashboard/DashboardView.tsx"
+slug: "src-features-dashboard-dashboardview-tsx"
+primary_target: "src/features/dashboard/DashboardView.tsx"
 related_targets: []
 ---
 
@@ -11,7 +11,6 @@ related_targets: []
 - **Scope:** route "hôm nay" (`今日`) của app; không gồm các trạm
 - **Audience & job:** người học tự học (hiện tại: tác giả) — mở app mỗi ngày để biết "mình đang ở đâu" rồi tự chọn trạm qua nav
 - **Direction:** Hệ nét viết — mực trên giấy đảo tối + cấp độ/EXP
-- **Reference:** `docs/Design/mock-dashboard.html` (+ screenshots trong `docs/Design/`)
 
 ## Direction contract
 
