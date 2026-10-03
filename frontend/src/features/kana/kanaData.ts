@@ -56,7 +56,6 @@ export interface KanaGroupMeta {
   label: string;
   shortLabel: string;
   description: string;
-  color: string;
 }
 
 /** Empty slot that keeps the traditional gojūon a / i / u / e / o columns aligned. */
@@ -86,39 +85,33 @@ export const KANA_GROUP_META: Record<KanaGroupKey, KanaGroupMeta> = {
     label: 'Bảng 46 chữ cơ bản (Gojūon)',
     shortLabel: 'Cơ bản',
     description: '46 chữ gốc, sắp theo hàng ngũ âm a / i / u / e / o.',
-    color: '#3B82F6',
   },
   DAKUTEN: {
     label: 'Biến âm đục (Dakuten)',
     shortLabel: 'Đục',
     description: 'Thêm dấu ゛ để đổi âm: k→g, s→z, t→d, h→b.',
-    color: '#8B5CF6',
   },
   HANDAKUTEN: {
     label: 'Biến âm bán đục (Handakuten)',
     shortLabel: 'Bán đục',
     description: 'Thêm dấu ゜ vào hàng H để đổi thành âm p.',
-    color: '#F59E0B',
   },
   YOON: {
     label: 'Âm ghép (Yōon)',
     shortLabel: 'Âm ghép',
     description: 'Ghép chữ hàng i với chữ nhỏ ゃ / ゅ / ょ để tạo âm mới.',
-    color: '#10B981',
   },
   EXTENDED_KATAKANA: {
     label: 'Katakana mở rộng — tổ hợp âm cho từ mượn',
     shortLabel: 'Mở rộng',
     description:
       'Tổ hợp ファ / フィ / フェ / フォ, ウィ / ウェ / ウォ, ヴ, ツァ / ツィ / ツェ / ツォ... dùng để phiên âm từ ngoại lai.',
-    color: '#EC4899',
   },
   DOUBLE_KATAKANA: {
     label: 'Katakana ký tự đôi — 促音 (ッ) & 長音 (ー)',
     shortLabel: 'Ký tự đôi',
     description:
       'ッ (sokuon) gấp đôi phụ âm đứng sau; ー (chōon) kéo dài nguyên âm đứng trước trong từ mượn.',
-    color: '#EF4444',
   },
 };
 
