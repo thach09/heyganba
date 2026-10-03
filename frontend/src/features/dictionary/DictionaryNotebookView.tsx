@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Search, Plus, FolderPlus, Trash2, Play, CheckCircle2, BookmarkPlus } from 'lucide-react';
 import { apiRequest } from '../../services/api';
 import type { AuthResponse } from '../../services/api';
@@ -76,7 +77,8 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
   const [activeTab, setActiveTab] = useState<'DICTIONARY' | 'NOTEBOOKS'>('DICTIONARY');
 
   // Dictionary state
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchQuery, setSearchQuery] = useState(() => searchParams.get('q') || '');
   const [isSearching, setIsSearching] = useState(false);
   const [searchResult, setSearchResult] = useState<DictionarySearchResponse | null>(null);
 
@@ -121,22 +123,43 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
     setCurrentOptions([correct, ...shuffledOthers].sort(() => Math.random() - 0.5));
   };
 
-  const handleSearch = async (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
-    if (!searchQuery.trim()) return;
+  const doSearch = async (queryText: string) => {
+    const trimmed = queryText.trim();
+    if (!trimmed) return;
 
     setIsSearching(true);
     try {
       const res = await apiRequest<DictionarySearchResponse>(
-        `/dictionary/search?q=${encodeURIComponent(searchQuery.trim())}`
+        `/dictionary/search?q=${encodeURIComponent(trimmed)}`
       );
       if (res.success && res.data) {
         setSearchResult(res.data);
+      } else {
+        showNotice(res.message || 'Không thể tra cứu từ điển vào lúc này.');
       }
+    } catch {
+      showNotice('Không thể kết nối đến máy chủ để tra cứu.');
     } finally {
       setIsSearching(false);
     }
   };
+
+  const handleSearch = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    const trimmed = searchQuery.trim();
+    if (!trimmed) return;
+    setSearchParams({ q: trimmed });
+    await doSearch(trimmed);
+  };
+
+  useEffect(() => {
+    const q = searchParams.get('q');
+    if (q && q.trim()) {
+      setSearchQuery(q.trim());
+      void doSearch(q.trim());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
 
   const fetchNotebooks = async () => {
     if (!user) return;

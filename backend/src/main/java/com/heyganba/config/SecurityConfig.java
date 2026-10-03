@@ -91,6 +91,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/auth/**",
+                                "/dictionary/**",
                                 "/health",
                                 "/actuator/health",
                                 "/actuator/info"
