@@ -16,6 +16,8 @@ export interface AuthResponse {
   role: string;
   /** Mã lớp học (nullable) — dùng cho leaderboard theo lớp. */
   classCode: string | null;
+  twoFactorRequired?: boolean;
+  twoFactorEnabled?: boolean;
 }
 
 export interface UserProfileResponse {
@@ -35,6 +37,9 @@ export interface UserProfileResponse {
  */
 const API_BASE = import.meta.env.VITE_API_BASE_URL?.replace(/\/+$/, '') || '/api/v1';
 
+/** Base URL của backend — dùng cho các tài nguyên không đi qua `apiRequest` (ví dụ audio TTS). */
+export const API_BASE_URL = API_BASE;
+
 export const getAccessToken = (): string | null => {
   return localStorage.getItem('heyganba_access_token');
 };
@@ -52,6 +57,41 @@ export const clearTokens = () => {
   localStorage.removeItem('heyganba_access_token');
   localStorage.removeItem('heyganba_refresh_token');
   localStorage.removeItem('heyganba_user');
+};
+
+/**
+ * Gửi yêu cầu đăng xuất tới backend để đưa access token và refresh token vào danh sách revoked_tokens.
+ * Trả về true nếu backend xác nhận thành công.
+ */
+export const logoutApi = async (): Promise<boolean> => {
+  const token = getAccessToken();
+  const refreshToken = getRefreshToken();
+  if (!token && !refreshToken) {
+    return true;
+  }
+
+  const headers = new Headers();
+  headers.set('Content-Type', 'application/json');
+  if (token) {
+    headers.set('Authorization', `Bearer ${token}`);
+  }
+
+  try {
+    const response = await fetch(`${API_BASE}/auth/logout`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ refreshToken: refreshToken || undefined }),
+    });
+
+    if (response.ok) {
+      const data: ApiResponse<void> = await response.json();
+      return Boolean(data.success);
+    }
+    return false;
+  } catch (error) {
+    console.error('Logout request failed:', error);
+    return false;
+  }
 };
 
 export const getSavedUser = (): AuthResponse | null => {

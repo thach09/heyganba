@@ -24,4 +24,10 @@ public interface KanaRepository extends JpaRepository<Kana, Long> {
 
     /** Đếm theo trạng thái duyệt nội dung — dùng cho GET /content/review-status. */
     long countByReviewStatus(ReviewStatus reviewStatus);
+
+    /** Đếm nội dung CẦN người biết tiếng Nhật kiểm (`needs_human_check = true`) — cho tab duyệt của admin. */
+    long countByNeedsHumanCheckTrue();
+
+    /** Nội dung theo cờ cần-người-kiểm, xếp theo id — dùng cho GET /admin/review-queue. */
+    List<Kana> findByNeedsHumanCheckOrderByIdAsc(Boolean needsHumanCheck, org.springframework.data.domain.Pageable pageable);
 }

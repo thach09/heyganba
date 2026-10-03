@@ -49,7 +49,8 @@ Chưa quyết (không được tự suy diễn):
 ## Brand Commitments
 
 - **Tên sản phẩm: HeyGanba — bắt buộc giữ.**
-- Không có ràng buộc brand nào khác được xác nhận (mascot/hero asset hiện có nhưng chưa chốt là bắt buộc).
+- Brand chốt 27/09/2026: **logo cổng Torii là biểu tượng thương hiệu chính thức**; **mascot chính thức** là chuỗi emoji
+  tiến hoá theo streak (🥚 → 🐣 → 🐤 → 🐥 → 🦅 → 🐉, xem `docs/roadmap.md`) — không làm thêm mascot nào khác.
 
 ## Evidence on Hand
 

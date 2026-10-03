@@ -15,5 +15,7 @@ public interface StudyActivityRepository extends JpaRepository<StudyActivity, Lo
 
     List<StudyActivity> findByUserIdAndActivityDateGreaterThanEqualOrderByActivityDateAsc(Long userId, LocalDate from);
 
+    List<StudyActivity> findByUserId(Long userId);
+
     long countByUserId(Long userId);
 }

@@ -1,8 +1,14 @@
+import { playServerTts } from './ttsAudio';
+
 /**
- * Đọc tiếng Nhật bằng Web Speech API (browser TTS) — dùng chung cho Trạm Kana và phần "nghe" của đề thi thử.
+ * Đọc tiếng Nhật — dùng chung cho Trạm Kana và phần "nghe" của đề thi thử.
  *
- * ⚠️ PLACEHOLDER: phần nghe của đề thi hiện dùng TTS vì chưa có file audio thu thật. Khi có audio thật
- * (Cloudflare R2 + CDN) thì thay bằng `new Audio(url).play()` và giữ TTS làm fallback.
+ * Quyết định 27/09/2026: luồng CHÍNH là audio TTS của server (Google Translate TTS, đã cache ở backend để
+ * không gọi lại API mỗi lần phát — xem docs/Internal/content-mapping-fpt-curriculum.md → "Audio"). Web Speech
+ * API của trình duyệt chỉ còn là FALLBACK khi server lỗi hoặc máy dev chưa chạy backend.
+ *
+ * Ngữ âm: caller phải truyền CHUỖI KANA (cách đọc). Với từ vựng/kanji, dùng `reading` chứ không dùng chữ kanji
+ * thô — nếu không TTS sẽ đọc theo cách đọc phổ biến nhất và sai với từ ghép.
  */
 export type SpeechSource = 'tts' | 'none';
 
@@ -37,8 +43,20 @@ if (isJapaneseSpeechSupported()) {
 }
 
 export function speakJapanese(text: string, rate = 0.8): SpeechSource {
-  if (!isJapaneseSpeechSupported() || !text) {
+  if (!text) {
     return 'none';
+  }
+
+  // Luồng chính: audio TTS của server (đã cache). Lỗi mạng/401 → rơi về giọng của trình duyệt.
+  void playServerTts(text).catch(() => {
+    speakWithBrowser(text, rate);
+  });
+  return 'tts';
+}
+
+function speakWithBrowser(text: string, rate: number): void {
+  if (!isJapaneseSpeechSupported()) {
+    return;
   }
 
   const utterance = new SpeechSynthesisUtterance(text);
@@ -52,7 +70,6 @@ export function speakJapanese(text: string, rate = 0.8): SpeechSource {
 
   window.speechSynthesis.cancel();
   window.speechSynthesis.speak(utterance);
-  return 'tts';
 }
 
 export function stopJapaneseSpeech(): void {

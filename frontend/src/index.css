@@ -14,6 +14,11 @@
   --color-tint: rgba(236, 236, 230, 0.06);
   --color-scrim: rgba(12, 12, 11, 0.72);
   --color-rank: #7FA98B;
+  --color-rank-1: #A3C4AD;
+  --color-rank-2: #7FA98B;
+  --color-rank-3: #5E8F6C;
+  --color-rank-4: #467152;
+  --color-rank-5: #30533B;
   --color-red: #D96A5C;
   --color-transparent: transparent;
   --color-current: currentColor;

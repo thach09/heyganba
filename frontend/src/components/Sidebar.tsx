@@ -289,6 +289,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         <NavItem to="/vocabulary" k="単語" v="Từ vựng" onNavigate={onNavigate} />
+        <NavItem to="/dictionary" k="辞書" v="Tra cứu & Sổ từ" onNavigate={onNavigate} />
         <NavItem to="/grammar" k="文法" v="Ngữ pháp" onNavigate={onNavigate} />
         <NavItem to="/exam" k="試験" v="Thi thử" onNavigate={onNavigate} />
 

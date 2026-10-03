@@ -28,6 +28,14 @@ export interface KanaCanvasProps {
   maxSize?: number;
   submitLabel?: string;
   onSubmit?: () => void;
+  /**
+   * Animation thứ tự nét có được hỗ trợ không.
+   *
+   * Hiện là `false` ở MỌI nơi: dữ liệu nét viết (KanjiVG) mang license CC BY-SA 3.0 (share-alike) nên KHÔNG
+   * dùng được cho sản phẩm này, và chưa tìm được nguồn license permissive thay thế — xem
+   * docs/Internal/content-mapping-fpt-curriculum.md → "Stroke order". Khi có nguồn phù hợp thì truyền `true`.
+   */
+  strokeOrderSupported?: boolean;
 }
 
 /**
@@ -41,6 +49,7 @@ export const KanaCanvas: React.FC<KanaCanvasProps> = ({
   maxSize = 460,
   submitLabel = 'Kiểm tra nét viết',
   onSubmit,
+  strokeOrderSupported = false,
 }) => {
   const shellRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -265,6 +274,14 @@ export const KanaCanvas: React.FC<KanaCanvasProps> = ({
       </div>
 
       <div ref={shellRef} className="mt-6">
+        {!strokeOrderSupported && (
+          <p className="mb-3 flex flex-wrap items-center gap-2 text-[11.5px] leading-[1.7] text-fg-38">
+            <span className="border border-rule px-2 py-0.5 text-[10.5px] font-semibold uppercase tracking-[0.12em] text-fg-60">
+              Stroke order: Chưa hỗ trợ
+            </span>
+            <span>Luyện viết bằng chữ mẫu mờ — xem thứ tự nét trong sách/giáo trình của bạn.</span>
+          </p>
+        )}
         <canvas
           ref={canvasRef}
           className="block touch-none border border-rule-strong"

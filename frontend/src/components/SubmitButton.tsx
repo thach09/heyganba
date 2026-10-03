@@ -11,6 +11,8 @@ interface SubmitButtonProps {
   type?: 'button' | 'submit';
   id?: string;
   fullWidth?: boolean;
+  className?: string;
+  title?: string;
 }
 
 export const SubmitButton: React.FC<SubmitButtonProps> = ({
@@ -23,6 +25,8 @@ export const SubmitButton: React.FC<SubmitButtonProps> = ({
   type = 'button',
   id = 'submit-action-btn',
   fullWidth = false,
+  className = '',
+  title,
 }) => {
   const variantClass =
     variant === 'primary'
@@ -34,10 +38,11 @@ export const SubmitButton: React.FC<SubmitButtonProps> = ({
       id={id}
       type={type}
       onClick={onClick}
+      title={title}
       disabled={disabled || loading}
       className={`inline-flex items-center justify-center gap-2 px-4 py-2 text-[11.5px] font-semibold uppercase tracking-[0.12em] transition-colors disabled:cursor-not-allowed disabled:opacity-35 ${
         disabled || loading ? '' : 'cursor-pointer'
-      } ${variantClass} ${fullWidth ? 'w-full' : ''}`}
+      } ${variantClass} ${fullWidth ? 'w-full' : ''} ${className}`}
     >
       {loading ? (
         <>

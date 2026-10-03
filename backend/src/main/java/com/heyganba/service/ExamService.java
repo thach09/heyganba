@@ -90,7 +90,7 @@ public class ExamService {
     /**
      * Câu hỏi lưu trong DB (có đáp án) và dùng nội bộ để chấm điểm. Public để Jackson đọc lại từ JSON.
      *
-     * `audioText` là text để phát bằng TTS (placeholder — xem ExamQuestionResponse).
+     * `audioText` là CHUỖI KANA để phát bằng TTS của server (đã cache) — xem ExamQuestionResponse.
      */
     public record Question(
             int index,
@@ -354,7 +354,7 @@ public class ExamService {
             }
             String explanation = vocabulary.getReading() + " — " + vocabulary.getSinoVietnamese();
             questions.add(new Question(0, TYPE_VOCABULARY, vocabulary.getWord(), options, vocabulary.getMeaning(),
-                    explanation, vocabulary.getWord()));
+                    explanation, vocabulary.getReading()));
         }
         return questions;
     }

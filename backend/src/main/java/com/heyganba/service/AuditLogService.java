@@ -1,6 +1,8 @@
 package com.heyganba.service;
 
 import com.heyganba.dto.admin.AuditLogResponse;
+import com.heyganba.model.entity.AuditLog;
+import com.heyganba.model.entity.User;
 import com.heyganba.repository.AuditLogRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,10 +12,6 @@ import java.util.List;
 
 /**
  * Audit log cho hành động admin (bảng `audit_logs` có từ V1).
- *
- * Phase này mới có phần ĐỌC log: các endpoint admin hiện tại chỉ đọc dữ liệu (status/users), chưa có endpoint
- * sửa/xoá nội dung nên chưa có chỗ để ghi log. Khi làm CRUD nội dung (admin), service này sẽ được gọi trong
- * cùng transaction với thao tác sửa/xoá.
  */
 @Service
 @RequiredArgsConstructor
@@ -32,5 +30,18 @@ public class AuditLogService {
                         log.getAction(),
                         log.getCreatedAt()))
                 .toList();
+    }
+
+    @Transactional
+    public void logAction(User admin, String tableName, Long recordId, String action, String beforeValue, String afterValue) {
+        AuditLog log = AuditLog.builder()
+                .admin(admin)
+                .tableName(tableName)
+                .recordId(recordId)
+                .action(action)
+                .beforeValue(beforeValue)
+                .afterValue(afterValue)
+                .build();
+        auditLogRepository.save(log);
     }
 }

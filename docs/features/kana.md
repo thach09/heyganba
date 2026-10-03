@@ -13,3 +13,11 @@
 - Luyện viết không nhận dạng nét; người học tự đối chiếu với chữ mẫu.
 - Tiến độ Luyện gõ lưu trong `localStorage`, không đồng bộ tài khoản.
 - Trạm hiện dùng `kanaData.ts` phía frontend; backend Kana API chưa được màn này gọi.
+
+## Âm thanh & stroke order (27/09/2026)
+
+- Phát âm dùng **audio TTS của server** (`GET /api/v1/audio/tts?text=<kana>`, Google Translate TTS giọng ja + cache ở
+  backend); Web Speech API của trình duyệt chỉ còn là fallback. Với ッ/ー, tham số là từ mượn đầy đủ (ベッド / コーヒー).
+- Luyện viết dùng chữ mẫu mờ và hiển thị badge **"Stroke order: Chưa hỗ trợ"** (lý do license: xem
+  `docs/Internal/content-mapping-fpt-curriculum.md` → "Stroke order Kanji").
+

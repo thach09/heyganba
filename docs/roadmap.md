@@ -19,12 +19,25 @@
 - [ ] **Từ điển + Kho học tập**: tìm từ, thêm từ vào kho, tạo nhóm cá nhân và chọn từ vào nhóm.
 - [ ] **Nhóm mẫu cơ bản**: học viên nhận bộ mẫu vào kho rồi học nhóm bằng trắc nghiệm nghĩa/âm đọc.
 - [ ] **Chỉ số luyện tập theo từ** để nhận ra từ cần ôn; phiên nhóm không đẩy lịch SRS ra xa.
+- [ ] **Đổi mật khẩu người dùng (Phase 5 Polish)**: endpoint `PUT /api/v1/auth/password` + UI đổi mật khẩu. Khi đổi mật khẩu thành công, nối vào cơ chế `revoked_tokens` để thu hồi toàn bộ token cũ của user trên tất cả các thiết bị.
 
 Phạm vi này được theo dõi ở [issue #11](https://github.com/thach09/heyganba/issues/11). Câu hỏi cloze/ngữ cảnh chưa thuộc MVP.
 
 ## Advanced Features
 
 - **Market bộ học tập**: giáo viên tạo bộ; học viên tìm và nhận bộ vào Kho. Định hướng chi tiết ở issue #11.
-- **Đề thi thử do người dùng tạo**: tự định nghĩa phạm vi đề, lưu và sử dụng lại; theo dõi ở [issue #12](https://github.com/thach09/heyganba/issues/12).
+- **Đề thi thử do người dùng tạo (Backlog sau MVP)**: tự định nghĩa phạm vi đề, lưu và sử dụng lại; theo dõi ở [issue #12](https://github.com/thach09/heyganba/issues/12) — giữ nguyên ở backlog sau MVP, không triển khai đợt này.
 - **Học qua câu chuyện**: tạo môi trường học có câu chuyện và cốt truyện, khiến người học có hứng thú quay lại.
 - **AI conversation partner**: một đối tác trò chuyện như người bạn để người học luyện tiếng Nhật.
+
+## Chốt gần đây (27/09/2026)
+
+- **Mascot — CHÍNH THỨC, không còn là "tạm"**: chuỗi emoji tiến hoá theo streak (🥚 → 🐣 → 🐤 → 🐥 → 🦅 → 🐉) là giải pháp
+  lâu dài; **không làm thêm mascot nào khác**. Logo cổng Torii là biểu tượng thương hiệu chính thức. Mỗi bậc emoji có
+  `alt` mô tả cho screen reader (`frontend/src/components/MascotBadge.tsx`).
+- **Redis — HOÃN CÓ ĐIỀU KIỆN** (đã chuyển ra khỏi backlog đang làm): đợt này **không** setup Redis và **không** đổi
+  `APP_SRS_CACHE` (giữ `memory`).
+  - Điều kiện xem xét lại: khi **load test** (xem `docs/Internal/deployment-plan.md` → "Trước khi public rộng") chứng minh
+    **Postgres là bottleneck thật** (p95 vượt mục tiêu, HikariCP hết connection, hoặc số instance > 1 làm rate-limit/
+    `SrsDueCache` in-memory mất tác dụng) — **không** bật trước thời điểm đó.
+  - Implementation đã có sẵn (`RedisSrsDueCache`, key `srs:due:{userId}`) nên khi cần chỉ phải set env, không phải viết code.

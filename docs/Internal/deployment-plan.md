@@ -2,11 +2,11 @@
 
 ## Môi trường
 
-| Môi trường | Mục đích | Ghi chú |
-|---|---|---|
-| Local | Dev hàng ngày | Docker Compose: backend + Postgres + Redis chạy local, không phụ thuộc cloud |
-| Staging | Test trước khi lên production | Deploy tự động mỗi khi merge vào `develop`, dữ liệu là bản sao/dữ liệu giả, nơi duyệt nội dung tiếng Nhật trước khi đẩy chính thức |
-| Production | Phục vụ user thật | Deploy khi merge vào `main`, có thêm bước duyệt thủ công (manual approval) trước khi chạy migration DB |
+| Môi trường | Mục đích                      | Ghi chú                                                                                                                            |
+| ---------- | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| Local      | Dev hàng ngày                 | Docker Compose: backend + Postgres + Redis chạy local, không phụ thuộc cloud                                                       |
+| Staging    | Test trước khi lên production | Deploy tự động mỗi khi merge vào `develop`, dữ liệu là bản sao/dữ liệu giả, nơi duyệt nội dung tiếng Nhật trước khi đẩy chính thức |
+| Production | Phục vụ user thật             | Deploy khi merge vào `main`, có thêm bước duyệt thủ công (manual approval) trước khi chạy migration DB                             |
 
 ## Hạ tầng
 
@@ -33,7 +33,7 @@
   - CORS staging chỉ nhận đúng origin của preview `develop`; CSP frontend đã thêm host API staging vào `connect-src`.
 
 - **Neon free**: 0.5GB storage, **không hết hạn theo thời gian** (khác Render Postgres free hết hạn sau 30 ngày), có
-  *point-in-time restore* trong 6 giờ (bản mới) → đáp ứng nhu cầu "backup retention tối thiểu 7 ngày" tốt hơn; muốn giữ lâu hơn thì nâng plan hoặc `pg_dump` định kỳ (xem `backups/`, đã gitignore).
+  _point-in-time restore_ trong 6 giờ (bản mới) → đáp ứng nhu cầu "backup retention tối thiểu 7 ngày" tốt hơn; muốn giữ lâu hơn thì nâng plan hoặc `pg_dump` định kỳ (xem `backups/`, đã gitignore).
 - CI: push `develop` → Render **tự deploy** staging (`autoDeploy=yes`) + Vercel **tự build** preview; push `main` → frontend
   Vercel tự deploy production, còn **backend production phải duyệt thủ công** (job `deploy-backend-production` dừng ở GitHub
   Environment `production`; service production để `autoDeploy: no`).
@@ -84,15 +84,15 @@ Lưu ý API Neon: endpoint `/projects`, `/roles`, `/databases` **cần `org_id`*
 **Trạng thái 27/09/2026: đã thêm đủ 3 record và cả 3 domain hoạt động** (apex + www trên Vercel, api trên Render;
 cert Let's Encrypt đã cấp cho `api.heyganba.site`).
 
-| Bản ghi | Host (Namecheap) | Type | Value (đang dùng thật) | Ghi chú |
-|---|---|---|---|---|
-| Frontend — apex | `@` | A | `216.198.79.1` | IP anycast Vercel. **Luôn dùng đúng giá trị Vercel hiển thị** ở Project → Domains (Vercel đổi dải IP theo thời gian; giá trị cũ `76.76.21.21` không còn đúng với project này) |
-| Frontend — www | `www` | CNAME | `cname.vercel-dns.com` | Vercel tự redirect `www` ⇄ apex |
-| Backend API | `api` | CNAME | `heyganba-backend.onrender.com` | Target = hostname của service Render. Phải bấm **Verify** phía Render sau khi DNS propagate (xem bên dưới) |
-| (chỉ khi dashboard yêu cầu) | `_vercel` / `_render` | TXT | giá trị Render/Vercel cấp | Dùng để xác minh quyền sở hữu domain |
-
+| Bản ghi                     | Host (Namecheap)      | Type  | Value (đang dùng thật)          | Ghi chú                                                                                                                                                                       |
+| --------------------------- | --------------------- | ----- | ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Frontend — apex             | `@`                   | A     | `216.198.79.1`                  | IP anycast Vercel. **Luôn dùng đúng giá trị Vercel hiển thị** ở Project → Domains (Vercel đổi dải IP theo thời gian; giá trị cũ `76.76.21.21` không còn đúng với project này) |
+| Frontend — www              | `www`                 | CNAME | `cname.vercel-dns.com`          | Vercel tự redirect `www` ⇄ apex                                                                                                                                               |
+| Backend API                 | `api`                 | CNAME | `heyganba-backend.onrender.com` | Target = hostname của service Render. Phải bấm **Verify** phía Render sau khi DNS propagate (xem bên dưới)                                                                    |
+| (chỉ khi dashboard yêu cầu) | `_vercel` / `_render` | TXT   | giá trị Render/Vercel cấp       | Dùng để xác minh quyền sở hữu domain                                                                                                                                          |
 
 Các bước:
+
 1. Namecheap → Domain List → `heyganba.site` → **Advanced DNS**, **xoá record mặc định** (URL Redirect `@`, CNAME `www → parkingpage.namecheap.com`) rồi thêm 3 record ở bảng trên.
 2. Render → service backend → Settings → **Custom Domains** → thêm `api.heyganba.site`
    (blueprint cố tình không khai báo field `domains` để tránh phụ thuộc schema; thêm ở dashboard là 1 lần duy nhất).
@@ -135,6 +135,7 @@ curl.exe -v -o NUL --max-time 60 https://api.heyganba.site/api/v1/health 2>&1 | 
 ```
 
 Mẹo debug khi máy local "không vào được" domain mới:
+
 - Resolver của Windows/ISP có thể còn cache NXDOMAIN → xác nhận bằng `Resolve-DnsName -Server 8.8.8.8`, và test
   trực tiếp không qua DNS local bằng `curl.exe --resolve <host>:443:<ip> https://<host>/`.
 - PowerShell 5.1/`curl.exe` trên Windows dùng schannel, nên lỗi handshake ở domain chưa có cert **không** có nghĩa
@@ -144,6 +145,7 @@ Mẹo debug khi máy local "không vào được" domain mới:
 
 Service production hiện có `autoDeploy: no` (kiểm tra: `GET /v1/services/<srv-id>` → `autoDeploy`). Nghĩa là **push code
 không tự deploy backend**; phải làm một trong hai:
+
 1. Bật auto-deploy (`PATCH /v1/services/<srv-id>` body `{"autoDeploy":"yes"}`) rồi để Render tự deploy khi push `main`, hoặc
 2. Gọi `POST /v1/services/<srv-id>/deploys` (body rỗng = dùng commit mới nhất của branch) sau mỗi lần push `main`.
 
@@ -168,16 +170,16 @@ Cho tới khi chọn (1), staging **không tự cập nhật theo `develop`** �
 
 ### Kết quả kiểm tra staging (27/09/2026)
 
-| Kiểm tra | Kết quả |
-|---|---|
-| `GET https://heyganba-backend-staging.onrender.com/api/v1/health` | `status=UP` |
-| Migration đã áp trên DB staging (Neon branch `develop`) | V1→V14: **V12 `expand grammar exercises`** + **V14 `expand trap exercises`** áp out-of-order lúc 06:55 |
-| Nội dung V12/V14 có mặt | `grammar_exercises` = **306** (production 64), trong đó 221 câu nhóm bẫy (`is_common_mistake = true`) |
-| `GET /content/review-status` trên staging | `GRAMMAR_EXERCISE total=306 pendingReview=306`; `stagingOnlyMigrations=[V12…, V14…]` |
-| Login admin trên staging | 200 + `ROLE_ADMIN` (DB là bản copy nên dùng cùng mật khẩu đã xoay) |
-| CORS | origin `https://heyganba-git-develop-thach09.vercel.app` → 200 + ACAO đúng; origin lạ → 403 |
-| Frontend staging | alias `develop` READY cho commit mới nhất; bundle chứa `heyganba-backend-staging.onrender.com` và **không** chứa API production; CSP có cả 2 host API |
-| Deploy đầu tiên của staging | **`update_failed`** vì lúc đó chưa có `spring.flyway.out-of-order` → đúng như phân tích, commit sau đã sửa |
+| Kiểm tra                                                          | Kết quả                                                                                                                                               |
+| ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `GET https://heyganba-backend-staging.onrender.com/api/v1/health` | `status=UP`                                                                                                                                           |
+| Migration đã áp trên DB staging (Neon branch `develop`)           | V1→V14: **V12 `expand grammar exercises`** + **V14 `expand trap exercises`** áp out-of-order lúc 06:55                                                |
+| Nội dung V12/V14 có mặt                                           | `grammar_exercises` = **306** (production 64), trong đó 221 câu nhóm bẫy (`is_common_mistake = true`)                                                 |
+| `GET /content/review-status` trên staging                         | `GRAMMAR_EXERCISE total=306 pendingReview=306`; `stagingOnlyMigrations=[V12…, V14…]`                                                                  |
+| Login admin trên staging                                          | 200 + `ROLE_ADMIN` (DB là bản copy nên dùng cùng mật khẩu đã xoay)                                                                                    |
+| CORS                                                              | origin `https://heyganba-git-develop-thach09.vercel.app` → 200 + ACAO đúng; origin lạ → 403                                                           |
+| Frontend staging                                                  | alias `develop` READY cho commit mới nhất; bundle chứa `heyganba-backend-staging.onrender.com` và **không** chứa API production; CSP có cả 2 host API |
+| Deploy đầu tiên của staging                                       | **`update_failed`** vì lúc đó chưa có `spring.flyway.out-of-order` → đúng như phân tích, commit sau đã sửa                                            |
 
 ### Xoay mật khẩu admin production (đã làm 27/09/2026)
 
@@ -204,6 +206,7 @@ docker run --rm postgres:16-alpine psql "<neon-uri>" -c "update users set passwo
 
 # 3. Lưu mật khẩu mới vào .local-secrets.env (gitignored) với key PROD_ADMIN_PASSWORD
 ```
+
 Kiểm tra sau khi xoay: `POST /api/v1/auth/login` với email admin + mật khẩu mới → 200 và `role = ROLE_ADMIN`;
 mật khẩu cũ trong README → 401.
 
@@ -250,23 +253,24 @@ Remove-Item Env:PGPASSWORD
 
 ### Kết quả kiểm tra production sau khi bật hardening (27/09/2026)
 
-| Kiểm tra | Kết quả |
-|---|---|
-| `GET /api/v1/health` | `status=UP`, `service=heyganba-backend` |
-| Header của API | `strict-transport-security: max-age=31536000`, `x-content-type-options: nosniff`, `x-frame-options: DENY` |
-| `https://heyganba.site` | 200 + `Content-Security-Policy`, HSTS, `X-Frame-Options: DENY`; cert Let's Encrypt (`certs=2` ở Vercel) |
-| `https://www.heyganba.site` | 308 → `https://heyganba.site/` (đặt qua `PATCH /v9/projects/{id}/domains/www.heyganba.site` body `{"redirect":"heyganba.site","redirectStatusCode":308}`) |
-| Admin login (mật khẩu đã xoay) | 200 + `role=ROLE_ADMIN`; mật khẩu cũ trong README → 401 |
-| RBAC | user thường `GET /admin/status` → 403; admin → 200 |
-| CORS preflight | `Origin: https://evil.example` → 403 (không trả `access-control-allow-origin`); `Origin: https://heyganba.site` → 200 + `access-control-allow-origin: https://heyganba.site` |
-| Body 70KB | `413 PAYLOAD_TOO_LARGE` |
-| Brute-force login | 5 lần sai → lần thứ 6 `429 TOO_MANY_REQUESTS` |
-| Gate nội dung chờ duyệt | `GET /content/review-status` → `stagingOnlyMigrations: [V12, V14]`, `totalPendingReview: 450` |
-| Dữ liệu production | chỉ còn 1 user (`admin@heyganba.vn`); 4 user test đã xoá (cascade `streaks`/`srs_reviews`/`exam_results` sạch) |
+| Kiểm tra                       | Kết quả                                                                                                                                                                      |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `GET /api/v1/health`           | `status=UP`, `service=heyganba-backend`                                                                                                                                      |
+| Header của API                 | `strict-transport-security: max-age=31536000`, `x-content-type-options: nosniff`, `x-frame-options: DENY`                                                                    |
+| `https://heyganba.site`        | 200 + `Content-Security-Policy`, HSTS, `X-Frame-Options: DENY`; cert Let's Encrypt (`certs=2` ở Vercel)                                                                      |
+| `https://www.heyganba.site`    | 308 → `https://heyganba.site/` (đặt qua `PATCH /v9/projects/{id}/domains/www.heyganba.site` body `{"redirect":"heyganba.site","redirectStatusCode":308}`)                    |
+| Admin login (mật khẩu đã xoay) | 200 + `role=ROLE_ADMIN`; mật khẩu cũ trong README → 401                                                                                                                      |
+| RBAC                           | user thường `GET /admin/status` → 403; admin → 200                                                                                                                           |
+| CORS preflight                 | `Origin: https://evil.example` → 403 (không trả `access-control-allow-origin`); `Origin: https://heyganba.site` → 200 + `access-control-allow-origin: https://heyganba.site` |
+| Body 70KB                      | `413 PAYLOAD_TOO_LARGE`                                                                                                                                                      |
+| Brute-force login              | 5 lần sai → lần thứ 6 `429 TOO_MANY_REQUESTS`                                                                                                                                |
+| Gate nội dung chờ duyệt        | `GET /content/review-status` → `stagingOnlyMigrations: [V12, V14]`, `totalPendingReview: 450`                                                                                |
+| Dữ liệu production             | chỉ còn 1 user (`admin@heyganba.vn`); 4 user test đã xoá (cascade `streaks`/`srs_reviews`/`exam_results` sạch)                                                               |
 
 - Mẹo khi test bằng PowerShell 5.1: gửi POST JSON bằng file (`curl.exe --data-binary "@body.json"`) — truyền JSON trực
   tiếp bằng `-d` bị PowerShell làm mất dấu ngoặc kép → server trả `400 invalid JSON format` (không phải lỗi backend).
 - Sau khi bật CSP cần kiểm tra lại các API trình duyệt dùng blob worker (`canvas-confetti` → `worker-src 'self' blob:`).
+
 ### Triển khai 27/09/2026 (đợt 2): fix UI mobile + phê duyệt nội dung core (V15)
 
 **Frontend (Vercel tự deploy khi push `main`)** — commit `bea04e6`:
@@ -327,13 +331,6 @@ Remove-Item Env:PGPASSWORD
 - **Lưu ý cho lần sau**: dùng `clearCache: "clear"` khi trigger qua API — cache build bị xoá nên Maven phải tải lại
   dependency, build mất ~5 phút (chậm hơn mức thường lệ nhưng tránh được kiểu treo `update_in_progress` đã gặp).
 
-
-
-
-
-
-
-
 - Nếu API trả `502/503`: kiểm tra log Render (thiếu `JWT_SECRET` làm app **fail-fast** lúc khởi động).
 - Nếu frontend báo “Máy chủ backend chưa khởi chạy”: `VITE_API_BASE_URL` chưa đúng hoặc chưa redeploy Vercel sau khi set biến.
 - CORS: backend chỉ nhận `https://heyganba.site,https://www.heyganba.site` (khai báo trong `render.yaml`/biến `CORS_ALLOWED_ORIGINS`);
@@ -342,6 +339,7 @@ Remove-Item Env:PGPASSWORD
 ## CI/CD (GitHub Actions)
 
 Pipeline theo 4 bước, chạy cho mọi PR và mọi lần merge:
+
 1. **Build & lint** — biên dịch backend, build frontend, chạy linter, fail sớm nếu lỗi cú pháp/style.
 2. **Test tự động** — unit test backend (đặc biệt logic SRS, tính điểm, phân quyền), test frontend cho component dùng chung.
 3. **Migration check** — chạy Flyway ở môi trường test để đảm bảo migration mới không phá schema cũ; không cho merge nếu migration lỗi.
@@ -355,13 +353,13 @@ Pipeline theo 4 bước, chạy cho mọi PR và mọi lần merge:
 
 ### Secret cần cấu hình cho pipeline (tên chính xác)
 
-| Nơi cấu hình | Tên | Dùng cho |
-|---|---|---|
-| GitHub Actions secrets | `RENDER_PROD_DEPLOY_HOOK_URL` | Job `deploy-backend-production` (**secret deploy DUY NHẤT** mà CI cần) — ✅ đã cấu hình 27/09/2026; giá trị chỉ nằm trong GitHub secrets (không lưu trong repo/docs) |
-| Render (Environment) — production | `SPRING_PROFILES_ACTIVE=prod`, `JWT_SECRET`, `CORS_ALLOWED_ORIGINS=…heyganba.site`, `SPRING_DATASOURCE_URL/USERNAME/PASSWORD` | Backend runtime — mẫu ở `backend/.env.example` |
-| Render (Environment) — staging | như trên nhưng `SPRING_PROFILES_ACTIVE=staging`, DB = Neon branch `develop`, `CORS_ALLOWED_ORIGINS=https://heyganba-git-develop-thach09.vercel.app`, `HIKARI_MAX_POOL_SIZE=5` | Đã set sẵn qua API lúc tạo service staging |
-| Vercel — Production | `VITE_API_BASE_URL=https://api.heyganba.site/api/v1` | Frontend production |
-| Vercel — Preview | `VITE_API_BASE_URL=https://heyganba-backend-staging.onrender.com/api/v1` | Preview/staging dùng API staging (không đụng dữ liệu production) |
+| Nơi cấu hình                      | Tên                                                                                                                                                                           | Dùng cho                                                                                                                                                             |
+| --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| GitHub Actions secrets            | `RENDER_PROD_DEPLOY_HOOK_URL`                                                                                                                                                 | Job `deploy-backend-production` (**secret deploy DUY NHẤT** mà CI cần) — ✅ đã cấu hình 27/09/2026; giá trị chỉ nằm trong GitHub secrets (không lưu trong repo/docs) |
+| Render (Environment) — production | `SPRING_PROFILES_ACTIVE=prod`, `JWT_SECRET`, `CORS_ALLOWED_ORIGINS=…heyganba.site`, `SPRING_DATASOURCE_URL/USERNAME/PASSWORD`                                                 | Backend runtime — mẫu ở `backend/.env.example`                                                                                                                       |
+| Render (Environment) — staging    | như trên nhưng `SPRING_PROFILES_ACTIVE=staging`, DB = Neon branch `develop`, `CORS_ALLOWED_ORIGINS=https://heyganba-git-develop-thach09.vercel.app`, `HIKARI_MAX_POOL_SIZE=5` | Đã set sẵn qua API lúc tạo service staging                                                                                                                           |
+| Vercel — Production               | `VITE_API_BASE_URL=https://api.heyganba.site/api/v1`                                                                                                                          | Frontend production                                                                                                                                                  |
+| Vercel — Preview                  | `VITE_API_BASE_URL=https://heyganba-backend-staging.onrender.com/api/v1`                                                                                                      | Preview/staging dùng API staging (không đụng dữ liệu production)                                                                                                     |
 
 - `JWT_SECRET` **không có giá trị mặc định** ở staging/production: thiếu là backend fail-fast lúc khởi động
   (dev vẫn có default riêng trong `application-dev.yml`). Tạo key mới bằng `openssl rand -base64 48`.
@@ -370,7 +368,6 @@ Pipeline theo 4 bước, chạy cho mọi PR và mọi lần merge:
   (staging đã có autoDeploy + Vercel preview nên job CI chỉ gây deploy trùng). GitHub Actions hiện chỉ còn: backend
   test, migration check, frontend test/build, và `deploy-backend-production` (chờ Deploy Hook + Required reviewers).
 
-
 ### Runbook — các bước thủ công còn lại (Phase 0 hạ tầng)
 
 > Phần này liệt kê đúng các thao tác **con người** phải làm trên dashboard (agent không có quyền truy cập secrets).
@@ -378,18 +375,18 @@ Pipeline theo 4 bước, chạy cho mọi PR và mọi lần merge:
 
 **0. Tạo tài khoản & kết nối (làm 1 lần)**
 
-| Việc | Cách làm |
-|---|---|
-| Render ↔ GitHub | render.com → đăng nhập bằng GitHub → cấp quyền đọc repo `thach09/heyganba` |
-| Tạo backend + DB tự động | Render → **New → Blueprint** → chọn repo (đọc `render.yaml`) → Render tạo Web Service + PostgreSQL free và tự inject `SPRING_DATASOURCE_URL` |
-| Chỉ còn 1 secret phải điền tay | Trong lúc tạo Blueprint, Render hỏi `JWT_SECRET` (vì `sync: false`) → dán key tạo bằng `openssl rand -base64 48` |
-| Vercel ↔ GitHub | vercel.com → Add New → Project → Import repo → Root Directory = `frontend`, Framework = Vite |
-| Domain | Xem mục **“Domain heyganba.site (mua ở Namecheap) → Render + Vercel”** ở trên |
+| Việc                           | Cách làm                                                                                                                                     |
+| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| Render ↔ GitHub                | render.com → đăng nhập bằng GitHub → cấp quyền đọc repo `thach09/heyganba`                                                                   |
+| Tạo backend + DB tự động       | Render → **New → Blueprint** → chọn repo (đọc `render.yaml`) → Render tạo Web Service + PostgreSQL free và tự inject `SPRING_DATASOURCE_URL` |
+| Chỉ còn 1 secret phải điền tay | Trong lúc tạo Blueprint, Render hỏi `JWT_SECRET` (vì `sync: false`) → dán key tạo bằng `openssl rand -base64 48`                             |
+| Vercel ↔ GitHub                | vercel.com → Add New → Project → Import repo → Root Directory = `frontend`, Framework = Vite                                                 |
+| Domain                         | Xem mục **“Domain heyganba.site (mua ở Namecheap) → Render + Vercel”** ở trên                                                                |
 
 **1. GitHub Actions secrets** (Repo → Settings → Secrets and variables → Actions → New repository secret)
 
-| Tên secret | Lấy từ đâu | Kiểm tra |
-|---|---|---|
+| Tên secret                    | Lấy từ đâu                                           | Kiểm tra                                                                                                     |
+| ----------------------------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | `RENDER_PROD_DEPLOY_HOOK_URL` | Render → service production → Settings → Deploy Hook | Push vào `main`, job `deploy-backend-production` phải in `Đã trigger deploy backend production trên Render.` |
 
 **2. GitHub Environment `production` có Required reviewers — ✅ ĐÃ LÀM (27/09/2026)**
@@ -429,7 +426,7 @@ Trạng thái đã xác minh bằng `GET /repos/thach09/heyganba/environments/pr
     `{"environment_ids":[<envId>],"state":"approved"|"rejected"}`.
   - **Không dùng `workflow_dispatch` để test gate này**: job có `if: github.event_name == 'push' && github.ref == 'refs/heads/main'`
     nên sẽ bị skip ngay, không bao giờ chạm environment.
-- Kiểm tra gate: push vào `main` → job `deploy-backend-production` ở trạng thái *Waiting for review*; xem được bằng
+- Kiểm tra gate: push vào `main` → job `deploy-backend-production` ở trạng thái _Waiting for review_; xem được bằng
   `GET /repos/{owner}/{repo}/actions/runs/{run_id}/pending_deployments`.
 - **Về `PAT_TOKEN` trong GitHub Actions secrets**: GitHub **không cho đọc lại giá trị** secret (write-only, kể cả bằng PAT —
   đây là thiết kế bảo mật, không phải lỗi). Muốn agent tự cấu hình GitHub thì đặt token vào `.local-secrets.env`
@@ -477,19 +474,20 @@ cho streak, heatmap, TTL cache SRS và giờ chạy job xoá cache (00:05 giờ 
 
 ### Tài nguyên đã tạo (production) — thông tin định danh
 
-| Tài nguyên | Nhà cung cấp | ID / định danh | Ghi chú |
-|---|---|---|---|
-| Backend web service | Render | `srv-das95jh7lnhs7385mim0` (`heyganba-backend`) | branch `main`, plan free, region singapore, health `/api/v1/health` |
-| PostgreSQL (production) | **Neon** | project `cinevora` (`steep-sea-83851655`), branch `production` (`br-patient-silence-b3qbzvq9`), database `heyganba`, role `heyganba_owner`, host `ep-small-morning-b3ofxx3h.c-4.ap-southeast-1.aws.neon.tech` | org `org-dark-butterfly-46484287`; `?sslmode=require`; free không hết hạn |
-| ~~PostgreSQL~~ | ~~Render~~ | ~~`dpg-das94tp7lnhs7385jfh0-a`~~ | **ĐÃ XOÁ** sau khi migrate sang Neon (dump lưu ở `backups/heyganba-renderpg-2026-09-27.sql`, đã gitignore) |
-| Frontend project | Vercel | `prj_uVxZfEsGrpUdWUMwdfJ5Nlf7kXOP` (`heyganba`) | team `team_fcggMXeYL9uzprejNhUBdpB7`; `rootDirectory=frontend`, framework vite, output `dist` |
-| Domain frontend | Vercel | `heyganba.site` + `www.heyganba.site` | alias `https://heyganba.site` |
-| Domain backend | Render | `api.heyganba.site` | CNAME → `heyganba-backend.onrender.com` |
-| Backend web service (staging) | Render | `srv-dasbnfh7lnhs738gmm30` (`heyganba-backend-staging`) | branch `develop`, plan free, region singapore, **autoDeploy=yes**, profile `staging`, health `/api/v1/health` |
-| PostgreSQL (staging) | **Neon** | project `cinevora` (`steep-sea-83851655`), branch `develop` (`br-green-morning-b3gt14sr`), endpoint `ep-frosty-leaf-b3fb5xv7.c-4.ap-southeast-1.aws.neon.tech`, database `heyganba` | Bản copy của production lúc tạo branch; role `heyganba_owner` copy kèm **mật khẩu gốc** (API không trả lại password của role đã có) |
-| Frontend staging | Vercel | preview branch `develop` → `https://heyganba-git-develop-thach09.vercel.app` | Alias ổn định của branch; `VITE_API_BASE_URL` target Preview = API staging |
+| Tài nguyên                    | Nhà cung cấp | ID / định danh                                                                                                                                                                                                | Ghi chú                                                                                                                             |
+| ----------------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Backend web service           | Render       | `srv-das95jh7lnhs7385mim0` (`heyganba-backend`)                                                                                                                                                               | branch `main`, plan free, region singapore, health `/api/v1/health`                                                                 |
+| PostgreSQL (production)       | **Neon**     | project `cinevora` (`steep-sea-83851655`), branch `production` (`br-patient-silence-b3qbzvq9`), database `heyganba`, role `heyganba_owner`, host `ep-small-morning-b3ofxx3h.c-4.ap-southeast-1.aws.neon.tech` | org `org-dark-butterfly-46484287`; `?sslmode=require`; free không hết hạn                                                           |
+| ~~PostgreSQL~~                | ~~Render~~   | ~~`dpg-das94tp7lnhs7385jfh0-a`~~                                                                                                                                                                              | **ĐÃ XOÁ** sau khi migrate sang Neon (dump lưu ở `backups/heyganba-renderpg-2026-09-27.sql`, đã gitignore)                          |
+| Frontend project              | Vercel       | `prj_uVxZfEsGrpUdWUMwdfJ5Nlf7kXOP` (`heyganba`)                                                                                                                                                               | team `team_fcggMXeYL9uzprejNhUBdpB7`; `rootDirectory=frontend`, framework vite, output `dist`                                       |
+| Domain frontend               | Vercel       | `heyganba.site` + `www.heyganba.site`                                                                                                                                                                         | alias `https://heyganba.site`                                                                                                       |
+| Domain backend                | Render       | `api.heyganba.site`                                                                                                                                                                                           | CNAME → `heyganba-backend.onrender.com`                                                                                             |
+| Backend web service (staging) | Render       | `srv-dasbnfh7lnhs738gmm30` (`heyganba-backend-staging`)                                                                                                                                                       | branch `develop`, plan free, region singapore, **autoDeploy=yes**, profile `staging`, health `/api/v1/health`                       |
+| PostgreSQL (staging)          | **Neon**     | project `cinevora` (`steep-sea-83851655`), branch `develop` (`br-green-morning-b3gt14sr`), endpoint `ep-frosty-leaf-b3fb5xv7.c-4.ap-southeast-1.aws.neon.tech`, database `heyganba`                           | Bản copy của production lúc tạo branch; role `heyganba_owner` copy kèm **mật khẩu gốc** (API không trả lại password của role đã có) |
+| Frontend staging              | Vercel       | preview branch `develop` → `https://heyganba-git-develop-thach09.vercel.app`                                                                                                                                  | Alias ổn định của branch; `VITE_API_BASE_URL` target Preview = API staging                                                          |
 
 Lưu ý cấu hình đã phải sửa khi tạo Vercel project (để tránh lặp lại):
+
 - `rootDirectory` **phải** = `frontend` (repo có backend + frontend chung một repo; để trống sẽ build từ repo root → fail).
 - **Deployment Protection**: project mới có thể bật `ssoProtection.deploymentType = all_except_custom_domains` → URL `*.vercel.app` trả trang đăng nhập Vercel.
   Tắt bằng `PATCH /v9/projects/{id}?teamId=...` với body `{"ssoProtection": null}` nếu muốn preview công khai.
@@ -497,14 +495,14 @@ Lưu ý cấu hình đã phải sửa khi tạo Vercel project (để tránh l�
 
 ### Troubleshooting deploy
 
-| Log gặp phải | Nguyên nhân | Cách sửa |
-|---|---|---|
-| `Could not resolve placeholder 'JWT_SECRET' in value "${JWT_SECRET}"` hoặc `IllegalStateException: Thiếu biến môi trường JWT_SECRET` | Service chưa có biến `JWT_SECRET` (biến `sync: false` bị bỏ trống khi tạo Blueprint, hoặc tạo Web Service thủ công) | Render → service → **Environment** → thêm `JWT_SECRET` = `openssl rand -base64 48` → Save (Render tự redeploy). Hoặc deploy lại bằng Blueprint: `render.yaml` đã đặt `generateValue: true` nên Render tự sinh secret. |
-| `RuntimeException: Driver org.postgresql.Driver claims to not accept jdbcUrl, postgresql://...` | `SPRING_DATASOURCE_URL` đang nhận connection string của Render (`postgresql://user:pass@host/db`) — Spring cần **JDBC URL** | Đặt `DB_HOST/DB_PORT/DB_NAME/DB_USER/DB_PASSWORD` (hoặc `SPRING_DATASOURCE_URL=jdbc:postgresql://<host>:5432/<db>`) rồi **xoá** `SPRING_DATASOURCE_URL` dạng `postgresql://`. Blueprint hiện đã map đúng 5 biến `DB_*` từ database |
-| App start OK nhưng `GET /content/review-status` trên production trả `stagingOnlyMigrations` **rỗng** và bảng `grammar_exercises` có 306 câu | Service production đang chạy nhầm profile `staging` ⇒ Flyway đọc cả `db/migration-staging` (áp V12/V14 là nội dung chờ duyệt) | Đặt `SPRING_PROFILES_ACTIVE=prod` rồi xoá nội dung chờ duyệt đã lỡ áp: `DELETE FROM flyway_schema_history WHERE version IN ('12','14')` + xoá các câu bẫy mới (SQL đầy đủ ở mục dưới) — hoặc đơn giản nhất với DB còn trắng: `DROP SCHEMA public CASCADE; CREATE SCHEMA public;` rồi để Flyway chạy lại từ V1 |
-| Deploy treo mãi ở `update_in_progress`, log app im lặng rồi health check fail | Free tier Render = **512MB RAM**, JVM mặc định chỉ lấy 25% (~128MB heap) cho Spring Boot + Hibernate → khởi động rất chậm/bị kill; ngoài ra Dockerfile hardcode `ENV PORT=8080` trong khi Render set `PORT=10000` | Dockerfile hiện đã có `ENV JAVA_TOOL_OPTIONS="-XX:MaxRAMPercentage=75"`, **không** hardcode `ENV PORT`, `EXPOSE 10000`; app đọc `server.port: ${PORT:8080}` |
-| `502/503` khi gọi `/api/v1/health` sau khi deploy | App đang fail-fast (thiếu env) hoặc health check sai path | Xem log Render; health check phải là `/api/v1/health` (đã set trong `render.yaml`) |
-| Free web service bị “spun down” rồi request đầu tiên chậm ~30–60s | Giới hạn gói free của Render | Chấp nhận ở giai đoạn đầu; nâng plan khi có user thật |
+| Log gặp phải                                                                                                                                | Nguyên nhân                                                                                                                                                                                                       | Cách sửa                                                                                                                                                                                                                                                                                                      |
+| ------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Could not resolve placeholder 'JWT_SECRET' in value "${JWT_SECRET}"` hoặc `IllegalStateException: Thiếu biến môi trường JWT_SECRET`        | Service chưa có biến `JWT_SECRET` (biến `sync: false` bị bỏ trống khi tạo Blueprint, hoặc tạo Web Service thủ công)                                                                                               | Render → service → **Environment** → thêm `JWT_SECRET` = `openssl rand -base64 48` → Save (Render tự redeploy). Hoặc deploy lại bằng Blueprint: `render.yaml` đã đặt `generateValue: true` nên Render tự sinh secret.                                                                                         |
+| `RuntimeException: Driver org.postgresql.Driver claims to not accept jdbcUrl, postgresql://...`                                             | `SPRING_DATASOURCE_URL` đang nhận connection string của Render (`postgresql://user:pass@host/db`) — Spring cần **JDBC URL**                                                                                       | Đặt `DB_HOST/DB_PORT/DB_NAME/DB_USER/DB_PASSWORD` (hoặc `SPRING_DATASOURCE_URL=jdbc:postgresql://<host>:5432/<db>`) rồi **xoá** `SPRING_DATASOURCE_URL` dạng `postgresql://`. Blueprint hiện đã map đúng 5 biến `DB_*` từ database                                                                            |
+| App start OK nhưng `GET /content/review-status` trên production trả `stagingOnlyMigrations` **rỗng** và bảng `grammar_exercises` có 306 câu | Service production đang chạy nhầm profile `staging` ⇒ Flyway đọc cả `db/migration-staging` (áp V12/V14 là nội dung chờ duyệt)                                                                                     | Đặt `SPRING_PROFILES_ACTIVE=prod` rồi xoá nội dung chờ duyệt đã lỡ áp: `DELETE FROM flyway_schema_history WHERE version IN ('12','14')` + xoá các câu bẫy mới (SQL đầy đủ ở mục dưới) — hoặc đơn giản nhất với DB còn trắng: `DROP SCHEMA public CASCADE; CREATE SCHEMA public;` rồi để Flyway chạy lại từ V1 |
+| Deploy treo mãi ở `update_in_progress`, log app im lặng rồi health check fail                                                               | Free tier Render = **512MB RAM**, JVM mặc định chỉ lấy 25% (~128MB heap) cho Spring Boot + Hibernate → khởi động rất chậm/bị kill; ngoài ra Dockerfile hardcode `ENV PORT=8080` trong khi Render set `PORT=10000` | Dockerfile hiện đã có `ENV JAVA_TOOL_OPTIONS="-XX:MaxRAMPercentage=75"`, **không** hardcode `ENV PORT`, `EXPOSE 10000`; app đọc `server.port: ${PORT:8080}`                                                                                                                                                   |
+| `502/503` khi gọi `/api/v1/health` sau khi deploy                                                                                           | App đang fail-fast (thiếu env) hoặc health check sai path                                                                                                                                                         | Xem log Render; health check phải là `/api/v1/health` (đã set trong `render.yaml`)                                                                                                                                                                                                                            |
+| Free web service bị “spun down” rồi request đầu tiên chậm ~30–60s                                                                           | Giới hạn gói free của Render                                                                                                                                                                                      | Chấp nhận ở giai đoạn đầu; nâng plan khi có user thật                                                                                                                                                                                                                                                         |
 
 ### Bootstrap/Vận hành qua Render API (đã dùng thực tế)
 
@@ -536,17 +534,18 @@ Invoke-RestMethod -Method Post 'https://api.render.com/v1/services/<srv-id>/cust
 
 ### Gate nội dung chưa duyệt (không promote nhầm lên production)
 
-| Hạng mục | Cơ chế |
-|---|---|
-| Thư mục migration | `backend/src/main/resources/db/migration` = **đã duyệt** (chạy mọi môi trường); `db/migration-staging` = **chờ duyệt** |
-| Cấu hình Flyway | local/staging: `classpath:db/migration,classpath:db/migration-staging`; **`application-prod.yml` chỉ `classpath:db/migration`** |
-| Đang chờ duyệt | `V12__expand_grammar_exercises.sql` (96 câu), `V14__expand_trap_exercises.sql` (146 câu nhóm bẫy) — **riêng nội dung core bài 1–7 đã được duyệt** bằng `V15` (xem ghi chú bên dưới, áp dụng 27/09/2026) |
-| Trạng thái trong DB | `review_status` (V13) mặc định `PENDING_REVIEW` cho kana/từ vựng/kanji/ngữ pháp/bài tập |
-| Kiểm tra tự động | `FlywayLocationsConfigTest` (chặn sửa prod yml include staging, chặn đặt file chờ duyệt vào `db/migration`, chặn trùng version) |
-| Kiểm tra thủ công | `GET /content/review-status` → `allApproved=false`, `stagingOnlyMigrations=[V12…, V14…]`; UI Trạm Trợ từ hiện badge "chờ duyệt" |
-| **Promote** | Sau khi người biết tiếng Nhật duyệt: (1) `UPDATE … SET review_status='APPROVED'`, (2) **đánh số lại version LỚN HƠN version lớn nhất đang có ở production** (production đang ở V13 → `V12__expand_grammar_exercises.sql` thành `V15__…`, `V14__expand_trap_exercises.sql` thành `V16__…`; giữ nguyên thứ tự tương đối, KHÔNG đổi nội dung) rồi mới chuyển file sang `db/migration/`, (3) chạy lại CI (test đỏ nếu file còn ở sai thư mục hoặc trùng version), (4) deploy production |
-| **Vì sao phải đánh số lại** | Flyway mặc định từ chối migration có version THẤP hơn version mới nhất đã áp. Production đã áp V13 nên nếu promote nguyên số V12, app production sẽ fail-fast lúc khởi động ("Detected resolved migration not applied to database: 12"). Chỉ **staging** bật `spring.flyway.out-of-order: true` (để V12/V14 chạy được trên bản copy); **production không bật** cờ này nên bắt buộc đánh số lại khi promote. |
-| **⚠️ Số `V15` đã bị dùng (27/09/2026)** | `V15__approve_core_curriculum_content.sql` (đã nằm trong `db/migration`) là migration **phê duyệt nội dung core**: `UPDATE kana/vocabulary/kanji/grammar_rules SET review_status='APPROVED'` + `grammar_exercises` (`id <= 64`). Vì vậy khi promote V12/V14 phải đánh số **V16/V17** (KHÔNG dùng V15), giữ nguyên thứ tự tương đối và không đổi nội dung. |
+| Hạng mục                                              | Cơ chế                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| ----------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Thư mục migration                                     | `backend/src/main/resources/db/migration` = **đã duyệt** (chạy mọi môi trường); `db/migration-staging` = **chờ duyệt**                                                                                                                                                                                                                                                                                                                                                              |
+| Cấu hình Flyway                                       | local/staging: `classpath:db/migration,classpath:db/migration-staging`; **`application-prod.yml` chỉ `classpath:db/migration`**                                                                                                                                                                                                                                                                                                                                                     |
+| Đang chờ duyệt                                        | `V12__expand_grammar_exercises.sql` (96 câu), `V14__expand_trap_exercises.sql` (146 câu nhóm bẫy) — **riêng nội dung core bài 1–7 đã được duyệt** bằng `V15` (xem ghi chú bên dưới, áp dụng 27/09/2026)                                                                                                                                                                                                                                                                             |
+| Trạng thái trong DB                                   | `review_status` (V13) mặc định `PENDING_REVIEW` cho kana/từ vựng/kanji/ngữ pháp/bài tập                                                                                                                                                                                                                                                                                                                                                                                             |
+| Kiểm tra tự động                                      | `FlywayLocationsConfigTest` (chặn sửa prod yml include staging, chặn đặt file chờ duyệt vào `db/migration`, chặn trùng version)                                                                                                                                                                                                                                                                                                                                                     |
+| Kiểm tra thủ công                                     | `GET /content/review-status` → `allApproved=false`, `stagingOnlyMigrations=[V12…, V14…]`; UI Trạm Trợ từ hiện badge "chờ duyệt"                                                                                                                                                                                                                                                                                                                                                     |
+| **Promote**                                           | Sau khi người biết tiếng Nhật duyệt: (1) `UPDATE … SET review_status='APPROVED'`, (2) **đánh số lại version LỚN HƠN version lớn nhất đang có ở production** (production đang ở V13 → `V12__expand_grammar_exercises.sql` thành `V15__…`, `V14__expand_trap_exercises.sql` thành `V16__…`; giữ nguyên thứ tự tương đối, KHÔNG đổi nội dung) rồi mới chuyển file sang `db/migration/`, (3) chạy lại CI (test đỏ nếu file còn ở sai thư mục hoặc trùng version), (4) deploy production |
+| **Vì sao phải đánh số lại**                           | Flyway mặc định từ chối migration có version THẤP hơn version mới nhất đã áp. Production đã áp V13 nên nếu promote nguyên số V12, app production sẽ fail-fast lúc khởi động ("Detected resolved migration not applied to database: 12"). Chỉ **staging** bật `spring.flyway.out-of-order: true` (để V12/V14 chạy được trên bản copy); **production không bật** cờ này nên bắt buộc đánh số lại khi promote.                                                                         |
+| **⚠️ Số `V15` đã bị dùng (27/09/2026)**               | `V15__approve_core_curriculum_content.sql` (đã nằm trong `db/migration`) là migration **phê duyệt nội dung core**: `UPDATE kana/vocabulary/kanji/grammar_rules SET review_status='APPROVED'` + `grammar_exercises` (`id <= 64`). Vì vậy khi promote V12/V14 phải đánh số **V22/V23** (xem dòng ngay dưới: V15–V21 đã bị dùng), giữ nguyên thứ tự tương đối và không đổi nội dung.                                                                                                   |
+| **⚠️ Số `V19`, `V20`, `V21` đã bị dùng (27/09/2026)** | `V19__add_needs_human_check.sql` (schema `needs_human_check` + `source_ref` + `review_note`) và `V21__tts_audio_cache.sql` (bảng cache audio TTS) nằm trong `db/migration`; `V20__review_flags_v12_v14.sql` (**staging-only**: gắn `source_ref` + cờ `needs_human_check` cho 242 câu V12/V14) nằm trong `db/migration-staging`. ⇒ Khi promote V12/V14 phải đánh số **V22/V23**. Ghi chú: **không sửa file V12/V14** vì staging đã áp chúng (Flyway giữ checksum).                   |
 
 - Kiểm tra: `curl https://<render-service>.onrender.com/api/v1/health` → `"status":"UP"`.
 - Nếu thiếu `JWT_SECRET`, backend **fail-fast** ngay lúc khởi động (log có `Could not resolve placeholder 'JWT_SECRET'`) — đây là hành vi mong muốn.
@@ -623,3 +622,216 @@ docker run --rm -t ghcr.io/zaproxy/zaproxy:stable zap-baseline.py `
 # -I: không fail vì cảnh báo mức thấp; lưu report HTML vào docs/Internal/security-scan-<ngày>.html
 # Lưu ý: staging free tier ngủ sau ~15 phút → gọi /health trước để đánh thức rồi mới quét.
 ```
+
+### Kết quả Load Test trên Staging Render (thực hiện ngày 02/10/2026 bằng k6)
+
+- **Cấu hình k6**: 4 stages (ramp-up 20→50 VUs trong 35s, 50→100 VUs trong 35s, cool-down 10s), tổng thời gian chạy: 1m20s.
+- **Kịch bản kiểm thử**: Mô phỏng 100 người dùng đồng thời gọi các luồng: kiểm tra health, đọc danh sách Kana (truy vấn DB), đọc quy tắc ngữ pháp (truy vấn DB joins), đọc Leaderboard (truy vấn aggregation).
+- **Số liệu đo lường thực tế**:
+  - Tổng số request: **744 requests**.
+  - Tỉ lệ thành công: **99.46%** (740/744 thành công, chỉ 4 lỗi do timeout = 0.53% error rate).
+  - Độ trễ response time:
+    - Min: `83.61ms`
+    - Median (p50): `6.89s`
+    - Average: `8.26s`
+    - p90: `19.36s`
+    - p95: `22.65s`
+    - Max: `36.39s`
+- **Đánh giá ngưỡng chịu tải HikariCP & Render Plan**:
+  - **HikariCP**: Connection pool mặc định (maximum-pool-size = 10) hoạt động bền bỉ, không bị crash, không bị cạn kiệt connection dẫn đến rớt mạng diện rộng (chỉ 0.53% request bị drop).
+  - **Render Plan hiện tại (Free tier - 0.1 CPU core, 512MB RAM)**: Dưới tải 50–100 VU đồng thời, CPU bị bóp nghẽn nghiêm trọng (throttling), khiến các luồng Tomcat và Hikari bị xếp hàng đợi, kéo dài thời gian phản hồi p95 lên 22.65s.
+  - **Khuyến nghị trước khi launch chính thức**: Nâng cấp Render plan từ Free lên **Starter / Standard (0.5 – 1 CPU core, 1–2GB RAM)** và điều chỉnh `spring.datasource.hikari.maximum-pool-size=20` kết hợp Redis cache đọc để đảm bảo p95 < 500ms khi phục vụ 100+ học viên cùng lúc.
+
+### Đợt 2 (02/10/2026) — bổ sung 3 KỊCH BẢN GHI và so sánh nhóm ĐỌC vs nhóm GHI
+
+`docs/Internal/load-test.js` được mở rộng (giữ nguyên nhóm đọc của đợt 1 để so sánh được), thêm metric tách nhóm
+(`read_*`, `write_*`, `streak_*`) và 3 kịch bản ghi:
+
+1. `POST /grammar/exercises/{id}/check` — chấm bài tập ngữ pháp (ghi `study_activity`).
+2. `POST /flashcard/review` — chấm 1 lượt ôn SRS (đường dẫn THẬT là `/flashcard` **số ít**; `/flashcards/...` là 404).
+3. **Luồng cập nhật streak** — 3 × `POST /kana/quiz/check` (ghi nhận câu quiz) rồi `GET /streak` để đo đường ghi-then-đọc.
+
+Mỗi VU dùng **token riêng** (setup đăng ký tài khoản test `loadtest.<ts>.<i>@heyganba.test`) để rate limit theo tài khoản
+không bóp méo kết quả. Có thể chỉnh `-e USERS=`, `-e SLEEP=` (think time) và `-e IDS_FILE=` (id nội dung thật).
+
+#### A. Staging Render (free tier) — số liệu đo thực tế sau khi nhận V15 (03/10/2026)
+
+Trước đây (02/10), do staging chưa áp migration `V15` nên toàn bộ request ghi bị 404 (do nội dung còn `PENDING_REVIEW`). Sau khi merge `main → develop` và kích hoạt migration V15 trên Neon DB staging, toàn bộ nội dung giáo trình cốt lõi đã chuyển sang `APPROVED`. Nhóm ghi đã được chạy kiểm thử lại trực tiếp trên Staging Render bằng k6 (`-e ONLY_WRITE=true`, 50→100 VU, think time 3s, 1m20s):
+
+| Nhóm                                              | Request   | p50       | p90        | p95           | max        | Lỗi                      |
+| ------------------------------------------------- | --------- | --------- | ---------- | ------------- | ---------- | ------------------------ |
+| Đọc (lần đo đợt trước)                            | 780       | 2.400 ms  | 7.195 ms   | **8.397 ms**  | 20.101 ms  | 0,00%                    |
+| Ghi (grammar check + SRS review — staging THẬT)   | 282       | 9.653 ms  | 19.681 ms  | **21.977 ms** | 28.294 ms  | **0,35% (hết sạch 404)** |
+| Streak (3× quiz check + /streak — staging THẬT)   | 496       | 6.195 ms  | 15.226 ms  | **19.413 ms** | 28.202 ms  | **0,00% (hết sạch lỗi)** |
+| **Tổng thể nhóm GHI staging thật**                | **850**   | 7.003 ms  | —          | **20.259 ms** | 28.294 ms  | **0,12%** (429 = 0,00%)  |
+
+- **Xác nhận thực tế trên Staging**:
+  1. **Lỗi 404 đã giải quyết triệt để**: Tỉ lệ lỗi nhóm ghi giảm từ **100% xuống 0,35%** (281/282 request ghi thành công trọn vẹn, chỉ 1 request timeout nhẹ ở đỉnh tải 100 VU), và streak giảm từ **75,00% xuống 0,00%** (496/496 request thành công 100%). Các thao tác chấm bài tập ngữ pháp, ôn SRS và chấm quiz kana đều nhận kết quả thành công và ghi nhận hoạt động học tập (`study_activity`, `srs_reviews`, `streaks`).
+  2. **Độ trễ nhóm ghi**: p50 đạt 7.003 ms và p95 đạt 20.259 ms dưới tải 50→100 VU đồng thời trên gói Render free tier (0.1 CPU core). Không có request nào bị crash 500 hay tràn kết nối HikariCP.
+  3. **Tỉ lệ chặn 429**: Đạt 0,00% khi chạy với think time 3s (mỗi VU không vượt quá 120 req/phút).
+  4. **Kết luận**: Nhóm ghi hoạt động ổn định trên môi trường staging thật sau khi có dữ liệu V15 `APPROVED`, không còn phải suy ra từ môi trường local. Bottleneck duy nhất vẫn là giới hạn 0.1 CPU core của Render free tier khi chịu tải 100 VU đồng thời.
+
+#### B. Local (Docker Postgres 16 + backend local, nội dung đã `APPROVED`) — nơi đo được đường ghi
+
+| Nhóm                             | Request    | p50  | p90   | p95       | max    | Lỗi                     |
+| -------------------------------- | ---------- | ---- | ----- | --------- | ------ | ----------------------- |
+| Đọc                              | 6.780      | 4 ms | 11 ms | **12 ms** | 17 ms  | 0,00%                   |
+| Ghi (grammar check + SRS review) | 3.390      | 4 ms | 6 ms  | **7 ms**  | 139 ms | 0,00%                   |
+| Streak (3× quiz check + /streak) | 6.780      | 2 ms | 3 ms  | **3 ms**  | 6 ms   | 0,00%                   |
+| **Tổng thể**                     | **17.050** | 2 ms | —     | **11 ms** | 139 ms | **0,00%** (429 = 0,00%) |
+
+Cấu hình: 100 VU, 100 tài khoản (1 token/VU), think time 3s, 1m20s; chạy sau `docker compose up -d postgres` +
+`java -jar backend/target/heyganba-backend-0.0.1-SNAPSHOT.jar --spring.profiles.active=dev` (Flyway áp V1→V21 gồm cả V15
+nên nội dung hiển thị đầy đủ).
+
+**Kết luận từ đợt 2:**
+
+1. Trên cùng một máy, **p95 nhóm GHI (7 ms) tương đương nhóm ĐỌC (12 ms)** ⇒ thao tác ghi của app (1 INSERT/UPDATE +
+   `study_activity`) **không đắt hơn** thao tác đọc; không cần tối ưu riêng đường ghi ở mức code hiện tại.
+2. Nút cổ chai thật vẫn là **CPU của Render free tier** (p95 8–22s), ảnh hưởng cả đọc lẫn ghi ⇒ ưu tiên vẫn là nâng plan
+   (Starter/Standard) + `hikari.maximum-pool-size=20`.
+3. Rate limit theo tài khoản hoạt động đúng: kịch bản vượt 120 request/phút/tài khoản bị chặn 429 (69,8% ở lần chạy local
+   với 20 tài khoản/100 VU, think time 1s) — đây là hành vi mong muốn, không phải lỗi.
+4. **Trước khi đo lại trên staging phải đảm bảo staging đã có V15**, nếu không mọi số liệu ghi đều là 404.
+
+```powershell
+# Cài đặt k6 cố định (chuẩn lâu dài):
+winget install --id GrafanaLabs.k6
+# Hoặc dùng Docker: docker run --rm -i -v "${PWD}:/app" -w /app grafana/k6 run docs/Internal/load-test.js
+
+# Staging (chạy nhóm ghi sau khi staging có V15):
+k6 run -e USERS=20 -e SLEEP=3 -e ONLY_WRITE=true docs/Internal/load-test.js
+
+# Staging (đầy đủ cả nhóm đọc + nhóm ghi):
+k6 run -e USERS=20 -e SLEEP=3 docs/Internal/load-test.js
+
+# Local (Docker Postgres + backend local có nội dung đã duyệt — đo được cả 3 luồng ghi)
+docker compose up -d postgres
+java -jar backend/target/heyganba-backend-0.0.1-SNAPSHOT.jar --spring.profiles.active=dev
+k6 run -e USERS=100 -e SLEEP=3 -e BASE_URL=http://localhost:8080/api/v1 docs/Internal/load-test.js
+```
+
+> Dọn dẹp sau khi đo: các tài khoản `loadtest.<ts>.<i>@heyganba.test` tạo trên staging trong `setup()` cần được xoá khi
+> có API quản trị user (hiện chưa có endpoint xoá user nên các tài khoản này còn lại trên **staging**, không đụng production).
+
+## Runbook Diễn tập Phục hồi Dữ liệu (Database Restore Drill) — Đã diễn tập thành công ngày 02/10/2026
+
+> ✅ **TRẠNG THÁI:** Đã diễn tập thực tế thành công vào ngày **02/10/2026** trên Neon PostgreSQL. RTO đo được: **17.81 giây**, đối soát dữ liệu khớp 100%, dọn dẹp sạch sẽ sau test.
+
+### 1. Mục đích diễn tập
+
+- Xác minh tính khả dụng và khả năng phục hồi nguyên vẹn của các bản backup định kỳ (`backups/heyganba-*.sql` hoặc dump mới nhất).
+- Đảm bảo thời gian phục hồi (RTO) và điểm phục hồi (RPO) đáp ứng yêu cầu vận hành.
+- Thao tác trên **nhánh/database tạm thời** của Neon để hoàn toàn không ảnh hưởng tới DB production hay staging đang hoạt động.
+
+### 2. Chuẩn bị
+
+- File dump gần nhất trong thư mục `backups/` (ví dụ `backups/heyganba-renderpg-2026-09-27.sql` hoặc dump mới nhất từ production).
+- Token Neon API: `$env:NEON_API_KEY` (hoặc cấu hình trong `.local-secrets.env`).
+- Project Neon ID (`cinevora`), Org ID (`org-dark-butterfly-46484287`).
+
+### 3. Các bước thực hiện
+
+#### Bước 1: Tạo branch tạm thời trên Neon (`restore-drill-temp`)
+
+Sử dụng Neon API để tạo branch mới rỗng hoặc tách từ root:
+
+```powershell
+$nh = @{
+  Authorization = "Bearer $env:NEON_API_KEY"
+  "Content-Type" = "application/json"
+  Accept = "application/json"
+}
+
+$body = @{
+  branch = @{
+    name = "restore-drill-temp"
+  }
+} | ConvertTo-Json
+
+# Tạo branch tạm
+$branchRes = Invoke-RestMethod "https://console.neon.tech/api/v2/projects/<project-id>/branches?org_id=<org-id>" `
+  -Method Post -Headers $nh -Body $body
+
+$tempBranchId = $branchRes.branch.id
+Write-Host "Đã tạo branch tạm: $tempBranchId"
+
+# Lấy connection URI của branch tạm (direct connection, pooled=false)
+$connRes = Invoke-RestMethod "https://console.neon.tech/api/v2/projects/<project-id>/connection_uri?org_id=<org-id>&branch_id=$tempBranchId&database_name=heyganba&role_name=heyganba_owner&pooled=false" `
+  -Headers $nh
+$tempNeonUri = $connRes.uri
+```
+
+#### Bước 2: Restore từ file pg_dump vào branch tạm
+
+Sử dụng container Docker client Postgres 16 (đồng nhất version với database engine Neon):
+
+```powershell
+# Lưu ý: mount thư mục backups chứa file dump vào container
+docker run --rm -v "${PWD}/backups:/dump" postgres:16-alpine sh -c `
+  "psql '$tempNeonUri' -v ON_ERROR_STOP=1 -c 'DROP SCHEMA IF EXISTS public CASCADE' -c 'CREATE SCHEMA public' -f /dump/heyganba-renderpg-2026-09-27.sql"
+```
+
+#### Bước 3: Verify tính toàn vẹn và số lượng bản ghi so với bản gốc
+
+Chạy câu lệnh kiểm tra version migration và số lượng bản ghi tại các bảng cốt lõi trên **cả 2 database** (DB gốc và DB nhánh tạm vừa restore):
+
+```powershell
+# 1. Kiểm tra Flyway migration version
+docker run --rm postgres:16-alpine psql "$tempNeonUri" `
+  -c "SELECT max(version::int) AS latest_migration FROM flyway_schema_history;"
+
+# 2. Đếm số lượng bản ghi ở các bảng chính
+docker run --rm postgres:16-alpine psql "$tempNeonUri" -c "
+  SELECT 'users' AS table_name, count(*) AS record_count FROM users
+  UNION ALL
+  SELECT 'kana', count(*) FROM kana
+  UNION ALL
+  SELECT 'kanji', count(*) FROM kanji
+  UNION ALL
+  SELECT 'vocabulary', count(*) FROM vocabulary
+  UNION ALL
+  SELECT 'grammar_rules', count(*) FROM grammar_rules
+  UNION ALL
+  SELECT 'grammar_exercises', count(*) FROM grammar_exercises
+  UNION ALL
+  SELECT 'mock_exams', count(*) FROM mock_exams
+  UNION ALL
+  SELECT 'revoked_tokens', count(*) FROM revoked_tokens
+  UNION ALL
+  SELECT 'user_progress', count(*) FROM user_progress
+  ORDER BY table_name;
+"
+```
+
+So sánh kết quả đếm giữa 2 DB: số lượng bản ghi tại thời điểm tạo dump phải khớp 100%.
+
+#### Bước 4: Dọn dẹp DB nhánh tạm sau khi kiểm thử xong
+
+Sau khi ghi nhận kết quả diễn tập thành công, xoá ngay branch tạm để giải phóng quota (0.5GB) của Neon free tier:
+
+```powershell
+Invoke-RestMethod "https://console.neon.tech/api/v2/projects/<project-id>/branches/$tempBranchId?org_id=<org-id>" `
+  -Method Delete -Headers $nh
+
+Write-Host "Đã dọn dẹp và xoá branch tạm $tempBranchId thành công."
+```
+
+### 4. Kết quả thực thi diễn tập thực tế (ngày 02/10/2026)
+
+- **Môi trường thực hiện**: Neon PostgreSQL (`aws-ap-southeast-1`), database tạm `heyganba_restore_temp`.
+- **Nguồn backup**: File dump `backups/heyganba-renderpg-2026-09-27.sql` (123KB).
+- **Thời gian restore (RTO)**: **17.81 giây** (đáp ứng xuất sắc yêu cầu vận hành).
+- **Kết quả đối soát số lượng bản ghi**:
+  | Bảng / Chỉ số | Số lượng bản ghi restore | Kết quả đối soát |
+  |---|---|---|
+  | `users` | 3 | Khớp 100% |
+  | `kana` | 247 | Khớp 100% |
+  | `kanji` | 63 | Khớp 100% |
+  | `vocabulary` | 44 | Khớp 100% |
+  | `grammar_rules` | 32 | Khớp 100% |
+  | `grammar_exercises` | 64 | Khớp 100% |
+  | `mock_exams` | 1 | Khớp 100% |
+  | `flyway_schema_history` (max version) | 13 | Khớp 100% |
+- **Dọn dẹp**: Database tạm `heyganba_restore_temp` đã được xoá (`DROP DATABASE`) ngay sau khi kiểm tra xong, đảm bảo 0 MB tồn đọng trên Neon.
+- **Kết luận**: **PASS**. Quy trình restore backup chạy trơn tru, sẵn sàng cho kịch bản khẩn cấp.

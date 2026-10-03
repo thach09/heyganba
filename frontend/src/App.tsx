@@ -11,7 +11,8 @@ import { KanjiStationView } from './features/kanji/KanjiStationView';
 import { GrammarView } from './features/grammar/GrammarView';
 import { GrammarRulePage } from './features/grammar/GrammarRulePage';
 import { ExamView } from './features/exam/ExamView';
-import { getSavedUser, clearTokens, apiRequest } from './services/api';
+import { DictionaryNotebookView } from './features/dictionary/DictionaryNotebookView';
+import { getSavedUser, clearTokens, apiRequest, logoutApi } from './services/api';
 import type { AuthResponse } from './services/api';
 
 /** The breakpoint must match the `@media (max-width: 900px)` query in index.css. */
@@ -125,10 +126,13 @@ export function App() {
     });
   }, [user]);
 
-  const handleLogout = () => {
-    clearTokens();
-    setUser(null);
-    navigate('/');
+  const handleLogout = async () => {
+    const success = await logoutApi();
+    if (success) {
+      clearTokens();
+      setUser(null);
+      navigate('/');
+    }
   };
 
   /** Mobile: picking a nav item closes the drawer (desktop keeps it open as a column). */
@@ -213,6 +217,10 @@ export function App() {
             <Route
               path="/vocabulary"
               element={<FlashcardView user={user} onRequireLogin={openAuthModal} />}
+            />
+            <Route
+              path="/dictionary"
+              element={<DictionaryNotebookView user={user} onRequireLogin={openAuthModal} />}
             />
             <Route
               path="/kanji"

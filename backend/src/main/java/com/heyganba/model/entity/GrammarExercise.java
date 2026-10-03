@@ -52,6 +52,22 @@ public class GrammarExercise {
     @Column(name = "review_status", nullable = false, length = 20)
     private ReviewStatus reviewStatus = ReviewStatus.PENDING_REVIEW;
 
+    /**
+     * TRUE = câu do AI soạn nhưng CHƯA đối chiếu được nguồn (hoặc có thể có >1 đáp án đúng theo ngữ cảnh) —
+     * phải để người biết tiếng Nhật kiểm trước (xem docs/Internal/content-mapping-fpt-curriculum.md).
+     */
+    @Builder.Default
+    @Column(name = "needs_human_check", nullable = false)
+    private Boolean needsHumanCheck = false;
+
+    /** Nguồn đã dùng để đối chiếu (vd: `doc:#19 | jlpt-n5: i-adjectives`) — để truy vết về sau. */
+    @Column(name = "source_ref", length = 160)
+    private String sourceRef;
+
+    /** Lý do ngắn vì sao câu này cần người kiểm (chỉ điền khi needsHumanCheck = true). */
+    @Column(name = "review_note", length = 400)
+    private String reviewNote;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;

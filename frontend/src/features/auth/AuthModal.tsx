@@ -24,6 +24,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [classCode, setClassCode] = useState('');
+  const [requireTwoFactor, setRequireTwoFactor] = useState(false);
+  const [twoFactorCode, setTwoFactorCode] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -38,7 +40,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       const endpoint = isRegister ? '/auth/register' : '/auth/login';
       const body = isRegister
         ? { email, password, fullName, classCode: classCode.trim() || null }
-        : { email, password };
+        : { email, password, twoFactorCode: twoFactorCode.trim() || undefined };
 
       const res = await apiRequest<AuthResponse>(endpoint, {
         method: 'POST',
@@ -46,6 +48,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       });
 
       if (res.success && res.data) {
+        if (res.data.twoFactorRequired) {
+          setRequireTwoFactor(true);
+          setError(null);
+          return;
+        }
         saveTokens(res.data.accessToken, res.data.refreshToken);
         saveUser(res.data);
         onAuthSuccess(res.data);
@@ -178,9 +185,31 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             </div>
           </div>
 
+          {requireTwoFactor && (
+            <div className="mt-4 border-l-2 border-l-rank bg-tint p-3.5 animate-toast-in">
+              <label htmlFor="auth-2fa-code" className="block text-[11.5px] font-semibold text-fg">
+                Mã xác thực 2FA (6 chữ số)
+              </label>
+              <p className="mt-1 text-[11px] text-fg-60">
+                Tài khoản của bạn đã bật 2FA. Vui lòng mở ứng dụng Google Authenticator và nhập mã 6 số.
+              </p>
+              <input
+                id="auth-2fa-code"
+                type="text"
+                maxLength={6}
+                autoFocus
+                required
+                placeholder="123456"
+                value={twoFactorCode}
+                onChange={(e) => setTwoFactorCode(e.target.value.replace(/\D/g, ''))}
+                className={`${inputClass} mt-2 font-mono text-[16px] text-center tracking-widest`}
+              />
+            </div>
+          )}
+
           <div className="mt-7">
             <SubmitButton type="submit" loading={loading} fullWidth id="auth-submit-btn">
-              {isRegister ? 'Tạo tài khoản' : 'Đăng nhập'}
+              {isRegister ? 'Tạo tài khoản' : requireTwoFactor ? 'Xác nhận mã 2FA & Đăng nhập' : 'Đăng nhập'}
             </SubmitButton>
           </div>
         </form>
