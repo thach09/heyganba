@@ -35,7 +35,10 @@ export interface UserProfileResponse {
  * - Dev local: để trống -> dùng Vite proxy (vite.config.ts -> http://localhost:8080).
  * - Staging/Production (Vercel): set VITE_API_BASE_URL = https://<render-service>.onrender.com/api/v1
  */
-const API_BASE = import.meta.env.VITE_API_BASE_URL?.replace(/\/+$/, '') || '/api/v1';
+const API_BASE =
+  import.meta.env.PROD && import.meta.env.VITE_API_BASE_URL
+    ? import.meta.env.VITE_API_BASE_URL.replace(/\/+$/, '')
+    : '/api/v1';
 
 /** Base URL của backend — dùng cho các tài nguyên không đi qua `apiRequest` (ví dụ audio TTS). */
 export const API_BASE_URL = API_BASE;
