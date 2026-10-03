@@ -12,3 +12,4 @@ Làm UI:
 - Sửa xong: `npm run lint` + `npm run build`, chụp desktop 1440 + mobile 390, tự xem ảnh rồi mới báo hoàn thành.
 
 Không bịa dữ liệu/số liệu/nội dung học thuật; nội dung Nhật mới phải ở luồng chờ duyệt; không commit secret.
+Rate limit admin: giữ nguyên 30/phút/admin; nhập nội dung số lượng lớn bắt buộc qua Flyway migration, không qua Admin UI.

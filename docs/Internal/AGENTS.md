@@ -96,6 +96,14 @@ Sau mỗi phase, agent báo cáo ngắn gọn gồm 3 phần:
   (trước đây heatmap/cache dùng UTC nên user học 0h–7h sáng giờ VN bị tính sang ngày hôm trước).
 - **Redis chưa bật** (chưa có managed instance): giữ `APP_SRS_CACHE=memory`. Code `RedisSrsDueCache` đã viết sẵn,
   không xoá; khi có Redis managed chỉ đổi biến môi trường.
+- **Rate limit khu vực Admin & Nhập nội dung số lượng lớn**:
+  - Giữ nguyên giới hạn: **30 request ghi/phút/admin** (`POST`/`PUT`/`DELETE` trên `/admin/**`) — không tăng lên 60 để đảm bảo an toàn bảo mật và bảo vệ cơ sở dữ liệu.
+  - **Nhập nội dung số lượng lớn (bulk import) BẮT BUỘC phải đi qua Flyway migration** (`Vxx__*.sql`), tuyệt đối KHÔNG nhập qua Admin UI (sẽ bị rate limit 429 chặn).
+  - Mọi migration thêm/cập nhật dữ liệu phải được test kỹ cú pháp SQL trên PostgreSQL thật trước khi merge (theo hướng dẫn BEGIN/ROLLBACK trong tài liệu này).
+- **Chuẩn cài đặt công cụ Load Test (k6)**:
+  - Cài k6 cố định trên máy: `winget install --id GrafanaLabs.k6` (mặc định tại `C:\Program Files\k6\k6.exe`).
+  - Hoặc sử dụng Docker container chính thức: `docker run --rm -i -v "${PWD}:/app" -w /app grafana/k6 run docs/Internal/load-test.js`.
+  - Luôn sử dụng 2 chuẩn này để tránh việc phải tải công cụ thủ công ở các lần kiểm thử sau.
 
 ## Kinh nghiệm vận hành Render (đã gặp thật khi deploy lần đầu)
 

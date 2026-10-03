@@ -194,22 +194,17 @@ admin trong 15 phút (self-DoS). Đổi lại, đây cũng chính là cơ chế 
 - Bài học đi kèm: **mọi state in-memory dùng cho bảo mật (rate limit, cache) phải ghi vào danh sách nợ kỹ thuật này**
   vì nó phụ thuộc số instance — xem thêm mục Redis trong `deployment-plan.md`.
 
-### Nợ kỹ thuật: `two_factor_secret` lưu PLAINTEXT trong DB — trigger: **TRƯỚC KHI THÊM ADMIN ACCOUNT THỨ 2**
+### Nợ kỹ thuật: Mã hoá TOTP secret & Xác thực 2 yếu tố khi Reset 2FA — trigger: **TRƯỚC KHI THÊM ADMIN ACCOUNT THỨ 2**
 
-- **Hiện trạng**: `users.two_factor_secret` lưu secret TOTP (Base32) **không mã hoá**. Ai đọc được bảng `users` (dump DB, log
-  câu SQL, hoặc một lỗ hổng SQL injection) là tự sinh được mã TOTP hợp lệ ⇒ vô hiệu hoá lớp bảo vệ thứ hai.
-- **Vì sao chưa fix đợt này**: hiện chỉ có **1 tài khoản admin**; để lấy được secret phải đã có quyền truy cập DB (bản thân
-  đã là quyền cao nhất). Mã hoá tại chỗ cần thêm quản lý khoá (env riêng) + migrate dữ liệu + luồng buộc setup lại ⇒ vượt
-  phạm vi, rủi ro thực tế thấp nên ghi thành nợ có điều kiện.
-- **Trigger bắt buộc trả nợ: TRƯỚC KHI THÊM ADMIN ACCOUNT THỨ 2** (không phải mốc thời gian chung chung). Lý do: khi có ≥2
-  admin, một secret bị lộ cho phép giả mạo admin khác, và xử lý sự cố sẽ phải xoay secret của nhiều tài khoản cùng lúc.
-  Khi đó phải làm đủ 3 việc:
-  1. Lưu secret ở dạng mã hoá (`AES-GCM`, khoá riêng trong env `TWO_FACTOR_ENC_KEY` — **không** dùng chung `JWT_SECRET`).
-  2. Migration: thêm cột lưu bản mã hoá + backfill + **buộc mọi admin setup lại 2FA** (xoá secret cũ).
-  3. Cập nhật `AuthService.setupTwoFactor`/`enableTwoFactor`/`verifyCode` + test hồi quy khẳng định log/response **không**
-     chứa secret thô (đã có tiền lệ: status endpoint bị bịt rò rỉ secret ngày 02/10/2026).
-- Đường thoát khi mất thiết bị (đã có từ 27/09/2026): `POST /api/v1/admin/2fa/reset` xác thực lại bằng **mật khẩu hiện tại**,
-  sau đó xoá hẳn secret ⇒ không còn secret cũ nào tồn tại sau khi reset (phải setup lại từ đầu).
+- **Gộp 2 nợ kỹ thuật liên quan đến 2FA quản trị xử lý cùng một đợt**:
+  1. **Mã hoá `two_factor_secret` at-rest trong database**: Hiện `users.two_factor_secret` lưu secret TOTP (Base32) dạng plaintext. Ai đọc được bảng `users` (qua DB dump, log SQL hoặc SQL injection) đều có thể tự sinh mã OTP hợp lệ, làm suy yếu lớp bảo vệ thứ 2.
+  2. **Xác thực đa yếu tố khi Reset 2FA (`POST /api/v1/admin/2fa/reset`)**: Hiện tại endpoint reset 2FA chỉ xác thực lại bằng mật khẩu hiện tại (`AdminPasswordConfirmRequest`). Nếu kẻ tấn công chiếm được mật khẩu admin, họ có thể tự reset 2FA bằng mật khẩu đó. Cần bổ sung cơ chế xác thực đa yếu tố khi reset (mã dự phòng Backup/Recovery Codes dùng một lần hoặc xác nhận phê duyệt qua email).
+- **Vì sao chưa fix đợt này**: Hiện hệ thống chỉ có **1 tài khoản admin seed duy nhất** (`admin@heyganba.vn`); việc reset bằng mật khẩu là đường thoát duy nhất khi admin mất Authenticator (tránh bị khoá vĩnh viễn ngoài hệ thống); để đọc được secret TOTP plaintext thì kẻ tấn công phải có quyền truy cập DB (quyền cao nhất). Việc sửa đổi đòi hỏi quản lý key riêng, migration DB, tạo cơ chế mã khôi phục và buộc setup lại toàn bộ.
+- **Trigger bắt buộc trả nợ: TRƯỚC KHI THÊM ADMIN ACCOUNT THỨ 2**: Khi hệ thống có từ 2 admin trở lên, nguy cơ leo quyền nội bộ và việc một secret bị lộ ảnh hưởng đến toàn bộ ban quản trị. Khi đó bắt buộc xử lý gộp 1 lần toàn bộ:
+  1. **Mã hoá secret**: Lưu `two_factor_secret` dạng mã hoá (`AES-256-GCM`, khoá riêng `TWO_FACTOR_ENC_KEY` — tuyệt đối không dùng chung `JWT_SECRET`).
+  2. **Backup Recovery Codes**: Sinh bộ mã khôi phục dự phòng (hash BCrypt/Argon2 lưu trong DB) khi admin kích hoạt 2FA.
+  3. **Siết endpoint reset**: `POST /admin/2fa/reset` bắt buộc phải có `password` + `recovery_code` (hoặc email OTP xác nhận).
+  4. **Migration & Rollout**: Thêm migration schema, xoá các secret cũ và buộc tất cả admin thiết lập lại 2FA cùng bộ mã dự phòng mới. Test hồi quy khẳng định không rò rỉ secret thô trong log/response.
 
 
 ### Khắc phục sự cố rò rỉ Render API key qua terminal buffer (xử lý ngày 02/10/2026)

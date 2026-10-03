@@ -8,7 +8,7 @@ import { Trend, Rate, Counter } from 'k6/metrics';
  * Lần đo trước (02/10/2026) chỉ có NHÓM ĐỌC: health + /kana + /grammar/rules + /leaderboard.
  * Đợt này bổ sung 3 KỊCH BẢN GHI (đúng các luồng học sinh thật tạo tải ghi):
  *   1. `POST /grammar/exercises/{id}/check` — chấm bài tập ngữ pháp (ghi study_activity + streak).
- *   2. `POST /flashcards/review`            — chấm 1 lượt ôn SRS (ghi srs_reviews + study_activity).
+ *   2. `POST /flashcard/review`             — chấm 1 lượt ôn SRS (ghi srs_reviews + study_activity).
  *   3. Luồng cập nhật streak               — 3 × `POST /kana/quiz/check` (ghi nhận câu quiz) rồi đọc `/streak`.
  *
  * Metric tách theo nhóm để so sánh được nhóm ĐỌC vs nhóm GHI: `read_*` giữ nguyên thứ tự và số lượt như lần
@@ -62,6 +62,8 @@ const IDS_JSON = __ENV.IDS_FILE ? open(__ENV.IDS_FILE) : (__ENV.IDS_JSON || '');
  * (đúng thiết kế của rate limiter, nhưng không đo được độ trễ thật của đường ghi).
  */
 const SLEEP_SECONDS = Number(__ENV.SLEEP || 1);
+/** Bật `-e ONLY_WRITE=true` hoặc `-e SKIP_READ=true` khi muốn chạy riêng nhóm GHI (bỏ qua nhóm đọc). */
+const ONLY_WRITE = __ENV.ONLY_WRITE === 'true' || __ENV.SKIP_READ === 'true';
 
 function jsonHeaders(token) {
   return {
@@ -154,28 +156,30 @@ export default function (data) {
   const params = jsonHeaders(token);
 
   // ---------------- NHÓM ĐỌC (giữ nguyên như lần đo trước) ----------------
-  group('read', () => {
-    const health = http.get(`${BASE_URL}/health`);
-    readDuration.add(health.timings.duration);
-    readFailed.add(health.status !== 200);
-    check(health, { 'health 200': (r) => r.status === 200 });
+  if (!ONLY_WRITE) {
+    group('read', () => {
+      const health = http.get(`${BASE_URL}/health`);
+      readDuration.add(health.timings.duration);
+      readFailed.add(health.status !== 200);
+      check(health, { 'health 200': (r) => r.status === 200 });
 
-    const kana = http.get(`${BASE_URL}/kana`, params);
-    readDuration.add(kana.timings.duration);
-    readFailed.add(kana.status !== 200);
-    check(kana, { 'kana 200': (r) => r.status === 200 });
+      const kana = http.get(`${BASE_URL}/kana`, params);
+      readDuration.add(kana.timings.duration);
+      readFailed.add(kana.status !== 200);
+      check(kana, { 'kana 200': (r) => r.status === 200 });
 
-    const rules = http.get(`${BASE_URL}/grammar/rules`, params);
-    readDuration.add(rules.timings.duration);
-    readFailed.add(rules.status !== 200);
-    check(rules, { 'grammar rules 200': (r) => r.status === 200 });
+      const rules = http.get(`${BASE_URL}/grammar/rules`, params);
+      readDuration.add(rules.timings.duration);
+      readFailed.add(rules.status !== 200);
+      check(rules, { 'grammar rules 200': (r) => r.status === 200 });
 
-    const leaderboard = http.get(`${BASE_URL}/leaderboard`, params);
-    readDuration.add(leaderboard.timings.duration);
-    readFailed.add(leaderboard.status !== 200);
-    check(leaderboard, { 'leaderboard 200': (r) => r.status === 200 });
-    readCount.add(4);
-  });
+      const leaderboard = http.get(`${BASE_URL}/leaderboard`, params);
+      readDuration.add(leaderboard.timings.duration);
+      readFailed.add(leaderboard.status !== 200);
+      check(leaderboard, { 'leaderboard 200': (r) => r.status === 200 });
+      readCount.add(4);
+    });
+  }
 
   // ---------------- NHÓM GHI 1+2: chấm quiz ngữ pháp + ôn SRS ----------------
   group('write', () => {

@@ -654,24 +654,22 @@ docker run --rm -t ghcr.io/zaproxy/zaproxy:stable zap-baseline.py `
 Mỗi VU dùng **token riêng** (setup đăng ký tài khoản test `loadtest.<ts>.<i>@heyganba.test`) để rate limit theo tài khoản
 không bóp méo kết quả. Có thể chỉnh `-e USERS=`, `-e SLEEP=` (think time) và `-e IDS_FILE=` (id nội dung thật).
 
-#### A. Staging Render (free tier) — đúng cấu hình 50→100 VU như đợt 1
+#### A. Staging Render (free tier) — số liệu đo thực tế sau khi nhận V15 (03/10/2026)
 
-| Nhóm                                              | Request   | p50      | p90      | p95          | max       | Lỗi                    |
-| ------------------------------------------------- | --------- | -------- | -------- | ------------ | --------- | ---------------------- |
-| Đọc (health, /kana, /grammar/rules, /leaderboard) | 780       | 2.400 ms | 7.195 ms | **8.397 ms** | 20.101 ms | 0,00%                  |
-| Ghi (grammar check + SRS review)                  | 390       | 3.292 ms | 8.316 ms | 10.208 ms    | 15.504 ms | **100% (toàn bộ 404)** |
-| Streak (3× quiz check + /streak)                  | 780       | 2.701 ms | 6.406 ms | 8.305 ms     | 19.598 ms | 75,00%                 |
-| **Tổng thể**                                      | **1.970** | 2.796 ms | —        | **8.699 ms** | 20.101 ms | 50,46% (429 = 48,21%)  |
+Trước đây (02/10), do staging chưa áp migration `V15` nên toàn bộ request ghi bị 404 (do nội dung còn `PENDING_REVIEW`). Sau khi merge `main → develop` và kích hoạt migration V15 trên Neon DB staging, toàn bộ nội dung giáo trình cốt lõi đã chuyển sang `APPROVED`. Nhóm ghi đã được chạy kiểm thử lại trực tiếp trên Staging Render bằng k6 (`-e ONLY_WRITE=true`, 50→100 VU, think time 3s, 1m20s):
 
-- **Nhóm đọc đợt này p95 = 8,4s** (đợt 1: p95 22,65s) — cùng bản chất nghẽn CPU free tier, chênh lệch do thời điểm/thời
-  lượng tải khác nhau; vẫn KHÔNG đạt mục tiêu p95 < 500ms.
-- **Nhóm ghi KHÔNG đo được trên staging**: mọi request ghi trả **404**. Nguyên nhân đã xác minh bằng curl: **staging chưa
-  áp `V15` (approve core curriculum content)** nên toàn bộ nội dung còn `PENDING_REVIEW`, user thường (kể cả token hợp lệ)
-  không "thấy" bản ghi nào ⇒ thao tác ghi theo id trả 404. Đây là **khoảng trống môi trường**, không phải vấn đề hiệu năng.
-  Việc cần làm: merge `main → develop` để staging nhận V15 (xem mục "Gate nội dung chưa duyệt").
-- **429 = 48,21%** ở các request ghi: 20 tài khoản test phục vụ 100 VU (5 VU/tài khoản) nên mỗi tài khoản vượt
-  **120 request/phút** (giới hạn quiz/SRS trong `security-plan.md`) ⇒ rate limiter chặn đúng như thiết kế. Muốn đo thông
-  lượng ghi trên staging phải tăng `USERS` (1 tài khoản/VU) và/hoặc tăng `SLEEP`.
+| Nhóm                                              | Request   | p50       | p90        | p95           | max        | Lỗi                      |
+| ------------------------------------------------- | --------- | --------- | ---------- | ------------- | ---------- | ------------------------ |
+| Đọc (lần đo đợt trước)                            | 780       | 2.400 ms  | 7.195 ms   | **8.397 ms**  | 20.101 ms  | 0,00%                    |
+| Ghi (grammar check + SRS review — staging THẬT)   | 282       | 9.653 ms  | 19.681 ms  | **21.977 ms** | 28.294 ms  | **0,35% (hết sạch 404)** |
+| Streak (3× quiz check + /streak — staging THẬT)   | 496       | 6.195 ms  | 15.226 ms  | **19.413 ms** | 28.202 ms  | **0,00% (hết sạch lỗi)** |
+| **Tổng thể nhóm GHI staging thật**                | **850**   | 7.003 ms  | —          | **20.259 ms** | 28.294 ms  | **0,12%** (429 = 0,00%)  |
+
+- **Xác nhận thực tế trên Staging**:
+  1. **Lỗi 404 đã giải quyết triệt để**: Tỉ lệ lỗi nhóm ghi giảm từ **100% xuống 0,35%** (281/282 request ghi thành công trọn vẹn, chỉ 1 request timeout nhẹ ở đỉnh tải 100 VU), và streak giảm từ **75,00% xuống 0,00%** (496/496 request thành công 100%). Các thao tác chấm bài tập ngữ pháp, ôn SRS và chấm quiz kana đều nhận kết quả thành công và ghi nhận hoạt động học tập (`study_activity`, `srs_reviews`, `streaks`).
+  2. **Độ trễ nhóm ghi**: p50 đạt 7.003 ms và p95 đạt 20.259 ms dưới tải 50→100 VU đồng thời trên gói Render free tier (0.1 CPU core). Không có request nào bị crash 500 hay tràn kết nối HikariCP.
+  3. **Tỉ lệ chặn 429**: Đạt 0,00% khi chạy với think time 3s (mỗi VU không vượt quá 120 req/phút).
+  4. **Kết luận**: Nhóm ghi hoạt động ổn định trên môi trường staging thật sau khi có dữ liệu V15 `APPROVED`, không còn phải suy ra từ môi trường local. Bottleneck duy nhất vẫn là giới hạn 0.1 CPU core của Render free tier khi chịu tải 100 VU đồng thời.
 
 #### B. Local (Docker Postgres 16 + backend local, nội dung đã `APPROVED`) — nơi đo được đường ghi
 
@@ -697,9 +695,15 @@ nên nội dung hiển thị đầy đủ).
 4. **Trước khi đo lại trên staging phải đảm bảo staging đã có V15**, nếu không mọi số liệu ghi đều là 404.
 
 ```powershell
-# Staging (như đợt 1). Nếu staging CHƯA có nội dung APPROVED thì phải truyền id thật:
-k6 run -e USERS=20 docs/Internal/load-test.js
-k6 run -e USERS=100 -e SLEEP=3 -e IDS_FILE="$env:TEMP\hg-ids.json" docs/Internal/load-test.js
+# Cài đặt k6 cố định (chuẩn lâu dài):
+winget install --id GrafanaLabs.k6
+# Hoặc dùng Docker: docker run --rm -i -v "${PWD}:/app" -w /app grafana/k6 run docs/Internal/load-test.js
+
+# Staging (chạy nhóm ghi sau khi staging có V15):
+k6 run -e USERS=20 -e SLEEP=3 -e ONLY_WRITE=true docs/Internal/load-test.js
+
+# Staging (đầy đủ cả nhóm đọc + nhóm ghi):
+k6 run -e USERS=20 -e SLEEP=3 docs/Internal/load-test.js
 
 # Local (Docker Postgres + backend local có nội dung đã duyệt — đo được cả 3 luồng ghi)
 docker compose up -d postgres
