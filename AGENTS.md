@@ -2,12 +2,14 @@
 
 Nền tảng học tiếng Nhật: frontend React 19 + Vite (`frontend/`), backend Spring Boot (`backend/`).
 
-Đọc trước khi làm: `docs/introduction.md` (định hướng do chủ sản phẩm nêu) · `DESIGN.md` (luật thị giác — nguồn duy nhất cho UI) · `docs/roadmap.md` (MVP / Advanced) · feature doc liên quan trong `docs/features/`.
+Đường dẫn trong file này tính từ repo root. Session mở tại `frontend/`: đọc `frontend/X` thành `X`, path ngoài frontend thêm `../`.
 
-Làm UI:
+Đọc trước khi làm: `docs/introduction.md` (định hướng do chủ sản phẩm nêu) · `frontend/DESIGN.md` (luật thị giác — nguồn duy nhất cho UI) · `docs/roadmap.md` (MVP / Advanced) · feature doc liên quan trong `docs/features/`.
 
-- Không tự chế màu, font, component ngoài `DESIGN.md`; mục "Còn để ngỏ" của nó — hỏi trước khi quyết.
-- Style dùng Tailwind v4 + token trong `@theme` (xem `DESIGN.md`); `frontend/src/index.css` chỉ chứa token và base style, không thêm lớp CSS legacy.
+Làm UI (session mở tại `frontend/`):
+
+- Không tự chế màu, font, component ngoài `frontend/DESIGN.md`; mục "Còn để ngỏ" của nó — hỏi trước khi quyết.
+- Style dùng Tailwind v4 + token trong `@theme` (xem `frontend/DESIGN.md`); `frontend/src/index.css` chỉ chứa token và base style, không thêm lớp CSS legacy.
 - Sửa xong: `npm run lint` + `npm run build`, chụp desktop 1440 + mobile 390, tự xem ảnh rồi mới báo hoàn thành.
 
 Không bịa dữ liệu/số liệu/nội dung học thuật; nội dung Nhật mới phải ở luồng chờ duyệt; không commit secret.

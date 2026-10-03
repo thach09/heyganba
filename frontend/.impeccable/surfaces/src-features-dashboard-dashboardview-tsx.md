@@ -1,7 +1,7 @@
 ---
 version: 1
-slug: "frontend-src-features-dashboard-dashboardview-tsx"
-primary_target: "frontend/src/features/dashboard/DashboardView.tsx"
+slug: "src-features-dashboard-dashboardview-tsx"
+primary_target: "src/features/dashboard/DashboardView.tsx"
 related_targets: []
 ---
 
