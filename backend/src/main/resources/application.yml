@@ -36,6 +36,8 @@ spring:
   flyway:
     enabled: true
     baseline-on-migrate: true
+    user: ${SPRING_FLYWAY_USER:${spring.datasource.username}}
+    password: ${SPRING_FLYWAY_PASSWORD:${spring.datasource.password}}
     # `db/migration` = migration đã duyệt (chạy ở MỌI môi trường, kể cả production).
     # `db/migration-staging` = nội dung CHỜ DUYỆT, chỉ chạy ở local/staging (application-prod.yml KHÔNG include thư mục này).
     locations: ${SPRING_FLYWAY_LOCATIONS:classpath:db/migration,classpath:db/migration-staging}
@@ -118,3 +120,9 @@ management:
   endpoint:
     health:
       show-details: when-authorized
+
+sentry:
+  dsn: ${SENTRY_DSN:}
+  traces-sample-rate: ${SENTRY_TRACES_SAMPLE_RATE:0.2}
+  environment: ${SPRING_PROFILES_ACTIVE:development}
+

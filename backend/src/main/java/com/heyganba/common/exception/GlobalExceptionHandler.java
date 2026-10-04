@@ -167,6 +167,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Void>> handleGenericException(Exception ex) {
         log.error("Unhandled exception occurred: ", ex);
+        try {
+            io.sentry.Sentry.captureException(ex);
+        } catch (Throwable ignored) {
+            // Sentry not initialized or not configured
+        }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ApiResponse.<Void>builder()
                         .success(false)
