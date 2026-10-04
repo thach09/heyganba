@@ -83,4 +83,33 @@ class JwtTokenProviderTest {
         assertTrue(provider.isRefreshToken(refreshToken));
         assertEquals("jwt@heyganba.vn", provider.getUsernameFromJwt(accessToken));
     }
+
+    @Test
+    @DisplayName("Diễn tập xoay JWT_SECRET: đổi secret lập tức vô hiệu hoá 100% access & refresh token cũ mà không cần can thiệp DB")
+    void rotateJwtSecretInvalidatesAllOldTokensImmediately() {
+        // 1. Hệ thống chạy với Secret A
+        String secretA = "OldSecretWithEnoughEntropyKeyString32Bytes!";
+        JwtTokenProvider providerOld = new JwtTokenProvider(secretA, 1800000L, 604800000L);
+
+        UserPrincipal user = principal();
+        String oldAccessToken = providerOld.generateAccessToken(user);
+        String oldRefreshToken = providerOld.generateRefreshToken(user);
+
+        // Trước khi xoay: cả 2 token đều hợp lệ
+        assertTrue(providerOld.validateToken(oldAccessToken));
+        assertTrue(providerOld.validateToken(oldRefreshToken));
+
+        // 2. Diễn tập xoay: Secret B được cấu hình thay thế Secret A
+        String secretB = "NewRotatedSecretWithSufficientEntropy32Bytes!";
+        JwtTokenProvider providerRotated = new JwtTokenProvider(secretB, 1800000L, 604800000L);
+
+        // Sau khi xoay: mọi token sinh bởi Secret A đều KHÔNG thể validate (chữ ký sai khác)
+        assertFalse(providerRotated.validateToken(oldAccessToken), "Access token cũ phải bị từ chối ngay lập tức");
+        assertFalse(providerRotated.validateToken(oldRefreshToken), "Refresh token cũ phải bị từ chối ngay lập tức");
+
+        // 3. User đăng nhập lại qua Secret B -> nhận token mới hoạt động trơn tru
+        String newAccessToken = providerRotated.generateAccessToken(user);
+        assertTrue(providerRotated.validateToken(newAccessToken));
+        assertEquals("jwt@heyganba.vn", providerRotated.getUsernameFromJwt(newAccessToken));
+    }
 }
