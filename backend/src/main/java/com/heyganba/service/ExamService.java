@@ -15,13 +15,16 @@ import com.heyganba.model.entity.ExamResult;
 import com.heyganba.model.entity.GrammarExercise;
 import com.heyganba.model.entity.Kana;
 import com.heyganba.model.entity.MockExam;
+import com.heyganba.model.entity.ReadingPassage;
 import com.heyganba.model.entity.Streak;
 import com.heyganba.model.entity.User;
 import com.heyganba.model.entity.Vocabulary;
+import com.heyganba.model.enums.ReviewStatus;
 import com.heyganba.repository.ExamResultRepository;
 import com.heyganba.repository.GrammarExerciseRepository;
 import com.heyganba.repository.KanaRepository;
 import com.heyganba.repository.MockExamRepository;
+import com.heyganba.repository.ReadingPassageRepository;
 import com.heyganba.repository.StreakRepository;
 import com.heyganba.repository.UserRepository;
 import com.heyganba.repository.VocabularyRepository;
@@ -73,12 +76,14 @@ public class ExamService {
     private static final String TYPE_GRAMMAR = "GRAMMAR";
     private static final String TYPE_KANA = "KANA";
     private static final String TYPE_VOCABULARY = "VOCABULARY";
+    private static final String TYPE_READING = "READING";
 
     private final MockExamRepository mockExamRepository;
     private final ExamResultRepository examResultRepository;
     private final GrammarExerciseRepository grammarExerciseRepository;
     private final KanaRepository kanaRepository;
     private final VocabularyRepository vocabularyRepository;
+    private final ReadingPassageRepository readingPassageRepository;
     private final UserRepository userRepository;
     private final StreakRepository streakRepository;
     private final StudyActivityService studyActivityService;
@@ -86,6 +91,17 @@ public class ExamService {
     private final ObjectMapper objectMapper;
 
     private final Random random = new Random();
+
+    /**
+     * DTO mapping câu hỏi đọc hiểu từ cột reading_passages.questions_json.
+     */
+    public record ReadingQuestionItem(
+            String question,
+            List<String> options,
+            String correctAnswer,
+            String explanation
+    ) {
+    }
 
     /**
      * Câu hỏi lưu trong DB (có đáp án) và dùng nội bộ để chấm điểm. Public để Jackson đọc lại từ JSON.
@@ -253,20 +269,25 @@ public class ExamService {
     }
 
     // -----------------------------------------------------------------
-    // Sinh câu hỏi từ nội dung đã có (grammar / kana / vocabulary)
+    // Sinh câu hỏi từ nội dung đã có (reading / grammar / kana / vocabulary)
     // -----------------------------------------------------------------
     private List<Question> buildQuestions(int totalQuestions) {
-        int grammarTarget = Math.max(1, (int) Math.round(totalQuestions * 0.4));
-        int kanaTarget = Math.max(1, (int) Math.round(totalQuestions * 0.3));
-        int vocabularyTarget = Math.max(0, totalQuestions - grammarTarget - kanaTarget);
+        int readingTarget = (int) Math.round(totalQuestions * 0.15);
+        int grammarTarget = Math.max(1, (int) Math.round(totalQuestions * 0.35));
+        int kanaTarget = Math.max(1, (int) Math.round(totalQuestions * 0.25));
+        int vocabularyTarget = Math.max(0, totalQuestions - grammarTarget - kanaTarget - readingTarget);
 
         List<Question> collected = new ArrayList<>();
+        collected.addAll(buildReadingQuestions(readingTarget));
         collected.addAll(buildGrammarQuestions(grammarTarget));
         collected.addAll(buildKanaQuestions(kanaTarget));
         collected.addAll(buildVocabularyQuestions(vocabularyTarget));
 
         if (collected.size() < totalQuestions) {
             collected.addAll(buildGrammarQuestions(totalQuestions - collected.size()));
+        }
+        if (collected.size() < totalQuestions) {
+            collected.addAll(buildVocabularyQuestions(totalQuestions - collected.size()));
         }
 
         Collections.shuffle(collected, random);
@@ -276,6 +297,61 @@ public class ExamService {
             Question question = collected.get(index);
             questions.add(new Question(index, question.type(), question.questionText(), question.options(),
                     question.correctAnswer(), question.explanation(), question.audioText()));
+        }
+        return questions;
+    }
+
+    private List<Question> buildReadingQuestions(int limit) {
+        if (limit <= 0) {
+            return List.of();
+        }
+
+        // CHỈ lấy bài đọc hiểu đã APPROVED theo đúng yêu cầu
+        List<ReadingPassage> pool = new ArrayList<>(
+                readingPassageRepository.findByReviewStatus(ReviewStatus.APPROVED));
+        if (pool.isEmpty()) {
+            return List.of();
+        }
+        Collections.shuffle(pool, random);
+
+        List<Question> questions = new ArrayList<>();
+        for (ReadingPassage passage : pool) {
+            if (questions.size() >= limit) {
+                break;
+            }
+            if (passage.getQuestionsJson() == null || passage.getQuestionsJson().isBlank()) {
+                continue;
+            }
+            try {
+                List<ReadingQuestionItem> items = objectMapper.readValue(
+                        passage.getQuestionsJson(), new TypeReference<List<ReadingQuestionItem>>() {});
+                if (items == null || items.isEmpty()) {
+                    continue;
+                }
+                Collections.shuffle(items, random);
+                for (ReadingQuestionItem item : items) {
+                    if (questions.size() >= limit) {
+                        break;
+                    }
+                    if (item.options() == null || item.options().size() < 2 || item.correctAnswer() == null) {
+                        continue;
+                    }
+                    String formattedQuestion = "【" + passage.getTitle() + "】\n\n"
+                            + passage.getPassageText() + "\n\n"
+                            + "▶ " + item.question();
+                    questions.add(new Question(
+                            0,
+                            TYPE_READING,
+                            formattedQuestion,
+                            shuffleCopy(item.options()),
+                            item.correctAnswer(),
+                            item.explanation(),
+                            null
+                    ));
+                }
+            } catch (Exception e) {
+                log.warn("Failed to parse reading passage questions_json for passage id {}: {}", passage.getId(), e.getMessage());
+            }
         }
         return questions;
     }

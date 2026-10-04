@@ -8,14 +8,17 @@ import com.heyganba.model.entity.GrammarRule;
 import com.heyganba.model.entity.Kana;
 import com.heyganba.model.entity.Lesson;
 import com.heyganba.model.entity.MockExam;
+import com.heyganba.model.entity.ReadingPassage;
 import com.heyganba.model.entity.Role;
 import com.heyganba.model.entity.Vocabulary;
 import com.heyganba.model.enums.KanaGroup;
 import com.heyganba.model.enums.KanaType;
+import com.heyganba.model.enums.ReviewStatus;
 import com.heyganba.model.enums.RoleName;
 import com.heyganba.repository.GrammarRuleRepository;
 import com.heyganba.repository.KanaRepository;
 import com.heyganba.repository.LessonRepository;
+import com.heyganba.repository.ReadingPassageRepository;
 import com.heyganba.repository.RoleRepository;
 import com.heyganba.repository.StudyActivityRepository;
 import com.heyganba.service.ExamService;
@@ -70,6 +73,9 @@ class ExamApiTest extends com.heyganba.support.ContentApiTestBase {
 
     @Autowired
     private StudyActivityRepository studyActivityRepository;
+
+    @Autowired
+    private ReadingPassageRepository readingPassageRepository;
 
     @BeforeEach
     void setUp() {
@@ -504,5 +510,47 @@ class ExamApiTest extends com.heyganba.support.ContentApiTestBase {
 
         mockMvc.perform(get("/streak"))
                 .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @DisplayName("Chỉ tích hợp ReadingPassage có review_status = APPROVED vào đề thi")
+    void generateExamFiltersApprovedReadingPassages() throws Exception {
+        Lesson lesson = lessonRepository.findBySlug("jpd113-b1").orElseThrow();
+
+        // 1. Tạo 1 bài PENDING_REVIEW
+        ReadingPassage pending = readingPassageRepository.save(ReadingPassage.builder()
+                .lesson(lesson)
+                .title("Bài Đọc Chờ Duyệt Test")
+                .passageText("Đoạn văn nháp bài đọc.")
+                .questionsJson("[{\"question\":\"Câu hỏi nháp đọc hiểu?\",\"options\":[\"A\",\"B\"],\"correctAnswer\":\"A\",\"explanation\":\"Giải thích nháp\"}]")
+                .reviewStatus(ReviewStatus.PENDING_REVIEW)
+                .build());
+
+        // 2. Tạo 1 bài APPROVED
+        ReadingPassage approved = readingPassageRepository.save(ReadingPassage.builder()
+                .lesson(lesson)
+                .title("Bài Đọc Đã Duyệt Test")
+                .passageText("Đoạn văn chính thức bài đọc.")
+                .questionsJson("[{\"question\":\"Câu hỏi chính thức đọc hiểu?\",\"options\":[\"A\",\"B\"],\"correctAnswer\":\"A\",\"explanation\":\"Giải thích chính thức\"}]")
+                .reviewStatus(ReviewStatus.APPROVED)
+                .build());
+
+        String token = registerAndGetToken("exam.dokkai@heyganba.vn");
+        MvcResult result = mockMvc.perform(post("/exam/generate")
+                        .header("Authorization", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"totalQuestions\":20,\"durationMinutes\":20}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.questions").isArray())
+                .andReturn();
+
+        String responseBody = result.getResponse().getContentAsString();
+        org.junit.jupiter.api.Assertions.assertFalse(responseBody.contains("Bài Đọc Chờ Duyệt Test"),
+                "Đề thi KHÔNG được chứa bài đọc PENDING_REVIEW");
+        org.junit.jupiter.api.Assertions.assertTrue(responseBody.contains("Bài Đọc Đã Duyệt Test"),
+                "Đề thi PHẢI chứa bài đọc APPROVED khi có bài APPROVED");
+
+        readingPassageRepository.delete(pending);
+        readingPassageRepository.delete(approved);
     }
 }
