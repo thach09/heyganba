@@ -4,13 +4,13 @@
 
 ## Điều kiện hoàn thành (Definition of Done)
 
-- [ ] SRS engine chạy đúng logic SM-2 rút gọn (giãn cách tăng dần khi trả lời đúng, reset khi sai).
-- [ ] Endpoint "từ cần ôn hôm nay" trả đúng danh sách.
+- [x] SRS engine chạy đúng logic SM-2 rút gọn (giãn cách tăng dần khi trả lời đúng, reset khi sai).
+- [x] Endpoint "từ cần ôn hôm nay" trả đúng danh sách.
 - [~] Redis cache hoạt động — **đã hoãn có điều kiện (27/09/2026)**: implementation có sẵn (`RedisSrsDueCache`, bật bằng
   `APP_SRS_CACHE=redis`) nhưng KHÔNG setup đợt này; chỉ bật khi load test chứng minh Postgres là bottleneck thật (xem mục 2.4).
-- [ ] Job đồng bộ cache chạy đúng lịch.
-- [ ] Giao diện flashcard lật thẻ hoạt động.
-- [ ] User chỉ truy cập được review của chính mình.
+- [x] Job đồng bộ cache chạy đúng lịch.
+- [x] Giao diện flashcard lật thẻ hoạt động.
+- [x] User chỉ truy cập được review của chính mình.
 
 ---
 

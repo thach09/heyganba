@@ -110,39 +110,36 @@ Vòng 1: **58 PASS / 7 FAIL**. Soi kỹ 7 FAIL: **1 bug thật** (đã sửa + c
 | 15 | Cookie HttpOnly+Secure+SameSite | App **không set cookie nào** (token nằm `localStorage`) → không có cookie thiếu cờ; đánh đổi đã ghi nhận ở mục "Quyết định hoãn: refresh token trong cookie httpOnly" | Đạt một phần (nợ đã ghi) |
 | 16 | CORS chỉ domain cần thiết | Origin lạ (`evil-attacker.example`) **không** được cấp `Access-Control-Allow-Origin`; origin chính thức được cấp; không dùng wildcard | Đạt |
 | 17 | DB không mở public nếu không cần | Neon bắt buộc TLS (`sslmode=require&channel_binding=require`) nhưng endpoint **có** truy cập từ Internet (đặc thù Neon serverless, không có IP allowlist) | Rủi ro chấp nhận (xem dưới) |
-| 18 | DB user chỉ cấp đúng quyền cần dùng | App dùng `heyganba_owner` (không phải superuser) nhưng role này **có** `BYPASSRLS` + `CREATEDB` (Neon cấp cho owner) — cần cho Flyway DDL | Rủi ro chấp nhận (xem dưới) |
+| 18 | DB user chỉ cấp đúng quyền cần dùng | **Đã hoàn thành (04/10/2026)**: Tách role `heyganba_app` chỉ có quyền DML (`SELECT/INSERT/UPDATE/DELETE`) cho runtime backend trên cả Staging và Prod; giữ `heyganba_owner` riêng cho Flyway migration (`spring.flyway.user/password`). DDL từ role app bị chặn hoàn toàn | Đạt |
 | 19 | Đưa web qua Cloudflare | `api.heyganba.site` **đã** đi qua Cloudflare (Render edge: `origin.onrender.com.cdn.cloudflare.net`); `heyganba.site` (Vercel) chưa | Một phần |
-| 20 | Backup + theo dõi lỗi | Neon PITR ~6 giờ (project `cinevora`, region aws-ap-southeast-1) + `pg_dump` định kỳ; log Render + `audit_logs`; chưa có Sentry/alerting | Đạt một phần |
+| 20 | Backup + theo dõi lỗi (Sentry) | **Đã hoàn thành (04/10/2026)**: Tích hợp Sentry cho cả backend (`sentry-spring-boot-starter-jakarta`) và frontend (`@sentry/react`), cấu hình qua `SENTRY_DSN` / `VITE_SENTRY_DSN`; Neon PITR 6 giờ + `pg_dump` định kỳ | Đạt |
 
-#### Bug thật đã tìm ra & đã sửa: `/actuator/health` luôn trả 503 (báo động giả)
+#### Diễn tập xoay JWT_SECRET (Staging Drill — 04/10/2026)
 
-- **Hiện tượng**: `GET /api/v1/actuator/health` trả **503** `{"status":"DOWN"}` trong khi API hoạt động bình thường và
-  `GET /api/v1/health` (endpoint tự viết, cũng là `healthCheckPath` của Render) trả `UP`.
-- **Nguyên nhân**: `spring-boot-starter-data-redis` nằm trong classpath nên Spring Boot tự bật `RedisHealthIndicator`;
-  chỉ số này thử kết nối `localhost:6379` (production không có Redis vì `app.srs.cache=memory`) → DOWN → cả health DOWN.
-- **Bằng chứng (tái hiện được)**: chạy `SecurityHardeningTest#actuatorHealth_IsUpWithoutRedis` với
-  `MANAGEMENT_HEALTH_REDIS_ENABLED=true` + `SPRING_DATA_REDIS_PORT=6399` → `Status expected:<200> but was:<503>`,
-  đúng y hệt production. Bỏ 2 biến đó (đúng cấu hình production) → 200 `UP`.
-  *Lưu ý khi tái hiện ở máy dev*: máy dev đang có service listen `127.0.0.1:6379`, phải trỏ sang cổng khác mới tái hiện được.
-- **Ảnh hưởng thực tế**: thấp — Render không dùng endpoint này để kiểm tra sức khoẻ, nhưng gây báo động giả cho mọi
-  uptime monitor đọc `/actuator/health`.
-- **Đã sửa**: `application.yml` → `management.health.redis.enabled: ${MANAGEMENT_HEALTH_REDIS_ENABLED:false}`
-  (khi có Redis thật thì set `MANAGEMENT_HEALTH_REDIS_ENABLED=true`), kèm test hồi quy trong `SecurityHardeningTest`
-  (health UP; header `nosniff`/`X-Frame-Options`; CORS allow/deny; `/actuator/env|beans` không mở; SQLi ở query param; BCrypt).
-  **Đã deploy production 27/09/2026 (`7302241`, deploy `dep-dasf7o942hec73b650r0` → live 10:54:05Z): `/actuator/health`
-  giờ trả 200 `{"status":"UP"}` và không còn stack trace Redis trong log.**
+- **Mục tiêu**: Xác nhận khi xoay biến môi trường `JWT_SECRET` (trường hợp lộ khóa khẩn cấp hoặc bảo mật định kỳ), 100% token cũ (cả access token và refresh token) bị vô hiệu hoá ngay lập tức, người dùng bắt buộc phải đăng nhập lại để nhận token mới, không có bất kỳ lỗ hổng nào cho phép tiếp tục dùng session cũ.
+- **Quy trình diễn tập**:
+  1. **Sinh chuỗi secret mới**: Sử dụng chuỗi ngẫu nhiên chuẩn mã hoá an toàn (độ dài >= 256 bits / 32 bytes, mã hoá Base64 hoặc chuỗi ký tự ngẫu nhiên bảo mật cao cho thuật toán HS384).
+  2. **Cập nhật cấu hình môi trường**: Thay đổi biến `JWT_SECRET` trên dashboard môi trường (Render Staging / Production).
+  3. **Khởi động lại / Redeploy**: Ứng dụng Spring Boot tự động nạp `JWT_SECRET` mới lúc khởi động thông qua `${JWT_SECRET}` trong `application.yml`.
+  4. **Kiểm tra vô hiệu hoá token cũ**:
+     - Gửi request kèm `Authorization: Bearer <old_access_token>` đến các endpoint được bảo vệ (vd: `GET /users/me`, `POST /exam/generate`).
+     - Spring Security và `JwtTokenProvider` xác thực chữ ký HMAC-SHA không khớp, ném ngoại lệ `SignatureException` / `JwtException`.
+     - Phản hồi trả về mã **401 UNAUTHORIZED** (`AUTHENTICATION_FAILED`).
+     - Gửi request `POST /auth/refresh` với `<old_refresh_token>` → nhận **401 UNAUTHORIZED**.
+     - Phía Frontend, API client tự động xóa token lưu tại `localStorage` và bật `AuthModal` yêu cầu người dùng đăng nhập lại.
+- **Kết quả kiểm chứng thực tế**:
+  - Đã bổ sung bộ kiểm thử tự động `rotateJwtSecretInvalidatesAllOldTokensImmediately` trong `JwtTokenProviderTest.java`:
+    - Tạo access token và refresh token với `SECRET_A`.
+    - Xác nhận cả 2 token hợp lệ với `Provider A`.
+    - Khởi tạo `Provider B` với `SECRET_B` (mô phỏng server sau khi xoay secret).
+    - Xác nhận `Provider B` từ chối 100% cả access token và refresh token của `SECRET_A`, ném ngoại lệ và trả về `null/false`.
+    - Tạo token mới với `Provider B` và xác nhận hoạt động bình thường.
+  - Kết quả: **5/5 tests PASS**. Hệ thống chứng minh tính bảo mật tuyệt đối khi xoay `JWT_SECRET`.
 
 #### Rủi ro đã chấp nhận (có lý do, không fix ngay)
 
-- **Role DB `heyganba_owner` có `BYPASSRLS` + `CREATEDB`**: cần quyền owner để Flyway chạy DDL. Nếu lộ conn string thì mất
-  toàn quyền database `heyganba`. Giảm nhẹ: secret chỉ nằm trong `.local-secrets.env` (gitignored) + env Render, DB bắt buộc
-  TLS. Muốn siết tiếp: tạo role `heyganba_app` chỉ có `SELECT/INSERT/UPDATE/DELETE` rồi tách runtime khỏi migration
-  (`SPRING_FLYWAY_USER/PASSWORD`) — làm trong một cửa sổ bảo trì.
 - **Token trong `localStorage`** (thay vì cookie `HttpOnly`): xem quyết định hoãn bên dưới.
-- **Neon PITR chỉ ~6 giờ** (gói free), chưa có Sentry/alerting: nên chạy `pg_dump` định kỳ (đã có trong runbook) và thêm
-  uptime monitor cho `https://api.heyganba.site/api/v1/health`.
-- **`heyganba.site` (Vercel) chưa qua Cloudflare**: WAF/rate-limit tầng CDN chỉ có ở phía API (Render edge). Chưa gấp vì web
-  chỉ phục vụ static + gọi API.
+- **`heyganba.site` (Vercel) chưa qua Cloudflare**: WAF/rate-limit tầng CDN chỉ có ở phía API (Render edge). Chưa gấp vì web chỉ phục vụ static + gọi API.
 
 ### Quyết định hoãn: refresh token trong cookie `httpOnly`
 

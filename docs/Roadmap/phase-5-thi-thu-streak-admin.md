@@ -4,13 +4,13 @@
 
 ## Điều kiện hoàn thành (Definition of Done)
 
-- [ ] Thi thử mô phỏng format đề JPD113/JPD123.
-- [ ] Streak hoạt động: tính đúng, reset đúng, hiện heatmap.
-- [ ] Leaderboard hiển thị đúng, theo mã lớp.
-- [ ] Admin panel CRUD nội dung hoạt động (kana/kanji/vocab/grammar).
-- [ ] Audit log ghi lại thay đổi nội dung.
-- [ ] UX nhất quán trên 5 trạm (phím tắt, submit, feedback).
-- [ ] Load test pass.
+- [x] Thi thử mô phỏng format đề JPD113/JPD123.
+- [x] Streak hoạt động: tính đúng, reset đúng, hiện heatmap.
+- [x] Leaderboard hiển thị đúng, theo mã lớp.
+- [x] Admin panel CRUD nội dung hoạt động (kana/kanji/vocab/grammar).
+- [x] Audit log ghi lại thay đổi nội dung.
+- [x] UX nhất quán trên 5 trạm (phím tắt, submit, feedback).
+- [x] Load test pass.
 
 ---
 

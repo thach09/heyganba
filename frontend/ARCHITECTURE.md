@@ -14,6 +14,7 @@ It describes what exists today; planned changes are tracked in GitHub issues (se
 | Build | Vite 8 | `npm run dev` / `build` / `preview` |
 | Routing | react-router-dom 7 | Real URLs, one route per station |
 | Styling | Tailwind v4 via `@tailwindcss/vite` | Tokens in `src/index.css` `@theme`; no other CSS |
+| Monitoring | @sentry/react | Error tracking initialized conditionally via `VITE_SENTRY_DSN` |
 | Icons | lucide-react | |
 | Effects | canvas-confetti | Completion celebrations |
 | Lint | oxlint | `npm run lint` |
@@ -37,6 +38,7 @@ No state-management or data-fetching library on purpose. The app is one user, ~2
 | `/` | `DashboardView` | Tracker, EXP level, 30-day charts |
 | `/kana` | `KanaStationView` | Tabs: table / typing drill / handwriting |
 | `/vocabulary` | `FlashcardView` | Multiple-choice SRS session |
+| `/dictionary` | `DictionaryView` | Search words/kanji, view details, personal study notebooks (#11) |
 | `/kanji` | `KanjiStationView` | Tabs: browse / write |
 | `/grammar` | `GrammarView` | Tabs: browse / practice |
 | `/grammar/:ruleId` | `GrammarRulePage` | Reading page + related rules |
@@ -53,7 +55,7 @@ src/
   index.css                # @theme tokens + base (64 lines)
   components/              # Sidebar, SubmitButton, FeedbackAlert, MascotBadge
   features/
-    admin/ auth/ dashboard/ exam/ flashcard/
+    admin/ auth/ dashboard/ dictionary/ exam/ flashcard/
     kana/   # + kanaData.ts, kanaAudio.ts, KanaCanvas
     kanji/ grammar/
   services/
@@ -100,7 +102,7 @@ No tests today. CI job `frontend-test` runs `npm run lint` + `npm run build`; th
 
 - Work items live in GitHub issues; PRs link the issue they close.
 - Current frontend refactor: #13 — test harness, API layer, app shell, component splits.
-- Next feature: #11 — Dictionary + Study Vault.
+- Next feature: #11 — Dictionary + Study Vault (Hoàn thành 02/10/2026).
 - This file is updated when the structure changes; it does not carry a backlog.
 
 ## 9. Verification commands
