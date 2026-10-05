@@ -89,22 +89,17 @@ Pipeline ở `.github/workflows/ci.yml`:
 
 ---
 
-## 🔐 Phân quyền & Tài khoản mẫu
+## 🔐 Phân quyền & Quản trị
 
 Hệ thống được cấu hình sẵn 2 phân quyền RBAC: `ROLE_ADMIN` và `ROLE_USER`.
-Tài khoản Quản trị viên được khởi tạo sẵn qua Flyway Migration V2:
+Tài khoản Quản trị viên khởi tạo được định danh:
 
 - **Email Admin:** `admin@heyganba.vn`
-- **Mật khẩu khởi tạo:** `Admin@HeyGanba2026!`
+- **Mật khẩu truy cập:** Xem trong file cấu hình bảo mật nội bộ `.local-secrets.env` (key `SEED_ADMIN_PASSWORD` cho dev/staging, `PROD_ADMIN_PASSWORD` cho production, đã được gitignore) hoặc liên hệ team phát triển để nhận credential phục vụ kiểm thử. Tuyệt đối không commit hoặc in bất kỳ thông tin xác thực dạng plaintext nào trên public repository.
 - **Endpoint kiểm tra quyền:** `GET /api/v1/admin/status` (Chỉ tài khoản ADMIN mới có quyền truy cập, các tài khoản khác bị chặn với mã `403 Forbidden`).
 
-> ⚠️ Đây là tài khoản seed cho local/staging. **Phải đổi mật khẩu** (hoặc tạo admin riêng qua biến môi trường) trước khi public.
-> Nút "Nạp sẵn tài khoản Admin thử nghiệm" ở màn đăng nhập chỉ hiện trong môi trường dev, không lộ ra production.
->
-> 🔐 **Production (27/09/2026): mật khẩu admin đã được xoay** — giá trị ở trên **không** còn dùng được trên production.
-> Mật khẩu production lưu trong `.local-secrets.env` (gitignored, key `PROD_ADMIN_PASSWORD`); khi cần đổi tiếp thì
-> `UPDATE users SET password_hash = <bcrypt-hash>, updated_at = now() WHERE email = 'admin@heyganba.vn';`
-> (hash BCrypt tạo bằng `BCryptPasswordEncoder` — xem `docs/Internal/deployment-plan.md`).
+> 💡 Ở môi trường phát triển local, modal đăng nhập có nút hỗ trợ nạp nhanh tài khoản thử nghiệm dành riêng cho dev; tính năng này tự động ẩn trên môi trường production.
+> Mật khẩu quản trị production được xoay định kỳ và lưu riêng trong secret manager/vault.
 
 ---
 
