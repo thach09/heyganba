@@ -143,42 +143,42 @@ flowchart LR
 
 ```mermaid
 graph TD
-    UserClient["Khách hàng Đa nền tảng<br/>(Desktop Browser 1440px / Mobile Web 390px)"]
+    UserClient["Khách hàng Đa nền tảng<br/>Desktop Browser 1440px / Mobile Web 390px"]
 
-    subgraph CDN_Edge ["Tầng Biên & Định tuyến (Edge & CDN Layer)"]
-        VercelCDN["Vercel Edge Network<br/>(SPA Hosting, HMR, Assets CDN, Clean URL Rewrites)"]
-        Cloudflare["Cloudflare Edge Proxy<br/>(SSL/TLS Termination, DDoS Shield, HSTS Header)"]
+    subgraph CDN_Edge ["Tầng Biên & Định tuyến - Edge & CDN Layer"]
+        VercelCDN["Vercel Edge Network<br/>SPA Hosting, HMR, Assets CDN, Clean URL Rewrites"]
+        Cloudflare["Cloudflare Edge Proxy<br/>SSL/TLS Termination, DDoS Shield, HSTS Header"]
     end
 
-    subgraph Backend_App ["Tầng Ứng dụng Backend (Render Singapore Node)"]
-        SpringCore["Spring Boot 3.4.3 Application (Java 21 LTS)"]
-        SecurityFilterChain["Security Filter Chain<br/>(JWT Stateless, Token Revoke Filter, MaxPayloadSizeFilter 64KB)"]
-        RateLimiter["Rate Limit Guards<br/>(Login: 5 fails/15m, Admin: 30 writes/min)"]
-        SentrySDK["Sentry Application Monitoring SDK<br/>(Real-time Error Tracking & Distributed Tracing)"]
-        Actuator["Spring Boot Actuator<br/>(/actuator/health, /actuator/info)"]
+    subgraph Backend_App ["Tầng Ứng dụng Backend - Render Singapore Node"]
+        SpringCore["Spring Boot 3.4.3 Application - Java 21 LTS"]
+        SecurityFilterChain["Security Filter Chain<br/>JWT Stateless, Token Revoke Filter, MaxPayloadSizeFilter 64KB"]
+        RateLimiter["Rate Limit Guards<br/>Login: 5 fails/15m, Admin: 30 writes/min"]
+        SentrySDK["Sentry Application Monitoring SDK<br/>Real-time Error Tracking & Distributed Tracing"]
+        Actuator["Spring Boot Actuator<br/>/actuator/health, /actuator/info"]
     end
 
-    subgraph Data_Tier ["Tầng Dữ liệu & Lưu trữ (PostgreSQL 16 Neon Singapore)"]
-        PostgresApp[("Runtime Application DB<br/>User: heyganba_app<br/>(Chỉ cấp quyền DML: SELECT, INSERT, UPDATE, DELETE)")]
-        PostgresOwner[("Flyway Migration Engine<br/>User: heyganba_owner<br/>(Cấp quyền DDL khi khởi chạy Schema)")]
+    subgraph Data_Tier ["Tầng Dữ liệu & Lưu trữ - PostgreSQL 16 Neon Singapore"]
+        PostgresApp["Runtime Application DB<br/>User: heyganba_app<br/>Quyền DML: SELECT, INSERT, UPDATE, DELETE"]
+        PostgresOwner["Flyway Migration Engine<br/>User: heyganba_owner<br/>Quyền DDL khi khởi chạy Schema"]
     end
 
     subgraph Cache_Media ["Tầng Đệm & Media Services"]
-        RedisCache["Redis 7 / In-Memory Fallback Cache<br/>(SRS Due Queue, Top Leaderboard)"]
-        GoogleTTS["Google Translate TTS Gateway<br/>(tl=ja, Audio Stream Fetching)"]
-        TTSStorage[("Bảng tts_audio / Cloudflare R2<br/>(Audio Cache chống spam TTS Endpoint)")]
+        RedisCache["Redis 7 / In-Memory Fallback Cache<br/>SRS Due Queue, Top Leaderboard"]
+        GoogleTTS["Google Translate TTS Gateway<br/>tl=ja, Audio Stream Fetching"]
+        TTSStorage["Lưu trữ TTS: Bảng tts_audio / Cloudflare R2<br/>Audio Cache chống spam TTS Endpoint"]
     end
 
     UserClient -->|HTTPS Traffic| VercelCDN
-    UserClient -->|API Requests: /api/v1/*| Cloudflare
+    UserClient -->|API Requests: /api/v1| Cloudflare
     Cloudflare -->|Reverse Proxy| SpringCore
     SpringCore --> SecurityFilterChain
     SecurityFilterChain --> RateLimiter
     SpringCore --> SentrySDK
     SpringCore --> Actuator
     
-    SpringCore -->|HikariCP Connection Pool (DML)| PostgresApp
-    PostgresOwner -->|Flyway Migration on Startup (DDL)| PostgresApp
+    SpringCore -->|HikariCP Connection Pool - DML| PostgresApp
+    PostgresOwner -->|Flyway Migration on Startup - DDL| PostgresApp
     SpringCore --> RedisCache
     SpringCore --> GoogleTTS
     GoogleTTS --> TTSStorage
