@@ -10,7 +10,7 @@ This audit maps the 20-point checklist supplied with the release request to repo
 | 2 | Authentication rate limits | Pass | Existing per-account and per-IP login throttles and generic credential errors remain covered by backend tests. Admin write limit remains 30 requests/minute. |
 | 3 | Session expiry and revocation | Pass | Access and refresh token TTLs remain bounded; logout/password changes revoke tokens. Refresh rotation now serializes concurrent refreshes and rejects replay. |
 | 4 | Remove excess debug logs | Pass | Frontend auth no longer writes refresh/logout failures to the console. Error handling avoids echoing untrusted values. No secret or token logging was found in the changed paths. |
-| 5 | Keep secrets out of frontend | Pass in source; deploy migration pending | Removed the development UI prefill for the published admin password. Migration V34 disables only the seed account that still has the exact public password hash and increments its token version. PostgreSQL test and production release must apply V34 before the item is fully deployed. |
+| 5 | Keep secrets out of frontend | Source and migration verified; live deploy pending | Removed the development UI prefill for the published admin password. Migration V34 disables only the seed account that still has the exact public password hash and increments its token version. PostgreSQL regression coverage and a production-backup clone both applied V34 successfully; live production still needs the deployment. |
 | 6 | Avoid detailed client errors | Pass | API validation responses do not echo rejected values; unhandled errors use the generic response path. Error details remain server-side. |
 | 7 | Restrict uploaded file types | Not applicable | The application has no file upload endpoint. |
 | 8 | Restrict request/file size | Pass | Request bodies are capped at 64 KiB, including chunked requests; larger bodies receive 413. |
@@ -33,9 +33,9 @@ This audit maps the 20-point checklist supplied with the release request to repo
 - Refresh cookie tests cover cookie flags, Origin rejection, rotation, replay rejection, and logout revocation. Browser smoke covers login, reload recovery, token storage, and desktop/mobile layouts.
 - V34 is narrowly scoped to `admin@heyganba.vn` with the exact public sample hash; changed credentials are untouched. Apply it through Flyway during backend deployment.
 - The production database backup was created with `pg_dump` and restored into an isolated audit database. User, vocabulary, kanji, and migration counts matched. The backup file and connection credentials are excluded from Git.
-- H2 backend suite: 176 tests passed. The final PostgreSQL suite is run separately against the isolated `heyganba_security_master_20261007` database before release.
+- H2 backend suite: 176 tests passed. Fresh PostgreSQL 16 suite: 176 tests passed. A restored production backup clone validated 28 migrations, applied 9 through V34, and started the production profile successfully.
 - Frontend checks: lint, build, unit tests, npm audit, dictionary/auth browser smoke, and 1440px/390px layout screenshots. Lint currently reports existing React hook warnings; it exits successfully.
-- Docker Compose now binds its published service ports to loopback. Existing containers need recreation for the new binding to take effect.
+- Docker Compose now binds its published service ports to loopback; PostgreSQL and Redis are healthy with the existing named data volume preserved. The separate older `heyganba` development database has checksum drift in V9/V12, so its Docker backend is stopped to avoid a restart loop. The live local tester at ports 5174/8081 remains healthy and passed both browser smoke suites.
 
 ## Deployment gates
 
