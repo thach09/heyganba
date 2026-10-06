@@ -131,14 +131,17 @@ export function App() {
 
   const handleLogout = async () => {
     try {
-      await logoutApi();
+      if (!await logoutApi()) {
+        setAccountNotice('Chưa đăng xuất được khỏi máy chủ. Vui lòng kiểm tra mạng rồi thử lại.');
+        return;
+      }
     } catch {
-      // Ignore network/server errors during logout
-    } finally {
-      clearTokens();
-      setUser(null);
-      navigate('/');
+      setAccountNotice('Chưa đăng xuất được khỏi máy chủ. Vui lòng thử lại.');
+      return;
     }
+    clearTokens();
+    setUser(null);
+    navigate('/');
   };
 
   /** Mobile: picking a nav item closes the drawer (desktop keeps it open as a column). */

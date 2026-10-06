@@ -37,12 +37,13 @@ const search = async query => {
 };
 try {
   await page.setViewport({ width: 1440, height: 1000 });
-  await page.goto(`${origin}/dictionary`, { waitUntil: 'networkidle0' });
+  await page.goto(`${origin}/dictionary`, { waitUntil: 'domcontentloaded' });
   await search('gakko');
   assert.ok(await page.evaluate(() => document.body.textContent.includes('学校')));
   await screenshot('dictionary-desktop-1440');
   await page.evaluate(auth => { localStorage.setItem('heyganba_access_token', auth.accessToken); localStorage.setItem('heyganba_refresh_token', auth.refreshToken); localStorage.setItem('heyganba_user', JSON.stringify(auth)); }, auth);
-  await page.reload({ waitUntil: 'networkidle0' });
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => [...document.querySelectorAll('button')].some(b => b.textContent.includes('Lưu vào sổ tay')));
   await clickText('Lưu vào sổ tay');
   await page.waitForSelector('dialog[open]');
   await waitText('Bạn chưa có sổ cá nhân');
@@ -84,13 +85,16 @@ try {
   for (const width of [1440, 390]) {
     await page.setViewport({ width, height: width === 390 ? 844 : 1000, deviceScaleFactor: 1 });
     for (const route of ['/dictionary?q=日本語', '/kana', '/vocabulary', '/kanji', '/grammar', '/exam', '/', '/admin']) {
-      await page.goto(`${origin}${route}`, { waitUntil: 'networkidle0' });
+      await page.goto(`${origin}${route}`, { waitUntil: 'domcontentloaded' });
+      await page.waitForFunction(() => document.querySelector('main') && !document.querySelector('main').textContent.includes('Đang tải'));
+      await page.waitForNetworkIdle({ idleTime: 300, concurrency: 5, timeout: 10000 });
       const overflow = await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1);
       assert.equal(overflow, false, `Horizontal overflow ${route} at ${width}`);
       await screenshot(`${route.split('?')[0].replaceAll('/', '') || 'dashboard'}-${width}`);
       results.push({ route, width, overflow });
     }
-    await page.goto(`${origin}/kana`, { waitUntil: 'networkidle0' });
+    await page.goto(`${origin}/kana`, { waitUntil: 'domcontentloaded' });
+    await page.waitForFunction(() => [...document.querySelectorAll('button')].some(b => b.textContent.includes('Luyện viết')));
     await clickText('Luyện viết');
     await page.waitForSelector('canvas');
     await page.$eval('canvas', c => c.scrollIntoView({block:'center'}));
@@ -102,7 +106,8 @@ try {
     await screenshot(`handwriting-wrong-${width}`);
     results.push({check:'wrong-handwriting-rejected',width,passed:true});
   }
-  await page.goto(`${origin}/`, { waitUntil: 'networkidle0' });
+  await page.goto(`${origin}/`, { waitUntil: 'domcontentloaded' });
+  await page.waitForSelector('button[aria-label="Mở thanh điều hướng"]');
   await page.click('button[aria-label="Mở thanh điều hướng"]');
   await clickText('Đổi mật khẩu');
   await page.waitForSelector('dialog[open] input[type="password"]');
@@ -110,23 +115,23 @@ try {
   const passwordFields = await page.$$('dialog[open] input[type="password"]');
   for (const [i, value] of ['LocalAudit123!','NewLocalAudit456!','NewLocalAudit456!'].entries()) await passwordFields[i].type(value);
   await page.click('dialog[open] button[type="submit"]');
-  await page.waitForFunction(() => !localStorage.getItem('heyganba_access_token'));
+  await page.waitForFunction(() => !localStorage.getItem('heyganba_user'));
   await waitText('Đăng nhập');
   await page.waitForSelector('dialog[aria-label="Đăng nhập vào HeyGanba"][open]');
   await page.type('#auth-email', email);
   await page.type('#auth-password', 'NewLocalAudit456!');
   await page.click('dialog[open] button[type="submit"]');
-  await page.waitForFunction(() => Boolean(localStorage.getItem('heyganba_access_token')) && !document.querySelector('dialog[open]'));
+  await page.waitForFunction(() => Boolean(localStorage.getItem('heyganba_user')) && !document.querySelector('dialog[open]'));
   assert.equal(await page.evaluate(() => document.body.textContent.includes('Đã đổi mật khẩu. Vui lòng đăng nhập lại')), false);
   await page.click('button[aria-label="Mở thanh điều hướng"]');
   await clickText('Đăng xuất');
-  await page.waitForFunction(() => !localStorage.getItem('heyganba_access_token'));
+  await page.waitForFunction(() => !localStorage.getItem('heyganba_user'));
   results.push({ check: 'password-change-logs-out-and-opens-login', passed: true });
   assert.deepEqual(errors, []);
   writeFileSync(`${out}/results.json`, JSON.stringify({ email, userId: auth.userId, results, errors }, null, 2));
   console.log(`Passed ${results.length} UI checks; screenshots: ${out}; test user id: ${auth.userId}`);
 } catch (error) {
   await screenshot('failure');
-  writeFileSync(`${out}/failure.txt`, JSON.stringify(await page.evaluate(() => ({text:document.body.innerText, inputs:[...document.querySelectorAll('input')].map(i=>({label:i.ariaLabel,value:i.value,valid:i.validity.valid})),dialogs:document.querySelectorAll('dialog[open]').length})),null,2));
+  writeFileSync(`${out}/failure.txt`, JSON.stringify(await page.evaluate(() => ({text:document.body.innerText, inputs:[...document.querySelectorAll('input')].map(i=>({label:i.ariaLabel,value:i.type === 'password' ? '[redacted]' : i.value,valid:i.validity.valid})),dialogs:document.querySelectorAll('dialog[open]').length})),null,2));
   throw error;
 } finally { await browser.close(); }

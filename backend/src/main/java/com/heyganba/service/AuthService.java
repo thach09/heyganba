@@ -221,19 +221,22 @@ public class AuthService {
                 .build();
     }
 
+    @Transactional
     public AuthResponse refreshToken(RefreshTokenRequest request) {
         String token = request.getRefreshToken();
         if (!tokenProvider.validateToken(token) || !tokenProvider.isRefreshToken(token)) {
             throw new BadRequestException("Invalid or expired refresh token");
         }
 
+        String username = tokenProvider.getUsernameFromJwt(token);
+        UserPrincipal initial = (UserPrincipal) userDetailsService.loadUserByUsername(username);
+        User user = userRepository.findLockedById(initial.getId()).orElseThrow(() -> new BadRequestException("Account not found"));
+        UserPrincipal userPrincipal = UserPrincipal.create(user);
+        // Serialize rotation per account before checking revocation, including concurrent refresh requests.
         String jti = tokenProvider.getJtiFromJwt(token);
         if (jti != null && tokenRevocationService.isRevoked(jti)) {
             throw new org.springframework.security.authentication.BadCredentialsException("Refresh token has been revoked");
         }
-
-        String username = tokenProvider.getUsernameFromJwt(token);
-        UserPrincipal userPrincipal = (UserPrincipal) userDetailsService.loadUserByUsername(username);
 
         if (!tokenProvider.matchesTokenVersion(token, userPrincipal)) {
             throw new org.springframework.security.authentication.BadCredentialsException("Phiên đăng nhập đã bị thu hồi");
@@ -243,6 +246,7 @@ public class AuthService {
             throw new BadRequestException("Account is disabled");
         }
 
+        tokenRevocationService.revokeToken(token);
         String newAccessToken = tokenProvider.generateAccessToken(userPrincipal);
         String newRefreshToken = tokenProvider.generateRefreshToken(userPrincipal);
 

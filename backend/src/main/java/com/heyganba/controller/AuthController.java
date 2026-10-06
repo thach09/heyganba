@@ -44,6 +44,7 @@ public class AuthController {
 
     private final AuthService authService;
     private final RateLimiterService rateLimiterService;
+    private final com.heyganba.service.RefreshCookieService refreshCookieService;
 
     @Value("${app.security.auth.login-max-failed-attempts-per-email:5}")
     private int loginMaxFailedAttemptsPerEmail;
@@ -68,8 +69,10 @@ public class AuthController {
                     "Too many registration attempts from this network. Please try again later.");
         }
 
+        refreshCookieService.browser(httpRequest);
         AuthResponse response = authService.register(request);
         return ResponseEntity.status(HttpStatus.CREATED)
+                .headers(refreshCookieService.headers(httpRequest, response))
                 .body(ApiResponse.success(response, "User registered successfully"));
     }
 
@@ -88,8 +91,10 @@ public class AuthController {
         }
 
         try {
+            refreshCookieService.browser(httpRequest);
             AuthResponse response = authService.login(request);
-            return ResponseEntity.ok(ApiResponse.success(response, "Logged in successfully"));
+            return ResponseEntity.ok().headers(refreshCookieService.headers(httpRequest, response))
+                    .body(ApiResponse.success(response, "Logged in successfully"));
         } catch (AuthenticationException ex) {
             // Chỉ đếm khi xác thực THẤT BẠI, tránh tự khoá tài khoản của chính người dùng.
             rateLimiterService.tryConsume(emailKey, loginMaxFailedAttemptsPerEmail, LOGIN_WINDOW);
@@ -100,7 +105,7 @@ public class AuthController {
 
     @PostMapping("/refresh")
     public ResponseEntity<ApiResponse<AuthResponse>> refreshToken(
-            @Valid @RequestBody RefreshTokenRequest request,
+            @RequestBody(required = false) RefreshTokenRequest request,
             HttpServletRequest httpRequest
     ) {
         String ipKey = "auth-refresh-ip:" + ClientIpResolver.resolve(httpRequest);
@@ -108,8 +113,16 @@ public class AuthController {
             throw new TooManyRequestsException("Too many token refresh attempts. Please try again later.");
         }
 
-        AuthResponse response = authService.refreshToken(request);
-        return ResponseEntity.ok(ApiResponse.success(response, "Token refreshed successfully"));
+        String token = refreshCookieService.browser(httpRequest) ? refreshCookieService.token(httpRequest)
+                : request == null ? null : request.getRefreshToken();
+        // One-time upgrade of existing body-token sessions to a browser cookie.
+        if ((token == null || token.isBlank()) && request != null) token = request.getRefreshToken();
+        if (token == null || token.isBlank() || token.length() > 4096) {
+            throw new com.heyganba.common.exception.BadRequestException("Refresh token is required");
+        }
+        AuthResponse response = authService.refreshToken(RefreshTokenRequest.builder().refreshToken(token).build());
+        return ResponseEntity.ok().headers(refreshCookieService.headers(httpRequest, response))
+                .body(ApiResponse.success(response, "Token refreshed successfully"));
     }
 
     @PostMapping("/logout")
@@ -121,10 +134,13 @@ public class AuthController {
         String accessToken = (bearer != null && bearer.startsWith("Bearer "))
                 ? bearer.substring(7)
                 : null;
-        String refreshToken = request != null ? request.getRefreshToken() : null;
+        boolean browser = refreshCookieService.browser(httpRequest);
+        String refreshToken = browser ? refreshCookieService.token(httpRequest) : request != null ? request.getRefreshToken() : null;
 
         authService.logout(accessToken, refreshToken);
-        return ResponseEntity.ok(ApiResponse.success(null, "Logged out successfully"));
+        var builder = ResponseEntity.ok().cacheControl(org.springframework.http.CacheControl.noStore());
+        if (browser) builder.header(org.springframework.http.HttpHeaders.SET_COOKIE, refreshCookieService.clear());
+        return builder.body(ApiResponse.success(null, "Logged out successfully"));
     }
 
     @org.springframework.web.bind.annotation.PutMapping("/password")
@@ -136,7 +152,10 @@ public class AuthController {
             throw new TooManyRequestsException("Bạn đã thử nhiều lần. Vui lòng thử lại sau 15 phút.");
         }
         String bearer = httpRequest.getHeader("Authorization");
+        boolean browser = refreshCookieService.browser(httpRequest);
         authService.changePassword(user.getId(), request, bearer.substring(7));
-        return ResponseEntity.ok(ApiResponse.success(null, "Đã đổi mật khẩu và đăng xuất tất cả thiết bị"));
+        var builder = ResponseEntity.ok().cacheControl(org.springframework.http.CacheControl.noStore());
+        if (browser) builder.header(org.springframework.http.HttpHeaders.SET_COOKIE, refreshCookieService.clear());
+        return builder.body(ApiResponse.success(null, "Đã đổi mật khẩu và đăng xuất tất cả thiết bị"));
     }
 }
