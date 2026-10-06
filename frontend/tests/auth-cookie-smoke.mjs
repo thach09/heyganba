@@ -41,8 +41,25 @@ try {
   await resumed;
   for (const width of [1440, 390]) {
     await page.setViewport({ width, height: 1000 });
+    if (width <= 900) {
+      await page.waitForFunction(() => matchMedia('(max-width: 900px)').matches
+        && document.querySelector('button.fixed.left-2.top-2') !== null);
+      await new Promise(resolve => setTimeout(resolve, 200)); // Let the sidebar and content-margin transitions finish.
+      const mobileLayout = await page.evaluate(() => {
+        const box = (element) => { const r = element.getBoundingClientRect(); return { x: Math.round(r.x), width: Math.round(r.width) }; };
+        const sidebar = document.querySelector('aside[aria-label]');
+        const main = document.querySelector('main');
+        return { viewport: innerWidth, documentWidth: document.documentElement.scrollWidth, scrollX,
+          sidebar: { ...box(sidebar), closed: sidebar.hasAttribute('inert') }, main: box(main), content: box(main.firstElementChild) };
+      });
+      assert.ok(mobileLayout.sidebar.closed && mobileLayout.sidebar.x <= -mobileLayout.sidebar.width + 1,
+        'The mobile drawer must be off-screen after resizing');
+      assert.equal(mobileLayout.main.x, 0, 'The dashboard must reclaim the mobile viewport after the drawer closes');
+      assert.ok(mobileLayout.documentWidth <= mobileLayout.viewport, 'Mobile dashboard must not overflow horizontally');
+    }
+    await page.evaluate(() => window.scrollTo({ left: 0, top: 0, behavior: 'instant' }));
+    assert.equal(await page.evaluate(() => window.scrollX), 0, `Screenshot must start at the left edge at ${width}px`);
     await page.screenshot({ path: `${out}/cookie-auth-${width}.png`, fullPage: true });
-    assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
   }
   assert.deepEqual(errors, []);
   await page.evaluate(() => [...document.querySelectorAll('button')].find(b => b.textContent.includes('Đăng xuất'))?.click());
