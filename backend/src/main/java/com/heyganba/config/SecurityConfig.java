@@ -89,6 +89,7 @@ public class SecurityConfig {
                         })
                 )
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/auth/password").authenticated()
                         .requestMatchers(
                                 "/auth/**",
                                 "/dictionary/**",

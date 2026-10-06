@@ -155,23 +155,31 @@ export async function apiRequest<T>(
           ...options,
           headers,
         });
-        return await retryResponse.json();
+        return await readApiResponse<T>(retryResponse);
       }
     }
 
-    const data: ApiResponse<T> = await response.json();
+    const data = await readApiResponse<T>(response);
     return data;
   } catch (error: any) {
     return {
       success: false,
       data: null as any,
-      message: error.message || 'Network request failed',
+      message: 'Chưa kết nối được máy chủ. Vui lòng kiểm tra mạng rồi thử lại.',
       error: error,
     };
   }
 }
 
 async function attemptRefreshToken(): Promise<boolean> {
+  if (refreshInFlight) return refreshInFlight;
+  refreshInFlight = refreshTokenOnce().finally(() => { refreshInFlight = null; });
+  return refreshInFlight;
+}
+
+let refreshInFlight: Promise<boolean> | null = null;
+
+async function refreshTokenOnce(): Promise<boolean> {
   const refreshToken = getRefreshToken();
   if (!refreshToken) return false;
 
@@ -185,6 +193,8 @@ async function attemptRefreshToken(): Promise<boolean> {
     if (res.ok) {
       const json: ApiResponse<AuthResponse> = await res.json();
       if (json.success && json.data) {
+        // A pending refresh must never restore a session that the user already logged out of.
+        if (getRefreshToken() !== refreshToken) return false;
         saveTokens(json.data.accessToken, json.data.refreshToken);
         return true;
       }
@@ -193,6 +203,16 @@ async function attemptRefreshToken(): Promise<boolean> {
     console.error('Refresh token failed:', e);
   }
 
-  clearTokens();
+  if (getRefreshToken() === refreshToken) {
+    clearTokens();
+    window.dispatchEvent(new Event('heyganba:session-expired'));
+  }
   return false;
+}
+
+async function readApiResponse<T>(response: Response): Promise<ApiResponse<T>> {
+  if (response.headers.get('content-type')?.includes('application/json')) return response.json();
+  return { success: false, data: null as T, message: response.status >= 500
+    ? 'Máy chủ đang bận. Vui lòng thử lại sau.'
+    : 'Chưa thực hiện được yêu cầu. Vui lòng tải lại trang rồi thử lại.' };
 }

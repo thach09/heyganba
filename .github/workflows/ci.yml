@@ -14,7 +14,7 @@ concurrency:
 
 env:
   JAVA_VERSION: "21"
-  NODE_VERSION: "20"
+  NODE_VERSION: "24"
 
 jobs:
   backend-test:
@@ -111,6 +111,10 @@ jobs:
       - name: Build Frontend
         working-directory: ./frontend
         run: npm run build
+
+      - name: Test frontend behavior
+        working-directory: ./frontend
+        run: npm test
 
       - name: Upload build output
         uses: actions/upload-artifact@v4

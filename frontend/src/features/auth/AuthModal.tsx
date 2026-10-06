@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { X, Lock, Mail, User as UserIcon, Users } from 'lucide-react';
+import { Lock, Mail, User as UserIcon, Users } from 'lucide-react';
 import { apiRequest, saveTokens, saveUser } from '../../services/api';
 import type { AuthResponse } from '../../services/api';
 import { SubmitButton } from '../../components/SubmitButton';
+import { Modal } from '../../components/Modal';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -75,27 +76,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-[110] flex items-center justify-center bg-scrim p-5" onClick={onClose}>
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-label={isRegister ? 'Tạo tài khoản HeyGanba' : 'Đăng nhập vào HeyGanba'}
-        className="w-full max-w-[380px] bg-card px-7 py-8"
-        onClick={(event) => event.stopPropagation()}
-      >
+    <Modal compact title={isRegister ? 'Tạo tài khoản HeyGanba' : 'Đăng nhập vào HeyGanba'} onClose={onClose}>
         <div className="flex items-start justify-between gap-4">
           <h2 className="text-[16px] font-semibold text-fg">
             {isRegister ? 'Tạo tài khoản HeyGanba' : 'Đăng nhập vào HeyGanba'}
           </h2>
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Đóng"
-            title="Đóng"
-            className="inline-flex h-7 w-7 shrink-0 cursor-pointer items-center justify-center border border-rule bg-transparent text-fg-60 transition-colors hover:border-rule-strong hover:text-fg"
-          >
-            <X size={15} />
-          </button>
         </div>
 
         {error && (
@@ -258,7 +243,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             </button>
           </div>
         )}
-      </div>
-    </div>
+    </Modal>
   );
 };

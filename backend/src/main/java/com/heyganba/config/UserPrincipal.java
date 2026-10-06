@@ -28,6 +28,8 @@ public class UserPrincipal implements UserDetails {
     /** Mã lớp học (nullable) — cần cho leaderboard theo lớp. */
     private String classCode;
 
+    private int tokenVersion;
+
     public static UserPrincipal create(User user) {
         GrantedAuthority authority = new SimpleGrantedAuthority(user.getRole().getName().name());
         return UserPrincipal.builder()
@@ -38,6 +40,7 @@ public class UserPrincipal implements UserDetails {
                 .authorities(Collections.singletonList(authority))
                 .enabled(Boolean.TRUE.equals(user.getIsActive()))
                 .classCode(user.getClassCode())
+                .tokenVersion(user.getTokenVersion() == null ? 0 : user.getTokenVersion())
                 .build();
     }
 

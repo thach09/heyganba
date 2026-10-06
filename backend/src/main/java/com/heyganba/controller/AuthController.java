@@ -126,4 +126,17 @@ public class AuthController {
         authService.logout(accessToken, refreshToken);
         return ResponseEntity.ok(ApiResponse.success(null, "Logged out successfully"));
     }
+
+    @org.springframework.web.bind.annotation.PutMapping("/password")
+    public ResponseEntity<ApiResponse<Void>> changePassword(
+            @org.springframework.security.core.annotation.AuthenticationPrincipal com.heyganba.config.UserPrincipal user,
+            @Valid @RequestBody com.heyganba.dto.auth.ChangePasswordRequest request,
+            HttpServletRequest httpRequest) {
+        if (!rateLimiterService.tryConsume("auth-password:" + user.getId(), 5, LOGIN_WINDOW)) {
+            throw new TooManyRequestsException("Bạn đã thử nhiều lần. Vui lòng thử lại sau 15 phút.");
+        }
+        String bearer = httpRequest.getHeader("Authorization");
+        authService.changePassword(user.getId(), request, bearer.substring(7));
+        return ResponseEntity.ok(ApiResponse.success(null, "Đã đổi mật khẩu và đăng xuất tất cả thiết bị"));
+    }
 }

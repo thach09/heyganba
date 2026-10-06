@@ -20,6 +20,9 @@ public class Vocabulary {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "dictionary_entry_id", unique = true)
+    private Long dictionaryEntryId;
+
     @Column(nullable = false, length = 100)
     private String word;
 

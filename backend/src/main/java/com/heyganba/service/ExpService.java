@@ -32,14 +32,14 @@ public class ExpService {
 
         for (StudyActivity activity : activities) {
             if (StudyActivityService.SOURCE_GRAMMAR.equalsIgnoreCase(activity.getSource())
-                    || "KANA".equalsIgnoreCase(activity.getSource())) {
+                    || "KANA".equalsIgnoreCase(activity.getSource()) || "NOTEBOOK".equalsIgnoreCase(activity.getSource())) {
                 exerciseExp += (long) activity.getCorrectCount() * expConfig.getExerciseCorrect();
             } else if (StudyActivityService.SOURCE_FLASHCARD.equalsIgnoreCase(activity.getSource())) {
-                int sessions = Math.max(1, activity.getItemCount() / 10);
-                srsExp += (long) sessions * expConfig.getSrsSession();
+                srsExp += activity.getItemCount();
             }
         }
 
+        srsExp = (srsExp / 10) * expConfig.getSrsSession();
         long examExp = 0;
         for (ExamResult exam : exams) {
             double percent = exam.getScorePercent() != null ? exam.getScorePercent() : 0.0;

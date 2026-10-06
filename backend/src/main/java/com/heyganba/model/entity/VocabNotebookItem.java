@@ -35,6 +35,15 @@ public class VocabNotebookItem {
     @Column(name = "custom_note", columnDefinition = "TEXT")
     private String customNote;
 
+    @Builder.Default
+    @Column(name = "practice_count", nullable = false)
+    private Integer practiceCount = 0;
+    @Builder.Default
+    @Column(name = "correct_count", nullable = false)
+    private Integer correctCount = 0;
+    @Column(name = "last_practiced_at")
+    private Instant lastPracticedAt;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;

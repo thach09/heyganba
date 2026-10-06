@@ -13,6 +13,10 @@ public record VocabNotebookItemResponse(
         String exampleSentence,
         String exampleReading,
         String exampleMeaning,
-        String customNote
+        String customNote,
+        int practiceCount,
+        int correctCount,
+        java.time.Instant lastPracticedAt,
+        String meaningLanguage
 ) {
 }

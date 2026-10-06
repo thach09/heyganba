@@ -23,7 +23,7 @@ export const SubmitButton: React.FC<SubmitButtonProps> = ({
   variant = 'primary',
   shortcutHint,
   type = 'button',
-  id = 'submit-action-btn',
+  id,
   fullWidth = false,
   className = '',
   title,

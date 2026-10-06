@@ -17,6 +17,7 @@ interface SidebarProps {
   onSelectKanaScript?: (script: 'HIRAGANA' | 'KATAKANA') => void;
   onOpenAuthModal?: () => void;
   onLogout?: () => void;
+  onChangePassword?: () => void;
   streakCount?: number;
 }
 
@@ -116,6 +117,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onSelectKanaScript,
   onOpenAuthModal,
   onLogout,
+  onChangePassword,
   streakCount = 0,
 }) => {
   const isAdmin = user?.role === 'ROLE_ADMIN';
@@ -329,6 +331,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 Đăng xuất
               </button>
             )}
+            {onChangePassword && <button type="button" onClick={onChangePassword} className="min-h-11 cursor-pointer self-start bg-transparent text-[12.5px] text-fg-60 hover:text-fg">Đổi mật khẩu</button>}
           </>
         ) : (
           onOpenAuthModal && (

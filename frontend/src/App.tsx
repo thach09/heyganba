@@ -3,6 +3,7 @@ import { Menu } from 'lucide-react';
 import { Link, Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { Sidebar } from './components/Sidebar';
 import { AuthModal } from './features/auth/AuthModal';
+import { ChangePasswordModal } from './features/auth/ChangePasswordModal';
 import { DashboardView } from './features/dashboard/DashboardView';
 import { AdminView } from './features/admin/AdminView';
 import { KanaStationView } from './features/kana/KanaStationView';
@@ -51,8 +52,10 @@ export function App() {
   const navigate = useNavigate();
   // Owned here so the sidebar dropdown can target Hiragana or Katakana directly.
   const [kanaScript, setKanaScript] = useState<'HIRAGANA' | 'KATAKANA'>('HIRAGANA');
-  const [user, setUser] = useState<AuthResponse | null>(null);
+  const [user, setUser] = useState<AuthResponse | null>(() => getSavedUser());
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [changingPassword, setChangingPassword] = useState(false);
+  const [accountNotice, setAccountNotice] = useState('');
   const isMobileLayout = useIsMobileLayout();
   /**
    * Manual user preference for the menu: `null` = not chosen yet -> follow the breakpoint default
@@ -98,12 +101,6 @@ export function App() {
   }, [isSidebarOverlay]);
 
   useEffect(() => {
-    // Check saved user session
-    const saved = getSavedUser();
-    if (saved) {
-      setUser(saved);
-    }
-
     // Ping backend health check (/api/v1/health)
     apiRequest<any>('/health')
       .then((res) => {
@@ -112,6 +109,12 @@ export function App() {
       .catch(() => {
         setBackendHealthy(false);
       });
+  }, []);
+
+  useEffect(() => {
+    const expired = () => { setUser(null); setAccountNotice('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.'); };
+    window.addEventListener('heyganba:session-expired', expired);
+    return () => window.removeEventListener('heyganba:session-expired', expired);
   }, []);
 
   useEffect(() => {
@@ -175,6 +178,7 @@ export function App() {
         onSelectKanaScript={setKanaScript}
         onOpenAuthModal={openAuthModal}
         onLogout={handleLogout}
+        onChangePassword={() => { setChangingPassword(true); if (isMobileLayout) closeSidebar(); }}
         streakCount={streakCount}
       />
 
@@ -266,11 +270,18 @@ export function App() {
       </div>
 
       {/* Auth Modal for Login / Register */}
+      {changingPassword && user && <ChangePasswordModal onClose={() => setChangingPassword(false)} onChanged={() => {
+        setChangingPassword(false); setUser(null); setAccountNotice('Đã đổi mật khẩu. Vui lòng đăng nhập lại bằng mật khẩu mới.'); setIsAuthModalOpen(true);
+      }} />}
+      {accountNotice && <div role="status" className="fixed bottom-4 right-4 z-[120] max-w-[calc(100%-32px)] bg-card p-4 text-[12.5px] text-fg">
+        {accountNotice}<button type="button" aria-label="Đóng thông báo" onClick={() => setAccountNotice('')} className="ml-4 cursor-pointer">×</button>
+      </div>}
       <AuthModal
         isOpen={isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}
         onAuthSuccess={(loggedInUser) => {
           setUser(loggedInUser);
+          setAccountNotice('');
         }}
       />
     </div>

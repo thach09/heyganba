@@ -97,6 +97,7 @@ public class JwtTokenProvider {
         claims.put("fullName", userPrincipal.getFullName());
         claims.put("role", userPrincipal.getAuthorities().iterator().next().getAuthority());
         claims.put(TOKEN_TYPE_CLAIM, ACCESS_TOKEN_TYPE);
+        claims.put("token_version", userPrincipal.getTokenVersion());
 
         return Jwts.builder()
                 .id(UUID.randomUUID().toString())
@@ -116,6 +117,7 @@ public class JwtTokenProvider {
                 .id(UUID.randomUUID().toString())
                 .subject(userPrincipal.getUsername())
                 .claim(TOKEN_TYPE_CLAIM, REFRESH_TOKEN_TYPE)
+                .claim("token_version", userPrincipal.getTokenVersion())
                 .issuedAt(now)
                 .expiration(expiryDate)
                 .signWith(key)
@@ -124,6 +126,11 @@ public class JwtTokenProvider {
 
     public String getUsernameFromJwt(String token) {
         return parseClaims(token).getSubject();
+    }
+
+    public boolean matchesTokenVersion(String token, UserPrincipal principal) {
+        Number version = parseClaims(token).get("token_version", Number.class);
+        return (version == null ? 0 : version.intValue()) == principal.getTokenVersion();
     }
 
     /** Chỉ access token mới được dùng để gọi API protected. */

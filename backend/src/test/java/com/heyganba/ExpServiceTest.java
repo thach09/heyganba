@@ -124,4 +124,15 @@ class ExpServiceTest {
         assertThat(response.rankTier()).isEqualTo(1);
         assertThat(response.config().exerciseCorrect()).isEqualTo(25);
     }
+
+    @Test void singleReviewsDoNotEachGrantSessionExpAndNotebookExpIsCounted() {
+        var activity = StudyActivity.builder().source("FLASHCARD").itemCount(1).correctCount(1).build();
+        when(studyActivityRepository.findByUserId(3L)).thenReturn(java.util.Collections.nCopies(9, activity));
+        when(examResultRepository.findByUserIdOrderByCreatedAtDesc(3L)).thenReturn(List.of());
+        assertThat(expService.calculateUserExp(3L).totalExp()).isZero();
+        var activities = new java.util.ArrayList<>(java.util.Collections.nCopies(10, activity));
+        activities.add(StudyActivity.builder().source("NOTEBOOK").itemCount(3).correctCount(2).build());
+        when(studyActivityRepository.findByUserId(3L)).thenReturn(activities);
+        assertThat(expService.calculateUserExp(3L).totalExp()).isEqualTo(70);
+    }
 }

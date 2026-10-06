@@ -37,7 +37,7 @@ public class ProgressController {
         return ResponseEntity.ok(ApiResponse.success(studyActivityService.getStreak(currentUser.getId())));
     }
 
-    @GetMapping("/streak/heatmap")
+    @GetMapping({"/streak/heatmap", "/study-activities/heatmap"})
     public ResponseEntity<ApiResponse<List<StudyActivityDayResponse>>> getHeatmap(
             @AuthenticationPrincipal UserPrincipal currentUser,
             @RequestParam(required = false, defaultValue = "" + DEFAULT_HEATMAP_DAYS) int days
@@ -54,7 +54,7 @@ public class ProgressController {
         return ResponseEntity.ok(ApiResponse.success(leaderboardService.getLeaderboard(limit, classCode)));
     }
 
-    @GetMapping("/exp")
+    @GetMapping({"/exp", "/users/me/exp"})
     public ResponseEntity<ApiResponse<UserExpResponse>> getExp(
             @AuthenticationPrincipal UserPrincipal currentUser
     ) {

@@ -16,11 +16,24 @@ import org.springframework.web.bind.annotation.RestController;
 public class DictionaryController {
 
     private final DictionaryService dictionaryService;
+    private final com.heyganba.service.KanjiService kanjiService;
 
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<DictionarySearchResponse>> search(
-            @RequestParam(required = false, defaultValue = "") String q
+            @RequestParam(required = false, defaultValue = "") String q,
+            @RequestParam(required = false) String query,
+            @RequestParam(defaultValue = "0") int page
     ) {
-        return ResponseEntity.ok(ApiResponse.success(dictionaryService.search(q)));
+        return ResponseEntity.ok(ApiResponse.success(dictionaryService.search(query == null ? q : query, page)));
+    }
+
+    @GetMapping("/lookup/{id}")
+    public ResponseEntity<ApiResponse<DictionaryService.Lookup>> lookup(@org.springframework.web.bind.annotation.PathVariable Long id) {
+        return ResponseEntity.ok(ApiResponse.success(dictionaryService.lookup(id)));
+    }
+
+    @GetMapping("/kanji-radicals")
+    public ResponseEntity<ApiResponse<java.util.List<com.heyganba.dto.kanji.RadicalResponse>>> radicals() {
+        return ResponseEntity.ok(ApiResponse.success(kanjiService.getRadicals(null)));
     }
 }

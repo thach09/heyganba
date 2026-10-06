@@ -414,7 +414,7 @@ public class ExamService {
         }
 
         List<Vocabulary> pool = new ArrayList<>(
-                ContentAccess.visibleOnly(vocabularyRepository.findAll(), Vocabulary::getReviewStatus));
+                ContentAccess.visibleOnly(vocabularyRepository.findCourseWords(), Vocabulary::getReviewStatus));
         Collections.shuffle(pool, random);
 
         List<String> meaningPool = pool.stream().map(Vocabulary::getMeaning).distinct().toList();

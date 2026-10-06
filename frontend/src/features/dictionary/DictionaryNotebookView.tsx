@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Search, Plus, FolderPlus, Trash2, Play, CheckCircle2, BookmarkPlus } from 'lucide-react';
-import { apiRequest } from '../../services/api';
+import { Search, Plus, FolderPlus, Trash2, Play, CheckCircle2, BookmarkPlus, Volume2 } from 'lucide-react';
+import { apiRequest, getSavedUser } from '../../services/api';
 import type { AuthResponse } from '../../services/api';
 import { SubmitButton } from '../../components/SubmitButton';
+import { Modal } from '../../components/Modal';
+import { speakJapanese } from '../../services/japaneseSpeech';
 
 interface VocabularyItem {
   id: number;
@@ -14,6 +16,8 @@ interface VocabularyItem {
   exampleSentence?: string;
   exampleReading?: string;
   exampleMeaning?: string;
+  source?: string;
+  meaningLanguage?: string;
 }
 
 interface KanjiItem {
@@ -32,6 +36,8 @@ interface DictionarySearchResponse {
   totalMatches: number;
   vocabularies: VocabularyItem[];
   kanjis: KanjiItem[];
+  page: number;
+  hasMore: boolean;
 }
 
 interface VocabNotebookItem {
@@ -45,6 +51,9 @@ interface VocabNotebookItem {
   exampleReading?: string;
   exampleMeaning?: string;
   customNote?: string;
+  practiceCount: number;
+  correctCount: number;
+  meaningLanguage?: string;
 }
 
 interface VocabNotebook {
@@ -81,6 +90,9 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
   const [searchQuery, setSearchQuery] = useState(() => searchParams.get('q') || '');
   const [isSearching, setIsSearching] = useState(false);
   const [searchResult, setSearchResult] = useState<DictionarySearchResponse | null>(null);
+  const searchSequence = useRef(0);
+  const [saving, setSaving] = useState(false);
+  const savingRef = useRef(false);
 
   // Notebooks state
   const [notebooks, setNotebooks] = useState<VocabNotebook[]>([]);
@@ -105,6 +117,12 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [isAnswered, setIsAnswered] = useState(false);
   const [practiceFinished, setPracticeFinished] = useState<PracticeResult | null>(null);
+  const [practiceKind, setPracticeKind] = useState<'MEANING' | 'READING'>('MEANING');
+  const practiceAnswers = useRef<{ vocabularyId: number; answer: string; kind: 'MEANING' | 'READING' }[]>([]);
+  const practiceSessionId = useRef('');
+
+  const questionKind = (item: VocabNotebookItem) => practiceKind === 'READING' && /[\u3400-\u9fff]/.test(item.word) ? 'READING' : 'MEANING';
+  const answerFor = (item: VocabNotebookItem, kind: 'MEANING' | 'READING') => kind === 'READING' ? item.reading : item.meaning;
 
   // Success / error toast
   const [notice, setNotice] = useState<string | null>(null);
@@ -117,30 +135,34 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
   const setupOptionsForIndex = (nb: VocabNotebook, idx: number) => {
     const item = nb.items[idx];
     if (!item) return;
-    const correct = item.meaning;
-    const others = nb.items.map((i) => i.meaning).filter((m) => m !== correct);
+    const kind = questionKind(item);
+    const correct = answerFor(item, kind);
+    const others = [...new Set(nb.items.map(i => answerFor(i, kind)))].filter(m => m !== correct);
     const shuffledOthers = [...others].sort(() => Math.random() - 0.5).slice(0, 3);
     setCurrentOptions([correct, ...shuffledOthers].sort(() => Math.random() - 0.5));
   };
 
-  const doSearch = async (queryText: string) => {
+  const doSearch = async (queryText: string, page = 0) => {
     const trimmed = queryText.trim();
     if (!trimmed) return;
 
+    const sequence = ++searchSequence.current;
     setIsSearching(true);
+    if (page === 0) setSearchResult(null);
     try {
       const res = await apiRequest<DictionarySearchResponse>(
-        `/dictionary/search?q=${encodeURIComponent(trimmed)}`
+        `/dictionary/search?q=${encodeURIComponent(trimmed)}&page=${page}`
       );
+      if (sequence !== searchSequence.current) return;
       if (res.success && res.data) {
-        setSearchResult(res.data);
+        setSearchResult(previous => page > 0 && previous ? { ...res.data, vocabularies: [...previous.vocabularies, ...res.data.vocabularies], kanjis: previous.kanjis } : res.data);
       } else {
         showNotice(res.message || 'Không thể tra cứu từ điển vào lúc này.');
       }
     } catch {
       showNotice('Không thể kết nối đến máy chủ để tra cứu.');
     } finally {
-      setIsSearching(false);
+      if (sequence === searchSequence.current) setIsSearching(false);
     }
   };
 
@@ -148,8 +170,8 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
     if (e) e.preventDefault();
     const trimmed = searchQuery.trim();
     if (!trimmed) return;
-    setSearchParams({ q: trimmed });
-    await doSearch(trimmed);
+    if (searchParams.get('q') === trimmed) await doSearch(trimmed);
+    else setSearchParams({ q: trimmed });
   };
 
   useEffect(() => {
@@ -158,21 +180,24 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
       setSearchQuery(q.trim());
       void doSearch(q.trim());
     }
+    else { searchSequence.current++; setSearchQuery(''); setSearchResult(null); setIsSearching(false); }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
   const fetchNotebooks = async () => {
     if (!user) return;
+    const accountId = user.userId;
     setLoadingNotebooks(true);
     try {
       const res = await apiRequest<VocabNotebook[]>('/notebooks');
+      if (getSavedUser()?.userId !== accountId) return;
       if (res.success && res.data) {
         setNotebooks(res.data);
-        if (selectedNotebook) {
-          const updated = res.data.find((n) => n.id === selectedNotebook.id);
-          if (updated) setSelectedNotebook(updated);
-        }
+        const personal = res.data.filter(n => !n.isPublicSample);
+        setTargetNotebookId(current => personal.some(n => n.id === current) ? current : personal[0]?.id ?? null);
+        setSelectedNotebook(current => current ? res.data.find(n => n.id === current.id) ?? null : null);
       }
+      else showNotice(res.message || 'Không tải được sổ từ. Vui lòng thử lại.');
     } finally {
       setLoadingNotebooks(false);
     }
@@ -186,15 +211,21 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, activeTab]);
 
+  useEffect(() => {
+    if (!user) { setNotebooks([]); setSelectedNotebook(null); setWordToAdd(null); setPracticeActive(false); setActiveTab('DICTIONARY'); }
+  }, [user]);
+
   const handleCreateNotebook = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newTitle.trim()) return;
+    if (!newTitle.trim() || savingRef.current) return;
+    savingRef.current = true; setSaving(true);
 
     const res = await apiRequest<VocabNotebook>('/notebooks', {
       method: 'POST',
       body: JSON.stringify({ title: newTitle.trim(), description: newDesc.trim() || undefined }),
     });
 
+    savingRef.current = false; setSaving(false);
     if (res.success && res.data) {
       showNotice('Tạo sổ từ vựng mới thành công');
       setNewTitle('');
@@ -202,6 +233,7 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
       setShowCreateModal(false);
       fetchNotebooks();
     }
+    else showNotice(res.message || 'Không tạo được sổ từ. Vui lòng thử lại.');
   };
 
   const handleCloneSample = async (sampleId: number) => {
@@ -209,23 +241,29 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
       onRequireLogin();
       return;
     }
+    if (savingRef.current) return;
+    savingRef.current = true; setSaving(true);
     const res = await apiRequest<VocabNotebook>(`/notebooks/clone-sample/${sampleId}`, { method: 'POST' });
+    savingRef.current = false; setSaving(false);
     if (res.success && res.data) {
       showNotice('Đã lưu nhóm từ mẫu vào kho từ vựng của bạn');
       fetchNotebooks();
       setSelectedNotebook(res.data);
     }
+    else showNotice(res.message || 'Chưa nhận được nhóm mẫu. Vui lòng thử lại.');
   };
 
   const handleAddWordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!wordToAdd || !targetNotebookId) return;
+    if (!wordToAdd || !targetNotebookId || savingRef.current) return;
+    savingRef.current = true; setSaving(true);
 
     const res = await apiRequest<VocabNotebook>(`/notebooks/${targetNotebookId}/items`, {
       method: 'POST',
       body: JSON.stringify({ vocabularyId: wordToAdd.id, customNote: customNote.trim() || undefined }),
     });
 
+    savingRef.current = false; setSaving(false);
     if (res.success) {
       showNotice(`Đã thêm "${wordToAdd.word}" vào sổ tay`);
       setWordToAdd(null);
@@ -243,6 +281,7 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
       showNotice('Đã xoá từ khỏi sổ tay');
       fetchNotebooks();
     }
+    else showNotice(res.message || 'Chưa xoá được từ. Vui lòng thử lại.');
   };
 
   const handleDeleteNotebook = async (notebookId: number) => {
@@ -253,6 +292,7 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
       setSelectedNotebook(null);
       fetchNotebooks();
     }
+    else showNotice(res.message || 'Chưa xoá được sổ. Vui lòng thử lại.');
   };
 
   // Practice session logic
@@ -261,7 +301,17 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
       showNotice('Sổ từ vựng đang trống, vui lòng thêm từ trước khi luyện tập');
       return;
     }
+    if (nb.items.length > 200) {
+      nb = { ...nb, items: [...nb.items].sort(() => Math.random() - 0.5).slice(0, 200) };
+      showNotice('Phiên này chọn 200 từ. Những từ còn lại vẫn ở trong sổ.');
+    }
+    if (nb.items.some(item => new Set(nb.items.map(i => answerFor(i, questionKind(item)))).size < 2)) {
+      showNotice('Hãy thêm ít nhất 2 từ có nghĩa khác nhau để luyện trắc nghiệm.');
+      return;
+    }
     setSelectedNotebook(nb);
+    practiceAnswers.current = [];
+    practiceSessionId.current = crypto.randomUUID();
     setPracticeIndex(0);
     setPracticeScore(0);
     setSelectedOption(null);
@@ -277,13 +327,16 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
     setIsAnswered(true);
 
     const currentItem = selectedNotebook.items[practiceIndex];
-    if (chosen === currentItem.meaning) {
+    const kind = questionKind(currentItem);
+    if (practiceAnswers.current.some(a => a.vocabularyId === currentItem.vocabularyId)) return;
+    practiceAnswers.current.push({ vocabularyId: currentItem.vocabularyId, answer: chosen, kind });
+    if (chosen === answerFor(currentItem, kind)) {
       setPracticeScore((prev) => prev + 1);
     }
   };
 
   const handleNextQuestion = async () => {
-    if (!selectedNotebook) return;
+    if (!selectedNotebook || !isAnswered || savingRef.current) return;
     const nextIdx = practiceIndex + 1;
     if (nextIdx < selectedNotebook.items.length) {
       setPracticeIndex(nextIdx);
@@ -292,22 +345,17 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
       setupOptionsForIndex(selectedNotebook, nextIdx);
     } else {
       // Finished practice
-      const total = selectedNotebook.items.length;
+      savingRef.current = true; setSaving(true);
       const res = await apiRequest<PracticeResult>(`/notebooks/${selectedNotebook.id}/practice-result`, {
         method: 'POST',
-        body: JSON.stringify({ correctCount: practiceScore, totalCount: total }),
+        body: JSON.stringify({ sessionId: practiceSessionId.current, answers: practiceAnswers.current }),
       });
+      savingRef.current = false; setSaving(false);
       if (res.success && res.data) {
         setPracticeFinished(res.data);
+        void fetchNotebooks();
       } else {
-        setPracticeFinished({
-          notebookId: selectedNotebook.id,
-          notebookTitle: selectedNotebook.title,
-          correctCount: practiceScore,
-          totalCount: total,
-          expEarned: practiceScore * 10,
-          note: 'Luyện tập tự do hoàn thành. Lịch ôn tập SRS chính không bị ảnh hưởng.',
-        });
+        showNotice(res.message || 'Chưa lưu được kết quả. Vui lòng bấm thử lại.');
       }
     }
   };
@@ -315,7 +363,7 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
   const currentItem = selectedNotebook?.items?.[practiceIndex];
 
   return (
-    <div className="mx-auto flex w-full max-w-[1100px] flex-col">
+    <div className="flex w-full min-w-0 flex-col">
       {/* Header */}
       <div className="flex flex-wrap items-start justify-between gap-5">
         <div>
@@ -325,8 +373,7 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
           </div>
           <h2 className="mt-3 text-[17px] font-semibold text-fg">Tra cứu Từ điển & Kho từ vựng cá nhân</h2>
           <p className="mt-1.5 text-[12px] leading-[1.8] text-fg-38">
-            Tra cứu từ vựng / Kanji theo giáo trình Dekiru Nihongo. Tạo sổ tay cá nhân và luyện tập tự do không ảnh
-            hưởng lịch SRS.
+            Tra cứu tiếng Nhật từ JMdict và giáo trình. Lưu từ vào sổ cá nhân, luyện tập không ảnh hưởng lịch SRS.
           </p>
         </div>
 
@@ -360,7 +407,7 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
       </div>
 
       {notice && (
-        <div className="mt-5 border-l-2 border-l-rank bg-tint px-4 py-2.5 text-[12.5px] text-fg animate-toast-in">
+        <div role="status" className="mt-5 border-l-2 border-l-fg-60 bg-tint px-4 py-2.5 text-[12.5px] text-fg animate-toast-in">
           {notice}
         </div>
       )}
@@ -372,9 +419,11 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
             <div className="relative flex-1">
               <input
                 type="text"
+                aria-label="Từ khoá tra cứu"
+                maxLength={100}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Tra cứu bằng Kanji, Hiragana, Rōmaji hoặc tiếng Việt (VD: 学校, gakko, trường học)..."
+                placeholder="日本語, にほんご, nihongo, nghĩa Việt / Anh…"
                 className="w-full border border-rule bg-card px-4 py-3 pl-10 text-[13.5px] text-fg placeholder:text-fg-38 focus:border-fg-60 focus:outline-none"
               />
               <Search size={16} className="absolute left-3.5 top-3.5 text-fg-38" />
@@ -383,6 +432,12 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
               Tra cứu
             </SubmitButton>
           </form>
+          <p className="text-[12.5px] leading-[1.8] text-fg-60">
+            Từ giáo trình có nghĩa tiếng Việt. Kho JMdict có nghĩa tiếng Anh, hỗ trợ kana, kanji và romaji.
+            {' '}Nguồn: <a className="underline" href="https://www.edrdg.org/jmdict/j_jmdict.html" target="_blank" rel="noreferrer">JMdict / EDRDG</a>
+            {' · '}<a className="underline" href="https://www.edrdg.org/edrdg/licence.html" target="_blank" rel="noreferrer">CC BY-SA 4.0</a>.
+          </p>
+          {isSearching && <p role="status" className="text-[12.5px] text-fg-60">Đang tra cứu…</p>}
 
           {searchResult && (
             <div className="mt-2 flex flex-col gap-8">
@@ -409,6 +464,7 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
                             <div className="mt-0.5 text-[11px] font-medium text-fg-38">{v.sinoVietnamese}</div>
                           )}
                           <div className="mt-2 text-[13.5px] font-medium text-fg">{v.meaning}</div>
+                          <div className="mt-2 text-[12.5px] text-fg-38">{v.source} · {v.meaningLanguage === 'en' ? 'Nghĩa tiếng Anh' : 'Nghĩa tiếng Việt'}</div>
                           {v.exampleSentence && (
                             <div className="mt-3 border-t border-rule/50 pt-2 text-[12px] text-fg-60">
                               <div className="font-serif">{v.exampleSentence}</div>
@@ -418,7 +474,8 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
                           )}
                         </div>
 
-                        <div className="mt-4 flex justify-end border-t border-rule pt-3">
+                        <div className="mt-4 flex justify-between border-t border-rule pt-3">
+                          <button type="button" onClick={() => speakJapanese(v.reading)} aria-label={`Nghe cách đọc ${v.word}`} className="inline-flex min-h-10 cursor-pointer items-center gap-2 text-[11.5px] text-fg-60 hover:text-fg"><Volume2 size={14} />Nghe</button>
                           <button
                             type="button"
                             onClick={() => {
@@ -428,7 +485,6 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
                               }
                               setWordToAdd(v);
                               fetchNotebooks();
-                              if (notebooks.length > 0) setTargetNotebookId(notebooks[0].id);
                             }}
                             className="inline-flex cursor-pointer items-center gap-1.5 text-[11.5px] font-medium text-fg-60 hover:text-fg"
                           >
@@ -475,9 +531,10 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
 
               {searchResult.totalMatches === 0 && (
                 <div className="py-12 text-center text-[13px] text-fg-38">
-                  Không tìm thấy từ vựng hoặc Kanji phù hợp trong cơ sở dữ liệu Dekiru Nihongo.
+                  Không tìm thấy kết quả. Thử dạng từ gốc, cách đọc kana hoặc nghĩa tiếng Anh.
                 </div>
               )}
+              {searchResult.hasMore && <SubmitButton loading={isSearching} onClick={() => doSearch(searchResult.query, searchResult.page + 1)} variant="secondary">Xem thêm kết quả</SubmitButton>}
             </div>
           )}
         </div>
@@ -486,6 +543,12 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
       {/* TAB 2: NOTEBOOKS */}
       {activeTab === 'NOTEBOOKS' && (
         <div className="mt-8 flex flex-col gap-10">
+          <p className="text-[12.5px] leading-[1.8] text-fg-60">Từ JMdict trong sổ có nghĩa tiếng Anh. Nguồn: <a className="underline" href="https://www.edrdg.org/jmdict/j_jmdict.html" target="_blank" rel="noreferrer">JMdict / EDRDG</a> · <a className="underline" href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noreferrer">CC BY-SA 4.0</a>.</p>
+          <label className="flex flex-wrap items-center gap-3 text-[12.5px] text-fg-60">Luyện theo
+            <select value={practiceKind} onChange={e => setPracticeKind(e.target.value as 'MEANING' | 'READING')} className="min-h-11 border border-rule-strong bg-card px-3 text-fg">
+              <option value="MEANING">Nghĩa của từ</option><option value="READING">Cách đọc kana (từ có kanji)</option>
+            </select>
+          </label>
           {/* Sample Decks */}
           <div>
             <div className="flex items-center justify-between">
@@ -497,6 +560,7 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
             <div className="mt-4 grid gap-3 min-[768px]:grid-cols-3">
               {notebooks
                 .filter((n) => n.isPublicSample)
+                .sort((a, b) => a.title.localeCompare(b.title, 'vi', { numeric: true }))
                 .map((sample) => (
                   <div key={sample.id} className="flex flex-col justify-between border border-rule bg-card p-4">
                     <div>
@@ -509,7 +573,7 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
                     </div>
 
                     <div className="mt-4 border-t border-rule pt-3">
-                      <SubmitButton onClick={() => handleCloneSample(sample.id)} variant="secondary" className="w-full">
+                      <SubmitButton onClick={() => handleCloneSample(sample.id)} disabled={saving} variant="secondary" className="w-full">
                         <FolderPlus size={13} />
                         <span>Lưu về sổ tay của tôi</span>
                       </SubmitButton>
@@ -556,7 +620,7 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
                           <button
                             type="button"
                             onClick={() => handleDeleteNotebook(nb.id)}
-                            className="cursor-pointer text-fg-38 hover:text-red"
+                            className="inline-flex h-10 w-10 cursor-pointer items-center justify-center text-fg-38 hover:text-red"
                             title="Xoá sổ này"
                           >
                             <Trash2 size={13} />
@@ -637,6 +701,7 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
                       <th className="border-b border-rule pb-2 text-left font-semibold uppercase tracking-[0.14em] text-fg-38">
                         Ghi chú
                       </th>
+                      <th className="border-b border-rule px-3 pb-2 text-left font-semibold text-fg-38">Đúng / Lượt luyện</th>
                       <th className="border-b border-rule pb-2 text-right font-semibold uppercase tracking-[0.14em] text-fg-38">
                         Thao tác
                       </th>
@@ -652,11 +717,12 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
                         <td className="border-b border-rule py-3 text-fg-38">{item.sinoVietnamese || '—'}</td>
                         <td className="border-b border-rule py-3 text-fg">{item.meaning}</td>
                         <td className="border-b border-rule py-3 text-fg-38">{item.customNote || '—'}</td>
+                        <td className="border-b border-rule px-3 py-3 text-fg-60">{item.practiceCount ? `${item.correctCount}/${item.practiceCount} đúng` : 'Chưa luyện'}</td>
                         <td className="border-b border-rule py-3 text-right">
                           <button
                             type="button"
                             onClick={() => handleRemoveWord(selectedNotebook.id, item.vocabularyId)}
-                            className="cursor-pointer text-fg-38 hover:text-red"
+                            className="inline-flex h-10 w-10 cursor-pointer items-center justify-center text-fg-38 hover:text-red"
                             title="Xoá khỏi sổ"
                           >
                             <Trash2 size={13} />
@@ -666,7 +732,7 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
                     ))}
                     {(!selectedNotebook.items || selectedNotebook.items.length === 0) && (
                       <tr>
-                        <td colSpan={6} className="py-8 text-center text-fg-38">
+                        <td colSpan={7} className="py-8 text-center text-fg-38">
                           Sổ tay này chưa có từ vựng. Vào mục "Tra cứu từ điển" để thêm từ vựng vào đây nhé!
                         </td>
                       </tr>
@@ -681,8 +747,7 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
 
       {/* CREATE NOTEBOOK MODAL */}
       {showCreateModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-scrim p-4">
-          <div className="w-full max-w-[440px] border border-rule bg-card p-6 shadow-xl animate-toast-in">
+        <Modal title="Tạo sổ từ" onClose={() => setShowCreateModal(false)}>
             <h3 className="font-serif text-[17px] font-semibold text-fg">Tạo sổ từ vựng cá nhân</h3>
             <form onSubmit={handleCreateNotebook} className="mt-4 flex flex-col gap-4">
               <div>
@@ -690,6 +755,9 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
                 <input
                   type="text"
                   required
+                  aria-label="Tên sổ từ"
+                  maxLength={200}
+                  autoFocus
                   value={newTitle}
                   onChange={(e) => setNewTitle(e.target.value)}
                   placeholder="VD: Từ vựng N5 hay quên, Đi ăn quán..."
@@ -700,6 +768,7 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
                 <label className={labelClass}>Mô tả (tuỳ chọn)</label>
                 <textarea
                   rows={2}
+                  maxLength={2000}
                   value={newDesc}
                   onChange={(e) => setNewDesc(e.target.value)}
                   placeholder="Mục đích hoặc ghi chú của sổ từ này..."
@@ -714,19 +783,17 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
                 >
                   Huỷ
                 </button>
-                <SubmitButton type="submit" variant="primary">
+                <SubmitButton type="submit" loading={saving} variant="primary">
                   Tạo sổ
                 </SubmitButton>
               </div>
             </form>
-          </div>
-        </div>
+        </Modal>
       )}
 
       {/* ADD WORD MODAL */}
-      {wordToAdd && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-scrim p-4">
-          <div className="w-full max-w-[440px] border border-rule bg-card p-6 shadow-xl animate-toast-in">
+      {wordToAdd && !showCreateModal && (
+        <Modal title="Thêm từ vào sổ" onClose={() => setWordToAdd(null)}>
             <h3 className="font-serif text-[17px] font-semibold text-fg">Thêm từ vào Sổ từ vựng</h3>
             <div className="mt-3 border-l-2 border-l-rank bg-tint p-3 text-[13px]">
               <span className="font-serif font-bold text-fg">{wordToAdd.word}</span>{' '}
@@ -737,11 +804,13 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
               <div>
                 <label className={labelClass}>Chọn sổ từ vựng</label>
                 <select
+                  aria-label="Chọn sổ từ vựng"
                   value={targetNotebookId ?? ''}
                   onChange={(e) => setTargetNotebookId(Number(e.target.value))}
                   className="mt-1 w-full border border-rule bg-bg px-3 py-2 text-[13px] text-fg focus:border-fg focus:outline-none"
                   required
                 >
+                  <option value="" disabled>Chọn sổ từ…</option>
                   {notebooks
                     .filter((n) => !n.isPublicSample)
                     .map((nb) => (
@@ -751,11 +820,15 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
                     ))}
                 </select>
               </div>
+              {!notebooks.some(n => !n.isPublicSample) && <div className="text-[12.5px] text-fg-60">
+                Bạn chưa có sổ cá nhân. <button type="button" className="cursor-pointer underline" onClick={() => setShowCreateModal(true)}>Tạo sổ đầu tiên</button>
+              </div>}
               <div>
                 <label className={labelClass}>Ghi chú cá nhân (tuỳ chọn)</label>
                 <input
                   type="text"
                   value={customNote}
+                  maxLength={2000}
                   onChange={(e) => setCustomNote(e.target.value)}
                   placeholder="VD: Hay nhầm âm ngắt, bài 3..."
                   className="mt-1 w-full border border-rule bg-bg px-3 py-2 text-[13px] text-fg focus:border-fg focus:outline-none"
@@ -769,31 +842,36 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
                 >
                   Huỷ
                 </button>
-                <SubmitButton type="submit" variant="primary">
+                <SubmitButton type="submit" loading={saving} disabled={!targetNotebookId} variant="primary">
                   Lưu từ
                 </SubmitButton>
               </div>
             </form>
-          </div>
-        </div>
+        </Modal>
       )}
 
       {/* PRACTICE MODAL */}
       {practiceActive && selectedNotebook && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-scrim p-4">
-          <div className="w-full max-w-[560px] border border-rule bg-card p-8 shadow-2xl animate-toast-in">
+        <Modal title="Luyện sổ từ" onClose={() => setPracticeActive(false)} onKeyDown={e => {
+          if (practiceFinished || saving || (e.target as HTMLElement).matches('input, textarea, select')) return;
+          const index = Number(e.key) - 1;
+          if (!isAnswered && index >= 0 && index < currentOptions.length) { e.preventDefault(); handleSelectOption(currentOptions[index]); }
+          if (isAnswered && e.key === 'Enter') { e.preventDefault(); void handleNextQuestion(); }
+        }}>
+            {selectedNotebook.items.some(i => i.meaningLanguage === 'en') && <p className="mb-3 text-[11.5px] leading-[1.8] text-fg-60">Nghĩa tiếng Anh: <a className="underline" href="https://www.edrdg.org/jmdict/j_jmdict.html" target="_blank" rel="noreferrer">JMdict / EDRDG</a> · <a className="underline" href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noreferrer">CC BY-SA 4.0</a>.</p>}
             {!practiceFinished ? (
               <div>
                 <div className="flex items-center justify-between text-[11px] text-fg-38">
                   <span>
-                    Câu {practiceIndex + 1} / {selectedNotebook.items.length}
+                    Câu {practiceIndex + 1} / {selectedNotebook.items.length} · Đúng {practiceScore}
                   </span>
                   <span className="font-semibold text-rank">Luyện tập tự do (Không ảnh hưởng SRS)</span>
                 </div>
 
                 <div className="my-8 text-center">
                   <div className="font-serif text-[36px] font-bold text-fg">{currentItem?.word}</div>
-                  <div className="mt-1 font-serif text-[15px] text-fg-60">{currentItem?.reading}</div>
+                  {currentItem && (questionKind(currentItem) !== 'READING' || isAnswered) && <div className="mt-1 font-serif text-[15px] text-fg-60">{currentItem.reading}</div>}
+                  <p className="mt-3 text-[12.5px] text-fg-60">{currentItem && questionKind(currentItem) === 'READING' ? 'Chọn cách đọc kana' : `Chọn nghĩa ${currentItem?.meaningLanguage === 'en' ? 'tiếng Anh' : 'tiếng Việt'}`}</p>
                   {currentItem?.sinoVietnamese && (
                     <div className="mt-0.5 text-[12px] text-fg-38">{currentItem?.sinoVietnamese}</div>
                   )}
@@ -801,7 +879,7 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
 
                 <div className="flex flex-col gap-2.5">
                   {currentOptions.map((opt, idx) => {
-                    const isCorrect = opt === currentItem?.meaning;
+                    const isCorrect = currentItem && opt === answerFor(currentItem, questionKind(currentItem));
                     const isChosen = selectedOption === opt;
                     let btnStyle = 'border-rule hover:border-fg text-fg bg-bg';
                     if (isAnswered) {
@@ -825,7 +903,7 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
 
                 {isAnswered && (
                   <div className="mt-6 flex justify-end">
-                    <SubmitButton onClick={handleNextQuestion} variant="primary">
+                    <SubmitButton onClick={handleNextQuestion} loading={saving} shortcutHint="Enter" variant="primary">
                       {practiceIndex + 1 < selectedNotebook.items.length ? 'Câu tiếp theo →' : 'Xem kết quả'}
                     </SubmitButton>
                   </div>
@@ -861,8 +939,7 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
                 </div>
               </div>
             )}
-          </div>
-        </div>
+        </Modal>
       )}
     </div>
   );

@@ -45,6 +45,10 @@ class VocabNotebookServiceTest {
     private StudyActivityService studyActivityService;
     @Mock
     private ExpService expService;
+    @Mock
+    private com.heyganba.service.DictionaryService dictionaryService;
+    @Mock
+    private com.heyganba.repository.NotebookPracticeSessionRepository practiceSessionRepository;
 
     private VocabNotebookService notebookService;
     private User testUser;
@@ -57,7 +61,9 @@ class VocabNotebookServiceTest {
                 vocabularyRepository,
                 userRepository,
                 studyActivityService,
-                expService
+                expService,
+                dictionaryService,
+                practiceSessionRepository
         );
         testUser = User.builder().id(10L).email("student@heyganba.vn").build();
     }
@@ -84,7 +90,7 @@ class VocabNotebookServiceTest {
     @Test
     @DisplayName("Sao chép nhóm từ mẫu thành công vào kho cá nhân của user")
     void cloneSampleNotebook_success() {
-        Vocabulary v1 = Vocabulary.builder().id(1L).word("私").reading("わたし").meaning("tôi").build();
+        Vocabulary v1 = Vocabulary.builder().id(1L).word("私").reading("わたし").meaning("tôi").reviewStatus(com.heyganba.model.enums.ReviewStatus.APPROVED).build();
         VocabNotebook sample = VocabNotebook.builder()
                 .id(99L)
                 .title("50 từ vựng cơ bản")
@@ -117,13 +123,18 @@ class VocabNotebookServiceTest {
                 .id(101L)
                 .title("Luyện tập nhóm từ")
                 .user(testUser)
+                .items(new ArrayList<>(java.util.stream.LongStream.rangeClosed(1, 10).mapToObj(id -> VocabNotebookItem.builder()
+                        .vocabulary(Vocabulary.builder().id(id).word("語" + id).reading("ご").meaning("nghĩa" + id)
+                                .reviewStatus(com.heyganba.model.enums.ReviewStatus.APPROVED).build()).build()).toList()))
                 .build();
 
         when(notebookRepository.findByIdAndAccessible(101L, 10L)).thenReturn(Optional.of(notebook));
         when(expService.getExerciseCorrectExp()).thenReturn(10);
-        when(userRepository.getReferenceById(10L)).thenReturn(testUser);
+        when(userRepository.findLockedById(10L)).thenReturn(Optional.of(testUser));
 
-        NotebookPracticeResultRequest req = new NotebookPracticeResultRequest(8, 10);
+        NotebookPracticeResultRequest req = new NotebookPracticeResultRequest(java.util.UUID.randomUUID(),
+                java.util.stream.LongStream.rangeClosed(1, 10).mapToObj(id -> new NotebookPracticeResultRequest.Answer(id,
+                        id <= 8 ? "nghĩa" + id : "sai", NotebookPracticeResultRequest.Kind.MEANING)).toList());
         VocabNotebookService.PracticeResultResponse response = notebookService.recordPracticeResult(10L, 101L, req);
 
         assertThat(response.correctCount()).isEqualTo(8);

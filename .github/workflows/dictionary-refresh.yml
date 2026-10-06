@@ -1,0 +1,26 @@
+name: Prepare monthly dictionary refresh
+on:
+  schedule:
+    - cron: '0 3 1 * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Fetch official EDRDG snapshot
+        run: |
+          mkdir -p scratch
+          curl --fail --location --retry 3 https://www.edrdg.org/pub/Nihongo/JMdict_e.gz -o scratch/JMdict_e.gz
+          node backend/tools/import-jmdict.mjs scratch/JMdict_e.gz
+      - uses: actions/upload-artifact@v4
+        with:
+          name: jmdict-refresh-review-required
+          path: |
+            backend/src/main/resources/dictionary/jmdict.tsv.gz
+            backend/src/main/resources/dictionary/snapshot.json
