@@ -69,12 +69,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     }
   };
 
-  const handlePrefillAdmin = () => {
-    setIsRegister(false);
-    setEmail('admin@heyganba.vn');
-    setPassword('Admin@HeyGanba2026!');
-  };
-
   return (
     <Modal compact title={isRegister ? 'Tạo tài khoản HeyGanba' : 'Đăng nhập vào HeyGanba'} onClose={onClose}>
         <div className="flex items-start justify-between gap-4">
@@ -231,18 +225,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           )}
         </div>
 
-        {/* The prefilled admin account is development-only; never expose sample credentials in production. */}
-        {import.meta.env.DEV && (
-          <div className="mt-6 flex justify-center border-t border-rule pt-5">
-            <button
-              type="button"
-              onClick={handlePrefillAdmin}
-              className="cursor-pointer border border-dashed border-rule bg-transparent px-3 py-1.5 text-[11px] text-fg-38 transition-colors hover:text-fg hover:border-rule-strong"
-            >
-              Nạp sẵn tài khoản Admin thử nghiệm
-            </button>
-          </div>
-        )}
     </Modal>
   );
 };
