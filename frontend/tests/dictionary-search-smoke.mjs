@@ -32,6 +32,10 @@ const japaneseFire = await lookup('火');
 assert.equal(japaneseFire.vocabularies[0].word, '火', 'Exact Japanese headword should rank first');
 assert.equal(new Set(japaneseFire.vocabularies.map(word => `${word.word}|${word.reading}`)).size,
   japaneseFire.vocabularies.length, 'Duplicate headword and reading pairs should be collapsed');
+const accentedFire = await lookup('h\u1ecfa');
+assert.ok(accentedFire.totalMatches < 40, 'Accented Vietnamese search should not broaden into unrelated normalized matches');
+assert.ok(accentedFire.vocabularies.some(word => ['\u706b\u4e8b', '\u706b\u707d'].includes(word.word)), 'Vietnamese fire lookup should find fire vocabulary');
+assert.ok(!accentedFire.vocabularies.some(word => word.word === '\u679c\u7269'), 'Tone marks must keep hỏa distinct from hoa');
 assert.match((await lookup('cà phê')).vocabularies.find(word => word.word === 'コーヒー')?.vietnameseMeaning ?? '', /cà phê/);
 assert.ok((await lookup('火', 1)).vocabularies.length > 0, 'Broad Japanese lookup should paginate');
 

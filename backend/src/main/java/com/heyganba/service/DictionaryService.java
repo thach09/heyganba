@@ -52,26 +52,33 @@ public class DictionaryService {
         if (trimmed.length() > 100 || page < 0 || page > 1000) throw new BadRequestException("Từ khoá hoặc trang tra cứu không hợp lệ");
         if (trimmed.isEmpty()) return new DictionarySearchResponse("", 0, List.of(), List.of(), 0, false);
         String normalized = DictionaryText.normalize(trimmed);
+        String vietnameseQuery = DictionaryText.normalizePreservingDiacritics(trimmed);
+        boolean toneSensitive = DictionaryText.hasLatinDiacritics(trimmed);
+        String vietnameseSearch = toneSensitive ? vietnameseQuery : normalized;
         List<RankedWord> matchedCourse = vocabularyRepository.findCourseWords().stream()
                 .filter(v -> ContentAccess.isVisible(v.getReviewStatus()))
                 .map(v -> new RankedWord(Word.from(v), relevance(v.getWord(), v.getReading(), v.getMeaning(), null,
-                        v.getSinoVietnamese(), normalized), 1000))
+                        v.getSinoVietnamese(), normalized, vietnameseSearch, toneSensitive), 1000))
                 .filter(candidate -> candidate.relevance() < 9)
                 .sorted(WORD_ORDER).toList();
         int courseStart = Math.min(page * PAGE_SIZE, matchedCourse.size());
         List<RankedWord> coursePage = matchedCourse.subList(courseStart, Math.min(courseStart + PAGE_SIZE, matchedCourse.size()));
-        var catalog = dictionaryEntryRepository.search(DictionaryText.pattern(normalized), DictionaryText.prefix(normalized),
-                normalized, PageRequest.of(page, PAGE_SIZE));
+        String catalogPattern = toneSensitive ? DictionaryText.pattern(vietnameseQuery) : DictionaryText.pattern(normalized);
+        var catalog = dictionaryEntryRepository.search(catalogPattern, DictionaryText.pattern(vietnameseSearch),
+                DictionaryText.pattern(vietnameseQuery), DictionaryText.prefix(normalized), normalized, vietnameseSearch,
+                PageRequest.of(page, PAGE_SIZE));
         List<RankedWord> candidates = new ArrayList<>(coursePage);
         catalog.forEach(d -> candidates.add(new RankedWord(dictionaryWord(d), relevance(d.getWord(), d.getReading(), d.getMeaning(),
-                d.getVietnameseMeaning(), null, normalized), d.getCommonRank())));
+                d.getVietnameseMeaning(), null, normalized, vietnameseSearch, toneSensitive), d.getCommonRank())));
         Map<String, RankedWord> distinct = new LinkedHashMap<>();
         candidates.stream().sorted(WORD_ORDER).forEach(candidate -> distinct.putIfAbsent(
                 DictionaryText.normalize(candidate.word().word()) + "|" + DictionaryText.normalize(candidate.word().reading()), candidate));
         List<Word> words = distinct.values().stream().map(RankedWord::word).toList();
         List<Kanji> kanjis = kanjiRepository.findAllWithDetails().stream()
                 .filter(k -> ContentAccess.isVisible(k.getReviewStatus()))
-                .filter(k -> DictionaryText.normalize(k.getCharacter() + " " + k.getMeaning() + " " + Objects.toString(k.getSinoVietnamese(), "") + " " + Objects.toString(k.getOnyomi(), "") + " " + Objects.toString(k.getKunyomi(), "")).contains(normalized))
+                .filter(k -> toneSensitive
+                        ? DictionaryText.normalizePreservingDiacritics(k.getSinoVietnamese()).contains(vietnameseQuery)
+                        : DictionaryText.normalize(k.getCharacter() + " " + k.getMeaning() + " " + Objects.toString(k.getSinoVietnamese(), "") + " " + Objects.toString(k.getOnyomi(), "") + " " + Objects.toString(k.getKunyomi(), "")).contains(normalized))
                 .limit(20).toList();
         return new DictionarySearchResponse(trimmed, Math.toIntExact(catalog.getTotalElements() + matchedCourse.size() + kanjis.size()),
                 words, page == 0 ? kanjis.stream().map(k -> com.heyganba.dto.kanji.KanjiResponse.from(k, 0)).toList() : List.of(), page,
@@ -83,21 +90,29 @@ public class DictionaryService {
                 null, null, null, "JMdict / EDRDG", "en");
     }
 
-    private static int relevance(String word, String reading, String english, String vietnamese, String sinoVietnamese, String query) {
-        String normalizedWord = DictionaryText.normalize(word);
-        String normalizedReading = DictionaryText.normalize(reading);
-        if (normalizedWord.equals(query) || normalizedReading.equals(query)) return 0;
-        if (normalizedWord.startsWith(query) || normalizedReading.startsWith(query)) return 1;
-        if (normalizedWord.contains(query) || normalizedReading.contains(query)) return 2;
-        String vi = DictionaryText.normalize(Objects.toString(vietnamese, ""));
-        if (vi.equals(query)) return 3;
-        if (containsToken(vi, query)) return 4;
+    private static int relevance(String word, String reading, String english, String vietnamese, String sinoVietnamese,
+                                 String query, String vietnameseQuery, boolean toneSensitive) {
+        if (!toneSensitive) {
+            String normalizedWord = DictionaryText.normalize(word);
+            String normalizedReading = DictionaryText.normalize(reading);
+            if (normalizedWord.equals(query) || normalizedReading.equals(query)) return 0;
+            if (normalizedWord.startsWith(query) || normalizedReading.startsWith(query)) return 1;
+            if (normalizedWord.contains(query) || normalizedReading.contains(query)) return 2;
+        }
+        String vi = toneSensitive
+                ? DictionaryText.normalizePreservingDiacritics(Objects.toString(vietnamese, ""))
+                : DictionaryText.normalize(Objects.toString(vietnamese, ""));
+        String viQuery = toneSensitive ? vietnameseQuery : query;
+        if (vi.equals(viQuery)) return 3;
+        if (containsToken(vi, viQuery)) return 4;
         String en = DictionaryText.normalize(Objects.toString(english, ""));
-        if (en.equals(query)) return 4;
-        if (containsToken(en, query)) return 5;
-        String hanViet = DictionaryText.normalize(Objects.toString(sinoVietnamese, ""));
-        if (hanViet.equals(query) || containsToken(hanViet, query)) return 5;
-        if (vi.contains(query) || en.contains(query)) return 8;
+        if (!toneSensitive && en.equals(query)) return 4;
+        if (!toneSensitive && containsToken(en, query)) return 5;
+        String hanViet = toneSensitive
+                ? DictionaryText.normalizePreservingDiacritics(Objects.toString(sinoVietnamese, ""))
+                : DictionaryText.normalize(Objects.toString(sinoVietnamese, ""));
+        if (hanViet.equals(viQuery) || containsToken(hanViet, viQuery)) return 5;
+        if (toneSensitive ? vi.contains(viQuery) : vi.contains(query) || en.contains(query)) return 8;
         return 9;
     }
 

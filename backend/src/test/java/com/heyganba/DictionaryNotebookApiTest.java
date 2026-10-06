@@ -25,7 +25,7 @@ class DictionaryNotebookApiTest extends ContentApiTestBase {
     static final long ENTRY_ID = 9000000000L;
 
     @BeforeEach void prepare() throws Exception {
-        dictionary.deleteAllByIdInBatch(java.util.List.of(ENTRY_ID, ENTRY_ID + 1));
+        dictionary.deleteAllByIdInBatch(java.util.List.of(ENTRY_ID, ENTRY_ID + 1, ENTRY_ID + 2, ENTRY_ID + 3));
         roleRepository.save(Role.builder().name(RoleName.ROLE_USER).build());
         roleRepository.save(Role.builder().name(RoleName.ROLE_ADMIN).build());
         dictionary.save(DictionaryEntry.builder().id(ENTRY_ID).word("学校").reading("がっこう").meaning("school")
@@ -47,6 +47,8 @@ class DictionaryNotebookApiTest extends ContentApiTestBase {
         }
         assertThat(com.heyganba.service.DictionaryText.normalize("がっこう")).isEqualTo("がっこう");
         assertThat(com.heyganba.service.DictionaryText.normalize("trường học")).isEqualTo("truong hoc");
+        assertThat(com.heyganba.service.DictionaryText.normalizePreservingDiacritics("h\u1ecfa")).isEqualTo("h\u1ecfa");
+        assertThat(com.heyganba.service.DictionaryText.hasLatinDiacritics("h\u1ecfa")).isTrue();
     }
 
     @Test void exactSearchAliasesRankBeforeShorterPartialMatches() throws Exception {
@@ -65,6 +67,22 @@ class DictionaryNotebookApiTest extends ContentApiTestBase {
         mvc.perform(get("/dictionary/lookup/" + (-ENTRY_ID)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.vocabulary.vietnameseMeaning", is("trường học")));
+    }
+
+    @Test void accentedVietnameseSearchKeepsToneMarksDistinct() throws Exception {
+        dictionary.saveAll(java.util.List.of(
+                DictionaryEntry.builder().id(ENTRY_ID + 2).word("\u706b\u4e8b").reading("\u304b\u3058").meaning("fire, conflagration")
+                        .vietnameseMeaning("h\u1ecfa ho\u1ea1n").vietnameseSearchText("hoa hoan").commonRank(2).searchText("kaji fire fixture_fire").build(),
+                DictionaryEntry.builder().id(ENTRY_ID + 3).word("\u679c\u7269").reading("\u304f\u3060\u3082\u306e").meaning("fruit")
+                        .vietnameseMeaning("hoa qu\u1ea3").vietnameseSearchText("hoa qua").commonRank(1).searchText("kudamono fruit fixture_fruit").build()));
+
+        mvc.perform(get("/dictionary/search").param("q", "h\u1ecfa"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.vocabularies[0].word", is("\u706b\u4e8b")))
+                .andExpect(jsonPath("$.data.vocabularies[?(@.word == '\u679c\u7269')]", hasSize(0)));
+        mvc.perform(get("/dictionary/search").param("q", "hoa"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.vocabularies[?(@.word == '\u679c\u7269')]", hasSize(1)));
     }
 
     @Test void draftsAndArchivedCourseWordsNeverLeakFromPublicSearch() throws Exception {
