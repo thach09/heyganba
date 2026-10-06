@@ -7,6 +7,8 @@
 - Xem bảng Hiragana và Katakana, chọn ký tự để xem chi tiết và nghe phát âm.
 - Luyện gõ romaji: chọn nhóm/hàng/từng ký tự, gõ lần lượt trong một dãy; Enter xác nhận, Backspace sửa buffer. Gõ sai thì ký tự đỏ, hiện cách đọc và được đưa lại cuối hàng đợi.
 - Luyện viết trên canvas, có chữ mẫu và ô căn chỉnh.
+- Chỉ chúc mừng khi nét viết đạt ít nhất 80% cả độ phủ mẫu và tỷ lệ nét nằm đúng vùng. Chấm độc lập với cỡ bút, chữ mẫu, ô ly và DPI; có xoá nét, xoá toàn bộ và phản hồi điểm.
+- Đây là đối chiếu hình chữ, chưa kiểm tra thứ tự hoặc hướng nét.
 
 ## Giới hạn hiện tại
 

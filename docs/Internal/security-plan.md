@@ -168,9 +168,17 @@ vẫn ra tới client. Đã sửa ở **tầng service** (`com.heyganba.common.s
   `exerciseCount` chỉ đếm câu đã duyệt), flashcard (due-today/review/stats), thi thử (cả 3 pool sinh câu hỏi).
 - `/content/review-status` là công cụ NỘI BỘ → chỉ ADMIN (user thường nhận 403).
 - Guard test: `ContentReviewVisibilityTest` (user thường không thấy/không chấm được nội dung nháp; admin vẫn thấy đủ).
-- **Hệ quả vận hành cần biết**: production hiện **không trả nội dung nào cho user thường** (mọi nội dung còn
+- **Hệ quả tại thời điểm 27/09/2026**: production khi đó **không trả nội dung nào cho user thường** (mọi nội dung còn
   `PENDING_REVIEW`). Muốn mở nội dung cho học viên phải hoàn tất duyệt tiếng Nhật rồi promote
   (`review_status='APPROVED'` + chuyển migration, lưu ý đánh số lại version — xem `deployment-plan.md`).
+
+### Kiểm chứng local ngày 06/10/2026
+
+- Đổi mật khẩu nối `revoked_tokens` cho access/refresh hiện tại, đồng thời tăng `users.token_version` để mọi token cũ mất hiệu lực ở tất cả thiết bị. Kiểm tra version ở cả authentication filter và refresh, không dùng so sánh timestamp dễ bỏ sót token cấp cùng giây.
+- Phiên sổ từ chấm từng đáp án ở server, UUID chống cộng EXP lặp khi retry; kiểm tra quyền sở hữu trước khi sửa sổ. Mục nháp/archived không rò ra từ điển công khai.
+- 2FA đã có TOTP và UI setup, chỉ áp dụng khi tài khoản đã bật. Không có API OTP qua email như một số feature doc cũ mô tả.
+- Các quyết định hoãn cookie HttpOnly, Redis và giới hạn nhiều instance vẫn giữ nguyên. Đợt này không đổi rate limit 30/phút/admin, không nhập bulk qua Admin UI, không đụng dữ liệu production.
+- Nguồn, kiểm thử và giới hạn: [audit](audit-2026-10-06.md).
 
 
 

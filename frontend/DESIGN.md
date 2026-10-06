@@ -104,7 +104,7 @@ Không dùng font mảnh ở cỡ nhỏ — body tối thiểu 12.5px; nét mả
 
 - **Công thức EXP (dạng config backend):**
   - Trả lời đúng 1 câu bài tập / quiz: **+10 EXP** (`app.exp.exercise-correct`)
-  - Hoàn thành 1 phiên ôn flashcard SRS: **+50 EXP** (`app.exp.srs-session`)
+  - Mỗi 10 lượt ôn flashcard SRS tích luỹ: **+50 EXP** (`app.exp.srs-session`), không cộng 50 EXP cho một thẻ đơn lẻ.
   - Hoàn thành 1 đề thi thử: **100 EXP × hệ số điểm** (`app.exp.exam-base * (score / total)`)
   - Cấu hình qua `ExpConfig`, không hardcode để dễ dàng tinh chỉnh chỉ số vận hành.
 - **Màu cấp độ:** Áp dụng **1 màu chủ đạo duy nhất (`#7FA98B` — rank green)** xuyên suốt cho toàn bộ các cấp độ. Không đổi màu lung tung giữa các cấp, chỉ thay đổi sắc độ (lightness / tone) đậm dần theo rank từ sơ cấp đến bậc thầy.

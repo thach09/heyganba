@@ -1,5 +1,7 @@
 # Content Mapping — Nguồn tài liệu JPD113/JPD123 (Dekiru Nihongo)
 
+> Cập nhật 06/10/2026: V23 đã promote ngân hàng bài tập/bài đọc. Audit mới phát hiện một số câu vẫn còn mơ hồ hoặc sai sau promote, nên V31 sửa 44 câu bằng cách làm rõ ngữ cảnh, loại đáp án thay thế hợp lệ và sửa cấu trúc sai. V32 kiểm chứng 72 thẻ từ V24 rồi publish qua migration theo quyền người dùng giao, không chờ duyệt tay. Snapshot local hiện có 116 từ giáo trình đã duyệt. Phần kết quả 27/09 bên dưới là lịch sử, không phải danh sách việc còn chờ hiện tại. Nguồn và phạm vi: [audit](audit-2026-10-06.md).
+
 Tài liệu này map nội dung từ blog tổng hợp của Min Thep sang schema đã định nghĩa trong `roadmap.md`, để agent biết seed nội dung nào vào bảng nào, theo đúng thứ tự bài học thay vì theo độ khó chữ Kanji ngẫu nhiên.
 
 ## Quy trình duyệt nội dung (chốt 27/09/2026) — `needs_human_check` + `source_ref`

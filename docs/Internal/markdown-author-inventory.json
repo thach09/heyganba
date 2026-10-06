@@ -1,0 +1,716 @@
+[
+  {
+    "path": "frontend/ARCHITECTURE.md",
+    "commit": "2a73840147498f2b4b5abc587626588f10a50cbc",
+    "characters": 6130,
+    "existsNow": true,
+    "blob": "669ffecd1ec9e71bfb88c88888abec22d6054336"
+  },
+  {
+    "path": "AGENTS.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 32595,
+    "existsNow": true,
+    "blob": "3e0fe03015f6511ee40201e29af759cc80f4e74c"
+  },
+  {
+    "path": "frontend/.impeccable/surfaces/src-features-dashboard-dashboardview-tsx.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 1913,
+    "existsNow": true,
+    "blob": "5df9b5692c2b15a0c14d1f4d61f5cd811c7adb53"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/SKILL.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 11990,
+    "existsNow": true,
+    "blob": "c31bc51f57e0d9f1f0deffbb6c5f4fc068b8717a"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/adapt.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 10299,
+    "existsNow": true,
+    "blob": "7f76bbbb4599d02eadec85dc5143e63ec6253ba4"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/adapt.native.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 3902,
+    "existsNow": true,
+    "blob": "f1ccd65d9788ffdfb5761824e6c51b8866f4cba5"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/android.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 4090,
+    "existsNow": true,
+    "blob": "1f67a6bb574960cccb1692f460cc5432baebad65"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/animate.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 5228,
+    "existsNow": true,
+    "blob": "4ae4cc5fcd7ae4341f4f130ab67a7d9b03c00562"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/audit.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 7873,
+    "existsNow": true,
+    "blob": "474af415497e17312e611182ce22773670dc0f91"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/audit.native.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 8364,
+    "existsNow": true,
+    "blob": "fbccb56f6e6fe64fc6b24d82977f392a6285848e"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/bolder.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 3466,
+    "existsNow": true,
+    "blob": "25fdcdb8aef4a4ee972bc24ec8cdfe8628e6bdda"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/clarify.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 4590,
+    "existsNow": true,
+    "blob": "3047a9d82b9cfa31b392e35c643d82bcdb50250a"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/colorize.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 4533,
+    "existsNow": true,
+    "blob": "dc45f88c5f81c61355a915c6ea1391b1a36c9ba8"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/craft-floor.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 4478,
+    "existsNow": true,
+    "blob": "9653b980895fa343127982ba575085c31726eecc"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/craft.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 543,
+    "existsNow": true,
+    "blob": "dbbc9402c07cdab21f2b6eb69279b8435fecfd7f"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/critique.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 42661,
+    "existsNow": true,
+    "blob": "d3a9362c2cb12db7baebe2291f629c83ea71f5ee"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/degraded/asset-producer.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 7314,
+    "existsNow": true,
+    "blob": "a4a4b19928a2a2ccd3de1221815d1a3238927d7a"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/degraded/documenter.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 3321,
+    "existsNow": true,
+    "blob": "e9dfb799bcece32233386bf9702bc3141d56d196"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/degraded/finish-reviewer.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 15397,
+    "existsNow": true,
+    "blob": "b5a131005b3bb617dbdfec584ac79100e17af02f"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/degraded/manual-edit-applier.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 7196,
+    "existsNow": true,
+    "blob": "ef5095b924623ce04e02188a6790ebd98a273bcd"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/delight.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 3712,
+    "existsNow": true,
+    "blob": "798c43a5b735a5b75b67484c516821f1355dfbd6"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/distill.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 5614,
+    "existsNow": true,
+    "blob": "96dfcd85f3e5fd90fa04b66b35db0eaee1646965"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/doctor.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 5485,
+    "existsNow": true,
+    "blob": "17d97412ba6190066aaf3bf794d493d3bd3f24c7"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/document.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 27409,
+    "existsNow": true,
+    "blob": "ae5e3de20b29e0324a38881919977c22662fb774"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/extract.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 3335,
+    "existsNow": true,
+    "blob": "a08541f16271159f986ccec9c67f0fa1547c9695"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/harden.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 8529,
+    "existsNow": true,
+    "blob": "46ca8a7c31946a9259b40aa1472dc25bbbd7cbc8"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/hooks.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 13324,
+    "existsNow": true,
+    "blob": "6a9afc041b0f013d9b8b2e4f28bca2fd7add6450"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/init.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 11438,
+    "existsNow": true,
+    "blob": "4afe5060052e8f6cf84660a48e6e40419074c843"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/ios.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 3809,
+    "existsNow": true,
+    "blob": "c6244dfe32176e5718d86211b7d1eb5601eb0860"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/layout.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 5159,
+    "existsNow": true,
+    "blob": "57ee422ab3bdfd117454b831645a949166f07fc0"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/live-setup.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 8188,
+    "existsNow": true,
+    "blob": "7af86b72936d50a841746244e5f234ceecb07ad9"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/live.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 36223,
+    "existsNow": true,
+    "blob": "64f0e7931962ebc03aef3ba8b7192ff634954c44"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/new-work.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 52789,
+    "existsNow": true,
+    "blob": "c8426e993e3383b2c9f9191dd33275ac23e79ab6"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/onboard.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 7738,
+    "existsNow": true,
+    "blob": "d6a6de372d527d232c60f8317a077b5c5405b927"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/operate.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 4139,
+    "existsNow": true,
+    "blob": "524f2c3ae9fa497284e9699f3ca5320cce5d05cf"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/optimize.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 7606,
+    "existsNow": true,
+    "blob": "cc6ce4925266bf3c4a7d40b5a435fe315cbf6f1a"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/overdrive.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 9022,
+    "existsNow": true,
+    "blob": "65cf924d4519d7278c9156751f7b9cadea4fa336"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/polish.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 6650,
+    "existsNow": true,
+    "blob": "70a40af58162002a274aab44fa4d27ec34e71730"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/quieter.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 4848,
+    "existsNow": true,
+    "blob": "ef4fb7f0a186d2de3c72ff195de2ec6a7aa9e7fb"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/routing.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 3243,
+    "existsNow": true,
+    "blob": "17171acfb7ccbd2f17b07b048d0cf63cca291165"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/shape.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 3547,
+    "existsNow": true,
+    "blob": "90a74ae813331cbce8fff6beb498ced77970fadf"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/typeset.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 5250,
+    "existsNow": true,
+    "blob": "c3b045cd1ca0f085cfa92759fd888b91cb07f300"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/visualize.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 11759,
+    "existsNow": true,
+    "blob": "7c4cbe7d8a5bc9f62856d8a68add340734bd80d2"
+  },
+  {
+    "path": "frontend/DESIGN.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 13412,
+    "existsNow": true,
+    "blob": "b379340413351b7dc2e64ae94fd76ffdf5a80026"
+  },
+  {
+    "path": "frontend/PRODUCT.md",
+    "commit": "a3446856630853324b8cd79cc7028e83fb511e92",
+    "characters": 3719,
+    "existsNow": true,
+    "blob": "876752ac919fa2250136affc02cd16b7d0f50560"
+  },
+  {
+    "path": ".impeccable/surfaces/frontend-src-features-dashboard-dashboardview-tsx.md",
+    "commit": "477a1e36eef345fd158c73c810cc76c1401f3a5c",
+    "characters": 1931,
+    "existsNow": false,
+    "blob": "e961a7561ac9791179d8e1a0ce4cedebaf68babb"
+  },
+  {
+    "path": "DESIGN.md",
+    "commit": "477a1e36eef345fd158c73c810cc76c1401f3a5c",
+    "characters": 13404,
+    "existsNow": false,
+    "blob": "d5bd57b6c2d526a09e57f2c0064dd608ead642be"
+  },
+  {
+    "path": "docs/features/admin.md",
+    "commit": "22dfa6c31709c2b46b06900958c4ed9392df12ba",
+    "characters": 576,
+    "existsNow": true,
+    "blob": "51d78d1d7f8ef17b4f53d6595192f15c9a098bcf"
+  },
+  {
+    "path": "docs/features/authentication.md",
+    "commit": "22dfa6c31709c2b46b06900958c4ed9392df12ba",
+    "characters": 746,
+    "existsNow": true,
+    "blob": "9ad6518c76b5ec76ee85397f9d8e1f1f719846c3"
+  },
+  {
+    "path": "docs/features/dashboard.md",
+    "commit": "22dfa6c31709c2b46b06900958c4ed9392df12ba",
+    "characters": 763,
+    "existsNow": true,
+    "blob": "e52426aad74420e77c8fb403919d19400c07a838"
+  },
+  {
+    "path": "docs/features/exam.md",
+    "commit": "22dfa6c31709c2b46b06900958c4ed9392df12ba",
+    "characters": 952,
+    "existsNow": true,
+    "blob": "9814679187ed27199dbb45069b2fccedf2419f4b"
+  },
+  {
+    "path": "docs/features/grammar.md",
+    "commit": "22dfa6c31709c2b46b06900958c4ed9392df12ba",
+    "characters": 769,
+    "existsNow": true,
+    "blob": "0ac005556e72b535af30dd345c3d19470984d689"
+  },
+  {
+    "path": "docs/features/kana.md",
+    "commit": "22dfa6c31709c2b46b06900958c4ed9392df12ba",
+    "characters": 669,
+    "existsNow": true,
+    "blob": "0f06cc26cb62eea868e7dcec937f1643e0cb9927"
+  },
+  {
+    "path": "docs/features/kanji.md",
+    "commit": "22dfa6c31709c2b46b06900958c4ed9392df12ba",
+    "characters": 533,
+    "existsNow": true,
+    "blob": "ab44470fe0ca017e032facd3387e8c9e039c7f0b"
+  },
+  {
+    "path": "docs/features/progress.md",
+    "commit": "22dfa6c31709c2b46b06900958c4ed9392df12ba",
+    "characters": 718,
+    "existsNow": true,
+    "blob": "c69ef9007c23b638527c5e985cf8d1a559de1c45"
+  },
+  {
+    "path": "docs/features/vocabulary.md",
+    "commit": "22dfa6c31709c2b46b06900958c4ed9392df12ba",
+    "characters": 817,
+    "existsNow": true,
+    "blob": "3a26ae8e1678a9be6bdd6e80f9ac055dc92b1d61"
+  },
+  {
+    "path": "docs/introduction.md",
+    "commit": "22dfa6c31709c2b46b06900958c4ed9392df12ba",
+    "characters": 1905,
+    "existsNow": true,
+    "blob": "a6a4eb0f6bec7e6b5446af1f12f4e1af76468ffd"
+  },
+  {
+    "path": "docs/roadmap.md",
+    "commit": "22dfa6c31709c2b46b06900958c4ed9392df12ba",
+    "characters": 2011,
+    "existsNow": true,
+    "blob": "039c0332a693130188a2ddf238233695c282f31e"
+  },
+  {
+    "path": "CONTRIBUTING.md",
+    "commit": "76957a1c0cb009e397af27bc04b69cae21fcad09",
+    "characters": 2128,
+    "existsNow": true,
+    "blob": "75b656a301008a3396d286318a243d6ed63dda5b"
+  },
+  {
+    "path": "PRODUCT.md",
+    "commit": "773abf2f2c80f8ed191a7b8e809518e9d3b00e9f",
+    "characters": 3719,
+    "existsNow": false,
+    "blob": "876752ac919fa2250136affc02cd16b7d0f50560"
+  },
+  {
+    "path": "docs/Internal/AGENTS.md",
+    "commit": "773abf2f2c80f8ed191a7b8e809518e9d3b00e9f",
+    "characters": 30944,
+    "existsNow": true,
+    "blob": "ea26a2078bc734f5ed04ebbf43cf73663543d749"
+  },
+  {
+    "path": ".opencode/commands/impeccable.md",
+    "commit": "d6f6a38355eea6a50fbe0d8b4673af83169f7989",
+    "characters": 1048,
+    "existsNow": false,
+    "blob": "33f4a6f0a89760df8c887b795e901a8cedcdae91"
+  },
+  {
+    "path": ".opencode/skills/impeccable/SKILL.md",
+    "commit": "d6f6a38355eea6a50fbe0d8b4673af83169f7989",
+    "characters": 11990,
+    "existsNow": false,
+    "blob": "c31bc51f57e0d9f1f0deffbb6c5f4fc068b8717a"
+  },
+  {
+    "path": ".opencode/skills/impeccable/reference/adapt.md",
+    "commit": "d6f6a38355eea6a50fbe0d8b4673af83169f7989",
+    "characters": 10299,
+    "existsNow": false,
+    "blob": "7f76bbbb4599d02eadec85dc5143e63ec6253ba4"
+  },
+  {
+    "path": ".opencode/skills/impeccable/reference/adapt.native.md",
+    "commit": "d6f6a38355eea6a50fbe0d8b4673af83169f7989",
+    "characters": 3902,
+    "existsNow": false,
+    "blob": "f1ccd65d9788ffdfb5761824e6c51b8866f4cba5"
+  },
+  {
+    "path": ".opencode/skills/impeccable/reference/android.md",
+    "commit": "d6f6a38355eea6a50fbe0d8b4673af83169f7989",
+    "characters": 4090,
+    "existsNow": false,
+    "blob": "1f67a6bb574960cccb1692f460cc5432baebad65"
+  },
+  {
+    "path": ".opencode/skills/impeccable/reference/animate.md",
+    "commit": "d6f6a38355eea6a50fbe0d8b4673af83169f7989",
+    "characters": 5228,
+    "existsNow": false,
+    "blob": "4ae4cc5fcd7ae4341f4f130ab67a7d9b03c00562"
+  },
+  {
+    "path": ".opencode/skills/impeccable/reference/audit.md",
+    "commit": "d6f6a38355eea6a50fbe0d8b4673af83169f7989",
+    "characters": 7873,
+    "existsNow": false,
+    "blob": "474af415497e17312e611182ce22773670dc0f91"
+  },
+  {
+    "path": ".opencode/skills/impeccable/reference/audit.native.md",
+    "commit": "d6f6a38355eea6a50fbe0d8b4673af83169f7989",
+    "characters": 8364,
+    "existsNow": false,
+    "blob": "fbccb56f6e6fe64fc6b24d82977f392a6285848e"
+  },
+  {
+    "path": ".opencode/skills/impeccable/reference/bolder.md",
+    "commit": "d6f6a38355eea6a50fbe0d8b4673af83169f7989",
+    "characters": 3466,
+    "existsNow": false,
+    "blob": "25fdcdb8aef4a4ee972bc24ec8cdfe8628e6bdda"
+  },
+  {
+    "path": ".opencode/skills/impeccable/reference/clarify.md",
+    "commit": "d6f6a38355eea6a50fbe0d8b4673af83169f7989",
+    "characters": 4590,
+    "existsNow": false,
+    "blob": "3047a9d82b9cfa31b392e35c643d82bcdb50250a"
+  },
+  {
+    "path": ".opencode/skills/impeccable/reference/colorize.md",
+    "commit": "d6f6a38355eea6a50fbe0d8b4673af83169f7989",
+    "characters": 4533,
+    "existsNow": false,
+    "blob": "dc45f88c5f81c61355a915c6ea1391b1a36c9ba8"
+  },
+  {
+    "path": ".opencode/skills/impeccable/reference/craft-floor.md",
+    "commit": "d6f6a38355eea6a50fbe0d8b4673af83169f7989",
+    "characters": 4478,
+    "existsNow": false,
+    "blob": "9653b980895fa343127982ba575085c31726eecc"
+  },
+  {
+    "path": ".opencode/skills/impeccable/reference/craft.md",
+    "commit": "d6f6a38355eea6a50fbe0d8b4673af83169f7989",
+    "characters": 543,
+    "existsNow": false,
+    "blob": "dbbc9402c07cdab21f2b6eb69279b8435fecfd7f"
+  },
+  {
+    "path": ".opencode/skills/impeccable/reference/critique.md",
+    "commit": "d6f6a38355eea6a50fbe0d8b4673af83169f7989",
+    "characters": 42661,
+    "existsNow": false,
+    "blob": "d3a9362c2cb12db7baebe2291f629c83ea71f5ee"
+  },
+  {
+    "path": ".opencode/skills/impeccable/reference/degraded/asset-producer.md",
+    "commit": "d6f6a38355eea6a50fbe0d8b4673af83169f7989",
+    "characters": 7314,
+    "existsNow": false,
+    "blob": "a4a4b19928a2a2ccd3de1221815d1a3238927d7a"
+  },
+  {
+    "path": ".opencode/skills/impeccable/reference/degraded/documenter.md",
+    "commit": "d6f6a38355eea6a50fbe0d8b4673af83169f7989",
+    "characters": 3321,
+    "existsNow": false,
+    "blob": "e9dfb799bcece32233386bf9702bc3141d56d196"
+  },
+  {
+    "path": ".opencode/skills/impeccable/reference/degraded/finish-reviewer.md",
+    "commit": "d6f6a38355eea6a50fbe0d8b4673af83169f7989",
+    "characters": 15397,
+    "existsNow": false,
+    "blob": "b5a131005b3bb617dbdfec584ac79100e17af02f"
+  },
+  {
+    "path": ".opencode/skills/impeccable/reference/degraded/manual-edit-applier.md",
+    "commit": "d6f6a38355eea6a50fbe0d8b4673af83169f7989",
+    "characters": 7196,
+    "existsNow": false,
+    "blob": "ef5095b924623ce04e02188a6790ebd98a273bcd"
+  },
+  {
+    "path": ".opencode/skills/impeccable/reference/delight.md",
+    "commit": "d6f6a38355eea6a50fbe0d8b4673af83169f7989",
+    "characters": 3712,
+    "existsNow": false,
+    "blob": "798c43a5b735a5b75b67484c516821f1355dfbd6"
+  },
+  {
+    "path": ".opencode/skills/impeccable/reference/distill.md",
+    "commit": "d6f6a38355eea6a50fbe0d8b4673af83169f7989",
+    "characters": 5614,
+    "existsNow": false,
+    "blob": "96dfcd85f3e5fd90fa04b66b35db0eaee1646965"
+  },
+  {
+    "path": ".opencode/skills/impeccable/reference/doctor.md",
+    "commit": "d6f6a38355eea6a50fbe0d8b4673af83169f7989",
+    "characters": 5485,
+    "existsNow": false,
+    "blob": "17d97412ba6190066aaf3bf794d493d3bd3f24c7"
+  },
+  {
+    "path": ".opencode/skills/impeccable/reference/document.md",
+    "commit": "d6f6a38355eea6a50fbe0d8b4673af83169f7989",
+    "characters": 27409,
+    "existsNow": false,
+    "blob": "ae5e3de20b29e0324a38881919977c22662fb774"
+  },
+  {
+    "path": ".opencode/skills/impeccable/reference/extract.md",
+    "commit": "d6f6a38355eea6a50fbe0d8b4673af83169f7989",
+    "characters": 3335,
+    "existsNow": false,
+    "blob": "a08541f16271159f986ccec9c67f0fa1547c9695"
+  },
+  {
+    "path": ".opencode/skills/impeccable/reference/harden.md",
+    "commit": "d6f6a38355eea6a50fbe0d8b4673af83169f7989",
+    "characters": 8529,
+    "existsNow": false,
+    "blob": "46ca8a7c31946a9259b40aa1472dc25bbbd7cbc8"
+  },
+  {
+    "path": ".opencode/skills/impeccable/reference/hooks.md",
+    "commit": "d6f6a38355eea6a50fbe0d8b4673af83169f7989",
+    "characters": 13324,
+    "existsNow": false,
+    "blob": "6a9afc041b0f013d9b8b2e4f28bca2fd7add6450"
+  },
+  {
+    "path": ".opencode/skills/impeccable/reference/init.md",
+    "commit": "d6f6a38355eea6a50fbe0d8b4673af83169f7989",
+    "characters": 11438,
+    "existsNow": false,
+    "blob": "4afe5060052e8f6cf84660a48e6e40419074c843"
+  },
+  {
+    "path": ".opencode/skills/impeccable/reference/ios.md",
+    "commit": "d6f6a38355eea6a50fbe0d8b4673af83169f7989",
+    "characters": 3809,
+    "existsNow": false,
+    "blob": "c6244dfe32176e5718d86211b7d1eb5601eb0860"
+  },
+  {
+    "path": ".opencode/skills/impeccable/reference/layout.md",
+    "commit": "d6f6a38355eea6a50fbe0d8b4673af83169f7989",
+    "characters": 5159,
+    "existsNow": false,
+    "blob": "57ee422ab3bdfd117454b831645a949166f07fc0"
+  },
+  {
+    "path": ".opencode/skills/impeccable/reference/live-setup.md",
+    "commit": "d6f6a38355eea6a50fbe0d8b4673af83169f7989",
+    "characters": 8188,
+    "existsNow": false,
+    "blob": "7af86b72936d50a841746244e5f234ceecb07ad9"
+  },
+  {
+    "path": ".opencode/skills/impeccable/reference/live.md",
+    "commit": "d6f6a38355eea6a50fbe0d8b4673af83169f7989",
+    "characters": 36223,
+    "existsNow": false,
+    "blob": "64f0e7931962ebc03aef3ba8b7192ff634954c44"
+  },
+  {
+    "path": ".opencode/skills/impeccable/reference/new-work.md",
+    "commit": "d6f6a38355eea6a50fbe0d8b4673af83169f7989",
+    "characters": 52789,
+    "existsNow": false,
+    "blob": "c8426e993e3383b2c9f9191dd33275ac23e79ab6"
+  },
+  {
+    "path": ".opencode/skills/impeccable/reference/onboard.md",
+    "commit": "d6f6a38355eea6a50fbe0d8b4673af83169f7989",
+    "characters": 7738,
+    "existsNow": false,
+    "blob": "d6a6de372d527d232c60f8317a077b5c5405b927"
+  },
+  {
+    "path": ".opencode/skills/impeccable/reference/operate.md",
+    "commit": "d6f6a38355eea6a50fbe0d8b4673af83169f7989",
+    "characters": 4139,
+    "existsNow": false,
+    "blob": "524f2c3ae9fa497284e9699f3ca5320cce5d05cf"
+  },
+  {
+    "path": ".opencode/skills/impeccable/reference/optimize.md",
+    "commit": "d6f6a38355eea6a50fbe0d8b4673af83169f7989",
+    "characters": 7606,
+    "existsNow": false,
+    "blob": "cc6ce4925266bf3c4a7d40b5a435fe315cbf6f1a"
+  },
+  {
+    "path": ".opencode/skills/impeccable/reference/overdrive.md",
+    "commit": "d6f6a38355eea6a50fbe0d8b4673af83169f7989",
+    "characters": 9022,
+    "existsNow": false,
+    "blob": "65cf924d4519d7278c9156751f7b9cadea4fa336"
+  },
+  {
+    "path": ".opencode/skills/impeccable/reference/polish.md",
+    "commit": "d6f6a38355eea6a50fbe0d8b4673af83169f7989",
+    "characters": 6650,
+    "existsNow": false,
+    "blob": "70a40af58162002a274aab44fa4d27ec34e71730"
+  },
+  {
+    "path": ".opencode/skills/impeccable/reference/quieter.md",
+    "commit": "d6f6a38355eea6a50fbe0d8b4673af83169f7989",
+    "characters": 4848,
+    "existsNow": false,
+    "blob": "ef4fb7f0a186d2de3c72ff195de2ec6a7aa9e7fb"
+  },
+  {
+    "path": ".opencode/skills/impeccable/reference/routing.md",
+    "commit": "d6f6a38355eea6a50fbe0d8b4673af83169f7989",
+    "characters": 3243,
+    "existsNow": false,
+    "blob": "17171acfb7ccbd2f17b07b048d0cf63cca291165"
+  },
+  {
+    "path": ".opencode/skills/impeccable/reference/shape.md",
+    "commit": "d6f6a38355eea6a50fbe0d8b4673af83169f7989",
+    "characters": 3547,
+    "existsNow": false,
+    "blob": "90a74ae813331cbce8fff6beb498ced77970fadf"
+  },
+  {
+    "path": ".opencode/skills/impeccable/reference/typeset.md",
+    "commit": "d6f6a38355eea6a50fbe0d8b4673af83169f7989",
+    "characters": 5250,
+    "existsNow": false,
+    "blob": "c3b045cd1ca0f085cfa92759fd888b91cb07f300"
+  },
+  {
+    "path": ".opencode/skills/impeccable/reference/visualize.md",
+    "commit": "d6f6a38355eea6a50fbe0d8b4673af83169f7989",
+    "characters": 11759,
+    "existsNow": false,
+    "blob": "7c4cbe7d8a5bc9f62856d8a68add340734bd80d2"
+  }
+]

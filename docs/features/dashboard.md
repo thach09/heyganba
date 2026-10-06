@@ -12,5 +12,5 @@
 ## Nguồn dữ liệu và giới hạn
 
 - Heatmap lấy từ `GET /api/v1/streak/heatmap?days=168`; thống kê flashcard từ `/api/v1/flashcard/stats`; streak từ `/api/v1/streak`.
-- EXP hiện tính ở frontend: 10 EXP mỗi activity item, 2.000 EXP mỗi cấp; không lưu thành level ở backend.
+- EXP lấy từ `GET /api/v1/exp` (alias `/users/me/exp`), tính ở backend từ hoạt động học thật, 1.000 EXP mỗi cấp. Có EXP cho đáp án đúng trong sổ từ.
 - Heatmap hiện gồm flashcard reviews, bài thi đã nộp và câu trả lời ngữ pháp. Lượt luyện Kana/Kanji chưa được tính vào heatmap này.

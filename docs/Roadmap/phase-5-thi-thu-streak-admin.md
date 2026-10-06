@@ -1,5 +1,7 @@
 # Phase 5 — Thi thử, Streak, Leaderboard, Admin Panel, Polish
 
+> Tài liệu lịch sử theo giai đoạn. Nội dung đã review/publish và kết quả kiểm thử hiện tại được đối chiếu tại [audit 06/10/2026](../Internal/audit-2026-10-06.md); backlog hiện hành nằm ở [roadmap](../roadmap.md).
+
 > **Mục tiêu:** Hoàn thiện toàn bộ platform. Thi thử mô phỏng đề thật. Streak + leaderboard tạo động lực. Admin panel quản lý nội dung không cần deploy. UX nhất quán trên tất cả trạm.
 
 ## Điều kiện hoàn thành (Definition of Done)

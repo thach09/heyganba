@@ -8,7 +8,7 @@
 - **Heatmap**: truy vấn số lượt học theo ngày qua `GET /api/v1/study-activities/heatmap`; Dashboard dùng 168 ngày (24 tuần), màn Thi thử dùng 91 ngày (13 tuần).
 - **Điểm kinh nghiệm (EXP) & Cấp độ**:
   - Backend quản lý qua `ExpService`, lưu trữ và cung cấp thông tin cấp độ qua endpoint `GET /api/v1/users/me/exp`.
-  - Quy tắc tích luỹ EXP: 10 EXP / câu bài tập đúng, 50 EXP / phiên ôn Flashcard hoàn thành, 100 EXP * tỷ lệ điểm / lượt thi thử.
+  - Quy tắc tích luỹ EXP: 10 EXP / câu ngữ pháp hoặc sổ từ đúng, 50 EXP / mỗi 10 lượt ôn SRS tích luỹ, 100 EXP * tỷ lệ điểm / lượt thi thử. Không cấp 50 EXP chỉ vì ôn một thẻ. Phiên sổ từ có UUID để retry không cộng điểm hai lần.
   - Cấp độ (Level) được tính từ tổng EXP tích luỹ và đồng bộ giữa Backend và Dashboard UI.
 - **Bảng xếp hạng (Leaderboard)**: hiển thị số từ đã thuộc, streak dài nhất, điểm thi cao nhất và điểm xếp hạng qua `GET /api/v1/leaderboard`; hỗ trợ lọc theo phạm vi toàn hệ thống hoặc theo mã lớp (`classCode`).
 - **Mã lớp**: lưu trong hồ sơ tài khoản, có thể cập nhật linh hoạt.
