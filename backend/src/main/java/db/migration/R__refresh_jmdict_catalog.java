@@ -30,7 +30,7 @@ public class R__refresh_jmdict_catalog extends BaseJavaMigration {
         InputStream data = getClass().getResourceAsStream("/dictionary/jmdict.tsv.gz");
         if (data == null) throw new IOException("Missing versioned JMdict snapshot");
         try (var update = context.getConnection().createStatement()) {
-            update.executeUpdate("UPDATE dictionary_entries SET active = false");
+            update.executeUpdate("UPDATE dictionary_entries SET active = false, vietnamese_meaning = NULL, vietnamese_search_text = NULL, common_rank = 1000");
         }
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new GZIPInputStream(data), StandardCharsets.UTF_8));
              PreparedStatement insert = context.getConnection().prepareStatement(

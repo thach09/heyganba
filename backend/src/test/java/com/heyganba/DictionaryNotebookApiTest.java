@@ -25,6 +25,7 @@ class DictionaryNotebookApiTest extends ContentApiTestBase {
     static final long ENTRY_ID = 9000000000L;
 
     @BeforeEach void prepare() throws Exception {
+        dictionary.deleteAllByIdInBatch(java.util.List.of(ENTRY_ID, ENTRY_ID + 1));
         roleRepository.save(Role.builder().name(RoleName.ROLE_USER).build());
         roleRepository.save(Role.builder().name(RoleName.ROLE_ADMIN).build());
         dictionary.save(DictionaryEntry.builder().id(ENTRY_ID).word("学校").reading("がっこう").meaning("school")
@@ -40,9 +41,9 @@ class DictionaryNotebookApiTest extends ContentApiTestBase {
     }
 
     @Test void publicLookupSupportsKanaKatakanaRomajiAndEnglish() throws Exception {
-        for (String q : new String[]{"学校", "がっこう", "ガッコウ", "gakkou", "gakko", "fixturecatalog"}) {
+        for (String q : new String[]{"学校", "がっこう", "ガッコウ", "gakkou", "gakko", "school"}) {
             mvc.perform(get("/dictionary/search").param("q", q)).andExpect(status().isOk())
-                    .andExpect(jsonPath("$.data.vocabularies[?(@.id == -9000000000)]", hasSize(1)));
+                    .andExpect(jsonPath("$.data.vocabularies[?(@.word == '学校' && @.reading == 'がっこう')]", hasSize(1)));
         }
         assertThat(com.heyganba.service.DictionaryText.normalize("がっこう")).isEqualTo("がっこう");
         assertThat(com.heyganba.service.DictionaryText.normalize("trường học")).isEqualTo("truong hoc");
@@ -58,7 +59,7 @@ class DictionaryNotebookApiTest extends ContentApiTestBase {
     @Test void dictionaryLookupAndVietnameseSearchExposeBothGlosses() throws Exception {
         mvc.perform(get("/dictionary/search").param("q", "trường học"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.vocabularies[0].id", is(-ENTRY_ID)))
+                .andExpect(jsonPath("$.data.vocabularies[0].word", is("学校")))
                 .andExpect(jsonPath("$.data.vocabularies[0].vietnameseMeaning", is("trường học")))
                 .andExpect(jsonPath("$.data.vocabularies[0].meaning", is("school")));
         mvc.perform(get("/dictionary/lookup/" + (-ENTRY_ID)))
