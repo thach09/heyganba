@@ -17,4 +17,7 @@ public final class DictionaryText {
     public static String pattern(String text) {
         return "%" + text.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_") + "%";
     }
+    public static String prefix(String text) {
+        return text.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_") + "%";
+    }
 }

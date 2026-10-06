@@ -9,6 +9,7 @@ public record VocabNotebookItemResponse(
         String word,
         String reading,
         String meaning,
+        String vietnameseMeaning,
         String sinoVietnamese,
         String exampleSentence,
         String exampleReading,

@@ -28,6 +28,7 @@ class DictionaryNotebookApiTest extends ContentApiTestBase {
         roleRepository.save(Role.builder().name(RoleName.ROLE_USER).build());
         roleRepository.save(Role.builder().name(RoleName.ROLE_ADMIN).build());
         dictionary.save(DictionaryEntry.builder().id(ENTRY_ID).word("学校").reading("がっこう").meaning("school")
+                .vietnameseMeaning("trường học").vietnameseSearchText("truong hoc").commonRank(1)
                 .searchText("学校 がっこう gakko gakkou school fixturecatalog").build());
         var auth = json.readTree(mvc.perform(post("/auth/register").contentType(MediaType.APPLICATION_JSON)
                 .content("{\"email\":\"notebook@test.example\",\"password\":\"Password123!\",\"fullName\":\"Notebook Test\"}"))
@@ -54,6 +55,17 @@ class DictionaryNotebookApiTest extends ContentApiTestBase {
                 .andExpect(status().isOk()).andExpect(jsonPath("$.data.vocabularies[0].id", is(-ENTRY_ID)));
     }
 
+    @Test void dictionaryLookupAndVietnameseSearchExposeBothGlosses() throws Exception {
+        mvc.perform(get("/dictionary/search").param("q", "trường học"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.vocabularies[0].id", is(-ENTRY_ID)))
+                .andExpect(jsonPath("$.data.vocabularies[0].vietnameseMeaning", is("trường học")))
+                .andExpect(jsonPath("$.data.vocabularies[0].meaning", is("school")));
+        mvc.perform(get("/dictionary/lookup/" + (-ENTRY_ID)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.vocabulary.vietnameseMeaning", is("trường học")));
+    }
+
     @Test void draftsAndArchivedCourseWordsNeverLeakFromPublicSearch() throws Exception {
         for (ReviewStatus status : new ReviewStatus[]{ReviewStatus.PENDING_REVIEW, ReviewStatus.ARCHIVED}) {
             vocabularyRepository.save(Vocabulary.builder().word("非公開語").reading("ひこうかいご").meaning("hiddenfixture").reviewStatus(status).build());
@@ -61,7 +73,7 @@ class DictionaryNotebookApiTest extends ContentApiTestBase {
         mvc.perform(get("/dictionary/search").param("q", "hiddenfixture"))
                 .andExpect(status().isOk()).andExpect(jsonPath("$.data.vocabularies", hasSize(0)));
         mvc.perform(get("/dictionary/search").param("q", "hiddenfixture").header("Authorization", "Bearer " + adminAccessToken("dictionary-admin@test.example")))
-                .andExpect(status().isOk()).andExpect(jsonPath("$.data.vocabularies", hasSize(2)));
+                .andExpect(status().isOk()).andExpect(jsonPath("$.data.vocabularies", hasSize(1)));
     }
 
     @Test void searchEscapesWildcardsAndRejectsOversizedOrInvalidPages() throws Exception {

@@ -12,6 +12,7 @@ interface VocabularyItem {
   word: string;
   reading: string;
   meaning: string;
+  vietnameseMeaning?: string;
   sinoVietnamese?: string;
   exampleSentence?: string;
   exampleReading?: string;
@@ -46,6 +47,7 @@ interface VocabNotebookItem {
   word: string;
   reading: string;
   meaning: string;
+  vietnameseMeaning?: string;
   sinoVietnamese?: string;
   exampleSentence?: string;
   exampleReading?: string;
@@ -373,7 +375,7 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
           </div>
           <h2 className="mt-3 text-[17px] font-semibold text-fg">Tra cứu Từ điển & Kho từ vựng cá nhân</h2>
           <p className="mt-1.5 text-[12px] leading-[1.8] text-fg-38">
-            Tra cứu tiếng Nhật từ JMdict và giáo trình. Lưu từ vào sổ cá nhân, luyện tập không ảnh hưởng lịch SRS.
+            Tra cứu từ thông dụng có nghĩa tiếng Việt và tiếng Anh; tìm theo chữ Nhật, kana, romaji hoặc nghĩa.
           </p>
         </div>
 
@@ -433,8 +435,11 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
             </SubmitButton>
           </form>
           <p className="text-[12.5px] leading-[1.8] text-fg-60">
-            Từ giáo trình có nghĩa tiếng Việt. Kho JMdict có nghĩa tiếng Anh, hỗ trợ kana, kanji và romaji.
-            {' '}Nguồn: <a className="underline" href="https://www.edrdg.org/jmdict/j_jmdict.html" target="_blank" rel="noreferrer">JMdict / EDRDG</a>
+            Từ phổ biến có cả nghĩa Việt và Anh đã đối chiếu; các mục khác dùng nghĩa tiếng Anh của JMdict.
+            {' '}Nguồn đối chiếu: <a className="underline" href="https://www.edrdg.org/jmdict/j_jmdict.html" target="_blank" rel="noreferrer">JMdict / EDRDG</a>,{' '}
+            <a className="underline" href="https://marugoto.jpf.go.jp/en/teacher/resource/starter_c/" target="_blank" rel="noreferrer">Marugoto A1</a>,{' '}
+            <a className="underline" href="https://vietcafe-learning.com/dictionary/%E5%8C%BB%E8%80%85" target="_blank" rel="noreferrer">VIETCAFE</a>,{' '}
+            <a className="underline" href="https://jdict.net/" target="_blank" rel="noreferrer">Jdict</a>.
             {' · '}<a className="underline" href="https://www.edrdg.org/edrdg/licence.html" target="_blank" rel="noreferrer">CC BY-SA 4.0</a>.
           </p>
           {isSearching && <p role="status" className="text-[12.5px] text-fg-60">Đang tra cứu…</p>}
@@ -453,7 +458,9 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
                     Từ vựng ({searchResult.vocabularies.length})
                   </h3>
                   <div className="grid gap-3 min-[768px]:grid-cols-2">
-                    {searchResult.vocabularies.map((v) => (
+                    {searchResult.vocabularies.map((v) => {
+                      const [primaryEnglishMeaning, ...additionalEnglishMeanings] = v.meaning.split(' / ');
+                      return (
                       <div key={v.id} className="relative flex flex-col justify-between border border-rule bg-card p-4">
                         <div>
                           <div className="flex items-baseline justify-between gap-2">
@@ -463,8 +470,14 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
                           {v.sinoVietnamese && (
                             <div className="mt-0.5 text-[11px] font-medium text-fg-38">{v.sinoVietnamese}</div>
                           )}
-                          <div className="mt-2 text-[13.5px] font-medium text-fg">{v.meaning}</div>
-                          <div className="mt-2 text-[12.5px] text-fg-38">{v.source} · {v.meaningLanguage === 'en' ? 'Nghĩa tiếng Anh' : 'Nghĩa tiếng Việt'}</div>
+                          <div className="mt-2 space-y-1.5 text-[13.5px]">
+                            {v.meaningLanguage === 'en' ? <>
+                              <div><span className="mr-1 text-[10px] font-semibold uppercase tracking-wide text-fg-38">Việt</span><span className="font-medium text-fg">{v.vietnameseMeaning || 'Chưa có nghĩa Việt đã đối chiếu'}</span></div>
+                              <div><span className="mr-1 text-[10px] font-semibold uppercase tracking-wide text-fg-38">Anh</span><span className="text-fg-60">{primaryEnglishMeaning}</span></div>
+                              {additionalEnglishMeanings.length > 0 && <details className="ml-8 text-[11.5px] text-fg-60"><summary className="cursor-pointer">Các nghĩa khác ({additionalEnglishMeanings.length})</summary><div className="mt-1 leading-[1.7]">{additionalEnglishMeanings.join(' / ')}</div></details>}
+                            </> : <div className="font-medium text-fg">{v.meaning}</div>}
+                          </div>
+                          <div className="mt-2 text-[12.5px] text-fg-38">{v.meaningLanguage === 'en' ? 'JMdict / EDRDG · nghĩa Anh' : 'Giáo trình HeyGanba · nghĩa Việt'}</div>
                           {v.exampleSentence && (
                             <div className="mt-3 border-t border-rule/50 pt-2 text-[12px] text-fg-60">
                               <div className="font-serif">{v.exampleSentence}</div>
@@ -493,7 +506,8 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
                           </button>
                         </div>
                       </div>
-                    ))}
+                    );
+                    })}
                   </div>
                 </div>
               )}
@@ -715,7 +729,7 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
                         </td>
                         <td className="border-b border-rule py-3 font-serif text-fg-60">{item.reading}</td>
                         <td className="border-b border-rule py-3 text-fg-38">{item.sinoVietnamese || '—'}</td>
-                        <td className="border-b border-rule py-3 text-fg">{item.meaning}</td>
+                        <td className="border-b border-rule py-3 text-fg">{item.meaning}{item.vietnameseMeaning ? ` · ${item.vietnameseMeaning}` : ''}</td>
                         <td className="border-b border-rule py-3 text-fg-38">{item.customNote || '—'}</td>
                         <td className="border-b border-rule px-3 py-3 text-fg-60">{item.practiceCount ? `${item.correctCount}/${item.practiceCount} đúng` : 'Chưa luyện'}</td>
                         <td className="border-b border-rule py-3 text-right">
@@ -797,7 +811,7 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
             <h3 className="font-serif text-[17px] font-semibold text-fg">Thêm từ vào Sổ từ vựng</h3>
             <div className="mt-3 border-l-2 border-l-rank bg-tint p-3 text-[13px]">
               <span className="font-serif font-bold text-fg">{wordToAdd.word}</span>{' '}
-              <span className="text-fg-60">({wordToAdd.reading})</span> — {wordToAdd.meaning}
+              <span className="text-fg-60">({wordToAdd.reading})</span> — {wordToAdd.meaning}{wordToAdd.vietnameseMeaning ? ` · ${wordToAdd.vietnameseMeaning}` : ''}
             </div>
 
             <form onSubmit={handleAddWordSubmit} className="mt-4 flex flex-col gap-4">

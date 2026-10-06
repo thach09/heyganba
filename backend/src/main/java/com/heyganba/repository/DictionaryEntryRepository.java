@@ -12,10 +12,16 @@ public interface DictionaryEntryRepository extends JpaRepository<DictionaryEntry
     @Query("SELECT d FROM DictionaryEntry d WHERE d.id = :id")
     java.util.Optional<DictionaryEntry> findLockedById(@Param("id") Long id);
     @Query("""
-        SELECT d FROM DictionaryEntry d WHERE d.active = true AND d.searchText LIKE :pattern ESCAPE '\\'
+        SELECT d FROM DictionaryEntry d WHERE d.active = true AND
+            (d.searchText LIKE :pattern ESCAPE '\\' OR d.vietnameseSearchText LIKE :pattern ESCAPE '\\')
         ORDER BY CASE WHEN d.word = :exact OR d.reading = :exact THEN 0
-            WHEN LOCATE(CONCAT(' ', :exact, ' '), CONCAT(' ', d.searchText, ' ')) > 0 THEN 1 ELSE 2 END,
-            LENGTH(d.word), d.id
+            WHEN d.word LIKE :prefix ESCAPE '\\' OR d.reading LIKE :prefix ESCAPE '\\' THEN 1
+            WHEN d.vietnameseSearchText = :exact THEN 2
+            WHEN LOCATE(CONCAT(' ', :exact, ' '), CONCAT(' ', d.searchText, ' ')) > 0
+              OR LOCATE(CONCAT(' ', :exact, ' '), CONCAT(' ', d.vietnameseSearchText, ' ')) > 0 THEN 3
+            ELSE 5 END,
+            d.commonRank, LENGTH(d.word), d.id
         """)
-    Page<DictionaryEntry> search(@Param("pattern") String pattern, @Param("exact") String exact, Pageable page);
+    Page<DictionaryEntry> search(@Param("pattern") String pattern, @Param("prefix") String prefix,
+                                 @Param("exact") String exact, Pageable page);
 }

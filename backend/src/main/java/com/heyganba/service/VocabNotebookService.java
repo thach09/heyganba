@@ -230,6 +230,7 @@ public class VocabNotebookService {
                             .word(v.getWord())
                             .reading(v.getReading())
                             .meaning(v.getMeaning())
+                            .vietnameseMeaning(v.getDictionaryEntryId() == null || v.getDictionaryEntry() == null ? null : v.getDictionaryEntry().getVietnameseMeaning())
                             .sinoVietnamese(v.getSinoVietnamese())
                             .exampleSentence(v.getExampleSentence())
                             .exampleReading(v.getExampleReading())

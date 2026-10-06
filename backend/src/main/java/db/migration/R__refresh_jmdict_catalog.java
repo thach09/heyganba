@@ -16,6 +16,11 @@ public class R__refresh_jmdict_catalog extends BaseJavaMigration {
             java.util.zip.CRC32 crc = new java.util.zip.CRC32();
             byte[] buffer = new byte[8192];
             for (int n; (n = data.read(buffer)) != -1;) crc.update(buffer, 0, n);
+            crc.update(0);
+            try (InputStream curated = getClass().getResourceAsStream("/dictionary/curated-ja-vi.tsv")) {
+                if (curated == null) throw new IllegalStateException("Missing reviewed translation data");
+                for (int n; (n = curated.read(buffer)) != -1;) crc.update(buffer, 0, n);
+            }
             return (int) crc.getValue();
         } catch (IOException e) { throw new IllegalStateException("Cannot read dictionary snapshot", e); }
     }
@@ -41,6 +46,41 @@ public class R__refresh_jmdict_catalog extends BaseJavaMigration {
             }
             insert.executeBatch();
             if (count < 200000) throw new IOException("Incomplete dictionary snapshot: " + count);
+        }
+        applyVietnameseCuration(context);
+    }
+
+    private void applyVietnameseCuration(Context context) throws Exception {
+        InputStream data = getClass().getResourceAsStream("/dictionary/curated-ja-vi.tsv");
+        if (data == null) throw new IOException("Missing reviewed Vietnamese meanings");
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(data, StandardCharsets.UTF_8));
+             PreparedStatement update = context.getConnection().prepareStatement("""
+                     UPDATE dictionary_entries SET word=?, reading=?, vietnamese_meaning=?, vietnamese_search_text=?,
+                         common_rank=?, search_text=search_text || ' ' || ?
+                     WHERE id=? AND word=? AND reading=? AND active=true
+                     """)) {
+            int count = 0;
+            for (String line; (line = reader.readLine()) != null;) {
+                if (line.isBlank() || line.startsWith("#")) continue;
+                String[] fields = line.split("\\t", -1);
+                if (fields.length != 7) throw new IOException("Invalid translation row " + count);
+                long entryId = Long.parseLong(fields[0]);
+                String sourceWord = fields[1], sourceReading = fields[2];
+                String word = fields[3], reading = fields[4], vietnamese = fields[5];
+                int rank = Integer.parseInt(fields[6]);
+                update.setString(1, word);
+                update.setString(2, reading);
+                update.setString(3, vietnamese);
+                update.setString(4, com.heyganba.service.DictionaryText.normalize(vietnamese));
+                update.setInt(5, rank);
+                update.setString(6, com.heyganba.service.DictionaryText.normalize(word + " " + reading));
+                update.setLong(7, entryId);
+                update.setString(8, sourceWord);
+                update.setString(9, sourceReading);
+                if (update.executeUpdate() != 1) throw new IOException("Reviewed word is missing or ambiguous in JMdict: " + sourceWord + " [" + sourceReading + "]");
+                count++;
+            }
+            if (count < 100) throw new IOException("Incomplete reviewed vocabulary set: " + count);
         }
     }
 }
