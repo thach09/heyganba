@@ -85,6 +85,8 @@
 
 ### Master test 20 điểm bảo mật (chạy thật trên production 27/09/2026)
 
+> Báo cáo này là snapshot lịch sử. Kết quả audit mới nhất và các mục còn thiếu được ghi tại [Security release audit 07/10/2026](security-release-2026-10-07.md), tài liệu đó là nguồn trạng thái hiện hành cho các mục 15, 17, 19 và 20.
+
 Cách chạy: script PowerShell dùng `curl.exe` bắn trực tiếp vào `https://api.heyganba.site/api/v1` + truy vấn SQL qua
 Neon HTTP endpoint, rồi tự tạo/xoá 2 tài khoản `@heyganba.test` để thử IDOR/leo quyền (dọn sạch sau khi test, 0 dòng mồ côi).
 Vòng 1: **58 PASS / 7 FAIL**. Soi kỹ 7 FAIL: **1 bug thật** (đã sửa + có test hồi quy) và **6 case do kỳ vọng của test sai**
