@@ -12,6 +12,10 @@ import java.util.List;
 
 @Repository
 public interface VocabularyRepository extends JpaRepository<Vocabulary, Long> {
+    java.util.Optional<Vocabulary> findByDictionaryEntryId(Long dictionaryEntryId);
+
+    @Query("SELECT v FROM Vocabulary v LEFT JOIN FETCH v.lesson WHERE v.dictionaryEntryId IS NULL ORDER BY v.id")
+    List<Vocabulary> findCourseWords();
     List<Vocabulary> findByLessonId(Long lessonId);
 
     /**
@@ -21,10 +25,16 @@ public interface VocabularyRepository extends JpaRepository<Vocabulary, Long> {
     @Query("""
             SELECT v FROM Vocabulary v
             LEFT JOIN FETCH v.lesson
-            WHERE v.id NOT IN (SELECT r.vocabulary.id FROM SrsReview r WHERE r.user.id = :userId)
+            WHERE v.dictionaryEntryId IS NULL
+              AND (:includePending = true OR v.reviewStatus = com.heyganba.model.enums.ReviewStatus.APPROVED)
+              AND v.id NOT IN (SELECT r.vocabulary.id FROM SrsReview r WHERE r.user.id = :userId)
             ORDER BY v.lesson.orderIndex ASC, v.id ASC
             """)
-    List<Vocabulary> findNewForUser(@Param("userId") Long userId, Pageable pageable);
+    List<Vocabulary> findVisibleNewForUser(@Param("userId") Long userId, @Param("includePending") boolean includePending, Pageable pageable);
+
+    default List<Vocabulary> findNewForUser(Long userId, Pageable pageable) {
+        return findVisibleNewForUser(userId, com.heyganba.common.security.ContentAccess.canSeePendingReview(), pageable);
+    }
 
     /** Đếm theo trạng thái duyệt nội dung — dùng cho GET /content/review-status. */
     long countByReviewStatus(ReviewStatus reviewStatus);

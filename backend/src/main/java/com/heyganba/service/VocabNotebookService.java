@@ -27,6 +27,8 @@ public class VocabNotebookService {
     private final UserRepository userRepository;
     private final StudyActivityService studyActivityService;
     private final ExpService expService;
+    private final DictionaryService dictionaryService;
+    private final com.heyganba.repository.NotebookPracticeSessionRepository practiceSessionRepository;
 
     @Transactional(readOnly = true)
     public List<VocabNotebookResponse> listNotebooks(Long userId) {
@@ -85,6 +87,7 @@ public class VocabNotebookService {
 
         List<VocabNotebookItem> itemsToSave = new ArrayList<>();
         for (VocabNotebookItem item : sample.getItems()) {
+            if (!com.heyganba.common.security.ContentAccess.isVisible(item.getVocabulary().getReviewStatus())) continue;
             itemsToSave.add(VocabNotebookItem.builder()
                     .notebook(savedNotebook)
                     .vocabulary(item.getVocabulary())
@@ -106,10 +109,9 @@ public class VocabNotebookService {
             throw new BadRequestException("Bạn không có quyền chỉnh sửa sổ từ vựng này");
         }
 
-        Vocabulary vocab = vocabularyRepository.findById(req.vocabularyId())
-                .orElseThrow(() -> new BadRequestException("Không tìm thấy từ vựng ID: " + req.vocabularyId()));
+        Vocabulary vocab = dictionaryService.resolveNotebookWord(req.vocabularyId());
 
-        if (itemRepository.findByNotebookIdAndVocabularyId(notebookId, req.vocabularyId()).isPresent()) {
+        if (itemRepository.findByNotebookIdAndVocabularyId(notebookId, vocab.getId()).isPresent()) {
             throw new BadRequestException("Từ vựng này đã có trong sổ tay của bạn");
         }
 
@@ -158,17 +160,50 @@ public class VocabNotebookService {
         VocabNotebook notebook = notebookRepository.findByIdAndAccessible(notebookId, userId)
                 .orElseThrow(() -> new BadRequestException("Không tìm thấy sổ từ vựng ID: " + notebookId));
 
-        int expEarned = req.correctCount() * expService.getExerciseCorrectExp();
+        // Serialize submissions for one account, including retries from multiple devices.
+        User user = userRepository.findLockedById(userId).orElseThrow(() -> new BadRequestException("Không tìm thấy tài khoản"));
+        var previous = practiceSessionRepository.findById(req.sessionId());
+        if (previous.isPresent()) {
+            var p = previous.get();
+            if (!p.getUserId().equals(userId) || !p.getNotebookId().equals(notebookId)) throw new BadRequestException("Phiên luyện tập không hợp lệ");
+            return practiceResponse(notebook, p.getCorrectCount(), p.getTotalCount(), p.getExpEarned());
+        }
+        var items = notebook.getItems().stream().collect(java.util.stream.Collectors.toMap(i -> i.getVocabulary().getId(), i -> i));
+        var seen = new java.util.HashSet<Long>();
+        int correct = 0;
+        for (var answer : req.answers()) {
+            var item = items.get(answer.vocabularyId());
+            if (item == null || !seen.add(answer.vocabularyId())) throw new BadRequestException("Từ luyện tập không thuộc sổ hoặc bị lặp");
+            var word = item.getVocabulary();
+            com.heyganba.common.security.ContentAccess.requireVisible(word.getReviewStatus(), "Vocabulary", word.getId());
+            String expected = answer.kind() == NotebookPracticeResultRequest.Kind.READING ? word.getReading() : word.getMeaning();
+            boolean right = java.text.Normalizer.normalize(answer.answer().trim(), java.text.Normalizer.Form.NFKC)
+                    .equals(java.text.Normalizer.normalize(expected.trim(), java.text.Normalizer.Form.NFKC));
+            if (right) correct++;
+            if (!Boolean.TRUE.equals(notebook.getIsPublicSample())) {
+                item.setPracticeCount(item.getPracticeCount() + 1);
+                item.setCorrectCount(item.getCorrectCount() + (right ? 1 : 0));
+                item.setLastPracticedAt(java.time.Instant.now());
+            }
+        }
+        int total = req.answers().size();
+        int expEarned = correct * expService.getExerciseCorrectExp();
+        practiceSessionRepository.save(com.heyganba.model.entity.NotebookPracticeSession.builder()
+                .id(req.sessionId()).userId(userId).notebookId(notebookId).correctCount(correct).totalCount(total).expEarned(expEarned).build());
 
         // Ghi nhận hoạt động vào streak heatmap (nguồn KANA / GRAMMAR / NOTEBOOK)
-        User user = userRepository.getReferenceById(userId);
-        studyActivityService.record(user, "NOTEBOOK", req.totalCount(), req.correctCount(), java.time.Instant.now());
+        studyActivityService.record(user, "NOTEBOOK", total, correct, java.time.Instant.now());
+
+        return practiceResponse(notebook, correct, total, expEarned);
+    }
+
+    private PracticeResultResponse practiceResponse(VocabNotebook notebook, int correct, int total, int expEarned) {
 
         return new PracticeResultResponse(
                 notebook.getId(),
                 notebook.getTitle(),
-                req.correctCount(),
-                req.totalCount(),
+                correct,
+                total,
                 expEarned,
                 "Luyện tập tự do hoàn thành. Lịch ôn tập SRS chính không bị ảnh hưởng."
         );
@@ -186,6 +221,7 @@ public class VocabNotebookService {
 
     private VocabNotebookResponse toResponse(VocabNotebook n) {
         List<VocabNotebookItemResponse> itemDtos = n.getItems() != null ? n.getItems().stream()
+                .filter(i -> com.heyganba.common.security.ContentAccess.isVisible(i.getVocabulary().getReviewStatus()))
                 .map(i -> {
                     Vocabulary v = i.getVocabulary();
                     return VocabNotebookItemResponse.builder()
@@ -194,11 +230,16 @@ public class VocabNotebookService {
                             .word(v.getWord())
                             .reading(v.getReading())
                             .meaning(v.getMeaning())
+                            .vietnameseMeaning(v.getDictionaryEntryId() == null || v.getDictionaryEntry() == null ? null : v.getDictionaryEntry().getVietnameseMeaning())
                             .sinoVietnamese(v.getSinoVietnamese())
                             .exampleSentence(v.getExampleSentence())
                             .exampleReading(v.getExampleReading())
                             .exampleMeaning(v.getExampleMeaning())
                             .customNote(i.getCustomNote())
+                            .practiceCount(i.getPracticeCount())
+                            .correctCount(i.getCorrectCount())
+                            .lastPracticedAt(i.getLastPracticedAt())
+                            .meaningLanguage(v.getDictionaryEntryId() == null ? "vi" : "en")
                             .build();
                 })
                 .toList() : List.of();

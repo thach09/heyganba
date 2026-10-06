@@ -3,7 +3,7 @@
 Scope: the React app in `frontend/`. This file owns code structure, data flow and conventions.
 Visual rules live in `DESIGN.md`; product truth in `PRODUCT.md`; working rules for agents in `../AGENTS.md`.
 
-Paths are relative to `frontend/` unless noted. Status: living document — verified against code on 2026-10-02.
+Paths are relative to `frontend/` unless noted. Status: living document — updated on 2026-10-06.
 It describes what exists today; planned changes are tracked in GitHub issues (see §8).
 
 ## 1. Stack
@@ -18,14 +18,14 @@ It describes what exists today; planned changes are tracked in GitHub issues (se
 | Icons | lucide-react | |
 | Effects | canvas-confetti | Completion celebrations |
 | Lint | oxlint | `npm run lint` |
-| Tests | none yet | Test plan tracked in #13 |
+| Tests | Node built-in runner + Puppeteer Core | Ink scoring unit tests and local browser smoke scripts |
 
 No state-management or data-fetching library on purpose. The app is one user, ~25 network calls, no offline need. Revisit only when caching/optimistic/offline becomes real.
 
 ## 2. Runtime shape
 
 - **SPA** rendered by `src/main.tsx` into `#root`, wrapped in `StrictMode` + `BrowserRouter`.
-- **API base**: `VITE_API_BASE_URL` (build-time) or `/api/v1` fallback; dev uses the Vite proxy to `http://localhost:8080`.
+- **API base**: `VITE_API_BASE_URL` (build-time) or `/api/v1` fallback; dev proxy defaults to `http://localhost:8080`, overridable with `DEV_API_TARGET` for isolated testing.
 - **Auth**: JWT access + refresh persisted in `localStorage` (`heyganba_access_token`, `heyganba_refresh_token`, `heyganba_user`). On 401 the client refreshes once and retries the original request.
 - **Boot checks**: saved-user restore, backend health ping (`/health`) driving the offline banner, streak fetch for the sidebar.
 - **Theme**: `src/index.css` defines `@theme` tokens (colour, font, animation). Legacy CSS has been removed; `index.css` is tokens + base only.
@@ -38,7 +38,7 @@ No state-management or data-fetching library on purpose. The app is one user, ~2
 | `/` | `DashboardView` | Tracker, EXP level, 30-day charts |
 | `/kana` | `KanaStationView` | Tabs: table / typing drill / handwriting |
 | `/vocabulary` | `FlashcardView` | Multiple-choice SRS session |
-| `/dictionary` | `DictionaryView` | Search words/kanji, view details, personal study notebooks (#11) |
+| `/dictionary` | `DictionaryNotebookView` | Course + JMdict search, personal notebooks, server-graded practice (#11) |
 | `/kanji` | `KanjiStationView` | Tabs: browse / write |
 | `/grammar` | `GrammarView` | Tabs: browse / practice |
 | `/grammar/:ruleId` | `GrammarRulePage` | Reading page + related rules |
@@ -66,7 +66,7 @@ src/
 
 Notes for anyone touching this code:
 
-- **All network calls go through `services/api.ts`** (verified: no other `fetch` in `src/`).
+- JSON requests go through `services/api.ts`; audio blobs use `services/ttsAudio.ts` with the same API base and token. Refresh requests are shared across simultaneous 401 responses, and a pending refresh cannot restore a logged-out session.
 - `services/api.ts` holds the fetch wrapper, token persistence, and one domain call (`updateClassCode`).
 - Views declare their DTO interfaces inline.
 - Auth state lives in `App.tsx` and is prop-drilled to every route (`user`, `onRequireLogin`).
@@ -78,7 +78,9 @@ Notes for anyone touching this code:
 
 - Session storage lives in the same module: `localStorage` keys `heyganba_access_token`, `heyganba_refresh_token`, `heyganba_user`.
 - Kana typing progress persists under its own key (`heyganba_kana_typing`) from `KanaQuiz`.
-- `services/japaneseSpeech.ts` owns text-to-speech via the Web Speech API.
+- `services/japaneseSpeech.ts` uses cached server TTS with Web Speech as fallback. Playback sequencing prevents stale responses playing over a newer request; completed blob URLs are released.
+- `components/Modal.tsx` uses a native dialog for focus trapping, inert background and Escape. Password changes clear the local session after the server invalidates all old tokens.
+- `features/kana/handwritingScore.ts` compares normalized ink against skeletonized Noto Serif JP glyphs. Both coverage and precision must reach 80%; it does not grade stroke direction/order.
 
 ## 5. Auth and routing
 
@@ -86,7 +88,7 @@ Notes for anyone touching this code:
 
 ## 6. Testing
 
-No tests today. CI job `frontend-test` runs `npm run lint` + `npm run build`; the backend is covered separately by `backend-test` and `backend-migration-check`. Test stack and the first cases to cover are tracked in #13.
+CI runs `npm run lint`, `npm run build` and `npm test` on Node 24. The unit suite checks ink coverage, precision, tolerance, missing strokes and scribbles. `node tests/browser-smoke.mjs` runs against an isolated backend (default 8081) and Vite (5174), creating a local test account and desktop/mobile screenshots. `node tests/glyph-browser.mjs` checks complete/incomplete ink using real Japanese glyphs in Chrome. `node tests/handwriting-ui.mjs` traces a real glyph through pointer events and verifies congratulations are cleared when ink changes at both viewport widths. Set `CHROME_PATH` on other platforms. Backend H2 and PostgreSQL/Flyway suites cover permissions and data integrity separately.
 
 ## 7. Conventions
 

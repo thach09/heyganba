@@ -6,12 +6,11 @@
 FROM eclipse-temurin:21-jdk-alpine AS builder
 WORKDIR /workspace
 
-# Install Maven & cache dependencies
+# Install Maven. The package goal below resolves only dependencies used by this application.
 RUN apk add --no-cache maven
-COPY pom.xml .
-RUN mvn dependency:go-offline -B || true
 
 # Copy source code and build
+COPY pom.xml .
 COPY src src
 RUN mvn clean package -DskipTests
 

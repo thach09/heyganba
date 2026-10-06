@@ -10,7 +10,7 @@
 
 ## Giới hạn hiện tại
 
-- Canvas không nhận dạng chữ viết hoặc kiểm tra thứ tự nét; hệ thống chỉ lưu số lần luyện và thời điểm luyện gần nhất.
+- Canvas đối chiếu hình chữ với mẫu: độ phủ và độ chính xác đều phải đạt ít nhất 80% mới lưu lượt luyện. Không chấm thứ tự/hướng nét; chỉ lưu số lần luyện và thời điểm luyện gần nhất.
 - Lượt luyện Kanji chưa được tính vào heatmap/streak.
 
 ## Stroke order (27/09/2026)

@@ -5,7 +5,7 @@
 ## Hành vi hiện tại
 
 - **Phân quyền chặt chẽ**: Tuyến đường `/admin` chỉ cho phép người dùng có vai trò `ROLE_ADMIN` truy cập; người dùng chưa đăng nhập hoặc không đủ quyền sẽ nhận mã lỗi 403 Forbidden.
-- **Bảo mật 2FA**: Admin đăng nhập yêu cầu xác thực OTP 2FA trước khi mở khóa toàn quyền quản trị.
+- **Bảo mật 2FA**: Khi admin đã bật 2FA, đăng nhập yêu cầu mã TOTP Authenticator trước khi cấp token. Có UI setup/bật/tắt/reset 2FA; không tự bật cho mọi tài khoản.
 - **Tổng quan hệ thống (Tab TỔNG QUAN)**: Hiển thị trạng thái backend (Health check, Memory, Uptime), tổng số tài khoản người dùng, thống kê học liệu và thông tin admin đang thao tác.
 - **Hàng đợi duyệt nội dung (Tab CẦN KIỂM)**:
   - Hiển thị danh sách các mục chờ duyệt (`review-queue`): từ vựng, ngữ pháp, kanji.

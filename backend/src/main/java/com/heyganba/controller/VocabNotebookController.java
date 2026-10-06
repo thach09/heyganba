@@ -14,11 +14,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/notebooks")
+@RequestMapping({"/notebooks", "/vocab/notebooks"})
 @RequiredArgsConstructor
 public class VocabNotebookController {
 
     private final VocabNotebookService notebookService;
+    private final com.heyganba.service.RateLimiterService rateLimiterService;
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<VocabNotebookResponse>>> listNotebooks(
@@ -88,6 +89,9 @@ public class VocabNotebookController {
             @PathVariable Long id,
             @Valid @RequestBody NotebookPracticeResultRequest request
     ) {
+        if (!rateLimiterService.tryConsume("notebook-practice:" + currentUser.getId(), 30, java.time.Duration.ofMinutes(1))) {
+            throw new com.heyganba.common.exception.TooManyRequestsException("Vui lòng đợi một phút trước khi lưu phiên tiếp theo");
+        }
         VocabNotebookService.PracticeResultResponse result = notebookService.recordPracticeResult(
                 currentUser.getId(), id, request);
         return ResponseEntity.ok(ApiResponse.success(result, "Đã ghi nhận kết quả luyện tập"));

@@ -54,6 +54,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 String username = tokenProvider.getUsernameFromJwt(jwt);
                 UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
 
+                if (!tokenProvider.matchesTokenVersion(jwt, (UserPrincipal) userDetails)) {
+                    filterChain.doFilter(request, response);
+                    return;
+                }
+
                 if (!userDetails.isEnabled()) {
                     log.warn("Rejected request from disabled account: {}", username);
                     filterChain.doFilter(request, response);

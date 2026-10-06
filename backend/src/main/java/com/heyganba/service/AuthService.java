@@ -40,8 +40,8 @@ public class AuthService {
 
     @Transactional
     public AuthResponse register(RegisterRequest request) {
-        if (userRepository.existsByEmail(request.getEmail())) {
-            throw new BadRequestException("Email is already registered: " + request.getEmail());
+        if (userRepository.existsByEmail(request.getEmail().toLowerCase().trim())) {
+            throw new BadRequestException("Email đã được đăng ký");
         }
 
         Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
@@ -221,24 +221,32 @@ public class AuthService {
                 .build();
     }
 
+    @Transactional
     public AuthResponse refreshToken(RefreshTokenRequest request) {
         String token = request.getRefreshToken();
         if (!tokenProvider.validateToken(token) || !tokenProvider.isRefreshToken(token)) {
             throw new BadRequestException("Invalid or expired refresh token");
         }
 
+        String username = tokenProvider.getUsernameFromJwt(token);
+        UserPrincipal initial = (UserPrincipal) userDetailsService.loadUserByUsername(username);
+        User user = userRepository.findLockedById(initial.getId()).orElseThrow(() -> new BadRequestException("Account not found"));
+        UserPrincipal userPrincipal = UserPrincipal.create(user);
+        // Serialize rotation per account before checking revocation, including concurrent refresh requests.
         String jti = tokenProvider.getJtiFromJwt(token);
         if (jti != null && tokenRevocationService.isRevoked(jti)) {
             throw new org.springframework.security.authentication.BadCredentialsException("Refresh token has been revoked");
         }
 
-        String username = tokenProvider.getUsernameFromJwt(token);
-        UserPrincipal userPrincipal = (UserPrincipal) userDetailsService.loadUserByUsername(username);
+        if (!tokenProvider.matchesTokenVersion(token, userPrincipal)) {
+            throw new org.springframework.security.authentication.BadCredentialsException("Phiên đăng nhập đã bị thu hồi");
+        }
 
         if (!userPrincipal.isEnabled()) {
             throw new BadRequestException("Account is disabled");
         }
 
+        tokenRevocationService.revokeToken(token);
         String newAccessToken = tokenProvider.generateAccessToken(userPrincipal);
         String newRefreshToken = tokenProvider.generateRefreshToken(userPrincipal);
 
@@ -255,6 +263,28 @@ public class AuthService {
 
     public void logout(String accessToken, String refreshToken) {
         tokenRevocationService.revokeTokens(accessToken, refreshToken);
+    }
+
+    @Transactional
+    public void changePassword(Long userId, com.heyganba.dto.auth.ChangePasswordRequest request, String accessToken) {
+        User user = userRepository.findLockedById(userId).orElseThrow(() -> new BadRequestException("Không tìm thấy tài khoản"));
+        if (!passwordEncoder.matches(request.currentPassword(), user.getPasswordHash())) {
+            throw new org.springframework.security.authentication.BadCredentialsException("Mật khẩu hiện tại không đúng");
+        }
+        if (passwordEncoder.matches(request.newPassword(), user.getPasswordHash())) {
+            throw new BadRequestException("Mật khẩu mới phải khác mật khẩu hiện tại");
+        }
+        String refresh = request.refreshToken();
+        if (refresh != null && !refresh.isBlank() && (!tokenProvider.validateToken(refresh)
+                || !tokenProvider.isRefreshToken(refresh)
+                || !user.getEmail().equals(tokenProvider.getUsernameFromJwt(refresh)))) {
+            throw new BadRequestException("Refresh token không hợp lệ");
+        }
+        user.setPasswordHash(passwordEncoder.encode(request.newPassword()));
+        user.setTokenVersion(user.getTokenVersion() + 1);
+        userRepository.save(user);
+        // Revoke the current JTI and invalidate all issued tokens by account version.
+        tokenRevocationService.revokeTokens(accessToken, refresh);
     }
 
     /** Mã lớp là text tự do: chỉ trim, để trống thì lưu null (không gán lớp mặc định). */

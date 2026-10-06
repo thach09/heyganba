@@ -1,5 +1,7 @@
 # Phase 2 — Trạm Flashcard Từ vựng + SRS Engine
 
+> Tài liệu lịch sử theo giai đoạn. Trạng thái hiện tại, audio từ vựng và quyết định hoãn Redis được đối chiếu tại [audit 06/10/2026](../Internal/audit-2026-10-06.md) và [roadmap hiện hành](../roadmap.md).
+
 > **Mục tiêu:** User ôn từ vựng theo thuật toán SRS (giãn cách lặp lại). Hệ thống tự tính "hôm nay cần ôn bao nhiêu từ" và chỉ hiện đúng số đó. Redis cache giảm tải cho Postgres.
 
 ## Điều kiện hoàn thành (Definition of Done)

@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import confetti from 'canvas-confetti';
-import { X } from 'lucide-react';
+import { X, Volume2 } from 'lucide-react';
 import { FeedbackAlert } from '../../components/FeedbackAlert';
 import type { FeedbackType } from '../../components/FeedbackAlert';
 import { apiRequest } from '../../services/api';
+import { speakJapanese } from '../../services/japaneseSpeech';
 import type { AuthResponse } from '../../services/api';
 
 interface FlashcardDueItem {
@@ -428,6 +429,7 @@ export const FlashcardView: React.FC<FlashcardViewProps> = ({ user, onRequireLog
             {/* Block 1 - word identity: furigana -> word -> meaning */}
             <div className="mt-7 flex flex-col items-center">
               <span className="font-serif text-[14px] text-fg-38">{current.reading}</span>
+              <button type="button" onClick={() => speakJapanese(current.reading)} aria-label="Nghe cách đọc từ" className="inline-flex h-10 w-10 cursor-pointer items-center justify-center text-fg-60 hover:text-fg"><Volume2 size={16} /></button>
               <span className="mt-1 font-serif text-[clamp(36px,7vw,48px)] font-light leading-[1.15]">
                 {current.word}
               </span>

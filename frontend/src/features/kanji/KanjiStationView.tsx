@@ -148,11 +148,11 @@ export const KanjiStationView: React.FC<KanjiStationViewProps> = ({ user, onRequ
         title: 'Không lưu được tiến độ',
         message: res.message || 'Vui lòng thử lại.',
       });
-      return;
+      return false;
     }
 
     const updated: KanjiDto = { ...selected, practiceCount: res.data.practiceCount };
-    setSelected(updated);
+    setSelected(current => current?.id === updated.id ? updated : current);
     setKanjiList((previous) =>
       previous.map((item) => (item.id === updated.id ? { ...item, practiceCount: updated.practiceCount } : item))
     );
@@ -161,7 +161,7 @@ export const KanjiStationView: React.FC<KanjiStationViewProps> = ({ user, onRequ
     setFeedback({
       type: 'success',
       title: `Đã luyện chữ ${updated.character} lần thứ ${updated.practiceCount}`,
-      message: 'Tiến độ được lưu theo tài khoản của bạn. Chưa có animation thứ tự nét — hãy viết theo chữ mẫu mờ.',
+      message: 'Hình chữ đã khớp ít nhất 80% với mẫu. Tiến độ đã được lưu vào tài khoản.',
     });
   };
 
@@ -298,7 +298,7 @@ export const KanjiStationView: React.FC<KanjiStationViewProps> = ({ user, onRequ
                 key={item.id}
                 type="button"
                 data-kanji-card={item.character}
-                onClick={() => setSelected(item)}
+                onClick={() => { setSelected(item); setFeedback(null); }}
                 className={`flex cursor-pointer flex-col items-center gap-1 border px-2 py-3 transition-colors ${
                   active ? 'border-fg bg-card' : 'border-rule-strong bg-transparent hover:border-fg'
                 }`}
@@ -448,7 +448,7 @@ export const KanjiStationView: React.FC<KanjiStationViewProps> = ({ user, onRequ
                   key={item.id}
                   type="button"
                   data-kanji-write-pick={item.character}
-                  onClick={() => setSelected(item)}
+                  onClick={() => { setSelected(item); setFeedback(null); }}
                   title={`${item.character} — ${item.sinoVietnamese}`}
                   className={`cursor-pointer px-1 py-2 text-center transition-colors ${
                     selected?.id === item.id ? 'bg-card' : 'bg-transparent hover:bg-tint'
@@ -486,6 +486,7 @@ export const KanjiStationView: React.FC<KanjiStationViewProps> = ({ user, onRequ
                     maxSize={420}
                     submitLabel="Lưu tiến độ luyện"
                     onSubmit={handlePracticeSubmit}
+                    onInkChange={() => setFeedback(null)}
                   />
                 </div>
                 {submitting && <p className="mt-3 text-[11.5px] text-fg-38">Đang lưu tiến độ...</p>}

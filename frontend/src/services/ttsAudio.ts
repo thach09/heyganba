@@ -11,12 +11,14 @@ import { API_BASE_URL, getAccessToken } from './api';
  */
 let activeAudio: HTMLAudioElement | null = null;
 let activeBlobUrl: string | null = null;
+let requestSequence = 0;
 
 export function ttsAudioUrl(kanaText: string): string {
   return `${API_BASE_URL}/audio/tts?text=${encodeURIComponent(kanaText)}`;
 }
 
 export function stopServerTts(): void {
+  requestSequence++;
   if (activeAudio) {
     activeAudio.pause();
     activeAudio = null;
@@ -29,6 +31,8 @@ export function stopServerTts(): void {
 
 /** @returns 'google-tts' nếu phát được từ server. Ném lỗi để caller fallback sang Web Speech API. */
 export async function playServerTts(kanaText: string): Promise<'google-tts'> {
+  stopServerTts();
+  const sequence = requestSequence;
   const token = getAccessToken();
   const response = await fetch(ttsAudioUrl(kanaText), {
     headers: token ? { Authorization: `Bearer ${token}` } : undefined,
@@ -38,12 +42,13 @@ export async function playServerTts(kanaText: string): Promise<'google-tts'> {
   }
 
   const blob = await response.blob();
-  stopServerTts();
+  if (sequence !== requestSequence) throw new Error('Audio request superseded');
 
   const blobUrl = URL.createObjectURL(blob);
   const audio = new Audio(blobUrl);
   activeAudio = audio;
   activeBlobUrl = blobUrl;
+  audio.addEventListener('ended', () => { if (activeAudio === audio) stopServerTts(); }, { once: true });
 
   await audio.play();
   return 'google-tts';

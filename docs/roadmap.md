@@ -8,18 +8,21 @@
 - [x] **Trang tổng quan** — [chi tiết](features/dashboard.md)
 - [x] **Tiến độ học tập** (heatmap, streak, EXP và bảng xếp hạng) — [chi tiết](features/progress.md)
 - [x] **Kana** (tra cứu, luyện gõ, luyện viết tay) — [chi tiết](features/kana.md)
-- [x] **Phiên ôn từ vựng/SRS** — [chi tiết](features/vocabulary.md). Chưa có từ điển hoặc Kho học tập.
+- [x] **Phiên ôn từ vựng/SRS và từ điển/sổ từ** — [chi tiết](features/vocabulary.md).
 - [x] **Kanji** (tra cứu, bộ thủ, luyện viết tay) — [chi tiết](features/kanji.md)
 - [x] **Ngữ pháp** (tra cứu, trang chi tiết, luyện trắc nghiệm) — [chi tiết](features/grammar.md)
 - [x] **Thi thử** (đề sinh tự động theo công thức hiện có, chấm server, lịch sử) — [chi tiết](features/exam.md)
 - [x] **Quản trị cơ bản** (trạng thái hệ thống và danh sách người dùng, chỉ ADMIN) — [chi tiết](features/admin.md)
 
-## MVP — Còn cần làm
+## MVP — Bổ sung đã triển khai ngày 06/10/2026
 
-- [ ] **Từ điển + Kho học tập**: tìm từ, thêm từ vào kho, tạo nhóm cá nhân và chọn từ vào nhóm.
-- [ ] **Nhóm mẫu cơ bản**: học viên nhận bộ mẫu vào kho rồi học nhóm bằng trắc nghiệm nghĩa/âm đọc.
-- [ ] **Chỉ số luyện tập theo từ** để nhận ra từ cần ôn; phiên nhóm không đẩy lịch SRS ra xa.
-- [ ] **Đổi mật khẩu người dùng (Phase 5 Polish)**: endpoint `PUT /api/v1/auth/password` + UI đổi mật khẩu. Khi đổi mật khẩu thành công, nối vào cơ chế `revoked_tokens` để thu hồi toàn bộ token cũ của user trên tất cả các thiết bị.
+- [x] **Từ điển + Kho học tập**: 218.867 mục JMdict cùng từ giáo trình, tìm kana/kanji/romaji/nghĩa, phân trang, lưu vào sổ cá nhân.
+- [x] **Nhóm mẫu cơ bản**: migration tạo 7 nhóm từ giáo trình đã duyệt; nhận bản sao rồi luyện nghĩa/âm đọc.
+- [x] **Chỉ số luyện tập theo từ**: số lượt, số đúng và lần luyện gần nhất; chấm ở server, retry không cộng lặp, không đổi SRS.
+- [x] **Đổi mật khẩu người dùng (Phase 5 Polish)**: `PUT /api/v1/auth/password` + UI, JTI hiện tại vào `revoked_tokens`, account token version vô hiệu toàn bộ token cũ.
+- [x] **Nét viết đúng ≥80%**: áp dụng chung Kana/Kanji, từ chối nét thiếu và vẽ bừa; chưa chấm thứ tự nét.
+
+Bằng chứng, giới hạn và kiểm chứng nguồn: [audit 06/10/2026](Internal/audit-2026-10-06.md).
 
 Phạm vi này được theo dõi ở [issue #11](https://github.com/thach09/heyganba/issues/11). Câu hỏi cloze/ngữ cảnh chưa thuộc MVP.
 

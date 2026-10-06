@@ -20,6 +20,13 @@ public class Vocabulary {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "dictionary_entry_id", unique = true)
+    private Long dictionaryEntryId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "dictionary_entry_id", insertable = false, updatable = false)
+    private DictionaryEntry dictionaryEntry;
+
     @Column(nullable = false, length = 100)
     private String word;
 

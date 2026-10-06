@@ -1,47 +1,127 @@
 package com.heyganba.service;
 
+import com.heyganba.common.exception.BadRequestException;
+import com.heyganba.common.security.ContentAccess;
 import com.heyganba.dto.dictionary.DictionarySearchResponse;
-import com.heyganba.model.entity.Kanji;
-import com.heyganba.model.entity.Vocabulary;
-import com.heyganba.repository.KanjiRepository;
-import com.heyganba.repository.VocabularyRepository;
+import com.heyganba.dto.dictionary.DictionarySearchResponse.Word;
+import com.heyganba.model.entity.*;
+import com.heyganba.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.*;
+import java.util.regex.Pattern;
 
-import java.util.List;
-
-@Service
-@RequiredArgsConstructor
+@Service @RequiredArgsConstructor
 public class DictionaryService {
-
     private final VocabularyRepository vocabularyRepository;
     private final KanjiRepository kanjiRepository;
+    private final DictionaryEntryRepository dictionaryEntryRepository;
+    private static final int PAGE_SIZE = 20;
+    private record RankedWord(Word word, int relevance, int commonRank) {}
+    private static final Comparator<RankedWord> WORD_ORDER = Comparator.comparingInt(RankedWord::relevance)
+            .thenComparingInt(RankedWord::commonRank)
+            .thenComparingInt(candidate -> candidate.word().word().codePointCount(0, candidate.word().word().length()))
+            .thenComparing(candidate -> candidate.word().word()).thenComparing(candidate -> candidate.word().reading());
+
+    public record Lookup(Word vocabulary, List<com.heyganba.dto.kanji.KanjiResponse> kanjis) {}
 
     @Transactional(readOnly = true)
-    public DictionarySearchResponse search(String query) {
-        if (query == null || query.isBlank()) {
-            return DictionarySearchResponse.builder()
-                    .query("")
-                    .totalMatches(0)
-                    .vocabularies(List.of())
-                    .kanjis(List.of())
-                    .build();
+    public Lookup lookup(Long id) {
+        Word word;
+        if (id < 0 && id != Long.MIN_VALUE) {
+            DictionaryEntry d = dictionaryEntryRepository.findById(-id).orElseThrow(() -> new com.heyganba.common.exception.ResourceNotFoundException("Dictionary", "id", id));
+            if (!Boolean.TRUE.equals(d.getActive())) throw new com.heyganba.common.exception.ResourceNotFoundException("Dictionary", "id", id);
+            word = dictionaryWord(d);
+        } else {
+            Vocabulary v = vocabularyRepository.findById(id).orElseThrow(() -> new com.heyganba.common.exception.ResourceNotFoundException("Vocabulary", "id", id));
+            ContentAccess.requireVisible(v.getReviewStatus(), "Vocabulary", id);
+            word = Word.from(v);
         }
+        return new Lookup(word, kanjiRepository.findAllWithDetails().stream()
+                .filter(k -> ContentAccess.isVisible(k.getReviewStatus()) && word.word().contains(k.getCharacter()))
+                .map(k -> com.heyganba.dto.kanji.KanjiResponse.from(k, 0)).toList());
+    }
 
-        String trimmed = query.trim();
-        List<Vocabulary> vocabs = vocabularyRepository.searchVocabulary(trimmed, PageRequest.of(0, 40));
-        List<Kanji> kanjis = kanjiRepository.searchWithDetails(trimmed);
-        if (kanjis.size() > 20) {
-            kanjis = kanjis.subList(0, 20);
+    public DictionarySearchResponse search(String query) { return search(query, 0); }
+
+    @Transactional(readOnly = true)
+    public DictionarySearchResponse search(String query, int page) {
+        String trimmed = query == null ? "" : query.trim();
+        if (trimmed.length() > 100 || page < 0 || page > 1000) throw new BadRequestException("Từ khoá hoặc trang tra cứu không hợp lệ");
+        if (trimmed.isEmpty()) return new DictionarySearchResponse("", 0, List.of(), List.of(), 0, false);
+        String normalized = DictionaryText.normalize(trimmed);
+        List<RankedWord> matchedCourse = vocabularyRepository.findCourseWords().stream()
+                .filter(v -> ContentAccess.isVisible(v.getReviewStatus()))
+                .map(v -> new RankedWord(Word.from(v), relevance(v.getWord(), v.getReading(), v.getMeaning(), null,
+                        v.getSinoVietnamese(), normalized), 1000))
+                .filter(candidate -> candidate.relevance() < 9)
+                .sorted(WORD_ORDER).toList();
+        int courseStart = Math.min(page * PAGE_SIZE, matchedCourse.size());
+        List<RankedWord> coursePage = matchedCourse.subList(courseStart, Math.min(courseStart + PAGE_SIZE, matchedCourse.size()));
+        var catalog = dictionaryEntryRepository.search(DictionaryText.pattern(normalized), DictionaryText.prefix(normalized),
+                normalized, PageRequest.of(page, PAGE_SIZE));
+        List<RankedWord> candidates = new ArrayList<>(coursePage);
+        catalog.forEach(d -> candidates.add(new RankedWord(dictionaryWord(d), relevance(d.getWord(), d.getReading(), d.getMeaning(),
+                d.getVietnameseMeaning(), null, normalized), d.getCommonRank())));
+        Map<String, RankedWord> distinct = new LinkedHashMap<>();
+        candidates.stream().sorted(WORD_ORDER).forEach(candidate -> distinct.putIfAbsent(
+                DictionaryText.normalize(candidate.word().word()) + "|" + DictionaryText.normalize(candidate.word().reading()), candidate));
+        List<Word> words = distinct.values().stream().map(RankedWord::word).toList();
+        List<Kanji> kanjis = kanjiRepository.findAllWithDetails().stream()
+                .filter(k -> ContentAccess.isVisible(k.getReviewStatus()))
+                .filter(k -> DictionaryText.normalize(k.getCharacter() + " " + k.getMeaning() + " " + Objects.toString(k.getSinoVietnamese(), "") + " " + Objects.toString(k.getOnyomi(), "") + " " + Objects.toString(k.getKunyomi(), "")).contains(normalized))
+                .limit(20).toList();
+        return new DictionarySearchResponse(trimmed, Math.toIntExact(catalog.getTotalElements() + matchedCourse.size() + kanjis.size()),
+                words, page == 0 ? kanjis.stream().map(k -> com.heyganba.dto.kanji.KanjiResponse.from(k, 0)).toList() : List.of(), page,
+                catalog.hasNext() || courseStart + coursePage.size() < matchedCourse.size());
+    }
+
+    private Word dictionaryWord(DictionaryEntry d) {
+        return new Word(-d.getId(), d.getWord(), d.getReading(), d.getMeaning(), d.getVietnameseMeaning(), null,
+                null, null, null, "JMdict / EDRDG", "en");
+    }
+
+    private static int relevance(String word, String reading, String english, String vietnamese, String sinoVietnamese, String query) {
+        String normalizedWord = DictionaryText.normalize(word);
+        String normalizedReading = DictionaryText.normalize(reading);
+        if (normalizedWord.equals(query) || normalizedReading.equals(query)) return 0;
+        if (normalizedWord.startsWith(query) || normalizedReading.startsWith(query)) return 1;
+        if (normalizedWord.contains(query) || normalizedReading.contains(query)) return 2;
+        String vi = DictionaryText.normalize(Objects.toString(vietnamese, ""));
+        if (vi.equals(query)) return 3;
+        if (containsToken(vi, query)) return 4;
+        String en = DictionaryText.normalize(Objects.toString(english, ""));
+        if (en.equals(query)) return 4;
+        if (containsToken(en, query)) return 5;
+        String hanViet = DictionaryText.normalize(Objects.toString(sinoVietnamese, ""));
+        if (hanViet.equals(query) || containsToken(hanViet, query)) return 5;
+        if (vi.contains(query) || en.contains(query)) return 8;
+        return 9;
+    }
+
+    private static boolean containsToken(String value, String query) {
+        if (value.isEmpty()) return false;
+        return Pattern.compile("(?<![\\p{L}\\p{N}])" + Pattern.quote(query) + "(?![\\p{L}\\p{N}])")
+                .matcher(value).find();
+    }
+
+    @Transactional
+    public Vocabulary resolveNotebookWord(Long id) {
+        if (id >= 0) {
+            Vocabulary v = vocabularyRepository.findById(id).orElseThrow(() -> new BadRequestException("Không tìm thấy từ vựng"));
+            ContentAccess.requireVisible(v.getReviewStatus(), "Vocabulary", id);
+            return v;
         }
-
-        return DictionarySearchResponse.builder()
-                .query(trimmed)
-                .totalMatches(vocabs.size() + kanjis.size())
-                .vocabularies(vocabs)
-                .kanjis(kanjis)
-                .build();
+        if (id == Long.MIN_VALUE) throw new BadRequestException("ID từ điển không hợp lệ");
+        // Source row lock prevents duplicate materialization across accounts and backend instances.
+        DictionaryEntry d = dictionaryEntryRepository.findLockedById(-id).orElseThrow(() -> new BadRequestException("Không tìm thấy từ điển"));
+        if (!Boolean.TRUE.equals(d.getActive())) throw new BadRequestException("Mục từ đã ngừng phát hành trong JMdict");
+        return vocabularyRepository.findByDictionaryEntryId(-id).orElseGet(() -> {
+            return vocabularyRepository.save(Vocabulary.builder().word(d.getWord()).reading(d.getReading()).meaning(d.getMeaning())
+                    .dictionaryEntryId(d.getId()).reviewStatus(com.heyganba.model.enums.ReviewStatus.APPROVED)
+                    .sourceRef("JMdict / EDRDG CC BY-SA 4.0, entry " + d.getId()).build());
+        });
     }
 }

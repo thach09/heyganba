@@ -9,6 +9,8 @@ spring:
         format_sql: true
 
 app:
+  security:
+    refresh-cookie-secure: false
   jwt:
     # Secret mặc định CHỈ dùng cho dev local. Staging/Production phải set env JWT_SECRET riêng.
     secret: ${JWT_SECRET:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}

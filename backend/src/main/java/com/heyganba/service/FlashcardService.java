@@ -80,6 +80,9 @@ public class FlashcardService {
 
         // Không cho ôn (đọc/chấm) từ vựng còn chờ duyệt khi không phải admin.
         ContentAccess.requireVisible(vocabulary.getReviewStatus(), "Vocabulary", request.vocabularyId());
+        if (vocabulary.getDictionaryEntryId() != null) {
+            throw new com.heyganba.common.exception.BadRequestException("Từ trong sổ cá nhân được luyện riêng, không thuộc lịch SRS giáo trình");
+        }
 
         Instant now = Instant.now();
         SrsReview review = srsReviewRepository.findByUserIdAndVocabularyId(userId, vocabulary.getId())
@@ -134,9 +137,8 @@ public class FlashcardService {
         long dueToday = srsReviewRepository.countByUserIdAndDueDateLessThanEqual(userId, Instant.now());
         long reviewedWords = srsReviewRepository.countByUserId(userId);
         // Tổng số từ "có thể học" cũng phải theo quy tắc hiển thị: user thường chỉ thấy từ đã duyệt.
-        long visibleTotalWords = ContentAccess.canSeePendingReview()
-                ? vocabularyRepository.count()
-                : vocabularyRepository.countByReviewStatus(ReviewStatus.APPROVED);
+        long visibleTotalWords = vocabularyRepository.findCourseWords().stream()
+                .filter(v -> ContentAccess.isVisible(v.getReviewStatus())).count();
         long availableNewWords = Math.max(0, visibleTotalWords - reviewedWords);
 
         Streak streak = streakRepository.findByUserId(userId).orElse(null);

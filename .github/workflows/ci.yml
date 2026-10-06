@@ -14,7 +14,7 @@ concurrency:
 
 env:
   JAVA_VERSION: "21"
-  NODE_VERSION: "20"
+  NODE_VERSION: "24"
 
 jobs:
   backend-test:
@@ -34,6 +34,12 @@ jobs:
       - name: Build and test with Maven
         working-directory: ./backend
         run: mvn -B clean verify
+
+      - name: Audit runtime dependencies
+        working-directory: ./backend
+        run: |
+          mvn -B dependency:list -DincludeScope=runtime -DoutputFile=target/runtime-dependencies.txt
+          python3 tools/audit-runtime-dependencies.py target/runtime-dependencies.txt
 
       - name: Upload surefire reports
         if: always()
@@ -112,6 +118,14 @@ jobs:
         working-directory: ./frontend
         run: npm run build
 
+      - name: Test frontend behavior
+        working-directory: ./frontend
+        run: npm test
+
+      - name: Audit frontend dependencies
+        working-directory: ./frontend
+        run: npm audit --audit-level=moderate
+
       - name: Upload build output
         uses: actions/upload-artifact@v4
         with:
@@ -138,7 +152,7 @@ jobs:
   # ============================================================
   deploy-backend-production:
     name: Deploy Backend → Render (production)
-    needs: [backend-test, backend-migration-check]
+    needs: [backend-test, backend-migration-check, frontend-test]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment: production

@@ -58,6 +58,7 @@ export const KanaStationView: React.FC<KanaStationViewProps> = ({ script, onScri
     practiceEntry.script === script ? practiceEntry : (getKanaEntries(script)[0] ?? getKanaEntries('HIRAGANA')[0]);
 
   const handleSelectScript = (next: KanaScript) => {
+    setFeedback(null);
     onScriptChange(next);
   };
 
@@ -71,6 +72,7 @@ export const KanaStationView: React.FC<KanaStationViewProps> = ({ script, onScri
   };
 
   const handlePractice = (entry: KanaEntry) => {
+    setFeedback(null);
     onScriptChange(entry.script);
     setPracticeGroup(entry.group);
     setPracticeEntry(entry);
@@ -83,7 +85,7 @@ export const KanaStationView: React.FC<KanaStationViewProps> = ({ script, onScri
       type: 'success',
       title: `Đã luyện xong chữ ${practiceEntrySafe.character}`,
       message:
-        'Giai đoạn này chưa nhận dạng chữ viết — hãy tự đối chiếu nét viết với chữ mẫu (bật/tắt bằng nút "Chữ mẫu").',
+        'Hình chữ đã khớp ít nhất 80% với mẫu. Hãy tiếp tục luyện để nét viết đều và tự nhiên hơn.',
     });
   };
 
@@ -208,7 +210,7 @@ export const KanaStationView: React.FC<KanaStationViewProps> = ({ script, onScri
                 <button
                   key={entry.id}
                   type="button"
-                  onClick={() => setPracticeEntry(entry)}
+                  onClick={() => { setPracticeEntry(entry); setFeedback(null); }}
                   title={`${entry.character} — ${entry.romaji}`}
                   className={`cursor-pointer px-1 py-2 text-center transition-colors ${
                     practiceEntrySafe.id === entry.id ? 'bg-card' : 'bg-transparent hover:bg-tint'
@@ -229,7 +231,7 @@ export const KanaStationView: React.FC<KanaStationViewProps> = ({ script, onScri
             </button>
           </div>
 
-          <KanaCanvas key={practiceEntrySafe.id} referenceChar={practiceEntrySafe.character} onSubmit={handleCanvasSubmit} />
+          <KanaCanvas key={practiceEntrySafe.id} referenceChar={practiceEntrySafe.character} onSubmit={handleCanvasSubmit} onInkChange={() => setFeedback(null)} />
         </div>
       )}
 

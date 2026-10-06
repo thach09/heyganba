@@ -1,4 +1,4 @@
-import { playServerTts } from './ttsAudio';
+import { playServerTts, stopServerTts } from './ttsAudio';
 
 /**
  * Đọc tiếng Nhật — dùng chung cho Trạm Kana và phần "nghe" của đề thi thử.
@@ -13,6 +13,7 @@ import { playServerTts } from './ttsAudio';
 export type SpeechSource = 'tts' | 'none';
 
 let cachedVoice: SpeechSynthesisVoice | null | undefined;
+let speechSequence = 0;
 
 export function isJapaneseSpeechSupported(): boolean {
   return typeof window !== 'undefined' && 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
@@ -48,8 +49,10 @@ export function speakJapanese(text: string, rate = 0.8): SpeechSource {
   }
 
   // Luồng chính: audio TTS của server (đã cache). Lỗi mạng/401 → rơi về giọng của trình duyệt.
+  const sequence = ++speechSequence;
+  if (isJapaneseSpeechSupported()) window.speechSynthesis.cancel();
   void playServerTts(text).catch(() => {
-    speakWithBrowser(text, rate);
+    if (sequence === speechSequence) speakWithBrowser(text, rate);
   });
   return 'tts';
 }
@@ -73,6 +76,8 @@ function speakWithBrowser(text: string, rate: number): void {
 }
 
 export function stopJapaneseSpeech(): void {
+  speechSequence++;
+  stopServerTts();
   if (isJapaneseSpeechSupported()) {
     window.speechSynthesis.cancel();
   }

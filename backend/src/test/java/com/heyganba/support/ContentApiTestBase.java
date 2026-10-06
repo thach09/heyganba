@@ -102,6 +102,12 @@ public abstract class ContentApiTestBase {
     @Autowired
     protected com.heyganba.repository.RevokedTokenRepository revokedTokenRepository;
 
+    @Autowired
+    protected com.heyganba.repository.ReadingPassageRepository readingPassageRepository;
+
+    @Autowired
+    protected com.heyganba.repository.VocabNotebookRepository notebookRepository;
+
     /**
      * Rate limiter là state trong memory của Spring context — context được chia sẻ giữa các test class,
      * nên phải reset ở đây. Nếu không, test A đăng ký/đăng nhập nhiều lần sẽ làm test B nhận 429
@@ -127,6 +133,8 @@ public abstract class ContentApiTestBase {
         mockExamRepository.deleteAll();
         studyActivityRepository.deleteAll();
         auditLogRepository.deleteAll();
+        readingPassageRepository.deleteAll();
+        notebookRepository.deleteAll();
         grammarExerciseRepository.deleteAll();
         grammarRuleRepository.deleteAll();
         kanjiProgressRepository.deleteAll();

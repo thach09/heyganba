@@ -9,10 +9,15 @@ public record VocabNotebookItemResponse(
         String word,
         String reading,
         String meaning,
+        String vietnameseMeaning,
         String sinoVietnamese,
         String exampleSentence,
         String exampleReading,
         String exampleMeaning,
-        String customNote
+        String customNote,
+        int practiceCount,
+        int correctCount,
+        java.time.Instant lastPracticedAt,
+        String meaningLanguage
 ) {
 }
