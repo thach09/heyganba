@@ -21,6 +21,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final UserService userService;
+    private final com.heyganba.service.LearningPreferenceService preferences;
+
+    @GetMapping("/me/preferences")
+    public ApiResponse<com.heyganba.service.LearningPreferenceService.Preferences> getPreferences(
+            @AuthenticationPrincipal UserPrincipal currentUser) {
+        return ApiResponse.success(preferences.get(currentUser.getId()));
+    }
+
+    @PutMapping("/me/preferences")
+    public ApiResponse<com.heyganba.service.LearningPreferenceService.Preferences> updatePreferences(
+            @AuthenticationPrincipal UserPrincipal currentUser,
+            @Valid @RequestBody com.heyganba.dto.user.LearningPreferenceRequest request) {
+        return ApiResponse.success(preferences.update(currentUser.getId(), request));
+    }
 
     @GetMapping("/me")
     public ResponseEntity<ApiResponse<UserProfileResponse>> getCurrentUser(
