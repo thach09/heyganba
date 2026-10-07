@@ -3,7 +3,7 @@
 Scope: the React app in `frontend/`. This file owns code structure, data flow and conventions.
 Visual rules live in `DESIGN.md`; product truth in `PRODUCT.md`; working rules for agents in `../AGENTS.md`.
 
-Paths are relative to `frontend/` unless noted. Status: living document — updated on 2026-10-06.
+Paths are relative to `frontend/` unless noted. Status: living document — updated on 2026-10-07.
 It describes what exists today; planned changes are tracked in GitHub issues (see §8).
 
 ## 1. Stack
@@ -18,7 +18,7 @@ It describes what exists today; planned changes are tracked in GitHub issues (se
 | Icons | lucide-react | |
 | Effects | canvas-confetti | Completion celebrations |
 | Lint | oxlint | `npm run lint` |
-| Tests | Node built-in runner + Puppeteer Core | Ink scoring unit tests and local browser smoke scripts |
+| Tests | Vitest + React Testing Library + jsdom, Node + Puppeteer Core | Auth/API/component regressions, ink scoring, browser smoke |
 
 No state-management or data-fetching library on purpose. The app is one user, ~25 network calls, no offline need. Revisit only when caching/optimistic/offline becomes real.
 
@@ -50,7 +50,9 @@ No state-management or data-fetching library on purpose. The app is one user, ~2
 
 ```
 src/
-  App.tsx                  # router + auth state + layout + health + streak + sidebar state
+  App.tsx                  # provider/boundary composition
+  app/                     # AuthProvider/useAuth, AppShell, lazy routes, ErrorBoundary
+  lib/api/                 # typed client, session storage, shared DTOs
   main.tsx
   index.css                # @theme tokens + base (64 lines)
   components/              # Sidebar, SubmitButton, FeedbackAlert, MascotBadge
@@ -59,7 +61,7 @@ src/
     kana/   # + kanaData.ts, kanaAudio.ts, KanaCanvas
     kanji/ grammar/
   services/
-    api.ts                 # fetch wrapper + token storage + refresh + updateClassCode
+    api.ts                 # temporary compatibility exports while feature APIs migrate
     japaneseSpeech.ts      # TTS via Web Speech API
   assets/
 ```
@@ -67,16 +69,16 @@ src/
 Notes for anyone touching this code:
 
 - JSON requests go through `services/api.ts`; audio blobs use `services/ttsAudio.ts` with the same API base and token. Refresh requests are shared across simultaneous 401 responses, and a pending refresh cannot restore a logged-out session.
-- `services/api.ts` holds the fetch wrapper, token persistence, and one domain call (`updateClassCode`).
+- `lib/api` owns HTTP and session concerns; `features/account/api.ts` owns class-code updates. Other station endpoint extraction is in progress.
 - Views declare their DTO interfaces inline.
-- Auth state lives in `App.tsx` and is prop-drilled to every route (`user`, `onRequireLogin`).
+- Auth state lives in `app/AuthProvider.tsx`; station components consume `app/useAuth.ts`.
 - Data fetching runs in `useEffect` through `apiRequest`.
 
 ## 4. Data layer
 
-`apiRequest<T>(endpoint, options)` returns `ApiResponse<T>`; on 401 it refreshes once through `/auth/refresh` and retries the original request. Call sites pass string endpoints directly from views.
+`apiRequest<T>(endpoint, options)` returns `ApiResponse<T>`; on 401 it refreshes once through `/auth/refresh` and retries the original request. Station endpoint extraction is in progress; the client supports typed failures and silent AbortError cancellation.
 
-- Session storage lives in the same module: `localStorage` keys `heyganba_access_token`, `heyganba_refresh_token`, `heyganba_user`.
+- Session storage lives in `lib/api/session.ts`: `localStorage` keys `heyganba_access_token`, `heyganba_refresh_token`, `heyganba_user`.
 - Kana typing progress persists under its own key (`heyganba_kana_typing`) from `KanaQuiz`.
 - `services/japaneseSpeech.ts` uses cached server TTS with Web Speech as fallback. Playback sequencing prevents stale responses playing over a newer request; completed blob URLs are released.
 - `components/Modal.tsx` uses a native dialog for focus trapping, inert background and Escape. Password changes clear the local session after the server invalidates all old tokens.
@@ -84,7 +86,9 @@ Notes for anyone touching this code:
 
 ## 5. Auth and routing
 
-`App.tsx` restores the saved user, opens `AuthModal` for login/register, gates `/admin` on `role === 'ROLE_ADMIN'` (inline 403 otherwise), and passes `user` + `onRequireLogin` to every route. The sidebar navigates with `NavLink`; `kanaScript` is held in `App.tsx` state so the nav flyout can switch Hiragana/Katakana.
+`AuthProvider` restores the token-free saved profile, owns login/logout/password dialogs and session-expiration handling. Stations consume `useAuth()` directly; profile updates propagate to the shell. `app/routes.tsx` lazy-loads major views with a design-token loading state. The top-level boundary reports exceptions to Sentry and shows safe recovery actions; a route boundary resets on pathname changes. Admin UI gating supplements backend RBAC and never authorizes an API operation.
+
+Kana script selection lives in `?script=hiragana|katakana`, survives refresh and browser history, and retains the existing sidebar flyout.
 
 ## 6. Testing
 

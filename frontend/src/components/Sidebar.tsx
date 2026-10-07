@@ -13,8 +13,6 @@ interface SidebarProps {
   onClose?: () => void;
   /** Desktop: collapse / reopen the sidebar. */
   onToggleSidebar?: () => void;
-  /** Nav dropdown: jump straight to Hiragana or Katakana inside the kana station. */
-  onSelectKanaScript?: (script: 'HIRAGANA' | 'KATAKANA') => void;
   onOpenAuthModal?: () => void;
   onLogout?: () => void;
   onChangePassword?: () => void;
@@ -114,7 +112,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
   isOverlay = false,
   onClose,
   onToggleSidebar,
-  onSelectKanaScript,
   onOpenAuthModal,
   onLogout,
   onChangePassword,
@@ -239,7 +236,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           >
             <span aria-hidden="true" className="absolute -left-3.5 top-0 bottom-0 w-3.5 max-[900px]:hidden" />
             <Link
-              to="/kana"
+              to="/kana?script=hiragana"
               role="menuitem"
               onClick={(event) => {
                 // Pointer click: drop focus so group-focus-within stops keeping the flyout open.
@@ -248,7 +245,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   event.currentTarget.blur();
                 }
                 closeFlyout();
-                onSelectKanaScript?.('HIRAGANA');
                 onNavigate?.();
               }}
               className="flex w-full cursor-pointer items-baseline gap-2.5 border-0 bg-transparent px-4 py-2 text-left font-sans text-fg hover:bg-tint"
@@ -257,14 +253,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <span className="text-[10.5px] text-fg-38">Hiragana</span>
             </Link>
             <Link
-              to="/kana"
+              to="/kana?script=katakana"
               role="menuitem"
               onClick={(event) => {
                 if (event.detail > 0) {
                   event.currentTarget.blur();
                 }
                 closeFlyout();
-                onSelectKanaScript?.('KATAKANA');
                 onNavigate?.();
               }}
               className="flex w-full cursor-pointer items-baseline gap-2.5 border-0 bg-transparent px-4 py-2 text-left font-sans text-fg hover:bg-tint"

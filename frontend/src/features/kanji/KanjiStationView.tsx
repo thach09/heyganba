@@ -1,3 +1,4 @@
+import { useAuth } from '../../app/useAuth';
 import React, { useCallback, useEffect, useState } from 'react';
 import { PenLine, Search, X } from 'lucide-react';
 import confetti from 'canvas-confetti';
@@ -6,7 +7,6 @@ import type { FeedbackType } from '../../components/FeedbackAlert';
 import { SubmitButton } from '../../components/SubmitButton';
 import { KanaCanvas } from '../kana/KanaCanvas';
 import { apiRequest } from '../../services/api';
-import type { AuthResponse } from '../../services/api';
 
 interface RadicalDto {
   id: number;
@@ -36,11 +36,6 @@ interface KanjiProgressResult {
   character: string;
   practiceCount: number;
   lastPracticedAt: string;
-}
-
-interface KanjiStationViewProps {
-  user: AuthResponse | null;
-  onRequireLogin: () => void;
 }
 
 const LESSON_OPTIONS = [
@@ -73,7 +68,8 @@ const MnemonicBlock: React.FC<{ text: string }> = ({ text }) => (
   </div>
 );
 
-export const KanjiStationView: React.FC<KanjiStationViewProps> = ({ user, onRequireLogin }) => {
+export const KanjiStationView: React.FC = () => {
+  const { user, requireLogin: onRequireLogin } = useAuth();
   const [kanjiList, setKanjiList] = useState<KanjiDto[]>([]);
   const [radicals, setRadicals] = useState<RadicalDto[]>([]);
   const [lesson, setLesson] = useState<string>('');

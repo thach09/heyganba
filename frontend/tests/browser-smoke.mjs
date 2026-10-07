@@ -30,6 +30,7 @@ const screenshot = async name => {
 };
 const waitText = async text => page.waitForFunction(text => document.body.textContent.includes(text), {}, text);
 const search = async query => {
+  await page.waitForSelector('input[aria-label="Từ khoá tra cứu"]');
   const input = await page.$('input[aria-label="Từ khoá tra cứu"]');
   await input.click(); await page.keyboard.down('Control'); await page.keyboard.press('A'); await page.keyboard.up('Control'); await page.keyboard.press('Backspace');
   await input.type(query); await page.keyboard.press('Enter');

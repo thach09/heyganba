@@ -1,3 +1,4 @@
+import { useAuth } from '../../app/useAuth';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Search, TriangleAlert, X } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -6,13 +7,7 @@ import { FeedbackAlert } from '../../components/FeedbackAlert';
 import type { FeedbackType } from '../../components/FeedbackAlert';
 import { SubmitButton } from '../../components/SubmitButton';
 import { apiRequest } from '../../services/api';
-import type { AuthResponse } from '../../services/api';
 import type { GrammarCheckResult, GrammarExerciseDto, GrammarRuleDto } from './types';
-
-interface GrammarViewProps {
-  user: AuthResponse | null;
-  onRequireLogin: () => void;
-}
 
 const LESSON_OPTIONS = [
   { slug: 'jpd113-b1', label: 'Bài 1' },
@@ -46,7 +41,8 @@ const normalizeText = (value: string) =>
 
 const snippet = (text: string, max = 96) => (text.length <= max ? text : `${text.slice(0, max).trimEnd()}…`);
 
-export const GrammarView: React.FC<GrammarViewProps> = ({ user, onRequireLogin }) => {
+export const GrammarView: React.FC = () => {
+  const { user, requireLogin: onRequireLogin } = useAuth();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [rules, setRules] = useState<GrammarRuleDto[]>([]);
