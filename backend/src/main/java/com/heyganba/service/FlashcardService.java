@@ -36,6 +36,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class FlashcardService {
+    private final org.springframework.context.ApplicationEventPublisher learningEvents;
 
     public static final int DEFAULT_NEW_PER_DAY = 10;
     private static final int MAX_NEW_PER_REQUEST = 50;
@@ -113,6 +114,8 @@ public class FlashcardService {
         // HOẶC >= 10 câu ngữ pháp (xem StreakPolicy) — ôn 1 từ đơn lẻ không tính là 1 ngày học.
         studyActivityService.record(user, StudyActivityService.SOURCE_FLASHCARD, 1,
                 request.rating().isLapse() ? 0 : 1, now);
+        learningEvents.publishEvent(com.heyganba.domain.learning.LearningActivity.srs(
+                userId, vocabulary.getId(), !request.rating().isLapse(), now));
 
         Streak streak = studyActivityService.qualifiesForStreak(user.getId(), now)
                 ? streakService.touch(user, now)

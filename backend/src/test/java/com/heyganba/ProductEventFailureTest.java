@@ -20,4 +20,14 @@ class ProductEventFailureTest {
         verify(manager).rollback(status);
         verify(manager, never()).commit(any());
     }
+    @Test void learningCaptureFailureDoesNotEscapeToTheAnswerTransaction() {
+        var jdbc = mock(JdbcTemplate.class);
+        var manager = mock(PlatformTransactionManager.class);
+        var status = mock(TransactionStatus.class);
+        when(manager.getTransaction(any())).thenReturn(status);
+        when(jdbc.update(anyString(), any(Object[].class))).thenThrow(new IllegalStateException("private storage details"));
+        var fact = com.heyganba.domain.learning.LearningActivity.srs(1L, 2L, false, java.time.Instant.now());
+        assertDoesNotThrow(() -> new com.heyganba.service.LearningEvidenceService(jdbc, manager).committed(fact));
+        verify(manager).rollback(status);
+    }
 }
