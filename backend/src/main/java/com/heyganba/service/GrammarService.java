@@ -34,6 +34,7 @@ import java.util.Locale;
 @Service
 @RequiredArgsConstructor
 public class GrammarService {
+    private final org.springframework.context.ApplicationEventPublisher learningEvents;
 
     private static final Logger log = LoggerFactory.getLogger(GrammarService.class);
 
@@ -123,6 +124,8 @@ public class GrammarService {
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
         Instant now = Instant.now();
         studyActivityService.record(user, StudyActivityService.SOURCE_GRAMMAR, 1, isCorrect ? 1 : 0, now);
+        learningEvents.publishEvent(com.heyganba.domain.learning.LearningActivity.grammar(
+                userId, exerciseId, exercise.getGrammarRule().getId(), isCorrect, now));
         if (studyActivityService.qualifiesForStreak(userId, now)) {
             streakService.touch(user, now);
         }
