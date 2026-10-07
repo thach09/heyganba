@@ -1,3 +1,5 @@
+import { useRequestScope } from '../../lib/hooks/useRequestScope';
+import { grammarApi } from './api';
 import { useAuth } from '../../app/useAuth';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Search, TriangleAlert, X } from 'lucide-react';
@@ -6,7 +8,6 @@ import confetti from 'canvas-confetti';
 import { FeedbackAlert } from '../../components/FeedbackAlert';
 import type { FeedbackType } from '../../components/FeedbackAlert';
 import { SubmitButton } from '../../components/SubmitButton';
-import { apiRequest } from '../../services/api';
 import type { GrammarCheckResult, GrammarExerciseDto, GrammarRuleDto } from './types';
 
 const LESSON_OPTIONS = [
@@ -43,6 +44,7 @@ const snippet = (text: string, max = 96) => (text.length <= max ? text : `${text
 
 export const GrammarView: React.FC = () => {
   const { user, requireLogin: onRequireLogin } = useAuth();
+  const { run, cancel } = useRequestScope(user?.userId);
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [rules, setRules] = useState<GrammarRuleDto[]>([]);
@@ -78,7 +80,8 @@ export const GrammarView: React.FC = () => {
     }
 
     const query = lesson ? `?lesson=${lesson}` : '';
-    const res = await apiRequest<GrammarRuleDto[]>(`/grammar/rules${query}`);
+    const res = await run('grammarApi.rules', signal => grammarApi.rules(query, { signal }));
+    if (!res) return;
 
     if (res.success && res.data) {
       setRules(res.data);
@@ -87,7 +90,7 @@ export const GrammarView: React.FC = () => {
     } else {
       setError(res.message || 'Không tải được danh sách điểm ngữ pháp.');
     }
-  }, [user, lesson]);
+  }, [user, lesson, run]);
 
   const loadExercises = useCallback(
     async (rule: GrammarRuleDto | null, onlyMistakes: boolean) => {
@@ -104,7 +107,8 @@ export const GrammarView: React.FC = () => {
       }
 
       const query = params.toString();
-      const res = await apiRequest<GrammarExerciseDto[]>(`/grammar/exercises${query ? `?${query}` : ''}`);
+      const res = await run('grammarApi.exercises', signal => grammarApi.exercises(query, { signal }));
+    if (!res) return;
 
       if (res.success && res.data) {
         setExercises(res.data);
@@ -115,19 +119,21 @@ export const GrammarView: React.FC = () => {
         setError(res.message || 'Không tải được bài tập.');
       }
     },
-    [user]
+    [user, run]
   );
 
   useEffect(() => {
     void loadRules();
-  }, [loadRules]);
+    return () => cancel('grammarApi.rules');
+  }, [loadRules, cancel]);
 
   useEffect(() => {
     if (mode !== 'PRACTICE') {
       return;
     }
     void loadExercises(selectedRule, mistakeOnly);
-  }, [mode, selectedRule, mistakeOnly, loadExercises]);
+    return () => cancel('grammarApi.exercises');
+  }, [mode, selectedRule, mistakeOnly, loadExercises, cancel]);
 
   const query = normalizeText(search.trim());  const visibleRules = useMemo(() => {
     if (!query) {
@@ -148,10 +154,11 @@ export const GrammarView: React.FC = () => {
       }
 
       setSelectedOption(answer);
-      const res = await apiRequest<GrammarCheckResult>(`/grammar/exercises/${current.id}/check`, {
+      const res = await run('grammarApi.check', signal => grammarApi.check(current.id, { signal,
         method: 'POST',
         body: JSON.stringify({ userAnswer: answer }),
-      });
+      }));
+    if (!res) return;
 
       if (!res.success || !res.data) {
         setFeedback({
@@ -174,7 +181,7 @@ export const GrammarView: React.FC = () => {
         confetti({ particleCount: 30, spread: 50, origin: { y: 0.85 } });
       }
     },
-    [current, result]
+    [current, result, run]
   );
 
   const goNext = useCallback(() => {

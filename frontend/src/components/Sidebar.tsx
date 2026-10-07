@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ChevronLeft, X } from 'lucide-react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import type { AuthResponse } from '../services/api';
+import type { AuthResponse } from '../lib/api/types';
 
 interface SidebarProps {
   /** Mobile: close the drawer after choosing a nav item; desktop keeps it open. */

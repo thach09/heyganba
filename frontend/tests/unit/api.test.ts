@@ -1,5 +1,9 @@
 import { beforeEach, expect, test, vi } from 'vitest';
 
+async function loadApi() {
+  return { ...await import('../../src/lib/api/client'), ...await import('../../src/lib/api/session') };
+}
+
 const json = (data: unknown, status = 200) => new Response(JSON.stringify(data), {
   status, headers: { 'Content-Type': 'application/json' },
 });
@@ -21,13 +25,13 @@ beforeEach(() => {
 test('normal success includes the access credential', async () => {
   const fetcher = vi.fn().mockResolvedValue(success({ value: 3 }));
   vi.stubGlobal('fetch', fetcher);
-  const api = await import('../../src/services/api');
+  const api = await loadApi();
   expect((await api.apiRequest('/example')).data).toEqual({ value: 3 });
   expect(new Headers(fetcher.mock.calls[0][1].headers).get('Authorization')).toBe('Bearer old-access');
 });
 test('network failure produces a safe message', async () => {
   vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('private host connection details')));
-  const api = await import('../../src/services/api');
+  const api = await loadApi();
   const result = await api.apiRequest('/example');
   expect(result.success).toBe(false);
   expect(result.message).not.toContain('private host');
@@ -36,7 +40,7 @@ test('401 refreshes and retries once', async () => {
   const fetcher = vi.fn().mockResolvedValueOnce(json({}, 401))
     .mockResolvedValueOnce(success(tokens)).mockResolvedValueOnce(success({ value: 2 }));
   vi.stubGlobal('fetch', fetcher);
-  const api = await import('../../src/services/api');
+  const api = await loadApi();
   expect((await api.apiRequest('/example')).data).toEqual({ value: 2 });
   expect(fetcher).toHaveBeenCalledTimes(3);
   expect(new Headers(fetcher.mock.calls[2][1].headers).get('Authorization')).toBe('Bearer new-access');
@@ -49,7 +53,7 @@ test('simultaneous unauthorized requests share one token rotation', async () => 
     return Promise.resolve(new Headers(options.headers).get('Authorization') === 'Bearer new-access'
       ? success({ value: 1 }) : json({}, 401));
   }));
-  const api = await import('../../src/services/api');
+  const api = await loadApi();
   const requests = [api.apiRequest('/first'), api.apiRequest('/second')];
   await vi.waitFor(() => expect(refreshes).toBe(1));
   gate.resolve(success(tokens));
@@ -60,7 +64,7 @@ test('invalid refresh clears the saved session', async () => {
   const expired = vi.fn();
   window.addEventListener('heyganba:session-expired', expired, { once: true });
   vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce(json({}, 401)).mockResolvedValueOnce(json({}, 400)));
-  const api = await import('../../src/services/api');
+  const api = await loadApi();
   await api.apiRequest('/example');
   expect(api.getAccessToken()).toBeNull();
   expect(localStorage.getItem('heyganba_user')).toBeNull();
@@ -68,7 +72,7 @@ test('invalid refresh clears the saved session', async () => {
 });
 test('transient refresh network failure retains a valid session', async () => {
   vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce(json({}, 401)).mockRejectedValueOnce(new TypeError('offline')));
-  const api = await import('../../src/services/api');
+  const api = await loadApi();
   await api.apiRequest('/example');
   expect(api.getAccessToken()).toBe('old-access');
   expect(api.getRefreshToken()).toBe('old-refresh');
@@ -77,7 +81,7 @@ test('a pending refresh cannot restore a cleared session', async () => {
   const gate = deferred<Response>();
   const fetcher = vi.fn().mockResolvedValueOnce(json({}, 401)).mockImplementationOnce(() => gate.promise);
   vi.stubGlobal('fetch', fetcher);
-  const api = await import('../../src/services/api');
+  const api = await loadApi();
   const request = api.apiRequest('/example');
   await vi.waitFor(() => expect(fetcher).toHaveBeenCalledTimes(2));
   api.clearTokens();
@@ -91,7 +95,7 @@ test('logout waits for rotation and revokes the latest token', async () => {
   const fetcher = vi.fn().mockResolvedValueOnce(json({}, 401)).mockImplementationOnce(() => gate.promise)
     .mockResolvedValue(success(null));
   vi.stubGlobal('fetch', fetcher);
-  const api = await import('../../src/services/api');
+  const api = await loadApi();
   const request = api.apiRequest('/example');
   await vi.waitFor(() => expect(fetcher).toHaveBeenCalledTimes(2));
   const logout = api.logoutApi();
@@ -106,13 +110,13 @@ test('logout waits for rotation and revokes the latest token', async () => {
 test('login rejection does not trigger refresh', async () => {
   const fetcher = vi.fn().mockResolvedValue(json({}, 401));
   vi.stubGlobal('fetch', fetcher);
-  const api = await import('../../src/services/api');
+  const api = await loadApi();
   await api.apiRequest('/auth/login');
   expect(fetcher).toHaveBeenCalledOnce();
 });
 test('cookie mode migrates legacy refresh without persisting new JWTs', async () => {
   vi.stubEnv('VITE_AUTH_COOKIE', 'true');
-  const api = await import('../../src/services/api');
+  const api = await loadApi();
   expect(api.getRefreshToken()).toBe('old-refresh');
   expect(localStorage.getItem('heyganba_refresh_token')).toBeNull();
   api.saveTokens('new-access', null);
@@ -124,7 +128,7 @@ test('cookie mode migrates legacy refresh without persisting new JWTs', async ()
 test('an aborted request rejects silently before fetching', async () => {
   const fetcher = vi.fn();
   vi.stubGlobal('fetch', fetcher);
-  const api = await import('../../src/services/api');
+  const api = await loadApi();
   const controller = new AbortController();
   controller.abort();
   await expect(api.apiRequest('/example', { signal: controller.signal })).rejects.toMatchObject({ name: 'AbortError' });
@@ -139,7 +143,7 @@ test('cancelling one refresh consumer leaves the other request working', async (
     return Promise.resolve(new Headers(options.headers).get('Authorization') === 'Bearer new-access'
       ? success({ value: 1 }) : json({}, 401));
   }));
-  const api = await import('../../src/services/api');
+  const api = await loadApi();
   const controller = new AbortController();
   const cancelled = api.apiRequest('/first', { signal: controller.signal });
   const rejection = expect(cancelled).rejects.toMatchObject({ name: 'AbortError' });
@@ -160,7 +164,7 @@ test('a delayed old-token 401 reuses the completed rotation', async () => {
     if (new Headers(options.headers).get('Authorization') === 'Bearer new-access') return Promise.resolve(success(null));
     return url.endsWith('/late') ? late.promise : Promise.resolve(json({}, 401));
   }));
-  const api = await import('../../src/services/api');
+  const api = await loadApi();
   const delayed = api.apiRequest('/late');
   expect((await api.apiRequest('/fast')).success).toBe(true);
   late.resolve(json({}, 401));
@@ -171,7 +175,7 @@ test('a delayed old-token 401 reuses the completed rotation', async () => {
 test.each([[400, 'validation'], [403, 'authentication'], [503, 'server']] as const)(
   'HTTP %s has a typed failure and server details stay private', async (status, kind) => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(json({ success: false, message: 'private database details' }, status)));
-    const api = await import('../../src/services/api');
+    const api = await loadApi();
     const result = await api.apiRequest('/example');
     expect(result.error).toMatchObject({ kind, status });
     if (status >= 500) expect(result.message).not.toContain('private database');

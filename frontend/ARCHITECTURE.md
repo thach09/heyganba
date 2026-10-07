@@ -61,22 +61,21 @@ src/
     kana/   # + kanaData.ts, kanaAudio.ts, KanaCanvas
     kanji/ grammar/
   services/
-    api.ts                 # temporary compatibility exports while feature APIs migrate
     japaneseSpeech.ts      # TTS via Web Speech API
   assets/
 ```
 
 Notes for anyone touching this code:
 
-- JSON requests go through `services/api.ts`; audio blobs use `services/ttsAudio.ts` with the same API base and token. Refresh requests are shared across simultaneous 401 responses, and a pending refresh cannot restore a logged-out session.
-- `lib/api` owns HTTP and session concerns; `features/account/api.ts` owns class-code updates. Other station endpoint extraction is in progress.
-- Views declare their DTO interfaces inline.
+- JSON and audio blob requests share `lib/api/client.ts` refresh handling; `features/kana/audioApi.ts` owns the audio endpoint and `services/ttsAudio.ts` owns playback sequencing. Refresh requests are shared across simultaneous 401 responses, and a pending refresh cannot restore a logged-out session.
+- `lib/api` owns HTTP and session concerns; `features/account/api.ts` owns class-code updates. Feature API modules own station endpoints.
+- Feature DTOs live beside their APIs in `features/<feature>/types.ts`. Heatmap DTOs belong to progress and SRS stats to flashcard; consumers import those definitions.
 - Auth state lives in `app/AuthProvider.tsx`; station components consume `app/useAuth.ts`.
-- Data fetching runs in `useEffect` through `apiRequest`.
+- Data fetching uses feature API functions. `lib/hooks/useRequestScope.ts` cancels obsolete named request channels and drops results after cancellation, even if a server ignores the signal. It cancels all channels on unmount/account changes; view effect cleanups cancel their own load channel. Dashboard/shell effects use a direct AbortController. Mutations may already have reached the server when cancelled, so cancellation does not promise rollback.
 
 ## 4. Data layer
 
-`apiRequest<T>(endpoint, options)` returns `ApiResponse<T>`; on 401 it refreshes once through `/auth/refresh` and retries the original request. Station endpoint extraction is in progress; the client supports typed failures and silent AbortError cancellation.
+`apiRequest<T>(endpoint, options)` returns `ApiResponse<T>`; on 401 it refreshes once through `/auth/refresh` and retries the original request. Feature modules own endpoint construction; the client supports typed failures and silent AbortError cancellation.
 
 - Session storage lives in `lib/api/session.ts`: `localStorage` keys `heyganba_access_token`, `heyganba_refresh_token`, `heyganba_user`.
 - Kana typing progress persists under its own key (`heyganba_kana_typing`) from `KanaQuiz`.
@@ -104,14 +103,18 @@ CI runs `npm run lint`, `npm run build` and `npm test` on Node 24. The unit suit
 - New dependency requires a reason stated in the PR. Default answer is no.
 - Before reporting done: `npm run lint` + `npm run build` + existing tests, and desktop 1440 + mobile 390 screenshots reviewed by hand.
 
-## 8. Tracking
+## 8. Remaining structural debt
+
+Admin and dictionary views still contain substantial existing form/render state. DTO/API extraction reduces coupling; splitting their panels into components remains useful incremental work. No arbitrary line-count target justifies a full station rewrite. Academic content, consent policy and reminder delivery remain independent product decisions.
+
+## 9. Tracking
 
 - Work items live in GitHub issues; PRs link the issue they close.
 - Current frontend refactor: #13 — test harness, API layer, app shell, component splits.
 - Next feature: #11 — Dictionary + Study Vault (Hoàn thành 02/10/2026).
 - This file is updated when the structure changes; it does not carry a backlog.
 
-## 9. Verification commands
+## 10. Verification commands
 
 ```
 npm run dev       # Vite dev server + proxy to localhost:8080
