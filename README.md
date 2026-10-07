@@ -196,7 +196,7 @@ graph TD
 | **Cơ sở Dữ liệu Lõi** | PostgreSQL Serverless | 16 | Chuẩn toàn vẹn dữ liệu ACID, hỗ trợ đánh chỉ mục JSONB cho ngân hàng đề thi phức hợp, vận hành trên hạ tầng AWS Singapore. |
 | **Quản trị Schema** | Flyway Migration | 10.x | Kiểm soát versioning cơ sở dữ liệu qua mã nguồn, ngăn chặn xung đột schema giữa các môi trường, hỗ trợ cơ chế băm kiểm tra checksum. |
 | **Bộ đệm & Xếp hạng** | Redis / In-Memory Cache | 7-alpine | Tối ưu hàng đợi ôn tập SRS và bảng xếp hạng điểm EXP. Hỗ trợ cơ chế Fallback mượt mà sang bộ nhớ RAM khi chạy Local. |
-| **Giám sát Lỗi (APM)** | Sentry | 7.x/11.x | Bắt bắt ngoại lệ thời gian thực (Zero Silent Failures), cung cấp ngữ cảnh người dùng, breadcrumb và stack trace đầy đủ. |
+| **Error monitoring** | Sentry | 7.x/11.x | Conditional on configured DSNs; diagnostic exceptions and request timing with privacy redaction. Provider enablement must be verified before release. |
 
 ### 3.3. Tiêu chuẩn Thiết kế REST API & Danh mục Endpoints
 
