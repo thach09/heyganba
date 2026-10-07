@@ -162,7 +162,7 @@ public class GrammarService {
             return objectMapper.readValue(optionsJson, new TypeReference<List<String>>() {
             });
         } catch (Exception ex) {
-            log.error("Không parse được options_json của bài tập ngữ pháp: {}", optionsJson, ex);
+            log.error("grammar_options_parse_failed category={}", ex.getClass().getSimpleName());
             return List.of();
         }
     }

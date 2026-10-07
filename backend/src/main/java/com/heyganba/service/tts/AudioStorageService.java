@@ -86,12 +86,12 @@ public class AudioStorageService {
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
             if (response.statusCode() / 100 != 2) {
-                log.warn("Upload R2 thất bại (mã {}): {}", response.statusCode(), response.body());
+                log.warn("audio_storage_upload_failed status={}", response.statusCode());
                 return null;
             }
             return trimTrailingSlash(publicBaseUrl) + "/" + objectKey;
         } catch (Exception ex) {
-            log.warn("Upload R2 lỗi, tạm lưu audio trong DB: {}", ex.getMessage());
+            log.warn("audio_storage_fallback category={}", ex.getClass().getSimpleName());
             return null;
         }
     }

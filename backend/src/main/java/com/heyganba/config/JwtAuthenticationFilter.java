@@ -60,7 +60,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
 
                 if (!userDetails.isEnabled()) {
-                    log.warn("Rejected request from disabled account: {}", username);
+                    log.warn("Rejected request from disabled account");
                     filterChain.doFilter(request, response);
                     return;
                 }
@@ -75,7 +75,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (Exception ex) {
-            log.error("Could not set user authentication in security context", ex);
+            log.warn("Authentication context rejected: {}", ex.getClass().getSimpleName());
         }
 
         filterChain.doFilter(request, response);

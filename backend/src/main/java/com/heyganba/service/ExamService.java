@@ -350,7 +350,7 @@ public class ExamService {
                     ));
                 }
             } catch (Exception e) {
-                log.warn("Failed to parse reading passage questions_json for passage id {}: {}", passage.getId(), e.getMessage());
+                log.warn("exam_passage_parse_failed passage={} category={}", passage.getId(), e.getClass().getSimpleName());
             }
         }
         return questions;
@@ -481,7 +481,7 @@ public class ExamService {
             return objectMapper.readValue(optionsJson, new TypeReference<List<String>>() {
             });
         } catch (Exception ex) {
-            log.error("Không parse được options_json khi sinh đề: {}", optionsJson, ex);
+            log.error("exam_options_parse_failed category={}", ex.getClass().getSimpleName());
             return List.of();
         }
     }

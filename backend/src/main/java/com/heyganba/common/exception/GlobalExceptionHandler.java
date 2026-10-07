@@ -166,7 +166,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Void>> handleGenericException(Exception ex) {
-        log.error("Unhandled exception occurred: ", ex);
+        log.error("unhandled_request_failure category={}", ex.getClass().getSimpleName());
         try {
             io.sentry.Sentry.captureException(ex);
         } catch (Throwable ignored) {
