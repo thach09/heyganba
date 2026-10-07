@@ -2,15 +2,15 @@
 
 <div align="center">
 
-[![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.4.3-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
+[![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.5-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
 [![Java](https://img.shields.io/badge/Java-21_LTS-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)](https://openjdk.org/projects/jdk/21/)
 [![React](https://img.shields.io/badge/React-19.2-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![Redis](https://img.shields.io/badge/Redis-7-DC382D?style=for-the-badge&logo=redis&logoColor=white)](https://redis.io/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![Sentry](https://img.shields.io/badge/Sentry-Monitored-362D59?style=for-the-badge&logo=sentry&logoColor=white)](https://sentry.io/)
-[![Build & Test Status](https://img.shields.io/badge/Tests-156_Passing-success?style=for-the-badge&logo=githubactions&logoColor=white)](https://github.com/thach09/heyganba/actions)
+[![Sentry](https://img.shields.io/badge/Sentry-SDK_Integrated-362D59?style=for-the-badge&logo=sentry&logoColor=white)](https://sentry.io/)
+[![Build & Test Status](https://github.com/thach09/heyganba/actions/workflows/ci.yml/badge.svg)](https://github.com/thach09/heyganba/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/License-Proprietary-red?style=for-the-badge)](./README.md)
 
 **Nền tảng đào tạo & tự học tiếng Nhật chuẩn khung năng lực JLPT N5–N4 và giáo trình Dekiru Nihongo.**  
@@ -151,7 +151,7 @@ graph TD
     end
 
     subgraph Backend_App ["Tầng Ứng dụng Backend - Render Singapore Node"]
-        SpringCore["Spring Boot 3.4.3 Application - Java 21 LTS"]
+        SpringCore["Spring Boot Application - Java 21 LTS"]
         SecurityFilterChain["Security Filter Chain<br/>JWT Stateless, Token Revoke Filter, MaxPayloadSizeFilter 64KB"]
         RateLimiter["Rate Limit Guards<br/>Login: 5 fails/15m, Admin: 30 writes/min"]
         SentrySDK["Sentry Application Monitoring SDK<br/>Real-time Error Tracking & Distributed Tracing"]
@@ -189,8 +189,8 @@ graph TD
 | Phân hệ Kỹ thuật | Giải pháp Lựa chọn | Phiên bản | Cơ sở Quyết định & Đánh giá Rủi ro |
 |:---|:---|:---|:---|
 | **Backend Runtime** | Java OpenJDK (LTS) | 21 | Hiệu năng vượt trội, hỗ trợ Virtual Threads (Project Loom) sẵn sàng cho tải I/O cao, Garbage Collector G1/ZGC ổn định. |
-| **Backend Framework** | Spring Boot | 3.4.3 | Hệ sinh thái hoàn thiện, Spring Security 6 với kiến trúc SecurityFilterChain không đồng bộ, Hibernate ORM 6.6 tối ưu truy vấn SQL. |
-| **Frontend Framework** | React + TypeScript | 19.2 / 5.x | Giao diện Single Page Application (SPA), bảo đảm 100% Type-safety từ DTO đến Component UI, hạn chế triệt để lỗi runtime `undefined`. |
+| **Backend Framework** | Spring Boot | See backend/pom.xml | Hệ sinh thái hoàn thiện, Spring Security 6 với kiến trúc SecurityFilterChain không đồng bộ, Hibernate ORM 6.6 tối ưu truy vấn SQL. |
+| **Frontend Framework** | React + TypeScript | See frontend/package.json | Giao diện Single Page Application (SPA), bảo đảm 100% Type-safety từ DTO đến Component UI, hạn chế triệt để lỗi runtime `undefined`. |
 | **Frontend Bundler** | Vite | 8.3 | Tốc độ biên dịch và HMR tức thời, tối ưu hoá kích thước gói nạp phân mảnh qua cơ chế Rollup Tree-shaking. |
 | **Design System** | Tailwind CSS | v4.x | Khai báo quy chuẩn bằng token trong `@theme` (Ink & Paper tone). Loại trừ hoàn toàn CSS tự phát, đảm bảo tính nhất quán thị giác. |
 | **Cơ sở Dữ liệu Lõi** | PostgreSQL Serverless | 16 | Chuẩn toàn vẹn dữ liệu ACID, hỗ trợ đánh chỉ mục JSONB cho ngân hàng đề thi phức hợp, vận hành trên hạ tầng AWS Singapore. |

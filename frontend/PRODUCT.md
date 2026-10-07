@@ -1,5 +1,7 @@
 # Product
 
+Canonical product scope and approved, unimplemented roadmap: [../PRODUCT.md](../PRODUCT.md). This file retains the frontend briefing.
+
 <!-- impeccable:product-schema 1 -->
 
 ## Platform
