@@ -26,7 +26,7 @@ No state-management or data-fetching library on purpose. The app is one user, ~2
 
 - **SPA** rendered by `src/main.tsx` into `#root`, wrapped in `StrictMode` + `BrowserRouter`.
 - **API base**: `VITE_API_BASE_URL` (build-time) or `/api/v1` fallback; dev proxy defaults to `http://localhost:8080`, overridable with `DEV_API_TARGET` for isolated testing.
-- **Auth**: JWT access + refresh persisted in `localStorage` (`heyganba_access_token`, `heyganba_refresh_token`, `heyganba_user`). On 401 the client refreshes once and retries the original request.
+- **Auth**: Cookie mode (`VITE_AUTH_COOKIE=true`) keeps access tokens in memory and refresh tokens in HttpOnly backend cookies. Legacy bearer mode persists tokens locally; saved profile excludes tokens. On 401 the client refreshes once and retries the original request.
 - **Boot checks**: saved-user restore, backend health ping (`/health`) driving the offline banner, streak fetch for the sidebar.
 - **Theme**: `src/index.css` defines `@theme` tokens (colour, font, animation). Legacy CSS has been removed; `index.css` is tokens + base only.
 - **Deploy**: Vercel (root directory `frontend`), SPA rewrites in `vercel.json`, CSP `connect-src` whitelists the production API and staging API hosts. Adding a new external service means updating CSP.
@@ -98,7 +98,7 @@ CI runs `npm run lint`, `npm run build` and `npm test` on Node 24. The unit suit
 - `index.css` stays tokens + base; component styling uses utilities.
 - Behaviour changes require an approved feature doc in `../docs/features/` first (`../AGENTS.md`).
 - New dependency requires a reason stated in the PR. Default answer is no.
-- Before reporting done: `npm run lint` + `npm run build` (plus tests once they exist), and desktop 1440 + mobile 390 screenshots reviewed by hand.
+- Before reporting done: `npm run lint` + `npm run build` + existing tests, and desktop 1440 + mobile 390 screenshots reviewed by hand.
 
 ## 8. Tracking
 
