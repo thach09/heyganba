@@ -96,10 +96,10 @@ flowchart LR
 | **Điểm chạm trên HeyGanba** | 5 Trạm học tập, Sổ tay từ vựng cá nhân, Flashcard trắc nghiệm, Thi thử. | Trạm Ngữ pháp (câu bẫy), Trạm Thi thử, Tra cứu từ điển, Đề xuất bài học. | Admin Panel chuyên sâu, Review Queue, Audit Logs, Quản lý 2FA TOTP. |
 
 ### 1.4. Hệ thống Chỉ số Hiệu quả Nghiệp vụ (KPIs)
-- **Retention Rate (D7 / D30):** Đo lường tỷ lệ học viên duy trì Streak liên tục trên 7 ngày và 30 ngày.
-- **SRS Recall Accuracy Rate:** Tỷ lệ trả lời chính xác trong các phiên ôn tập ngắt quãng (mục tiêu đạt $\ge 85\%$).
-- **Common Mistake Elimination Index:** Tỷ lệ học viên vượt qua các câu hỏi bẫy trợ từ sau khi luyện trạm Ngữ pháp.
-- **System Service Level Availability (SLA):** Đạt $\ge 99.9\%$ thời gian phản hồi API $< 200\text{ms}$.
+- **Product retention (D7 / D30):** Return to meaningful learning in a defined cohort window, measured independently of continuous streak survival. Definitions and current data limitations are owned by the foundation metrics specification.
+- **SRS recall accuracy:** A candidate learning metric, not a demonstrated product outcome. Current SRS state alone is insufficient to reconstruct attempt-level accuracy.
+- **Repeated mistakes:** A future reporting metric requiring identifiable graded attempts. No measured improvement is claimed.
+- **Operational reliability:** Observe API errors, health and release status. No enterprise SLA or measured response-time guarantee is established.
 
 ### 1.5. Từ điển Thuật ngữ Nghiệp vụ (Domain Glossary)
 - **Kana (仮名):** Hai bảng chữ cái ngữ âm tiếng Nhật gồm Hiragana (chữ mềm) và Katakana (chữ cứng).
@@ -363,7 +363,7 @@ Yêu cầu: Đã cài đặt **Docker** và **Docker Compose**.
 Chỉ cần một dòng lệnh duy nhất để khởi động toàn bộ cụm PostgreSQL 16, Redis 7 và Backend Spring Boot:
 
 ```bash
-# 1. Clone repository
+# 1. Run the current backend regression suite
 git clone https://github.com/thach09/heyganba.git
 cd heyganba
 
@@ -411,7 +411,7 @@ npm run dev
 
 ## 🧪 8. Đảm bảo Chất lượng & Ma trận Kiểm thử (QA Lead Perspective)
 
-Dự án áp dụng quy chuẩn kiểm thử nghiêm ngặt đạt tỷ lệ vượt qua **100% (156/156 automated tests)**:
+Current validation results are recorded by [CI](https://github.com/thach09/heyganba/actions/workflows/ci.yml), not a hard-coded passing-test count.
 
 ### 8.1. Kim tự tháp Kiểm thử Tự động (Test Automation Pyramid)
 
@@ -430,7 +430,7 @@ Dự án áp dụng quy chuẩn kiểm thử nghiêm ngặt đạt tỷ lệ vư
 
 #### Danh mục các lệnh kiểm thử cốt lõi:
 ```bash
-# 1. Chạy toàn bộ 156 bài kiểm thử tự động của Backend
+# 1. Run the current backend regression suite
 cd backend
 mvn test
 
@@ -440,7 +440,7 @@ mvn test -Dtest=FlywayLocationsConfigTest
 # 3. Kiểm tra an ninh hệ thống (JWT, Token Revocation, 2FA, Rate Limit)
 mvn test -Dtest=SecurityHardeningTest,JwtTokenProviderTest,SecurityRbacTest
 
-# 4. Kiểm tra chất lượng mã nguồn Frontend (ESLint 0 errors)
+# 4. Frontend lint (oxlint)
 cd ../frontend
 npm run lint
 
