@@ -1,8 +1,9 @@
+import { trackLearningStarted } from '../progress/productEvents';
 import { useRequestScope } from '../../lib/hooks/useRequestScope';
 import { flashcardApi } from './api';
 import type { FlashcardDueItem, FlashcardStats } from './types';
 import { useAuth } from '../../app/useAuth';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import confetti from 'canvas-confetti';
 import { X, Volume2 } from 'lucide-react';
 import { FeedbackAlert } from '../../components/FeedbackAlert';
@@ -20,6 +21,7 @@ type OptionState = 'idle' | 'correct' | 'wrong' | 'dim';
 export const FlashcardView: React.FC = () => {
   const { user, requireLogin: onRequireLogin } = useAuth();
   const { run, cancel } = useRequestScope(user?.userId);
+  const startKey = useRef(crypto.randomUUID());
   const [items, setItems] = useState<FlashcardDueItem[]>([]);
   const [stats, setStats] = useState<FlashcardStats | null>(null);
   const [index, setIndex] = useState(0);
@@ -51,6 +53,7 @@ export const FlashcardView: React.FC = () => {
     const [dueRes, statsRes] = loaded;
 
     if (dueRes.success && dueRes.data) {
+      if (dueRes.data.length) trackLearningStarted('SRS', startKey.current);
       setItems(dueRes.data);
       setIndex(0);
       setChoice(null);

@@ -45,6 +45,7 @@ public class AuthController {
     private final AuthService authService;
     private final RateLimiterService rateLimiterService;
     private final com.heyganba.service.RefreshCookieService refreshCookieService;
+    private final com.heyganba.service.ProductEventService productEvents;
 
     @Value("${app.security.auth.login-max-failed-attempts-per-email:5}")
     private int loginMaxFailedAttemptsPerEmail;
@@ -93,6 +94,7 @@ public class AuthController {
         try {
             refreshCookieService.browser(httpRequest);
             AuthResponse response = authService.login(request);
+            if (response.getUserId() != null) productEvents.login(response.getUserId());
             return ResponseEntity.ok().headers(refreshCookieService.headers(httpRequest, response))
                     .body(ApiResponse.success(response, "Logged in successfully"));
         } catch (AuthenticationException ex) {
