@@ -84,7 +84,9 @@ reviewed summaries belong in Git; generated dumps, reports with account data,
 downloads and credentials do not. Test runs target disposable local databases,
 never production; scope cleanup to the exact created accounts/targets.
 
-The pre-existing scratch directory remains untracked. An explicit recursive
-PowerShell cleanup was rejected by automatic action review. No alternative
-delete route was used; cleanup remains unresolved and is not claimed complete.
+The pre-existing scratch directory remains untracked; old backup files remain
+ignored. Explicit PowerShell scratch cleanup and exact backup-file deletion
+were rejected by automatic action review. No alternative delete route was used;
+that cleanup remains unresolved and is not claimed complete. Newly created
+container rehearsal dumps/restore DBs were removed after verification.
 This is a local artifact-handling limitation, not a reason to commit scratch.
