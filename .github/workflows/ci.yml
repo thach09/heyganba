@@ -136,10 +136,10 @@ jobs:
   # ============================================================
   # Deploy — Staging: KHÔNG cần job trong CI (tránh deploy trùng 2 lần).
   # - Backend staging: Render Web Service `heyganba-backend-staging` (branch develop, autoDeploy=yes)
-  #   → push lên `develop` là Render tự build/deploy.
+  #   → requires a connected Render Git integration; verify provider HEAD after merge.
   # - Frontend staging: Vercel Git Integration tự tạo preview cho branch `develop`
   #   → https://heyganba-git-develop-thach09.vercel.app (dùng VITE_API_BASE_URL = API staging).
-  # CI ở đây chỉ chạy test + migration check.
+  # CI validates this branch; a green run alone does not prove a staging deploy.
   # ============================================================
 
   # ============================================================
