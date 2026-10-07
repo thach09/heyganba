@@ -1,6 +1,10 @@
 import puppeteer from 'puppeteer-core';
 import assert from 'node:assert/strict';
-import {writeFileSync} from 'node:fs';
+import {mkdirSync,writeFileSync} from 'node:fs';
+import {tmpdir} from 'node:os';
+import {join} from 'node:path';
+const out=process.env.AUDIT_OUTPUT || join(tmpdir(),'heyganba-ui-audit');
+mkdirSync(out,{recursive:true});
 const browser=await puppeteer.launch({executablePath:process.env.CHROME_PATH || 'C:/Program Files/Google/Chrome/Application/chrome.exe',headless:true});
 try {
   const page=await browser.newPage();
@@ -28,11 +32,11 @@ try {
     for(const path of paths){const first=path[0];await page.mouse.move(box.x+first.x*box.width,box.y+first.y*box.height);await page.mouse.down();for(const point of path.slice(1))await page.mouse.move(box.x+point.x*box.width,box.y+point.y*box.height);await page.mouse.up();}
     await page.evaluate(()=>[...document.querySelectorAll('button')].find(b=>b.textContent.trim()==='Kiểm tra nét viết').click());
     await page.waitForFunction(()=>document.body.textContent.includes('Đã luyện xong chữ あ'));
-    await page.screenshot({path:`../scratch/ui-audit/handwriting-correct-${width}.png`});
+    await page.screenshot({path:join(out,`handwriting-correct-${width}.png`)});
     await page.evaluate(()=>[...document.querySelectorAll('button')].find(b=>b.textContent.trim()==='Xoá hết').click());
     assert.equal(await page.evaluate(()=>document.body.textContent.includes('Đã luyện xong chữ')),false,'Clearing ink clears old congratulations');
     results.push({width,correctTraceAccepted:true,oldFeedbackCleared:true});
   }
-  writeFileSync('../scratch/ui-audit/handwriting-ui-results.json',JSON.stringify(results,null,2));
+  writeFileSync(join(out,'handwriting-ui-results.json'),JSON.stringify(results,null,2));
   console.log('Correct traces accepted and old feedback cleared at 1440 and 390');
 } finally {await browser.close();}
