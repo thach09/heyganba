@@ -1,17 +1,8 @@
+import { useRequestScope } from '../../lib/hooks/useRequestScope';
+import { adminApi } from './api';
+import type { ReviewQueueItem } from './types';
 import React, { useCallback, useEffect, useState } from 'react';
 import { RefreshCw } from 'lucide-react';
-import { apiRequest } from '../../services/api';
-
-interface ReviewQueueItem {
-  contentType: string;
-  id: number;
-  label: string;
-  detail: string;
-  needsHumanCheck: boolean;
-  reviewStatus: string;
-  sourceRef: string | null;
-  reviewNote: string | null;
-}
 
 const CONTENT_LABEL: Record<string, string> = {
   KANA: 'Kana',
@@ -31,6 +22,7 @@ const tdClass = 'border-b border-rule py-2.5 align-top text-fg-60 text-[12.5px]'
  * tiếng Nhật vào chốt mà không phải tự lọc. Chi tiết: docs/Internal/content-mapping-fpt-curriculum.md.
  */
 export const ReviewQueuePanel: React.FC = () => {
+  const { run, cancel } = useRequestScope();
   const [items, setItems] = useState<ReviewQueueItem[]>([]);
   const [onlyNeedsCheck, setOnlyNeedsCheck] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -39,20 +31,20 @@ export const ReviewQueuePanel: React.FC = () => {
   const load = useCallback(async () => {
     setLoading(true);
     setError(null);
-    const res = await apiRequest<ReviewQueueItem[]>(
-      `/admin/review-queue?limit=100&onlyNeedsCheck=${onlyNeedsCheck}`,
-    );
+    const res = await run('adminApi.reviewQueue', signal => adminApi.reviewQueue(onlyNeedsCheck, { signal }));
+    if (!res) return;
     if (res.success && res.data) {
       setItems(res.data);
     } else {
       setError(res.message || 'Không tải được hàng đợi kiểm nội dung.');
     }
     setLoading(false);
-  }, [onlyNeedsCheck]);
+  }, [onlyNeedsCheck, run]);
 
   useEffect(() => {
     void load();
-  }, [load]);
+    return () => cancel('adminApi.reviewQueue');
+  }, [load, cancel]);
 
   const needsCheckCount = items.filter((item) => item.needsHumanCheck).length;
 

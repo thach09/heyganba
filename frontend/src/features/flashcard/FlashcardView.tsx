@@ -1,48 +1,13 @@
+import { useRequestScope } from '../../lib/hooks/useRequestScope';
+import { flashcardApi } from './api';
+import type { FlashcardDueItem, FlashcardStats } from './types';
 import { useAuth } from '../../app/useAuth';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import confetti from 'canvas-confetti';
 import { X, Volume2 } from 'lucide-react';
 import { FeedbackAlert } from '../../components/FeedbackAlert';
 import type { FeedbackType } from '../../components/FeedbackAlert';
-import { apiRequest } from '../../services/api';
 import { speakJapanese } from '../../services/japaneseSpeech';
-
-interface FlashcardDueItem {
-  vocabularyId: number;
-  word: string;
-  reading: string;
-  meaning: string;
-  sinoVietnamese: string | null;
-  exampleSentence: string | null;
-  exampleReading: string | null;
-  exampleMeaning: string | null;
-  lessonSlug: string | null;
-  isNew: boolean;
-  intervalDays: number;
-  repetitions: number;
-  easeFactor: number;
-  dueDate: string | null;
-}
-
-interface FlashcardStats {
-  learnedWords: number;
-  dueToday: number;
-  availableNewWords: number;
-  currentStreak: number;
-  longestStreak: number;
-}
-
-interface FlashcardReviewResult {
-  vocabularyId: number;
-  rating: string;
-  intervalDays: number;
-  repetitions: number;
-  easeFactor: number;
-  nextDueDate: string;
-  lapse: boolean;
-  currentStreak: number;
-  longestStreak: number;
-}
 
 type QuestionType = 'reading' | 'meaning';
 type OptionState = 'idle' | 'correct' | 'wrong' | 'dim';
@@ -54,6 +19,7 @@ type OptionState = 'idle' | 'correct' | 'wrong' | 'dim';
  */
 export const FlashcardView: React.FC = () => {
   const { user, requireLogin: onRequireLogin } = useAuth();
+  const { run, cancel } = useRequestScope(user?.userId);
   const [items, setItems] = useState<FlashcardDueItem[]>([]);
   const [stats, setStats] = useState<FlashcardStats | null>(null);
   const [index, setIndex] = useState(0);
@@ -65,21 +31,24 @@ export const FlashcardView: React.FC = () => {
   const [helpOpen, setHelpOpen] = useState(false);
 
   const refreshStats = useCallback(async () => {
-    const statsRes = await apiRequest<FlashcardStats>('/flashcard/stats');
+    const statsRes = await run('flashcardApi.stats', signal => flashcardApi.stats({ signal }));
+    if (!statsRes) return;
     if (statsRes.success && statsRes.data) {
       setStats(statsRes.data);
     }
-  }, []);
+  }, [run]);
 
   const loadDeck = useCallback(async () => {
     if (!user) {
       return;
     }
 
-    const [dueRes, statsRes] = await Promise.all([
-      apiRequest<FlashcardDueItem[]>('/flashcard/due-today'),
-      apiRequest<FlashcardStats>('/flashcard/stats'),
-    ]);
+    const loaded = await run('FlashcardView-load', signal => Promise.all([
+      flashcardApi.due({ signal }),
+      flashcardApi.stats({ signal }),
+    ]));
+    if (!loaded) return;
+    const [dueRes, statsRes] = loaded;
 
     if (dueRes.success && dueRes.data) {
       setItems(dueRes.data);
@@ -94,11 +63,12 @@ export const FlashcardView: React.FC = () => {
     if (statsRes.success && statsRes.data) {
       setStats(statsRes.data);
     }
-  }, [user]);
+  }, [user, run]);
 
   useEffect(() => {
     void loadDeck();
-  }, [loadDeck]);
+    return () => cancel('FlashcardView-load');
+  }, [loadDeck, cancel]);
 
   const current = items[index];
 
@@ -144,10 +114,11 @@ export const FlashcardView: React.FC = () => {
         return;
       }
 
-      const res = await apiRequest<FlashcardReviewResult>('/flashcard/review', {
+      const res = await run('flashcardApi.review', signal => flashcardApi.review({ signal,
         method: 'POST',
         body: JSON.stringify({ vocabularyId: target.vocabularyId, rating }),
-      });
+      }));
+    if (!res) return;
 
       if (!res.success || !res.data) {
         setFeedback({
@@ -173,7 +144,7 @@ export const FlashcardView: React.FC = () => {
 
       void refreshStats();
     },
-    [items, index, refreshStats]
+    [items, index, refreshStats, run]
   );
 
   const chooseOption = useCallback(
