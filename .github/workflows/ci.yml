@@ -118,7 +118,7 @@ jobs:
         working-directory: ./frontend
         run: npm run build
 
-      - name: Test frontend behavior
+      - name: Test frontend behavior (Node + Vitest)
         working-directory: ./frontend
         run: npm test
 
