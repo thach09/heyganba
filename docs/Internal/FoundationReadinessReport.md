@@ -25,8 +25,11 @@ Focused integration PRs: [#18](https://github.com/thach09/heyganba/pull/18),
 [#23](https://github.com/thach09/heyganba/pull/23),
 [#24](https://github.com/thach09/heyganba/pull/24),
 [#25](https://github.com/thach09/heyganba/pull/25),
-[#26](https://github.com/thach09/heyganba/pull/26).
-Documentation closes the milestone through a separate develop PR. Never infer
+[#26](https://github.com/thach09/heyganba/pull/26),
+[#27](https://github.com/thach09/heyganba/pull/27).
+Final account-switch regression: private notebook forms and pending-save locks
+are scoped to one learner; cancellation cannot block the next learner's save.
+Never infer
 production rollout from those integration merges.
 
 ## Validation snapshot
@@ -35,7 +38,7 @@ These numbers describe this audit, not a permanent README promise. CI is the
 ongoing source of truth.
 
 - Frontend `npm ci`, lint, `npm test`, build and moderate dependency audit pass.
-  32 React/API/privacy tests and 8 existing Node handwriting tests pass.
+  33 React/API/privacy tests and 8 existing Node handwriting tests pass.
   Lint exits successfully with nine existing React effect warnings.
 - Backend `mvn -B clean verify` passes all 196 tests. The complete same suite
   passes real PostgreSQL 16 with Flyway enabled and Hibernate schema validation,
@@ -127,8 +130,10 @@ does not constitute notification delivery or marketing consent.
    hours if required. No seven-day daily backup, private Neon networking or
    Cloudflare-proxied website is claimed.
 5. Resolve the privacy/account/email dependencies before broad public launch.
-6. Pre-existing local scratch cleanup remains blocked by automatic action review;
-   artifacts stay untracked and were not committed. New tests default outside
+6. Pre-existing local scratch and backup-file cleanup remain blocked by automatic
+   action review; artifacts stay untracked/ignored and were not committed. New
+   rehearsal container dumps and restore databases were removed after verification.
+   New tests default outside
    the repo. This unresolved cleanup is explicitly recorded, not hidden.
 
 ## Decision and hard stop

@@ -13,6 +13,13 @@ import { speakJapanese } from '../../services/japaneseSpeech';
 const labelClass = 'text-[10.5px] font-semibold uppercase tracking-[0.18em] text-fg-38';
 
 export const DictionaryNotebookView: React.FC = () => {
+  const { user } = useAuth();
+  // Private forms, submission locks and requests belong to one account session.
+  // Keep public search in URL state, but never carry a pending save into another account.
+  return <DictionaryNotebookSessionView key={user?.userId ?? 'guest'} />;
+};
+
+const DictionaryNotebookSessionView: React.FC = () => {
   const { user, requireLogin: onRequireLogin } = useAuth();
   const { run, cancel, isActive } = useRequestScope(user?.userId);
   const [activeTab, setActiveTab] = useState<'DICTIONARY' | 'NOTEBOOKS'>('DICTIONARY');
