@@ -1,14 +1,9 @@
+import { useAuth } from '../../app/useAuth';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { SubmitButton } from '../../components/SubmitButton';
 import { apiRequest } from '../../services/api';
-import type { AuthResponse } from '../../services/api';
 import type { GrammarRuleDto } from './types';
-
-interface GrammarRulePageProps {
-  user: AuthResponse | null;
-  onRequireLogin: () => void;
-}
 
 const labelClass = 'text-[10.5px] font-semibold uppercase tracking-[0.18em] text-fg-38';
 
@@ -20,7 +15,8 @@ const OTHERS_LIMIT = 6;
  * refresh, and browser back/forward all work. Related rules prefer the same lesson,
  * then fill from adjacent rule numbers.
  */
-export const GrammarRulePage: React.FC<GrammarRulePageProps> = ({ user, onRequireLogin }) => {
+export const GrammarRulePage: React.FC = () => {
+  const { user, requireLogin: onRequireLogin } = useAuth();
   const { ruleId } = useParams();
   const navigate = useNavigate();
   const [rule, setRule] = useState<GrammarRuleDto | null>(null);

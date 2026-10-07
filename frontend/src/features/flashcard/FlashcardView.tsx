@@ -1,3 +1,4 @@
+import { useAuth } from '../../app/useAuth';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import confetti from 'canvas-confetti';
 import { X, Volume2 } from 'lucide-react';
@@ -5,7 +6,6 @@ import { FeedbackAlert } from '../../components/FeedbackAlert';
 import type { FeedbackType } from '../../components/FeedbackAlert';
 import { apiRequest } from '../../services/api';
 import { speakJapanese } from '../../services/japaneseSpeech';
-import type { AuthResponse } from '../../services/api';
 
 interface FlashcardDueItem {
   vocabularyId: number;
@@ -44,11 +44,6 @@ interface FlashcardReviewResult {
   longestStreak: number;
 }
 
-interface FlashcardViewProps {
-  user: AuthResponse | null;
-  onRequireLogin: () => void;
-}
-
 type QuestionType = 'reading' | 'meaning';
 type OptionState = 'idle' | 'correct' | 'wrong' | 'dim';
 
@@ -57,7 +52,8 @@ type OptionState = 'idle' | 'correct' | 'wrong' | 'dim';
  * Correct -> SRS `GOOD`, wrong -> SRS `FORGOT` (the word returns next session); distractors are the
  * other words of today's session, so no dedicated endpoint is needed yet.
  */
-export const FlashcardView: React.FC<FlashcardViewProps> = ({ user, onRequireLogin }) => {
+export const FlashcardView: React.FC = () => {
+  const { user, requireLogin: onRequireLogin } = useAuth();
   const [items, setItems] = useState<FlashcardDueItem[]>([]);
   const [stats, setStats] = useState<FlashcardStats | null>(null);
   const [index, setIndex] = useState(0);

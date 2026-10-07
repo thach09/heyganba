@@ -1,8 +1,8 @@
+import { useAuth } from '../../app/useAuth';
 import React, { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Search, Plus, FolderPlus, Trash2, Play, CheckCircle2, BookmarkPlus, Volume2 } from 'lucide-react';
 import { apiRequest, getSavedUser } from '../../services/api';
-import type { AuthResponse } from '../../services/api';
 import { SubmitButton } from '../../components/SubmitButton';
 import { Modal } from '../../components/Modal';
 import { speakJapanese } from '../../services/japaneseSpeech';
@@ -77,14 +77,10 @@ interface PracticeResult {
   note: string;
 }
 
-interface DictionaryNotebookViewProps {
-  user: AuthResponse | null;
-  onRequireLogin: () => void;
-}
-
 const labelClass = 'text-[10.5px] font-semibold uppercase tracking-[0.18em] text-fg-38';
 
-export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ user, onRequireLogin }) => {
+export const DictionaryNotebookView: React.FC = () => {
+  const { user, requireLogin: onRequireLogin } = useAuth();
   const [activeTab, setActiveTab] = useState<'DICTIONARY' | 'NOTEBOOKS'>('DICTIONARY');
 
   // Dictionary state
