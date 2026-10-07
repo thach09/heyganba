@@ -1,3 +1,4 @@
+import { useAuth } from '../../app/useAuth';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Play, Users, Volume2, X } from 'lucide-react';
 import confetti from 'canvas-confetti';
@@ -5,7 +6,7 @@ import { FeedbackAlert } from '../../components/FeedbackAlert';
 import type { FeedbackType } from '../../components/FeedbackAlert';
 import { SubmitButton } from '../../components/SubmitButton';
 import { MascotBadge } from '../../components/MascotBadge';
-import { apiRequest, saveUser, updateClassCode } from '../../services/api';
+import { apiRequest, updateClassCode } from '../../services/api';
 import type { AuthResponse } from '../../services/api';
 import { isJapaneseSpeechSupported, speakJapanese } from '../../services/japaneseSpeech';
 
@@ -94,11 +95,6 @@ interface LeaderboardDto {
   entries: LeaderboardEntry[];
 }
 
-interface ExamViewProps {
-  user: AuthResponse | null;
-  onRequireLogin: () => void;
-}
-
 type Phase = 'IDLE' | 'TAKING' | 'RESULT';
 
 const QUESTION_COUNT_OPTIONS = [10, 20, 30];
@@ -129,7 +125,8 @@ const RankBadge: React.FC<{ rank: number }> = ({ rank }) => {
   );
 };
 
-export const ExamView: React.FC<ExamViewProps> = ({ user, onRequireLogin }) => {
+export const ExamView: React.FC = () => {
+  const { user, requireLogin: onRequireLogin, updateProfile } = useAuth();
   const [phase, setPhase] = useState<Phase>('IDLE');
   const [totalQuestions, setTotalQuestions] = useState(20);
   const [durationMinutes, setDurationMinutes] = useState(20);
@@ -209,7 +206,7 @@ export const ExamView: React.FC<ExamViewProps> = ({ user, onRequireLogin }) => {
     }
 
     const updatedUser: AuthResponse = { ...user, classCode: profile.classCode };
-    saveUser(updatedUser);
+    updateProfile(updatedUser);
     setClassCodeInput(profile.classCode ?? '');
     setClassFilterActive(Boolean(profile.classCode));
     setClassMessage(profile.classCode ? `Đã lưu lớp ${profile.classCode}.` : 'Đã xoá mã lớp.');

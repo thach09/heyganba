@@ -5,7 +5,7 @@ import { App } from '../../src/App';
 
 vi.mock('../../src/features/dashboard/DashboardView', () => ({ DashboardView: () => <h1>Dashboard station</h1> }));
 vi.mock('../../src/features/admin/AdminView', () => ({ AdminView: () => <h1>Admin station</h1> }));
-vi.mock('../../src/features/kana/KanaStationView', () => ({ KanaStationView: () => <h1>Kana station</h1> }));
+vi.mock('../../src/features/kana/KanaStationView', () => ({ KanaStationView: ({ script }: { script: string }) => <h1>Kana station {script}</h1> }));
 vi.mock('../../src/features/flashcard/FlashcardView', () => ({ FlashcardView: () => <h1>SRS station</h1> }));
 vi.mock('../../src/features/dictionary/DictionaryNotebookView', () => ({ DictionaryNotebookView: () => <h1>Dictionary station</h1> }));
 vi.mock('../../src/features/kanji/KanjiStationView', () => ({ KanjiStationView: () => <h1>Kanji station</h1> }));
@@ -24,9 +24,9 @@ beforeEach(() => {
 });
 const mount = (path = '/') => render(<MemoryRouter initialEntries={[path]}><App /></MemoryRouter>);
 
-test('public route renders without a saved account', () => {
+test('public route renders without a saved account', async () => {
   mount('/dictionary');
-  expect(screen.getByText('Dictionary station')).toBeTruthy();
+  expect(await screen.findByText('Dictionary station')).toBeTruthy();
 });
 test('ordinary and anonymous users cannot mount the admin station', () => {
   localStorage.setItem('heyganba_user', JSON.stringify(profile));
@@ -34,11 +34,11 @@ test('ordinary and anonymous users cannot mount the admin station', () => {
   expect(screen.getByText('Không có quyền truy cập')).toBeTruthy();
   expect(screen.queryByText('Admin station')).toBeNull();
 });
-test('restores an admin profile and allows the admin route', () => {
+test('restores an admin profile and allows the admin route', async () => {
   localStorage.setItem('heyganba_user', JSON.stringify({ ...profile, role: 'ROLE_ADMIN' }));
   mount('/admin');
   expect(screen.getByText('Local learner')).toBeTruthy();
-  expect(screen.getByText('Admin station')).toBeTruthy();
+  expect(await screen.findByText('Admin station')).toBeTruthy();
 });
 test('require-login opens the modal and successful login updates the shell', async () => {
   mount();
@@ -67,4 +67,20 @@ test('session expiration removes the signed-in shell and displays a safe notice'
   act(() => window.dispatchEvent(new Event('heyganba:session-expired')));
   expect(screen.queryByText('Local learner')).toBeNull();
   expect(screen.getByRole('status').textContent).toContain('Phiên đăng nhập đã hết hạn');
+});
+
+test('katakana selection is restored from the URL on a fresh mount', async () => {
+  mount('/kana?script=katakana');
+  expect(await screen.findByText('Kana station KATAKANA')).toBeTruthy();
+});
+
+test('logout network failure retains the profile and offers a retry', async () => {
+  localStorage.setItem('heyganba_user', JSON.stringify(profile));
+  localStorage.setItem('heyganba_access_token', 'test-access');
+  vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new TypeError('offline')));
+  mount();
+  fireEvent.click(screen.getByRole('button', { name: 'Đăng xuất' }));
+  await waitFor(() => expect(screen.getByRole('status').textContent).toContain('Chưa đăng xuất được'));
+  expect(screen.getByText('Local learner')).toBeTruthy();
+  expect(localStorage.getItem('heyganba_user')).not.toBeNull();
 });

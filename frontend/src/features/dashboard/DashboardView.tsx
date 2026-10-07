@@ -1,6 +1,6 @@
+import { useAuth } from '../../app/useAuth';
 import React, { useEffect, useMemo, useState } from 'react';
 import { apiRequest } from '../../services/api';
-import type { AuthResponse } from '../../services/api';
 
 /**
  * Dashboard - the reflection surface (see DESIGN.md):
@@ -36,10 +36,6 @@ interface UserExp {
     srsSession: number;
     examBase: number;
   };
-}
-
-interface DashboardViewProps {
-  user?: AuthResponse | null;
 }
 
 const TRACKER_DAYS = 24 * 7;
@@ -188,7 +184,8 @@ const ActivityChart: React.FC<{ days: HeatmapDay[]; metric: 'itemCount' | 'corre
   );
 };
 
-export const DashboardView: React.FC<DashboardViewProps> = ({ user }) => {
+export const DashboardView: React.FC = () => {
+  const { user } = useAuth();
   const [heatmap, setHeatmap] = useState<HeatmapDay[]>([]);
   const [flashStats, setFlashStats] = useState<FlashcardStats | null>(null);
   const [userExp, setUserExp] = useState<UserExp | null>(null);
