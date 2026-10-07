@@ -1,7 +1,8 @@
+import { trackLearningStarted } from '../progress/productEvents';
 import { useRequestScope } from '../../lib/hooks/useRequestScope';
 import { grammarApi } from './api';
 import { useAuth } from '../../app/useAuth';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Search, TriangleAlert, X } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import confetti from 'canvas-confetti';
@@ -45,6 +46,7 @@ const snippet = (text: string, max = 96) => (text.length <= max ? text : `${text
 export const GrammarView: React.FC = () => {
   const { user, requireLogin: onRequireLogin } = useAuth();
   const { run, cancel } = useRequestScope(user?.userId);
+  const startKey = useRef(crypto.randomUUID());
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [rules, setRules] = useState<GrammarRuleDto[]>([]);
@@ -111,6 +113,7 @@ export const GrammarView: React.FC = () => {
     if (!res) return;
 
       if (res.success && res.data) {
+        if (res.data.length) trackLearningStarted('GRAMMAR', startKey.current);
         setExercises(res.data);
         setIndex(0);
         setSelectedOption(null);
