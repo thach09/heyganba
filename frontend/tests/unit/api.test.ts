@@ -120,3 +120,60 @@ test('cookie mode migrates legacy refresh without persisting new JWTs', async ()
   expect(api.getRefreshToken()).toBeNull();
   expect(localStorage.getItem('heyganba_access_token')).toBeNull();
 });
+
+test('an aborted request rejects silently before fetching', async () => {
+  const fetcher = vi.fn();
+  vi.stubGlobal('fetch', fetcher);
+  const api = await import('../../src/services/api');
+  const controller = new AbortController();
+  controller.abort();
+  await expect(api.apiRequest('/example', { signal: controller.signal })).rejects.toMatchObject({ name: 'AbortError' });
+  expect(fetcher).not.toHaveBeenCalled();
+});
+
+test('cancelling one refresh consumer leaves the other request working', async () => {
+  const gate = deferred<Response>();
+  let refreshes = 0;
+  vi.stubGlobal('fetch', vi.fn((url: string, options: RequestInit) => {
+    if (url.endsWith('/auth/refresh')) { refreshes++; return gate.promise; }
+    return Promise.resolve(new Headers(options.headers).get('Authorization') === 'Bearer new-access'
+      ? success({ value: 1 }) : json({}, 401));
+  }));
+  const api = await import('../../src/services/api');
+  const controller = new AbortController();
+  const cancelled = api.apiRequest('/first', { signal: controller.signal });
+  const rejection = expect(cancelled).rejects.toMatchObject({ name: 'AbortError' });
+  const remaining = api.apiRequest('/second');
+  await vi.waitFor(() => expect(refreshes).toBe(1));
+  controller.abort();
+  await rejection;
+  gate.resolve(success(tokens));
+  expect((await remaining).success).toBe(true);
+  expect(refreshes).toBe(1);
+});
+
+test('a delayed old-token 401 reuses the completed rotation', async () => {
+  const late = deferred<Response>();
+  let refreshes = 0;
+  vi.stubGlobal('fetch', vi.fn((url: string, options: RequestInit) => {
+    if (url.endsWith('/auth/refresh')) { refreshes++; return Promise.resolve(success(tokens)); }
+    if (new Headers(options.headers).get('Authorization') === 'Bearer new-access') return Promise.resolve(success(null));
+    return url.endsWith('/late') ? late.promise : Promise.resolve(json({}, 401));
+  }));
+  const api = await import('../../src/services/api');
+  const delayed = api.apiRequest('/late');
+  expect((await api.apiRequest('/fast')).success).toBe(true);
+  late.resolve(json({}, 401));
+  expect((await delayed).success).toBe(true);
+  expect(refreshes).toBe(1);
+});
+
+test.each([[400, 'validation'], [403, 'authentication'], [503, 'server']] as const)(
+  'HTTP %s has a typed failure and server details stay private', async (status, kind) => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(json({ success: false, message: 'private database details' }, status)));
+    const api = await import('../../src/services/api');
+    const result = await api.apiRequest('/example');
+    expect(result.error).toMatchObject({ kind, status });
+    if (status >= 500) expect(result.message).not.toContain('private database');
+  },
+);
