@@ -1,8 +1,9 @@
+import { useRequestScope } from '../../lib/hooks/useRequestScope';
+import { grammarApi } from './api';
 import { useAuth } from '../../app/useAuth';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { SubmitButton } from '../../components/SubmitButton';
-import { apiRequest } from '../../services/api';
 import type { GrammarRuleDto } from './types';
 
 const labelClass = 'text-[10.5px] font-semibold uppercase tracking-[0.18em] text-fg-38';
@@ -17,6 +18,7 @@ const OTHERS_LIMIT = 6;
  */
 export const GrammarRulePage: React.FC = () => {
   const { user, requireLogin: onRequireLogin } = useAuth();
+  const { run, cancel } = useRequestScope(user?.userId);
   const { ruleId } = useParams();
   const navigate = useNavigate();
   const [rule, setRule] = useState<GrammarRuleDto | null>(null);
@@ -29,10 +31,12 @@ export const GrammarRulePage: React.FC = () => {
       return;
     }
     setLoading(true);
-    const [ruleRes, listRes] = await Promise.all([
-      apiRequest<GrammarRuleDto>(`/grammar/rules/${ruleId}`),
-      apiRequest<GrammarRuleDto[]>('/grammar/rules'),
-    ]);
+    const loaded = await run('GrammarRulePage-load', signal => Promise.all([
+      grammarApi.rule(ruleId!, { signal }),
+      grammarApi.rules('', { signal }),
+    ]));
+    if (!loaded) return;
+    const [ruleRes, listRes] = loaded;
     setLoading(false);
 
     if (!ruleRes.success || !ruleRes.data) {
@@ -66,11 +70,12 @@ export const GrammarRulePage: React.FC = () => {
       }
     }
     setOthers(picked.slice(0, OTHERS_LIMIT));
-  }, [user, ruleId]);
+  }, [user, ruleId, run]);
 
   useEffect(() => {
     void loadRule();
-  }, [loadRule]);
+    return () => cancel('GrammarRulePage-load');
+  }, [loadRule, cancel]);
 
   // Start at the top when navigating to another rule from the related-rules section.
   useEffect(() => {

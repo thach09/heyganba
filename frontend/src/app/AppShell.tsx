@@ -3,7 +3,7 @@ import { Menu } from 'lucide-react';
 import { Sidebar } from '../components/Sidebar';
 import { useAuth } from './useAuth';
 import { AppRoutes } from './routes';
-import { apiRequest } from '../lib/api/client';
+import { progressApi } from '../features/progress/api';
 
 /** The breakpoint must match the `@media (max-width: 900px)` query in index.css. */
 const MOBILE_BREAKPOINT_QUERY = '(max-width: 900px)';
@@ -86,7 +86,7 @@ export function AppShell() {
   useEffect(() => {
     // Ping backend health check (/api/v1/health)
     const controller = new AbortController();
-    apiRequest<{ status: string }>('/health', { signal: controller.signal })
+    progressApi.health( { signal: controller.signal })
       .then((res) => {
         if (controller.signal.aborted) return;
         setBackendHealthy(res.success && res.data?.status === 'UP');
@@ -103,7 +103,7 @@ export function AppShell() {
     }
 
     const controller = new AbortController();
-    void apiRequest<{ currentStreak: number }>('/streak', { signal: controller.signal }).then((res) => {
+    void progressApi.streak( { signal: controller.signal }).then((res) => {
       if (!controller.signal.aborted && res.success && res.data) {
         setStreakCount(res.data.currentStreak);
       }

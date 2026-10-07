@@ -1,3 +1,8 @@
+import { useRequestScope } from '../../lib/hooks/useRequestScope';
+import { progressApi } from '../progress/api';
+import { examApi } from './api';
+import type { HeatmapDay } from '../progress/types';
+import type { ExamQuestion, ExamDto, ExamResultDto, ExamHistoryDto, StreakDto, LeaderboardDto } from './types';
 import { useAuth } from '../../app/useAuth';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Play, Users, Volume2, X } from 'lucide-react';
@@ -6,94 +11,9 @@ import { FeedbackAlert } from '../../components/FeedbackAlert';
 import type { FeedbackType } from '../../components/FeedbackAlert';
 import { SubmitButton } from '../../components/SubmitButton';
 import { MascotBadge } from '../../components/MascotBadge';
-import { apiRequest, updateClassCode } from '../../services/api';
-import type { AuthResponse } from '../../services/api';
+import { updateClassCode } from '../account/api';
+import type { AuthResponse } from '../../lib/api/types';
 import { isJapaneseSpeechSupported, speakJapanese } from '../../services/japaneseSpeech';
-
-interface ExamQuestion {
-  index: number;
-  type: string;
-  questionText: string;
-  options: string[];
-  /**
-    * Text read by the browser Web Speech API (TTS).
-    * PLACEHOLDER: exam listening uses temporary TTS until recorded audio is available.
-   */
-  audioText?: string | null;
-}
-
-interface ExamDto {
-  examId: number;
-  totalQuestions: number;
-  durationMinutes: number;
-  startedAt: string;
-  expiresAt: string;
-  status: string;
-  questions: ExamQuestion[];
-}
-
-interface ExamQuestionResult {
-  index: number;
-  type: string;
-  questionText: string;
-  submittedAnswer: string;
-  correctAnswer: string;
-  explanation: string | null;
-  correct: boolean;
-}
-
-interface ExamResultDto {
-  examId: number;
-  correctCount: number;
-  totalCount: number;
-  scorePercent: number;
-  durationSeconds: number | null;
-  currentStreak: number;
-  details: ExamQuestionResult[];
-}
-
-interface ExamHistoryDto {
-  examId: number;
-  correctCount: number;
-  totalCount: number;
-  scorePercent: number;
-  durationMinutes: number;
-  durationSeconds: number | null;
-  submittedAt: string;
-}
-
-interface StreakDto {
-  currentStreak: number;
-  longestStreak: number;
-  lastActiveDate: string | null;
-  activeDays: number;
-  zone: string;
-  todaySrsReviews: number;
-  minSrsReviewsForStreak: number;
-  todayQualified: boolean;
-}
-
-interface HeatmapDay {
-  date: string;
-  itemCount: number;
-  correctCount: number;
-}
-
-interface LeaderboardEntry {
-  rank: number;
-  userId: number;
-  fullName: string;
-  learnedWords: number;
-  longestStreak: number;
-  bestExamScore: number;
-  points: number;
-}
-
-interface LeaderboardDto {
-  scope: string;
-  pointsFormula: string;
-  entries: LeaderboardEntry[];
-}
 
 type Phase = 'IDLE' | 'TAKING' | 'RESULT';
 
@@ -127,6 +47,7 @@ const RankBadge: React.FC<{ rank: number }> = ({ rank }) => {
 
 export const ExamView: React.FC = () => {
   const { user, requireLogin: onRequireLogin, updateProfile } = useAuth();
+  const { run, cancel } = useRequestScope(user?.userId);
   const [phase, setPhase] = useState<Phase>('IDLE');
   const [totalQuestions, setTotalQuestions] = useState(20);
   const [durationMinutes, setDurationMinutes] = useState(20);
@@ -155,16 +76,15 @@ export const ExamView: React.FC = () => {
     }
 
     const activeClassCode = classFilterActive && classCodeInput.trim() ? classCodeInput.trim() : null;
-    const leaderboardEndpoint = activeClassCode
-      ? `/leaderboard?limit=10&classCode=${encodeURIComponent(activeClassCode)}`
-      : '/leaderboard?limit=10';
 
-    const [historyRes, streakRes, heatmapRes, leaderboardRes] = await Promise.all([
-      apiRequest<ExamHistoryDto[]>('/exam/history'),
-      apiRequest<StreakDto>('/streak'),
-      apiRequest<HeatmapDay[]>(`/streak/heatmap?days=${HEATMAP_DAYS}`),
-      apiRequest<LeaderboardDto>(leaderboardEndpoint),
-    ]);
+    const loaded = await run('ExamView-load', signal => Promise.all([
+      examApi.history({ signal }),
+      progressApi.streak({ signal }),
+      progressApi.heatmap(HEATMAP_DAYS, { signal }),
+      examApi.leaderboard(activeClassCode, { signal }),
+    ]));
+    if (!loaded) return;
+    const [historyRes, streakRes, heatmapRes, leaderboardRes] = loaded;
 
     if (historyRes.success && historyRes.data) {
       setHistory(historyRes.data);
@@ -181,11 +101,12 @@ export const ExamView: React.FC = () => {
     if (!historyRes.success) {
       setError(historyRes.message || 'Không tải được dữ liệu tiến độ.');
     }
-  }, [user, classFilterActive, classCodeInput]);
+  }, [user, classFilterActive, classCodeInput, run]);
 
   useEffect(() => {
     void loadProgress();
-  }, [loadProgress]);
+    return () => cancel('ExamView-load');
+  }, [loadProgress, cancel]);
 
   /** Save the free-text class code (empty clears it), then filter the leaderboard by that class. */
   const saveOwnClassCode = async () => {
@@ -196,7 +117,7 @@ export const ExamView: React.FC = () => {
     setClassSaving(true);
     setClassMessage(null);
 
-    const profile = await updateClassCode(classCodeInput.trim());
+    const profile = await run('class-code', signal => updateClassCode(classCodeInput.trim(), signal));
 
     setClassSaving(false);
 
@@ -228,10 +149,11 @@ export const ExamView: React.FC = () => {
     setBusy(true);
     setError(null);
 
-    const res = await apiRequest<ExamDto>('/exam/generate', {
+    const res = await run('examApi.generate', signal => examApi.generate({ signal,
       method: 'POST',
       body: JSON.stringify({ totalQuestions, durationMinutes }),
-    });
+    }));
+    if (!res) return;
 
     setBusy(false);
 
@@ -261,10 +183,11 @@ export const ExamView: React.FC = () => {
       })),
     };
 
-    const res = await apiRequest<ExamResultDto>(`/exam/${exam.examId}/submit`, {
+    const res = await run('examApi.submit', signal => examApi.submit(exam.examId, { signal,
       method: 'POST',
       body: JSON.stringify(payload),
-    });
+    }));
+    if (!res) return;
 
     setBusy(false);
 
@@ -283,7 +206,7 @@ export const ExamView: React.FC = () => {
       confetti({ particleCount: 70, spread: 80, origin: { y: 0.8 } });
     }
     void loadProgress();
-  }, [exam, answers, loadProgress]);
+  }, [exam, answers, loadProgress, run]);
 
   const submitRef = useRef(submitExam);
   useEffect(() => {

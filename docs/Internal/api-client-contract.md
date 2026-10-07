@@ -2,9 +2,9 @@
 
 The HTTP client lives in `frontend/src/lib/api/client.ts`. Session storage and
 epoch protection live in `session.ts`; shared envelopes and typed errors live in
-`types.ts`. Feature endpoints belong to their feature, starting with account
-class-code updates. `services/api.ts` is a temporary compatibility export during
-the incremental station migration.
+`types.ts`. Feature endpoints belong to their feature, including account
+class-code updates. The old `services/api.ts` compatibility export has been removed
+after station endpoints migrated.
 
 Ordinary HTTP/network failures retain the existing response-envelope contract.
 `error.kind` distinguishes network, authentication, validation, server, HTTP and
