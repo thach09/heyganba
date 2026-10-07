@@ -53,13 +53,15 @@ src/
   App.tsx                  # provider/boundary composition
   app/                     # AuthProvider/useAuth, AppShell, lazy routes, ErrorBoundary
   lib/api/                 # typed client, session storage, shared DTOs
+  lib/hooks/               # keyed cancellable request scopes
+  lib/observability/       # Sentry event/breadcrumb/streamed-span privacy
   main.tsx
   index.css                # @theme tokens + base (64 lines)
   components/              # Sidebar, SubmitButton, FeedbackAlert, MascotBadge
   features/
     admin/ auth/ dashboard/ dictionary/ exam/ flashcard/
     kana/   # + kanaData.ts, kanaAudio.ts, KanaCanvas
-    kanji/ grammar/
+    kanji/ grammar/ account/ progress/
   services/
     japaneseSpeech.ts      # TTS via Web Speech API
   assets/
