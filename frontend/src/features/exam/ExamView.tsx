@@ -47,6 +47,7 @@ const RankBadge: React.FC<{ rank: number }> = ({ rank }) => {
 
 export const ExamView: React.FC = () => {
   const { user, requireLogin: onRequireLogin, updateProfile } = useAuth();
+  const userId = user?.userId;
   const { run, cancel } = useRequestScope(user?.userId);
   const [phase, setPhase] = useState<Phase>('IDLE');
   const [totalQuestions, setTotalQuestions] = useState(20);
@@ -61,6 +62,8 @@ export const ExamView: React.FC = () => {
   const [leaderboard, setLeaderboard] = useState<LeaderboardDto | null>(null);
   const [remainingSeconds, setRemainingSeconds] = useState(0);
   const [busy, setBusy] = useState(false);
+  const submissionInFlight = useRef(false);
+  const deadlineAttempted = useRef(false);
   const [error, setError] = useState<string | null>(null);
   const [helpOpen, setHelpOpen] = useState(false);
   const [feedback, setFeedback] = useState<{ type: FeedbackType; title: string; message: string } | null>(null);
@@ -71,7 +74,7 @@ export const ExamView: React.FC = () => {
   const [classMessage, setClassMessage] = useState<string | null>(null);
 
   const loadProgress = useCallback(async () => {
-    if (!user) {
+    if (!userId) {
       return;
     }
 
@@ -101,7 +104,7 @@ export const ExamView: React.FC = () => {
     if (!historyRes.success) {
       setError(historyRes.message || 'Không tải được dữ liệu tiến độ.');
     }
-  }, [user, classFilterActive, classCodeInput, run]);
+  }, [userId, classFilterActive, classCodeInput, run]);
 
   useEffect(() => {
     void loadProgress();
@@ -163,6 +166,7 @@ export const ExamView: React.FC = () => {
     }
 
     setExam(res.data);
+    deadlineAttempted.current = false;
     setAnswers({});
     setActiveIndex(0);
     setResult(null);
@@ -171,10 +175,11 @@ export const ExamView: React.FC = () => {
   };
 
   const submitExam = useCallback(async () => {
-    if (!exam) {
+    if (!exam || phase !== 'TAKING' || submissionInFlight.current) {
       return;
     }
 
+    submissionInFlight.current = true;
     setBusy(true);
     const payload = {
       answers: exam.questions.map((question) => ({
@@ -187,6 +192,7 @@ export const ExamView: React.FC = () => {
       method: 'POST',
       body: JSON.stringify(payload),
     }));
+    submissionInFlight.current = false;
     if (!res) return;
 
     setBusy(false);
@@ -206,7 +212,7 @@ export const ExamView: React.FC = () => {
       confetti({ particleCount: 70, spread: 80, origin: { y: 0.8 } });
     }
     void loadProgress();
-  }, [exam, answers, loadProgress, run]);
+  }, [exam, phase, answers, loadProgress, run]);
 
   const submitRef = useRef(submitExam);
   useEffect(() => {
@@ -223,7 +229,8 @@ export const ExamView: React.FC = () => {
       setRemainingSeconds(secondsLeft);
 
       // Auto-submit at zero; the server still scores the exam and does not trust client results.
-      if (secondsLeft === 0) {
+      if (secondsLeft === 0 && !deadlineAttempted.current) {
+        deadlineAttempted.current = true;
         void submitRef.current();
       }
     }, 1000);
@@ -233,7 +240,7 @@ export const ExamView: React.FC = () => {
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (phase !== 'TAKING' || !exam) {
+      if (phase !== 'TAKING' || !exam || busy) {
         return;
       }
 
@@ -262,7 +269,7 @@ export const ExamView: React.FC = () => {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [phase, exam, activeIndex]);
+  }, [phase, exam, activeIndex, busy]);
 
   const formatClock = (seconds: number): string => {
     const minutes = Math.floor(seconds / 60);
@@ -578,6 +585,7 @@ export const ExamView: React.FC = () => {
                       <button
                         key={option}
                         type="button"
+                        disabled={busy}
                         onClick={(event) => {
                           event.stopPropagation();
                           setAnswers((previous) => ({ ...previous, [question.index]: option }));

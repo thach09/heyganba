@@ -20,12 +20,15 @@ type OptionState = 'idle' | 'correct' | 'wrong' | 'dim';
  */
 export const FlashcardView: React.FC = () => {
   const { user, requireLogin: onRequireLogin } = useAuth();
+  const userId = user?.userId;
   const { run, cancel } = useRequestScope(user?.userId);
   const startKey = useRef(crypto.randomUUID());
   const [items, setItems] = useState<FlashcardDueItem[]>([]);
   const [stats, setStats] = useState<FlashcardStats | null>(null);
   const [index, setIndex] = useState(0);
   const [choice, setChoice] = useState<{ value: string; correct: boolean } | null>(null);
+  const [saveState, setSaveState] = useState<'idle' | 'saving' | 'saved' | 'failed'>('idle');
+  const saveStateRef = useRef(saveState);
   const [reviewedCount, setReviewedCount] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
@@ -41,7 +44,7 @@ export const FlashcardView: React.FC = () => {
   }, [run]);
 
   const loadDeck = useCallback(async () => {
-    if (!user) {
+    if (!userId) {
       return;
     }
 
@@ -57,6 +60,8 @@ export const FlashcardView: React.FC = () => {
       setItems(dueRes.data);
       setIndex(0);
       setChoice(null);
+      saveStateRef.current = 'idle';
+      setSaveState('idle');
       setReviewedCount(0);
       setError(null);
     } else {
@@ -66,7 +71,7 @@ export const FlashcardView: React.FC = () => {
     if (statsRes.success && statsRes.data) {
       setStats(statsRes.data);
     }
-  }, [user, run]);
+  }, [userId, run]);
 
   useEffect(() => {
     void loadDeck();
@@ -113,10 +118,12 @@ export const FlashcardView: React.FC = () => {
   const submitRating = useCallback(
     async (rating: string) => {
       const target = items[index];
-      if (!target) {
+      if (!target || saveStateRef.current === 'saving' || saveStateRef.current === 'saved') {
         return;
       }
 
+      saveStateRef.current = 'saving';
+      setSaveState('saving');
       const res = await run('flashcardApi.review', signal => flashcardApi.review({ signal,
         method: 'POST',
         body: JSON.stringify({ vocabularyId: target.vocabularyId, rating }),
@@ -124,6 +131,8 @@ export const FlashcardView: React.FC = () => {
     if (!res) return;
 
       if (!res.success || !res.data) {
+        saveStateRef.current = 'failed';
+        setSaveState('failed');
         setFeedback({
           type: 'error',
           title: 'Không gửi được kết quả ôn tập',
@@ -133,6 +142,8 @@ export const FlashcardView: React.FC = () => {
       }
 
       const result = res.data;
+      saveStateRef.current = 'saved';
+      setSaveState('saved');
       setReviewedCount((previous) => previous + 1);
 
       if (result.lapse) {
@@ -152,7 +163,7 @@ export const FlashcardView: React.FC = () => {
 
   const chooseOption = useCallback(
     (value: string) => {
-      if (choice || !current) {
+      if (choice || !current || saveStateRef.current !== 'idle') {
         return;
       }
       const isCorrect = value === correctValue;
@@ -163,6 +174,9 @@ export const FlashcardView: React.FC = () => {
   );
 
   const handleContinue = useCallback(() => {
+    if (saveStateRef.current !== 'saved') return;
+    saveStateRef.current = 'idle';
+    setSaveState('idle');
     setChoice(null);
     setIndex((previous) => previous + 1);
   }, []);
@@ -272,7 +286,7 @@ export const FlashcardView: React.FC = () => {
         <button
           type="button"
           onClick={handleRefresh}
-          disabled={refreshing}
+          disabled={refreshing || saveState === 'saving' || saveState === 'failed'}
           className="cursor-pointer border border-rule-strong bg-transparent px-3 py-1 text-[10.5px] font-semibold uppercase tracking-[0.12em] text-fg transition-colors hover:bg-fg hover:text-bg disabled:cursor-not-allowed disabled:opacity-40"
         >
           {refreshing ? 'Đang tải...' : 'Tải lại'}
@@ -423,10 +437,16 @@ export const FlashcardView: React.FC = () => {
             <button
               type="button"
               onClick={handleContinue}
-              className="mt-8 cursor-pointer border border-rule-strong bg-transparent px-6 py-2.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-fg transition-colors hover:bg-fg hover:text-bg"
+              disabled={saveState !== 'saved'}
+              className="mt-8 cursor-pointer border border-rule-strong bg-transparent px-6 py-2.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-fg transition-colors hover:bg-fg hover:text-bg disabled:cursor-default disabled:opacity-40"
             >
-              Tiếp theo <span className="ml-2 normal-case tracking-normal text-fg-38">(Space)</span>
+              {saveState === 'saving' ? 'Đang lưu...' : 'Tiếp theo'} <span className="ml-2 normal-case tracking-normal text-fg-38">(Space)</span>
             </button>
+            {saveState === 'failed' && <div className="mt-4 text-[12.5px] text-red" role="alert">
+              <p>Chưa lưu được lượt ôn này. Hãy thử lưu lại trước khi sang từ tiếp theo.</p>
+              <button type="button" className="mt-3 cursor-pointer border border-rule-strong px-4 py-2 text-fg"
+                onClick={() => void submitRating(choice.correct ? 'GOOD' : 'FORGOT')}>Thử lưu lại</button>
+            </div>}
           </div>
         </div>
       )}
