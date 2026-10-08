@@ -728,7 +728,7 @@ export const ExamView: React.FC = () => {
 
       {/* Help panel */}
       {helpOpen && (
-        <Modal title="Hướng dẫn phòng thi thử" onClose={() => setHelpOpen(false)} maxWidthClass="max-w-[420px]" initialFocus={helpHeading}>
+        <Modal title="Hướng dẫn phòng thi thử" onClose={() => setHelpOpen(false)} maxWidthClass="max-w-[420px]" initialFocus={helpHeading} containFocus>
           <h3 ref={helpHeading} tabIndex={-1} className="text-[15px] font-semibold focus:outline-none">Hướng dẫn phòng thi thử</h3>
           <p className="mt-4 text-[13px] leading-[1.9] text-fg-60">
             Chọn số câu và thời gian rồi bắt đầu. Đề sinh từ ngân hàng ngữ pháp, kana và từ vựng đã duyệt, chấm điểm

@@ -210,16 +210,42 @@ try {
   });
   await test('QA-006', 'C', async () => {
     const user = await account('exam-help'), page = await pageFor(user, '/exam'); await generate(page);
-    await page.click('button[aria-label="Hướng dẫn phòng thi thử"]'); await page.waitForSelector('dialog[open]');
-    await page.keyboard.press('1'); await page.keyboard.press('Enter');
-    assert.equal(await page.evaluate(() => document.body.textContent.includes('Đã chọn')), false);
-    assert.equal(await page.$eval('[data-exam-question].border-fg', q => q.getAttribute('data-exam-question')), '0');
-    assert.equal(await page.evaluate(() => document.activeElement.closest('dialog[open]') !== null), true,
-      JSON.stringify(await page.evaluate(() => ({ activeTag: document.activeElement.tagName, activeText: document.activeElement.textContent?.slice(0, 80),
-        openDialogs: document.querySelectorAll('dialog[open]').length }))));
-    await capture(page, 'QA-006', { unchangedAnswers: true, unchangedQuestion: true, focusInDialog: true });
-    await page.keyboard.press('Escape'); assert.equal(await page.$('dialog[open]'), null);
-    await page.browserContext().close(); return { unchangedAnswers: true, unchangedQuestion: true, escapeCloses: true };
+    const viewports = [];
+    const checkpoint = () => page.evaluate(id => JSON.parse(sessionStorage.getItem(`heyganba_exam:${id}`)), user.userId);
+    for (const width of [1440, 390]) {
+      await page.setViewport({ width, height: width === 390 ? 844 : 1000 });
+      const before = await checkpoint();
+      await page.click('button[aria-label="Hướng dẫn phòng thi thử"]'); await page.waitForSelector('dialog[open]');
+      const assertFocus = async () => assert.equal(await page.evaluate(() =>
+        document.hasFocus() && document.activeElement.closest('dialog[open]') !== null), true, `Help focus escaped at ${width}`);
+      await assertFocus();
+      await page.keyboard.press('1'); await page.keyboard.press('Enter');
+      for (const backwards of [false, false, false, false, false, false, true, true, true, true, true, true]) {
+        if (backwards) await page.keyboard.down('Shift');
+        await page.keyboard.press('Tab');
+        if (backwards) await page.keyboard.up('Shift');
+        await assertFocus();
+      }
+      assert.deepEqual(await checkpoint(), before);
+      if (width === 1440) {
+        assert.equal(await page.evaluate(() => document.body.textContent.includes('Đã chọn')), false);
+        assert.equal(await page.$eval('[data-exam-question].border-fg', q => q.getAttribute('data-exam-question')), '0');
+      }
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1), false);
+      const suffix = width === 390 ? 'mobile' : 'desktop';
+      await page.screenshot({ path: join(out, `QA-006-${suffix}.png`), fullPage: true });
+      await page.screenshot({ path: join(out, `QA-006-${suffix}-viewport.png`) });
+      await page.keyboard.press('Escape'); assert.equal(await page.$('dialog[open]'), null);
+      assert.equal(await page.evaluate(() => document.activeElement.getAttribute('aria-label')), 'Hướng dẫn phòng thi thử');
+      // Enter on the restored Help button correctly reopens Help. Return to the exam before study shortcuts.
+      await page.click(`[data-exam-question="${before.activeIndex}"]`);
+      await page.keyboard.press('1'); await page.keyboard.press('Enter');
+      const after = await checkpoint();
+      assert.equal(after.activeIndex, before.activeIndex + 1); assert.ok(after.answers[before.activeIndex]);
+      viewports.push({ width, unchangedAnswers: true, unchangedQuestion: true, tabContained: true, shiftTabContained: true,
+        escapeCloses: true, openerRestored: true, shortcutsResume: true });
+    }
+    await page.browserContext().close(); return { viewports };
   });
   await test('QA-010', 'C', async () => {
     const user = await account('active-days'), page = await pageFor(user, '/grammar');

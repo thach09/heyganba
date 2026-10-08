@@ -140,6 +140,29 @@ test('QA-006: exam help owns keys, native cancel closes it, then shortcuts resum
   expect(screen.getByText('Đã chọn')).toBeTruthy(); expect(readActiveAttempt(1)?.activeIndex).toBe(1);
 });
 
+test('QA-006: help cycles Tab and Shift+Tab inside the dialog and restores its opener', async () => {
+  mount(<ExamView />); fireEvent.click(screen.getByRole('button', { name: /Bắt đầu thi thử/ }));
+  await screen.findByText('Question 0');
+  const opener = screen.getByRole('button', { name: 'Hướng dẫn phòng thi thử' });
+  opener.focus(); fireEvent.click(opener);
+  const dialog = screen.getByRole('dialog', { name: 'Hướng dẫn phòng thi thử' });
+  const close = screen.getByRole('button', { name: 'Đóng' });
+  // jsdom has no layout; the real browser probe also checks native Tab navigation.
+  vi.spyOn(close, 'getClientRects').mockReturnValue([{}] as unknown as DOMRectList);
+  expect(document.activeElement).toBe(dialog.querySelector('h3'));
+  for (const shiftKey of [false, false, false, true, true, true]) {
+    fireEvent.keyDown(document.activeElement!, { key: 'Tab', shiftKey });
+    expect(document.activeElement).toBe(close);
+    expect(dialog.contains(document.activeElement)).toBe(true);
+  }
+  fireEvent.keyDown(close, { key: '1' }); fireEvent.keyDown(close, { key: 'Enter' });
+  expect(screen.queryByText('Đã chọn')).toBeNull(); expect(readActiveAttempt(1)?.activeIndex).toBe(0);
+  fireEvent(dialog, new Event('cancel', { bubbles: true, cancelable: true }));
+  expect(screen.queryByRole('dialog')).toBeNull(); expect(document.activeElement).toBe(opener);
+  fireEvent.keyDown(opener, { key: '1' }); fireEvent.keyDown(opener, { key: 'Enter' });
+  expect(readActiveAttempt(1)?.activeIndex).toBe(1);
+});
+
 test.each(['input', 'textarea', 'div'])('QA-006: exam ignores editable %s controls', async tag => {
   mount(<ExamView />); fireEvent.click(screen.getByRole('button', { name: /Bắt đầu thi thử/ })); await screen.findByText('Question 0');
   const field = document.createElement(tag); if (tag === 'div') field.setAttribute('contenteditable', 'true'); document.body.append(field);
