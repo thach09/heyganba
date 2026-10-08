@@ -10,6 +10,7 @@ HTMLDialogElement.prototype.close = function () { this.removeAttribute('open'); 
 afterEach(() => {
   cleanup();
   localStorage.clear();
+  sessionStorage.clear();
   vi.unstubAllGlobals();
   vi.unstubAllEnvs();
 });

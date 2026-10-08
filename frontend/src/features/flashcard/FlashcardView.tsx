@@ -9,6 +9,7 @@ import { X, Volume2 } from 'lucide-react';
 import { FeedbackAlert } from '../../components/FeedbackAlert';
 import type { FeedbackType } from '../../components/FeedbackAlert';
 import { speakJapanese } from '../../services/japaneseSpeech';
+import { learningKeyboardBlocked } from '../../lib/learningKeyboard';
 
 type QuestionType = 'reading' | 'meaning';
 type OptionState = 'idle' | 'correct' | 'wrong' | 'dim';
@@ -189,6 +190,11 @@ export const FlashcardView: React.FC = () => {
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      if (learningKeyboardBlocked(event, helpOpen ? 'Hướng dẫn ôn tập' : 'Kết quả ôn tập')) return;
+      if (helpOpen) {
+        if (event.key === 'Escape') setHelpOpen(false);
+        return;
+      }
       if (event.key === 'Escape') {
         if (helpOpen) {
           setHelpOpen(false);

@@ -46,6 +46,7 @@ const browser = await puppeteer.launch({ executablePath: process.env.CHROME_PATH
 async function pageFor(user, route) {
   const context = await browser.createBrowserContext();
   const page = await context.newPage(); page.setDefaultTimeout(15000);
+  page.on('dialog', dialog => dialog.accept());
   await page.setViewport({ width: 1440, height: 1000 });
   await page.goto(web + route, { waitUntil: 'domcontentloaded' });
   await login(page, user); return page;
@@ -59,6 +60,7 @@ async function capture(page, id, evidence) {
 }
 async function test(id, group, fn) {
   if (batch !== 'ALL' && batch !== group) return;
+  if (process.env.QA_CASE && process.env.QA_CASE !== id) return;
   try { records.push({ id, status: 'PASS', evidence: await fn() }); console.log(`${id}: PASS`); }
   catch (error) { records.push({ id, status: 'FAIL', error: error.message }); console.error(`${id}: FAIL ${error.message}`); process.exitCode = 1; }
   writeFileSync(join(out, `results-${batch}.json`), JSON.stringify(records, null, 2));
@@ -138,5 +140,70 @@ try {
     assert(await page.evaluate(() => document.body.textContent.includes('Kết quả:')));
     const evidence = await capture(page, 'QA-005', { submitRequests: 1, dbStatus: 'SUBMITTED', outboundDelayMs: 3500, acceleratedClientClock: true });
     await page.browserContext().close(); return evidence;
+  });
+  await test('QA-002', 'B', async () => {
+    const user = await account('reload'), page = await pageFor(user, '/exam'), exam = await generate(page);
+    await page.keyboard.press('1'); await page.keyboard.press('Enter');
+    const before = await page.evaluate(() => ({ selected: document.querySelector('[data-exam-question="0"] button.border-fg')?.textContent,
+      question: document.querySelector('[data-exam-question="0"] p')?.textContent }));
+    await page.reload({ waitUntil: 'domcontentloaded' }); await page.waitForSelector('[data-exam-question]');
+    const after = await page.evaluate(() => ({ selected: document.querySelector('[data-exam-question="0"] button.border-fg')?.textContent,
+      question: document.querySelector('[data-exam-question="0"] p')?.textContent, active: document.querySelector('[data-exam-question].border-fg')?.getAttribute('data-exam-question') }));
+    assert.equal(after.selected, before.selected); assert.equal(after.question, before.question); assert.equal(after.active, '1');
+    const restored = await call(`/exam/${exam.examId}`, null, user.accessToken);
+    // PostgreSQL persists microseconds; browser timers use milliseconds, not JSON string precision.
+    assert.equal(Date.parse(restored.data.expiresAt), Date.parse(exam.expiresAt));
+    await capture(page, 'QA-002', { examId: exam.examId, sameAnswers: true, sameDeadline: true, activeQuestion: after.active });
+    const submitted = page.waitForResponse(r => r.url().endsWith(`/exam/${exam.examId}/submit`));
+    await click(page, 'Nộp bài'); assert.equal((await submitted).status(), 200);
+    await page.waitForFunction(() => document.body.textContent.includes('Kết quả:'));
+    assert.equal(sql(`SELECT status FROM mock_exams WHERE id=${exam.examId}`), 'SUBMITTED');
+    await page.browserContext().close(); return { restoredExam: exam.examId, sameAnswers: true, sameDeadline: true, submitted: true };
+  });
+  await test('QA-004', 'B', async () => {
+    const user = await account('password-keys'), page = await pageFor(user, '/vocabulary');
+    await page.waitForFunction(() => document.body.textContent.includes('Nghĩa tiếng Việt là gì?') || document.body.textContent.includes('Cách đọc là gì?'));
+    const reviewRequests = [];
+    page.on('request', r => { if (r.url().endsWith('/flashcard/review')) reviewRequests.push(r.postData()); });
+    await click(page, 'Đổi mật khẩu'); await page.waitForSelector('dialog[open] input[type=password]');
+    await page.type('dialog[open] input[type=password]', '123'); await page.keyboard.press('Enter'); await sleep(300);
+    assert.equal(reviewRequests.length, 0); assert.equal(Number(sql(`SELECT count(*) FROM srs_reviews WHERE user_id=${user.userId}`)), 0);
+    assert(await page.$('dialog[open]')); await capture(page, 'QA-004', { reviewRequests: 0, storedReviews: 0, passwordDialogRemainsOpen: true });
+    await page.browserContext().close(); return { reviewRequests: 0, storedReviews: 0 };
+  });
+  await test('QA-008', 'B', async () => {
+    const user = await account('grammar-double'), page = await pageFor(user, '/grammar');
+    await page.waitForSelector('[data-grammar-rule]'); const checks = [];
+    await page.setRequestInterception(true);
+    page.on('request', async request => {
+      try {
+        if (request.url().endsWith('/check')) {
+          checks.push(JSON.parse(request.postData()));
+          const response = await fetch(request.url(), { method: request.method(), headers: request.headers(), body: request.postData() });
+          const body = await response.text(); await sleep(1800);
+          await request.respond({ status: response.status, contentType: 'application/json', body });
+        } else await request.continue();
+      } catch { /* Context closed after assertions. */ }
+    });
+    await click(page, 'Luyện tập'); await page.waitForSelector('main kbd');
+    await page.keyboard.press('1'); await sleep(160); await page.keyboard.press('1');
+    await page.waitForFunction(() => /Đúng\s*[01]\/1 câu/.test(document.body.textContent));
+    assert.equal(checks.length, 1);
+    assert.equal(Number(sql(`SELECT COALESCE(sum(item_count),0) FROM study_activities WHERE user_id=${user.userId} AND source='GRAMMAR'`)), 1);
+    const evidence = await capture(page, 'QA-008', { checkRequests: 1, grammarItems: 1, actualServerResponseDelayMs: 1800 });
+    await page.browserContext().close(); return evidence;
+  });
+  await test('QA-009', 'B', async () => {
+    const user = await account('grammar-loading'), page = await pageFor(user, '/grammar');
+    await page.waitForSelector('[data-grammar-rule]'); let pending = 0;
+    await page.setRequestInterception(true);
+    page.on('request', async request => {
+      if (request.url().includes('/grammar/exercises') && request.method() === 'GET') { pending++; await sleep(2500); pending--; }
+      try { await request.continue(); } catch { /* Context closed after assertions. */ }
+    });
+    await click(page, 'Luyện tập'); await page.waitForFunction(() => document.body.textContent.includes('Đang tải bài tập...'));
+    assert(pending > 0); assert.equal(await page.evaluate(() => document.body.textContent.includes('Chưa có câu bài tập')), false);
+    await capture(page, 'QA-009', { pendingExerciseRequests: pending, showsLoading: true, showsEmpty: false });
+    await page.waitForSelector('main kbd'); await page.browserContext().close(); return { loadingShown: true, realExercisesLoaded: true };
   });
 } finally { await browser.close(); }

@@ -1,6 +1,7 @@
 import { useRequestScope } from '../../lib/hooks/useRequestScope';
 import { progressApi } from '../progress/api';
 import { examApi } from './api';
+import { clearActiveAttempt, readActiveAttempt, saveActiveAttempt } from './activeAttempt';
 import type { HeatmapDay } from '../progress/types';
 import type { ExamQuestion, ExamDto, ExamResultDto, ExamHistoryDto, StreakDto, LeaderboardDto } from './types';
 import { useAuth } from '../../app/useAuth';
@@ -64,6 +65,10 @@ export const ExamView: React.FC = () => {
   const [busy, setBusy] = useState(false);
   const submissionInFlight = useRef(false);
   const deadlineAttempted = useRef(false);
+  const [checkpoint] = useState(() => readActiveAttempt(userId));
+  const [resumeState, setResumeState] = useState<'none' | 'loading' | 'failed'>(checkpoint ? 'loading' : 'none');
+  const [resumeError, setResumeError] = useState<string | null>(null);
+  const [storageWarning, setStorageWarning] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [helpOpen, setHelpOpen] = useState(false);
   const [feedback, setFeedback] = useState<{ type: FeedbackType; title: string; message: string } | null>(null);
@@ -72,6 +77,10 @@ export const ExamView: React.FC = () => {
   const [classFilterActive, setClassFilterActive] = useState(false);
   const [classSaving, setClassSaving] = useState(false);
   const [classMessage, setClassMessage] = useState<string | null>(null);
+
+  const checkpointAttempt = useCallback((attempt: ExamDto, selected: Record<number, string>, position: number) => {
+    if (userId) setStorageWarning(!saveActiveAttempt(userId, { examId: attempt.examId, answers: selected, activeIndex: position }));
+  }, [userId]);
 
   const loadProgress = useCallback(async () => {
     if (!userId) {
@@ -111,6 +120,58 @@ export const ExamView: React.FC = () => {
     return () => cancel('ExamView-load');
   }, [loadProgress, cancel]);
 
+  const restoreAttempt = useCallback(async () => {
+    if (!checkpoint || !userId) return;
+    setResumeState('loading');
+    setResumeError(null);
+    const res = await run('examApi.resume', signal => examApi.get(checkpoint.examId, { signal }));
+    if (!res) return;
+    if (!res.success || !res.data) {
+      setResumeError(res.message || 'Không khôi phục được bài thi. Vui lòng thử lại.');
+      if (res.error?.status === 404) {
+        clearActiveAttempt(userId);
+        setResumeState('none');
+      } else setResumeState('failed');
+      return;
+    }
+    if (res.data.status !== 'IN_PROGRESS') {
+      const graded = await run('examApi.resume', signal => examApi.result(checkpoint.examId, { signal }));
+      if (!graded) return;
+      if (!graded.success || !graded.data) {
+        setResumeError(graded.message || 'Không tải được kết quả bài thi. Vui lòng thử lại.');
+        setResumeState('failed');
+        return;
+      }
+      clearActiveAttempt(userId);
+      setResult(graded.data);
+      setPhase('RESULT');
+    } else {
+      const validAnswers = Object.fromEntries(res.data.questions
+        .filter(question => question.options.includes(checkpoint.answers[question.index]))
+        .map(question => [question.index, checkpoint.answers[question.index]]));
+      setExam(res.data);
+      setAnswers(validAnswers);
+      setActiveIndex(Math.max(0, Math.min(checkpoint.activeIndex, res.data.questions.length - 1)));
+      checkpointAttempt(res.data, validAnswers, Math.max(0, Math.min(checkpoint.activeIndex, res.data.questions.length - 1)));
+      setRemainingSeconds(Math.max(0, Math.floor((Date.parse(res.data.expiresAt) - Date.now()) / 1000)));
+      setPhase('TAKING');
+    }
+    setResumeState('none');
+  }, [checkpoint, userId, run, checkpointAttempt]);
+
+  useEffect(() => {
+    void restoreAttempt();
+    return () => cancel('examApi.resume');
+  }, [restoreAttempt, cancel]);
+
+  useEffect(() => {
+    // Closing the tab discards sessionStorage; the learner must explicitly confirm leaving.
+    if (phase !== 'TAKING') return;
+    const warn = (event: BeforeUnloadEvent) => { event.preventDefault(); event.returnValue = ''; };
+    window.addEventListener('beforeunload', warn);
+    return () => window.removeEventListener('beforeunload', warn);
+  }, [phase]);
+
   /** Save the free-text class code (empty clears it), then filter the leaderboard by that class. */
   const saveOwnClassCode = async () => {
     if (!user) {
@@ -149,6 +210,7 @@ export const ExamView: React.FC = () => {
   };
 
   const startExam = async () => {
+    if (busy || resumeState !== 'none') return;
     setBusy(true);
     setError(null);
 
@@ -166,6 +228,7 @@ export const ExamView: React.FC = () => {
     }
 
     setExam(res.data);
+    checkpointAttempt(res.data, {}, 0);
     deadlineAttempted.current = false;
     setAnswers({});
     setActiveIndex(0);
@@ -207,12 +270,13 @@ export const ExamView: React.FC = () => {
     }
 
     setResult(res.data);
+    if (userId) clearActiveAttempt(userId);
     setPhase('RESULT');
     if (res.data.scorePercent >= 80) {
       confetti({ particleCount: 70, spread: 80, origin: { y: 0.8 } });
     }
     void loadProgress();
-  }, [exam, phase, answers, loadProgress, run]);
+  }, [exam, phase, answers, userId, loadProgress, run]);
 
   const submitRef = useRef(submitExam);
   useEffect(() => {
@@ -258,18 +322,20 @@ export const ExamView: React.FC = () => {
         const option = question.options[Number(event.key) - 1];
         if (option) {
           setAnswers((previous) => ({ ...previous, [question.index]: option }));
+          checkpointAttempt(exam, { ...answers, [question.index]: option }, activeIndex);
         }
         return;
       }
 
       if (event.key === 'Enter') {
         setActiveIndex((previous) => Math.min(previous + 1, exam.questions.length - 1));
+        checkpointAttempt(exam, answers, Math.min(activeIndex + 1, exam.questions.length - 1));
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [phase, exam, activeIndex, busy]);
+  }, [phase, exam, answers, activeIndex, busy, checkpointAttempt]);
 
   const formatClock = (seconds: number): string => {
     const minutes = Math.floor(seconds / 60);
@@ -338,8 +404,16 @@ export const ExamView: React.FC = () => {
       </p>
 
       {error && <p className="mt-4 text-[12.5px] text-red">{error}</p>}
+      {resumeState === 'loading' && <p role="status" className="mt-4 text-[12.5px] text-fg-60">Đang khôi phục bài thi...</p>}
+      {resumeError && <div role="alert" className="mt-4 text-[12.5px] text-red">
+        <p>{resumeError}</p>
+        {resumeState === 'failed' && <SubmitButton variant="secondary" onClick={restoreAttempt}>Thử khôi phục lại</SubmitButton>}
+      </div>}
+      {phase === 'TAKING' && storageWarning && <p role="alert" className="mt-4 text-[12.5px] text-red">
+        Trình duyệt không lưu được bài thi để khôi phục. Hãy nộp bài trước khi tải lại hoặc đóng trang.
+      </p>}
 
-      {phase === 'IDLE' && (
+      {phase === 'IDLE' && resumeState === 'none' && (
         <>
           {/* Setup đề */}
           <div className="mt-8 bg-card px-6 py-7">
@@ -557,7 +631,7 @@ export const ExamView: React.FC = () => {
                 <div
                   key={question.index}
                   data-exam-question={index}
-                  onClick={() => setActiveIndex(index)}
+                  onClick={() => { setActiveIndex(index); checkpointAttempt(exam, answers, index); }}
                   className={`cursor-pointer border px-5 py-5 transition-colors ${
                     active ? 'border-fg bg-card' : 'border-rule hover:border-rule-strong'
                   }`}
@@ -589,6 +663,7 @@ export const ExamView: React.FC = () => {
                         onClick={(event) => {
                           event.stopPropagation();
                           setAnswers((previous) => ({ ...previous, [question.index]: option }));
+                          checkpointAttempt(exam, { ...answers, [question.index]: option }, activeIndex);
                         }}
                         className={`flex cursor-pointer items-center gap-3 border px-4 py-2.5 text-left transition-colors ${
                           selected === option
