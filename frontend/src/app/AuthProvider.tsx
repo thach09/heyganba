@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
+import { flushSync } from 'react-dom';
 import type { ReactNode } from 'react';
 import { AuthContext } from './useAuth';
 import { useNavigate } from 'react-router-dom';
-import { clearTokens, getSavedUser, saveUser } from '../lib/api/session';
+import { clearTokens, getSavedUser, invalidateTabSession, saveUser } from '../lib/api/session';
 import { logoutApi } from '../lib/api/client';
 import type { AuthResponse } from '../lib/api/types';
 import { AuthModal } from '../features/auth/AuthModal';
@@ -14,6 +15,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [authOpen, setAuthOpen] = useState(false);
   const [passwordOpen, setPasswordOpen] = useState(false);
   const [notice, setNotice] = useState('');
+
+  useEffect(() => {
+    const reconcile = (event: Event) => {
+      if (event instanceof StorageEvent && event.key !== null && event.key !== 'heyganba_user') return;
+      const profile = getSavedUser();
+      if (event instanceof StorageEvent && profile?.userId !== user?.userId) invalidateTabSession();
+      // Commit the visible identity and unmount private state before an HTTP retry can run.
+      flushSync(() => {
+        setUser(profile);
+        if (profile?.userId !== user?.userId) setPasswordOpen(false);
+      });
+    };
+    window.addEventListener('storage', reconcile);
+    window.addEventListener('heyganba:session-changed', reconcile);
+    return () => {
+      window.removeEventListener('storage', reconcile);
+      window.removeEventListener('heyganba:session-changed', reconcile);
+    };
+  }, [user?.userId]);
 
   useEffect(() => {
     const expire = () => {
@@ -40,7 +60,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return <AuthContext.Provider value={{ user, requireLogin: () => setAuthOpen(true), logout,
     changePassword: () => setPasswordOpen(true), updateProfile }}>
-    {children}
+    <Fragment key={user?.userId ?? 'guest'}>{children}</Fragment>
     {passwordOpen && user && <ChangePasswordModal onClose={() => setPasswordOpen(false)} onChanged={() => {
       setPasswordOpen(false); setUser(null);
       setNotice('Đã đổi mật khẩu. Vui lòng đăng nhập lại bằng mật khẩu mới.'); setAuthOpen(true);
