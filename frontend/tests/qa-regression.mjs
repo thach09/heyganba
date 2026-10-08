@@ -53,8 +53,10 @@ async function pageFor(user, route) {
 }
 async function capture(page, id, evidence) {
   await page.screenshot({ path: join(out, `${id}-desktop.png`), fullPage: true });
+  await page.screenshot({ path: join(out, `${id}-desktop-viewport.png`) });
   await page.setViewport({ width: 390, height: 844 }); await sleep(150);
   await page.screenshot({ path: join(out, `${id}-mobile.png`), fullPage: true });
+  await page.screenshot({ path: join(out, `${id}-mobile-viewport.png`) });
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1), false, 'Mobile horizontal overflow');
   return evidence;
 }
@@ -205,5 +207,33 @@ try {
     assert(pending > 0); assert.equal(await page.evaluate(() => document.body.textContent.includes('Chưa có câu bài tập')), false);
     await capture(page, 'QA-009', { pendingExerciseRequests: pending, showsLoading: true, showsEmpty: false });
     await page.waitForSelector('main kbd'); await page.browserContext().close(); return { loadingShown: true, realExercisesLoaded: true };
+  });
+  await test('QA-006', 'C', async () => {
+    const user = await account('exam-help'), page = await pageFor(user, '/exam'); await generate(page);
+    await page.click('button[aria-label="Hướng dẫn phòng thi thử"]'); await page.waitForSelector('dialog[open]');
+    await page.keyboard.press('1'); await page.keyboard.press('Enter');
+    assert.equal(await page.evaluate(() => document.body.textContent.includes('Đã chọn')), false);
+    assert.equal(await page.$eval('[data-exam-question].border-fg', q => q.getAttribute('data-exam-question')), '0');
+    assert.equal(await page.evaluate(() => document.activeElement.closest('dialog[open]') !== null), true,
+      JSON.stringify(await page.evaluate(() => ({ activeTag: document.activeElement.tagName, activeText: document.activeElement.textContent?.slice(0, 80),
+        openDialogs: document.querySelectorAll('dialog[open]').length }))));
+    await capture(page, 'QA-006', { unchangedAnswers: true, unchangedQuestion: true, focusInDialog: true });
+    await page.keyboard.press('Escape'); assert.equal(await page.$('dialog[open]'), null);
+    await page.browserContext().close(); return { unchangedAnswers: true, unchangedQuestion: true, escapeCloses: true };
+  });
+  await test('QA-010', 'C', async () => {
+    const user = await account('active-days'), page = await pageFor(user, '/grammar');
+    await page.waitForSelector('[data-grammar-rule]'); await click(page, 'Luyện tập'); await page.waitForSelector('main kbd');
+    const graded = page.waitForResponse(r => r.url().endsWith('/check')); await page.keyboard.press('1'); assert.equal((await graded).status(), 200);
+    await page.goto(web + '/exam', { waitUntil: 'domcontentloaded' }); const exam = await generate(page);
+    const submitted = page.waitForResponse(r => r.url().endsWith(`/exam/${exam.examId}/submit`)); await click(page, 'Nộp bài'); assert.equal((await submitted).status(), 200);
+    await page.waitForFunction(() => document.body.textContent.includes('Kết quả:'));
+    const streak = await call('/streak', null, user.accessToken);
+    const distinctDates = Number(sql(`SELECT count(DISTINCT activity_date) FROM study_activities WHERE user_id=${user.userId}`));
+    const sourceRows = Number(sql(`SELECT count(*) FROM study_activities WHERE user_id=${user.userId}`));
+    assert.equal(sourceRows, 2); assert.equal(distinctDates, 1); assert.equal(streak.data.activeDays, 1);
+    await page.waitForFunction(() => /đã học\s*1\s*ngày/.test(document.body.textContent));
+    const evidence = await capture(page, 'QA-010', { sourceRows, distinctDates, apiActiveDays: streak.data.activeDays, zone: streak.data.zone });
+    await page.browserContext().close(); return evidence;
   });
 } finally { await browser.close(); }

@@ -6,7 +6,7 @@ import type { HeatmapDay } from '../progress/types';
 import type { ExamQuestion, ExamDto, ExamResultDto, ExamHistoryDto, StreakDto, LeaderboardDto } from './types';
 import { useAuth } from '../../app/useAuth';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Play, Users, Volume2, X } from 'lucide-react';
+import { Play, Users, Volume2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { FeedbackAlert } from '../../components/FeedbackAlert';
 import type { FeedbackType } from '../../components/FeedbackAlert';
@@ -15,6 +15,8 @@ import { MascotBadge } from '../../components/MascotBadge';
 import { updateClassCode } from '../account/api';
 import type { AuthResponse } from '../../lib/api/types';
 import { isJapaneseSpeechSupported, speakJapanese } from '../../services/japaneseSpeech';
+import { Modal } from '../../components/Modal';
+import { learningKeyboardBlocked } from '../../lib/learningKeyboard';
 
 type Phase = 'IDLE' | 'TAKING' | 'RESULT';
 
@@ -71,6 +73,7 @@ export const ExamView: React.FC = () => {
   const [storageWarning, setStorageWarning] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [helpOpen, setHelpOpen] = useState(false);
+  const helpHeading = useRef<HTMLHeadingElement>(null);
   const [feedback, setFeedback] = useState<{ type: FeedbackType; title: string; message: string } | null>(null);
   // Class leaderboard: load the class code from the profile and allow editing here.
   const [classCodeInput, setClassCodeInput] = useState(user?.classCode ?? '');
@@ -304,12 +307,7 @@ export const ExamView: React.FC = () => {
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (phase !== 'TAKING' || !exam || busy) {
-        return;
-      }
-
-      const target = event.target as HTMLElement | null;
-      if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA')) {
+      if (phase !== 'TAKING' || !exam || busy || helpOpen || learningKeyboardBlocked(event)) {
         return;
       }
 
@@ -335,7 +333,7 @@ export const ExamView: React.FC = () => {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [phase, exam, answers, activeIndex, busy, checkpointAttempt]);
+  }, [phase, exam, answers, activeIndex, busy, helpOpen, checkpointAttempt]);
 
   const formatClock = (seconds: number): string => {
     const minutes = Math.floor(seconds / 60);
@@ -730,36 +728,14 @@ export const ExamView: React.FC = () => {
 
       {/* Help panel */}
       {helpOpen && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-scrim p-5"
-          onClick={() => setHelpOpen(false)}
-        >
-          <div
-            role="dialog"
-            aria-modal="true"
-            aria-label="Hướng dẫn phòng thi thử"
-            className="w-full max-w-[420px] bg-card px-7 py-8"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <div className="flex items-start justify-between gap-4">
-              <h3 className="text-[15px] font-semibold">Hướng dẫn phòng thi thử</h3>
-              <button
-                type="button"
-                onClick={() => setHelpOpen(false)}
-                aria-label="Đóng hướng dẫn"
-                title="Đóng hướng dẫn"
-                className="inline-flex h-7 w-7 cursor-pointer items-center justify-center border border-rule bg-transparent text-fg-60 transition-colors hover:border-rule-strong hover:text-fg"
-              >
-                <X size={15} />
-              </button>
-            </div>
-            <p className="mt-4 text-[13px] leading-[1.9] text-fg-60">
-              Chọn số câu và thời gian rồi bắt đầu. Đề sinh từ ngân hàng ngữ pháp, kana và từ vựng đã duyệt, chấm điểm
-              hoàn toàn ở server — client không thấy đáp án trước khi nộp. Chọn đáp án bằng phím 1–4, Enter để sang câu
-              tiếp theo; hết giờ thì bài tự nộp.
-            </p>
-          </div>
-        </div>
+        <Modal title="Hướng dẫn phòng thi thử" onClose={() => setHelpOpen(false)} maxWidthClass="max-w-[420px]" initialFocus={helpHeading}>
+          <h3 ref={helpHeading} tabIndex={-1} className="text-[15px] font-semibold">Hướng dẫn phòng thi thử</h3>
+          <p className="mt-4 text-[13px] leading-[1.9] text-fg-60">
+            Chọn số câu và thời gian rồi bắt đầu. Đề sinh từ ngân hàng ngữ pháp, kana và từ vựng đã duyệt, chấm điểm
+            hoàn toàn ở server — client không thấy đáp án trước khi nộp. Chọn đáp án bằng phím 1–4, Enter để sang câu
+            tiếp theo; hết giờ thì bài tự nộp.
+          </p>
+        </Modal>
       )}
 
       {feedback && (

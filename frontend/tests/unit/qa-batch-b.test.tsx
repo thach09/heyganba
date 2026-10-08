@@ -54,7 +54,9 @@ beforeEach(() => {
 test('QA-002: reload restores owned exam, answers, position, then clears the checkpoint on submit', async () => {
   const view = mount(<ExamView />);
   fireEvent.click(screen.getByRole('button', { name: /Bắt đầu thi thử/ }));
-  await screen.findByText('Question 0'); fireEvent.keyDown(window, { key: '1' }); fireEvent.keyDown(window, { key: 'Enter' });
+  await screen.findByText('Question 0');
+  fireEvent.click(screen.getAllByRole('button', { name: /1\s*Option A/ })[0]);
+  fireEvent.click(document.querySelector('[data-exam-question="1"]')!);
   expect(readActiveAttempt(1)).toEqual({ examId: 17, answers: { 0: 'Option A' }, activeIndex: 1 });
   view.unmount(); mount(<ExamView />); await screen.findByText('Question 0');
   expect(api.get.mock.calls[0][0]).toBe(17); expect(screen.getByText('Đã chọn')).toBeTruthy();
@@ -124,4 +126,25 @@ test('QA-009: pending, successful empty and failed exercise loads remain distinc
   expect(screen.queryByText(/Chưa có câu bài tập/)).toBeNull(); expect(screen.queryByText('Đang tải bài tập...')).toBeNull();
   api.exercises.mockResolvedValue(success([])); fireEvent.click(screen.getByRole('button', { name: 'Thử tải lại' }));
   await waitFor(() => expect(screen.getByText(/Chưa có câu bài tập/)).toBeTruthy());
+});
+
+test('QA-006: exam help owns keys, native cancel closes it, then shortcuts resume', async () => {
+  mount(<ExamView />); fireEvent.click(screen.getByRole('button', { name: /Bắt đầu thi thử/ }));
+  await screen.findByText('Question 0'); fireEvent.click(screen.getByRole('button', { name: 'Hướng dẫn phòng thi thử' }));
+  const dialog = screen.getByRole('dialog', { name: 'Hướng dẫn phòng thi thử' });
+  fireEvent.keyDown(dialog, { key: '1' }); fireEvent.keyDown(dialog, { key: 'Enter' });
+  expect(screen.queryByText('Đã chọn')).toBeNull(); expect(readActiveAttempt(1)?.activeIndex).toBe(0);
+  fireEvent(dialog, new Event('cancel', { bubbles: true, cancelable: true }));
+  expect(screen.queryByRole('dialog')).toBeNull();
+  fireEvent.keyDown(window, { key: '1' }); fireEvent.keyDown(window, { key: 'Enter' });
+  expect(screen.getByText('Đã chọn')).toBeTruthy(); expect(readActiveAttempt(1)?.activeIndex).toBe(1);
+});
+
+test.each(['input', 'textarea', 'div'])('QA-006: exam ignores editable %s controls', async tag => {
+  mount(<ExamView />); fireEvent.click(screen.getByRole('button', { name: /Bắt đầu thi thử/ })); await screen.findByText('Question 0');
+  const field = document.createElement(tag); if (tag === 'div') field.setAttribute('contenteditable', 'true'); document.body.append(field);
+  try {
+    fireEvent.keyDown(field, { key: '1' }); fireEvent.keyDown(field, { key: 'Enter' });
+    expect(screen.queryByText('Đã chọn')).toBeNull(); expect(readActiveAttempt(1)?.activeIndex).toBe(0);
+  } finally { field.remove(); }
 });
