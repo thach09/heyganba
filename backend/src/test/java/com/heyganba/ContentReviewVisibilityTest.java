@@ -214,7 +214,7 @@ class ContentReviewVisibilityTest extends com.heyganba.support.ContentApiTestBas
         mockMvc.perform(post("/grammar/exercises/" + pendingExercise.getId() + "/check")
                         .header("Authorization", bearer(userToken))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"userAnswer\":\"が\"}"))
+                        .content("{\"userAnswer\":\"が\",\"attemptId\":\"" + java.util.UUID.randomUUID() + "\"}"))
                 .andExpect(status().isNotFound());
     }
 
@@ -233,7 +233,7 @@ class ContentReviewVisibilityTest extends com.heyganba.support.ContentApiTestBas
         mockMvc.perform(post("/flashcard/review")
                         .header("Authorization", bearer(userToken))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"vocabularyId\":" + pendingWord.getId() + ",\"rating\":\"GOOD\"}"))
+                        .content("{\"vocabularyId\":" + pendingWord.getId() + ",\"rating\":\"GOOD\",\"attemptId\":\"" + java.util.UUID.randomUUID() + "\"}"))
                 .andExpect(status().isNotFound());
 
         mockMvc.perform(get("/flashcard/stats").header("Authorization", bearer(userToken)))

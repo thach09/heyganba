@@ -61,6 +61,7 @@ export const GrammarView: React.FC = () => {
   const [exerciseError, setExerciseError] = useState<string | null>(null);
   const [checking, setChecking] = useState(false);
   const checkState = useRef<'idle' | 'pending' | 'graded'>('idle');
+  const answerAttempt = useRef<{ attemptId: string; exerciseId: number; userAnswer: string } | null>(null);
   const [index, setIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [result, setResult] = useState<GrammarCheckResult | null>(null);
@@ -127,6 +128,7 @@ export const GrammarView: React.FC = () => {
         setSelectedOption(null);
         setResult(null);
         checkState.current = 'idle';
+        answerAttempt.current = null;
         setExerciseState('loaded');
       } else {
         setExerciseError(res.message || 'Không tải được bài tập.');
@@ -168,11 +170,13 @@ export const GrammarView: React.FC = () => {
       }
 
       checkState.current = 'pending';
+      const attempt = answerAttempt.current ?? { attemptId: crypto.randomUUID(), exerciseId: current.id, userAnswer: answer };
+      answerAttempt.current = attempt;
       setChecking(true);
-      setSelectedOption(answer);
-      const res = await run('grammarApi.check', signal => grammarApi.check(current.id, { signal,
+      setSelectedOption(attempt.userAnswer);
+      const res = await run('grammarApi.check', signal => grammarApi.check(attempt.exerciseId, { signal,
         method: 'POST',
-        body: JSON.stringify({ userAnswer: answer }),
+        body: JSON.stringify({ userAnswer: attempt.userAnswer, attemptId: attempt.attemptId }),
       }));
       if (!res) return;
       setChecking(false);
@@ -184,7 +188,6 @@ export const GrammarView: React.FC = () => {
           title: 'Không chấm được bài tập',
           message: res.message || 'Vui lòng thử lại.',
         });
-        setSelectedOption(null);
         return;
       }
 
@@ -206,6 +209,7 @@ export const GrammarView: React.FC = () => {
   const goNext = useCallback(() => {
     if (checkState.current !== 'graded') return;
     checkState.current = 'idle';
+    answerAttempt.current = null;
     setSelectedOption(null);
     setResult(null);
     setIndex((previous) => previous + 1);
@@ -581,7 +585,7 @@ export const GrammarView: React.FC = () => {
                     <button
                       key={option}
                       type="button"
-                      disabled={checking || Boolean(result)}
+                      disabled={checking || selectedOption !== null || Boolean(result)}
                       onClick={() => void submitAnswer(option)}
                       className={`flex items-center gap-3 border px-4 py-3 text-left transition-colors disabled:cursor-default ${
                         result ? 'cursor-default' : 'cursor-pointer'
@@ -595,6 +599,13 @@ export const GrammarView: React.FC = () => {
                   );
                 })}
               </div>
+
+              {selectedOption !== null && !checking && !result && (
+                <div className="mt-6 text-[12.5px] text-fg-60">
+                  <p>Giữ nguyên đáp án đã chọn: <span className="font-serif text-fg">{selectedOption}</span></p>
+                  <SubmitButton variant="secondary" onClick={() => void submitAnswer(selectedOption)}>Thử chấm lại</SubmitButton>
+                </div>
+              )}
 
               {result && (
                 <div className="mt-5 max-w-[560px] bg-tint px-4 py-3">

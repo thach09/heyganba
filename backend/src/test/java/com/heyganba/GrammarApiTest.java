@@ -181,7 +181,7 @@ class GrammarApiTest extends com.heyganba.support.ContentApiTestBase {
     @Test
     @DisplayName("checkAnswer phải là transaction GHI (nó INSERT study_activities) — chặn hồi quy readOnly")
     void checkAnswerMustStayWritableTransaction() throws Exception {
-        Method method = GrammarService.class.getMethod("checkAnswer", Long.class, Long.class, String.class);
+        Method method = GrammarService.class.getMethod("checkAnswer", Long.class, Long.class, String.class, java.util.UUID.class);
         Transactional transactional = method.getAnnotation(Transactional.class);
 
         assertNotNull(transactional, "checkAnswer cần @Transactional để ghi study_activities");
@@ -277,7 +277,7 @@ class GrammarApiTest extends com.heyganba.support.ContentApiTestBase {
         mockMvc.perform(post("/grammar/exercises/" + particleExercise.getId() + "/check")
                         .header("Authorization", "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"userAnswer\":\" は \"}"))
+                        .content("{\"userAnswer\":\" は \",\"attemptId\":\"" + java.util.UUID.randomUUID() + "\"}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.correct", is(true)))
                 .andExpect(jsonPath("$.data.correctAnswer", is("は")))
@@ -287,7 +287,7 @@ class GrammarApiTest extends com.heyganba.support.ContentApiTestBase {
         mockMvc.perform(post("/grammar/exercises/" + particleExercise.getId() + "/check")
                         .header("Authorization", "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"userAnswer\":\"を\"}"))
+                        .content("{\"userAnswer\":\"を\",\"attemptId\":\"" + java.util.UUID.randomUUID() + "\"}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.correct", is(false)))
                 .andExpect(jsonPath("$.data.correctAnswer", is("は")))
@@ -303,14 +303,14 @@ class GrammarApiTest extends com.heyganba.support.ContentApiTestBase {
         mockMvc.perform(post("/grammar/exercises/" + particleExercise.getId() + "/check")
                         .header("Authorization", "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"userAnswer\":\"\"}"))
+                        .content("{\"userAnswer\":\"\",\"attemptId\":\"" + java.util.UUID.randomUUID() + "\"}"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.error.userAnswer").exists());
 
         mockMvc.perform(post("/grammar/exercises/999999/check")
                         .header("Authorization", "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"userAnswer\":\"は\"}"))
+                        .content("{\"userAnswer\":\"は\",\"attemptId\":\"" + java.util.UUID.randomUUID() + "\"}"))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.error", is("NOT_FOUND")));
     }
@@ -326,7 +326,7 @@ class GrammarApiTest extends com.heyganba.support.ContentApiTestBase {
 
         mockMvc.perform(post("/grammar/exercises/1/check")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"userAnswer\":\"は\"}"))
+                        .content("{\"userAnswer\":\"は\",\"attemptId\":\"" + java.util.UUID.randomUUID() + "\"}"))
                 .andExpect(status().isUnauthorized());
     }
 }

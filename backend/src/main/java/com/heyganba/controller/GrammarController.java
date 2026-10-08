@@ -67,6 +67,6 @@ public class GrammarController {
                     "Too many grammar submissions. Please wait a minute and try again.");
         }
 
-        return ResponseEntity.ok(ApiResponse.success(grammarService.checkAnswer(currentUser.getId(), id, request.userAnswer())));
+        return ResponseEntity.ok(ApiResponse.success(grammarService.checkAnswer(currentUser.getId(), id, request.userAnswer(), request.attemptId())));
     }
 }

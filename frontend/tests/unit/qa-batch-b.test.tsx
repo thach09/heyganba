@@ -116,6 +116,45 @@ test('QA-008: settled failure unlocks one retry', async () => {
   fireEvent.keyDown(window, { key: '1' }); await screen.findByText('Offline');
   fireEvent.keyDown(window, { key: '1' }); await screen.findByText('Giải thích'); expect(api.check).toHaveBeenCalledTimes(2);
 });
+
+test('QA-008: lost-response retry retains the answer and ID; a new question gets a new ID', async () => {
+  api.exercises.mockResolvedValue(success([66, 67].map(id => ({ id, questionText: `Retry question ${id}`, options: ['Option A', 'Option B'] }))));
+  api.check.mockResolvedValueOnce({ success: false, message: 'Lost response' })
+    .mockResolvedValueOnce(success({ correct: true, correctAnswer: 'Option A', submittedAnswer: 'Option A' }))
+    .mockResolvedValueOnce(success({ correct: true, correctAnswer: 'Option B', submittedAnswer: 'Option B' }));
+  mount(<GrammarView />); fireEvent.click(screen.getByRole('button', { name: 'Luyện tập' })); await screen.findByText('Retry question 66');
+  fireEvent.keyDown(window, { key: '1' }); await screen.findByText('Lost response');
+  const first = JSON.parse(api.check.mock.calls[0][1].body);
+  expect(first.attemptId).toMatch(/^[0-9a-f-]{36}$/); expect(first.userAnswer).toBe('Option A');
+  expect((screen.getByRole('button', { name: /1\s*Option A/ }) as HTMLButtonElement).disabled).toBe(true);
+  expect(screen.getByRole('button', { name: 'Thử chấm lại' })).toBeTruthy();
+  fireEvent.keyDown(window, { key: '2' }); await screen.findByText('Chính xác');
+  expect(JSON.parse(api.check.mock.calls[1][1].body)).toEqual(first);
+  expect(screen.getByText(/Đúng/, { selector: 'p' }).textContent).toContain('1/1 câu');
+  fireEvent.keyDown(window, { key: 'Enter' }); await screen.findByText('Retry question 67');
+  fireEvent.keyDown(window, { key: '2' }); await screen.findByText('Chính xác');
+  const next = JSON.parse(api.check.mock.calls[2][1].body);
+  expect(api.check.mock.calls[2][0]).toBe(67); expect(next.attemptId).not.toBe(first.attemptId); expect(next.userAnswer).toBe('Option B');
+  expect(screen.getByText(/Đúng/, { selector: 'p' }).textContent).toContain('2/2 câu');
+});
+
+test('NEW-REGRESSION-001: SRS retry retains the review ID and payload; the next card gets a new ID', async () => {
+  api.review.mockResolvedValueOnce({ success: false, message: 'Lost review response' })
+    .mockResolvedValue(success({ repetitions: 1, lapse: false }));
+  mount(<FlashcardView />); await screen.findByText('Word 1');
+  fireEvent.keyDown(window, { key: '1' }); await screen.findByText('Lost review response');
+  const first = JSON.parse(api.review.mock.calls[0][0].body);
+  expect(first.attemptId).toMatch(/^[0-9a-f-]{36}$/);
+  fireEvent.click(screen.getByRole('button', { name: 'Thử lưu lại' }));
+  await waitFor(() => expect(screen.queryByText('Chưa lưu được lượt ôn này. Hãy thử lại trước khi sang từ tiếp theo.')).toBeNull());
+  expect(JSON.parse(api.review.mock.calls[1][0].body)).toEqual(first);
+  await waitFor(() => expect(screen.getByText('1', { selector: 'b' })).toBeTruthy());
+  fireEvent.keyDown(window, { key: 'Enter' }); await screen.findByText('Word 2');
+  fireEvent.keyDown(window, { key: '1' }); await waitFor(() => expect(api.review).toHaveBeenCalledTimes(3));
+  const next = JSON.parse(api.review.mock.calls[2][0].body);
+  expect(next.vocabularyId).toBe(2); expect(next.attemptId).not.toBe(first.attemptId);
+  await waitFor(() => expect(screen.getByText('2', { selector: 'b' })).toBeTruthy());
+});
 test('QA-009: pending, successful empty and failed exercise loads remain distinct', async () => {
   const gate = deferred<ReturnType<typeof success>>(); api.exercises.mockImplementationOnce(() => gate.promise);
   mount(<GrammarView />); fireEvent.click(screen.getByRole('button', { name: 'Luyện tập' }));

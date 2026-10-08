@@ -49,6 +49,7 @@ public class FlashcardService {
     private final SrsDueCache srsDueCache;
     private final StreakService streakService;
     private final StudyActivityService studyActivityService;
+    private final LearningMutationReceiptService mutationReceipts;
 
     @Transactional(readOnly = true)
     public List<FlashcardDueResponse> getDueToday(Long userId, Integer newLimit) {
@@ -74,7 +75,7 @@ public class FlashcardService {
 
     @Transactional
     public FlashcardReviewResponse review(Long userId, FlashcardReviewRequest request) {
-        User user = userRepository.findById(userId)
+        User user = userRepository.findLockedById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
         Vocabulary vocabulary = vocabularyRepository.findById(request.vocabularyId())
                 .orElseThrow(() -> new ResourceNotFoundException("Vocabulary", "id", request.vocabularyId()));
@@ -84,6 +85,10 @@ public class FlashcardService {
         if (vocabulary.getDictionaryEntryId() != null) {
             throw new com.heyganba.common.exception.BadRequestException("Từ trong sổ cá nhân được luyện riêng, không thuộc lịch SRS giáo trình");
         }
+
+        var replay = mutationReceipts.replay(userId, LearningMutationReceiptService.SRS_REVIEW,
+                request.attemptId(), request.vocabularyId(), request.rating().name(), FlashcardReviewResponse.class);
+        if (replay.isPresent()) return replay.get();
 
         Instant now = Instant.now();
         SrsReview review = srsReviewRepository.findByUserIdAndVocabularyId(userId, vocabulary.getId())
@@ -121,7 +126,7 @@ public class FlashcardService {
                 ? streakService.touch(user, now)
                 : streakService.find(user.getId()).orElse(null);
 
-        return new FlashcardReviewResponse(
+        FlashcardReviewResponse response = new FlashcardReviewResponse(
                 vocabulary.getId(),
                 request.rating().name(),
                 outcome.intervalDays(),
@@ -132,6 +137,9 @@ public class FlashcardService {
                 streak != null ? streak.getCurrentStreak() : 0,
                 streak != null ? streak.getLongestStreak() : 0
         );
+        mutationReceipts.remember(user, LearningMutationReceiptService.SRS_REVIEW,
+                request.attemptId(), request.vocabularyId(), request.rating().name(), response);
+        return response;
     }
 
     @Transactional(readOnly = true)

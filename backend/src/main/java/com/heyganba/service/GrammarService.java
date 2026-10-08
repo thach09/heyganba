@@ -24,6 +24,7 @@ import java.text.Normalizer;
 import java.time.Instant;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
 /**
  * Phase 4 — Trạm Trợ từ & Ngữ pháp.
@@ -44,6 +45,7 @@ public class GrammarService {
     private final StudyActivityService studyActivityService;
     private final StreakService streakService;
     private final ObjectMapper objectMapper;
+    private final LearningMutationReceiptService mutationReceipts;
 
     @Transactional(readOnly = true)
     public List<GrammarRuleResponse> getRules(String lessonSlug) {
@@ -108,20 +110,24 @@ public class GrammarService {
      * Có guard test `checkAnswerMustStayWritableTransaction` để chặn hồi quy.
      */
     @Transactional(readOnly = false)
-    public GrammarCheckResponse checkAnswer(Long userId, Long exerciseId, String userAnswer) {
+    public GrammarCheckResponse checkAnswer(Long userId, Long exerciseId, String userAnswer, UUID attemptId) {
+        User user = userRepository.findLockedById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
         GrammarExercise exercise = grammarExerciseRepository.findById(exerciseId)
                 .orElseThrow(() -> new ResourceNotFoundException("GrammarExercise", "id", exerciseId));
 
         // Không cho chấm điểm bài tập còn chờ duyệt khi không phải admin (tránh lộ cả câu hỏi lẫn đáp án).
         ContentAccess.requireVisible(exercise.getReviewStatus(), "GrammarExercise", exerciseId);
 
+        var replay = mutationReceipts.replay(userId, LearningMutationReceiptService.GRAMMAR_CHECK,
+                attemptId, exerciseId, userAnswer, GrammarCheckResponse.class);
+        if (replay.isPresent()) return replay.get();
+
         String submitted = normalize(userAnswer);
         String correct = normalize(exercise.getCorrectAnswer());
         boolean isCorrect = submitted.equals(correct);
 
         // Ghi nhật ký hoạt động + chỉ tính streak khi đủ ngưỡng trong ngày (xem StreakPolicy).
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
         Instant now = Instant.now();
         studyActivityService.record(user, StudyActivityService.SOURCE_GRAMMAR, 1, isCorrect ? 1 : 0, now);
         learningEvents.publishEvent(com.heyganba.domain.learning.LearningActivity.grammar(
@@ -130,7 +136,7 @@ public class GrammarService {
             streakService.touch(user, now);
         }
 
-        return new GrammarCheckResponse(
+        GrammarCheckResponse response = new GrammarCheckResponse(
                 isCorrect,
                 exercise.getId(),
                 exercise.getGrammarRule().getId(),
@@ -142,6 +148,9 @@ public class GrammarService {
                 Boolean.TRUE.equals(exercise.getIsCommonMistake()),
                 exercise.getMistakeCategory()
         );
+        mutationReceipts.remember(user, LearningMutationReceiptService.GRAMMAR_CHECK,
+                attemptId, exerciseId, userAnswer, response);
+        return response;
     }
 
     private GrammarExerciseResponse toResponse(GrammarExercise exercise) {

@@ -30,6 +30,7 @@ export const FlashcardView: React.FC = () => {
   const [choice, setChoice] = useState<{ value: string; correct: boolean } | null>(null);
   const [saveState, setSaveState] = useState<'idle' | 'saving' | 'saved' | 'failed'>('idle');
   const saveStateRef = useRef(saveState);
+  const reviewAttempt = useRef<{ attemptId: string; vocabularyId: number; rating: string } | null>(null);
   const [reviewedCount, setReviewedCount] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
@@ -62,6 +63,7 @@ export const FlashcardView: React.FC = () => {
       setIndex(0);
       setChoice(null);
       saveStateRef.current = 'idle';
+      reviewAttempt.current = null;
       setSaveState('idle');
       setReviewedCount(0);
       setError(null);
@@ -124,10 +126,12 @@ export const FlashcardView: React.FC = () => {
       }
 
       saveStateRef.current = 'saving';
+      const attempt = reviewAttempt.current ?? { attemptId: crypto.randomUUID(), vocabularyId: target.vocabularyId, rating };
+      reviewAttempt.current = attempt;
       setSaveState('saving');
       const res = await run('flashcardApi.review', signal => flashcardApi.review({ signal,
         method: 'POST',
-        body: JSON.stringify({ vocabularyId: target.vocabularyId, rating }),
+        body: JSON.stringify(attempt),
       }));
     if (!res) return;
 
@@ -177,6 +181,7 @@ export const FlashcardView: React.FC = () => {
   const handleContinue = useCallback(() => {
     if (saveStateRef.current !== 'saved') return;
     saveStateRef.current = 'idle';
+    reviewAttempt.current = null;
     setSaveState('idle');
     setChoice(null);
     setIndex((previous) => previous + 1);
