@@ -1,9 +1,12 @@
+import { useRequestScope } from '../../lib/hooks/useRequestScope';
+import { authApi } from './api';
 import { useRef, useState } from 'react';
-import { apiRequest, clearTokens, getRefreshToken } from '../../services/api';
+import { clearTokens, getRefreshToken } from '../../lib/api/session';
 import { SubmitButton } from '../../components/SubmitButton';
 import { Modal } from '../../components/Modal';
 
 export function ChangePasswordModal({ onClose, onChanged }: { onClose: () => void; onChanged: () => void }) {
+  const { run } = useRequestScope();
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmation, setConfirmation] = useState('');
@@ -15,7 +18,8 @@ export function ChangePasswordModal({ onClose, onChanged }: { onClose: () => voi
     if (busy.current) return;
     if (newPassword !== confirmation) { setError('Mật khẩu xác nhận chưa khớp.'); return; }
     busy.current = true; setSaving(true); setError('');
-    const response = await apiRequest('/auth/password', { method: 'PUT', body: JSON.stringify({ currentPassword, newPassword, refreshToken: getRefreshToken() }) });
+    const response = await run('authApi.password', signal => authApi.password({ signal, method: 'PUT', body: JSON.stringify({ currentPassword, newPassword, refreshToken: getRefreshToken() }) }));
+    if (!response) return;
     busy.current = false; setSaving(false);
     if (!response.success) { setError(response.message || 'Chưa đổi được mật khẩu. Vui lòng thử lại.'); return; }
     clearTokens(); onChanged();

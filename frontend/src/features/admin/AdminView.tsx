@@ -1,3 +1,6 @@
+import { useRequestScope } from '../../lib/hooks/useRequestScope';
+import { adminApi } from './api';
+import type { AdminStatusData, AuditLogItem, TwoFactorStatusResponse, VocabularyAdminItem, KanjiAdminItem, ExerciseAdminItem } from './types';
 import React, { useEffect, useState } from 'react';
 import {
   ShieldAlert,
@@ -12,70 +15,16 @@ import {
   Edit2,
   History,
 } from 'lucide-react';
-import { apiRequest } from '../../services/api';
-import type { UserProfileResponse } from '../../services/api';
+import type { UserProfileResponse } from '../../lib/api/types';
 import { SubmitButton } from '../../components/SubmitButton';
 import { ReviewQueuePanel } from './ReviewQueuePanel';
-
-interface AdminStatusData {
-  authorizedAdmin: string;
-  role: string;
-  totalUsers: number;
-}
-
-interface AuditLogItem {
-  id: number;
-  adminEmail: string | null;
-  tableName: string;
-  recordId: number | null;
-  action: string;
-  createdAt: string;
-}
-
-interface TwoFactorStatusResponse {
-  secret: string;
-  otpAuthUrl: string | null;
-  enabled: boolean;
-}
-
-interface VocabularyAdminItem {
-  id: number;
-  word: string;
-  reading: string;
-  meaning: string;
-  sinoVietnamese?: string;
-  exampleSentence?: string;
-  exampleReading?: string;
-  exampleMeaning?: string;
-  reviewStatus?: string;
-}
-
-interface KanjiAdminItem {
-  id: number;
-  character: string;
-  strokeCount: number;
-  onyomi?: string;
-  kunyomi?: string;
-  sinoVietnamese?: string;
-  meaning: string;
-  mnemonic?: string;
-}
-
-interface ExerciseAdminItem {
-  id: number;
-  questionText: string;
-  optionsJson: string;
-  correctAnswer: string;
-  explanation?: string;
-  isCommonMistake: boolean;
-  mistakeCategory?: string;
-}
 
 const labelClass = 'text-[10.5px] font-semibold uppercase tracking-[0.18em] text-fg-38';
 const thClass = 'border-b border-rule pb-2 text-left text-[10.5px] font-semibold uppercase tracking-[0.14em] text-fg-38';
 const tdClass = 'border-b border-rule py-2.5 text-fg-60 text-[12.5px]';
 
 export const AdminView: React.FC = () => {
+  const { run, isActive } = useRequestScope();
   const [activeTab, setActiveTab] = useState<'OVERVIEW' | '2FA' | 'VOCAB' | 'KANJI' | 'EXERCISES' | 'REVIEW'>('OVERVIEW');
 
   // Overview state
@@ -138,20 +87,27 @@ export const AdminView: React.FC = () => {
     mistakeCategory: '',
   });
 
+  useEffect(() => {
+    if (!toast) return;
+    const timer = window.setTimeout(() => setToast(null), 4000);
+    return () => window.clearTimeout(timer);
+  }, [toast]);
+
   const showToast = (msg: string) => {
     setToast(msg);
-    setTimeout(() => setToast(null), 4000);
   };
 
   const fetchAdminData = async () => {
     setLoading(true);
     setError(null);
     try {
-      const [statusRes, usersRes, logsRes] = await Promise.all([
-        apiRequest<AdminStatusData>('/admin/status'),
-        apiRequest<UserProfileResponse[]>('/admin/users'),
-        apiRequest<AuditLogItem[]>('/admin/audit-logs'),
-      ]);
+      const loaded = await run('AdminView-load', signal => Promise.all([
+        adminApi.status({ signal }),
+        adminApi.users({ signal }),
+        adminApi.logs({ signal }),
+      ]));
+    if (!loaded) return;
+    const [statusRes, usersRes, logsRes] = loaded;
 
       if (statusRes.success && statusRes.data) setStatusData(statusRes.data);
       else setError(statusRes.message || 'Không thể truy cập API Quản trị');
@@ -161,12 +117,13 @@ export const AdminView: React.FC = () => {
     } catch (err: any) {
       setError(err.message || 'Lỗi khi tải thông tin quản trị');
     } finally {
-      setLoading(false);
+      if (isActive()) setLoading(false);
     }
   };
 
   const fetch2FAStatus = async () => {
-    const res = await apiRequest<TwoFactorStatusResponse>('/admin/2fa/status');
+    const res = await run('adminApi.twoFactorStatus', signal => adminApi.twoFactorStatus({ signal }));
+    if (!res) return;
     if (res.success && res.data) {
       setTwoFactorStatus(res.data);
     }
@@ -175,14 +132,15 @@ export const AdminView: React.FC = () => {
   const handleSetup2FA = async () => {
     setIsSubmitting2FA(true);
     try {
-      const res = await apiRequest<TwoFactorStatusResponse>('/admin/2fa/setup', { method: 'POST' });
+      const res = await run('adminApi.twoFactorSetup', signal => adminApi.twoFactorSetup({ signal, method: 'POST' }));
+    if (!res) return;
       if (res.success && res.data) {
         setTwoFactorSecret(res.data.secret);
         setTwoFactorUrl(res.data.otpAuthUrl);
         showToast('Đã khởi tạo Secret 2FA mới. Hãy quét hoặc nhập vào Google Authenticator');
       }
     } finally {
-      setIsSubmitting2FA(false);
+      if (isActive()) setIsSubmitting2FA(false);
     }
   };
 
@@ -191,10 +149,11 @@ export const AdminView: React.FC = () => {
     if (!twoFactorCode.trim()) return;
     setIsSubmitting2FA(true);
     try {
-      const res = await apiRequest('/admin/2fa/enable', {
+      const res = await run('adminApi.twoFactorEnable', signal => adminApi.twoFactorEnable({ signal,
         method: 'POST',
         body: JSON.stringify({ code: twoFactorCode.trim() }),
-      });
+      }));
+    if (!res) return;
       if (res.success) {
         showToast('Kích hoạt 2FA thành công! Tài khoản admin của bạn đã được bảo vệ.');
         setTwoFactorCode('');
@@ -205,7 +164,7 @@ export const AdminView: React.FC = () => {
         showToast(res.message || 'Mã xác thực không chính xác');
       }
     } finally {
-      setIsSubmitting2FA(false);
+      if (isActive()) setIsSubmitting2FA(false);
     }
   };
 
@@ -214,10 +173,11 @@ export const AdminView: React.FC = () => {
     if (!twoFactorCode.trim()) return;
     setIsSubmitting2FA(true);
     try {
-      const res = await apiRequest('/admin/2fa/disable', {
+      const res = await run('adminApi.twoFactorDisable', signal => adminApi.twoFactorDisable({ signal,
         method: 'POST',
         body: JSON.stringify({ code: twoFactorCode.trim() }),
-      });
+      }));
+    if (!res) return;
       if (res.success) {
         showToast('Đã huỷ kích hoạt 2FA');
         setTwoFactorCode('');
@@ -226,28 +186,26 @@ export const AdminView: React.FC = () => {
         showToast(res.message || 'Mã xác thực không chính xác');
       }
     } finally {
-      setIsSubmitting2FA(false);
+      if (isActive()) setIsSubmitting2FA(false);
     }
   };
 
   // Vocabulary handlers
   const fetchVocabulary = async () => {
-    const url = vocabSearch.trim()
-      ? `/admin/vocabulary?q=${encodeURIComponent(vocabSearch.trim())}`
-      : '/admin/vocabulary?size=50';
-    const res = await apiRequest<VocabularyAdminItem[]>(url);
+    const res = await run('adminApi.vocabulary', signal => adminApi.vocabulary(vocabSearch, { signal }));
+    if (!res) return;
     if (res.success && res.data) setVocabList(res.data);
   };
 
   const handleSaveVocab = async (e: React.FormEvent) => {
     e.preventDefault();
-    const endpoint = editingVocabId ? `/admin/vocabulary/${editingVocabId}` : '/admin/vocabulary';
     const method = editingVocabId ? 'PUT' : 'POST';
 
-    const res = await apiRequest(endpoint, {
+    const res = await run('adminApi.saveContent', signal => adminApi.saveContent('vocabulary', editingVocabId, { signal,
       method,
       body: JSON.stringify(vocabForm),
-    });
+    }));
+    if (!res) return;
 
     if (res.success) {
       showToast(editingVocabId ? 'Cập nhật từ vựng thành công' : 'Thêm từ vựng mới thành công');
@@ -262,7 +220,8 @@ export const AdminView: React.FC = () => {
 
   const handleDeleteVocab = async (id: number) => {
     if (!confirm('Bạn có chắc chắn muốn lưu trữ (archive) từ vựng này?')) return;
-    const res = await apiRequest(`/admin/vocabulary/${id}`, { method: 'DELETE' });
+    const res = await run('adminApi.deleteContent', signal => adminApi.deleteContent('vocabulary', id, { signal, method: 'DELETE' }));
+    if (!res) return;
     if (res.success) {
       showToast('Đã lưu trữ từ vựng (ARCHIVED)');
       fetchVocabulary();
@@ -274,22 +233,20 @@ export const AdminView: React.FC = () => {
 
   // Kanji handlers
   const fetchKanji = async () => {
-    const url = kanjiSearch.trim()
-      ? `/admin/kanji?q=${encodeURIComponent(kanjiSearch.trim())}`
-      : '/admin/kanji?size=50';
-    const res = await apiRequest<KanjiAdminItem[]>(url);
+    const res = await run('adminApi.kanji', signal => adminApi.kanji(kanjiSearch, { signal }));
+    if (!res) return;
     if (res.success && res.data) setKanjiList(res.data);
   };
 
   const handleSaveKanji = async (e: React.FormEvent) => {
     e.preventDefault();
-    const endpoint = editingKanjiId ? `/admin/kanji/${editingKanjiId}` : '/admin/kanji';
     const method = editingKanjiId ? 'PUT' : 'POST';
 
-    const res = await apiRequest(endpoint, {
+    const res = await run('adminApi.saveContent', signal => adminApi.saveContent('kanji', editingKanjiId, { signal,
       method,
       body: JSON.stringify(kanjiForm),
-    });
+    }));
+    if (!res) return;
 
     if (res.success) {
       showToast(editingKanjiId ? 'Cập nhật Kanji thành công' : 'Thêm Kanji mới thành công');
@@ -304,7 +261,8 @@ export const AdminView: React.FC = () => {
 
   const handleDeleteKanji = async (id: number) => {
     if (!confirm('Bạn có chắc chắn muốn xoá Kanji này?')) return;
-    const res = await apiRequest(`/admin/kanji/${id}`, { method: 'DELETE' });
+    const res = await run('adminApi.deleteContent', signal => adminApi.deleteContent('kanji', id, { signal, method: 'DELETE' }));
+    if (!res) return;
     if (res.success) {
       showToast('Đã xoá Kanji');
       fetchKanji();
@@ -314,22 +272,20 @@ export const AdminView: React.FC = () => {
 
   // Exercise handlers
   const fetchExercises = async () => {
-    const url = exerciseSearch.trim()
-      ? `/admin/exercises?q=${encodeURIComponent(exerciseSearch.trim())}`
-      : '/admin/exercises?size=50';
-    const res = await apiRequest<ExerciseAdminItem[]>(url);
+    const res = await run('adminApi.exercises', signal => adminApi.exercises(exerciseSearch, { signal }));
+    if (!res) return;
     if (res.success && res.data) setExerciseList(res.data);
   };
 
   const handleSaveExercise = async (e: React.FormEvent) => {
     e.preventDefault();
-    const endpoint = editingExerciseId ? `/admin/exercises/${editingExerciseId}` : '/admin/exercises';
     const method = editingExerciseId ? 'PUT' : 'POST';
 
-    const res = await apiRequest(endpoint, {
+    const res = await run('adminApi.saveContent', signal => adminApi.saveContent('exercises', editingExerciseId, { signal,
       method,
       body: JSON.stringify(exerciseForm),
-    });
+    }));
+    if (!res) return;
 
     if (res.success) {
       showToast(editingExerciseId ? 'Cập nhật bài tập thành công' : 'Thêm bài tập mới thành công');
@@ -344,7 +300,8 @@ export const AdminView: React.FC = () => {
 
   const handleDeleteExercise = async (id: number) => {
     if (!confirm('Bạn có chắc chắn muốn xoá bài tập này?')) return;
-    const res = await apiRequest(`/admin/exercises/${id}`, { method: 'DELETE' });
+    const res = await run('adminApi.deleteContent', signal => adminApi.deleteContent('exercises', id, { signal, method: 'DELETE' }));
+    if (!res) return;
     if (res.success) {
       showToast('Đã xoá bài tập');
       fetchExercises();

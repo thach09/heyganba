@@ -1,18 +1,16 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { trackLearningStarted } from '../progress/productEvents';
+import { useRequestScope } from '../../lib/hooks/useRequestScope';
+import { grammarApi } from './api';
+import { useAuth } from '../../app/useAuth';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Search, TriangleAlert, X } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import confetti from 'canvas-confetti';
 import { FeedbackAlert } from '../../components/FeedbackAlert';
 import type { FeedbackType } from '../../components/FeedbackAlert';
 import { SubmitButton } from '../../components/SubmitButton';
-import { apiRequest } from '../../services/api';
-import type { AuthResponse } from '../../services/api';
 import type { GrammarCheckResult, GrammarExerciseDto, GrammarRuleDto } from './types';
-
-interface GrammarViewProps {
-  user: AuthResponse | null;
-  onRequireLogin: () => void;
-}
+import { learningKeyboardBlocked } from '../../lib/learningKeyboard';
 
 const LESSON_OPTIONS = [
   { slug: 'jpd113-b1', label: 'Bài 1' },
@@ -46,7 +44,11 @@ const normalizeText = (value: string) =>
 
 const snippet = (text: string, max = 96) => (text.length <= max ? text : `${text.slice(0, max).trimEnd()}…`);
 
-export const GrammarView: React.FC<GrammarViewProps> = ({ user, onRequireLogin }) => {
+export const GrammarView: React.FC = () => {
+  const { user, requireLogin: onRequireLogin } = useAuth();
+  const userId = user?.userId;
+  const { run, cancel } = useRequestScope(user?.userId);
+  const startKey = useRef(crypto.randomUUID());
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [rules, setRules] = useState<GrammarRuleDto[]>([]);
@@ -55,6 +57,11 @@ export const GrammarView: React.FC<GrammarViewProps> = ({ user, onRequireLogin }
   const [selectedRule, setSelectedRule] = useState<GrammarRuleDto | null>(null);
   const [search, setSearch] = useState('');
   const [exercises, setExercises] = useState<GrammarExerciseDto[]>([]);
+  const [exerciseState, setExerciseState] = useState<'idle' | 'loading' | 'loaded' | 'error'>('idle');
+  const [exerciseError, setExerciseError] = useState<string | null>(null);
+  const [checking, setChecking] = useState(false);
+  const checkState = useRef<'idle' | 'pending' | 'graded'>('idle');
+  const answerAttempt = useRef<{ attemptId: string; exerciseId: number; userAnswer: string } | null>(null);
   const [index, setIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [result, setResult] = useState<GrammarCheckResult | null>(null);
@@ -77,12 +84,13 @@ export const GrammarView: React.FC<GrammarViewProps> = ({ user, onRequireLogin }
   }, []);
 
   const loadRules = useCallback(async () => {
-    if (!user) {
+    if (!userId) {
       return;
     }
 
     const query = lesson ? `?lesson=${lesson}` : '';
-    const res = await apiRequest<GrammarRuleDto[]>(`/grammar/rules${query}`);
+    const res = await run('grammarApi.rules', signal => grammarApi.rules(query, { signal }));
+    if (!res) return;
 
     if (res.success && res.data) {
       setRules(res.data);
@@ -91,11 +99,11 @@ export const GrammarView: React.FC<GrammarViewProps> = ({ user, onRequireLogin }
     } else {
       setError(res.message || 'Không tải được danh sách điểm ngữ pháp.');
     }
-  }, [user, lesson]);
+  }, [userId, lesson, run]);
 
   const loadExercises = useCallback(
     async (rule: GrammarRuleDto | null, onlyMistakes: boolean) => {
-      if (!user) {
+      if (!userId) {
         return;
       }
 
@@ -108,30 +116,40 @@ export const GrammarView: React.FC<GrammarViewProps> = ({ user, onRequireLogin }
       }
 
       const query = params.toString();
-      const res = await apiRequest<GrammarExerciseDto[]>(`/grammar/exercises${query ? `?${query}` : ''}`);
+      setExerciseState('loading');
+      setExerciseError(null);
+      const res = await run('grammarApi.exercises', signal => grammarApi.exercises(query, { signal }));
+    if (!res) return;
 
       if (res.success && res.data) {
+        if (res.data.length) trackLearningStarted('GRAMMAR', startKey.current);
         setExercises(res.data);
         setIndex(0);
         setSelectedOption(null);
         setResult(null);
+        checkState.current = 'idle';
+        answerAttempt.current = null;
+        setExerciseState('loaded');
       } else {
-        setError(res.message || 'Không tải được bài tập.');
+        setExerciseError(res.message || 'Không tải được bài tập.');
+        setExerciseState('error');
       }
     },
-    [user]
+    [userId, run]
   );
 
   useEffect(() => {
     void loadRules();
-  }, [loadRules]);
+    return () => cancel('grammarApi.rules');
+  }, [loadRules, cancel]);
 
   useEffect(() => {
     if (mode !== 'PRACTICE') {
       return;
     }
     void loadExercises(selectedRule, mistakeOnly);
-  }, [mode, selectedRule, mistakeOnly, loadExercises]);
+    return () => cancel('grammarApi.exercises');
+  }, [mode, selectedRule, mistakeOnly, loadExercises, cancel]);
 
   const query = normalizeText(search.trim());  const visibleRules = useMemo(() => {
     if (!query) {
@@ -144,30 +162,37 @@ export const GrammarView: React.FC<GrammarViewProps> = ({ user, onRequireLogin }
     );
   }, [rules, query]);
 
-  const current = exercises[index] ?? null;
+  const current = exerciseState === 'loaded' ? exercises[index] ?? null : null;
   const submitAnswer = useCallback(
     async (answer: string) => {
-      if (!current || result) {
+      if (!current || result || checkState.current !== 'idle') {
         return;
       }
 
-      setSelectedOption(answer);
-      const res = await apiRequest<GrammarCheckResult>(`/grammar/exercises/${current.id}/check`, {
+      checkState.current = 'pending';
+      const attempt = answerAttempt.current ?? { attemptId: crypto.randomUUID(), exerciseId: current.id, userAnswer: answer };
+      answerAttempt.current = attempt;
+      setChecking(true);
+      setSelectedOption(attempt.userAnswer);
+      const res = await run('grammarApi.check', signal => grammarApi.check(attempt.exerciseId, { signal,
         method: 'POST',
-        body: JSON.stringify({ userAnswer: answer }),
-      });
+        body: JSON.stringify({ userAnswer: attempt.userAnswer, attemptId: attempt.attemptId }),
+      }));
+      if (!res) return;
+      setChecking(false);
 
       if (!res.success || !res.data) {
+        checkState.current = 'idle';
         setFeedback({
           type: 'error',
           title: 'Không chấm được bài tập',
           message: res.message || 'Vui lòng thử lại.',
         });
-        setSelectedOption(null);
         return;
       }
 
       const checked = res.data;
+      checkState.current = 'graded';
       setResult(checked);
       setScore((previous) => ({
         correct: previous.correct + (checked.correct ? 1 : 0),
@@ -178,10 +203,13 @@ export const GrammarView: React.FC<GrammarViewProps> = ({ user, onRequireLogin }
         confetti({ particleCount: 30, spread: 50, origin: { y: 0.85 } });
       }
     },
-    [current, result]
+    [current, result, run]
   );
 
   const goNext = useCallback(() => {
+    if (checkState.current !== 'graded') return;
+    checkState.current = 'idle';
+    answerAttempt.current = null;
     setSelectedOption(null);
     setResult(null);
     setIndex((previous) => previous + 1);
@@ -193,10 +221,7 @@ export const GrammarView: React.FC<GrammarViewProps> = ({ user, onRequireLogin }
     }
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      const target = event.target as HTMLElement | null;
-      if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA')) {
-        return;
-      }
+      if (learningKeyboardBlocked(event)) return;
 
       if (['1', '2', '3', '4'].includes(event.key) && current) {
         const option = current.options[Number(event.key) - 1];
@@ -320,6 +345,7 @@ export const GrammarView: React.FC<GrammarViewProps> = ({ user, onRequireLogin }
           <button
             key={tab.key}
             type="button"
+            disabled={checking}
             onClick={() => setMode(tab.key)}
             className={`cursor-pointer border-0 border-b-2 bg-transparent px-0.5 pb-2 text-[12.5px] transition-colors ${
               mode === tab.key ? 'border-fg font-semibold text-fg' : 'border-transparent text-fg-38 hover:text-fg'
@@ -474,6 +500,7 @@ export const GrammarView: React.FC<GrammarViewProps> = ({ user, onRequireLogin }
             <button
               type="button"
               className={chipClass(!selectedRule && !mistakeOnly)}
+              disabled={checking}
               onClick={() => {
                 setSelectedRule(null);
                 setMistakeOnly(false);
@@ -484,6 +511,7 @@ export const GrammarView: React.FC<GrammarViewProps> = ({ user, onRequireLogin }
             <button
               type="button"
               className={chipClass(mistakeOnly)}
+              disabled={checking}
               onClick={() => {
                 setSelectedRule(null);
                 setMistakeOnly(true);
@@ -497,6 +525,7 @@ export const GrammarView: React.FC<GrammarViewProps> = ({ user, onRequireLogin }
                 Đang luyện: <span className="font-serif text-[13px] text-fg">{selectedRule.structure}</span>
                 <button
                   type="button"
+                  disabled={checking}
                   onClick={() => setSelectedRule(null)}
                   className="cursor-pointer border-0 bg-transparent p-0 text-fg-38 underline underline-offset-2 transition-colors hover:text-fg"
                 >
@@ -512,7 +541,12 @@ export const GrammarView: React.FC<GrammarViewProps> = ({ user, onRequireLogin }
             {selectedRule ? '' : ` · ${scopeLabel}`}
           </p>
 
-          {!current && (
+          {(exerciseState === 'idle' || exerciseState === 'loading') && <p role="status" className="mt-8 text-[12.5px] text-fg-60">Đang tải bài tập...</p>}
+          {exerciseState === 'error' && <div role="alert" className="mt-8 text-[12.5px] text-red">
+            <p>{exerciseError}</p>
+            <SubmitButton variant="secondary" onClick={() => void loadExercises(selectedRule, mistakeOnly)}>Thử tải lại</SubmitButton>
+          </div>}
+          {exerciseState === 'loaded' && !current && (
             <div className="mt-8 border border-rule px-6 py-12 text-center">
               <p className="text-[12.5px] leading-[1.8] text-fg-38">
                 {exercises.length === 0
@@ -551,7 +585,7 @@ export const GrammarView: React.FC<GrammarViewProps> = ({ user, onRequireLogin }
                     <button
                       key={option}
                       type="button"
-                      disabled={Boolean(result)}
+                      disabled={checking || selectedOption !== null || Boolean(result)}
                       onClick={() => void submitAnswer(option)}
                       className={`flex items-center gap-3 border px-4 py-3 text-left transition-colors disabled:cursor-default ${
                         result ? 'cursor-default' : 'cursor-pointer'
@@ -565,6 +599,13 @@ export const GrammarView: React.FC<GrammarViewProps> = ({ user, onRequireLogin }
                   );
                 })}
               </div>
+
+              {selectedOption !== null && !checking && !result && (
+                <div className="mt-6 text-[12.5px] text-fg-60">
+                  <p>Giữ nguyên đáp án đã chọn: <span className="font-serif text-fg">{selectedOption}</span></p>
+                  <SubmitButton variant="secondary" onClick={() => void submitAnswer(selectedOption)}>Thử chấm lại</SubmitButton>
+                </div>
+              )}
 
               {result && (
                 <div className="mt-5 max-w-[560px] bg-tint px-4 py-3">

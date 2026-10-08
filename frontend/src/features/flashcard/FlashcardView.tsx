@@ -1,53 +1,15 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { trackLearningStarted } from '../progress/productEvents';
+import { useRequestScope } from '../../lib/hooks/useRequestScope';
+import { flashcardApi } from './api';
+import type { FlashcardDueItem, FlashcardStats } from './types';
+import { useAuth } from '../../app/useAuth';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import confetti from 'canvas-confetti';
 import { X, Volume2 } from 'lucide-react';
 import { FeedbackAlert } from '../../components/FeedbackAlert';
 import type { FeedbackType } from '../../components/FeedbackAlert';
-import { apiRequest } from '../../services/api';
 import { speakJapanese } from '../../services/japaneseSpeech';
-import type { AuthResponse } from '../../services/api';
-
-interface FlashcardDueItem {
-  vocabularyId: number;
-  word: string;
-  reading: string;
-  meaning: string;
-  sinoVietnamese: string | null;
-  exampleSentence: string | null;
-  exampleReading: string | null;
-  exampleMeaning: string | null;
-  lessonSlug: string | null;
-  isNew: boolean;
-  intervalDays: number;
-  repetitions: number;
-  easeFactor: number;
-  dueDate: string | null;
-}
-
-interface FlashcardStats {
-  learnedWords: number;
-  dueToday: number;
-  availableNewWords: number;
-  currentStreak: number;
-  longestStreak: number;
-}
-
-interface FlashcardReviewResult {
-  vocabularyId: number;
-  rating: string;
-  intervalDays: number;
-  repetitions: number;
-  easeFactor: number;
-  nextDueDate: string;
-  lapse: boolean;
-  currentStreak: number;
-  longestStreak: number;
-}
-
-interface FlashcardViewProps {
-  user: AuthResponse | null;
-  onRequireLogin: () => void;
-}
+import { learningKeyboardBlocked } from '../../lib/learningKeyboard';
 
 type QuestionType = 'reading' | 'meaning';
 type OptionState = 'idle' | 'correct' | 'wrong' | 'dim';
@@ -57,11 +19,18 @@ type OptionState = 'idle' | 'correct' | 'wrong' | 'dim';
  * Correct -> SRS `GOOD`, wrong -> SRS `FORGOT` (the word returns next session); distractors are the
  * other words of today's session, so no dedicated endpoint is needed yet.
  */
-export const FlashcardView: React.FC<FlashcardViewProps> = ({ user, onRequireLogin }) => {
+export const FlashcardView: React.FC = () => {
+  const { user, requireLogin: onRequireLogin } = useAuth();
+  const userId = user?.userId;
+  const { run, cancel } = useRequestScope(user?.userId);
+  const startKey = useRef(crypto.randomUUID());
   const [items, setItems] = useState<FlashcardDueItem[]>([]);
   const [stats, setStats] = useState<FlashcardStats | null>(null);
   const [index, setIndex] = useState(0);
   const [choice, setChoice] = useState<{ value: string; correct: boolean } | null>(null);
+  const [saveState, setSaveState] = useState<'idle' | 'saving' | 'saved' | 'failed'>('idle');
+  const saveStateRef = useRef(saveState);
+  const reviewAttempt = useRef<{ attemptId: string; vocabularyId: number; rating: string } | null>(null);
   const [reviewedCount, setReviewedCount] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
@@ -69,26 +38,33 @@ export const FlashcardView: React.FC<FlashcardViewProps> = ({ user, onRequireLog
   const [helpOpen, setHelpOpen] = useState(false);
 
   const refreshStats = useCallback(async () => {
-    const statsRes = await apiRequest<FlashcardStats>('/flashcard/stats');
+    const statsRes = await run('flashcardApi.stats', signal => flashcardApi.stats({ signal }));
+    if (!statsRes) return;
     if (statsRes.success && statsRes.data) {
       setStats(statsRes.data);
     }
-  }, []);
+  }, [run]);
 
   const loadDeck = useCallback(async () => {
-    if (!user) {
+    if (!userId) {
       return;
     }
 
-    const [dueRes, statsRes] = await Promise.all([
-      apiRequest<FlashcardDueItem[]>('/flashcard/due-today'),
-      apiRequest<FlashcardStats>('/flashcard/stats'),
-    ]);
+    const loaded = await run('FlashcardView-load', signal => Promise.all([
+      flashcardApi.due({ signal }),
+      flashcardApi.stats({ signal }),
+    ]));
+    if (!loaded) return;
+    const [dueRes, statsRes] = loaded;
 
     if (dueRes.success && dueRes.data) {
+      if (dueRes.data.length) trackLearningStarted('SRS', startKey.current);
       setItems(dueRes.data);
       setIndex(0);
       setChoice(null);
+      saveStateRef.current = 'idle';
+      reviewAttempt.current = null;
+      setSaveState('idle');
       setReviewedCount(0);
       setError(null);
     } else {
@@ -98,11 +74,12 @@ export const FlashcardView: React.FC<FlashcardViewProps> = ({ user, onRequireLog
     if (statsRes.success && statsRes.data) {
       setStats(statsRes.data);
     }
-  }, [user]);
+  }, [userId, run]);
 
   useEffect(() => {
     void loadDeck();
-  }, [loadDeck]);
+    return () => cancel('FlashcardView-load');
+  }, [loadDeck, cancel]);
 
   const current = items[index];
 
@@ -144,16 +121,23 @@ export const FlashcardView: React.FC<FlashcardViewProps> = ({ user, onRequireLog
   const submitRating = useCallback(
     async (rating: string) => {
       const target = items[index];
-      if (!target) {
+      if (!target || saveStateRef.current === 'saving' || saveStateRef.current === 'saved') {
         return;
       }
 
-      const res = await apiRequest<FlashcardReviewResult>('/flashcard/review', {
+      saveStateRef.current = 'saving';
+      const attempt = reviewAttempt.current ?? { attemptId: crypto.randomUUID(), vocabularyId: target.vocabularyId, rating };
+      reviewAttempt.current = attempt;
+      setSaveState('saving');
+      const res = await run('flashcardApi.review', signal => flashcardApi.review({ signal,
         method: 'POST',
-        body: JSON.stringify({ vocabularyId: target.vocabularyId, rating }),
-      });
+        body: JSON.stringify(attempt),
+      }));
+    if (!res) return;
 
       if (!res.success || !res.data) {
+        saveStateRef.current = 'failed';
+        setSaveState('failed');
         setFeedback({
           type: 'error',
           title: 'Không gửi được kết quả ôn tập',
@@ -163,6 +147,8 @@ export const FlashcardView: React.FC<FlashcardViewProps> = ({ user, onRequireLog
       }
 
       const result = res.data;
+      saveStateRef.current = 'saved';
+      setSaveState('saved');
       setReviewedCount((previous) => previous + 1);
 
       if (result.lapse) {
@@ -177,12 +163,12 @@ export const FlashcardView: React.FC<FlashcardViewProps> = ({ user, onRequireLog
 
       void refreshStats();
     },
-    [items, index, refreshStats]
+    [items, index, refreshStats, run]
   );
 
   const chooseOption = useCallback(
     (value: string) => {
-      if (choice || !current) {
+      if (choice || !current || saveStateRef.current !== 'idle') {
         return;
       }
       const isCorrect = value === correctValue;
@@ -193,6 +179,10 @@ export const FlashcardView: React.FC<FlashcardViewProps> = ({ user, onRequireLog
   );
 
   const handleContinue = useCallback(() => {
+    if (saveStateRef.current !== 'saved') return;
+    saveStateRef.current = 'idle';
+    reviewAttempt.current = null;
+    setSaveState('idle');
     setChoice(null);
     setIndex((previous) => previous + 1);
   }, []);
@@ -205,6 +195,11 @@ export const FlashcardView: React.FC<FlashcardViewProps> = ({ user, onRequireLog
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      if (learningKeyboardBlocked(event, helpOpen ? 'Hướng dẫn ôn tập' : 'Kết quả ôn tập')) return;
+      if (helpOpen) {
+        if (event.key === 'Escape') setHelpOpen(false);
+        return;
+      }
       if (event.key === 'Escape') {
         if (helpOpen) {
           setHelpOpen(false);
@@ -302,7 +297,7 @@ export const FlashcardView: React.FC<FlashcardViewProps> = ({ user, onRequireLog
         <button
           type="button"
           onClick={handleRefresh}
-          disabled={refreshing}
+          disabled={refreshing || saveState === 'saving' || saveState === 'failed'}
           className="cursor-pointer border border-rule-strong bg-transparent px-3 py-1 text-[10.5px] font-semibold uppercase tracking-[0.12em] text-fg transition-colors hover:bg-fg hover:text-bg disabled:cursor-not-allowed disabled:opacity-40"
         >
           {refreshing ? 'Đang tải...' : 'Tải lại'}
@@ -453,10 +448,16 @@ export const FlashcardView: React.FC<FlashcardViewProps> = ({ user, onRequireLog
             <button
               type="button"
               onClick={handleContinue}
-              className="mt-8 cursor-pointer border border-rule-strong bg-transparent px-6 py-2.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-fg transition-colors hover:bg-fg hover:text-bg"
+              disabled={saveState !== 'saved'}
+              className="mt-8 cursor-pointer border border-rule-strong bg-transparent px-6 py-2.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-fg transition-colors hover:bg-fg hover:text-bg disabled:cursor-default disabled:opacity-40"
             >
-              Tiếp theo <span className="ml-2 normal-case tracking-normal text-fg-38">(Space)</span>
+              {saveState === 'saving' ? 'Đang lưu...' : 'Tiếp theo'} <span className="ml-2 normal-case tracking-normal text-fg-38">(Space)</span>
             </button>
+            {saveState === 'failed' && <div className="mt-4 text-[12.5px] text-red" role="alert">
+              <p>Chưa lưu được lượt ôn này. Hãy thử lưu lại trước khi sang từ tiếp theo.</p>
+              <button type="button" className="mt-3 cursor-pointer border border-rule-strong px-4 py-2 text-fg"
+                onClick={() => void submitRating(choice.correct ? 'GOOD' : 'FORGOT')}>Thử lưu lại</button>
+            </div>}
           </div>
         </div>
       )}

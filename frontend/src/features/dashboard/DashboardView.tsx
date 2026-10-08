@@ -1,6 +1,10 @@
+import { progressApi } from '../progress/api';
+import { flashcardApi } from '../flashcard/api';
+import type { FlashcardStats } from '../flashcard/types';
+import type { HeatmapDay } from '../progress/types';
+import type { UserExp } from './types';
+import { useAuth } from '../../app/useAuth';
 import React, { useEffect, useMemo, useState } from 'react';
-import { apiRequest } from '../../services/api';
-import type { AuthResponse } from '../../services/api';
 
 /**
  * Dashboard - the reflection surface (see DESIGN.md):
@@ -9,38 +13,6 @@ import type { AuthResponse } from '../../services/api';
  * Real data: `/streak/heatmap` (itemCount, correctCount) + `/flashcard/stats`.
  * EXP is computed client-side from itemCount (not in the DB yet): 10 EXP per study item, 2,000 per level.
  */
-
-interface HeatmapDay {
-  date: string;
-  itemCount: number;
-  correctCount: number;
-}
-
-interface FlashcardStats {
-  learnedWords: number;
-  dueToday: number;
-  availableNewWords: number;
-  currentStreak: number;
-  longestStreak: number;
-}
-
-interface UserExp {
-  totalExp: number;
-  level: number;
-  expIntoLevel: number;
-  expForNextLevel: number;
-  rankName: string;
-  rankTier: number;
-  config: {
-    exerciseCorrect: number;
-    srsSession: number;
-    examBase: number;
-  };
-}
-
-interface DashboardViewProps {
-  user?: AuthResponse | null;
-}
 
 const TRACKER_DAYS = 24 * 7;
 const CHART_DAYS = 30;
@@ -188,7 +160,8 @@ const ActivityChart: React.FC<{ days: HeatmapDay[]; metric: 'itemCount' | 'corre
   );
 };
 
-export const DashboardView: React.FC<DashboardViewProps> = ({ user }) => {
+export const DashboardView: React.FC = () => {
+  const { user } = useAuth();
   const [heatmap, setHeatmap] = useState<HeatmapDay[]>([]);
   const [flashStats, setFlashStats] = useState<FlashcardStats | null>(null);
   const [userExp, setUserExp] = useState<UserExp | null>(null);
@@ -198,23 +171,25 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ user }) => {
       return;
     }
 
-    void apiRequest<HeatmapDay[]>(`/streak/heatmap?days=${TRACKER_DAYS}`).then((res) => {
-      if (res.success && res.data) {
+    const controller = new AbortController();
+    void progressApi.heatmap(TRACKER_DAYS, { signal: controller.signal }).then((res) => {
+      if (!controller.signal.aborted && res.success && res.data) {
         setHeatmap(res.data);
       }
-    });
+    }).catch(() => { /* Cancellation is silent. */ });
 
-    void apiRequest<FlashcardStats>('/flashcard/stats').then((res) => {
-      if (res.success && res.data) {
+    void flashcardApi.stats({ signal: controller.signal }).then((res) => {
+      if (!controller.signal.aborted && res.success && res.data) {
         setFlashStats(res.data);
       }
-    });
+    }).catch(() => { /* Cancellation is silent. */ });
 
-    void apiRequest<UserExp>('/exp').then((res) => {
-      if (res.success && res.data) {
+    void progressApi.exp({ signal: controller.signal }).then((res) => {
+      if (!controller.signal.aborted && res.success && res.data) {
         setUserExp(res.data);
       }
-    });
+    }).catch(() => { /* Cancellation is silent. */ });
+    return () => controller.abort();
   }, [user]);
 
   const { weekItems, weekCorrect } = useMemo(() => {

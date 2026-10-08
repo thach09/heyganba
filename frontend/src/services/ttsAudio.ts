@@ -1,4 +1,4 @@
-import { API_BASE_URL, getAccessToken } from './api';
+import { fetchJapaneseAudio } from '../features/kana/audioApi';
 
 /**
  * Phát âm tiếng Nhật bằng audio TTS của SERVER (Google Translate TTS đã cache ở backend).
@@ -12,13 +12,12 @@ import { API_BASE_URL, getAccessToken } from './api';
 let activeAudio: HTMLAudioElement | null = null;
 let activeBlobUrl: string | null = null;
 let requestSequence = 0;
-
-export function ttsAudioUrl(kanaText: string): string {
-  return `${API_BASE_URL}/audio/tts?text=${encodeURIComponent(kanaText)}`;
-}
+let pending: AbortController | null = null;
 
 export function stopServerTts(): void {
   requestSequence++;
+  pending?.abort();
+  pending = null;
   if (activeAudio) {
     activeAudio.pause();
     activeAudio = null;
@@ -33,15 +32,9 @@ export function stopServerTts(): void {
 export async function playServerTts(kanaText: string): Promise<'google-tts'> {
   stopServerTts();
   const sequence = requestSequence;
-  const token = getAccessToken();
-  const response = await fetch(ttsAudioUrl(kanaText), {
-    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
-  });
-  if (!response.ok) {
-    throw new Error(`TTS server trả về ${response.status}`);
-  }
-
-  const blob = await response.blob();
+  const controller = new AbortController();
+  pending = controller;
+  const blob = await fetchJapaneseAudio(kanaText, controller.signal);
   if (sequence !== requestSequence) throw new Error('Audio request superseded');
 
   const blobUrl = URL.createObjectURL(blob);

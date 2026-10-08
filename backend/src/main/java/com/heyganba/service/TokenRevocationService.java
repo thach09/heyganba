@@ -41,7 +41,7 @@ public class TokenRevocationService {
                                 .expiresAt(expiresAt)
                                 .build()
                 );
-                log.info("Revoked token with jti: {}, expiresAt: {}", jti, expiresAt);
+                log.debug("Session token revoked");
             }
         }
     }

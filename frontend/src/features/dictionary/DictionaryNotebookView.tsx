@@ -1,90 +1,27 @@
+import { useRequestScope } from '../../lib/hooks/useRequestScope';
+import { dictionaryApi } from './api';
+import type { VocabularyItem, DictionarySearchResponse, VocabNotebookItem, VocabNotebook, PracticeResult } from './types';
+import { useAuth } from '../../app/useAuth';
 import React, { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Search, Plus, FolderPlus, Trash2, Play, CheckCircle2, BookmarkPlus, Volume2 } from 'lucide-react';
-import { apiRequest, getSavedUser } from '../../services/api';
-import type { AuthResponse } from '../../services/api';
+import { getSavedUser } from '../../lib/api/session';
 import { SubmitButton } from '../../components/SubmitButton';
 import { Modal } from '../../components/Modal';
 import { speakJapanese } from '../../services/japaneseSpeech';
 
-interface VocabularyItem {
-  id: number;
-  word: string;
-  reading: string;
-  meaning: string;
-  vietnameseMeaning?: string;
-  sinoVietnamese?: string;
-  exampleSentence?: string;
-  exampleReading?: string;
-  exampleMeaning?: string;
-  source?: string;
-  meaningLanguage?: string;
-}
-
-interface KanjiItem {
-  id: number;
-  character: string;
-  strokeCount: number;
-  onyomi?: string;
-  kunyomi?: string;
-  sinoVietnamese?: string;
-  meaning: string;
-  mnemonic?: string;
-}
-
-interface DictionarySearchResponse {
-  query: string;
-  totalMatches: number;
-  vocabularies: VocabularyItem[];
-  kanjis: KanjiItem[];
-  page: number;
-  hasMore: boolean;
-}
-
-interface VocabNotebookItem {
-  id: number;
-  vocabularyId: number;
-  word: string;
-  reading: string;
-  meaning: string;
-  vietnameseMeaning?: string;
-  sinoVietnamese?: string;
-  exampleSentence?: string;
-  exampleReading?: string;
-  exampleMeaning?: string;
-  customNote?: string;
-  practiceCount: number;
-  correctCount: number;
-  meaningLanguage?: string;
-}
-
-interface VocabNotebook {
-  id: number;
-  title: string;
-  description?: string;
-  isPublicSample: boolean;
-  itemCount: number;
-  createdAt: string;
-  items: VocabNotebookItem[];
-}
-
-interface PracticeResult {
-  notebookId: number;
-  notebookTitle: string;
-  correctCount: number;
-  totalCount: number;
-  expEarned: number;
-  note: string;
-}
-
-interface DictionaryNotebookViewProps {
-  user: AuthResponse | null;
-  onRequireLogin: () => void;
-}
-
 const labelClass = 'text-[10.5px] font-semibold uppercase tracking-[0.18em] text-fg-38';
 
-export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ user, onRequireLogin }) => {
+export const DictionaryNotebookView: React.FC = () => {
+  const { user } = useAuth();
+  // Private forms, submission locks and requests belong to one account session.
+  // Keep public search in URL state, but never carry a pending save into another account.
+  return <DictionaryNotebookSessionView key={user?.userId ?? 'guest'} />;
+};
+
+const DictionaryNotebookSessionView: React.FC = () => {
+  const { user, requireLogin: onRequireLogin } = useAuth();
+  const { run, cancel, isActive } = useRequestScope(user?.userId);
   const [activeTab, setActiveTab] = useState<'DICTIONARY' | 'NOTEBOOKS'>('DICTIONARY');
 
   // Dictionary state
@@ -129,9 +66,14 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
   // Success / error toast
   const [notice, setNotice] = useState<string | null>(null);
 
+  useEffect(() => {
+    if (!notice) return;
+    const timer = window.setTimeout(() => setNotice(null), 4000);
+    return () => window.clearTimeout(timer);
+  }, [notice]);
+
   const showNotice = (msg: string) => {
     setNotice(msg);
-    setTimeout(() => setNotice(null), 4000);
   };
 
   const setupOptionsForIndex = (nb: VocabNotebook, idx: number) => {
@@ -152,9 +94,8 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
     setIsSearching(true);
     if (page === 0) setSearchResult(null);
     try {
-      const res = await apiRequest<DictionarySearchResponse>(
-        `/dictionary/search?q=${encodeURIComponent(trimmed)}&page=${page}`
-      );
+      const res = await run('dictionaryApi.search', signal => dictionaryApi.search(trimmed, page, { signal }));
+    if (!res) return;
       if (sequence !== searchSequence.current) return;
       if (res.success && res.data) {
         setSearchResult(previous => page > 0 && previous ? { ...res.data, vocabularies: [...previous.vocabularies, ...res.data.vocabularies], kanjis: previous.kanjis } : res.data);
@@ -164,7 +105,7 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
     } catch {
       showNotice('Không thể kết nối đến máy chủ để tra cứu.');
     } finally {
-      if (sequence === searchSequence.current) setIsSearching(false);
+      if (isActive() && sequence === searchSequence.current) setIsSearching(false);
     }
   };
 
@@ -183,15 +124,17 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
       void doSearch(q.trim());
     }
     else { searchSequence.current++; setSearchQuery(''); setSearchResult(null); setIsSearching(false); }
+    return () => cancel('dictionaryApi.search');
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams]);
+  }, [searchParams, cancel]);
 
   const fetchNotebooks = async () => {
     if (!user) return;
     const accountId = user.userId;
     setLoadingNotebooks(true);
     try {
-      const res = await apiRequest<VocabNotebook[]>('/notebooks');
+      const res = await run('dictionaryApi.notebooks', signal => dictionaryApi.notebooks({ signal }));
+    if (!res) return;
       if (getSavedUser()?.userId !== accountId) return;
       if (res.success && res.data) {
         setNotebooks(res.data);
@@ -201,7 +144,7 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
       }
       else showNotice(res.message || 'Không tải được sổ từ. Vui lòng thử lại.');
     } finally {
-      setLoadingNotebooks(false);
+      if (isActive()) setLoadingNotebooks(false);
     }
   };
 
@@ -210,22 +153,24 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
     if (user && activeTab === 'NOTEBOOKS') {
       fetchNotebooks();
     }
+    return () => cancel('dictionaryApi.notebooks');
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, activeTab]);
+  }, [user, activeTab, run, cancel]);
 
   useEffect(() => {
     if (!user) { setNotebooks([]); setSelectedNotebook(null); setWordToAdd(null); setPracticeActive(false); setActiveTab('DICTIONARY'); }
-  }, [user]);
+  }, [user, run]);
 
   const handleCreateNotebook = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newTitle.trim() || savingRef.current) return;
     savingRef.current = true; setSaving(true);
 
-    const res = await apiRequest<VocabNotebook>('/notebooks', {
+    const res = await run('dictionaryApi.create', signal => dictionaryApi.create({ signal,
       method: 'POST',
       body: JSON.stringify({ title: newTitle.trim(), description: newDesc.trim() || undefined }),
-    });
+    }));
+    if (!res) return;
 
     savingRef.current = false; setSaving(false);
     if (res.success && res.data) {
@@ -245,7 +190,8 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
     }
     if (savingRef.current) return;
     savingRef.current = true; setSaving(true);
-    const res = await apiRequest<VocabNotebook>(`/notebooks/clone-sample/${sampleId}`, { method: 'POST' });
+    const res = await run('dictionaryApi.clone', signal => dictionaryApi.clone(sampleId, { signal, method: 'POST' }));
+    if (!res) return;
     savingRef.current = false; setSaving(false);
     if (res.success && res.data) {
       showNotice('Đã lưu nhóm từ mẫu vào kho từ vựng của bạn');
@@ -260,10 +206,11 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
     if (!wordToAdd || !targetNotebookId || savingRef.current) return;
     savingRef.current = true; setSaving(true);
 
-    const res = await apiRequest<VocabNotebook>(`/notebooks/${targetNotebookId}/items`, {
+    const res = await run('dictionaryApi.addWord', signal => dictionaryApi.addWord(targetNotebookId, { signal,
       method: 'POST',
       body: JSON.stringify({ vocabularyId: wordToAdd.id, customNote: customNote.trim() || undefined }),
-    });
+    }));
+    if (!res) return;
 
     savingRef.current = false; setSaving(false);
     if (res.success) {
@@ -278,7 +225,8 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
 
   const handleRemoveWord = async (notebookId: number, vocabId: number) => {
     if (!confirm('Bạn có chắc chắn muốn xoá từ này khỏi sổ tay?')) return;
-    const res = await apiRequest(`/notebooks/${notebookId}/items/${vocabId}`, { method: 'DELETE' });
+    const res = await run('dictionaryApi.removeWord', signal => dictionaryApi.removeWord(notebookId, vocabId, { signal, method: 'DELETE' }));
+    if (!res) return;
     if (res.success) {
       showNotice('Đã xoá từ khỏi sổ tay');
       fetchNotebooks();
@@ -288,7 +236,8 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
 
   const handleDeleteNotebook = async (notebookId: number) => {
     if (!confirm('Xoá toàn bộ sổ từ vựng này?')) return;
-    const res = await apiRequest(`/notebooks/${notebookId}`, { method: 'DELETE' });
+    const res = await run('dictionaryApi.remove', signal => dictionaryApi.remove(notebookId, { signal, method: 'DELETE' }));
+    if (!res) return;
     if (res.success) {
       showNotice('Đã xoá sổ từ vựng');
       setSelectedNotebook(null);
@@ -348,10 +297,11 @@ export const DictionaryNotebookView: React.FC<DictionaryNotebookViewProps> = ({ 
     } else {
       // Finished practice
       savingRef.current = true; setSaving(true);
-      const res = await apiRequest<PracticeResult>(`/notebooks/${selectedNotebook.id}/practice-result`, {
+      const res = await run('dictionaryApi.practice', signal => dictionaryApi.practice(selectedNotebook.id, { signal,
         method: 'POST',
         body: JSON.stringify({ sessionId: practiceSessionId.current, answers: practiceAnswers.current }),
-      });
+      }));
+    if (!res) return;
       savingRef.current = false; setSaving(false);
       if (res.success && res.data) {
         setPracticeFinished(res.data);

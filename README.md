@@ -2,15 +2,15 @@
 
 <div align="center">
 
-[![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.4.3-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
+[![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.5-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
 [![Java](https://img.shields.io/badge/Java-21_LTS-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)](https://openjdk.org/projects/jdk/21/)
 [![React](https://img.shields.io/badge/React-19.2-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![Redis](https://img.shields.io/badge/Redis-7-DC382D?style=for-the-badge&logo=redis&logoColor=white)](https://redis.io/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![Sentry](https://img.shields.io/badge/Sentry-Monitored-362D59?style=for-the-badge&logo=sentry&logoColor=white)](https://sentry.io/)
-[![Build & Test Status](https://img.shields.io/badge/Tests-156_Passing-success?style=for-the-badge&logo=githubactions&logoColor=white)](https://github.com/thach09/heyganba/actions)
+[![Sentry](https://img.shields.io/badge/Sentry-SDK_Integrated-362D59?style=for-the-badge&logo=sentry&logoColor=white)](https://sentry.io/)
+[![Build & Test Status](https://github.com/thach09/heyganba/actions/workflows/ci.yml/badge.svg)](https://github.com/thach09/heyganba/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/License-Proprietary-red?style=for-the-badge)](./README.md)
 
 **Nền tảng đào tạo & tự học tiếng Nhật chuẩn khung năng lực JLPT N5–N4 và giáo trình Dekiru Nihongo.**  
@@ -96,10 +96,10 @@ flowchart LR
 | **Điểm chạm trên HeyGanba** | 5 Trạm học tập, Sổ tay từ vựng cá nhân, Flashcard trắc nghiệm, Thi thử. | Trạm Ngữ pháp (câu bẫy), Trạm Thi thử, Tra cứu từ điển, Đề xuất bài học. | Admin Panel chuyên sâu, Review Queue, Audit Logs, Quản lý 2FA TOTP. |
 
 ### 1.4. Hệ thống Chỉ số Hiệu quả Nghiệp vụ (KPIs)
-- **Retention Rate (D7 / D30):** Đo lường tỷ lệ học viên duy trì Streak liên tục trên 7 ngày và 30 ngày.
-- **SRS Recall Accuracy Rate:** Tỷ lệ trả lời chính xác trong các phiên ôn tập ngắt quãng (mục tiêu đạt $\ge 85\%$).
-- **Common Mistake Elimination Index:** Tỷ lệ học viên vượt qua các câu hỏi bẫy trợ từ sau khi luyện trạm Ngữ pháp.
-- **System Service Level Availability (SLA):** Đạt $\ge 99.9\%$ thời gian phản hồi API $< 200\text{ms}$.
+- **Product retention (D7 / D30):** Return to meaningful learning in a defined cohort window, measured independently of continuous streak survival. Definitions and current data limitations are owned by the foundation metrics specification.
+- **SRS recall accuracy:** A candidate learning metric, not a demonstrated product outcome. Current SRS state alone is insufficient to reconstruct attempt-level accuracy.
+- **Repeated mistakes:** A future reporting metric requiring identifiable graded attempts. No measured improvement is claimed.
+- **Operational reliability:** Observe API errors, health and release status. No enterprise SLA or measured response-time guarantee is established.
 
 ### 1.5. Từ điển Thuật ngữ Nghiệp vụ (Domain Glossary)
 - **Kana (仮名):** Hai bảng chữ cái ngữ âm tiếng Nhật gồm Hiragana (chữ mềm) và Katakana (chữ cứng).
@@ -151,7 +151,7 @@ graph TD
     end
 
     subgraph Backend_App ["Tầng Ứng dụng Backend - Render Singapore Node"]
-        SpringCore["Spring Boot 3.4.3 Application - Java 21 LTS"]
+        SpringCore["Spring Boot Application - Java 21 LTS"]
         SecurityFilterChain["Security Filter Chain<br/>JWT Stateless, Token Revoke Filter, MaxPayloadSizeFilter 64KB"]
         RateLimiter["Rate Limit Guards<br/>Login: 5 fails/15m, Admin: 30 writes/min"]
         SentrySDK["Sentry Application Monitoring SDK<br/>Real-time Error Tracking & Distributed Tracing"]
@@ -189,14 +189,14 @@ graph TD
 | Phân hệ Kỹ thuật | Giải pháp Lựa chọn | Phiên bản | Cơ sở Quyết định & Đánh giá Rủi ro |
 |:---|:---|:---|:---|
 | **Backend Runtime** | Java OpenJDK (LTS) | 21 | Hiệu năng vượt trội, hỗ trợ Virtual Threads (Project Loom) sẵn sàng cho tải I/O cao, Garbage Collector G1/ZGC ổn định. |
-| **Backend Framework** | Spring Boot | 3.4.3 | Hệ sinh thái hoàn thiện, Spring Security 6 với kiến trúc SecurityFilterChain không đồng bộ, Hibernate ORM 6.6 tối ưu truy vấn SQL. |
-| **Frontend Framework** | React + TypeScript | 19.2 / 5.x | Giao diện Single Page Application (SPA), bảo đảm 100% Type-safety từ DTO đến Component UI, hạn chế triệt để lỗi runtime `undefined`. |
+| **Backend Framework** | Spring Boot | See backend/pom.xml | Hệ sinh thái hoàn thiện, Spring Security 6 với kiến trúc SecurityFilterChain không đồng bộ, Hibernate ORM 6.6 tối ưu truy vấn SQL. |
+| **Frontend Framework** | React + TypeScript | See frontend/package.json | Giao diện Single Page Application (SPA), bảo đảm 100% Type-safety từ DTO đến Component UI, hạn chế triệt để lỗi runtime `undefined`. |
 | **Frontend Bundler** | Vite | 8.3 | Tốc độ biên dịch và HMR tức thời, tối ưu hoá kích thước gói nạp phân mảnh qua cơ chế Rollup Tree-shaking. |
 | **Design System** | Tailwind CSS | v4.x | Khai báo quy chuẩn bằng token trong `@theme` (Ink & Paper tone). Loại trừ hoàn toàn CSS tự phát, đảm bảo tính nhất quán thị giác. |
 | **Cơ sở Dữ liệu Lõi** | PostgreSQL Serverless | 16 | Chuẩn toàn vẹn dữ liệu ACID, hỗ trợ đánh chỉ mục JSONB cho ngân hàng đề thi phức hợp, vận hành trên hạ tầng AWS Singapore. |
 | **Quản trị Schema** | Flyway Migration | 10.x | Kiểm soát versioning cơ sở dữ liệu qua mã nguồn, ngăn chặn xung đột schema giữa các môi trường, hỗ trợ cơ chế băm kiểm tra checksum. |
 | **Bộ đệm & Xếp hạng** | Redis / In-Memory Cache | 7-alpine | Tối ưu hàng đợi ôn tập SRS và bảng xếp hạng điểm EXP. Hỗ trợ cơ chế Fallback mượt mà sang bộ nhớ RAM khi chạy Local. |
-| **Giám sát Lỗi (APM)** | Sentry | 7.x/11.x | Bắt bắt ngoại lệ thời gian thực (Zero Silent Failures), cung cấp ngữ cảnh người dùng, breadcrumb và stack trace đầy đủ. |
+| **Error monitoring** | Sentry | 7.x/11.x | Conditional on configured DSNs; diagnostic exceptions and request timing with privacy redaction. Provider enablement must be verified before release. |
 
 ### 3.3. Tiêu chuẩn Thiết kế REST API & Danh mục Endpoints
 
@@ -363,7 +363,7 @@ Yêu cầu: Đã cài đặt **Docker** và **Docker Compose**.
 Chỉ cần một dòng lệnh duy nhất để khởi động toàn bộ cụm PostgreSQL 16, Redis 7 và Backend Spring Boot:
 
 ```bash
-# 1. Clone repository
+# 1. Run the current backend regression suite
 git clone https://github.com/thach09/heyganba.git
 cd heyganba
 
@@ -411,7 +411,7 @@ npm run dev
 
 ## 🧪 8. Đảm bảo Chất lượng & Ma trận Kiểm thử (QA Lead Perspective)
 
-Dự án áp dụng quy chuẩn kiểm thử nghiêm ngặt đạt tỷ lệ vượt qua **100% (156/156 automated tests)**:
+Current validation results are recorded by [CI](https://github.com/thach09/heyganba/actions/workflows/ci.yml), not a hard-coded passing-test count.
 
 ### 8.1. Kim tự tháp Kiểm thử Tự động (Test Automation Pyramid)
 
@@ -430,7 +430,7 @@ Dự án áp dụng quy chuẩn kiểm thử nghiêm ngặt đạt tỷ lệ vư
 
 #### Danh mục các lệnh kiểm thử cốt lõi:
 ```bash
-# 1. Chạy toàn bộ 156 bài kiểm thử tự động của Backend
+# 1. Run the current backend regression suite
 cd backend
 mvn test
 
@@ -440,7 +440,7 @@ mvn test -Dtest=FlywayLocationsConfigTest
 # 3. Kiểm tra an ninh hệ thống (JWT, Token Revocation, 2FA, Rate Limit)
 mvn test -Dtest=SecurityHardeningTest,JwtTokenProviderTest,SecurityRbacTest
 
-# 4. Kiểm tra chất lượng mã nguồn Frontend (ESLint 0 errors)
+# 4. Frontend lint (oxlint)
 cd ../frontend
 npm run lint
 

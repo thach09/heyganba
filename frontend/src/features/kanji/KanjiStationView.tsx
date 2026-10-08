@@ -1,3 +1,7 @@
+import { useRequestScope } from '../../lib/hooks/useRequestScope';
+import { kanjiApi } from './api';
+import type { RadicalDto, KanjiDto } from './types';
+import { useAuth } from '../../app/useAuth';
 import React, { useCallback, useEffect, useState } from 'react';
 import { PenLine, Search, X } from 'lucide-react';
 import confetti from 'canvas-confetti';
@@ -5,43 +9,6 @@ import { FeedbackAlert } from '../../components/FeedbackAlert';
 import type { FeedbackType } from '../../components/FeedbackAlert';
 import { SubmitButton } from '../../components/SubmitButton';
 import { KanaCanvas } from '../kana/KanaCanvas';
-import { apiRequest } from '../../services/api';
-import type { AuthResponse } from '../../services/api';
-
-interface RadicalDto {
-  id: number;
-  radical: string;
-  strokeCount: number;
-  name: string;
-  meaning: string;
-}
-
-interface KanjiDto {
-  id: number;
-  character: string;
-  strokeCount: number;
-  onyomi: string | null;
-  kunyomi: string | null;
-  sinoVietnamese: string;
-  meaning: string;
-  mnemonic: string | null;
-  lessonSlug: string | null;
-  lessonTitle: string | null;
-  radicals: RadicalDto[];
-  practiceCount: number;
-}
-
-interface KanjiProgressResult {
-  kanjiId: number;
-  character: string;
-  practiceCount: number;
-  lastPracticedAt: string;
-}
-
-interface KanjiStationViewProps {
-  user: AuthResponse | null;
-  onRequireLogin: () => void;
-}
 
 const LESSON_OPTIONS = [
   { slug: 'jpd113-b1', label: 'Bài 1' },
@@ -73,7 +40,9 @@ const MnemonicBlock: React.FC<{ text: string }> = ({ text }) => (
   </div>
 );
 
-export const KanjiStationView: React.FC<KanjiStationViewProps> = ({ user, onRequireLogin }) => {
+export const KanjiStationView: React.FC = () => {
+  const { user, requireLogin: onRequireLogin } = useAuth();
+  const { run, cancel } = useRequestScope(user?.userId);
   const [kanjiList, setKanjiList] = useState<KanjiDto[]>([]);
   const [radicals, setRadicals] = useState<RadicalDto[]>([]);
   const [lesson, setLesson] = useState<string>('');
@@ -104,7 +73,8 @@ export const KanjiStationView: React.FC<KanjiStationViewProps> = ({ user, onRequ
     }
 
     const query = params.toString();
-    const res = await apiRequest<KanjiDto[]>(`/kanji${query ? `?${query}` : ''}`);
+    const res = await run('kanjiApi.list', signal => kanjiApi.list(query, { signal }));
+    if (!res) return;
 
     if (res.success && res.data) {
       setKanjiList(res.data);
@@ -113,25 +83,28 @@ export const KanjiStationView: React.FC<KanjiStationViewProps> = ({ user, onRequ
     } else {
       setError(res.message || 'Không tải được dữ liệu kanji.');
     }
-  }, [user, lesson, radicalId, search]);
+  }, [user, lesson, radicalId, search, run]);
 
   const loadRadicals = useCallback(async () => {
     if (!user) {
       return;
     }
-    const res = await apiRequest<RadicalDto[]>('/radicals');
+    const res = await run('kanjiApi.radicals', signal => kanjiApi.radicals({ signal }));
+    if (!res) return;
     if (res.success && res.data) {
       setRadicals(res.data);
     }
-  }, [user]);
+  }, [user, run]);
 
   useEffect(() => {
     void loadKanji();
-  }, [loadKanji]);
+    return () => cancel('kanjiApi.list');
+  }, [loadKanji, cancel]);
 
   useEffect(() => {
     void loadRadicals();
-  }, [loadRadicals]);
+    return () => cancel('kanjiApi.radicals');
+  }, [loadRadicals, cancel]);
 
   const handlePracticeSubmit = async () => {
     if (!selected) {
@@ -139,7 +112,8 @@ export const KanjiStationView: React.FC<KanjiStationViewProps> = ({ user, onRequ
     }
 
     setSubmitting(true);
-    const res = await apiRequest<KanjiProgressResult>(`/kanji/${selected.id}/progress`, { method: 'POST' });
+    const res = await run('kanjiApi.progress', signal => kanjiApi.progress(selected.id, { signal, method: 'POST' }));
+    if (!res) return;
     setSubmitting(false);
 
     if (!res.success || !res.data) {

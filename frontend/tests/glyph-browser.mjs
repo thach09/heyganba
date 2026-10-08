@@ -1,6 +1,10 @@
 import puppeteer from 'puppeteer-core';
 import assert from 'node:assert/strict';
-import { writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+const out = process.env.AUDIT_OUTPUT || join(tmpdir(), 'heyganba-ui-audit');
+mkdirSync(out, { recursive: true });
 const browser = await puppeteer.launch({ executablePath: process.env.CHROME_PATH || 'C:/Program Files/Google/Chrome/Application/chrome.exe', headless: true });
 try {
   const page = await browser.newPage();
@@ -27,6 +31,6 @@ try {
     return results;
   });
   for(const r of results) { assert.equal(r.complete.accepted,true,`Complete ${r.char}`);assert.equal(r.incomplete.accepted,false,`Half ${r.char}`); }
-  writeFileSync('../scratch/ui-audit/glyph-results.json',JSON.stringify(results,null,2));
+  writeFileSync(join(out, 'glyph-results.json'),JSON.stringify(results,null,2));
   console.log(`Verified complete and incomplete ink for ${results.length} real Japanese glyphs in Chrome`);
 } finally { await browser.close(); }

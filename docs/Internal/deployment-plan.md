@@ -1,5 +1,10 @@
 # Deployment Plan — Japanese Learning Platform (DevOps)
 
+Current verified operations (2026-10-07) are recorded in
+[operational-readiness.md](operational-readiness.md) and
+[backup-recovery-runbook.md](backup-recovery-runbook.md). Historical deployment
+steps below are not evidence that a provider setting remains enabled.
+
 ## Môi trường
 
 | Môi trường | Mục đích                      | Ghi chú                                                                                                                            |
@@ -12,10 +17,10 @@
 
 - **Backend:** Spring Boot đóng gói Docker image, deploy trên Render (Web Service).
 - **Frontend:** React + Vite build tĩnh, deploy trên Vercel, hưởng CDN edge sẵn có.
-- **Database:** PostgreSQL managed (Render Postgres hoặc Neon) — bật daily backup tự động, retention tối thiểu 7 ngày.
-- **Cache:** Redis managed (Render Redis hoặc Upstash) cho hàng đợi SRS và leaderboard.
-- **Media:** Audio phát âm lưu Cloudflare R2, phục vụ qua CDN, không đi qua backend.
-- **DNS/HTTPS:** Domain trỏ qua Cloudflare, TLS tự động (Let's Encrypt qua Render/Vercel), bật HSTS.
+- **Database:** Neon PostgreSQL; verified PITR history is six hours. No verified seven-day daily backup.
+- **Cache:** Memory SRS cache; Redis is optional and no managed instance is required.
+- **Media:** Cached audio in PostgreSQL; optional R2 only when its complete configuration is available.
+- **DNS/HTTPS:** Render/Vercel HTTPS and security headers; the Vercel website is not verified behind a Cloudflare proxy.
 
 ### Staging & Database (thực tế triển khai)
 
@@ -32,8 +37,7 @@
     (chỉ staging; production KHÔNG bật — xem "Gate nội dung chưa duyệt" → mục Promote).
   - CORS staging chỉ nhận đúng origin của preview `develop`; CSP frontend đã thêm host API staging vào `connect-src`.
 
-- **Neon free**: 0.5GB storage, **không hết hạn theo thời gian** (khác Render Postgres free hết hạn sau 30 ngày), có
-  _point-in-time restore_ trong 6 giờ (bản mới) → đáp ứng nhu cầu "backup retention tối thiểu 7 ngày" tốt hơn; muốn giữ lâu hơn thì nâng plan hoặc `pg_dump` định kỳ (xem `backups/`, đã gitignore).
+- **Neon recovery:** API-verified history is 21,600 seconds (six hours). Six hours does **not** satisfy seven-day retention. Provider limits are plan-dependent; consult the current console and backup runbook before release.
 - CI: push `develop` → Render **tự deploy** staging (`autoDeploy=yes`) + Vercel **tự build** preview; push `main` → frontend
   Vercel tự deploy production, còn **backend production phải duyệt thủ công** (job `deploy-backend-production` dừng ở GitHub
   Environment `production`; service production để `autoDeploy: no`).
@@ -42,15 +46,18 @@
 
 Project Neon: `cinevora` (org `org-dark-butterfly-46484287`, region `aws-ap-southeast-1`), **database riêng cho HeyGanba**:
 `heyganba` (owner role `heyganba_owner`) trên branch `production` (`br-patient-silence-b3qbzvq9`).
-Lý do dùng chung project: **Neon free chỉ cho 1 project/org** — nhưng tách riêng database + role nên dữ liệu HeyGanba
-không lẫn với app khác. Khi cần tách hẳn: tạo project Neon mới rồi `pg_dump | psql` sang (quy trình y hệt bên dưới).
+This shared project is an existing deployment choice, not a current claim that
+the Free plan allows only one project. HeyGanba uses its own database and roles.
+Any later separation must follow the backup/recovery runbook and verify permissions.
 
 Env Render cần set (JDBC URL, **không** dùng dạng `postgresql://`):
 
 ```
 SPRING_DATASOURCE_URL=jdbc:postgresql://<neon-host>/heyganba?sslmode=require
-SPRING_DATASOURCE_USERNAME=heyganba_owner
-SPRING_DATASOURCE_PASSWORD=<neon role password>
+SPRING_DATASOURCE_USERNAME=heyganba_app
+SPRING_DATASOURCE_PASSWORD=<runtime role password>
+SPRING_FLYWAY_USER=heyganba_owner
+SPRING_FLYWAY_PASSWORD=<migration owner password>
 ```
 
 Quy trình migrate Render Postgres → Neon (đã chạy thật, dùng lại khi cần):

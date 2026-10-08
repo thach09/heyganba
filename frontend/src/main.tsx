@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom'
 import * as Sentry from '@sentry/react'
 import './index.css'
 import App from './App.tsx'
+import { privateBreadcrumb, privateEvent, privateSpan } from './lib/observability/privacy'
 
 const sentryDsn = import.meta.env.VITE_SENTRY_DSN;
 if (sentryDsn) {
@@ -14,6 +15,11 @@ if (sentryDsn) {
     ],
     tracesSampleRate: 0.2,
     environment: import.meta.env.MODE || 'production',
+    dataCollection: { userInfo: false, cookies: false, httpHeaders: false, httpBodies: [],
+      urlQueryParams: false, stackFrameVariables: false, databaseQueryData: false },
+    beforeBreadcrumb: privateBreadcrumb,
+    beforeSend: privateEvent,
+    beforeSendSpan: privateSpan,
   });
 }
 

@@ -1,7 +1,9 @@
+import { useRequestScope } from '../../lib/hooks/useRequestScope';
+import { authApi } from './api';
 import React, { useState } from 'react';
 import { Lock, Mail, User as UserIcon, Users } from 'lucide-react';
-import { apiRequest, saveTokens, saveUser } from '../../services/api';
-import type { AuthResponse } from '../../services/api';
+import { saveTokens, saveUser } from '../../lib/api/session';
+import type { AuthResponse } from '../../lib/api/types';
 import { SubmitButton } from '../../components/SubmitButton';
 import { Modal } from '../../components/Modal';
 
@@ -20,6 +22,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   onClose,
   onAuthSuccess,
 }) => {
+  const { run, isActive } = useRequestScope();
   const [isRegister, setIsRegister] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -38,15 +41,15 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     setLoading(true);
 
     try {
-      const endpoint = isRegister ? '/auth/register' : '/auth/login';
       const body = isRegister
         ? { email, password, fullName, classCode: classCode.trim() || null }
         : { email, password, twoFactorCode: twoFactorCode.trim() || undefined };
 
-      const res = await apiRequest<AuthResponse>(endpoint, {
+      const res = await run('auth-submit', signal => (isRegister ? authApi.register : authApi.login)({ signal,
         method: 'POST',
         body: JSON.stringify(body),
-      });
+      }));
+      if (!res) return;
 
       if (res.success && res.data) {
         if (res.data.twoFactorRequired) {
@@ -65,7 +68,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     } catch (err: any) {
       setError(err.message || 'Lỗi kết nối máy chủ');
     } finally {
-      setLoading(false);
+      if (isActive()) setLoading(false);
     }
   };
 

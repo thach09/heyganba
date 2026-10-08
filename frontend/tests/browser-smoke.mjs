@@ -1,10 +1,12 @@
 import puppeteer from 'puppeteer-core';
 import assert from 'node:assert/strict';
 import { mkdirSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 
 const origin = process.env.AUDIT_WEB_URL || 'http://127.0.0.1:5174';
 const api = process.env.AUDIT_API_URL || 'http://127.0.0.1:8081/api/v1';
-const out = process.env.AUDIT_OUTPUT || '../scratch/ui-audit';
+const out = process.env.AUDIT_OUTPUT || join(tmpdir(), 'heyganba-ui-audit');
 mkdirSync(out, { recursive: true });
 const email = `ui-audit-${Date.now()}@heyganba.test`;
 const authResponse = await fetch(`${api}/auth/register`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: 'LocalAudit123!', fullName: 'Local UI Audit' }) });
@@ -30,6 +32,7 @@ const screenshot = async name => {
 };
 const waitText = async text => page.waitForFunction(text => document.body.textContent.includes(text), {}, text);
 const search = async query => {
+  await page.waitForSelector('input[aria-label="Từ khoá tra cứu"]');
   const input = await page.$('input[aria-label="Từ khoá tra cứu"]');
   await input.click(); await page.keyboard.down('Control'); await page.keyboard.press('A'); await page.keyboard.up('Control'); await page.keyboard.press('Backspace');
   await input.type(query); await page.keyboard.press('Enter');
@@ -62,6 +65,7 @@ try {
   await page.waitForFunction(() => document.querySelectorAll('dialog[open]').length === 0);
   await clickText('Kho từ vựng cá nhân');
   await waitText('Sổ kiểm thử local');
+  await page.waitForFunction(() => [...document.querySelectorAll('button')].some(b => b.textContent.trim() === 'Xem từ (2)'));
   await clickText('Xem từ (2)');
   await screenshot('notebook-desktop-1440');
   await clickText('Bắt đầu luyện tập nhóm từ này');
