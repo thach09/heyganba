@@ -1,41 +1,58 @@
 # QA Blocker Fix Report — 2026-10-08
 
-Base: `fix/qa-session-mutations` at `3501b5f`. Working branch: `fix/qa-blocker-retries-focus`.
+Base: fix/qa-session-mutations at 3501b5f. Working branch: fix/qa-blocker-retries-focus.
 
-**Sprint remains incomplete: one VERIFIED FIXED, two blocked on explicit Tech Lead persistence approval.** The three findings were independently replayed before editing; the previous fix report and existing passing tests were not used as proof. No mutation implementation or migration has been created while approval is pending.
+**All three findings are VERIFIED FIXED in the tested local Chrome/PostgreSQL configuration.** Each was reproduced on the unchanged base before editing. The user/Tech Lead explicitly approved the [persistence proposal](Blocker-Idempotency-Proposal-20261008.md) after the initial blocked handoff; only then was V38 created. No production verification, push, merge or deployment is claimed.
 
-| ID | Reproduced before fix | Root cause | Exact fix | Regression coverage | Original-scenario verification | Final status |
+| ID | Reproduced before fix | Root cause | Exact fix | Regression added | Original-scenario verification | Final status |
 | --- | --- | --- | --- | --- | --- | --- |
-| QA-008 | YES | Every Grammar POST records an activity independently; failed transport gives the client no logical-attempt identity to reuse. | Not implemented pending persistence approval. Proposed learner-scoped durable receipt and immutable retry payload/attempt ID. | Fresh external Chrome probe forwards a real POST, confirms HTTP 200, discards the response, then retries; DB assertions confirm the defect. Passing lost-response regression will accompany the approved implementation. | One displayed answer still creates two GRAMMAR items, 1→2, although UI score counts it once. | BLOCKED — approval required |
-| NEW-REGRESSION-001 | YES | SRS retry reapplies an already committed review and records another activity; aggregate review-row count conceals duplication. | Not implemented pending the same approval. Proposed replay of the original SRS outcome without repeating state/activity effects. | Fresh external commit→lost response→UI retry probe; confirms FLASHCARD item count rather than relying on one aggregate review row. Passing replay/state regression awaits approval. | One displayed review still creates two FLASHCARD items, 1→2; both real POSTs return HTTP 200. | BLOCKED — approval required |
-| QA-006 | YES | Native dialog navigation can move focus into BODY/browser chrome; native restoration did not meet the strict Help acceptance contract. | Add opt-in explicit Tab/Shift+Tab cycling and connected-opener restoration to the existing shared Modal; enable only for Exam Help. Keep native dialog, heading initial focus, Escape and existing layout. | New focused Help test failed before the fix and passes afterwards. Extend the real browser regression with six Tabs and six Shift+Tabs at each width, focus/document assertions, checkpoint equality, Escape, opener and resumed shortcuts. | At 1440 and 390, focus stays inside Help, background exam state is unchanged, Escape closes, opener regains focus, and study shortcuts work after returning focus to the exam. | VERIFIED FIXED — local Chrome |
+| QA-008 | YES | Independent Grammar POSTs had no logical-action identity; retry after a committed response was lost recorded another item. | Keep original answer/UUID through failure, expose explicit retry, require UUID at API; lock learner and replay a matching receipt or save the typed result atomically with activity/streak. Reject changed payload under the same ID. | Commit→discard result→retry; one item/EXP/evidence fact; new IDs; rollback; concurrent retry; learner/operation scope; changed-payload rejection. UI retains answer/ID and counts score once. | Real HTTP 200 committed, response dropped, UI retry: activity stays 1, full result/EXP/streak unchanged, score 1/1. New question and pre-commit retry work at 1440/390. | VERIFIED FIXED |
+| NEW-REGRESSION-001 | YES | SRS retry reapplied committed schedule/activity; one aggregate review row hid duplication. | Retain UUID/vocabulary/rating; replay original SRS result without reapplying SM-2, activity, streak or evidence. New reviews get new UUIDs. | Full schedule snapshot on retry; old outcome replay after a later review; distinct reviews; concurrent retries; rollback; changed rating/content rejection; EXP/streak thresholds; UI count/ID lifetime. | Real commit→lost response→retry: one activity and one UI review, unchanged repetitions/interval/ease/due/last-reviewed/update time. New card and pre-commit retry work at 1440/390. | VERIFIED FIXED |
+| QA-006 | YES | Native Tab navigation could leave the dialog for BODY/browser chrome; restoration did not meet strict Help focus acceptance. | Opt-in Tab/Shift+Tab cycling and connected-opener restoration in existing Modal, enabled only for Help; preserve heading initial focus, Escape and layout. | Focused test failed before fix, passes after; six Tabs/six Shift+Tabs per width, document focus, unchanged checkpoint, Escape/opener and resumed shortcuts. | Final 1440/390 replay: focus contained, exam unchanged, Escape closes, opener restored; keys resume after returning focus to the exam. | VERIFIED FIXED |
 
-Browser verification above is supervised scripted interaction with the actual API/PostgreSQL, plus screenshot inspection, not a claim of additional human testing. Screenshots and original-failure evidence were captured outside the repository.
+Verification used supervised scripted Chrome interaction with the real API/PostgreSQL, native pointer/keyboard events and request/DB assertions, plus screenshot inspection. This is not a claim of additional human testing. Mutation probes recorded no page errors or horizontal overflow.
 
-## Persistence approval gate
+## Approved mutation contract
 
-See [the concrete proposal](Blocker-Idempotency-Proposal-20261008.md) for schema, transaction/retry contract, alternatives and acceptance tests. One additive `learning_mutation_receipts` table is proposed, keyed by authenticated learner, operation and client attempt UUID, storing request identity and the original response in the mutation transaction. Existing aggregates and best-effort AFTER_COMMIT learning evidence cannot safely serve as replay receipts.
+- Both POST bodies require attemptId as a UUID identifying the logical action, retained with its immutable payload through retries. New displayed questions/reviews reset it.
+- V38 adds only learning_mutation_receipts: PK (user_id, operation, attempt_id), content ID, original answer/rating, typed response JSON and timestamp. Learner FK cascades on deletion; operations are restricted to Grammar/SRS. No existing migration/table was edited.
+- Both writable transactions use existing UserRepository.findLockedById. Same learner/operation/ID replays the result; different content/payload under that ID returns 400. Concurrent retries serialize.
+- Receipt, scheduling, activity and streak commit/rollback together. Pre-commit failure can retry. Only first execution publishes learning evidence; its existing best-effort AFTER_COMMIT contract remains unchanged.
+- Authentication, content visibility, vocabulary restrictions and existing rate limits still run; replay bypasses none. Learner identity comes from the authenticated principal.
+- Entire typed result replays, including original SRS due date; existing ApiResponse.timestamp describes each new HTTP response.
+- Actual backend restart replayed four original receipts without changing results, activity or SRS state, including after later distinct reviews.
 
-The Sprint 2 request explicitly says: “Do not create a migration without Tech Lead approval.” Approval was requested and remains pending at this handoff. No schema, DTO, controller, Grammar/SRS service or mutation UI change was made. Retrying these two ambiguous completed mutations remains unsafe until the approved fix is implemented.
+## Tests executed
 
-Tech Lead review is required for the durable receipt schema/retention, the required `attemptId` API contract for older clients, and use of the existing learner row lock to serialize the two affected paths. These are proposed choices, not deployed behavior.
+| Check | Result |
+| --- | --- |
+| Focused backend | 37 pass, including 8 new LearningMutationRetryTest cases |
+| Frontend npm test | 58 Vitest + 8 legacy handwriting pass |
+| Frontend lint/build | Pass; ten existing hook/effect warnings, none added |
+| Backend H2 mvn -B clean verify | 206 tests, zero failures/errors/skips; BUILD SUCCESS |
+| Backend PostgreSQL 16 full mvn -B clean verify | 206 tests, zero failures/errors/skips; real PG driver/dialect, Flyway enabled, Hibernate validate, no H2 fallback |
+| Flyway/schema | Fresh heyganba_qa_blocker_tests_20261008: 37 successful migration/history entries, V38 applied. Separate browser DB heyganba_blocker_ui_20261008 also migrated/schema-validated |
+| Lost-response browser | Grammar/SRS at 1440×1000 and 390×844: commit→lost response→safe retry; new action; pre-commit failure/retry; typed result, activity, EXP/streak, SRS state, receipt/evidence counts and UI counts asserted |
+| Original related probes | SRS 3-second save blocks early advancement; two cards persist; third pre-commit failure retries once. Grammar 1.8-second actual response delay yields one check/item under repeated keys; next question and pre-commit retry pass |
+| Final Help browser | Both widths pass Tab/Shift+Tab containment, unchanged checkpoint, Escape, restored opener and resumed shortcuts |
+| Restart replay | Four receipts pass after backend process restart |
+| Visual/design | Desktop/mobile pending, retry/result and Help images opened/inspected; existing Impeccable detector exits 0 for touched files, no output |
 
-## Validation executed
+## Files changed
 
-- Frontend `npm test`: 56 Vitest + 8 legacy handwriting tests pass. Includes the existing delayed SRS save, two distinct reviews, pre-commit retry, repeated Grammar input and modal shortcut regressions.
-- `npm run lint` and `npm run build`: pass. Ten existing hook/effect lint warnings remain; this focus change adds none.
-- Backend `mvn -B clean verify`: 198 tests, zero failures/errors/skips. The first runner was interrupted because PowerShell `ErrorActionPreference=Stop` promoted Mockito stderr to a terminating error; rerun with normal stderr handling completed BUILD SUCCESS. Existing Mockito/JDK dynamic-agent warnings remain.
-- Full PostgreSQL test rerun was not required for this partial fix because backend mutation/persistence code is unchanged. The browser backend uses PostgreSQL 16, Flyway enabled and Hibernate `validate`, with all 36 existing migrations; no migration was added or edited.
-- Real related browser probes both pass: SRS 3-second saves cannot be canceled by early advancement, two distinct cards persist, and a pre-commit failure retries the third card once; Grammar rapid repeated input yields one delayed check/item, next question works, and a pre-commit failure creates no activity until retry succeeds.
-- Exam Help original keyboard and stricter focus probes pass at 1440×1000 and 390×844. Desktop/mobile screenshots were opened and inspected; no horizontal overflow. Enter on the restored Help button retains its native role of reopening Help; the resumed study-shortcut check first returns focus to the question.
-- Existing Impeccable design detector invoked for the touched Modal/Exam files: exit 0, no output. No visual redesign or new design tokens.
+Backend: Grammar controller; GrammarCheckRequest/FlashcardReviewRequest; GrammarService/FlashcardService; new receipt entity/repository/service; V38__learning_mutation_receipts.sql. New LearningMutationRetryTest; existing Grammar/Flashcard/content-visibility/learning-evidence request fixtures updated for UUID while retaining original assertions.
 
-## Files and unchanged systems
+Frontend: GrammarView/FlashcardView, Modal and ExamView Help caller. Coverage: qa-batch-b.test.tsx, qa-regression.mjs, new qa-blocker-regression.mjs. Documentation: this report and approved proposal.
 
-Changed: `frontend/src/components/Modal.tsx`, `frontend/src/features/exam/ExamView.tsx`, `frontend/tests/unit/qa-batch-b.test.tsx`, `frontend/tests/qa-regression.mjs`, this report and the linked persistence proposal.
+Schema changed: **YES — approved additive V38 only**. Dependencies: **NO changes**. Auth architecture, RBAC/2FA, ownership/content review, rate limits, CORS/CSP source configuration, Japanese curriculum, product metrics/formulas, feature flags and unrelated frontend modules remain unchanged. Local QA origin/port/databases were configured only for isolated testing. Other Modal callers retain prior native behavior.
 
-Schema changed: **NO**. Dependencies changed: **NO**. Auth architecture, RBAC/2FA, ownership/content review, rate limits, CORS/CSP source configuration, Japanese curriculum, metrics and future features remain unchanged. Only the isolated local QA server origin/port/database were configured for browser testing. Other shared-modal callers retain their previous native behavior because explicit cycling is opt-in.
+## Remaining warnings, limits and Tech Lead review
 
-Evidence: `C:\Users\LENOVO\AppData\Local\Temp\heyganba-blocker-fix-20261008`, especially `exploratory.json`, baseline `focus-probe.json`, `focus-after/results-C.json`, `related/verification.json`, frontend logs and `backend-h2-retry.log`. Independent report consulted: `heyganba-independent-qa-20261008/Independent-QA-Verification-Report.md`.
+- The approved required-UUID contract makes older clients without attemptId receive 400. API/client versions need coordination when eventually released; this sprint performs no release.
+- Receipts have no automatic expiry: deleting them would let old retries execute again. Retention/storage growth and per-learner serialization merit review. No broad ledger/worker/cache/transaction framework was introduced.
+- Ten existing lint warnings and existing Mockito/JDK dynamic-agent warnings remain. Existing error toasts retain manual dismissal after recovery; native-click probes confirm retry controls remain reachable, including mobile scrolling. No unrelated cleanup was added.
+- Browser coverage is Chrome viewport emulation, not physical mobile/cross-engine testing. No production data/behavior was tested. Scope is these three findings and their specified related regressions.
 
-Focused fix commit: `99637d8`. Task-owned QA servers are stopped after checks, logs are credential-redacted and the working tree is clean at handoff. No push, merge or deployment occurred. Work stops at this report while the two persistence-dependent findings await approval.
+Evidence: C:\Users\LENOVO\AppData\Local\Temp\heyganba-blocker-fix-20261008. Key files: baseline exploratory.json/focus-probe.json, final-mutations/results.json and screenshots, final-help/results-C.json, related-final/verification.json, restart-proof/restart-replay.json, frontend logs and final H2/PG logs. Logs are credential-redacted; restart fixtures contain no passwords/tokens.
+
+Changes are committed locally in focused Conventional Commits, the working tree is clean at handoff, and task-owned QA servers are stopped. No push, merge or deployment occurred. Work stops after these three findings, with no redesign or future feature work.

@@ -11,7 +11,7 @@ const db = process.env.QA_DB || 'heyganba_qa_20261008';
 const out = process.env.QA_OUTPUT_DIR;
 const batch = process.env.QA_BATCH || 'ALL';
 assert(out, 'QA_OUTPUT_DIR must be an external evidence directory');
-assert.match(db, /^heyganba_qa_[a-z0-9_]+$/);
+assert.match(db, /^heyganba_(?:qa|blocker)_[a-z0-9_]+$/);
 for (const url of [web, api]) assert(['127.0.0.1', 'localhost'].includes(new URL(url).hostname), 'Local QA only');
 mkdirSync(out, { recursive: true });
 const password = 'LocalRegression123!';

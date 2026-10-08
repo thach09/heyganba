@@ -1,6 +1,6 @@
-# Grammar/SRS retry receipt proposal — approval required
+# Grammar/SRS retry receipt proposal — approved
 
-Base: `fix/qa-session-mutations`, `3501b5f`. No migration or mutation implementation has been created.
+Base: `fix/qa-session-mutations`, `3501b5f`. The user/Tech Lead explicitly approved this proposal in the conversation on 2026-10-08 after the initial blocked handoff. It is now implemented by V38 and the local Grammar/SRS retry fix. The sections below preserve the approved design; final validation is in [the blocker fix report](QA-Blocker-Fix-Report-20261008.md).
 
 ## Reproduced problem
 
