@@ -1,0 +1,519 @@
+# DRAFT — chờ duyệt. Independently authored concept selection; not an imported vocabulary list.
+# category headers; headword|Vietnamese primary|English primary|Vietnamese aliases (;)|English aliases (;)
+# Canonical IDs/readings/senses are locked in coverage-benchmark.json after snapshot identity review.
+[animals]
+猫|mèo|cat|con mèo; mèo nhà|
+犬|chó|dog|con chó|
+ライオン|sư tử|lion|con sư tử|
+象|voi|elephant|con voi|
+虎|hổ|tiger|con hổ; cọp|
+熊|gấu|bear|con gấu|
+兎|thỏ|rabbit|con thỏ|
+馬|ngựa|horse|con ngựa|
+牛|bò|cow|con bò|cattle
+豚|lợn|pig|heo; con lợn|
+羊|cừu|sheep|con cừu|
+山羊|dê|goat|con dê|
+鶏|gà|chicken|con gà|
+家鴨|vịt|duck|con vịt|
+猿|khỉ|monkey|con khỉ|
+鹿|hươu|deer|con hươu|
+狐|cáo|fox|con cáo|
+狼|sói|wolf|chó sói|
+鼠|chuột|mouse|chuột nhắt|
+栗鼠|sóc|squirrel|con sóc|
+縞馬|ngựa vằn|zebra||
+河馬|hà mã|hippopotamus||hippo
+パンダ|gấu trúc|panda||
+鰐|cá sấu|crocodile||
+蛇|rắn|snake|con rắn|
+亀|rùa|turtle|con rùa|
+蛙|ếch|frog|con ếch|
+魚|cá|fish|con cá|
+鮫|cá mập|shark||
+鯨|cá voi|whale||
+イルカ|cá heo|dolphin||
+蛸|bạch tuộc|octopus||
+蟹|cua|crab|con cua|
+海老|tôm|shrimp|con tôm|prawn
+蝶|bướm|butterfly|con bướm|
+蜂|ong|bee|con ong|
+蚊|muỗi|mosquito|con muỗi|
+蟻|kiến|ant|con kiến|
+[food-drinks]
+ご飯|cơm|cooked rice||
+パン|bánh mì|bread||
+麺|mì|noodles||
+肉|thịt|meat||
+牛肉|thịt bò|beef||
+豚肉|thịt lợn|pork|thịt heo|
+鶏肉|thịt gà|chicken meat||
+卵|trứng|egg||
+豆腐|đậu phụ|tofu|đậu hũ|
+チーズ|phô mai|cheese|pho mát|
+バター|bơ sữa|butter|bơ động vật|
+牛乳|sữa bò|milk||
+ヨーグルト|sữa chua|yogurt||yoghurt
+水|nước|water||
+お茶|trà|tea|nước trà|
+紅茶|trà đen|black tea||
+コーヒー|cà phê|coffee||
+ジュース|nước ép|juice|nước trái cây|
+ビール|bia|beer||
+ワイン|rượu vang|wine||
+砂糖|đường ăn|sugar||
+塩|muối|salt||
+醤油|nước tương|soy sauce|xì dầu|
+酢|giấm|vinegar||
+油|dầu|oil||
+胡椒|hạt tiêu|pepper|tiêu|
+小麦粉|bột mì|wheat flour||
+米|gạo|uncooked rice||rice grain
+寿司|sushi|sushi||
+ラーメン|mì ramen|ramen||
+カレー|cà ri|curry||
+スープ|súp|soup||
+サラダ|salad|salad|rau trộn|
+ケーキ|bánh kem|cake|bánh ngọt|
+アイスクリーム|kem|ice cream||
+[fruit-vegetables]
+苺|dâu tây|strawberry||
+西瓜|dưa hấu|watermelon||
+林檎|táo|apple|quả táo|
+バナナ|chuối|banana||
+葡萄|nho|grape||
+桃|đào|peach|quả đào|
+梨|lê|pear|quả lê|
+オレンジ|cam|orange|quả cam|
+蜜柑|quýt|mandarin orange||tangerine
+レモン|chanh vàng|lemon||
+ライム|chanh xanh|lime||
+パイナップル|dứa|pineapple|thơm; khóm|
+マンゴー|xoài|mango||
+アボカド|quả bơ|avocado|trái bơ|
+柿|hồng|persimmon|quả hồng|
+メロン|dưa lưới|melon||
+キウイ|kiwi|kiwi fruit||kiwifruit
+さくらんぼ|anh đào|cherry|quả anh đào|
+トマト|cà chua|tomato||
+胡瓜|dưa chuột|cucumber|dưa leo|
+人参|cà rốt|carrot||
+玉葱|hành tây|onion||
+馬鈴薯|khoai tây|potato||
+キャベツ|bắp cải|cabbage||
+レタス|xà lách|lettuce||
+茄子|cà tím|eggplant||aubergine
+大根|củ cải trắng|daikon|củ cải Nhật|
+ほうれん草|rau bina|spinach|cải bó xôi|
+ブロッコリー|bông cải xanh|broccoli|súp lơ xanh|
+南瓜|bí ngô|pumpkin|bí đỏ|
+薩摩芋|khoai lang|sweet potato||
+大蒜|tỏi|garlic||
+生姜|gừng|ginger||
+[household]
+冷蔵庫|tủ lạnh|refrigerator||fridge
+洗濯機|máy giặt|washing machine||
+掃除機|máy hút bụi|vacuum cleaner||
+電子レンジ|lò vi sóng|microwave oven||microwave
+炊飯器|nồi cơm điện|rice cooker||
+エアコン|máy điều hòa|air conditioner|máy lạnh; điều hòa|
+扇風機|quạt điện|electric fan||
+テレビ|ti vi|television|tivi; tivi màn hình|TV
+椅子|ghế|chair||
+机|bàn làm việc|desk||
+テーブル|bàn|table|bàn ăn|
+ソファー|ghế sofa|sofa|ghế sô pha|couch
+ベッド|giường|bed||
+布団|chăn đệm kiểu Nhật|futon||
+枕|gối|pillow||
+毛布|chăn|blanket||
+棚|kệ|shelf||
+本棚|giá sách|bookshelf|kệ sách|
+鏡|gương|mirror||
+時計|đồng hồ|clock||
+カーテン|rèm cửa|curtain||
+ドア|cửa|door|cửa ra vào|
+窓|cửa sổ|window||
+鍵|chìa khóa|key|chìa khoá|
+電球|bóng đèn|light bulb||
+皿|đĩa|plate||
+茶碗|bát cơm|rice bowl|chén cơm|
+コップ|cốc|drinking glass|ly|
+箸|đũa|chopsticks||
+スプーン|thìa|spoon|muỗng|
+フォーク|nĩa|fork||
+包丁|dao bếp|kitchen knife||
+鍋|nồi|cooking pot||
+フライパン|chảo|frying pan||
+石鹸|xà phòng|soap|xà bông|
+歯ブラシ|bàn chải đánh răng|toothbrush||
+歯磨き粉|kem đánh răng|toothpaste||
+タオル|khăn|towel||
+ゴミ箱|thùng rác|trash can|sọt rác|rubbish bin
+洗剤|chất tẩy rửa|detergent||
+[transport]
+自動車|ô tô|car|xe hơi; xe ô tô|automobile
+オートバイ|xe máy|motorcycle|xe mô tô|motorbike
+自転車|xe đạp|bicycle||bike
+バス|xe buýt|bus||
+電車|tàu điện|train||electric train
+トラック|xe tải|truck||
+タクシー|taxi|taxi|xe taxi|
+飛行機|máy bay|airplane||aeroplane
+船|tàu thủy|ship|tàu thuỷ|
+地下鉄|tàu điện ngầm|subway||underground railway
+新幹線|tàu Shinkansen|bullet train|tàu cao tốc Nhật|
+救急車|xe cứu thương|ambulance||
+消防車|xe cứu hỏa|fire engine|xe chữa cháy|fire truck
+パトカー|xe cảnh sát|police car||
+ヘリコプター|trực thăng|helicopter||
+フェリー|phà|ferry||
+スクーター|xe tay ga|scooter||
+歩行者|người đi bộ|pedestrian||
+運転|lái xe|driving||
+信号機|đèn giao thông|traffic light||
+交差点|ngã tư|intersection|giao lộ|
+道路|đường bộ|road||
+高速道路|đường cao tốc|expressway||highway
+駐車場|bãi đỗ xe|parking lot|bãi đậu xe|car park
+切符|vé|ticket||
+時刻表|bảng giờ chạy|timetable|lịch tàu xe|
+乗客|hành khách|passenger||
+座席|chỗ ngồi|seat||
+渋滞|ùn tắc|traffic jam|kẹt xe|
+[jobs]
+教師|giáo viên|teacher|thầy giáo; cô giáo|
+医者|bác sĩ|doctor||
+看護師|điều dưỡng|nurse|y tá|
+プログラマー|lập trình viên|programmer||
+警察官|cảnh sát viên|police officer|nhân viên cảnh sát|
+消防士|lính cứu hỏa|firefighter|lính chữa cháy; nhân viên cứu hỏa|
+会計士|kế toán|accountant|kế toán viên|
+美容師|thợ cắt tóc|hairdresser|thợ làm tóc; thợ tạo mẫu tóc|hairstylist
+料理人|đầu bếp|cook|người nấu ăn|chef
+運転手|tài xế|driver|người lái xe|
+会社員|nhân viên công ty|office worker||company employee
+獣医|bác sĩ thú y|veterinarian||vet
+銀行員|nhân viên ngân hàng|bank employee||bank clerk
+弁護士|luật sư|lawyer||attorney
+技師|kỹ sư|engineer|kĩ sư|
+建築家|kiến trúc sư|architect||
+歯医者|nha sĩ|dentist||
+薬剤師|dược sĩ|pharmacist||
+農家|nông dân|farmer||
+漁師|ngư dân|fisherman|người đánh cá|
+大工|thợ mộc|carpenter||
+店員|nhân viên cửa hàng|shop assistant||salesclerk
+歌手|ca sĩ|singer||
+俳優|diễn viên|actor||
+画家|họa sĩ|painter|hoạ sĩ|
+作家|nhà văn|writer||author
+記者|phóng viên|journalist||reporter
+翻訳者|biên dịch viên|translator||
+通訳|phiên dịch|interpreter||
+[school]
+学校|trường học|school||
+大学|đại học|university||
+高校|trường cấp ba|high school|trường trung học phổ thông|
+中学校|trường cấp hai|junior high school|trường trung học cơ sở|
+小学校|trường tiểu học|elementary school||primary school
+幼稚園|trường mẫu giáo|kindergarten||
+学生|sinh viên|student||
+生徒|học sinh|pupil||
+授業|tiết học|class|giờ học|
+教室|phòng học|classroom||
+図書館|thư viện|library||
+教科書|sách giáo khoa|textbook||
+ノート|vở|notebook|tập ghi chép|
+鉛筆|bút chì|pencil||
+ペン|bút|pen||
+消しゴム|tẩy|eraser|cục tẩy; gôm|
+定規|thước kẻ|ruler||
+黒板|bảng đen|blackboard||
+チョーク|phấn viết bảng|chalk||
+試験|kỳ thi|examination|kì thi|exam
+宿題|bài tập về nhà|homework||
+成績|kết quả học tập|grades||
+卒業|tốt nghiệp|graduation||
+入学|nhập học|school admission||
+数学|toán học|mathematics||math
+歴史|lịch sử|history||
+科学|khoa học|science||
+体育|thể dục|physical education||
+辞書|từ điển|dictionary||
+[body-health]
+頭|đầu|head||
+顔|mặt|face||
+目|mắt|eye||
+耳|tai|ear||
+鼻|mũi|nose||
+口|miệng|mouth||
+歯|răng|tooth||teeth
+舌|lưỡi|tongue||
+髪|tóc|hair||
+首|cổ|neck||
+肩|vai|shoulder||
+腕|cánh tay|arm||
+手|bàn tay|hand||
+指|ngón tay|finger||
+足|chân|foot||leg
+膝|đầu gối|knee||
+背中|lưng|back||
+お腹|bụng|belly||abdomen
+心臓|tim|heart||
+血|máu|blood||
+骨|xương|bone||
+皮膚|da|skin||
+病気|bệnh|illness||sickness
+風邪|cảm lạnh|common cold||
+熱|sốt|fever||
+咳|ho|cough||
+頭痛|đau đầu|headache||
+薬|thuốc|medicine||
+怪我|vết thương|injury|bị thương|
+健康|sức khỏe|health|sức khoẻ|
+[clothing]
+服|quần áo|clothes||clothing
+シャツ|áo sơ mi|shirt||
+ティーシャツ|áo phông|T-shirt|áo thun|
+ズボン|quần|trousers||pants
+スカート|váy|skirt||
+ワンピース|váy liền|dress||
+コート|áo khoác dài|coat||
+ジャケット|áo khoác|jacket||
+セーター|áo len|sweater||
+靴|giày|shoes||
+靴下|tất|socks|vớ|
+帽子|mũ|hat|nón|
+手袋|găng tay|gloves||
+マフラー|khăn quàng cổ|scarf||
+眼鏡|kính mắt|glasses|kính đeo mắt|eyeglasses
+サングラス|kính râm|sunglasses||
+鞄|cặp|bag|túi xách|
+財布|ví|wallet|bóp|
+ベルト|thắt lưng|belt|dây nịt|
+ネクタイ|cà vạt|necktie||tie
+指輪|nhẫn|ring||
+ネックレス|dây chuyền|necklace||
+腕時計|đồng hồ đeo tay|wristwatch||
+傘|ô|umbrella|dù|
+長靴|ủng|boots||
+サンダル|dép xăng đan|sandals||
+スリッパ|dép đi trong nhà|slippers||
+パジャマ|đồ ngủ|pajamas||pyjamas
+制服|đồng phục|uniform||
+着物|kimono|kimono||
+[places]
+銀行|ngân hàng|bank|ngân hàng tài chính|
+病院|bệnh viện|hospital||
+郵便局|bưu điện|post office||
+駅|nhà ga|station|ga tàu|
+空港|sân bay|airport||
+港|cảng|port|bến cảng|
+公園|công viên|park||
+動物園|sở thú|zoo|vườn thú|
+水族館|thủy cung|aquarium|thuỷ cung|
+博物館|bảo tàng|museum||
+美術館|bảo tàng mỹ thuật|art museum||
+映画館|rạp chiếu phim|cinema||movie theater
+劇場|nhà hát|theater||theatre
+レストラン|nhà hàng|restaurant||
+喫茶店|quán cà phê|cafe||coffee shop
+スーパー|siêu thị|supermarket||
+コンビニ|cửa hàng tiện lợi|convenience store||
+市場|chợ|market||
+薬局|hiệu thuốc|pharmacy|nhà thuốc|
+本屋|hiệu sách|bookshop|nhà sách|bookstore
+花屋|cửa hàng hoa|florist|tiệm hoa|
+パン屋|tiệm bánh mì|bakery||
+ホテル|khách sạn|hotel||
+旅館|nhà trọ kiểu Nhật|Japanese inn||ryokan
+警察署|đồn cảnh sát|police station||
+消防署|trạm cứu hỏa|fire station|trạm cứu hoả|
+市役所|tòa thị chính|city hall|toà thị chính|
+トイレ|nhà vệ sinh|toilet||restroom
+美容院|tiệm làm tóc|hair salon||
+体育館|nhà thể thao|gymnasium||
+[family]
+家族|gia đình|family||
+父|bố|father|ba; cha|
+母|mẹ|mother|má|
+両親|cha mẹ|parents|bố mẹ|
+祖父|ông|grandfather||
+祖母|bà|grandmother||
+兄|anh trai|older brother||elder brother
+姉|chị gái|older sister||elder sister
+弟|em trai|younger brother||
+妹|em gái|younger sister||
+息子|con trai|son||
+娘|con gái|daughter||
+夫|chồng|husband||
+妻|vợ|wife||
+子供|trẻ em|child|con trẻ|
+赤ちゃん|em bé|baby||
+友達|bạn bè|friend|bạn|
+恋人|người yêu|sweetheart||
+隣人|hàng xóm|neighbor|người hàng xóm|neighbour
+親戚|họ hàng|relative|bà con|
+甥|cháu trai|nephew||
+姪|cháu gái|niece||
+孫|cháu|grandchild|cháu nội; cháu ngoại|
+男性|nam giới|man|đàn ông|
+女性|nữ giới|woman|phụ nữ|
+大人|người lớn|adult||
+同僚|đồng nghiệp|colleague||coworker
+客|khách|guest||
+住民|cư dân|resident||
+[weather-nature]
+天気|thời tiết|weather||
+雨|mưa|rain||
+雪|tuyết|snow||
+風|gió|wind||
+雲|mây|cloud||
+霧|sương mù|fog||
+雷|sấm|thunder||
+嵐|bão|storm||
+台風|bão nhiệt đới|typhoon||
+虹|cầu vồng|rainbow||
+太陽|mặt trời|sun||
+月|mặt trăng|moon||
+星|ngôi sao|star||
+空|bầu trời|sky||
+海|biển|sea||ocean
+川|sông|river||
+湖|hồ|lake||
+山|núi|mountain||
+森|rừng|forest||
+木|cây|tree||
+花|hoa|flower||
+草|cỏ|grass||
+葉|lá|leaf||
+石|đá|stone||
+砂|cát|sand||
+土|đất|soil||
+春|mùa xuân|spring|mùa xuân trong năm|
+夏|mùa hè|summer||
+秋|mùa thu|autumn||fall
+冬|mùa đông|winter||
+[emotions-personality]
+嬉しい|vui mừng|glad||
+悲しい|buồn|sad||
+怒る|tức giận|get angry|nổi giận|
+楽しい|vui vẻ|enjoyable||
+寂しい|cô đơn|lonely||
+怖い|đáng sợ|scary|sợ hãi|
+心配|lo lắng|worry||
+安心|yên tâm|relief||
+驚く|ngạc nhiên|be surprised||
+退屈|buồn chán|boredom||
+恥ずかしい|xấu hổ|embarrassed||
+緊張|căng thẳng|tension||
+優しい|dịu dàng|gentle|tốt bụng|
+親切|tử tế|kind||
+正直|trung thực|honest||
+真面目|nghiêm túc|serious||
+勇敢|dũng cảm|brave||
+臆病|nhút nhát|timid||
+頑固|bướng bỉnh|stubborn||
+我儘|ích kỷ|selfish||
+礼儀正しい|lễ phép|polite||
+失礼|bất lịch sự|rude||
+穏やか|điềm đạm|calm||
+[technology]
+コンピューター|máy tính|computer||
+ノートパソコン|máy tính xách tay|laptop||
+スマートフォン|điện thoại thông minh|smartphone||
+携帯電話|điện thoại di động|mobile phone||cellphone
+電話|điện thoại|telephone||
+キーボード|bàn phím|keyboard||
+マウス|chuột máy tính|computer mouse||
+画面|màn hình|screen||
+プリンター|máy in|printer||
+スキャナー|máy quét|scanner||
+カメラ|máy ảnh|camera||
+イヤホン|tai nghe|earphones||earbuds
+スピーカー|loa|speaker||
+充電器|bộ sạc|charger|cục sạc; sạc điện|
+電池|pin|battery||
+ケーブル|dây cáp|cable||
+ソフトウェア|phần mềm|software||
+アプリ|ứng dụng|app||application
+インターネット|mạng internet|internet||
+ウェブサイト|trang web|website||
+メール|thư điện tử|email||
+パスワード|mật khẩu|password||
+ファイル|tệp|file|tập tin|
+フォルダー|thư mục|folder||
+データ|dữ liệu|data||
+検索|tìm kiếm|search||
+ダウンロード|tải xuống|download||
+アップロード|tải lên|upload||
+印刷|in ấn|printing||
+電源|nguồn điện|power supply||
+[daily-verbs]
+食べる|ăn|eat||
+飲む|uống|drink||
+寝る|ngủ|sleep||
+起きる|thức dậy|wake up||
+買う|mua|buy||
+売る|bán|sell||
+歩く|đi bộ|walk||
+走る|chạy|run||
+開ける|mở|open||
+閉める|đóng|close||
+洗う|rửa|wash||
+料理|nấu ăn|cooking||
+働く|làm việc|work||
+勉強|học|study|học tập|
+読む|đọc|read||
+書く|viết|write||
+聞く|nghe|listen||
+話す|nói|speak||
+見る|xem|see|nhìn|
+行く|đi|go||
+来る|đến|come||
+帰る|về|return home||
+待つ|chờ|wait|đợi|
+会う|gặp|meet||
+使う|dùng|use|sử dụng|
+作る|làm ra|make|tạo ra|
+持つ|cầm|hold||
+置く|đặt|put||
+座る|ngồi|sit||
+立つ|đứng|stand||
+泳ぐ|bơi|swim||
+遊ぶ|chơi|play||
+歌う|hát|sing||
+踊る|nhảy múa|dance||
+笑う|cười|laugh||
+泣く|khóc|cry||
+教える|dạy|teach||
+覚える|ghi nhớ|memorize||
+忘れる|quên|forget||
+手伝う|giúp đỡ|help||
+[adjectives]
+大きい|to|big|lớn|
+小さい|nhỏ|small|bé|
+暑い|trời nóng|hot weather|nóng bức|
+寒い|trời lạnh|cold weather||
+熱い|nóng|hot to touch||
+冷たい|lạnh|cold to touch||
+速い|nhanh|fast||
+遅い|chậm|slow||
+高い|đắt|expensive||
+安い|rẻ|cheap||
+綺麗|sạch đẹp|beautiful|đẹp; sạch sẽ|
+汚い|bẩn|dirty|dơ|
+新しい|mới|new||
+古い|cũ|old||
+長い|dài|long||
+短い|ngắn|short||
+重い|nặng|heavy||
+軽い|nhẹ|lightweight||light in weight
+強い|mạnh|strong||
+弱い|yếu|weak||
+良い|tốt|good||
+悪い|xấu|bad||
+難しい|khó|difficult||
+易しい|dễ|easy||
+美味しい|ngon|delicious||
