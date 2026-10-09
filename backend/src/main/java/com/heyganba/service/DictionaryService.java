@@ -68,8 +68,10 @@ public class DictionaryService {
                 DictionaryText.pattern(vietnameseQuery), DictionaryText.prefix(normalized), normalized, vietnameseSearch,
                 PageRequest.of(page, PAGE_SIZE));
         List<RankedWord> candidates = new ArrayList<>(coursePage);
-        catalog.forEach(d -> candidates.add(new RankedWord(dictionaryWord(d), relevance(d.getWord(), d.getReading(), d.getMeaning(),
-                d.getVietnameseMeaning(), null, normalized, vietnameseSearch, toneSensitive), d.getCommonRank())));
+        catalog.forEach(d -> candidates.add(new RankedWord(dictionaryWord(d), Math.min(
+                relevance(d.getWord(), d.getReading(), d.getMeaning(), d.getVietnameseMeaning(), null,
+                        normalized, vietnameseSearch, toneSensitive),
+                metadataRelevance(d, normalized, vietnameseSearch, toneSensitive)), d.getCommonRank())));
         Map<String, RankedWord> distinct = new LinkedHashMap<>();
         candidates.stream().sorted(WORD_ORDER).forEach(candidate -> distinct.putIfAbsent(
                 DictionaryText.normalize(candidate.word().word()) + "|" + DictionaryText.normalize(candidate.word().reading()), candidate));
@@ -120,6 +122,26 @@ public class DictionaryService {
         if (value.isEmpty()) return false;
         return Pattern.compile("(?<![\\p{L}\\p{N}])" + Pattern.quote(query) + "(?![\\p{L}\\p{N}])")
                 .matcher(value).find();
+    }
+
+    // Search metadata participates in the same relevance scale as displayed glosses.
+    // Previously repository alias hits were re-sorted as unrelated (9), below partial glosses (8).
+    private static int metadataRelevance(DictionaryEntry entry, String query, String vietnameseQuery, boolean toneSensitive) {
+        int rank = 9;
+        String vi = Objects.toString(entry.getVietnameseSearchText(), "");
+        for (String alias : vi.split(" \\| ")) {
+            if (alias.equals(vietnameseQuery)) return 3;
+            if (containsToken(alias, vietnameseQuery)) rank = Math.min(rank, 4);
+            else if (alias.contains(vietnameseQuery)) rank = Math.min(rank, 8);
+        }
+        if (!toneSensitive) {
+            for (String alias : entry.getSearchText().split(" \\| ")) {
+                if (alias.equals(query)) rank = Math.min(rank, 4);
+                else if (containsToken(alias, query)) rank = Math.min(rank, 5);
+                else if (alias.contains(query)) rank = Math.min(rank, 8);
+            }
+        }
+        return rank;
     }
 
     @Transactional
