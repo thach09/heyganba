@@ -1,0 +1,421 @@
+[
+  {
+    "query": "mèo",
+    "top3": [
+      {
+        "id": -1467640,
+        "word": "猫",
+        "reading": "ねこ",
+        "vi": "mèo",
+        "en": "cat (esp. the domestic cat, Felis catus), feline / shamisen / geisha / wheelbarrow / clay bed-warmer / bottom (submissive partner of a homosexual relationship)"
+      }
+    ],
+    "duplicates": 0
+  },
+  {
+    "query": "sư tử",
+    "top3": [
+      {
+        "id": -1137760,
+        "word": "ライオン",
+        "reading": "ライオン",
+        "vi": "sư tử",
+        "en": "lion (Panthera leo)"
+      }
+    ],
+    "duplicates": 0
+  },
+  {
+    "query": "bánh mì",
+    "top3": [
+      {
+        "id": -2850597,
+        "word": "パン",
+        "reading": "パン",
+        "vi": "bánh mì",
+        "en": "pan-"
+      },
+      {
+        "id": -1103480,
+        "word": "パン屋",
+        "reading": "パンや",
+        "vi": "tiệm bánh mì",
+        "en": "bakery, baker"
+      }
+    ],
+    "duplicates": 0
+  },
+  {
+    "query": "dâu tây",
+    "top3": [
+      {
+        "id": -1571460,
+        "word": "苺",
+        "reading": "いちご",
+        "vi": "dâu tây",
+        "en": "strawberry (esp. the garden strawberry, Fragaria x ananassa) / 15,000 yen"
+      }
+    ],
+    "duplicates": 0
+  },
+  {
+    "query": "tủ lạnh",
+    "top3": [
+      {
+        "id": -1557110,
+        "word": "冷蔵庫",
+        "reading": "れいぞうこ",
+        "vi": "tủ lạnh",
+        "en": "refrigerator, fridge"
+      }
+    ],
+    "duplicates": 0
+  },
+  {
+    "query": "máy giặt",
+    "top3": [
+      {
+        "id": -1390990,
+        "word": "洗濯機",
+        "reading": "せんたくき",
+        "vi": "máy giặt",
+        "en": "washing machine, (clothes) washer"
+      }
+    ],
+    "duplicates": 0
+  },
+  {
+    "query": "xe máy",
+    "top3": [
+      {
+        "id": -1032030,
+        "word": "オートバイ",
+        "reading": "オートバイ",
+        "vi": "xe máy",
+        "en": "motorcycle, motorbike"
+      }
+    ],
+    "duplicates": 0
+  },
+  {
+    "query": "xe buýt",
+    "top3": [
+      {
+        "id": -2845315,
+        "word": "バス",
+        "reading": "バス",
+        "vi": "xe buýt",
+        "en": "bass (fish; esp. black bass)"
+      }
+    ],
+    "duplicates": 0
+  },
+  {
+    "query": "xe tải",
+    "top3": [
+      {
+        "id": -1085760,
+        "word": "トラック",
+        "reading": "トラック",
+        "vi": "xe tải",
+        "en": "truck, lorry"
+      }
+    ],
+    "duplicates": 0
+  },
+  {
+    "query": "lính cứu hỏa",
+    "top3": [
+      {
+        "id": -1350350,
+        "word": "消防士",
+        "reading": "しょうぼうし",
+        "vi": "lính cứu hỏa",
+        "en": "firefighter, fireman"
+      }
+    ],
+    "duplicates": 0
+  },
+  {
+    "query": "bác sĩ thú y",
+    "top3": [
+      {
+        "id": -1335610,
+        "word": "獣医",
+        "reading": "じゅうい",
+        "vi": "bác sĩ thú y",
+        "en": "veterinarian, veterinary surgeon, vet"
+      }
+    ],
+    "duplicates": 0
+  },
+  {
+    "query": "máy tính",
+    "top3": [
+      {
+        "id": -1053350,
+        "word": "コンピュータ",
+        "reading": "コンピュータ",
+        "vi": "máy tính",
+        "en": "computer"
+      },
+      {
+        "id": -1127140,
+        "word": "マウス",
+        "reading": "マウス",
+        "vi": "chuột máy tính",
+        "en": "mouse (esp. a laboratory mouse) / (computer) mouse"
+      },
+      {
+        "id": -2257490,
+        "word": "ノートパソコン",
+        "reading": "ノートパソコン",
+        "vi": "máy tính xách tay",
+        "en": "laptop (computer), notebook (computer)"
+      }
+    ],
+    "duplicates": 0
+  },
+  {
+    "query": "ngủ",
+    "top3": [
+      {
+        "id": -1360010,
+        "word": "寝る",
+        "reading": "ねる",
+        "vi": "ngủ; đi ngủ",
+        "en": "to sleep (lying down) / to go to bed, to lie in bed / to lie down / to sleep (with someone, i.e. have intercourse) / to lie flat (e.g. of hair) / to lie idle (of funds, stock, etc.) / to ferment (of soy sauce, miso, etc.)"
+      },
+      {
+        "id": -1101430,
+        "word": "パジャマ",
+        "reading": "パジャマ",
+        "vi": "đồ ngủ",
+        "en": "pajamas, pyjamas"
+      }
+    ],
+    "duplicates": 0
+  },
+  {
+    "query": "rửa",
+    "top3": [
+      {
+        "id": -1390930,
+        "word": "洗う",
+        "reading": "あらう",
+        "vi": "rửa; giặt",
+        "en": "to wash, to cleanse, to rinse / to inquire into, to investigate / to purify (one's heart) / to lave (e.g. shore), to wash over (e.g. deck), to sweep"
+      },
+      {
+        "id": -1390950,
+        "word": "洗剤",
+        "reading": "せんざい",
+        "vi": "chất tẩy rửa",
+        "en": "detergent, cleanser, cleaning agent, washing material"
+      }
+    ],
+    "duplicates": 0
+  },
+  {
+    "query": "to",
+    "top3": [
+      {
+        "id": -1323080,
+        "word": "車",
+        "reading": "くるま",
+        "vi": "xe hơi; ô tô",
+        "en": "car, automobile, vehicle / wheel, castor, caster"
+      },
+      {
+        "id": -1392580,
+        "word": "前",
+        "reading": "まえ",
+        "vi": "phía trước; trước",
+        "en": "in front (of), before (e.g. a building) / before, earlier, previously, prior, ago, (minutes) to (the hour) / (the) front, frontal part, fore, head (e.g. of a line) / forward, ahead / (in the) presence (of), in front (of someone) / previous (e.g. page), prior (e.g. engagement), first (e.g. half), former (e.g. example) / portion, helping / front (of one's body or clothing), breast (of a coat, kimono, etc.) / privates, private parts / criminal record, previous conviction, (a) prior"
+      },
+      {
+        "id": -1327190,
+        "word": "手",
+        "reading": "て",
+        "vi": "tay; bàn tay",
+        "en": "hand, arm / forepaw, foreleg / handle / hand, worker, help / trouble, care, effort / means, way, trick, move, technique, workmanship / hand, handwriting / kind, type, sort / one's hands, one's possession / ability to cope / hand (of cards) / direction / move (in go, shogi, etc.)"
+      }
+    ],
+    "duplicates": 0
+  },
+  {
+    "query": "cat",
+    "top3": [
+      {
+        "id": -1291500,
+        "word": "砂",
+        "reading": "すな",
+        "vi": "cát",
+        "en": "sand, grit, fine gravel"
+      },
+      {
+        "id": -2698030,
+        "word": "猫",
+        "reading": "ねこま",
+        "vi": null,
+        "en": "cat"
+      },
+      {
+        "id": -1467640,
+        "word": "猫",
+        "reading": "ねこ",
+        "vi": "mèo",
+        "en": "cat (esp. the domestic cat, Felis catus), feline / shamisen / geisha / wheelbarrow / clay bed-warmer / bottom (submissive partner of a homosexual relationship)"
+      }
+    ],
+    "duplicates": 0
+  },
+  {
+    "query": "猫",
+    "top3": [
+      {
+        "id": -1467640,
+        "word": "猫",
+        "reading": "ねこ",
+        "vi": "mèo",
+        "en": "cat (esp. the domestic cat, Felis catus), feline / shamisen / geisha / wheelbarrow / clay bed-warmer / bottom (submissive partner of a homosexual relationship)"
+      },
+      {
+        "id": -2698030,
+        "word": "猫",
+        "reading": "ねこま",
+        "vi": null,
+        "en": "cat"
+      },
+      {
+        "id": -2064330,
+        "word": "猫又",
+        "reading": "ねこまた",
+        "vi": null,
+        "en": "nekomata, fork-tailed cat yōkai / giant beast that inhabits the mountains"
+      }
+    ],
+    "duplicates": 0
+  },
+  {
+    "query": "ねこ",
+    "top3": [
+      {
+        "id": -1467640,
+        "word": "猫",
+        "reading": "ねこ",
+        "vi": "mèo",
+        "en": "cat (esp. the domestic cat, Felis catus), feline / shamisen / geisha / wheelbarrow / clay bed-warmer / bottom (submissive partner of a homosexual relationship)"
+      },
+      {
+        "id": -2698030,
+        "word": "猫",
+        "reading": "ねこま",
+        "vi": null,
+        "en": "cat"
+      },
+      {
+        "id": -2064330,
+        "word": "猫又",
+        "reading": "ねこまた",
+        "vi": null,
+        "en": "nekomata, fork-tailed cat yōkai / giant beast that inhabits the mountains"
+      }
+    ],
+    "duplicates": 0
+  },
+  {
+    "query": "ネコ",
+    "top3": [
+      {
+        "id": -1467640,
+        "word": "猫",
+        "reading": "ねこ",
+        "vi": "mèo",
+        "en": "cat (esp. the domestic cat, Felis catus), feline / shamisen / geisha / wheelbarrow / clay bed-warmer / bottom (submissive partner of a homosexual relationship)"
+      },
+      {
+        "id": -2698030,
+        "word": "猫",
+        "reading": "ねこま",
+        "vi": null,
+        "en": "cat"
+      },
+      {
+        "id": -2064330,
+        "word": "猫又",
+        "reading": "ねこまた",
+        "vi": null,
+        "en": "nekomata, fork-tailed cat yōkai / giant beast that inhabits the mountains"
+      }
+    ],
+    "duplicates": 0
+  },
+  {
+    "query": "neko",
+    "top3": [
+      {
+        "id": -1467640,
+        "word": "猫",
+        "reading": "ねこ",
+        "vi": "mèo",
+        "en": "cat (esp. the domestic cat, Felis catus), feline / shamisen / geisha / wheelbarrow / clay bed-warmer / bottom (submissive partner of a homosexual relationship)"
+      },
+      {
+        "id": -5026173,
+        "word": "ギコ猫",
+        "reading": "ギコねこ",
+        "vi": null,
+        "en": "Giko Neko (ASCII-art character), Giko Cat"
+      },
+      {
+        "id": -2698030,
+        "word": "猫",
+        "reading": "ねこま",
+        "vi": null,
+        "en": "cat"
+      }
+    ],
+    "duplicates": 0
+  },
+  {
+    "query": "meo",
+    "top3": [
+      {
+        "id": -1467640,
+        "word": "猫",
+        "reading": "ねこ",
+        "vi": "mèo",
+        "en": "cat (esp. the domestic cat, Felis catus), feline / shamisen / geisha / wheelbarrow / clay bed-warmer / bottom (submissive partner of a homosexual relationship)"
+      },
+      {
+        "id": -1580640,
+        "word": "人",
+        "reading": "ひと",
+        "vi": "người",
+        "en": "person, someone, somebody / human beings, mankind, man, people, humans / human (Homo sapiens) / (other) people, others / character, personality, nature / capable person, competent person, suitable person, right person / adult, grown-up / I, me, one"
+      },
+      {
+        "id": -1392580,
+        "word": "前",
+        "reading": "まえ",
+        "vi": "phía trước; trước",
+        "en": "in front (of), before (e.g. a building) / before, earlier, previously, prior, ago, (minutes) to (the hour) / (the) front, frontal part, fore, head (e.g. of a line) / forward, ahead / (in the) presence (of), in front (of someone) / previous (e.g. page), prior (e.g. engagement), first (e.g. half), former (e.g. example) / portion, helping / front (of one's body or clothing), breast (of a coat, kimono, etc.) / privates, private parts / criminal record, previous conviction, (a) prior"
+      }
+    ],
+    "duplicates": 0
+  },
+  {
+    "query": "con mèo",
+    "top3": [
+      {
+        "id": -1467640,
+        "word": "猫",
+        "reading": "ねこ",
+        "vi": "mèo",
+        "en": "cat (esp. the domestic cat, Felis catus), feline / shamisen / geisha / wheelbarrow / clay bed-warmer / bottom (submissive partner of a homosexual relationship)"
+      }
+    ],
+    "duplicates": 0
+  }
+]

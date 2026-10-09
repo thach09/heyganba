@@ -58,6 +58,16 @@ class DictionaryNotebookApiTest extends ContentApiTestBase {
                 .andExpect(status().isOk()).andExpect(jsonPath("$.data.vocabularies[0].id", is(-ENTRY_ID)));
     }
 
+    @Test void exactAliasMustSurviveServiceResortWithoutCommonRankBoost() throws Exception {
+        var school = dictionary.findById(ENTRY_ID).orElseThrow();
+        school.setCommonRank(1000);
+        dictionary.save(school);
+        dictionary.save(DictionaryEntry.builder().id(ENTRY_ID + 1).word("仮").reading("かり")
+                .meaning("fixturecatalogish").searchText("fixturecatalogish").commonRank(1000).build());
+        mvc.perform(get("/dictionary/search").param("q", "fixturecatalog"))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.data.vocabularies[0].id", is(-ENTRY_ID)));
+    }
+
     @Test void dictionaryLookupAndVietnameseSearchExposeBothGlosses() throws Exception {
         mvc.perform(get("/dictionary/search").param("q", "trường học"))
                 .andExpect(status().isOk())
@@ -67,6 +77,18 @@ class DictionaryNotebookApiTest extends ContentApiTestBase {
         mvc.perform(get("/dictionary/lookup/" + (-ENTRY_ID)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.vocabulary.vietnameseMeaning", is("trường học")));
+    }
+
+    @Test void vietnameseAliasesPreserveToneMarksAndNeverPolluteDisplayMeaning() throws Exception {
+        var school = dictionary.findById(ENTRY_ID).orElseThrow();
+        school.setVietnameseSearchText("truong hoc | trường học | ngoi truong | ngôi trường");
+        dictionary.save(school);
+        for (String query : new String[]{"ngôi trường", "ngoi truong", "NGÔI TRƯỜNG", "ngo\u0302i tru\u031bo\u031b\u0300ng"}) {
+            mvc.perform(get("/dictionary/search").param("q", query)).andExpect(status().isOk())
+                    .andExpect(jsonPath("$.data.vocabularies[0].id", is(-ENTRY_ID)))
+                    .andExpect(jsonPath("$.data.vocabularies[0].vietnameseMeaning", is("trường học")))
+                    .andExpect(jsonPath("$.data.vocabularies[0].meaning", is("school")));
+        }
     }
 
     @Test void accentedVietnameseSearchKeepsToneMarksDistinct() throws Exception {
