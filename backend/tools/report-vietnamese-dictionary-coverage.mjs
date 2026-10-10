@@ -110,7 +110,7 @@ The prior reviewed mapping fixes remain: bánh mì → JMdict ID 1103090 (\`パ�
 - Identity, reading and English sense are checked against the pinned JMdict snapshot by \`DictionaryCurationIntegrityTest\`.
 - Baseline CI after normal main → develop merge: H2 PASS, PostgreSQL/Flyway PASS through V38, frontend lint/build PASS. Run: [38052704294](https://github.com/thach09/heyganba/actions/runs/38052704294).
 - Local candidate validation: backend H2 215 passed, one opt-in PostgreSQL test skipped; the separate PostgreSQL 16 rehearsal passed with 218,867 active catalog entries and intact curriculum fingerprints. Frontend legacy/unit tests passed (8 + 58), lint passed, and production build passed.
-- The post-change hosted CI run is recorded after the review branch is pushed; the baseline CI above covers the synchronized tree.
+- Hosted checks run on [draft PR #32](https://github.com/thach09/heyganba/pull/32), targeting develop. The merge remains blocked by the failed dictionary readiness gate.
 - Candidate search timing: median ${after.performance.medianMs} ms, slowest \`${after.performance.slowest.query}\` at ${after.performance.slowest.ms} ms (sequential local HTTP on PostgreSQL 16; not a production latency guarantee).
 
 ## Remaining gaps
