@@ -52,6 +52,9 @@ class DictionaryPilotPostgresRehearsalTest {
             try (var input = getClass().getResourceAsStream(DictionaryCurationIntegrityTest.PILOT)) {
                 var crc = new java.util.zip.CRC32();
                 crc.update("pilot-rehearsal-v2".getBytes(java.nio.charset.StandardCharsets.UTF_8));
+                // A canonical index refresh clears the overlay, so rehearse again for every transformer revision.
+                crc.update(new db.migration.R__refresh_jmdict_catalog().getChecksum().toString()
+                        .getBytes(java.nio.charset.StandardCharsets.UTF_8));
                 crc.update(input.readAllBytes()); return (int) crc.getValue();
             } catch (java.io.IOException e) { throw new IllegalStateException(e); }
         }

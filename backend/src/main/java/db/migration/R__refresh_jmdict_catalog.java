@@ -15,7 +15,7 @@ public class R__refresh_jmdict_catalog extends BaseJavaMigration {
             if (data == null) throw new IllegalStateException("Missing dictionary snapshot");
             java.util.zip.CRC32 crc = new java.util.zip.CRC32();
             // Include transformer revision: alias indexing changes must refresh even with identical data.
-            crc.update("curation-format-2".getBytes(StandardCharsets.UTF_8));
+            crc.update("gloss-candidates-4".getBytes(StandardCharsets.UTF_8));
             byte[] buffer = new byte[8192];
             for (int n; (n = data.read(buffer)) != -1;) crc.update(buffer, 0, n);
             crc.update(0);
@@ -42,7 +42,8 @@ public class R__refresh_jmdict_catalog extends BaseJavaMigration {
                 String[] fields = line.split("\t", -1);
                 if (fields.length != 5) throw new IOException("Invalid dictionary row " + count);
                 insert.setLong(1, Long.parseLong(fields[0]));
-                for (int i = 1; i < 5; i++) insert.setString(i + 1, fields[i]);
+                for (int i = 1; i < 4; i++) insert.setString(i + 1, fields[i]);
+                insert.setString(5, com.heyganba.service.DictionarySearchText.catalog(fields[4], fields[3]));
                 insert.addBatch();
                 if (++count % 1000 == 0) insert.executeBatch();
             }
@@ -56,7 +57,7 @@ public class R__refresh_jmdict_catalog extends BaseJavaMigration {
         var rows = com.heyganba.service.DictionaryCuration.read(getClass().getResourceAsStream("/dictionary/curated-ja-vi.tsv"));
         try (PreparedStatement update = context.getConnection().prepareStatement("""
                      UPDATE dictionary_entries SET word=?, reading=?, vietnamese_meaning=?, vietnamese_search_text=?,
-                         common_rank=?, search_text=search_text || ' ' || ?
+                         common_rank=?, search_text=search_text || ' | ' || ?
                      WHERE id=? AND word=? AND reading=? AND active=true
                      """)) {
             int count = 0;

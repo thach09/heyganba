@@ -42,6 +42,12 @@ class DictionaryCurationIntegrityTest {
         var snapshot = snapshot();
         var reviewed = DictionaryCuration.read(getClass().getResourceAsStream("/dictionary/curated-ja-vi.tsv"));
         assertThat(reviewed).hasSize(204);
+        assertThat(reviewed.stream().filter(r -> r.vietnamese().equals("bánh mì")).map(DictionaryCuration.Row::id))
+                .containsExactly(1103090L);
+        assertThat(snapshot.get(1103090L)[3]).startsWith("bread");
+        assertThat(reviewed.stream().filter(r -> r.vietnamese().equals("xe buýt")).map(DictionaryCuration.Row::id))
+                .containsExactly(1098390L);
+        assertThat(snapshot.get(1098390L)[3]).startsWith("bus");
         for (var row : reviewed) {
             var source = snapshot.get(row.id());
             assertThat(source).as("Reviewed ID %s", row.id()).isNotNull();

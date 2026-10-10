@@ -15,6 +15,10 @@ public final class DictionaryCuration {
             for (String term : concat(List.of(vietnamese), vietnameseAliases)) {
                 terms.add(DictionaryText.normalize(term));
                 terms.add(DictionaryText.normalizePreservingDiacritics(term));
+                for (String gloss : term.split(";")) {
+                    terms.add(DictionaryText.normalize(gloss));
+                    terms.add(DictionaryText.normalizePreservingDiacritics(gloss));
+                }
             }
             return String.join(" | ", terms);
         }

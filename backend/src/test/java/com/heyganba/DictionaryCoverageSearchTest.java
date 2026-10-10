@@ -33,7 +33,7 @@ class DictionaryCoverageSearchTest extends ContentApiTestBase {
             for (var c : chosen) {
                 var row=DictionaryCurationIntegrityTest.row(c); var source=snapshot.get(row.id());
                 dictionary.save(DictionaryEntry.builder().id(row.id()).word(source[1]).reading(source[2]).meaning(source[3])
-                        .searchText(source[4] + " | " + row.additionalSearchText()).vietnameseMeaning(row.vietnamese())
+                        .searchText(com.heyganba.service.DictionarySearchText.catalog(source[4], source[3]) + " | " + row.additionalSearchText()).vietnameseMeaning(row.vietnamese())
                         .vietnameseSearchText(row.vietnameseSearchText()).commonRank(row.commonRank()).build());
             }
             for (var c : chosen) {
