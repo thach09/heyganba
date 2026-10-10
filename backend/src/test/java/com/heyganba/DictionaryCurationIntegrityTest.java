@@ -67,7 +67,10 @@ class DictionaryCurationIntegrityTest {
             assertThat(c.path("reading").asText()).isEqualTo(source[2]);
             assertThat(c.path("englishSense").asText()).isEqualTo(source[3]);
             assertThat(c.path("reviewStatus").asText()).isEqualTo("PENDING_REVIEW");
-            assertThat(c.path("quality").asText()).isIn("A", "C");
+            assertThat(c.path("confidence").asText()).isIn("A", "B", "C");
+            assertThat(c.path("quality").asText()).isEqualTo(c.path("confidence").asText());
+            if (c.path("confidence").asText().equals("C"))
+                assertThat(c.path("reviewStatus").asText()).isNotEqualTo("APPROVED");
             assertThat(c.path("reviewNote").asText()).isNotBlank();
             for (String field : List.of("vi", "en", "word", "reading", "vietnameseMeaning")) {
                 String value = c.path(field).asText();
