@@ -1,0 +1,1282 @@
+[
+  {
+    "conceptId": "animals-14",
+    "category": "animals",
+    "jmdictId": 1191810,
+    "word": "アヒル",
+    "reading": "アヒル",
+    "language": "en",
+    "query": "duck",
+    "rank": null,
+    "reason": "WRONG_ENTRY_RANKING",
+    "courseEquivalentRank": null,
+    "top10": [
+      {
+        "id": -1209250,
+        "word": "鴨",
+        "reading": "かも"
+      },
+      {
+        "id": -2423760,
+        "word": "鴨肉",
+        "reading": "かもにく"
+      },
+      {
+        "id": -2003320,
+        "word": "ダック",
+        "reading": "ダック"
+      },
+      {
+        "id": -1074250,
+        "word": "ズック",
+        "reading": "ズック"
+      },
+      {
+        "id": -1570230,
+        "word": "竦める",
+        "reading": "すくめる"
+      },
+      {
+        "id": -2842101,
+        "word": "縮こめる",
+        "reading": "ちぢこめる"
+      },
+      {
+        "id": -1337570,
+        "word": "縮める",
+        "reading": "ちぢめる"
+      },
+      {
+        "id": -1586040,
+        "word": "合鴨",
+        "reading": "あいがも"
+      },
+      {
+        "id": -2827318,
+        "word": "晨鴨",
+        "reading": "しのりがも"
+      },
+      {
+        "id": -2800170,
+        "word": "氷鴨",
+        "reading": "こおりがも"
+      }
+    ]
+  },
+  {
+    "conceptId": "food-drinks-04",
+    "category": "food-drinks",
+    "jmdictId": 1463520,
+    "word": "肉",
+    "reading": "にく",
+    "language": "en",
+    "query": "meat",
+    "rank": 16,
+    "reason": "WRONG_ENTRY_RANKING",
+    "courseEquivalentRank": null,
+    "top10": [
+      {
+        "id": -2835196,
+        "word": "畜肉",
+        "reading": "ちくにく"
+      },
+      {
+        "id": -1380130,
+        "word": "精肉",
+        "reading": "せいにく"
+      },
+      {
+        "id": -1463710,
+        "word": "肉類",
+        "reading": "にくるい"
+      },
+      {
+        "id": -2179830,
+        "word": "膂宍",
+        "reading": "そしし"
+      },
+      {
+        "id": -1358580,
+        "word": "食肉",
+        "reading": "しょくにく"
+      },
+      {
+        "id": -1130400,
+        "word": "ミート",
+        "reading": "ミート"
+      },
+      {
+        "id": -1722350,
+        "word": "味噌漬け",
+        "reading": "みそづけ"
+      },
+      {
+        "id": -2849347,
+        "word": "肉",
+        "reading": "しし"
+      },
+      {
+        "id": -1951990,
+        "word": "旨煮",
+        "reading": "うまに"
+      },
+      {
+        "id": -2695530,
+        "word": "麹漬け",
+        "reading": "こうじづけ"
+      }
+    ]
+  },
+  {
+    "conceptId": "household-04",
+    "category": "household",
+    "jmdictId": 1443380,
+    "word": "電子レンジ",
+    "reading": "でんしレンジ",
+    "language": "enAlias",
+    "query": "microwave",
+    "rank": 12,
+    "reason": "WRONG_ENTRY_RANKING",
+    "courseEquivalentRank": null,
+    "top10": [
+      {
+        "id": -2822770,
+        "word": "チンする",
+        "reading": "チンする"
+      },
+      {
+        "id": -1126860,
+        "word": "マイクロ波",
+        "reading": "マイクロは"
+      },
+      {
+        "id": -1126610,
+        "word": "マイクロウェーブ",
+        "reading": "マイクロウェーブ"
+      },
+      {
+        "id": -1077380,
+        "word": "チン",
+        "reading": "チン"
+      },
+      {
+        "id": -1146110,
+        "word": "レンジ",
+        "reading": "レンジ"
+      },
+      {
+        "id": -2841428,
+        "word": "ＭＬＳ",
+        "reading": "エム・エル・エス"
+      },
+      {
+        "id": -2075010,
+        "word": "メーザー",
+        "reading": "メーザー"
+      },
+      {
+        "id": -2842196,
+        "word": "レンチン",
+        "reading": "レンチン"
+      },
+      {
+        "id": -2831088,
+        "word": "加熱ムラ",
+        "reading": "かねつムラ"
+      },
+      {
+        "id": -2831087,
+        "word": "温めムラ",
+        "reading": "あたためムラ"
+      }
+    ]
+  },
+  {
+    "conceptId": "jobs-09",
+    "category": "jobs",
+    "jmdictId": 1644930,
+    "word": "料理人",
+    "reading": "りょうりにん",
+    "language": "enAlias",
+    "query": "chef",
+    "rank": 11,
+    "reason": "WRONG_ENTRY_RANKING",
+    "courseEquivalentRank": null,
+    "top10": [
+      {
+        "id": -2571540,
+        "word": "厨人",
+        "reading": "ちゅうじん"
+      },
+      {
+        "id": -2571550,
+        "word": "厨宰",
+        "reading": "ちゅうさい"
+      },
+      {
+        "id": -1481390,
+        "word": "板前",
+        "reading": "いたまえ"
+      },
+      {
+        "id": -1060000,
+        "word": "シェフ",
+        "reading": "シェフ"
+      },
+      {
+        "id": -2804780,
+        "word": "司厨士",
+        "reading": "しちゅうし"
+      },
+      {
+        "id": -1717040,
+        "word": "調理人",
+        "reading": "ちょうりにん"
+      },
+      {
+        "id": -1050310,
+        "word": "コック",
+        "reading": "コック"
+      },
+      {
+        "id": -2651830,
+        "word": "包丁人",
+        "reading": "ほうちょうにん"
+      },
+      {
+        "id": -2651840,
+        "word": "包丁師",
+        "reading": "ほうちょうし"
+      },
+      {
+        "id": -2651850,
+        "word": "包丁者",
+        "reading": "ほうちょうじゃ"
+      }
+    ]
+  },
+  {
+    "conceptId": "jobs-26",
+    "category": "jobs",
+    "jmdictId": 1297510,
+    "word": "作家",
+    "reading": "さっか",
+    "language": "en",
+    "query": "writer",
+    "rank": 13,
+    "reason": "WRONG_ENTRY_RANKING",
+    "courseEquivalentRank": null,
+    "top10": [
+      {
+        "id": -1487830,
+        "word": "筆者",
+        "reading": "ひっしゃ"
+      },
+      {
+        "id": -1319720,
+        "word": "執筆者",
+        "reading": "しっぴつしゃ"
+      },
+      {
+        "id": -2833596,
+        "word": "文章家",
+        "reading": "ぶんしょうか"
+      },
+      {
+        "id": -1723440,
+        "word": "文筆家",
+        "reading": "ぶんぴつか"
+      },
+      {
+        "id": -2852044,
+        "word": "書き人",
+        "reading": "かきびと"
+      },
+      {
+        "id": -1701600,
+        "word": "書き手",
+        "reading": "かきて"
+      },
+      {
+        "id": -2013020,
+        "word": "物書き",
+        "reading": "ものかき"
+      },
+      {
+        "id": -1700960,
+        "word": "著作家",
+        "reading": "ちょさくか"
+      },
+      {
+        "id": -1700940,
+        "word": "著作者",
+        "reading": "ちょさくしゃ"
+      },
+      {
+        "id": -1427130,
+        "word": "著述家",
+        "reading": "ちょじゅつか"
+      }
+    ]
+  },
+  {
+    "conceptId": "school-09",
+    "category": "school",
+    "jmdictId": 1330290,
+    "word": "授業",
+    "reading": "じゅぎょう",
+    "language": "en",
+    "query": "class",
+    "rank": 17,
+    "reason": "WRONG_ENTRY_RANKING",
+    "courseEquivalentRank": null,
+    "top10": [
+      {
+        "id": -1582305,
+        "word": "等",
+        "reading": "とう"
+      },
+      {
+        "id": -1397450,
+        "word": "組",
+        "reading": "くみ"
+      },
+      {
+        "id": -2179140,
+        "word": "綱",
+        "reading": "こう"
+      },
+      {
+        "id": -1206680,
+        "word": "学級",
+        "reading": "がっきゅう"
+      },
+      {
+        "id": -1499570,
+        "word": "部類",
+        "reading": "ぶるい"
+      },
+      {
+        "id": -1203080,
+        "word": "階層",
+        "reading": "かいそう"
+      },
+      {
+        "id": -1203040,
+        "word": "階級",
+        "reading": "かいきゅう"
+      },
+      {
+        "id": -1044070,
+        "word": "クラス",
+        "reading": "クラス"
+      },
+      {
+        "id": -1834190,
+        "word": "講習会",
+        "reading": "こうしゅうかい"
+      },
+      {
+        "id": -2867846,
+        "word": "並び称する",
+        "reading": "ならびしょうする"
+      }
+    ]
+  },
+  {
+    "conceptId": "clothing-01",
+    "category": "clothing",
+    "jmdictId": 1500940,
+    "word": "服",
+    "reading": "ふく",
+    "language": "enAlias",
+    "query": "clothing",
+    "rank": 12,
+    "reason": "WRONG_ENTRY_RANKING",
+    "courseEquivalentRank": null,
+    "top10": [
+      {
+        "id": -2266110,
+        "word": "衣",
+        "reading": "きぬ"
+      },
+      {
+        "id": -2414600,
+        "word": "装",
+        "reading": "そう"
+      },
+      {
+        "id": -1701310,
+        "word": "着類",
+        "reading": "きるい"
+      },
+      {
+        "id": -1158830,
+        "word": "衣料",
+        "reading": "いりょう"
+      },
+      {
+        "id": -1158760,
+        "word": "衣装",
+        "reading": "いしょう"
+      },
+      {
+        "id": -1484560,
+        "word": "被服",
+        "reading": "ひふく"
+      },
+      {
+        "id": -1402410,
+        "word": "装用",
+        "reading": "そうよう"
+      },
+      {
+        "id": -1346400,
+        "word": "召し物",
+        "reading": "めしもの"
+      },
+      {
+        "id": -2144400,
+        "word": "衣料品",
+        "reading": "いりょうひん"
+      },
+      {
+        "id": -1002140,
+        "word": "お召し物",
+        "reading": "おめしもの"
+      }
+    ]
+  },
+  {
+    "conceptId": "places-04",
+    "category": "places",
+    "jmdictId": 1175140,
+    "word": "駅",
+    "reading": "えき",
+    "language": "en",
+    "query": "station",
+    "rank": 16,
+    "reason": "WRONG_ENTRY_RANKING",
+    "courseEquivalentRank": null,
+    "top10": [
+      {
+        "id": -2152020,
+        "word": "署",
+        "reading": "しょ"
+      },
+      {
+        "id": -2869182,
+        "word": "車站",
+        "reading": "しゃたん"
+      },
+      {
+        "id": -1656220,
+        "word": "詰め所",
+        "reading": "つめしょ"
+      },
+      {
+        "id": -1070300,
+        "word": "ステーション",
+        "reading": "ステーション"
+      },
+      {
+        "id": -1584250,
+        "word": "牧場",
+        "reading": "ぼくじょう"
+      },
+      {
+        "id": -2812610,
+        "word": "駅家",
+        "reading": "えきか"
+      },
+      {
+        "id": -1175220,
+        "word": "駅頭",
+        "reading": "えきとう"
+      },
+      {
+        "id": -1435080,
+        "word": "停留所",
+        "reading": "ていりゅうじょ"
+      },
+      {
+        "id": -1945390,
+        "word": "発着所",
+        "reading": "はっちゃくじょ"
+      },
+      {
+        "id": -1316380,
+        "word": "次",
+        "reading": "つぎ"
+      }
+    ]
+  },
+  {
+    "conceptId": "weather-nature-07",
+    "category": "weather-nature",
+    "jmdictId": 1585060,
+    "word": "雷",
+    "reading": "かみなり",
+    "language": "en",
+    "query": "thunder",
+    "rank": 13,
+    "reason": "WRONG_ENTRY_RANKING",
+    "courseEquivalentRank": null,
+    "top10": [
+      {
+        "id": -2868307,
+        "word": "雷",
+        "reading": "らい"
+      },
+      {
+        "id": -1440460,
+        "word": "天雷",
+        "reading": "てんらい"
+      },
+      {
+        "id": -2740730,
+        "word": "雷公",
+        "reading": "らいこう"
+      },
+      {
+        "id": -2740740,
+        "word": "雷様",
+        "reading": "かみなりさま"
+      },
+      {
+        "id": -2683660,
+        "word": "雷霆",
+        "reading": "らいてい"
+      },
+      {
+        "id": -1548470,
+        "word": "雷鳴",
+        "reading": "らいめい"
+      },
+      {
+        "id": -1574110,
+        "word": "霹靂",
+        "reading": "へきれき"
+      },
+      {
+        "id": -2736670,
+        "word": "鳴神",
+        "reading": "なるかみ"
+      },
+      {
+        "id": -1659970,
+        "word": "サンダー",
+        "reading": "サンダー"
+      },
+      {
+        "id": -2795440,
+        "word": "雷が鳴る",
+        "reading": "かみなりがなる"
+      }
+    ]
+  },
+  {
+    "conceptId": "weather-nature-29",
+    "category": "weather-nature",
+    "jmdictId": 1332650,
+    "word": "秋",
+    "reading": "あき",
+    "language": "enAlias",
+    "query": "fall",
+    "rank": null,
+    "reason": "WRONG_ENTRY_RANKING",
+    "courseEquivalentRank": null,
+    "top10": [
+      {
+        "id": -1434250,
+        "word": "低下",
+        "reading": "ていか"
+      },
+      {
+        "id": -1434770,
+        "word": "低落",
+        "reading": "ていらく"
+      },
+      {
+        "id": -2804550,
+        "word": "倒る",
+        "reading": "たおる"
+      },
+      {
+        "id": -1432240,
+        "word": "墜落",
+        "reading": "ついらく"
+      },
+      {
+        "id": -1303490,
+        "word": "散る",
+        "reading": "ちる"
+      },
+      {
+        "id": -1263200,
+        "word": "減収",
+        "reading": "げんしゅう"
+      },
+      {
+        "id": -2013510,
+        "word": "落つ",
+        "reading": "おつ"
+      },
+      {
+        "id": -1548650,
+        "word": "落下",
+        "reading": "らっか"
+      },
+      {
+        "id": -1619700,
+        "word": "転倒",
+        "reading": "てんとう"
+      },
+      {
+        "id": -1441370,
+        "word": "転落",
+        "reading": "てんらく"
+      }
+    ]
+  },
+  {
+    "conceptId": "emotions-personality-08",
+    "category": "emotions-personality",
+    "jmdictId": 1153890,
+    "word": "安心",
+    "reading": "あんしん",
+    "language": "en",
+    "query": "relief",
+    "rank": 16,
+    "reason": "WRONG_ENTRY_RANKING",
+    "courseEquivalentRank": null,
+    "top10": [
+      {
+        "id": -1154170,
+        "word": "安堵",
+        "reading": "あんど"
+      },
+      {
+        "id": -1229200,
+        "word": "救助",
+        "reading": "きゅうじょ"
+      },
+      {
+        "id": -2841892,
+        "word": "救恤",
+        "reading": "きゅうじゅつ"
+      },
+      {
+        "id": -1229070,
+        "word": "救援",
+        "reading": "きゅうえん"
+      },
+      {
+        "id": -1229150,
+        "word": "救済",
+        "reading": "きゅうさい"
+      },
+      {
+        "id": -1229120,
+        "word": "救護",
+        "reading": "きゅうご"
+      },
+      {
+        "id": -1214530,
+        "word": "緩和",
+        "reading": "かんわ"
+      },
+      {
+        "id": -2590110,
+        "word": "陽刻",
+        "reading": "ようこく"
+      },
+      {
+        "id": -1143270,
+        "word": "リリーフ",
+        "reading": "リリーフ"
+      },
+      {
+        "id": -2868157,
+        "word": "レリーフ",
+        "reading": "レリーフ"
+      }
+    ]
+  },
+  {
+    "conceptId": "emotions-personality-11",
+    "category": "emotions-personality",
+    "jmdictId": 1421630,
+    "word": "恥ずかしい",
+    "reading": "はずかしい",
+    "language": "en",
+    "query": "embarrassed",
+    "rank": 11,
+    "reason": "WRONG_ENTRY_RANKING",
+    "courseEquivalentRank": null,
+    "top10": [
+      {
+        "id": -1643620,
+        "word": "面映い",
+        "reading": "おもはゆい"
+      },
+      {
+        "id": -2872989,
+        "word": "顔ない",
+        "reading": "かおない"
+      },
+      {
+        "id": -2828368,
+        "word": "は文字い",
+        "reading": "はもじい"
+      },
+      {
+        "id": -1254160,
+        "word": "きまり悪い",
+        "reading": "きまりわるい"
+      },
+      {
+        "id": -2773860,
+        "word": "恥ずかしげ",
+        "reading": "はずかしげ"
+      },
+      {
+        "id": -2576620,
+        "word": "きまりが悪い",
+        "reading": "きまりがわるい"
+      },
+      {
+        "id": -1639480,
+        "word": "気恥ずかしい",
+        "reading": "きはずかしい"
+      },
+      {
+        "id": -2009200,
+        "word": "どぎまぎ",
+        "reading": "どぎまぎ"
+      },
+      {
+        "id": -2869539,
+        "word": "ドキマギ",
+        "reading": "ドキマギ"
+      },
+      {
+        "id": -2083670,
+        "word": "間が悪い",
+        "reading": "まがわるい"
+      }
+    ]
+  },
+  {
+    "conceptId": "emotions-personality-13",
+    "category": "emotions-personality",
+    "jmdictId": 1539040,
+    "word": "優しい",
+    "reading": "やさしい",
+    "language": "en",
+    "query": "gentle",
+    "rank": 16,
+    "reason": "WRONG_ENTRY_RANKING",
+    "courseEquivalentRank": null,
+    "top10": [
+      {
+        "id": -1539020,
+        "word": "優",
+        "reading": "やさ"
+      },
+      {
+        "id": -1335510,
+        "word": "柔和",
+        "reading": "にゅうわ"
+      },
+      {
+        "id": -1183380,
+        "word": "温厚",
+        "reading": "おんこう"
+      },
+      {
+        "id": -1183580,
+        "word": "温良",
+        "reading": "おんりょう"
+      },
+      {
+        "id": -1183620,
+        "word": "穏便",
+        "reading": "おんびん"
+      },
+      {
+        "id": -1539050,
+        "word": "優しげ",
+        "reading": "やさしげ"
+      },
+      {
+        "id": -1414190,
+        "word": "大人しい",
+        "reading": "おとなしい"
+      },
+      {
+        "id": -2836576,
+        "word": "手柔らか",
+        "reading": "てやわらか"
+      },
+      {
+        "id": -2075720,
+        "word": "お手柔らか",
+        "reading": "おてやわらか"
+      },
+      {
+        "id": -2702810,
+        "word": "ジェントル",
+        "reading": "ジェントル"
+      }
+    ]
+  },
+  {
+    "conceptId": "emotions-personality-22",
+    "category": "emotions-personality",
+    "jmdictId": 1320230,
+    "word": "失礼",
+    "reading": "しつれい",
+    "language": "en",
+    "query": "rude",
+    "rank": null,
+    "reason": "WRONG_ENTRY_RANKING",
+    "courseEquivalentRank": null,
+    "top10": [
+      {
+        "id": -2848112,
+        "word": "無礼",
+        "reading": "なめ"
+      },
+      {
+        "id": -2844913,
+        "word": "ルード",
+        "reading": "ルード"
+      },
+      {
+        "id": -1529670,
+        "word": "無遠慮",
+        "reading": "ぶえんりょ"
+      },
+      {
+        "id": -2789830,
+        "word": "礼儀知らず",
+        "reading": "れいぎしらず"
+      },
+      {
+        "id": -2441570,
+        "word": "いけぞんざい",
+        "reading": "いけぞんざい"
+      },
+      {
+        "id": -2816860,
+        "word": "オジタリアン",
+        "reading": "オジタリアン"
+      },
+      {
+        "id": -1919605,
+        "word": "オバタリアン",
+        "reading": "オバタリアン"
+      },
+      {
+        "id": -1495490,
+        "word": "不埒",
+        "reading": "ふらち"
+      },
+      {
+        "id": -1495530,
+        "word": "不躾",
+        "reading": "ぶしつけ"
+      },
+      {
+        "id": -1616260,
+        "word": "粗忽",
+        "reading": "そこつ"
+      }
+    ]
+  },
+  {
+    "conceptId": "emotions-personality-23",
+    "category": "emotions-personality",
+    "jmdictId": 1183590,
+    "word": "穏やか",
+    "reading": "おだやか",
+    "language": "en",
+    "query": "calm",
+    "rank": 15,
+    "reason": "WRONG_ENTRY_RANKING",
+    "courseEquivalentRank": null,
+    "top10": [
+      {
+        "id": -1459650,
+        "word": "凪",
+        "reading": "なぎ"
+      },
+      {
+        "id": -2849501,
+        "word": "優々",
+        "reading": "ゆうゆう"
+      },
+      {
+        "id": -2820370,
+        "word": "寧静",
+        "reading": "ねいせい"
+      },
+      {
+        "id": -1507540,
+        "word": "平然",
+        "reading": "へいぜん"
+      },
+      {
+        "id": -1507530,
+        "word": "平静",
+        "reading": "へいせい"
+      },
+      {
+        "id": -1709410,
+        "word": "従容",
+        "reading": "しょうよう"
+      },
+      {
+        "id": -1540700,
+        "word": "悠然",
+        "reading": "ゆうぜん"
+      },
+      {
+        "id": -2172520,
+        "word": "晏如",
+        "reading": "あんじょ"
+      },
+      {
+        "id": -2172510,
+        "word": "晏然",
+        "reading": "あんぜん"
+      },
+      {
+        "id": -1410890,
+        "word": "泰然",
+        "reading": "たいぜん"
+      }
+    ]
+  },
+  {
+    "conceptId": "technology-18",
+    "category": "technology",
+    "jmdictId": 1018190,
+    "word": "アプリ",
+    "reading": "アプリ",
+    "language": "enAlias",
+    "query": "application",
+    "rank": null,
+    "reason": "WRONG_ENTRY_RANKING",
+    "courseEquivalentRank": null,
+    "top10": [
+      {
+        "id": -1338500,
+        "word": "出願",
+        "reading": "しゅつがん"
+      },
+      {
+        "id": -1444320,
+        "word": "塗布",
+        "reading": "とふ"
+      },
+      {
+        "id": -1180030,
+        "word": "応募",
+        "reading": "おうぼ"
+      },
+      {
+        "id": -1180060,
+        "word": "応用",
+        "reading": "おうよう"
+      },
+      {
+        "id": -1363130,
+        "word": "申請",
+        "reading": "しんせい"
+      },
+      {
+        "id": -1437500,
+        "word": "適用",
+        "reading": "てきよう"
+      },
+      {
+        "id": -1218050,
+        "word": "願書",
+        "reading": "がんしょ"
+      },
+      {
+        "id": -1816910,
+        "word": "志願書",
+        "reading": "しがんしょ"
+      },
+      {
+        "id": -1605150,
+        "word": "申込書",
+        "reading": "もうしこみしょ"
+      },
+      {
+        "id": -1217930,
+        "word": "願い出",
+        "reading": "ねがいで"
+      }
+    ]
+  },
+  {
+    "conceptId": "daily-verbs-40",
+    "category": "daily-verbs",
+    "jmdictId": 1328190,
+    "word": "手伝う",
+    "reading": "てつだう",
+    "language": "en",
+    "query": "help",
+    "rank": 11,
+    "reason": "WRONG_ENTRY_RANKING",
+    "courseEquivalentRank": null,
+    "top10": [
+      {
+        "id": -1344360,
+        "word": "助",
+        "reading": "じょ"
+      },
+      {
+        "id": -1163450,
+        "word": "一助",
+        "reading": "いちじょ"
+      },
+      {
+        "id": -1613820,
+        "word": "介助",
+        "reading": "かいじょ"
+      },
+      {
+        "id": -2011250,
+        "word": "助く",
+        "reading": "たすく"
+      },
+      {
+        "id": -1691010,
+        "word": "扶翼",
+        "reading": "ふよく"
+      },
+      {
+        "id": -1229030,
+        "word": "救い",
+        "reading": "すくい"
+      },
+      {
+        "id": -2846515,
+        "word": "資益",
+        "reading": "しえき"
+      },
+      {
+        "id": -2144410,
+        "word": "お世話",
+        "reading": "おせわ"
+      },
+      {
+        "id": -1118960,
+        "word": "ヘルプ",
+        "reading": "ヘルプ"
+      },
+      {
+        "id": -1555130,
+        "word": "力添え",
+        "reading": "ちからぞえ"
+      }
+    ]
+  },
+  {
+    "conceptId": "adjectives-11",
+    "category": "adjectives",
+    "jmdictId": 1591900,
+    "word": "綺麗",
+    "reading": "きれい",
+    "language": "en",
+    "query": "beautiful",
+    "rank": 18,
+    "reason": "WRONG_ENTRY_RANKING",
+    "courseEquivalentRank": null,
+    "top10": [
+      {
+        "id": -1189670,
+        "word": "佳",
+        "reading": "か"
+      },
+      {
+        "id": -1903740,
+        "word": "斐然",
+        "reading": "ひぜん"
+      },
+      {
+        "id": -2261100,
+        "word": "美い",
+        "reading": "うっつい"
+      },
+      {
+        "id": -2804640,
+        "word": "美ら",
+        "reading": "ちゅら"
+      },
+      {
+        "id": -1615170,
+        "word": "美麗",
+        "reading": "びれい"
+      },
+      {
+        "id": -1061830,
+        "word": "シャン",
+        "reading": "シャン"
+      },
+      {
+        "id": -2677830,
+        "word": "玉敷き",
+        "reading": "たましき"
+      },
+      {
+        "id": -1486360,
+        "word": "美しい",
+        "reading": "うつくしい"
+      },
+      {
+        "id": -1557920,
+        "word": "麗しい",
+        "reading": "うるわしい"
+      },
+      {
+        "id": -2864677,
+        "word": "麗しの",
+        "reading": "うるわしの"
+      }
+    ]
+  },
+  {
+    "conceptId": "adjectives-21",
+    "category": "adjectives",
+    "jmdictId": 1605820,
+    "word": "良い",
+    "reading": "よい",
+    "language": "en",
+    "query": "good",
+    "rank": 11,
+    "reason": "WRONG_ENTRY_RANKING",
+    "courseEquivalentRank": null,
+    "top10": [
+      {
+        "id": -1394250,
+        "word": "善",
+        "reading": "ぜん"
+      },
+      {
+        "id": -2414420,
+        "word": "好",
+        "reading": "こう"
+      },
+      {
+        "id": -1157080,
+        "word": "為",
+        "reading": "ため"
+      },
+      {
+        "id": -1957070,
+        "word": "良",
+        "reading": "りょう"
+      },
+      {
+        "id": -2820690,
+        "word": "いい",
+        "reading": "いい"
+      },
+      {
+        "id": -1046070,
+        "word": "グー",
+        "reading": "グー"
+      },
+      {
+        "id": -1124460,
+        "word": "ボン",
+        "reading": "ボン"
+      },
+      {
+        "id": -1189900,
+        "word": "佳良",
+        "reading": "かりょう"
+      },
+      {
+        "id": -1394560,
+        "word": "善良",
+        "reading": "ぜんりょう"
+      },
+      {
+        "id": -1200110,
+        "word": "快調",
+        "reading": "かいちょう"
+      }
+    ]
+  },
+  {
+    "conceptId": "adjectives-24",
+    "category": "adjectives",
+    "jmdictId": 1157000,
+    "word": "易しい",
+    "reading": "やさしい",
+    "language": "en",
+    "query": "easy",
+    "rank": 12,
+    "reason": "WRONG_ENTRY_RANKING",
+    "courseEquivalentRank": null,
+    "top10": [
+      {
+        "id": -1600560,
+        "word": "呑気",
+        "reading": "のんき"
+      },
+      {
+        "id": -1153720,
+        "word": "安易",
+        "reading": "あんい"
+      },
+      {
+        "id": -1545350,
+        "word": "容易",
+        "reading": "ようい"
+      },
+      {
+        "id": -1507010,
+        "word": "平易",
+        "reading": "へいい"
+      },
+      {
+        "id": -1327530,
+        "word": "手軽",
+        "reading": "てがる"
+      },
+      {
+        "id": -2672320,
+        "word": "易々",
+        "reading": "いい"
+      },
+      {
+        "id": -1156990,
+        "word": "易い",
+        "reading": "やすい"
+      },
+      {
+        "id": -1615670,
+        "word": "軽易",
+        "reading": "けいい"
+      },
+      {
+        "id": -2256380,
+        "word": "お安い",
+        "reading": "おやすい"
+      },
+      {
+        "id": -1545360,
+        "word": "容易い",
+        "reading": "たやすい"
+      }
+    ]
+  }
+]

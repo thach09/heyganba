@@ -17,11 +17,18 @@ public interface DictionaryEntryRepository extends JpaRepository<DictionaryEntry
                 OR LOWER(d.vietnameseMeaning) LIKE :vietnameseRawPattern ESCAPE '\\')
         ORDER BY CASE WHEN d.word = :exact OR d.reading = :exact THEN 0
             WHEN d.word LIKE :prefix ESCAPE '\\' OR d.reading LIKE :prefix ESCAPE '\\' THEN 1
-            WHEN d.vietnameseSearchText = :vietnameseExact OR LOWER(d.vietnameseMeaning) = :vietnameseExact THEN 2
-            WHEN LOCATE(CONCAT(' ', :exact, ' '), CONCAT(' ', d.searchText, ' ')) > 0
-              OR LOCATE(CONCAT(' ', :vietnameseExact, ' '), CONCAT(' ', d.vietnameseSearchText, ' ')) > 0
-              OR LOCATE(CONCAT(' ', :vietnameseExact, ' '), CONCAT(' ', LOWER(COALESCE(d.vietnameseMeaning, '')), ' ')) > 0 THEN 3
-            ELSE 5 END,
+            WHEN d.word LIKE :pattern ESCAPE '\\' OR d.reading LIKE :pattern ESCAPE '\\' THEN 2
+            WHEN LOCATE(CONCAT('| ', :vietnameseExact, ' |'), CONCAT('| ', COALESCE(d.vietnameseSearchText, ''), ' |')) > 0
+              OR LOWER(d.vietnameseMeaning) = :vietnameseExact THEN 3
+            WHEN LOWER(d.meaning) = :exact
+              OR LOCATE(CONCAT('| ^ ', :exact, ' |'), CONCAT('| ', d.searchText, ' |')) > 0 THEN 4
+            WHEN LOCATE(CONCAT(' ', :vietnameseExact, ' '), CONCAT(' ', COALESCE(d.vietnameseSearchText, ''), ' ')) > 0
+              OR LOCATE(CONCAT(' ', :vietnameseExact, ' '), CONCAT(' ', LOWER(COALESCE(d.vietnameseMeaning, '')), ' ')) > 0 THEN 4
+            WHEN LOCATE(CONCAT('| = ', :exact, ' |'), CONCAT('| ', d.searchText, ' |')) > 0
+              OR LOCATE(CONCAT('| ', :exact, ' |'), CONCAT('| ', d.searchText, ' |')) > 0 THEN 5
+            WHEN LOCATE(CONCAT('| ~ ', :exact, ' |'), CONCAT('| ', d.searchText, ' |')) > 0 THEN 6
+            WHEN LOCATE(CONCAT(' ', :exact, ' '), CONCAT(' ', d.searchText, ' ')) > 0 THEN 7
+            ELSE 8 END,
             d.commonRank, LENGTH(d.word), d.id
         """)
     Page<DictionaryEntry> search(@Param("pattern") String pattern, @Param("vietnamesePattern") String vietnamesePattern,

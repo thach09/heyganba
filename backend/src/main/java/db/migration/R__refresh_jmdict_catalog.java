@@ -14,6 +14,8 @@ public class R__refresh_jmdict_catalog extends BaseJavaMigration {
         try (InputStream data = getClass().getResourceAsStream("/dictionary/jmdict.tsv.gz")) {
             if (data == null) throw new IllegalStateException("Missing dictionary snapshot");
             java.util.zip.CRC32 crc = new java.util.zip.CRC32();
+            // Include transformer revision: alias indexing changes must refresh even with identical data.
+            crc.update("gloss-candidates-4".getBytes(StandardCharsets.UTF_8));
             byte[] buffer = new byte[8192];
             for (int n; (n = data.read(buffer)) != -1;) crc.update(buffer, 0, n);
             crc.update(0);
@@ -40,7 +42,8 @@ public class R__refresh_jmdict_catalog extends BaseJavaMigration {
                 String[] fields = line.split("\t", -1);
                 if (fields.length != 5) throw new IOException("Invalid dictionary row " + count);
                 insert.setLong(1, Long.parseLong(fields[0]));
-                for (int i = 1; i < 5; i++) insert.setString(i + 1, fields[i]);
+                for (int i = 1; i < 4; i++) insert.setString(i + 1, fields[i]);
+                insert.setString(5, com.heyganba.service.DictionarySearchText.catalog(fields[4], fields[3]));
                 insert.addBatch();
                 if (++count % 1000 == 0) insert.executeBatch();
             }
@@ -51,33 +54,24 @@ public class R__refresh_jmdict_catalog extends BaseJavaMigration {
     }
 
     private void applyVietnameseCuration(Context context) throws Exception {
-        InputStream data = getClass().getResourceAsStream("/dictionary/curated-ja-vi.tsv");
-        if (data == null) throw new IOException("Missing reviewed Vietnamese meanings");
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(data, StandardCharsets.UTF_8));
-             PreparedStatement update = context.getConnection().prepareStatement("""
+        var rows = com.heyganba.service.DictionaryCuration.read(getClass().getResourceAsStream("/dictionary/curated-ja-vi.tsv"));
+        try (PreparedStatement update = context.getConnection().prepareStatement("""
                      UPDATE dictionary_entries SET word=?, reading=?, vietnamese_meaning=?, vietnamese_search_text=?,
-                         common_rank=?, search_text=search_text || ' ' || ?
+                         common_rank=?, search_text=search_text || ' | ' || ?
                      WHERE id=? AND word=? AND reading=? AND active=true
                      """)) {
             int count = 0;
-            for (String line; (line = reader.readLine()) != null;) {
-                if (line.isBlank() || line.startsWith("#")) continue;
-                String[] fields = line.split("\\t", -1);
-                if (fields.length != 7) throw new IOException("Invalid translation row " + count);
-                long entryId = Long.parseLong(fields[0]);
-                String sourceWord = fields[1], sourceReading = fields[2];
-                String word = fields[3], reading = fields[4], vietnamese = fields[5];
-                int rank = Integer.parseInt(fields[6]);
-                update.setString(1, word);
-                update.setString(2, reading);
-                update.setString(3, vietnamese);
-                update.setString(4, com.heyganba.service.DictionaryText.normalize(vietnamese));
-                update.setInt(5, rank);
-                update.setString(6, com.heyganba.service.DictionaryText.normalize(word + " " + reading));
-                update.setLong(7, entryId);
-                update.setString(8, sourceWord);
-                update.setString(9, sourceReading);
-                if (update.executeUpdate() != 1) throw new IOException("Reviewed word is missing or ambiguous in JMdict: " + sourceWord + " [" + sourceReading + "]");
+            for (var row : rows) {
+                update.setString(1, row.word());
+                update.setString(2, row.reading());
+                update.setString(3, row.vietnamese());
+                update.setString(4, row.vietnameseSearchText());
+                update.setInt(5, row.commonRank());
+                update.setString(6, row.additionalSearchText());
+                update.setLong(7, row.id());
+                update.setString(8, row.sourceWord());
+                update.setString(9, row.sourceReading());
+                if (update.executeUpdate() != 1) throw new IOException("Reviewed word is missing or ambiguous in JMdict: " + row.sourceWord() + " [" + row.sourceReading() + "]");
                 count++;
             }
             if (count < 100) throw new IOException("Incomplete reviewed vocabulary set: " + count);
