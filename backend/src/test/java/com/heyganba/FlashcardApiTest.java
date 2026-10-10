@@ -139,7 +139,7 @@ class FlashcardApiTest extends com.heyganba.support.ContentApiTestBase {
     }
 
     private String reviewBody(long vocabularyId, String rating) {
-        return "{\"vocabularyId\":" + vocabularyId + ",\"rating\":\"" + rating + "\"}";
+        return "{\"vocabularyId\":" + vocabularyId + ",\"rating\":\"" + rating + "\",\"attemptId\":\"" + java.util.UUID.randomUUID() + "\"}";
     }
 
     @Test

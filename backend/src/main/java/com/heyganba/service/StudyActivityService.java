@@ -93,7 +93,7 @@ public class StudyActivityService {
                 currentStreak,
                 streak != null ? streak.getLongestStreak() : 0,
                 streak != null ? streak.getLastActiveDate() : null,
-                studyActivityRepository.countByUserId(userId),
+                studyActivityRepository.countDistinctActivityDatesByUserId(userId),
                 streakService.zone().getId(),
                 todaySrsReviews,
                 streakPolicy.minSrsReviews(),

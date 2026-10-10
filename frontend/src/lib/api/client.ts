@@ -1,6 +1,6 @@
 import { ApiError } from './types';
 import type { ApiResponse, AuthResponse } from './types';
-import { COOKIE_AUTH, clearTokens, getAccessToken, getRefreshToken, getSessionEpoch, saveTokens } from './session';
+import { COOKIE_AUTH, clearTokens, getAccessToken, getRefreshToken, getSavedUser, getSessionEpoch, saveTokens, saveUser } from './session';
 
 export const API_BASE_URL = import.meta.env.PROD && import.meta.env.VITE_API_BASE_URL
   ? import.meta.env.VITE_API_BASE_URL.replace(/\/+$/, '') : '/api/v1';
@@ -8,7 +8,7 @@ const credentials = COOKIE_AUTH ? 'include' : 'same-origin';
 let refreshInFlight: Promise<boolean> | null = null;
 
 export const isRequestCancelled = (error: unknown): boolean =>
-  error instanceof Error && error.name === 'AbortError';
+  (error instanceof Error || error instanceof DOMException) && error.name === 'AbortError';
 
 async function refreshTokenOnce(): Promise<boolean> {
   const refreshToken = getRefreshToken();
@@ -25,6 +25,7 @@ async function refreshTokenOnce(): Promise<boolean> {
       if (json.success && json.data) {
         if (getSessionEpoch() !== epoch || getRefreshToken() !== refreshToken) return false;
         saveTokens(json.data.accessToken, json.data.refreshToken);
+        saveUser(json.data);
         return true;
       }
     }
@@ -56,6 +57,12 @@ async function awaitRefresh(signal?: AbortSignal | null): Promise<boolean> {
 
 async function request(endpoint: string, options: RequestInit = {}): Promise<Response> {
   options.signal?.throwIfAborted();
+  const owner = getSavedUser()?.userId;
+  const assertOwner = () => {
+    if (!endpoint.startsWith('/auth/') && getSavedUser()?.userId !== owner) {
+      throw new DOMException('Session identity changed', 'AbortError');
+    }
+  };
   const token = getAccessToken();
   const headers = new Headers(options.headers);
   if (!headers.has('Content-Type')) headers.set('Content-Type', 'application/json');
@@ -63,15 +70,20 @@ async function request(endpoint: string, options: RequestInit = {}): Promise<Res
   if (token) headers.set('Authorization', `Bearer ${token}`);
   const url = `${API_BASE_URL}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
   const response = await fetch(url, { ...options, headers, credentials });
+  assertOwner();
   if (response.status === 401 && !endpoint.startsWith('/auth/') && (COOKIE_AUTH || getRefreshToken())) {
     // A delayed 401 from the previous token should reuse a completed rotation.
     const alreadyRotated = getAccessToken() !== token && Boolean(getAccessToken());
     if (alreadyRotated || await awaitRefresh(options.signal)) {
       options.signal?.throwIfAborted();
+      assertOwner();
       headers.set('Authorization', `Bearer ${getAccessToken()}`);
-      return fetch(url, { ...options, headers, credentials });
+      const retried = await fetch(url, { ...options, headers, credentials });
+      assertOwner();
+      return retried;
     }
   }
+  assertOwner();
   return response;
 }
 

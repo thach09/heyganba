@@ -7,7 +7,7 @@ async function loadApi() {
 const json = (data: unknown, status = 200) => new Response(JSON.stringify(data), {
   status, headers: { 'Content-Type': 'application/json' },
 });
-const tokens = { accessToken: 'new-access', refreshToken: 'new-refresh' };
+const tokens = { accessToken: 'new-access', refreshToken: 'new-refresh', userId: 1, role: 'ROLE_USER', fullName: 'Learner A' };
 const success = (data: unknown) => json({ success: true, data });
 function deferred<T>() {
   let resolve!: (value: T) => void;
@@ -19,7 +19,7 @@ beforeEach(() => {
   vi.stubEnv('VITE_AUTH_COOKIE', 'false');
   localStorage.setItem('heyganba_access_token', 'old-access');
   localStorage.setItem('heyganba_refresh_token', 'old-refresh');
-  localStorage.setItem('heyganba_user', '{"userId":1}');
+  localStorage.setItem('heyganba_user', '{"userId":1,"role":"ROLE_USER","fullName":"Learner A"}');
 });
 
 test('normal success includes the access credential', async () => {
@@ -65,7 +65,7 @@ test('invalid refresh clears the saved session', async () => {
   window.addEventListener('heyganba:session-expired', expired, { once: true });
   vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce(json({}, 401)).mockResolvedValueOnce(json({}, 400)));
   const api = await loadApi();
-  await api.apiRequest('/example');
+  await expect(api.apiRequest('/example')).rejects.toMatchObject({ name: 'AbortError' });
   expect(api.getAccessToken()).toBeNull();
   expect(localStorage.getItem('heyganba_user')).toBeNull();
   expect(expired).toHaveBeenCalledOnce();
@@ -83,10 +83,11 @@ test('a pending refresh cannot restore a cleared session', async () => {
   vi.stubGlobal('fetch', fetcher);
   const api = await loadApi();
   const request = api.apiRequest('/example');
+  const rejection = expect(request).rejects.toMatchObject({ name: 'AbortError' });
   await vi.waitFor(() => expect(fetcher).toHaveBeenCalledTimes(2));
   api.clearTokens();
   gate.resolve(success(tokens));
-  expect((await request).success).not.toBe(true);
+  await rejection;
   expect(api.getAccessToken()).toBeNull();
   expect(api.getRefreshToken()).toBeNull();
 });
@@ -170,6 +171,38 @@ test('a delayed old-token 401 reuses the completed rotation', async () => {
   late.resolve(json({}, 401));
   expect((await delayed).success).toBe(true);
   expect(refreshes).toBe(1);
+});
+
+test('QA-007: refresh reconciles the profile but never replays A progress as B', async () => {
+  const changed = vi.fn();
+  window.addEventListener('heyganba:session-changed', changed, { once: true });
+  const fetcher = vi.fn().mockResolvedValueOnce(json({}, 401))
+    .mockResolvedValueOnce(success({ ...tokens, userId: 2, fullName: 'Learner B' }));
+  vi.stubGlobal('fetch', fetcher);
+  const api = await loadApi();
+  await expect(api.apiRequest('/flashcard/review', { method: 'POST', body: '{}' }))
+    .rejects.toMatchObject({ name: 'AbortError' });
+  expect(api.getSavedUser()?.userId).toBe(2);
+  expect(changed).toHaveBeenCalledOnce();
+  expect(fetcher).toHaveBeenCalledTimes(2);
+});
+
+test('QA-007: cross-tab invalidation blocks a pending refresh from restoring A', async () => {
+  vi.stubEnv('VITE_AUTH_COOKIE', 'true');
+  const gate = deferred<Response>();
+  const fetcher = vi.fn().mockResolvedValueOnce(json({}, 401)).mockImplementationOnce(() => gate.promise);
+  vi.stubGlobal('fetch', fetcher);
+  const api = await loadApi();
+  api.saveTokens('a-access', null);
+  const request = api.apiRequest('/example');
+  const rejection = expect(request).rejects.toMatchObject({ name: 'AbortError' });
+  await vi.waitFor(() => expect(fetcher).toHaveBeenCalledTimes(2));
+  localStorage.setItem('heyganba_user', JSON.stringify({ ...tokens, userId: 2 }));
+  api.invalidateTabSession();
+  gate.resolve(success(tokens));
+  await rejection;
+  expect(api.getAccessToken()).toBeNull();
+  expect(api.getSavedUser()?.userId).toBe(2);
 });
 
 test.each([[400, 'validation'], [403, 'authentication'], [503, 'server']] as const)(

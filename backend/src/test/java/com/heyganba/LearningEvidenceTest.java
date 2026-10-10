@@ -41,8 +41,8 @@ class LearningEvidenceTest extends ContentApiTestBase {
         word = persistApprovedVocabulary(Vocabulary.builder().word("本").reading("ほん").meaning("book").build());
     }
     @Test void committedChecksCaptureTrustedReferencesAndDeriveObservedCounts() {
-        grammar.checkAnswer(learner.getId(), exercise.getId(), "は");
-        grammar.checkAnswer(learner.getId(), exercise.getId(), "を");
+        grammar.checkAnswer(learner.getId(), exercise.getId(), "は", java.util.UUID.randomUUID());
+        grammar.checkAnswer(learner.getId(), exercise.getId(), "を", java.util.UUID.randomUUID());
         var progress = evidence.grammarSkill(learner.getId(), rule.getId());
         assertEquals(2, progress.attemptCount());
         assertEquals(1, progress.correctCount());
@@ -51,14 +51,14 @@ class LearningEvidenceTest extends ContentApiTestBase {
         assertEquals("grammar-exercise:" + exercise.getId(), jdbc.queryForList("SELECT content_ref FROM learning_attempts", String.class).getFirst());
     }
     @Test void srsPreservesRatingSemanticsWithoutInventingSkillTaxonomy() {
-        flashcard.review(learner.getId(), new FlashcardReviewRequest(word.getId(), SrsRating.FORGOT));
+        flashcard.review(learner.getId(), new FlashcardReviewRequest(word.getId(), SrsRating.FORGOT, java.util.UUID.randomUUID()));
         assertEquals("FORGOT", jdbc.queryForObject("SELECT result FROM learning_attempts", String.class));
         assertNull(jdbc.queryForObject("SELECT skill_ref FROM learning_attempts", String.class));
         assertEquals("vocabulary:" + word.getId(), jdbc.queryForObject("SELECT content_ref FROM learning_attempts", String.class));
     }
     @Test void rolledBackAnswersDoNotCreateCompletedEvidence() {
         new TransactionTemplate(manager).executeWithoutResult(status -> {
-            grammar.checkAnswer(learner.getId(), exercise.getId(), "は");
+            grammar.checkAnswer(learner.getId(), exercise.getId(), "は", java.util.UUID.randomUUID());
             status.setRollbackOnly();
         });
         assertEquals(0, jdbc.queryForObject("SELECT count(*) FROM learning_attempts", Integer.class));

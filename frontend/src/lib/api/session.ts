@@ -25,10 +25,18 @@ export function clearTokens() {
   localStorage.removeItem('heyganba_access_token');
   localStorage.removeItem('heyganba_refresh_token');
   localStorage.removeItem('heyganba_user');
+  window.dispatchEvent(new Event('heyganba:session-changed'));
+}
+/** Discard this tab's credential without deleting the session shared with other tabs. */
+export function invalidateTabSession() {
+  sessionEpoch++;
+  memoryAccessToken = null;
+  legacyRefreshToken = null;
 }
 export function saveUser(user: AuthResponse) {
   const { accessToken: _access, refreshToken: _refresh, ...profile } = user;
   localStorage.setItem('heyganba_user', JSON.stringify(profile));
+  window.dispatchEvent(new Event('heyganba:session-changed'));
 }
 export function getSavedUser(): AuthResponse | null {
   try {
@@ -36,7 +44,10 @@ export function getSavedUser(): AuthResponse | null {
     if (!saved) return null;
     const user = JSON.parse(saved) as AuthResponse;
     if (!user || typeof user.userId !== 'number' || typeof user.role !== 'string') return null;
-    saveUser(user);
+    if ('accessToken' in user || 'refreshToken' in user) {
+      const { accessToken: _access, refreshToken: _refresh, ...profile } = user;
+      localStorage.setItem('heyganba_user', JSON.stringify(profile));
+    }
     return { ...user, accessToken: '', refreshToken: null };
   } catch { return null; }
 }
