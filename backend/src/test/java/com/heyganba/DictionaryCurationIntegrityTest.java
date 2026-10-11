@@ -29,6 +29,16 @@ class DictionaryCurationIntegrityTest {
         assertThat(result).hasSize(218867);
         return result;
     }
+    static Set<Long> reviewedIds() throws IOException {
+        Set<Long> result = new HashSet<>();
+        try (var reader = new BufferedReader(new InputStreamReader(
+                DictionaryCurationIntegrityTest.class.getResourceAsStream("/dictionary/curated-ja-vi.tsv"), StandardCharsets.UTF_8))) {
+            for (String line; (line = reader.readLine()) != null;) {
+                if (!line.isBlank() && !line.startsWith("#")) result.add(Long.parseLong(line.split("\t", -1)[0]));
+            }
+        }
+        return result;
+    }
     static DictionaryCuration.Row row(JsonNode c) {
         return new DictionaryCuration.Row(c.path("jmdictId").asLong(), c.path("word").asText(), c.path("reading").asText(),
                 c.path("word").asText(), c.path("reading").asText(), c.path("vietnameseMeaning").asText(), c.path("commonRank").asInt(),
@@ -67,7 +77,10 @@ class DictionaryCurationIntegrityTest {
             assertThat(c.path("reading").asText()).isEqualTo(source[2]);
             assertThat(c.path("englishSense").asText()).isEqualTo(source[3]);
             assertThat(c.path("reviewStatus").asText()).isEqualTo("PENDING_REVIEW");
-            assertThat(c.path("quality").asText()).isIn("A", "C");
+            assertThat(c.path("confidence").asText()).isIn("A", "B", "C");
+            assertThat(c.path("quality").asText()).isEqualTo(c.path("confidence").asText());
+            if (c.path("confidence").asText().equals("C"))
+                assertThat(c.path("reviewStatus").asText()).isNotEqualTo("APPROVED");
             assertThat(c.path("reviewNote").asText()).isNotBlank();
             for (String field : List.of("vi", "en", "word", "reading", "vietnameseMeaning")) {
                 String value = c.path(field).asText();

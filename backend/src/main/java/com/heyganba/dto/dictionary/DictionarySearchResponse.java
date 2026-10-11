@@ -2,6 +2,7 @@ package com.heyganba.dto.dictionary;
 
 import com.heyganba.dto.kanji.KanjiResponse;
 import com.heyganba.model.entity.Vocabulary;
+import com.heyganba.model.enums.VietnameseMeaningStatus;
 import lombok.Builder;
 
 import java.util.List;
@@ -15,13 +16,16 @@ public record DictionarySearchResponse(
         int page,
         boolean hasMore
 ) {
-    public record Word(Long id, String word, String reading, String meaning, String vietnameseMeaning, String sinoVietnamese,
+    public record Word(Long id, String word, String reading, String meaning, String vietnameseMeaning,
+                       VietnameseMeaningStatus vietnameseStatus, String sinoVietnamese,
                        String exampleSentence, String exampleReading, String exampleMeaning,
                        String source, String meaningLanguage) {
         public static Word from(Vocabulary v) {
             String vietnamese = v.getDictionaryEntryId() != null && v.getDictionaryEntry() != null
                     ? v.getDictionaryEntry().getVietnameseMeaning() : null;
-            return new Word(v.getId(), v.getWord(), v.getReading(), v.getMeaning(), vietnamese, v.getSinoVietnamese(),
+            VietnameseMeaningStatus vietnameseStatus = v.getDictionaryEntryId() != null && v.getDictionaryEntry() != null
+                    ? v.getDictionaryEntry().getVietnameseStatus() : VietnameseMeaningStatus.NONE;
+            return new Word(v.getId(), v.getWord(), v.getReading(), v.getMeaning(), vietnamese, vietnameseStatus, v.getSinoVietnamese(),
                     v.getExampleSentence(), v.getExampleReading(), v.getExampleMeaning(),
                     v.getDictionaryEntryId() == null ? "HeyGanba" : "JMdict / EDRDG", v.getDictionaryEntryId() == null ? "vi" : "en");
         }

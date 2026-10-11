@@ -2,6 +2,7 @@ package com.heyganba.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import com.heyganba.model.enums.VietnameseMeaningStatus;
 
 /** Published JMdict data, kept separate from reviewed course content. */
 @Entity
@@ -15,6 +16,10 @@ public class DictionaryEntry {
     @Column(name = "search_text", nullable = false, columnDefinition = "TEXT") private String searchText;
     @Column(name = "vietnamese_meaning", columnDefinition = "TEXT") private String vietnameseMeaning;
     @Column(name = "vietnamese_search_text", columnDefinition = "TEXT") private String vietnameseSearchText;
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    @Column(name = "vietnamese_status", nullable = false, length = 10)
+    private VietnameseMeaningStatus vietnameseStatus = VietnameseMeaningStatus.NONE;
     @Builder.Default @Column(name = "common_rank", nullable = false) private Integer commonRank = 1000;
     @Builder.Default @Column(nullable = false) private Boolean active = true;
 }

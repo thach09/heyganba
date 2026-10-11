@@ -15,13 +15,17 @@ public class R__refresh_jmdict_catalog extends BaseJavaMigration {
             if (data == null) throw new IllegalStateException("Missing dictionary snapshot");
             java.util.zip.CRC32 crc = new java.util.zip.CRC32();
             // Include transformer revision: alias indexing changes must refresh even with identical data.
-            crc.update("gloss-candidates-4".getBytes(StandardCharsets.UTF_8));
+            crc.update("gloss-candidates-5-vietnamese-status".getBytes(StandardCharsets.UTF_8));
             byte[] buffer = new byte[8192];
             for (int n; (n = data.read(buffer)) != -1;) crc.update(buffer, 0, n);
             crc.update(0);
             try (InputStream curated = getClass().getResourceAsStream("/dictionary/curated-ja-vi.tsv")) {
                 if (curated == null) throw new IllegalStateException("Missing reviewed translation data");
                 for (int n; (n = curated.read(buffer)) != -1;) crc.update(buffer, 0, n);
+            }
+            try (InputStream assisted = getClass().getResourceAsStream("/dictionary/assisted-ja-vi.tsv")) {
+                if (assisted == null) crc.update("no-assisted-vietnamese-data".getBytes(StandardCharsets.UTF_8));
+                else for (int n; (n = assisted.read(buffer)) != -1;) crc.update(buffer, 0, n);
             }
             return (int) crc.getValue();
         } catch (IOException e) { throw new IllegalStateException("Cannot read dictionary snapshot", e); }
@@ -32,7 +36,7 @@ public class R__refresh_jmdict_catalog extends BaseJavaMigration {
         InputStream data = getClass().getResourceAsStream("/dictionary/jmdict.tsv.gz");
         if (data == null) throw new IOException("Missing versioned JMdict snapshot");
         try (var update = context.getConnection().createStatement()) {
-            update.executeUpdate("UPDATE dictionary_entries SET active = false, vietnamese_meaning = NULL, vietnamese_search_text = NULL, common_rank = 1000");
+            update.executeUpdate("UPDATE dictionary_entries SET active = false, vietnamese_meaning = NULL, vietnamese_search_text = NULL, vietnamese_status = 'NONE', common_rank = 1000");
         }
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new GZIPInputStream(data), StandardCharsets.UTF_8));
              PreparedStatement insert = context.getConnection().prepareStatement(
@@ -51,12 +55,13 @@ public class R__refresh_jmdict_catalog extends BaseJavaMigration {
             if (count < 200000) throw new IOException("Incomplete dictionary snapshot: " + count);
         }
         applyVietnameseCuration(context);
+        applyAssistedVietnameseCuration(context);
     }
 
     private void applyVietnameseCuration(Context context) throws Exception {
         var rows = com.heyganba.service.DictionaryCuration.read(getClass().getResourceAsStream("/dictionary/curated-ja-vi.tsv"));
         try (PreparedStatement update = context.getConnection().prepareStatement("""
-                     UPDATE dictionary_entries SET word=?, reading=?, vietnamese_meaning=?, vietnamese_search_text=?,
+                     UPDATE dictionary_entries SET word=?, reading=?, vietnamese_meaning=?, vietnamese_search_text=?, vietnamese_status='VERIFIED',
                          common_rank=?, search_text=search_text || ' | ' || ?
                      WHERE id=? AND word=? AND reading=? AND active=true
                      """)) {
@@ -75,6 +80,30 @@ public class R__refresh_jmdict_catalog extends BaseJavaMigration {
                 count++;
             }
             if (count < 100) throw new IOException("Incomplete reviewed vocabulary set: " + count);
+        }
+    }
+
+    private void applyAssistedVietnameseCuration(Context context) throws Exception {
+        InputStream data = getClass().getResourceAsStream("/dictionary/assisted-ja-vi.tsv");
+        if (data == null) return;
+        var rows = com.heyganba.service.AssistedDictionaryCuration.read(data);
+        try (PreparedStatement update = context.getConnection().prepareStatement("""
+                     UPDATE dictionary_entries SET vietnamese_meaning=?, vietnamese_search_text=?, vietnamese_status='ASSISTED',
+                         search_text=search_text || ' | ' || ?
+                     WHERE id=? AND word=? AND reading=? AND meaning=? AND active=true AND vietnamese_status='NONE'
+                     """)) {
+            for (var row : rows) {
+                var search = row.asSearchRow();
+                update.setString(1, row.vietnameseMeaning());
+                update.setString(2, search.vietnameseSearchText());
+                update.setString(3, search.additionalSearchText());
+                update.setLong(4, row.id());
+                update.setString(5, row.word());
+                update.setString(6, row.reading());
+                update.setString(7, row.englishSense());
+                if (update.executeUpdate() != 1)
+                    throw new IOException("Assisted word is missing, mismatched, or already curated: " + row.word() + " [" + row.reading() + "]");
+            }
         }
     }
 }

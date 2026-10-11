@@ -231,6 +231,8 @@ public class VocabNotebookService {
                             .reading(v.getReading())
                             .meaning(v.getMeaning())
                             .vietnameseMeaning(v.getDictionaryEntryId() == null || v.getDictionaryEntry() == null ? null : v.getDictionaryEntry().getVietnameseMeaning())
+                            .vietnameseStatus(v.getDictionaryEntryId() == null || v.getDictionaryEntry() == null
+                                    ? com.heyganba.model.enums.VietnameseMeaningStatus.NONE : v.getDictionaryEntry().getVietnameseStatus())
                             .sinoVietnamese(v.getSinoVietnamese())
                             .exampleSentence(v.getExampleSentence())
                             .exampleReading(v.getExampleReading())

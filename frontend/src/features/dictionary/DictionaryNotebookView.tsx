@@ -385,7 +385,7 @@ const DictionaryNotebookSessionView: React.FC = () => {
             </SubmitButton>
           </form>
           <p className="text-[12.5px] leading-[1.8] text-fg-60">
-            Từ phổ biến có cả nghĩa Việt và Anh đã đối chiếu; các mục khác dùng nghĩa tiếng Anh của JMdict.
+            Từ điển hiển thị nghĩa tiếng Việt đã đối chiếu hoặc nghĩa tham khảo; nghĩa tiếng Anh lấy từ JMdict.
             {' '}Nguồn đối chiếu: <a className="underline" href="https://www.edrdg.org/jmdict/j_jmdict.html" target="_blank" rel="noreferrer">JMdict / EDRDG</a>,{' '}
             <a className="underline" href="https://marugoto.jpf.go.jp/en/teacher/resource/starter_c/" target="_blank" rel="noreferrer">Marugoto A1</a>,{' '}
             <a className="underline" href="https://vietcafe-learning.com/dictionary/%E5%8C%BB%E8%80%85" target="_blank" rel="noreferrer">VIETCAFE</a>,{' '}
@@ -422,7 +422,7 @@ const DictionaryNotebookSessionView: React.FC = () => {
                           )}
                           <div className="mt-2 space-y-1.5 text-[13.5px]">
                             {v.meaningLanguage === 'en' ? <>
-                              <div><span className="mr-1 text-[10px] font-semibold uppercase tracking-wide text-fg-38">Việt</span><span className="font-medium text-fg">{v.vietnameseMeaning || 'Chưa có nghĩa Việt đã đối chiếu'}</span></div>
+                              <div><span className="mr-1 text-[10px] font-semibold uppercase tracking-wide text-fg-38">{v.vietnameseStatus === 'ASSISTED' ? 'Việt tham khảo' : 'Việt'}</span>{' '}<span className="font-medium text-fg">{v.vietnameseMeaning || 'Chưa có nghĩa Việt đã đối chiếu'}</span></div>
                               <div><span className="mr-1 text-[10px] font-semibold uppercase tracking-wide text-fg-38">Anh</span><span className="text-fg-60">{primaryEnglishMeaning}</span></div>
                               {additionalEnglishMeanings.length > 0 && <details className="ml-8 text-[11.5px] text-fg-60"><summary className="cursor-pointer">Các nghĩa khác ({additionalEnglishMeanings.length})</summary><div className="mt-1 leading-[1.7]">{additionalEnglishMeanings.join(' / ')}</div></details>}
                             </> : <div className="font-medium text-fg">{v.meaning}</div>}
@@ -679,7 +679,7 @@ const DictionaryNotebookSessionView: React.FC = () => {
                         </td>
                         <td className="border-b border-rule py-3 font-serif text-fg-60">{item.reading}</td>
                         <td className="border-b border-rule py-3 text-fg-38">{item.sinoVietnamese || '—'}</td>
-                        <td className="border-b border-rule py-3 text-fg">{item.meaning}{item.vietnameseMeaning ? ` · ${item.vietnameseMeaning}` : ''}</td>
+                        <td className="border-b border-rule py-3 text-fg">{item.meaning}{item.vietnameseMeaning ? ` · ${item.vietnameseStatus === 'ASSISTED' ? 'Việt tham khảo: ' : 'Việt: '}${item.vietnameseMeaning}` : ''}</td>
                         <td className="border-b border-rule py-3 text-fg-38">{item.customNote || '—'}</td>
                         <td className="border-b border-rule px-3 py-3 text-fg-60">{item.practiceCount ? `${item.correctCount}/${item.practiceCount} đúng` : 'Chưa luyện'}</td>
                         <td className="border-b border-rule py-3 text-right">
@@ -761,7 +761,7 @@ const DictionaryNotebookSessionView: React.FC = () => {
             <h3 className="font-serif text-[17px] font-semibold text-fg">Thêm từ vào Sổ từ vựng</h3>
             <div className="mt-3 border-l-2 border-l-rank bg-tint p-3 text-[13px]">
               <span className="font-serif font-bold text-fg">{wordToAdd.word}</span>{' '}
-              <span className="text-fg-60">({wordToAdd.reading})</span> — {wordToAdd.meaning}{wordToAdd.vietnameseMeaning ? ` · ${wordToAdd.vietnameseMeaning}` : ''}
+              <span className="text-fg-60">({wordToAdd.reading})</span> — {wordToAdd.meaning}{wordToAdd.vietnameseMeaning ? ` · ${wordToAdd.vietnameseStatus === 'ASSISTED' ? 'Việt tham khảo: ' : 'Việt: '}${wordToAdd.vietnameseMeaning}` : ''}
             </div>
 
             <form onSubmit={handleAddWordSubmit} className="mt-4 flex flex-col gap-4">

@@ -90,7 +90,7 @@ public class DictionaryService {
     }
 
     private Word dictionaryWord(DictionaryEntry d) {
-        return new Word(-d.getId(), d.getWord(), d.getReading(), d.getMeaning(), d.getVietnameseMeaning(), null,
+        return new Word(-d.getId(), d.getWord(), d.getReading(), d.getMeaning(), d.getVietnameseMeaning(), d.getVietnameseStatus(), null,
                 null, null, null, "JMdict / EDRDG", "en");
     }
 
