@@ -42,10 +42,11 @@ Candidate timing was a 53.78 ms median and 234.88 ms slowest query (`tofu`) for 
 - PostgreSQL 16.15/Flyway: opt-in rehearsal passed on a disposable database through V39; full refresh produced 218,867 active entries with 204 `VERIFIED`, 4,796 `ASSISTED`, and 213,867 `NONE`. Refresh fingerprint/idempotency and curriculum fingerprints passed.
 - Dictionary integrity: all six batch files and the runtime resource are A-only, unique, non-reviewed, nonempty, and identity/sense-matched to the pinned catalog; excluded IDs are absent.
 - Frontend: 8 legacy and 61 unit tests passed; lint and production build passed. Existing lint output contains warnings, with no lint errors.
+- Hosted CI run [#150](https://github.com/thach09/heyganba/actions/runs/38124235315) on the final candidate passed frontend, backend H2, PostgreSQL/Flyway, and the Vercel check. The Render production deploy job was skipped.
 - Local runtime smoke: health reported `UP`; dictionary search returned canonical `犬` with the `ASSISTED` status.
 
 ## Production release gate
 
-V39 has not been applied to production. This environment cannot read the production PostgreSQL data or its deployment variables, has no configured production database URL or Render credentials, has no `pg_dump` executable, and exposes no signed-in dashboard session. Therefore it cannot mechanically confirm that existing production Vietnamese values came only from `curated-ja-vi.tsv`, nor create and verify the required custom-format pre-V39 backup. No production migration, merge, or deployment has been performed. PR #32 remains a draft until hosted checks run on the final candidate and the production gates are supplied and passed.
+V39 has not been applied to production. This environment cannot read the production PostgreSQL data or its deployment variables, has no configured production database URL or Render credentials, has no `pg_dump` executable, and exposes no signed-in dashboard session. Therefore it cannot mechanically confirm that existing production Vietnamese values came only from `curated-ja-vi.tsv`, nor create and verify the required custom-format pre-V39 backup. No production migration, merge, or deployment has been performed. PR #32 remains a draft because those two production gates are unverified.
 
 If provenance is uncertain or the backup cannot be verified, stop before V39. The expected result is a release block, not an assumption that unknown production meanings are `VERIFIED`.

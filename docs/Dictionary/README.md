@@ -27,3 +27,5 @@ Run `backend/tools/prepare-assisted-dictionary-batch.mjs` for Batch A, `backend/
 ## Production status
 
 V39 has not been applied to production. Before doing so, mechanically verify the provenance of existing production Vietnamese values against the reviewed TSV and create/verify a custom-format PostgreSQL backup. The current workspace has no production DB URL/Render credentials, no `pg_dump`, and no connected production dashboard session; therefore release remains blocked until those two hard gates are completed.
+
+Hosted CI run [#150](https://github.com/thach09/heyganba/actions/runs/38124235315) passed frontend, backend H2, PostgreSQL/Flyway, and Vercel checks. The Render production deploy job was skipped; no production merge or deployment has occurred.

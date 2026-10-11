@@ -29,4 +29,4 @@ Dictionary search and notebook responses expose `vietnameseStatus`. The UI keeps
 - Frontend: 8 legacy and 61 unit tests, lint, and production build passed.
 - A-only integrity checks cover every batch and the runtime resource; assisted data remains distinct from verified data.
 
-The local candidate and benchmark are ready for hosted CI. Production remains blocked until production data provenance is mechanically verified and a custom-format PostgreSQL backup is created and verified before V39. No migration has been applied to production and no merge or deployment has occurred.
+Hosted CI for the final pushed candidate passed frontend, backend H2, PostgreSQL/Flyway, and Vercel checks. The Render production deploy job was skipped. Production remains blocked until production data provenance is mechanically verified and a custom-format PostgreSQL backup is created and verified before V39. No migration has been applied to production and no merge or deployment has occurred.
