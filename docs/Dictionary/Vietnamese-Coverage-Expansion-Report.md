@@ -1,22 +1,21 @@
 # Vietnamese Dictionary Coverage Expansion Report
 
-**Recommendation: VIETNAMESE COVERAGE NEEDS MORE WORK.** No entries were promoted or deployed. All new draft content remains `PENDING_REVIEW`.
+**Recommendation: ENRICHMENT BLOCKED — MANUAL REVIEW REQUIRED.** No entries were promoted or deployed. The current implementation is local to the feature branch.
 
 ## Dataset
 
 - JMdict snapshot: 218867 entries, pinned source SHA-256 `96d749f97e845f98ac05cca9234d805e42059a56edff34a3349862cefe8176a7`.
-- Total distinct entries with existing or staged Vietnamese: 582. Currently approved in the reviewed dictionary: 204. Release target: at least 5,000 approved high-value entries.
-- Staged meanings in the existing pilot file: 378 new drafts, plus 122 already-reviewed benchmark meanings. Benchmark concepts measured: 500.
-- Vietnamese aliases proposed: 139. English aliases proposed: 25.
+- Currently reviewed in the dictionary: 204. Staging batch A adds 343 new A-confidence `ASSISTED` drafts with 104 Vietnamese aliases and 9 English aliases. The potential combined coverage is 547 entries after qualified review; the release target is at least 5,000 approved high-value entries.
+- Batch A is `backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-a.tsv`. It is not loaded by the production Flyway path. No assisted runtime resource has been promoted.
 
 ## Confidence
 
-- A: 452.
-- B: 0.
-- C excluded from release: 48.
-- Every staged record remains `PENDING_REVIEW`; confidence is not human approval. The pending JSON is not loaded by the production Flyway path.
+- Batch A: 343 A-confidence rows; no B or C rows.
+- The 35 new C-confidence pilot candidates remain excluded. The other 13 C-confidence concepts were already in the independently reviewed source. Confidence is not human approval, and the 343 A drafts still need qualified Japanese review.
 
-## Search Quality
+## Historical pilot search quality (not current readiness evidence)
+
+The measurements below came from the earlier 500-concept pilot, which used 378 new drafts and 122 already-reviewed benchmark meanings. They predate the status migration and do not establish readiness for the current 343-row A-only batch. Re-run the full-catalog benchmark against the final reviewed candidate before release.
 
 Canonical entry rank is measured within the first page. The new density metric counts visible result cards with a non-empty Vietnamese meaning, independently from the intended canonical entry rank.
 
@@ -53,12 +52,12 @@ The prior reviewed mapping fixes remain: bánh mì → JMdict ID 1103090 (`パ�
 
 - Identity, reading and English sense are checked against the pinned JMdict snapshot by `DictionaryCurationIntegrityTest`.
 - Baseline CI after normal main → develop merge: H2 PASS, PostgreSQL/Flyway PASS through V38, frontend lint/build PASS. Run: [38052704294](https://github.com/thach09/heyganba/actions/runs/38052704294).
-- Local candidate validation: backend H2 215 passed, one opt-in PostgreSQL test skipped; the separate PostgreSQL 16 rehearsal passed with 218,867 active catalog entries and intact curriculum fingerprints. Frontend legacy/unit tests passed (8 + 58), lint passed, and production build passed.
-- Hosted checks run on [draft PR #32](https://github.com/thach09/heyganba/pull/32), targeting develop. The merge remains blocked by the failed dictionary readiness gate.
+- Local validation: backend H2 suite passes. PostgreSQL 16 Flyway rehearsal through V39 passes with 218,867 active entries, 204 `VERIFIED`, 343 `ASSISTED`, 218,320 `NONE`, idempotent catalog refresh, and unchanged learning-content fingerprints. Frontend unit coverage checks all three displayed provenance states; lint/build and desktop/mobile visual checks are part of the implementation validation.
+- V39 has not been applied to production. Before any production migration, verify that the existing nonblank runtime values came from the reviewed TSV source.
 - Candidate search timing: median 64.14 ms, slowest `to` at 156.58 ms (sequential local HTTP on PostgreSQL 16; not a production latency guarantee).
 
 ## Remaining gaps
 
-The reviewed dictionary currently covers 204 approved entries against the 5,000-entry target; 582 dictionary IDs would be covered if all staged drafts were later approved. Top-10 Vietnamese result density does not meet the 80% target for every primary query. The catalog entries outside the focused batch remain without Vietnamese because they include low-frequency, technical, archaic, slang and polysemous senses that need prioritization and semantic review; they were not translated to inflate the metric. Human review is still required for all staged A/B records, and C records must remain excluded from release.
+The reviewed dictionary currently covers 204 entries against the 5,000-entry target; the current batch adds 343 staged drafts. The required full-catalog density benchmark has not been run against the final reviewed candidate, and the 80% Top-10 gate is not established. Human review remains required for every staged row; all 35 new C-confidence pilot candidates remain excluded.
 
-The JMdict/EDRDG snapshot and license remain pinned as described in [the curation README](README.md); Vietnamese drafts are independently authored and not claimed externally verified row by row. No application schema migration, runtime translation API or UI redesign was introduced. Measurements used disposable local PostgreSQL databases; no staging or production database was written.
+The JMdict/EDRDG snapshot and license remain pinned as described in [the curation README](README.md); Vietnamese drafts are independently authored and not claimed externally verified row by row. V39 and the provenance-aware API/UI changes are implemented locally. No runtime translation API was added. Measurements used disposable local PostgreSQL databases; no staging or production database was written.

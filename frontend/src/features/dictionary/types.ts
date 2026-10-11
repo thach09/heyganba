@@ -1,9 +1,12 @@
+export type VietnameseMeaningStatus = 'VERIFIED' | 'ASSISTED' | 'NONE';
+
 export interface VocabularyItem {
   id: number;
   word: string;
   reading: string;
   meaning: string;
   vietnameseMeaning?: string;
+  vietnameseStatus?: VietnameseMeaningStatus;
   sinoVietnamese?: string;
   exampleSentence?: string;
   exampleReading?: string;
@@ -39,6 +42,7 @@ export interface VocabNotebookItem {
   reading: string;
   meaning: string;
   vietnameseMeaning?: string;
+  vietnameseStatus?: VietnameseMeaningStatus;
   sinoVietnamese?: string;
   exampleSentence?: string;
   exampleReading?: string;

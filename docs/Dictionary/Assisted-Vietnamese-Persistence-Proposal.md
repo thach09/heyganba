@@ -1,40 +1,34 @@
-# Assisted Vietnamese persistence proposal
+# Assisted Vietnamese persistence: approved implementation
 
-## Decision required
+Tech Lead approved the minimal status design on 2026-10-11. The implementation is local to the dictionary model and does not add review history, a general-purpose workflow, or external runtime translation.
 
-The current dictionary model cannot distinguish a human-reviewed Vietnamese meaning from an assisted draft after persistence. The enrichment batch must stop here until Tech Lead approval is given for a minimal status field. No migration or assisted batch has been created.
+## Persisted states
 
-## Evidence in the current implementation
+`dictionary_entries.vietnamese_meaning` remains the displayed text. V39 adds `vietnamese_status VARCHAR(10) NOT NULL` with the constrained values `VERIFIED`, `ASSISTED`, and `NONE`, plus a consistency constraint:
 
-- `dictionary_entries` has `vietnamese_meaning` and `vietnamese_search_text`, added in V33, but no Vietnamese review status.
-- `DictionaryEntry` stores the meaning and search text only. `DictionarySearchResponse.Word` exposes the meaning without its provenance.
-- The runtime refresh imports `curated-ja-vi.tsv`, which is the reviewed source, and does not load the pending pilot in `migration-staging`.
-- The dictionary card currently uses one “Việt” label for any non-empty meaning, so it cannot label assisted text differently.
-
-## Smallest persistence change
-
-Keep `vietnamese_meaning` as the text field already in use. Add one constrained status column to `dictionary_entries`:
-
-```sql
-vietnamese_status VARCHAR(10) NOT NULL DEFAULT 'NONE'
-  CHECK (vietnamese_status IN ('VERIFIED', 'ASSISTED', 'NONE'))
-```
-
-Add a consistency constraint so `NONE` has no non-blank Vietnamese meaning, while `VERIFIED` and `ASSISTED` require one. Existing populated runtime values can be backfilled as `VERIFIED` because the current repeatable migration clears the catalog and repopulates Vietnamese meanings exclusively from the reviewed TSV. Confirm that provenance against the production data before applying the migration.
-
-The states mean:
-
-- `VERIFIED`: reviewed and approved by a qualified human.
-- `ASSISTED`: generated offline after checking the Japanese entry, reading, JMdict sense, restrictions, and part of speech; never represented as human-reviewed.
+- `VERIFIED`: a Vietnamese meaning approved by a qualified human.
+- `ASSISTED`: an offline assisted draft, explicitly labeled as reference text.
 - `NONE`: no Vietnamese meaning.
 
-This adds no review-history table, generic review workflow, or new content architecture. Search aliases remain in `vietnamese_search_text`; English JMdict meanings remain unchanged.
+V39 backfills existing nonblank meanings as `VERIFIED` and empty meanings as `NONE`. Before applying this migration in production, verify that the persisted nonblank values came from the reviewed `curated-ja-vi.tsv` source, as the current production refresh path indicates. V39 has not been applied to production.
 
-## Follow-on implementation after approval
+## Refresh and assisted import
 
-1. Add a versioned Flyway migration (next version after V38) for `vietnamese_status`, its allowed values, consistency constraint, and reviewed-data backfill.
-2. Update the repeatable dictionary refresh to reset entries to `NONE`, then mark entries loaded from `curated-ja-vi.tsv` as `VERIFIED`. Add a separate, explicitly status-bearing offline import for approved assisted batches; never load `NEEDS_REVIEW` rows.
-3. Expose the status in the dictionary response. Preserve the current verified label, display assisted text as “Việt tham khảo” (or approved equivalent), and keep the current no-meaning fallback. Keep English meanings visible.
-4. Add migration and refresh tests proving all three states survive a full catalog refresh, plus API/UI coverage that an assisted result is never labeled verified.
+The repeatable catalog refresh resets entries to `NONE`, then marks rows from `curated-ja-vi.tsv` as `VERIFIED`. It supports an optional, explicitly status-bearing `/dictionary/assisted-ja-vi.tsv` resource through a strict importer that accepts only `ASSISTED` rows with confidence A/B and exact JMdict ID, word, reading, and English-sense identity. It rejects C confidence, `NEEDS_REVIEW`, malformed fields, duplicate IDs, and mismatched catalog rows. It does not read `migration-staging`.
 
-The first batch remains blocked until this status design is approved. Only then should the approximately 5,000 high-value candidates be selected, translated semantically, split into reviewable chunks, and evaluated against the specified search-density gates.
+The staging-only rehearsal batch lives at `backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-a.tsv`; it is not part of the production classpath. No assisted resource has been promoted to the runtime dictionary resources.
+
+## API and display
+
+Dictionary search and notebook responses expose `vietnameseStatus`. The dictionary card keeps `Việt` for verified text, shows `Việt tham khảo` for assisted text, retains the no-meaning fallback, and keeps English JMdict meanings visible. Notebook list and add-word views retain the assisted label as well.
+
+## Validation completed
+
+- H2 backend suite passes, including API status assertions for all three states.
+- A disposable PostgreSQL 16 Flyway rehearsal passes through V39 and a full catalog refresh. It verifies 218,867 active entries, 204 `VERIFIED`, 343 `ASSISTED`, 218,320 `NONE`, and unchanged learning-content fingerprints.
+- The PostgreSQL rehearsal also confirms the repeatable refresh is idempotent and that the assisted staging rows match the pinned JMdict snapshot.
+- Frontend coverage verifies the `ASSISTED`, `VERIFIED`, and `NONE` labels, including that assisted text is never labeled verified.
+
+## Enrichment readiness remains blocked
+
+The persistence design and first staging batch are implemented, but the batch is not release-ready. It contains 343 new A/B assisted drafts, not the requested approximately 5,000 high-value entries; the 35 C-confidence candidates remain excluded, and the 343 drafts still need qualified Japanese review. The approved dictionary contains 204 verified entries. The prior pilot density benchmark is historical and does not prove the current release gates. Keep the drafts in staging and do not merge or deploy until the complete batch, semantic review, full-catalog benchmark, and readiness thresholds pass.

@@ -29,7 +29,7 @@ class DictionaryNotebookApiTest extends ContentApiTestBase {
         roleRepository.save(Role.builder().name(RoleName.ROLE_USER).build());
         roleRepository.save(Role.builder().name(RoleName.ROLE_ADMIN).build());
         dictionary.save(DictionaryEntry.builder().id(ENTRY_ID).word("学校").reading("がっこう").meaning("school")
-                .vietnameseMeaning("trường học").vietnameseSearchText("truong hoc").commonRank(1)
+                .vietnameseMeaning("trường học").vietnameseStatus(VietnameseMeaningStatus.VERIFIED).vietnameseSearchText("truong hoc").commonRank(1)
                 .searchText("学校 がっこう gakko gakkou school fixturecatalog").build());
         var auth = json.readTree(mvc.perform(post("/auth/register").contentType(MediaType.APPLICATION_JSON)
                 .content("{\"email\":\"notebook@test.example\",\"password\":\"Password123!\",\"fullName\":\"Notebook Test\"}"))
@@ -68,15 +68,46 @@ class DictionaryNotebookApiTest extends ContentApiTestBase {
                 .andExpect(status().isOk()).andExpect(jsonPath("$.data.vocabularies[0].id", is(-ENTRY_ID)));
     }
 
+    @Test void missingVietnameseGlossReturnsNoneStatus() throws Exception {
+        dictionary.save(DictionaryEntry.builder().id(ENTRY_ID + 1).word("仮語").reading("かりご")
+                .meaning("unique none-status fixture").searchText("none-status-fixture").commonRank(1000).build());
+        mvc.perform(get("/dictionary/search").param("q", "none-status-fixture"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.vocabularies[0].id", is(-(ENTRY_ID + 1))))
+                .andExpect(jsonPath("$.data.vocabularies[0].vietnameseStatus", is("NONE")))
+                .andExpect(jsonPath("$.data.vocabularies[0].vietnameseMeaning").doesNotExist());
+    }
+
     @Test void dictionaryLookupAndVietnameseSearchExposeBothGlosses() throws Exception {
         mvc.perform(get("/dictionary/search").param("q", "trường học"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.vocabularies[0].word", is("学校")))
                 .andExpect(jsonPath("$.data.vocabularies[0].vietnameseMeaning", is("trường học")))
+                .andExpect(jsonPath("$.data.vocabularies[0].vietnameseStatus", is("VERIFIED")))
                 .andExpect(jsonPath("$.data.vocabularies[0].meaning", is("school")));
         mvc.perform(get("/dictionary/lookup/" + (-ENTRY_ID)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.vocabulary.vietnameseMeaning", is("trường học")));
+                .andExpect(jsonPath("$.data.vocabulary.vietnameseMeaning", is("trường học")))
+                .andExpect(jsonPath("$.data.vocabulary.vietnameseStatus", is("VERIFIED")));
+    }
+
+    @Test void assistedMeaningKeepsItsStatusThroughSearchLookupAndNotebook() throws Exception {
+        var school = dictionary.findById(ENTRY_ID).orElseThrow();
+        school.setVietnameseStatus(VietnameseMeaningStatus.ASSISTED);
+        dictionary.save(school);
+
+        mvc.perform(get("/dictionary/search").param("q", "trường học"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.vocabularies[0].vietnameseMeaning", is("trường học")))
+                .andExpect(jsonPath("$.data.vocabularies[0].vietnameseStatus", is("ASSISTED")));
+        mvc.perform(get("/dictionary/lookup/" + (-ENTRY_ID)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.vocabulary.vietnameseStatus", is("ASSISTED")));
+
+        addWord(-ENTRY_ID);
+        mvc.perform(get("/notebooks/" + notebookId).header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.items[0].vietnameseStatus", is("ASSISTED")));
     }
 
     @Test void vietnameseAliasesPreserveToneMarksAndNeverPolluteDisplayMeaning() throws Exception {
@@ -94,9 +125,9 @@ class DictionaryNotebookApiTest extends ContentApiTestBase {
     @Test void accentedVietnameseSearchKeepsToneMarksDistinct() throws Exception {
         dictionary.saveAll(java.util.List.of(
                 DictionaryEntry.builder().id(ENTRY_ID + 2).word("\u706b\u4e8b").reading("\u304b\u3058").meaning("fire, conflagration")
-                        .vietnameseMeaning("h\u1ecfa ho\u1ea1n").vietnameseSearchText("hoa hoan").commonRank(2).searchText("kaji fire fixture_fire").build(),
+                        .vietnameseMeaning("h\u1ecfa ho\u1ea1n").vietnameseStatus(VietnameseMeaningStatus.VERIFIED).vietnameseSearchText("hoa hoan").commonRank(2).searchText("kaji fire fixture_fire").build(),
                 DictionaryEntry.builder().id(ENTRY_ID + 3).word("\u679c\u7269").reading("\u304f\u3060\u3082\u306e").meaning("fruit")
-                        .vietnameseMeaning("hoa qu\u1ea3").vietnameseSearchText("hoa qua").commonRank(1).searchText("kudamono fruit fixture_fruit").build()));
+                        .vietnameseMeaning("hoa qu\u1ea3").vietnameseStatus(VietnameseMeaningStatus.VERIFIED).vietnameseSearchText("hoa qua").commonRank(1).searchText("kudamono fruit fixture_fruit").build()));
 
         mvc.perform(get("/dictionary/search").param("q", "h\u1ecfa"))
                 .andExpect(status().isOk())

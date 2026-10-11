@@ -29,6 +29,16 @@ class DictionaryCurationIntegrityTest {
         assertThat(result).hasSize(218867);
         return result;
     }
+    static Set<Long> reviewedIds() throws IOException {
+        Set<Long> result = new HashSet<>();
+        try (var reader = new BufferedReader(new InputStreamReader(
+                DictionaryCurationIntegrityTest.class.getResourceAsStream("/dictionary/curated-ja-vi.tsv"), StandardCharsets.UTF_8))) {
+            for (String line; (line = reader.readLine()) != null;) {
+                if (!line.isBlank() && !line.startsWith("#")) result.add(Long.parseLong(line.split("\t", -1)[0]));
+            }
+        }
+        return result;
+    }
     static DictionaryCuration.Row row(JsonNode c) {
         return new DictionaryCuration.Row(c.path("jmdictId").asLong(), c.path("word").asText(), c.path("reading").asText(),
                 c.path("word").asText(), c.path("reading").asText(), c.path("vietnameseMeaning").asText(), c.path("commonRank").asInt(),
