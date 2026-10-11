@@ -1,421 +1,909 @@
 [
   {
-    "query": "mèo",
-    "top3": [
-      {
-        "id": -1467640,
-        "word": "猫",
-        "reading": "ねこ",
-        "vi": "mèo",
-        "en": "cat (esp. the domestic cat, Felis catus), feline / shamisen / geisha / wheelbarrow / clay bed-warmer / bottom (submissive partner of a homosexual relationship)"
-      }
-    ],
-    "duplicates": 0
+    "en": "dog",
+    "vi": "chó",
+    "jmdictId": 1258330,
+    "word": "犬",
+    "reading": "いぬ",
+    "vietnamese": {
+      "query": "chó",
+      "top3": [
+        {
+          "id": -1258330,
+          "word": "犬",
+          "reading": "いぬ",
+          "vi": "chó",
+          "en": "dog (Canis (lupus) familiaris), canine / squealer, rat, snitch, informer, informant, spy / loser, asshole / counterfeit, inferior, useless, wasteful"
+        },
+        {
+          "id": -1560940,
+          "word": "狼",
+          "reading": "おおかみ",
+          "vi": "sói",
+          "en": "wolf (Canis lupus) / wolf in sheep's clothing, womanizer"
+        },
+        {
+          "id": -1534290,
+          "word": "盲導犬",
+          "reading": "もうどうけん",
+          "vi": "chó dẫn đường",
+          "en": "guide dog, seeing-eye dog"
+        }
+      ],
+      "duplicates": 0
+    },
+    "english": {
+      "query": "dog",
+      "top3": [
+        {
+          "id": -1258330,
+          "word": "犬",
+          "reading": "いぬ",
+          "vi": "chó",
+          "en": "dog (Canis (lupus) familiaris), canine / squealer, rat, snitch, informer, informant, spy / loser, asshole / counterfeit, inferior, useless, wasteful"
+        },
+        {
+          "id": -2003490,
+          "word": "ドッグ",
+          "reading": "ドッグ",
+          "vi": null,
+          "en": "dog / hotdog / firedog, andiron"
+        },
+        {
+          "id": -2582030,
+          "word": "ワン公",
+          "reading": "ワンこう",
+          "vi": null,
+          "en": "dog"
+        }
+      ],
+      "duplicates": 0
+    },
+    "canonicalRank": {
+      "vietnamese": 1,
+      "english": 1
+    }
   },
   {
-    "query": "sư tử",
-    "top3": [
-      {
-        "id": -1137760,
-        "word": "ライオン",
-        "reading": "ライオン",
-        "vi": "sư tử",
-        "en": "lion (Panthera leo)"
-      }
-    ],
-    "duplicates": 0
+    "en": "cat",
+    "vi": "mèo",
+    "jmdictId": 1467640,
+    "word": "猫",
+    "reading": "ねこ",
+    "vietnamese": {
+      "query": "mèo",
+      "top3": [
+        {
+          "id": -1467640,
+          "word": "猫",
+          "reading": "ねこ",
+          "vi": "mèo",
+          "en": "cat (esp. the domestic cat, Felis catus), feline / shamisen / geisha / wheelbarrow / clay bed-warmer / bottom (submissive partner of a homosexual relationship)"
+        }
+      ],
+      "duplicates": 0
+    },
+    "english": {
+      "query": "cat",
+      "top3": [
+        {
+          "id": -1291500,
+          "word": "砂",
+          "reading": "すな",
+          "vi": "cát",
+          "en": "sand, grit, fine gravel"
+        },
+        {
+          "id": -1467640,
+          "word": "猫",
+          "reading": "ねこ",
+          "vi": "mèo",
+          "en": "cat (esp. the domestic cat, Felis catus), feline / shamisen / geisha / wheelbarrow / clay bed-warmer / bottom (submissive partner of a homosexual relationship)"
+        },
+        {
+          "id": -2698030,
+          "word": "猫",
+          "reading": "ねこま",
+          "vi": null,
+          "en": "cat"
+        }
+      ],
+      "duplicates": 0
+    },
+    "canonicalRank": {
+      "vietnamese": 1,
+      "english": 2
+    }
   },
   {
-    "query": "bánh mì",
-    "top3": [
-      {
-        "id": -2850597,
-        "word": "パン",
-        "reading": "パン",
-        "vi": "bánh mì",
-        "en": "pan-"
-      },
-      {
-        "id": -1103480,
-        "word": "パン屋",
-        "reading": "パンや",
-        "vi": "tiệm bánh mì",
-        "en": "bakery, baker"
-      }
-    ],
-    "duplicates": 0
+    "en": "lion",
+    "vi": "sư tử",
+    "jmdictId": 1137760,
+    "word": "ライオン",
+    "reading": "ライオン",
+    "vietnamese": {
+      "query": "sư tử",
+      "top3": [
+        {
+          "id": -1137760,
+          "word": "ライオン",
+          "reading": "ライオン",
+          "vi": "sư tử",
+          "en": "lion (Panthera leo)"
+        }
+      ],
+      "duplicates": 0
+    },
+    "english": {
+      "query": "lion",
+      "top3": [
+        {
+          "id": -1311070,
+          "word": "獅子",
+          "reading": "しし",
+          "vi": null,
+          "en": "lion / left-hand (stone) guardian lion-dog at a Shinto shrine"
+        },
+        {
+          "id": -2843797,
+          "word": "獅子王",
+          "reading": "ししおう",
+          "vi": null,
+          "en": "lion (king of beasts)"
+        },
+        {
+          "id": -1137760,
+          "word": "ライオン",
+          "reading": "ライオン",
+          "vi": "sư tử",
+          "en": "lion (Panthera leo)"
+        }
+      ],
+      "duplicates": 0
+    },
+    "canonicalRank": {
+      "vietnamese": 1,
+      "english": 3
+    }
   },
   {
-    "query": "dâu tây",
-    "top3": [
-      {
-        "id": -1571460,
-        "word": "苺",
-        "reading": "いちご",
-        "vi": "dâu tây",
-        "en": "strawberry (esp. the garden strawberry, Fragaria x ananassa) / 15,000 yen"
-      }
-    ],
-    "duplicates": 0
+    "en": "elephant",
+    "vi": "voi",
+    "jmdictId": 1351830,
+    "word": "象",
+    "reading": "ぞう",
+    "vietnamese": {
+      "query": "voi",
+      "top3": [
+        {
+          "id": -1351830,
+          "word": "象",
+          "reading": "ぞう",
+          "vi": "voi",
+          "en": "elephant (Elephantidae spp.)"
+        },
+        {
+          "id": -1641390,
+          "word": "名優",
+          "reading": "めいゆう",
+          "vi": "diễn viên tuyệt vời",
+          "en": "great actor, famous actor, star"
+        },
+        {
+          "id": -1351840,
+          "word": "象牙",
+          "reading": "ぞうげ",
+          "vi": "ngà voi",
+          "en": "ivory"
+        }
+      ],
+      "duplicates": 0
+    },
+    "english": {
+      "query": "elephant",
+      "top3": [
+        {
+          "id": -2872529,
+          "word": "象",
+          "reading": "きさ",
+          "vi": null,
+          "en": "elephant"
+        },
+        {
+          "id": -1351830,
+          "word": "象",
+          "reading": "ぞう",
+          "vi": "voi",
+          "en": "elephant (Elephantidae spp.)"
+        },
+        {
+          "id": -2834345,
+          "word": "エレファント",
+          "reading": "エレファント",
+          "vi": null,
+          "en": "elephant"
+        }
+      ],
+      "duplicates": 0
+    },
+    "canonicalRank": {
+      "vietnamese": 1,
+      "english": 2
+    }
   },
   {
-    "query": "tủ lạnh",
-    "top3": [
-      {
-        "id": -1557110,
-        "word": "冷蔵庫",
-        "reading": "れいぞうこ",
-        "vi": "tủ lạnh",
-        "en": "refrigerator, fridge"
-      }
-    ],
-    "duplicates": 0
+    "en": "truck",
+    "vi": "xe tải",
+    "jmdictId": 1085760,
+    "word": "トラック",
+    "reading": "トラック",
+    "vietnamese": {
+      "query": "xe tải",
+      "top3": [
+        {
+          "id": -1085760,
+          "word": "トラック",
+          "reading": "トラック",
+          "vi": "xe tải",
+          "en": "truck, lorry"
+        }
+      ],
+      "duplicates": 0
+    },
+    "english": {
+      "query": "truck",
+      "top3": [
+        {
+          "id": -1085760,
+          "word": "トラック",
+          "reading": "トラック",
+          "vi": "xe tải",
+          "en": "truck, lorry"
+        },
+        {
+          "id": -1195910,
+          "word": "貨物自動車",
+          "reading": "かもつじどうしゃ",
+          "vi": null,
+          "en": "truck"
+        },
+        {
+          "id": -2773260,
+          "word": "車",
+          "reading": "しゃ",
+          "vi": null,
+          "en": "car, vehicle, van, truck, wagon, lorry / (train) car, carriage"
+        }
+      ],
+      "duplicates": 0
+    },
+    "canonicalRank": {
+      "vietnamese": 1,
+      "english": 1
+    }
   },
   {
-    "query": "máy giặt",
-    "top3": [
-      {
-        "id": -1390990,
-        "word": "洗濯機",
-        "reading": "せんたくき",
-        "vi": "máy giặt",
-        "en": "washing machine, (clothes) washer"
-      }
-    ],
-    "duplicates": 0
+    "en": "motorcycle",
+    "vi": "xe máy",
+    "jmdictId": 1032030,
+    "word": "オートバイ",
+    "reading": "オートバイ",
+    "vietnamese": {
+      "query": "xe máy",
+      "top3": [
+        {
+          "id": -1032030,
+          "word": "オートバイ",
+          "reading": "オートバイ",
+          "vi": "xe máy",
+          "en": "motorcycle, motorbike"
+        }
+      ],
+      "duplicates": 0
+    },
+    "english": {
+      "query": "motorcycle",
+      "top3": [
+        {
+          "id": -1097810,
+          "word": "バイク",
+          "reading": "バイク",
+          "vi": null,
+          "en": "motorcycle, motorbike, bike / bicycle"
+        },
+        {
+          "id": -2504640,
+          "word": "原付一種",
+          "reading": "げんつきいっしゅ",
+          "vi": null,
+          "en": "motorcycle, less than or equal to 50cc"
+        },
+        {
+          "id": -2476660,
+          "word": "小型二輪",
+          "reading": "こがたにりん",
+          "vi": null,
+          "en": "motorcycle, greater than or equal to 250cc"
+        }
+      ],
+      "duplicates": 0
+    },
+    "canonicalRank": {
+      "vietnamese": 1,
+      "english": null
+    }
   },
   {
-    "query": "xe máy",
-    "top3": [
-      {
-        "id": -1032030,
-        "word": "オートバイ",
-        "reading": "オートバイ",
-        "vi": "xe máy",
-        "en": "motorcycle, motorbike"
-      }
-    ],
-    "duplicates": 0
+    "en": "teacher",
+    "vi": "giáo viên",
+    "jmdictId": 1237130,
+    "word": "教師",
+    "reading": "きょうし",
+    "vietnamese": {
+      "query": "giáo viên",
+      "top3": [
+        {
+          "id": -1387990,
+          "word": "先生",
+          "reading": "せんせい",
+          "vi": "thầy; cô; giáo viên; bác sĩ (cách xưng hô)",
+          "en": "teacher, instructor, master / sensei, title or form of address for a teacher, master, doctor, lawyer, etc. / intimate or teasing form of address / one's elder"
+        },
+        {
+          "id": -1237130,
+          "word": "教師",
+          "reading": "きょうし",
+          "vi": "giáo viên",
+          "en": "teacher, instructor"
+        },
+        {
+          "id": -1183160,
+          "word": "恩師",
+          "reading": "おんし",
+          "vi": "giáo viên",
+          "en": "teacher (to whom one owes a debt of gratitude), mentor, one's former teacher"
+        }
+      ],
+      "duplicates": 0
+    },
+    "english": {
+      "query": "teacher",
+      "top3": [
+        {
+          "id": -1387990,
+          "word": "先生",
+          "reading": "せんせい",
+          "vi": "thầy; cô; giáo viên; bác sĩ (cách xưng hô)",
+          "en": "teacher, instructor, master / sensei, title or form of address for a teacher, master, doctor, lawyer, etc. / intimate or teasing form of address / one's elder"
+        },
+        {
+          "id": -1237130,
+          "word": "教師",
+          "reading": "きょうし",
+          "vi": "giáo viên",
+          "en": "teacher, instructor"
+        },
+        {
+          "id": -1956330,
+          "word": "師",
+          "reading": "し",
+          "vi": null,
+          "en": "teacher, master, mentor / religious leader / specialist / five-battalion brigade comprising 2500 men (Zhou dynasty Chinese army)"
+        }
+      ],
+      "duplicates": 0
+    },
+    "canonicalRank": {
+      "vietnamese": 2,
+      "english": 2
+    }
   },
   {
-    "query": "xe buýt",
-    "top3": [
-      {
-        "id": -2845315,
-        "word": "バス",
-        "reading": "バス",
-        "vi": "xe buýt",
-        "en": "bass (fish; esp. black bass)"
-      }
-    ],
-    "duplicates": 0
+    "en": "doctor",
+    "vi": "bác sĩ",
+    "jmdictId": 1159980,
+    "word": "医者",
+    "reading": "いしゃ",
+    "vietnamese": {
+      "query": "bác sĩ",
+      "top3": [
+        {
+          "id": -1159980,
+          "word": "医者",
+          "reading": "いしゃ",
+          "vi": "bác sĩ",
+          "en": "doctor, physician"
+        },
+        {
+          "id": -1159930,
+          "word": "医師",
+          "reading": "いし",
+          "vi": "bác sĩ; thầy thuốc (cách gọi trang trọng)",
+          "en": "doctor, physician"
+        },
+        {
+          "id": -1387990,
+          "word": "先生",
+          "reading": "せんせい",
+          "vi": "thầy; cô; giáo viên; bác sĩ (cách xưng hô)",
+          "en": "teacher, instructor, master / sensei, title or form of address for a teacher, master, doctor, lawyer, etc. / intimate or teasing form of address / one's elder"
+        }
+      ],
+      "duplicates": 0
+    },
+    "english": {
+      "query": "doctor",
+      "top3": [
+        {
+          "id": -1159980,
+          "word": "医者",
+          "reading": "いしゃ",
+          "vi": "bác sĩ",
+          "en": "doctor, physician"
+        },
+        {
+          "id": -1159930,
+          "word": "医師",
+          "reading": "いし",
+          "vi": "bác sĩ; thầy thuốc (cách gọi trang trọng)",
+          "en": "doctor, physician"
+        },
+        {
+          "id": -1583000,
+          "word": "博",
+          "reading": "はく",
+          "vi": null,
+          "en": "doctor, PhD / exposition, fair, exhibition"
+        }
+      ],
+      "duplicates": 0
+    },
+    "canonicalRank": {
+      "vietnamese": 1,
+      "english": 1
+    }
   },
   {
-    "query": "xe tải",
-    "top3": [
-      {
-        "id": -1085760,
-        "word": "トラック",
-        "reading": "トラック",
-        "vi": "xe tải",
-        "en": "truck, lorry"
-      }
-    ],
-    "duplicates": 0
+    "en": "firefighter",
+    "vi": "lính cứu hỏa",
+    "jmdictId": 1350350,
+    "word": "消防士",
+    "reading": "しょうぼうし",
+    "vietnamese": {
+      "query": "lính cứu hỏa",
+      "top3": [
+        {
+          "id": -1350350,
+          "word": "消防士",
+          "reading": "しょうぼうし",
+          "vi": "lính cứu hỏa",
+          "en": "firefighter, fireman"
+        }
+      ],
+      "duplicates": 0
+    },
+    "english": {
+      "query": "firefighter",
+      "top3": [
+        {
+          "id": -1350350,
+          "word": "消防士",
+          "reading": "しょうぼうし",
+          "vi": "lính cứu hỏa",
+          "en": "firefighter, fireman"
+        },
+        {
+          "id": -2838660,
+          "word": "鳶の者",
+          "reading": "とびのもの",
+          "vi": null,
+          "en": "firefighter (Edo period) / construction worker, scaffolding builder"
+        },
+        {
+          "id": -2527770,
+          "word": "定火消し",
+          "reading": "じょうびけし",
+          "vi": null,
+          "en": "firefighter (Edo period)"
+        }
+      ],
+      "duplicates": 0
+    },
+    "canonicalRank": {
+      "vietnamese": 1,
+      "english": 1
+    }
   },
   {
-    "query": "lính cứu hỏa",
-    "top3": [
-      {
-        "id": -1350350,
-        "word": "消防士",
-        "reading": "しょうぼうし",
-        "vi": "lính cứu hỏa",
-        "en": "firefighter, fireman"
-      }
-    ],
-    "duplicates": 0
+    "en": "programmer",
+    "vi": "lập trình viên",
+    "jmdictId": 1117060,
+    "word": "プログラマー",
+    "reading": "プログラマー",
+    "vietnamese": {
+      "query": "lập trình viên",
+      "top3": [
+        {
+          "id": -1117060,
+          "word": "プログラマー",
+          "reading": "プログラマー",
+          "vi": "lập trình viên",
+          "en": "(computer) programmer"
+        }
+      ],
+      "duplicates": 0
+    },
+    "english": {
+      "query": "programmer",
+      "top3": [
+        {
+          "id": -1117060,
+          "word": "プログラマー",
+          "reading": "プログラマー",
+          "vi": "lập trình viên",
+          "en": "(computer) programmer"
+        },
+        {
+          "id": -2300730,
+          "word": "システムプログラマ",
+          "reading": "システムプログラマ",
+          "vi": null,
+          "en": "system programmer"
+        },
+        {
+          "id": -1073340,
+          "word": "スポーツプログラマー",
+          "reading": "スポーツプログラマー",
+          "vi": null,
+          "en": "sports programmer"
+        }
+      ],
+      "duplicates": 0
+    },
+    "canonicalRank": {
+      "vietnamese": 1,
+      "english": 1
+    }
   },
   {
-    "query": "bác sĩ thú y",
-    "top3": [
-      {
-        "id": -1335610,
-        "word": "獣医",
-        "reading": "じゅうい",
-        "vi": "bác sĩ thú y",
-        "en": "veterinarian, veterinary surgeon, vet"
-      }
-    ],
-    "duplicates": 0
+    "en": "refrigerator",
+    "vi": "tủ lạnh",
+    "jmdictId": 1557110,
+    "word": "冷蔵庫",
+    "reading": "れいぞうこ",
+    "vietnamese": {
+      "query": "tủ lạnh",
+      "top3": [
+        {
+          "id": -1557110,
+          "word": "冷蔵庫",
+          "reading": "れいぞうこ",
+          "vi": "tủ lạnh",
+          "en": "refrigerator, fridge"
+        }
+      ],
+      "duplicates": 0
+    },
+    "english": {
+      "query": "refrigerator",
+      "top3": [
+        {
+          "id": -1556610,
+          "word": "冷",
+          "reading": "れい",
+          "vi": null,
+          "en": "refrigerator / cold, cool / cold sake"
+        },
+        {
+          "id": -1948700,
+          "word": "冷凍機",
+          "reading": "れいとうき",
+          "vi": null,
+          "en": "refrigerator, freezer"
+        },
+        {
+          "id": -1556880,
+          "word": "冷却器",
+          "reading": "れいきゃくき",
+          "vi": null,
+          "en": "refrigerator, cooler, freezer, radiator (of a car)"
+        }
+      ],
+      "duplicates": 0
+    },
+    "canonicalRank": {
+      "vietnamese": 1,
+      "english": null
+    }
   },
   {
-    "query": "máy tính",
-    "top3": [
-      {
-        "id": -1053350,
-        "word": "コンピュータ",
-        "reading": "コンピュータ",
-        "vi": "máy tính",
-        "en": "computer"
-      },
-      {
-        "id": -1127140,
-        "word": "マウス",
-        "reading": "マウス",
-        "vi": "chuột máy tính",
-        "en": "mouse (esp. a laboratory mouse) / (computer) mouse"
-      },
-      {
-        "id": -2257490,
-        "word": "ノートパソコン",
-        "reading": "ノートパソコン",
-        "vi": "máy tính xách tay",
-        "en": "laptop (computer), notebook (computer)"
-      }
-    ],
-    "duplicates": 0
+    "en": "washing machine",
+    "vi": "máy giặt",
+    "jmdictId": 1390990,
+    "word": "洗濯機",
+    "reading": "せんたくき",
+    "vietnamese": {
+      "query": "máy giặt",
+      "top3": [
+        {
+          "id": -1390990,
+          "word": "洗濯機",
+          "reading": "せんたくき",
+          "vi": "máy giặt",
+          "en": "washing machine, (clothes) washer"
+        }
+      ],
+      "duplicates": 0
+    },
+    "english": {
+      "query": "washing machine",
+      "top3": [
+        {
+          "id": -2838455,
+          "word": "洗",
+          "reading": "せん",
+          "vi": null,
+          "en": "washing machine, (clothes) washer"
+        },
+        {
+          "id": -1390990,
+          "word": "洗濯機",
+          "reading": "せんたくき",
+          "vi": "máy giặt",
+          "en": "washing machine, (clothes) washer"
+        },
+        {
+          "id": -1136740,
+          "word": "ユーティリティー",
+          "reading": "ユーティリティー",
+          "vi": null,
+          "en": "utility / room with sink, washing machine, etc. in a house or apartment"
+        }
+      ],
+      "duplicates": 0
+    },
+    "canonicalRank": {
+      "vietnamese": 1,
+      "english": 2
+    }
   },
   {
-    "query": "ngủ",
-    "top3": [
-      {
-        "id": -1360010,
-        "word": "寝る",
-        "reading": "ねる",
-        "vi": "ngủ; đi ngủ",
-        "en": "to sleep (lying down) / to go to bed, to lie in bed / to lie down / to sleep (with someone, i.e. have intercourse) / to lie flat (e.g. of hair) / to lie idle (of funds, stock, etc.) / to ferment (of soy sauce, miso, etc.)"
-      },
-      {
-        "id": -1101430,
-        "word": "パジャマ",
-        "reading": "パジャマ",
-        "vi": "đồ ngủ",
-        "en": "pajamas, pyjamas"
-      }
-    ],
-    "duplicates": 0
+    "en": "computer",
+    "vi": "máy tính",
+    "jmdictId": 1053350,
+    "word": "コンピュータ",
+    "reading": "コンピュータ",
+    "vietnamese": {
+      "query": "máy tính",
+      "top3": [
+        {
+          "id": -1443600,
+          "word": "電卓",
+          "reading": "でんたく",
+          "vi": "máy tính",
+          "en": "calculator (electronic), pocket calculator"
+        },
+        {
+          "id": -1053350,
+          "word": "コンピュータ",
+          "reading": "コンピュータ",
+          "vi": "máy tính",
+          "en": "computer"
+        },
+        {
+          "id": -2257490,
+          "word": "ノートパソコン",
+          "reading": "ノートパソコン",
+          "vi": "máy tính xách tay",
+          "en": "laptop (computer), notebook (computer)"
+        }
+      ],
+      "duplicates": 0
+    },
+    "english": {
+      "query": "computer",
+      "top3": [
+        {
+          "id": -1443300,
+          "word": "電算",
+          "reading": "でんさん",
+          "vi": null,
+          "en": "computer"
+        },
+        {
+          "id": -1443710,
+          "word": "電脳",
+          "reading": "でんのう",
+          "vi": null,
+          "en": "computer / cyberbrain, digital brain"
+        },
+        {
+          "id": -2843066,
+          "word": "計算手",
+          "reading": "けいさんしゅ",
+          "vi": null,
+          "en": "computer (person who makes calculations)"
+        }
+      ],
+      "duplicates": 0
+    },
+    "canonicalRank": {
+      "vietnamese": 2,
+      "english": null
+    }
   },
   {
-    "query": "rửa",
-    "top3": [
-      {
-        "id": -1390930,
-        "word": "洗う",
-        "reading": "あらう",
-        "vi": "rửa; giặt",
-        "en": "to wash, to cleanse, to rinse / to inquire into, to investigate / to purify (one's heart) / to lave (e.g. shore), to wash over (e.g. deck), to sweep"
-      },
-      {
-        "id": -1390950,
-        "word": "洗剤",
-        "reading": "せんざい",
-        "vi": "chất tẩy rửa",
-        "en": "detergent, cleanser, cleaning agent, washing material"
-      }
-    ],
-    "duplicates": 0
+    "en": "apple",
+    "vi": "táo",
+    "jmdictId": 1555480,
+    "word": "林檎",
+    "reading": "りんご",
+    "vietnamese": {
+      "query": "táo",
+      "top3": [
+        {
+          "id": -1555480,
+          "word": "りんご",
+          "reading": "りんご",
+          "vi": "táo",
+          "en": "apple (fruit) / apple tree (Malus pumila)"
+        },
+        {
+          "id": -1512580,
+          "word": "便秘",
+          "reading": "べんぴ",
+          "vi": "táo bón",
+          "en": "constipation"
+        }
+      ],
+      "duplicates": 0
+    },
+    "english": {
+      "query": "apple",
+      "top3": [
+        {
+          "id": -1555480,
+          "word": "りんご",
+          "reading": "りんご",
+          "vi": "táo",
+          "en": "apple (fruit) / apple tree (Malus pumila)"
+        },
+        {
+          "id": -2859672,
+          "word": "林檎",
+          "reading": "りゅうごう",
+          "vi": null,
+          "en": "apple"
+        },
+        {
+          "id": -2859671,
+          "word": "苹果",
+          "reading": "ひょうか",
+          "vi": null,
+          "en": "apple (fruit)"
+        }
+      ],
+      "duplicates": 0
+    },
+    "canonicalRank": {
+      "vietnamese": 1,
+      "english": 1
+    }
   },
   {
-    "query": "to",
-    "top3": [
-      {
-        "id": -1323080,
-        "word": "車",
-        "reading": "くるま",
-        "vi": "xe hơi; ô tô",
-        "en": "car, automobile, vehicle / wheel, castor, caster"
-      },
-      {
-        "id": -1392580,
-        "word": "前",
-        "reading": "まえ",
-        "vi": "phía trước; trước",
-        "en": "in front (of), before (e.g. a building) / before, earlier, previously, prior, ago, (minutes) to (the hour) / (the) front, frontal part, fore, head (e.g. of a line) / forward, ahead / (in the) presence (of), in front (of someone) / previous (e.g. page), prior (e.g. engagement), first (e.g. half), former (e.g. example) / portion, helping / front (of one's body or clothing), breast (of a coat, kimono, etc.) / privates, private parts / criminal record, previous conviction, (a) prior"
-      },
-      {
-        "id": -1327190,
-        "word": "手",
-        "reading": "て",
-        "vi": "tay; bàn tay",
-        "en": "hand, arm / forepaw, foreleg / handle / hand, worker, help / trouble, care, effort / means, way, trick, move, technique, workmanship / hand, handwriting / kind, type, sort / one's hands, one's possession / ability to cope / hand (of cards) / direction / move (in go, shogi, etc.)"
-      }
-    ],
-    "duplicates": 0
+    "en": "banana",
+    "vi": "chuối",
+    "jmdictId": 1099420,
+    "word": "バナナ",
+    "reading": "バナナ",
+    "vietnamese": {
+      "query": "chuối",
+      "top3": [
+        {
+          "id": -1099420,
+          "word": "バナナ",
+          "reading": "バナナ",
+          "vi": "chuối",
+          "en": "banana"
+        }
+      ],
+      "duplicates": 0
+    },
+    "english": {
+      "query": "banana",
+      "top3": [
+        {
+          "id": -1099420,
+          "word": "バナナ",
+          "reading": "バナナ",
+          "vi": "chuối",
+          "en": "banana"
+        },
+        {
+          "id": -2833215,
+          "word": "甘蕉",
+          "reading": "かんしょう",
+          "vi": null,
+          "en": "banana"
+        },
+        {
+          "id": -2740680,
+          "word": "香蕉",
+          "reading": "こうしょう",
+          "vi": null,
+          "en": "banana"
+        }
+      ],
+      "duplicates": 0
+    },
+    "canonicalRank": {
+      "vietnamese": 1,
+      "english": 1
+    }
   },
   {
-    "query": "cat",
-    "top3": [
-      {
-        "id": -1291500,
-        "word": "砂",
-        "reading": "すな",
-        "vi": "cát",
-        "en": "sand, grit, fine gravel"
-      },
-      {
-        "id": -2698030,
-        "word": "猫",
-        "reading": "ねこま",
-        "vi": null,
-        "en": "cat"
-      },
-      {
-        "id": -1467640,
-        "word": "猫",
-        "reading": "ねこ",
-        "vi": "mèo",
-        "en": "cat (esp. the domestic cat, Felis catus), feline / shamisen / geisha / wheelbarrow / clay bed-warmer / bottom (submissive partner of a homosexual relationship)"
-      }
-    ],
-    "duplicates": 0
-  },
-  {
-    "query": "猫",
-    "top3": [
-      {
-        "id": -1467640,
-        "word": "猫",
-        "reading": "ねこ",
-        "vi": "mèo",
-        "en": "cat (esp. the domestic cat, Felis catus), feline / shamisen / geisha / wheelbarrow / clay bed-warmer / bottom (submissive partner of a homosexual relationship)"
-      },
-      {
-        "id": -2698030,
-        "word": "猫",
-        "reading": "ねこま",
-        "vi": null,
-        "en": "cat"
-      },
-      {
-        "id": -2064330,
-        "word": "猫又",
-        "reading": "ねこまた",
-        "vi": null,
-        "en": "nekomata, fork-tailed cat yōkai / giant beast that inhabits the mountains"
-      }
-    ],
-    "duplicates": 0
-  },
-  {
-    "query": "ねこ",
-    "top3": [
-      {
-        "id": -1467640,
-        "word": "猫",
-        "reading": "ねこ",
-        "vi": "mèo",
-        "en": "cat (esp. the domestic cat, Felis catus), feline / shamisen / geisha / wheelbarrow / clay bed-warmer / bottom (submissive partner of a homosexual relationship)"
-      },
-      {
-        "id": -2698030,
-        "word": "猫",
-        "reading": "ねこま",
-        "vi": null,
-        "en": "cat"
-      },
-      {
-        "id": -2064330,
-        "word": "猫又",
-        "reading": "ねこまた",
-        "vi": null,
-        "en": "nekomata, fork-tailed cat yōkai / giant beast that inhabits the mountains"
-      }
-    ],
-    "duplicates": 0
-  },
-  {
-    "query": "ネコ",
-    "top3": [
-      {
-        "id": -1467640,
-        "word": "猫",
-        "reading": "ねこ",
-        "vi": "mèo",
-        "en": "cat (esp. the domestic cat, Felis catus), feline / shamisen / geisha / wheelbarrow / clay bed-warmer / bottom (submissive partner of a homosexual relationship)"
-      },
-      {
-        "id": -2698030,
-        "word": "猫",
-        "reading": "ねこま",
-        "vi": null,
-        "en": "cat"
-      },
-      {
-        "id": -2064330,
-        "word": "猫又",
-        "reading": "ねこまた",
-        "vi": null,
-        "en": "nekomata, fork-tailed cat yōkai / giant beast that inhabits the mountains"
-      }
-    ],
-    "duplicates": 0
-  },
-  {
-    "query": "neko",
-    "top3": [
-      {
-        "id": -1467640,
-        "word": "猫",
-        "reading": "ねこ",
-        "vi": "mèo",
-        "en": "cat (esp. the domestic cat, Felis catus), feline / shamisen / geisha / wheelbarrow / clay bed-warmer / bottom (submissive partner of a homosexual relationship)"
-      },
-      {
-        "id": -5026173,
-        "word": "ギコ猫",
-        "reading": "ギコねこ",
-        "vi": null,
-        "en": "Giko Neko (ASCII-art character), Giko Cat"
-      },
-      {
-        "id": -2698030,
-        "word": "猫",
-        "reading": "ねこま",
-        "vi": null,
-        "en": "cat"
-      }
-    ],
-    "duplicates": 0
-  },
-  {
-    "query": "meo",
-    "top3": [
-      {
-        "id": -1467640,
-        "word": "猫",
-        "reading": "ねこ",
-        "vi": "mèo",
-        "en": "cat (esp. the domestic cat, Felis catus), feline / shamisen / geisha / wheelbarrow / clay bed-warmer / bottom (submissive partner of a homosexual relationship)"
-      },
-      {
-        "id": -1580640,
-        "word": "人",
-        "reading": "ひと",
-        "vi": "người",
-        "en": "person, someone, somebody / human beings, mankind, man, people, humans / human (Homo sapiens) / (other) people, others / character, personality, nature / capable person, competent person, suitable person, right person / adult, grown-up / I, me, one"
-      },
-      {
-        "id": -1392580,
-        "word": "前",
-        "reading": "まえ",
-        "vi": "phía trước; trước",
-        "en": "in front (of), before (e.g. a building) / before, earlier, previously, prior, ago, (minutes) to (the hour) / (the) front, frontal part, fore, head (e.g. of a line) / forward, ahead / (in the) presence (of), in front (of someone) / previous (e.g. page), prior (e.g. engagement), first (e.g. half), former (e.g. example) / portion, helping / front (of one's body or clothing), breast (of a coat, kimono, etc.) / privates, private parts / criminal record, previous conviction, (a) prior"
-      }
-    ],
-    "duplicates": 0
-  },
-  {
-    "query": "con mèo",
-    "top3": [
-      {
-        "id": -1467640,
-        "word": "猫",
-        "reading": "ねこ",
-        "vi": "mèo",
-        "en": "cat (esp. the domestic cat, Felis catus), feline / shamisen / geisha / wheelbarrow / clay bed-warmer / bottom (submissive partner of a homosexual relationship)"
-      }
-    ],
-    "duplicates": 0
+    "en": "phone",
+    "vi": "điện thoại",
+    "jmdictId": null,
+    "word": null,
+    "reading": null,
+    "vietnamese": {
+      "query": "điện thoại",
+      "top3": [
+        {
+          "id": -1443840,
+          "word": "電話",
+          "reading": "でんわ",
+          "vi": "điện thoại; cuộc gọi",
+          "en": "telephone call, phone call / telephone (device), phone"
+        },
+        {
+          "id": -1443870,
+          "word": "電話機",
+          "reading": "でんわき",
+          "vi": "điện thoại",
+          "en": "telephone (device)"
+        },
+        {
+          "id": -1250690,
+          "word": "携帯電話",
+          "reading": "けいたいでんわ",
+          "vi": "điện thoại di động",
+          "en": "mobile phone, cell phone"
+        }
+      ],
+      "duplicates": 0
+    },
+    "english": {
+      "query": "phone",
+      "top3": [
+        {
+          "id": -2492250,
+          "word": "フォーン",
+          "reading": "フォーン",
+          "vi": null,
+          "en": "phone, telephone"
+        },
+        {
+          "id": -1417160,
+          "word": "単音",
+          "reading": "たんおん",
+          "vi": null,
+          "en": "single sound, monosyllable, phone / monotone (harmonica, etc.)"
+        },
+        {
+          "id": -1443840,
+          "word": "電話",
+          "reading": "でんわ",
+          "vi": "điện thoại; cuộc gọi",
+          "en": "telephone call, phone call / telephone (device), phone"
+        }
+      ],
+      "duplicates": 0
+    },
+    "canonicalRank": {
+      "vietnamese": null,
+      "english": null
+    }
   }
 ]

@@ -1,34 +1,32 @@
 # Assisted Vietnamese persistence: approved implementation
 
-Tech Lead approved the minimal status design on 2026-10-11. The implementation is local to the dictionary model and does not add review history, a general-purpose workflow, or external runtime translation.
+The founder approved A-confidence `ASSISTED` Vietnamese meanings for production without human row-by-row review. `ASSISTED` stays visibly distinct from human-reviewed `VERIFIED`; only promotion to `VERIFIED` requires a qualified human review. Density goals are targets, not release gates.
 
 ## Persisted states
 
-`dictionary_entries.vietnamese_meaning` remains the displayed text. V39 adds `vietnamese_status VARCHAR(10) NOT NULL` with the constrained values `VERIFIED`, `ASSISTED`, and `NONE`, plus a consistency constraint:
+V39 adds `dictionary_entries.vietnamese_status VARCHAR(10) NOT NULL` with the constrained values `VERIFIED`, `ASSISTED`, and `NONE`, plus a consistency constraint:
 
 - `VERIFIED`: a Vietnamese meaning approved by a qualified human.
-- `ASSISTED`: an offline assisted draft, explicitly labeled as reference text.
+- `ASSISTED`: offline machine/agent-assisted meaning that has not been human-reviewed.
 - `NONE`: no Vietnamese meaning.
 
-V39 backfills existing nonblank meanings as `VERIFIED` and empty meanings as `NONE`. Before applying this migration in production, verify that the persisted nonblank values came from the reviewed `curated-ja-vi.tsv` source, as the current production refresh path indicates. V39 has not been applied to production.
+The migration backfills existing nonblank meanings as `VERIFIED` and empty meanings as `NONE`. Before applying V39 to production, mechanically verify that existing nonblank runtime values originated from the reviewed `curated-ja-vi.tsv` source. Do not guess or mark unknown values `VERIFIED`.
 
 ## Refresh and assisted import
 
-The repeatable catalog refresh resets entries to `NONE`, then marks rows from `curated-ja-vi.tsv` as `VERIFIED`. It supports an optional, explicitly status-bearing `/dictionary/assisted-ja-vi.tsv` resource through a strict importer that accepts only `ASSISTED` rows with confidence A/B and exact JMdict ID, word, reading, and English-sense identity. It rejects C confidence, `NEEDS_REVIEW`, malformed fields, duplicate IDs, and mismatched catalog rows. It does not read `migration-staging`.
+The repeatable catalog refresh resets entries to `NONE`, imports `dictionary/curated-ja-vi.tsv` as `VERIFIED`, and imports the explicitly status-bearing `dictionary/assisted-ja-vi.tsv` as `ASSISTED`. The strict importer accepts only confidence A and exact JMdict ID, word, reading, and full English-sense identity. It rejects B/C confidence, `NEEDS_REVIEW`, malformed fields, duplicate IDs, reviewed IDs, and mismatched catalog rows. The application never loads `migration-staging` and never calls an external translation service.
 
-The staging-only rehearsal batch lives at `backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-a.tsv`; it is not part of the production classpath. No assisted resource has been promoted to the runtime dictionary resources.
+The runtime candidate contains batches A–F (4,796 rows). Batch files and exclusions remain in `backend/src/main/resources/db/migration-staging/`; the older 500-concept pilot, including its 48 C-confidence concepts, is not a runtime data source. Forty-seven historical or named-institution/eponym entries were removed from the release batches. See [the release report](Vietnamese-Coverage-Expansion-Report.md) for the complete counts, benchmark, and production blockers.
 
 ## API and display
 
-Dictionary search and notebook responses expose `vietnameseStatus`. The dictionary card keeps `Việt` for verified text, shows `Việt tham khảo` for assisted text, retains the no-meaning fallback, and keeps English JMdict meanings visible. Notebook list and add-word views retain the assisted label as well.
+Dictionary search and notebook responses expose `vietnameseStatus`. The UI keeps `Việt` for verified text, displays `Việt tham khảo` for assisted text, and retains the existing no-meaning fallback. English JMdict meanings stay visible. Notebook views preserve the assisted label.
 
-## Validation completed
+## Validation and release state
 
-- H2 backend suite passes, including API status assertions for all three states.
-- A disposable PostgreSQL 16 Flyway rehearsal passes through V39 and a full catalog refresh. It verifies 218,867 active entries, 204 `VERIFIED`, 343 `ASSISTED`, 218,320 `NONE`, and unchanged learning-content fingerprints.
-- The PostgreSQL rehearsal also confirms the repeatable refresh is idempotent and that the assisted staging rows match the pinned JMdict snapshot.
-- Frontend coverage verifies the `ASSISTED`, `VERIFIED`, and `NONE` labels, including that assisted text is never labeled verified.
+- H2: 221 passed, 0 failed, 1 opt-in PostgreSQL test skipped.
+- PostgreSQL 16.15/Flyway through V39: passed on a disposable database with 218,867 active entries, 204 `VERIFIED`, 4,796 `ASSISTED`, and 213,867 `NONE`; full refresh idempotency and learning-content fingerprints passed.
+- Frontend: 8 legacy and 61 unit tests, lint, and production build passed.
+- A-only integrity checks cover every batch and the runtime resource; assisted data remains distinct from verified data.
 
-## Enrichment readiness remains blocked
-
-The persistence design and first staging batch are implemented, but the batch is not release-ready. It contains 343 new A/B assisted drafts, not the requested approximately 5,000 high-value entries; the 35 C-confidence candidates remain excluded, and the 343 drafts still need qualified Japanese review. The approved dictionary contains 204 verified entries. The prior pilot density benchmark is historical and does not prove the current release gates. Keep the drafts in staging and do not merge or deploy until the complete batch, semantic review, full-catalog benchmark, and readiness thresholds pass.
+The local candidate and benchmark are ready for hosted CI. Production remains blocked until production data provenance is mechanically verified and a custom-format PostgreSQL backup is created and verified before V39. No migration has been applied to production and no merge or deployment has occurred.

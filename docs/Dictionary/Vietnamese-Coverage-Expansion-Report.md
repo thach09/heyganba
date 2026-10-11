@@ -1,63 +1,51 @@
-# Vietnamese Dictionary Coverage Expansion Report
+# Vietnamese Assisted Dictionary Release Report
 
-**Recommendation: ENRICHMENT BLOCKED — MANUAL REVIEW REQUIRED.** No entries were promoted or deployed. The current implementation is local to the feature branch.
+**Local candidate: validated. Production release: blocked pending production provenance verification and a verified pre-V39 PostgreSQL backup.** The founder approved A-confidence `ASSISTED` meanings for production without row-by-row human review. They remain distinct from `VERIFIED` meanings in storage, API responses, and the UI.
 
 ## Dataset
 
-- JMdict snapshot: 218867 entries, pinned source SHA-256 `96d749f97e845f98ac05cca9234d805e42059a56edff34a3349862cefe8176a7`.
-- Currently reviewed in the dictionary: 204. Staging batch A adds 343 new A-confidence `ASSISTED` drafts with 104 Vietnamese aliases and 9 English aliases. The potential combined coverage is 547 entries after qualified review; the release target is at least 5,000 approved high-value entries.
-- Batch A is `backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-a.tsv`. It is not loaded by the production Flyway path. No assisted runtime resource has been promoted.
+The pinned JMdict snapshot contains 218,867 active entries (`96d749f97e845f98ac05cca9234d805e42059a56edff34a3349862cefe8176a7`). The release candidate contains 204 reviewed `VERIFIED` entries and 4,796 A-confidence `ASSISTED` entries, for 5,000 Vietnamese-covered entries. After a full refresh, the expected counts are 204 `VERIFIED`, 4,796 `ASSISTED`, and 213,867 `NONE`.
 
-## Confidence
+| Batch | A | B | C | D | E | F | Total |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| A-confidence ASSISTED rows | 343 | 890 | 882 | 888 | 896 | 897 | 4,796 |
 
-- Batch A: 343 A-confidence rows; no B or C rows.
-- The 35 new C-confidence pilot candidates remain excluded. The other 13 C-confidence concepts were already in the independently reviewed source. Confidence is not human approval, and the 343 A drafts still need qualified Japanese review.
+Forty-seven historical or named-institution/eponym rows are in `migration-staging/vietnamese-assisted-exclusions.tsv` and are not loaded. The earlier 500-concept pilot's 48 C-confidence items remain outside the runtime resource; 35 are new candidates and 13 overlap the existing reviewed source. No B-confidence or `NEEDS_REVIEW` rows are loaded. The runtime importer rejects confidence other than A.
 
-## Historical pilot search quality (not current readiness evidence)
+## Selection and translation checks
 
-The measurements below came from the earlier 500-concept pilot, which used 378 new drafts and 122 already-reviewed benchmark meanings. They predate the status migration and do not establish readiness for the current 343-row A-only batch. Re-run the full-catalog benchmark against the final reviewed candidate before release.
+Candidate priority uses JMdict frequency tags (`nf01`–`nf48`, then `ichi1`, `news1`, and `gai1`). Each accepted item has one unrestricted JMdict sense and must exactly match the repository-pinned entry ID, Japanese headword, reading, and complete English sense. Offline authoring translates the Japanese headword JA→VI and cross-checks it against an EN→VI translation of the complete sense. Empty, malformed, non-Vietnamese-script, mismatched, duplicate, reviewed, ambiguous, specialized, archaic, slang-heavy, and named entries are rejected. The application does not call a translation service.
 
-Canonical entry rank is measured within the first page. The new density metric counts visible result cards with a non-empty Vietnamese meaning, independently from the intended canonical entry rank.
+The full source and acceptance metadata are in `backend/tools/generate-assisted-dictionary-batches.mjs` and `backend/src/main/resources/db/migration-staging/`. The assembled runtime file is `backend/src/main/resources/dictionary/assisted-ja-vi.tsv`; only that explicitly status-bearing resource is loaded by the repeatable dictionary refresh. Pilot C rows remain staging-only.
 
-| Metric | Before (clean develop baseline) | After (pending local rehearsal) |
+## Full-catalog search benchmark
+
+The benchmark measured 500 independently selected everyday concepts against the clean `develop` baseline and the full-catalog candidate. Canonical Top-10 assertions remain unchanged. Coverage density targets are reported for product planning and are not release blockers under the founder decision.
+
+| Metric | Baseline | Candidate |
 |---|---:|---:|
-| Vietnamese canonical Top-10 | 122/500 (24.4%) | 500/500 (100%) |
-| English canonical Top-10 | 468/500 (93.6%) | 485/500 (97%) |
-| VI-query Top-10 results with Vietnamese meaning | 278/471 (59.02%) | 805/954 (84.38%) |
-| EN-query Top-10 results with Vietnamese meaning | 154/4696 (3.28%) | 541/4709 (11.49%) |
-| Primary-query Top-10 results with Vietnamese meaning | 432/5167 (8.36%) | 1346/5663 (23.77%) |
-| Primary queries meeting 80% Top-10 Vietnamese coverage | 139/1000 | 486/1000 |
-| Primary-query first-page results with Vietnamese meaning | 544/9566 (5.69%) | 1534/10101 (15.19%) |
+| Vietnamese canonical entries in Top 10 | 122/500 (24.4%) | 462/500 (92.4%) |
+| English canonical entries in Top 10 | 468/500 (93.6%) | 473/500 (94.6%) |
+| VI-query Top-10 results with Vietnamese meaning | 278/471 (59.02%) | 1,595/1,673 (95.34%) |
+| EN-query Top-10 results with Vietnamese meaning | 154/4,696 (3.28%) | 635/4,701 (13.51%) |
+| Combined primary-query Top-10 results with Vietnamese meaning | 432/5,167 (8.36%) | 2,230/6,374 (34.99%) |
+| Primary queries meeting 80% Top-10 Vietnamese density | 139/1,000 | 476/1,000 |
+| Combined primary-query first-page results with Vietnamese meaning | 544/9,566 (5.69%) | 2,905/11,080 (26.22%) |
 
-### Sample queries
+Representative canonical ranks in the candidate are `VI / EN`: dog 1/1, cat 1/2, lion 1/3, elephant 1/2, truck 1/1, motorcycle 1/5, teacher 2/2, doctor 1/1, firefighter 1/1, programmer 1/1, refrigerator 1/4, washing machine 1/2, computer 2/5, apple 1/1, and banana 1/1. `phone` has no matching benchmark identity; live search returned the Japanese telephone entry with `điện thoại; cuộc gọi` in its top results. Query-level results and actual first-three result samples are in `coverage-spot-checks.json`; complete benchmark request results are in `vietnamese-coverage-baseline.json` and `vietnamese-coverage-candidate.json`.
 
-Ranks show VI / English canonical result. Coverage columns show cards with Vietnamese meaning on the full first page and Top-10.
-
-| Queries | Before VI / EN rank | After VI / EN rank | After first-page VI coverage | After Top-10 VI coverage |
-|---|---:|---:|---:|---:|
-| dog / chó | absent / 1 | 1 / 1 | 2/2 (100%) | 2/2 (100%) |
-| cat / mèo | absent / 1 | 1 / 2 | 1/1 (100%) | 1/1 (100%) |
-| lion / sư tử | absent / 3 | 1 / 3 | 1/1 (100%) | 1/1 (100%) |
-| truck / xe tải | absent / 1 | 1 / 1 | 1/1 (100%) | 1/1 (100%) |
-| refrigerator / tủ lạnh | absent / 4 | 1 / 4 | 1/1 (100%) | 1/1 (100%) |
-| firefighter / lính cứu hỏa | absent / 1 | 1 / 1 | 1/1 (100%) | 1/1 (100%) |
-
-Per-query first-page counts, coverage, canonical ranks and the first ten returned entries are in [coverage-query-density.csv](coverage-query-density.csv). The full-catalog before and after request results are in [vietnamese-coverage-baseline.json](vietnamese-coverage-baseline.json) and [vietnamese-coverage-candidate.json](vietnamese-coverage-candidate.json).
-
-## Corrected old data
-
-The prior reviewed mapping fixes remain: bánh mì → JMdict ID 1103090 (`パン`, bread), and xe buýt → ID 1098390 (`バス`, bus). The incorrect pan and bass-fish IDs no longer carry those meanings.
+Candidate timing was a 53.78 ms median and 234.88 ms slowest query (`tofu`) for sequential local PostgreSQL HTTP measurements. These are not production latency guarantees.
 
 ## Validation
 
-- Identity, reading and English sense are checked against the pinned JMdict snapshot by `DictionaryCurationIntegrityTest`.
-- Baseline CI after normal main → develop merge: H2 PASS, PostgreSQL/Flyway PASS through V38, frontend lint/build PASS. Run: [38052704294](https://github.com/thach09/heyganba/actions/runs/38052704294).
-- Local validation: backend H2 suite passes. PostgreSQL 16 Flyway rehearsal through V39 passes with 218,867 active entries, 204 `VERIFIED`, 343 `ASSISTED`, 218,320 `NONE`, idempotent catalog refresh, and unchanged learning-content fingerprints. Frontend unit coverage checks all three displayed provenance states; lint/build and desktop/mobile visual checks are part of the implementation validation.
-- V39 has not been applied to production. Before any production migration, verify that the existing nonblank runtime values came from the reviewed TSV source.
-- Candidate search timing: median 64.14 ms, slowest `to` at 156.58 ms (sequential local HTTP on PostgreSQL 16; not a production latency guarantee).
+- Backend H2: 221 tests passed, 0 failures, 0 errors, 1 opt-in PostgreSQL test skipped in the H2 suite.
+- PostgreSQL 16.15/Flyway: opt-in rehearsal passed on a disposable database through V39; full refresh produced 218,867 active entries with 204 `VERIFIED`, 4,796 `ASSISTED`, and 213,867 `NONE`. Refresh fingerprint/idempotency and curriculum fingerprints passed.
+- Dictionary integrity: all six batch files and the runtime resource are A-only, unique, non-reviewed, nonempty, and identity/sense-matched to the pinned catalog; excluded IDs are absent.
+- Frontend: 8 legacy and 61 unit tests passed; lint and production build passed. Existing lint output contains warnings, with no lint errors.
+- Local runtime smoke: health reported `UP`; dictionary search returned canonical `犬` with the `ASSISTED` status.
 
-## Remaining gaps
+## Production release gate
 
-The reviewed dictionary currently covers 204 entries against the 5,000-entry target; the current batch adds 343 staged drafts. The required full-catalog density benchmark has not been run against the final reviewed candidate, and the 80% Top-10 gate is not established. Human review remains required for every staged row; all 35 new C-confidence pilot candidates remain excluded.
+V39 has not been applied to production. This environment cannot read the production PostgreSQL data or its deployment variables, has no configured production database URL or Render credentials, has no `pg_dump` executable, and exposes no signed-in dashboard session. Therefore it cannot mechanically confirm that existing production Vietnamese values came only from `curated-ja-vi.tsv`, nor create and verify the required custom-format pre-V39 backup. No production migration, merge, or deployment has been performed. PR #32 remains a draft until hosted checks run on the final candidate and the production gates are supplied and passed.
 
-The JMdict/EDRDG snapshot and license remain pinned as described in [the curation README](README.md); Vietnamese drafts are independently authored and not claimed externally verified row by row. V39 and the provenance-aware API/UI changes are implemented locally. No runtime translation API was added. Measurements used disposable local PostgreSQL databases; no staging or production database was written.
+If provenance is uncertain or the backup cannot be verified, stop before V39. The expected result is a release block, not an assumption that unknown production meanings are `VERIFIED`.

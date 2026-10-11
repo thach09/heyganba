@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.*;
 /** Opt-in disposable PostgreSQL ONLY. This migration is test-source code, never packaged/deployed. */
 @EnabledIfSystemProperty(named = "dictionary.pilot.rehearsal", matches = "true")
 class DictionaryPilotPostgresRehearsalTest {
-    @Test void rehearsePendingEnrichmentThroughFlywayWithoutCurriculumMutation() throws Exception {
+    @Test void rehearseFullAssistedReleaseThroughFlywayWithoutCurriculumMutation() throws Exception {
         String url = System.getProperty("dictionary.pilot.jdbc", "jdbc:postgresql://127.0.0.1:15439/dictionary_pilot");
         assertThat(url).matches("jdbc:postgresql://127\\.0\\.0\\.1:[0-9]+/dictionary_pilot(?:_clean)?");
         String user = "pilot", password = "local-dictionary-pilot";
@@ -30,7 +30,8 @@ class DictionaryPilotPostgresRehearsalTest {
                 var counts = new java.util.HashMap<String, Integer>();
                 while (rows.next()) counts.put(rows.getString(1), rows.getInt(2));
                 assertThat(counts.get("VERIFIED")).isEqualTo(204);
-                assertThat(counts.get("ASSISTED")).isEqualTo(343);
+                assertThat(counts.get("ASSISTED")).isEqualTo(4796);
+                assertThat(counts.get("NONE")).isEqualTo(213867);
             }
         }
     }
@@ -53,34 +54,23 @@ class DictionaryPilotPostgresRehearsalTest {
     }
     public static class R__zz_dictionary_pilot_rehearsal extends BaseJavaMigration {
         @Override public Integer getChecksum() {
-            try (var input = getClass().getResourceAsStream("/db/migration-staging/vietnamese-assisted-batch-a.tsv")) {
-                var crc = new java.util.zip.CRC32();
-                crc.update("assisted-batch-rehearsal-v2".getBytes(java.nio.charset.StandardCharsets.UTF_8));
-                // A canonical index refresh clears the overlay, so rehearse again for every transformer revision.
-                crc.update(new db.migration.R__refresh_jmdict_catalog().getChecksum().toString()
-                        .getBytes(java.nio.charset.StandardCharsets.UTF_8));
-                crc.update(input.readAllBytes()); return (int) crc.getValue();
-            } catch (java.io.IOException e) { throw new IllegalStateException(e); }
+            var crc = new java.util.zip.CRC32();
+            crc.update("full-assisted-release-rehearsal-v3".getBytes(java.nio.charset.StandardCharsets.UTF_8));
+            crc.update(new db.migration.R__refresh_jmdict_catalog().getChecksum().toString()
+                    .getBytes(java.nio.charset.StandardCharsets.UTF_8));
+            return (int) crc.getValue();
         }
         @Override public void migrate(Context context) throws Exception {
-            // Start each changed rehearsal from the same canonical refresh; never accumulate aliases.
             String canonicalBefore = canonicalFingerprint(context.getConnection());
             new db.migration.R__refresh_jmdict_catalog().migrate(context);
             assertThat(canonicalFingerprint(context.getConnection())).isEqualTo(canonicalBefore);
-            // Local disposable rehearsal applies only the high-confidence, identity-pinned staging batch.
-            var rows = com.heyganba.service.AssistedDictionaryCuration.read(
-                    getClass().getResourceAsStream("/db/migration-staging/vietnamese-assisted-batch-a.tsv"));
-            try (var update=context.getConnection().prepareStatement("""
-                    UPDATE dictionary_entries SET vietnamese_meaning=?, vietnamese_search_text=?, vietnamese_status='ASSISTED', search_text=search_text || ' | ' || ?
-                    WHERE id=? AND word=? AND reading=? AND meaning=? AND active=true AND vietnamese_status='NONE'
-                    """)) {
-                for (var row : rows) {
-                    var search = row.asSearchRow();
-                    update.setString(1,row.vietnameseMeaning()); update.setString(2,search.vietnameseSearchText());
-                    update.setString(3,search.additionalSearchText()); update.setLong(4,row.id());
-                    update.setString(5,row.word()); update.setString(6,row.reading()); update.setString(7,row.englishSense());
-                    assertThat(update.executeUpdate()).isEqualTo(1);
-                }
+            try (var query = context.getConnection().createStatement();
+                 var rows = query.executeQuery("SELECT vietnamese_status, count(*) FROM dictionary_entries GROUP BY vietnamese_status")) {
+                var counts = new java.util.HashMap<String, Integer>();
+                while (rows.next()) counts.put(rows.getString(1), rows.getInt(2));
+                assertThat(counts.get("VERIFIED")).isEqualTo(204);
+                assertThat(counts.get("ASSISTED")).isEqualTo(4796);
+                assertThat(counts.get("NONE")).isEqualTo(213867);
             }
         }
     }

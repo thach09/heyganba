@@ -10,7 +10,7 @@ const reviewedIds = new Set(readFileSync(reviewedPath, 'utf8').split(/\r?\n/u)
 
 const candidates = pilot.concepts.filter(row => {
   if (row.reviewStatus !== 'PENDING_REVIEW') throw new Error(`Unexpected source review state: ${row.conceptId}`);
-  return !reviewedIds.has(row.jmdictId) && ['A', 'B'].includes(row.confidence);
+  return !reviewedIds.has(row.jmdictId) && row.confidence === 'A';
 });
 if (candidates.length !== 343) throw new Error(`Expected 343 new high-confidence pilot rows; found ${candidates.length}`);
 
@@ -24,7 +24,7 @@ const fields = [
   row => row.englishAliases.join(';'),
   () => 'ASSISTED',
   row => row.confidence,
-  row => row.reviewNote,
+  () => 'ASSISTED draft; Japanese identity, reading, JMdict sense, and clear everyday meaning matched; no human row review.',
 ];
 const lines = candidates.map(row => {
   const values = fields.map(field => String(field(row)));
@@ -34,7 +34,7 @@ const lines = candidates.map(row => {
   return values.join('\t');
 });
 writeFileSync(outputPath,
-  '# STAGING ONLY — ASSISTED, not human-verified. Confidence C and already-VERIFIED IDs are excluded.\n'
+  '# STAGING ONLY — ASSISTED, not human-verified. Only A-confidence, non-reviewed IDs are included.\n'
   + lines.join('\n') + '\n');
 console.log(JSON.stringify({ batch: 'A', assistedRows: candidates.length, sourcePilot: pilot.concepts.length,
   excludedC: pilot.concepts.filter(row => row.confidence === 'C' && !reviewedIds.has(row.jmdictId)).length,

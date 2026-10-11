@@ -42,8 +42,8 @@ public final class AssistedDictionaryCuration {
                     if (fields[1].length() > 100 || fields[2].length() > 100)
                         throw new IllegalArgumentException("Oversized identity");
                     if (!fields[7].equals("ASSISTED")) throw new IllegalArgumentException("Only ASSISTED rows are publishable from this source");
-                    if (!fields[8].equals("A") && !fields[8].equals("B"))
-                        throw new IllegalArgumentException("Only high-confidence A/B rows are publishable");
+                    if (!fields[8].equals("A"))
+                        throw new IllegalArgumentException("Only A-confidence rows are publishable");
                     rows.add(new Row(id, fields[1], fields[2], fields[3], fields[4], aliases(fields[5]),
                             aliases(fields[6]), fields[7], fields[8], fields[9]));
                 } catch (IllegalArgumentException e) {
