@@ -333,12 +333,12 @@ export const AdminView: React.FC = () => {
       <div className="flex flex-wrap items-start justify-between gap-5">
         <div>
           <div className={labelClass}>
-            Admin Portal{' '}
-            <span className="ml-2 font-serif text-[12.5px] font-normal normal-case tracking-[0.06em]">管理ポータル</span>
+            Administrator Portal{' '}
+            <span className="ml-2 font-serif text-[12.5px] font-normal normal-case tracking-[0.06em]">管理中心</span>
           </div>
           <h2 className="mt-3 flex items-center gap-2.5 text-[17px] font-semibold text-fg">
             <ShieldAlert size={18} className="text-fg-60" />
-            <span>Khu vực Quản trị Hệ thống HeyGanba</span>
+            <span>Khu vực Quản trị Hệ thống (Administrator)</span>
           </h2>
           <p className="mt-1.5 text-[12px] leading-[1.8] text-fg-38">
             Quản trị người dùng, audit log, cài đặt xác thực hai yếu tố (2FA) và CRUD trực tiếp ngân hàng câu hỏi, từ

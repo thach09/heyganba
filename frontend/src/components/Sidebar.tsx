@@ -22,18 +22,18 @@ interface SidebarProps {
 const itemBase =
   'relative flex w-full items-baseline gap-2.5 border-0 bg-transparent p-0 text-left font-sans text-sm text-fg cursor-pointer focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-[3px] focus-visible:outline-fg-38';
 
-/** Chinese Red Seal Stamp (印章 - khắc chữ 漢) as the platform brand icon */
+/** Chinese Imperial Seal Stamp (朱砂玉印 - khắc chữ 漢) as the platform brand icon */
 const ChineseSealStamp = () => (
-  <div className="relative flex h-7 w-7 shrink-0 items-center justify-center rounded-[3px] border border-cinnabar/80 bg-cinnabar/10 shadow-xs">
-    <div className="absolute inset-[1.5px] rounded-[2px] border border-cinnabar/40" />
-    <span className="relative z-10 font-serif text-[14px] font-black leading-none text-cinnabar">
+  <div className="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-[3px] border border-[#D97706]/70 bg-[#B91C1C]/20 shadow-[0_0_12px_rgba(185,28,28,0.35)]">
+    <div className="absolute inset-[2px] rounded-[2px] border border-[#B91C1C]/70" />
+    <span className="relative z-10 font-serif text-[15px] font-black leading-none text-[#EF4444]">
       漢
     </span>
   </div>
 );
 
 const ActiveTick = () => (
-  <span aria-hidden="true" className="absolute -left-4 top-1 bottom-1 w-0.5 bg-rank" />
+  <span aria-hidden="true" className="absolute -left-4 top-1 bottom-1 w-0.5 bg-[#D97706] shadow-[0_0_8px_rgba(217,119,6,0.7)]" />
 );
 
 const iconButton =
@@ -153,18 +153,22 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <aside
-      className={`fixed inset-y-0 left-0 z-20 flex w-[216px] flex-col overflow-visible overscroll-contain bg-bg pb-8 pl-8 pr-4 pt-10 transition-transform duration-150 max-[900px]:overflow-y-auto max-[900px]:z-[100] max-[900px]:w-[min(280px,82vw)] max-[900px]:p-6 ${
+      className={`fixed inset-y-0 left-0 z-20 flex w-[216px] flex-col overflow-visible overscroll-contain bg-[#0a0b10]/95 border-r border-[#1e202b] backdrop-blur-md pb-8 pl-8 pr-4 pt-10 transition-transform duration-150 max-[900px]:overflow-y-auto max-[900px]:z-[100] max-[900px]:w-[min(280px,82vw)] max-[900px]:p-6 ${
         isOpen ? 'translate-x-0' : '-translate-x-full'
       }`}
       aria-label="Thanh điều hướng chính"
       inert={isOverlay && !isOpen}
     >
       <div className="flex items-center justify-between gap-2.5">
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-3">
           <ChineseSealStamp />
-          <div>
-            <div className="text-[15px] font-semibold tracking-[0.01em] text-fg">Học tiếng Trung</div>
-            <span className="block text-[10px] uppercase tracking-[0.22em] text-fg-38">中文学习</span>
+          <div className="min-w-0">
+            <div className="font-sans text-[16px] font-bold tracking-tight text-fg whitespace-nowrap">
+              Học tiếng Trung
+            </div>
+            <span className="block font-sans text-[11px] font-medium tracking-[0.16em] text-[#E5A93C]">
+              中文学习 · 华语
+            </span>
           </div>
         </div>
         {isOverlay && onClose && (
@@ -284,12 +288,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {user ? (
           <>
             <div className="min-w-0">
-              <div className="truncate text-xs text-fg-60" title={user.fullName}>
-                {user.fullName}
+              <div className="truncate text-xs font-medium text-fg-60" title={user.fullName}>
+                {user.fullName?.toLowerCase().includes('heyganba') ? 'Administrator' : user.fullName}
               </div>
-              <div className="text-[10.5px] text-fg-38">
-                {user.role === 'ROLE_ADMIN' ? 'Quản trị viên' : 'Học viên'}
-              </div>
+              {user.fullName?.toLowerCase().includes('heyganba') ? null : (
+                <div className="text-[10.5px] text-fg-38">
+                  {user.role === 'ROLE_ADMIN' ? 'Administrator' : 'Học viên'}
+                </div>
+              )}
             </div>
             <div className="flex items-baseline gap-1.5 text-[11px] text-fg-38">
               <span className="font-serif">连续</span>
@@ -319,7 +325,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           )
         )}
         <div className="text-[11px] leading-[1.8] text-fg-38">
-          <span className="font-serif text-xs">學而時習之</span>
+          <span className="font-serif text-xs">学而时习之</span>
           <br />
           Học rồi thường xuyên ôn lại.
         </div>

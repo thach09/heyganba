@@ -20,13 +20,8 @@ const TRACKER_DAYS = 24 * 7;
 const CHART_DAYS = 30;
 const INTENSITY = [0.06, 0.22, 0.44, 0.66, 0.9];
 
-const RANK_TONES: Record<number, { bg: string; text: string; fill: string; border: string }> = {
-  1: { bg: 'bg-rank-1/15', text: 'text-rank-1', fill: 'bg-rank-1', border: 'border-rank-1/40' },
-  2: { bg: 'bg-rank-2/15', text: 'text-rank-2', fill: 'bg-rank-2', border: 'border-rank-2/40' },
-  3: { bg: 'bg-rank-3/15', text: 'text-rank-3', fill: 'bg-rank-3', border: 'border-rank-3/40' },
-  4: { bg: 'bg-rank-4/15', text: 'text-rank-4', fill: 'bg-rank-4', border: 'border-rank-4/40' },
-  5: { bg: 'bg-rank-5/20', text: 'text-rank-5', fill: 'bg-rank-5', border: 'border-rank-5/50' },
-};
+
+
 
 const formatNumber = (value: number) => value.toLocaleString('vi-VN');
 
@@ -214,54 +209,46 @@ export const DashboardView: React.FC = () => {
   const currentLevel = userExp?.level ?? 1;
   const currentExp = userExp?.expIntoLevel ?? 0;
   const nextLevelExp = userExp?.expForNextLevel ?? 1000;
-  const rankTier = userExp?.rankTier ?? 1;
-  const rankName = userExp?.rankName ?? 'Sơ khởi';
-  const rankTone = RANK_TONES[rankTier] ?? RANK_TONES[1] ?? { bg: 'bg-rank-1/15', text: 'text-rank-1', fill: 'bg-rank-1', border: 'border-rank-1/40' };
   const expPercent = Math.min(100, Math.round((currentExp / nextLevelExp) * 100));
 
   const chartDays = useMemo(() => (user && Array.isArray(heatmap) ? heatmap.slice(-CHART_DAYS) : []), [heatmap, user]);
 
-  const now = new Date();
-  const viDate = now.toLocaleDateString('vi-VN', {
-    weekday: 'long',
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-  });
-
   return (
     <>
-      <header className="flex items-start justify-between gap-10 max-[900px]:flex-col max-[900px]:gap-7">
-        <div className="pt-0.5 text-[12.5px] text-fg-38">
-          {viDate}
-        </div>
-
-        <div className="text-right max-[900px]:text-left">
-          <div className="flex items-center justify-end gap-2 max-[900px]:justify-start">
-            <span className={`inline-flex items-center px-2 py-0.5 text-[10.5px] font-medium tracking-[0.1em] border ${rankTone.border} ${rankTone.bg} ${rankTone.text} rounded-sm`}>
-              {rankName} (Tier {rankTier})
-            </span>
-            <span className="text-[10.5px] uppercase tracking-[0.16em] text-fg-38">Kinh nghiệm</span>
-          </div>
-          {user ? (
-            <>
-              <div className="mt-1 text-[13.5px]">
-                Cấp{' '}
-                <b className="mr-0.5 font-serif text-[22px] font-semibold">{currentLevel}</b> ·{' '}
+      <header className="flex flex-col items-start">
+        {user ? (
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+            <div className="flex items-baseline gap-1.5 text-[14px] text-fg">
+              <span className="text-fg-60 text-[13px]">Cấp</span>
+              <b className="font-serif text-[22px] font-bold text-fg leading-none">{currentLevel}</b>
+              <span className="mx-1 text-fg-38">·</span>
+              <span className="font-mono text-[13px] text-fg-60">
                 {formatNumber(currentExp)} / {formatNumber(nextLevelExp)} EXP
-              </div>
-              <div className="relative ml-auto mt-2.5 h-[2px] w-[220px] max-w-full bg-rule max-[900px]:ml-0 max-[900px]:w-full">
-                <i
-                  aria-hidden="true"
-                  className={`absolute inset-y-0 left-0 ${rankTone.fill}`}
+              </span>
+            </div>
+
+            {/* Thanh nhỏ hiển thị sắp lên cấp / kinh nghiệm chưa */}
+            <div className="flex items-center gap-2.5 rounded-full border border-[#262834] bg-[#12141a]/95 px-3 py-1 shadow-inner">
+              <span className="text-[11px] text-fg-38">Lên cấp:</span>
+              <div
+                className="relative h-2 w-28 overflow-hidden rounded-full bg-rule/70"
+                title={`Đã tích lũy ${expPercent}% để lên cấp ${currentLevel + 1}`}
+              >
+                <div
+                  className="h-full rounded-full bg-gradient-to-r from-[#D97706] to-[#F59E0B] transition-all duration-500 shadow-[0_0_8px_rgba(217,119,6,0.6)]"
                   style={{ width: `${expPercent}%` }}
                 />
               </div>
-            </>
-          ) : (
-            <div className="mt-1 text-[13.5px] text-fg-60">Đăng nhập để theo dõi tiến độ</div>
-          )}
-        </div>
+              <span className="font-mono text-[11px] font-semibold text-[#F59E0B]">
+                {expPercent}%
+              </span>
+            </div>
+          </div>
+        ) : (
+          <div className="text-[13px] text-fg-60">
+            Đăng nhập để theo dõi tiến độ học tập
+          </div>
+        )}
       </header>
 
       {/* Prominent Companion Pet Widget */}
@@ -270,11 +257,11 @@ export const DashboardView: React.FC = () => {
       </div>
 
       <section className="mt-10 grid grid-cols-2 gap-x-12 gap-y-10 max-[900px]:grid-cols-1 max-[900px]:gap-8">
-        <OrientalCard tag="Mật độ học" tagVariant="cinnabar" className="p-6">
+        <OrientalCard className="p-6">
           <Tracker days={heatmap} />
         </OrientalCard>
 
-        <OrientalCard tag="Tổng kết" tagVariant="gold" className="p-6">
+        <OrientalCard className="p-6">
           <WeekStats
             items={user ? weekItems : null}
             correct={user ? weekCorrect : null}
@@ -282,11 +269,11 @@ export const DashboardView: React.FC = () => {
           />
         </OrientalCard>
 
-        <OrientalCard tag="Xu hướng 30 ngày" tagVariant="ink" className="p-6">
+        <OrientalCard className="p-6">
           <ActivityChart days={chartDays} metric="itemCount" label="Lượt học" />
         </OrientalCard>
 
-        <OrientalCard tag="Tỉ lệ chính xác" tagVariant="jade" className="p-6">
+        <OrientalCard className="p-6">
           <ActivityChart days={chartDays} metric="correctCount" label="Trả lời đúng" />
         </OrientalCard>
       </section>
