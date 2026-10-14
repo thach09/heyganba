@@ -1,34 +1,38 @@
 @import "tailwindcss";
 
-/* Editorial Oriental Craft (Văn Phòng Tứ Bảo / Modern Guochao) Design Tokens */
+/* Imperial Forbidden City & Three Kingdoms (Cung Đình Hoàng Gia & Tam Quốc) Dark Palette Tokens */
 @theme {
   --color-*: initial;
-  --color-bg: #141413;
-  --color-fg: #ECECE6;
-  --color-fg-60: rgba(236, 236, 230, 0.60);
-  --color-fg-38: rgba(236, 236, 230, 0.34);
-  --color-rule: rgba(236, 236, 230, 0.12);
-  --color-rule-strong: rgba(236, 236, 230, 0.28);
-  --color-card: #1A1B18;
-  --color-tint: rgba(236, 236, 230, 0.05);
-  --color-scrim: rgba(12, 12, 11, 0.76);
-  --color-rank: #7FA98B;
-  --color-rank-1: #A3C4AD;
-  --color-rank-2: #7FA98B;
-  --color-rank-3: #5E8F6C;
-  --color-rank-4: #467152;
-  --color-rank-5: #30533B;
-  --color-red: #C83E31;
+  --color-bg: #090a0e;
+  --color-fg: #edece6;
+  --color-fg-60: rgba(237, 236, 230, 0.65);
+  --color-fg-38: rgba(237, 236, 230, 0.38);
+  --color-rule: rgba(237, 236, 230, 0.08);
+  --color-rule-strong: rgba(237, 236, 230, 0.20);
+  --color-card: #12141a;
+  --color-tint: rgba(237, 236, 230, 0.04);
+  --color-scrim: rgba(7, 8, 12, 0.82);
+  --color-rank: #e5a93c;
+  --color-rank-1: #94a3b8;
+  --color-rank-2: #2dd4bf;
+  --color-rank-3: #f59e0b;
+  --color-rank-4: #f43f5e;
+  --color-rank-5: #e11d48;
+  --color-red: #b91c1c;
   --color-transparent: transparent;
   --color-current: currentColor;
 
-  /* Authentic Chinese Heritage Tones (中國傳統色) */
-  --color-cinnabar: #C83E31;     /* Chu Sa (朱砂) */
-  --color-jade: #2E7D6B;         /* Thanh Ngọc (青玉) */
-  --color-gold: #D97706;         /* Hoàng Kim / Nê Kim (泥金) */
-  --color-xuan: #F7F4ED;         /* Giấy Tuyên (宣纸) */
-  --color-inkstone: #141413;     /* Nghiên Mực (端砚) */
-  --color-ink-border: #2D2E29;
+  /* Authentic Chinese Imperial & Three Kingdoms Heritage Tones */
+  --color-cinnabar: #b91c1c;     /* Chu Sa Cung Đình (朱砂) */
+  --color-cinnabar-dark: #7f1d1d;
+  --color-jade: #0f766e;         /* Thanh Ngọc (青玉) */
+  --color-gold: #d97706;         /* Hoàng Kim Hoàng Cung (琉璃金) */
+  --color-gold-light: #f59e0b;
+  --color-bronze: #854d0e;       /* Đồng Cổ Tam Quốc (青铜) */
+  --color-lacquer: #12141a;      /* Sơn Mài Huyền Sắc (玄漆) */
+  --color-xuan: #f7f4ed;         /* Giấy Tuyên Chỉ (宣纸) */
+  --color-inkstone: #090a0e;     /* Nghiên Mực Đoan Nghiên (端砚) */
+  --color-ink-border: #262933;
 
   --font-*: initial;
   --font-sans: 'Be Vietnam Pro', 'Noto Sans SC', 'Noto Sans', system-ui, sans-serif;
@@ -46,6 +50,8 @@
   --animate-pet-wag: pet-wag 1.6s ease-in-out infinite;
   --animate-pet-chew: pet-chew 0.5s ease-in-out infinite;
   --animate-pet-float: pet-float 2.4s ease-in-out infinite;
+  --animate-lantern-sway: lantern-sway 6s ease-in-out infinite alternate;
+  --animate-lantern-glow: lantern-glow 3.5s ease-in-out infinite alternate;
 
   @keyframes caret-blink {
     0%, 49% { opacity: 1; }
@@ -143,6 +149,24 @@
       transform: translateY(-6px);
     }
   }
+
+  @keyframes lantern-sway {
+    0% {
+      transform: translateY(0) rotate(-1.5deg);
+    }
+    100% {
+      transform: translateY(-14px) rotate(1.8deg);
+    }
+  }
+
+  @keyframes lantern-glow {
+    0% {
+      filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.35));
+    }
+    100% {
+      filter: drop-shadow(0 0 22px rgba(245, 158, 11, 0.75));
+    }
+  }
 }
 
 @layer base {
@@ -150,6 +174,17 @@
     min-height: 100vh;
     overflow-x: hidden;
     background-color: var(--color-bg);
+    background-image: 
+      /* Imperial vermilion palace glow from top right */
+      radial-gradient(circle 800px at 90% -10%, rgba(185, 28, 28, 0.12) 0%, transparent 70%),
+      /* Glazed tile gold / Three Kingdoms bronze glow from top left */
+      radial-gradient(circle 700px at 15% -5%, rgba(217, 119, 6, 0.09) 0%, transparent 65%),
+      /* Deep misty pass shadow from bottom */
+      radial-gradient(ellipse 100% 40% at 50% 100%, rgba(15, 23, 42, 0.45) 0%, transparent 80%),
+      /* Rice paper / lattice subtle grid */
+      linear-gradient(to right, rgba(237, 236, 230, 0.016) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(237, 236, 230, 0.016) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 100% 100%, 52px 52px, 52px 52px;
     color: var(--color-fg);
     font-family: var(--font-sans);
     line-height: 1.65;
@@ -182,9 +217,9 @@
   background-size: 24px 24px;
 }
 
-/* Subtle Xuan Paper Texture Overlay */
+/* Imperial Lacquer Plaque (Sơn Mài Hoàng Gia / Thẻ Bài Tam Quốc) */
 .xuan-paper-card {
-  background-color: #1A1B18;
-  border: 1px solid rgba(236, 236, 230, 0.12);
-  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.25);
+  background: linear-gradient(180deg, #161822 0%, #101218 100%);
+  border: 1px solid #2a2c38;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.45);
 }
