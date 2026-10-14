@@ -1,14 +1,11 @@
 import React from 'react';
 
 /**
- * Mascot CHÍNH THỨC của HeyGanba: chuỗi emoji tiến hoá theo streak (🥚 → 🐣 → 🐤 → 🐥 → 🦅 → 🐉).
- *
- * Quyết định (27/09/2026): đây là giải pháp lâu dài, KHÔNG còn là "tạm/placeholder" — không làm thêm mascot
- * nào khác; logo cổng Torii vẫn là biểu tượng thương hiệu chính. Mỗi bậc có `alt` mô tả để screen reader đọc
- * được (accessibility), không ẩn khỏi cây accessibility như trước.
+ * Mascot chuỗi emoji tiến hoá theo streak (🥚 → 🐣 → 🐤 → 🐥 → 🦅 → 🐉).
+ * Dấu ấn kiên trì học tập của học viên tiếng Trung.
  */
 const MILESTONES = [
-  { minStreak: 30, emoji: '🐉', label: 'Rồng Nhật', note: 'Bậc thầy kiên trì', alt: 'Rồng — mascot bậc 30 ngày streak' },
+  { minStreak: 30, emoji: '🐉', label: 'Kim Long (金龙)', note: 'Bậc thầy kiên trì', alt: 'Kim Long — mascot bậc 30 ngày streak' },
   { minStreak: 14, emoji: '🦅', label: 'Đại bàng', note: 'Bay cao, học đều', alt: 'Đại bàng — mascot bậc 14 ngày streak' },
   { minStreak: 7, emoji: '🐥', label: 'Chim non', note: 'Đã thành thói quen tuần', alt: 'Chim non — mascot bậc 7 ngày streak' },
   { minStreak: 3, emoji: '🐤', label: 'Gà con', note: 'Bắt đầu vững vàng', alt: 'Gà con — mascot bậc 3 ngày streak' },

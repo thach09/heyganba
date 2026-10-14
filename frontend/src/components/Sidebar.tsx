@@ -22,21 +22,14 @@ interface SidebarProps {
 const itemBase =
   'relative flex w-full items-baseline gap-2.5 border-0 bg-transparent p-0 text-left font-sans text-sm text-fg cursor-pointer focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-[3px] focus-visible:outline-fg-38';
 
-/** Chinese character mark — a simplified 文 (wén) as the brand icon */
-const ChineseMark = () => (
-  <svg
-    width="26"
-    height="24"
-    viewBox="0 0 26 24"
-    aria-hidden="true"
-    className="shrink-0 fill-none stroke-fg-60"
-    strokeWidth={1.1}
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    {/* Simplified 文 strokes */}
-    <path d="M13 4 L13 18 M7 9 L19 9 M5 14 L13 21 L21 14" />
-  </svg>
+/** Chinese Red Seal Stamp (印章 - khắc chữ 漢) as the platform brand icon */
+const ChineseSealStamp = () => (
+  <div className="relative flex h-7 w-7 shrink-0 items-center justify-center rounded-[3px] border border-cinnabar/80 bg-cinnabar/10 shadow-xs">
+    <div className="absolute inset-[1.5px] rounded-[2px] border border-cinnabar/40" />
+    <span className="relative z-10 font-serif text-[14px] font-black leading-none text-cinnabar">
+      漢
+    </span>
+  </div>
 );
 
 const ActiveTick = () => (
@@ -123,7 +116,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const isAdmin = user?.role === 'ROLE_ADMIN';
   const location = useLocation();
   const [charGroupOpen, setCharGroupOpen] = useState(false);
-  const charGroupActive = location.pathname.startsWith('/hanzi');
+  const charGroupActive = location.pathname.startsWith('/hanzi') || location.pathname.startsWith('/pinyin');
   const charGroupRef = useRef<HTMLDivElement | null>(null);
 
   /**
@@ -168,7 +161,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     >
       <div className="flex items-center justify-between gap-2.5">
         <div className="flex items-center gap-2.5">
-          <ChineseMark />
+          <ChineseSealStamp />
           <div>
             <div className="text-[15px] font-semibold tracking-[0.01em] text-fg">Học tiếng Trung</div>
             <span className="block text-[10px] uppercase tracking-[0.22em] text-fg-38">中文学习</span>
@@ -239,6 +232,21 @@ export const Sidebar: React.FC<SidebarProps> = ({
           >
             <span aria-hidden="true" className="absolute -left-3.5 top-0 bottom-0 w-3.5 max-[900px]:hidden" />
             <Link
+              to="/pinyin"
+              role="menuitem"
+              onClick={(event) => {
+                if (event.detail > 0) {
+                  event.currentTarget.blur();
+                }
+                closeFlyout();
+                onNavigate?.();
+              }}
+              className="flex w-full cursor-pointer items-baseline gap-2.5 border-0 bg-transparent px-4 py-2 text-left font-sans text-fg hover:bg-tint"
+            >
+              <span className="font-serif text-sm">拼音</span>
+              <span className="text-[10.5px] text-fg-38">Pinyin & Thanh điệu</span>
+            </Link>
+            <Link
               to="/hanzi"
               role="menuitem"
               onClick={(event) => {
@@ -251,7 +259,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               className="flex w-full cursor-pointer items-baseline gap-2.5 border-0 bg-transparent px-4 py-2 text-left font-sans text-fg hover:bg-tint"
             >
               <span className="font-serif text-sm">汉字</span>
-              <span className="text-[10.5px] text-fg-38">Chữ Hán</span>
+              <span className="text-[10.5px] text-fg-38">Chữ Hán (Tập viết)</span>
             </Link>
           </div>
         </div>
