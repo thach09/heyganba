@@ -4,21 +4,36 @@ import { PetId, PetMood } from './types';
 const STORAGE_PET_KEY = 'heyganba_companion_pet_id';
 const STORAGE_BAMBOO_KEY = 'heyganba_companion_bamboo';
 const STORAGE_EXP_KEY = 'heyganba_companion_affection_exp';
+const VALID_PETS: PetId[] = ['panda', 'red_panda', 'golden_monkey', 'imperial_cat'];
 
 export function useCompanion() {
   const [selectedPetId, setSelectedPetId] = useState<PetId>(() => {
-    const saved = localStorage.getItem(STORAGE_PET_KEY);
-    return (saved as PetId) || 'panda';
+    try {
+      const saved = localStorage.getItem(STORAGE_PET_KEY);
+      return saved && VALID_PETS.includes(saved as PetId) ? (saved as PetId) : 'panda';
+    } catch {
+      return 'panda';
+    }
   });
 
   const [bambooCount, setBambooCount] = useState<number>(() => {
-    const saved = localStorage.getItem(STORAGE_BAMBOO_KEY);
-    return saved !== null ? parseInt(saved, 10) : 6;
+    try {
+      const saved = localStorage.getItem(STORAGE_BAMBOO_KEY);
+      const val = saved !== null ? parseInt(saved, 10) : 6;
+      return isNaN(val) ? 6 : val;
+    } catch {
+      return 6;
+    }
   });
 
   const [affectionExp, setAffectionExp] = useState<number>(() => {
-    const saved = localStorage.getItem(STORAGE_EXP_KEY);
-    return saved !== null ? parseInt(saved, 10) : 35;
+    try {
+      const saved = localStorage.getItem(STORAGE_EXP_KEY);
+      const val = saved !== null ? parseInt(saved, 10) : 35;
+      return isNaN(val) ? 35 : val;
+    } catch {
+      return 35;
+    }
   });
 
   const [mood, setMood] = useState<PetMood>('idle');

@@ -1078,12 +1078,12 @@ export const AdminView: React.FC = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-scrim p-4">
           <div className="w-full max-w-[500px] border border-rule bg-card p-6 shadow-xl animate-toast-in">
             <h3 className="font-serif text-[17px] font-semibold text-fg">
-              {editingKanjiId ? 'Chỉnh sửa Kanji' : 'Thêm Kanji mới'}
+              {editingKanjiId ? 'Chỉnh sửa chữ Hán (Hanzi)' : 'Thêm chữ Hán (Hanzi) mới'}
             </h3>
             <form onSubmit={handleSaveKanji} className="mt-4 flex flex-col gap-3">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className={labelClass}>Chữ Kanji</label>
+                  <label className={labelClass}>Chữ Hán</label>
                   <input
                     type="text"
                     required
@@ -1107,7 +1107,7 @@ export const AdminView: React.FC = () => {
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className={labelClass}>Âm On (Katakana)</label>
+                  <label className={labelClass}>Phiên âm Pinyin</label>
                   <input
                     type="text"
                     value={kanjiForm.onyomi}
@@ -1116,7 +1116,7 @@ export const AdminView: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className={labelClass}>Âm Kun (Hiragana)</label>
+                  <label className={labelClass}>Bộ thủ (Radical)</label>
                   <input
                     type="text"
                     value={kanjiForm.kunyomi}
@@ -1147,7 +1147,7 @@ export const AdminView: React.FC = () => {
                 </div>
               </div>
               <div>
-                <label className={labelClass}>Mẹo nhớ (Mnemonic)</label>
+                <label className={labelClass}>Chiết tự & Mẹo nhớ</label>
                 <textarea
                   rows={2}
                   value={kanjiForm.mnemonic}
@@ -1164,7 +1164,7 @@ export const AdminView: React.FC = () => {
                   Huỷ
                 </button>
                 <SubmitButton type="submit" variant="primary">
-                  Lưu Kanji
+                  Lưu chữ Hán
                 </SubmitButton>
               </div>
             </form>

@@ -30,9 +30,18 @@ const RANK_TONES: Record<number, { bg: string; text: string; fill: string; borde
 
 const formatNumber = (value: number) => value.toLocaleString('vi-VN');
 
-const toLocalDate = (isoDate: string) => {
-  const [year, month, day] = isoDate.split('-').map(Number);
-  return new Date(year, (month ?? 1) - 1, day ?? 1);
+const toLocalDate = (isoDate: unknown): Date => {
+  if (!isoDate) return new Date();
+  if (Array.isArray(isoDate)) {
+    const [year, month, day] = isoDate;
+    return new Date(Number(year) || 2026, (Number(month) || 1) - 1, Number(day) || 1);
+  }
+  if (typeof isoDate === 'string') {
+    const [year, month, day] = isoDate.split('-').map(Number);
+    return new Date(year, (month ?? 1) - 1, day ?? 1);
+  }
+  if (isoDate instanceof Date) return isoDate;
+  return new Date();
 };
 
 /** 0 = Monday ... 6 = Sunday (heatmap columns run Mon -> Sun) */
@@ -54,7 +63,7 @@ const StatRow: React.FC<{ label: string; value: number | null }> = ({ label, val
 /** Tracker: per-day ink density - the more you study, the brighter the cell */
 const Tracker: React.FC<{ days: HeatmapDay[] }> = ({ days }) => {
   const cells = useMemo<(HeatmapDay | null)[]>(() => {
-    if (days.length === 0) {
+    if (!days || days.length === 0 || !days[0]) {
       return Array.from({ length: TRACKER_DAYS }, () => null);
     }
     const pad = mondayFirstIndex(toLocalDate(days[0].date));
@@ -62,7 +71,8 @@ const Tracker: React.FC<{ days: HeatmapDay[] }> = ({ days }) => {
   }, [days]);
 
   const level = useMemo(() => {
-    const max = Math.max(1, ...days.map((day) => day.itemCount));
+    const validDays = Array.isArray(days) ? days : [];
+    const max = Math.max(1, ...validDays.map((day) => day?.itemCount || 0));
     return (count: number) => (count <= 0 ? 0 : Math.min(4, Math.ceil((count / max) * 4)));
   }, [days]);
 
@@ -125,7 +135,7 @@ const ActivityChart: React.FC<{ days: HeatmapDay[]; metric: 'itemCount' | 'corre
   metric,
   label,
 }) => {
-  const values = useMemo(() => days.map((day) => day[metric]), [days, metric]);
+  const values = useMemo(() => (Array.isArray(days) ? days.map((day) => day?.[metric] || 0) : []), [days, metric]);
   const max = Math.max(1, ...values);
   const total = values.reduce((sum, value) => sum + value, 0);
 
@@ -173,7 +183,7 @@ export const DashboardView: React.FC = () => {
 
     const controller = new AbortController();
     void progressApi.heatmap(TRACKER_DAYS, { signal: controller.signal }).then((res) => {
-      if (!controller.signal.aborted && res.success && res.data) {
+      if (!controller.signal.aborted && res.success && Array.isArray(res.data)) {
         setHeatmap(res.data);
       }
     }).catch(() => { /* Cancellation is silent. */ });
@@ -193,10 +203,11 @@ export const DashboardView: React.FC = () => {
   }, [user]);
 
   const { weekItems, weekCorrect } = useMemo(() => {
-    const last7 = heatmap.slice(-7);
+    const safeHeatmap = Array.isArray(heatmap) ? heatmap : [];
+    const last7 = safeHeatmap.slice(-7);
     return {
-      weekItems: last7.reduce((sum, day) => sum + day.itemCount, 0),
-      weekCorrect: last7.reduce((sum, day) => sum + day.correctCount, 0),
+      weekItems: last7.reduce((sum, day) => sum + (day?.itemCount || 0), 0),
+      weekCorrect: last7.reduce((sum, day) => sum + (day?.correctCount || 0), 0),
     };
   }, [heatmap]);
 
@@ -205,10 +216,10 @@ export const DashboardView: React.FC = () => {
   const nextLevelExp = userExp?.expForNextLevel ?? 1000;
   const rankTier = userExp?.rankTier ?? 1;
   const rankName = userExp?.rankName ?? 'Sơ khởi';
-  const rankTone = RANK_TONES[rankTier] ?? RANK_TONES[1];
+  const rankTone = RANK_TONES[rankTier] ?? RANK_TONES[1] ?? { bg: 'bg-rank-1/15', text: 'text-rank-1', fill: 'bg-rank-1', border: 'border-rank-1/40' };
   const expPercent = Math.min(100, Math.round((currentExp / nextLevelExp) * 100));
 
-  const chartDays = useMemo(() => (user ? heatmap.slice(-CHART_DAYS) : []), [heatmap, user]);
+  const chartDays = useMemo(() => (user && Array.isArray(heatmap) ? heatmap.slice(-CHART_DAYS) : []), [heatmap, user]);
 
   const now = new Date();
   const viDate = now.toLocaleDateString('vi-VN', {

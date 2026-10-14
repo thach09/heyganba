@@ -321,11 +321,11 @@ const DictionaryNotebookSessionView: React.FC = () => {
         <div>
           <div className={labelClass}>
             Dictionary & Notebooks{' '}
-            <span className="ml-2 font-serif text-[12.5px] font-normal normal-case tracking-[0.06em]">辞書・単語帳</span>
+            <span className="ml-2 font-serif text-[12.5px] font-normal normal-case tracking-[0.06em]">词典 · 生词本</span>
           </div>
           <h2 className="mt-3 text-[17px] font-semibold text-fg">Tra cứu Từ điển & Kho từ vựng cá nhân</h2>
           <p className="mt-1.5 text-[12px] leading-[1.8] text-fg-38">
-            Tra cứu từ thông dụng có nghĩa tiếng Việt và tiếng Anh; tìm theo chữ Nhật, kana, romaji hoặc nghĩa.
+            Tra cứu từ vựng tiếng Trung có nghĩa tiếng Việt, âm Hán Việt; tìm theo chữ Hán, Pinyin hoặc nghĩa.
           </p>
         </div>
 
@@ -495,7 +495,7 @@ const DictionaryNotebookSessionView: React.FC = () => {
 
               {searchResult.totalMatches === 0 && (
                 <div className="py-12 text-center text-[13px] text-fg-38">
-                  Không tìm thấy kết quả. Thử dạng từ gốc, cách đọc kana hoặc nghĩa tiếng Anh.
+                  Không tìm thấy kết quả. Thử chữ Hán, phiên âm Pinyin hoặc nghĩa tiếng Việt.
                 </div>
               )}
               {searchResult.hasMore && <SubmitButton loading={isSearching} onClick={() => doSearch(searchResult.query, searchResult.page + 1)} variant="secondary">Xem thêm kết quả</SubmitButton>}
@@ -510,7 +510,7 @@ const DictionaryNotebookSessionView: React.FC = () => {
           <p className="text-[12.5px] leading-[1.8] text-fg-60">Từ JMdict trong sổ có nghĩa tiếng Anh. Nguồn: <a className="underline" href="https://www.edrdg.org/jmdict/j_jmdict.html" target="_blank" rel="noreferrer">JMdict / EDRDG</a> · <a className="underline" href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noreferrer">CC BY-SA 4.0</a>.</p>
           <label className="flex flex-wrap items-center gap-3 text-[12.5px] text-fg-60">Luyện theo
             <select value={practiceKind} onChange={e => setPracticeKind(e.target.value as 'MEANING' | 'READING')} className="min-h-11 border border-rule-strong bg-card px-3 text-fg">
-              <option value="MEANING">Nghĩa của từ</option><option value="READING">Cách đọc kana (từ có kanji)</option>
+              <option value="MEANING">Nghĩa của từ</option><option value="READING">Phiên âm Pinyin (chữ Hán)</option>
             </select>
           </label>
           {/* Sample Decks */}
@@ -835,7 +835,7 @@ const DictionaryNotebookSessionView: React.FC = () => {
                 <div className="my-8 text-center">
                   <div className="font-serif text-[36px] font-bold text-fg">{currentItem?.word}</div>
                   {currentItem && (questionKind(currentItem) !== 'READING' || isAnswered) && <div className="mt-1 font-serif text-[15px] text-fg-60">{currentItem.reading}</div>}
-                  <p className="mt-3 text-[12.5px] text-fg-60">{currentItem && questionKind(currentItem) === 'READING' ? 'Chọn cách đọc kana' : `Chọn nghĩa ${currentItem?.meaningLanguage === 'en' ? 'tiếng Anh' : 'tiếng Việt'}`}</p>
+                  <p className="mt-3 text-[12.5px] text-fg-60">{currentItem && questionKind(currentItem) === 'READING' ? 'Chọn phiên âm Pinyin' : `Chọn nghĩa ${currentItem?.meaningLanguage === 'en' ? 'tiếng Anh' : 'tiếng Việt'}`}</p>
                   {currentItem?.sinoVietnamese && (
                     <div className="mt-0.5 text-[12px] text-fg-38">{currentItem?.sinoVietnamese}</div>
                   )}

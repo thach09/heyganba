@@ -24,7 +24,8 @@ export function CompanionPetSvg({
   const [isBlinking, setIsBlinking] = useState(false);
   const [squish, setSquish] = useState(false);
   const [currentQuote, setCurrentQuote] = useState<PetQuote>(() => {
-    const quotes = PET_DEFINITIONS[petId].quotes[mood];
+    const pet = PET_DEFINITIONS[petId] || PET_DEFINITIONS.panda;
+    const quotes = pet?.quotes?.[mood] || PET_DEFINITIONS.panda.quotes.idle;
     return quotes[0] || { zh: '今天一起加油！', vi: 'Hôm nay cùng cố gắng nhé!' };
   });
 
@@ -39,7 +40,8 @@ export function CompanionPetSvg({
 
   // Update quote when mood or pet changes
   useEffect(() => {
-    const quotes = PET_DEFINITIONS[petId].quotes[mood];
+    const pet = PET_DEFINITIONS[petId] || PET_DEFINITIONS.panda;
+    const quotes = pet?.quotes?.[mood] || PET_DEFINITIONS.panda.quotes.idle;
     if (quotes && quotes.length > 0) {
       const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
       setCurrentQuote(randomQuote);
@@ -52,7 +54,8 @@ export function CompanionPetSvg({
     setTimeout(() => setSquish(false), 450);
 
     // Pick a new random quote
-    const quotes = PET_DEFINITIONS[petId].quotes[mood];
+    const pet = PET_DEFINITIONS[petId] || PET_DEFINITIONS.panda;
+    const quotes = pet?.quotes?.[mood] || PET_DEFINITIONS.panda.quotes.idle;
     if (quotes && quotes.length > 0) {
       const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
       setCurrentQuote(randomQuote);

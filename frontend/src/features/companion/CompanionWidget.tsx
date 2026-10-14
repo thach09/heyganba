@@ -35,7 +35,7 @@ export function CompanionWidget() {
   } = useCompanion();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const activePet = PET_DEFINITIONS[selectedPetId];
+  const activePet = PET_DEFINITIONS[selectedPetId] || PET_DEFINITIONS.panda;
 
   const handleFeed = () => {
     feedBamboo();
