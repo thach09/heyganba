@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { PetMood } from './types';
+import type { PetMood } from './types';
 import { useCompanion } from './useCompanionStore';
-import { CompanionPetSvg } from './CompanionPetSvg';
-import { BambooShootIcon } from './CompanionWidget';
+import { Companion3DCanvas } from './three/Companion3DCanvas';
+import { FoodIcon } from './CompanionWidget';
+import { PET_DEFINITIONS } from './petData';
 
 interface StudyPetCompanionProps {
   mood?: PetMood;
@@ -17,8 +17,9 @@ export function StudyPetCompanion({
   onCheer,
   compact = false,
 }: StudyPetCompanionProps) {
-  const { selectedPetId, bambooCount, mood: storeMood, setMood } = useCompanion();
+  const { selectedPetId, bambooCount, mood: storeMood, setMood, growthStage } = useCompanion();
   const currentMood = propMood || storeMood;
+  const activePet = PET_DEFINITIONS[selectedPetId] || PET_DEFINITIONS.panda;
 
   if (compact) {
     return (
@@ -26,11 +27,12 @@ export function StudyPetCompanion({
         className={`relative inline-flex items-center gap-2 rounded-lg border border-rule bg-[#1A1B18]/90 px-2.5 py-1 shadow-sm backdrop-blur-sm ${className}`}
       >
         <div className="flex items-center gap-1 rounded-full border border-rule/80 bg-black/40 px-2 py-0.5 text-[10.5px] font-medium text-[#2E7D6B]">
-          <BambooShootIcon className="h-3 w-3" />
+          <FoodIcon type={activePet.foodIcon} className="h-3 w-3" />
           <span>{bambooCount}</span>
         </div>
-        <CompanionPetSvg
+        <Companion3DCanvas
           petId={selectedPetId}
+          stage={growthStage}
           mood={currentMood}
           size={42}
           showSpeechBubble={false}
@@ -49,17 +51,18 @@ export function StudyPetCompanion({
     <div
       className={`relative inline-flex flex-col items-center rounded-xl border border-rule bg-[#1A1B18]/90 p-3 shadow-md backdrop-blur-sm ${className}`}
     >
-      {/* Bamboo Shoots Badge */}
+      {/* Food Badge */}
       <div className="mb-1 flex items-center gap-1 rounded-full border border-rule/80 bg-black/40 px-2 py-0.5 text-[10.5px] font-medium text-[#2E7D6B]">
-        <BambooShootIcon className="h-3 w-3" />
+        <FoodIcon type={activePet.foodIcon} className="h-3.5 w-3.5" />
         <span>{bambooCount}</span>
       </div>
 
-      {/* Mini Pet Illustration */}
-      <CompanionPetSvg
+      {/* 3D Pet Illustration */}
+      <Companion3DCanvas
         petId={selectedPetId}
+        stage={growthStage}
         mood={currentMood}
-        size={88}
+        size={96}
         showSpeechBubble={true}
         interactive={true}
         onPetClick={() => {
@@ -71,3 +74,4 @@ export function StudyPetCompanion({
     </div>
   );
 }
+

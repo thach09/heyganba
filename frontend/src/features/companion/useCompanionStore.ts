@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-import { PetId, PetMood } from './types';
+import type { PetId, PetMood, GrowthStage } from './types';
+import { getGrowthStage } from './petData';
 
 const STORAGE_PET_KEY = 'heyganba_companion_pet_id';
 const STORAGE_BAMBOO_KEY = 'heyganba_companion_bamboo';
@@ -38,9 +39,10 @@ export function useCompanion() {
 
   const [mood, setMood] = useState<PetMood>('idle');
 
-  // Affection Level (each level is 100 EXP)
+  // Affection Level & Growth Stage
   const affectionLevel = Math.floor(affectionExp / 100) + 1;
   const currentLevelProgress = affectionExp % 100;
+  const growthStage: GrowthStage = getGrowthStage(affectionLevel);
 
   // Sync to localStorage
   useEffect(() => {
@@ -102,12 +104,14 @@ export function useCompanion() {
     bambooCount,
     affectionExp,
     affectionLevel,
+    growthStage,
     currentLevelProgress,
     mood,
     setMood,
     selectPet,
     feedBamboo,
     rewardBamboo,
+    rewardFood: rewardBamboo,
     triggerReaction,
   };
 }

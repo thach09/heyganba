@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { PetId, PetMood, PetQuote } from './types';
+import { useEffect, useState } from 'react';
+import type { PetId, PetMood, PetQuote } from './types';
 import { PET_DEFINITIONS } from './petData';
 
 interface CompanionPetSvgProps {
@@ -451,19 +451,6 @@ export function CompanionPetSvg({
             </g>
           )}
         </svg>
-      </div>
-
-      {/* Name Tag Pill */}
-      <div className="mt-2 flex items-center gap-1.5 rounded-full border border-rule bg-[#1A1B18]/90 px-3 py-1 shadow-sm">
-        <span className="font-serif text-[12px] font-bold text-fg">
-          {PET_DEFINITIONS[petId].nameZh}
-        </span>
-        <span className="text-[10px] text-fg-60">
-          • {PET_DEFINITIONS[petId].nameVi}
-        </span>
-        <span className="rounded-full bg-[#C83E31]/15 px-1.5 py-0.2 font-serif text-[9.5px] font-medium text-[#C83E31]">
-          {PET_DEFINITIONS[petId].badge}
-        </span>
       </div>
     </div>
   );
