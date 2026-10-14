@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class SeedAdminCredentialMigrationTest extends ContentApiTestBase {
     @Autowired DataSource dataSource;
     private void migrate() {
-        new ResourceDatabasePopulator(new ClassPathResource("db/migration/V34__disable_public_seed_admin_credential.sql")).execute(dataSource);
+        new ResourceDatabasePopulator(new ClassPathResource("db/migration/V3__disable_public_seed_admin_credential.sql")).execute(dataSource);
     }
     private User seed(String hash) {
         Role role = roleRepository.save(Role.builder().name(RoleName.ROLE_ADMIN).build());

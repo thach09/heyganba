@@ -38,28 +38,30 @@ public interface KanjiRepository extends JpaRepository<Kanji, Long> {
             """)
     List<Kanji> findByRadicalIdWithDetails(@Param("radicalId") Long radicalId);
 
-    /** Tìm theo nghĩa tiếng Việt, Hán Việt, chữ Hán hoặc cách đọc. */
+    /** Tìm theo nghĩa tiếng Việt, Hán Việt, chữ Hán hoặc pinyin. */
     @Query("""
             SELECT DISTINCT k FROM Kanji k
             LEFT JOIN FETCH k.radicals
             LEFT JOIN FETCH k.lesson
-            WHERE LOWER(k.meaning) LIKE LOWER(CONCAT('%', :keyword, '%'))
-               OR LOWER(k.sinoVietnamese) LIKE LOWER(CONCAT('%', :keyword, '%'))
+            WHERE LOWER(COALESCE(k.meaningVi, '')) LIKE LOWER(CONCAT('%', :keyword, '%'))
+               OR LOWER(COALESCE(k.hanViet, '')) LIKE LOWER(CONCAT('%', :keyword, '%'))
                OR k.character LIKE CONCAT('%', :keyword, '%')
-               OR k.onyomi LIKE CONCAT('%', :keyword, '%')
-               OR k.kunyomi LIKE CONCAT('%', :keyword, '%')
+               OR (k.pinyin IS NOT NULL AND LOWER(k.pinyin) LIKE LOWER(CONCAT('%', :keyword, '%')))
+               OR (k.traditional IS NOT NULL AND k.traditional LIKE CONCAT('%', :keyword, '%'))
             ORDER BY k.id ASC
             """)
     List<Kanji> searchWithDetails(@Param("keyword") String keyword);
 
     boolean existsByCharacter(String character);
 
+    java.util.Optional<Kanji> findByCharacter(String character);
+
     /** Đếm theo trạng thái duyệt nội dung — dùng cho GET /content/review-status. */
     long countByReviewStatus(ReviewStatus reviewStatus);
 
-    /** Đếm nội dung CẦN người biết tiếng Nhật kiểm (`needs_human_check = true`) — cho tab duyệt của admin. */
+    /** Đếm nội dung CẦN kiểm (`needs_human_check = true`). */
     long countByNeedsHumanCheckTrue();
 
-    /** Nội dung theo cờ cần-người-kiểm, xếp theo id — dùng cho GET /admin/review-queue. */
+    /** Nội dung theo cờ cần-người-kiểm, xếp theo id. */
     List<Kanji> findByNeedsHumanCheckOrderByIdAsc(Boolean needsHumanCheck, org.springframework.data.domain.Pageable pageable);
 }

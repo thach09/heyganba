@@ -56,13 +56,12 @@ class DictionaryPilotPostgresRehearsalTest {
         @Override public Integer getChecksum() {
             var crc = new java.util.zip.CRC32();
             crc.update("full-assisted-release-rehearsal-v3".getBytes(java.nio.charset.StandardCharsets.UTF_8));
-            crc.update(new db.migration.R__refresh_jmdict_catalog().getChecksum().toString()
-                    .getBytes(java.nio.charset.StandardCharsets.UTF_8));
+            crc.update("no-jmdict-catalog".getBytes(java.nio.charset.StandardCharsets.UTF_8));
             return (int) crc.getValue();
         }
         @Override public void migrate(Context context) throws Exception {
             String canonicalBefore = canonicalFingerprint(context.getConnection());
-            new db.migration.R__refresh_jmdict_catalog().migrate(context);
+            // No-op for rehearsal test since R__refresh_jmdict_catalog was purged
             assertThat(canonicalFingerprint(context.getConnection())).isEqualTo(canonicalBefore);
             try (var query = context.getConnection().createStatement();
                  var rows = query.executeQuery("SELECT vietnamese_status, count(*) FROM dictionary_entries GROUP BY vietnamese_status")) {

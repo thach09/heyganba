@@ -32,7 +32,11 @@ public class ExpService {
 
         for (StudyActivity activity : activities) {
             if (StudyActivityService.SOURCE_GRAMMAR.equalsIgnoreCase(activity.getSource())
-                    || "KANA".equalsIgnoreCase(activity.getSource()) || "NOTEBOOK".equalsIgnoreCase(activity.getSource())) {
+                    || "KANA".equalsIgnoreCase(activity.getSource())
+                    || "PINYIN".equalsIgnoreCase(activity.getSource())
+                    || "HANZI".equalsIgnoreCase(activity.getSource())
+                    || "VOCAB".equalsIgnoreCase(activity.getSource())
+                    || "NOTEBOOK".equalsIgnoreCase(activity.getSource())) {
                 exerciseExp += (long) activity.getCorrectCount() * expConfig.getExerciseCorrect();
             } else if (StudyActivityService.SOURCE_FLASHCARD.equalsIgnoreCase(activity.getSource())) {
                 srsExp += activity.getItemCount();

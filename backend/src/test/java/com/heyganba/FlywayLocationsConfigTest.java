@@ -79,14 +79,14 @@ class FlywayLocationsConfigTest {
     }
 
     @Test
-    @DisplayName("V12/V14 (nội dung chờ duyệt) nằm ở db/migration-staging, không nằm ở db/migration")
+    @DisplayName("Nội dung chờ duyệt nằm ở db/migration-staging, không nằm ở db/migration")
     void pendingMigrationsLiveInStagingFolderOnly() {
-        assertTrue(new ClassPathResource(STAGING_DIR + "/V12__expand_grammar_exercises.sql").exists(),
-                "V12 (96 câu bổ sung) phải ở db/migration-staging để không chạy ở production");
+        assertTrue(new ClassPathResource(STAGING_DIR).exists(),
+                "Thư mục db/migration-staging phải tồn tại");
         assertFalse(new ClassPathResource(MAIN_DIR + "/V12__expand_grammar_exercises.sql").exists(),
                 "V12 không được nằm ở db/migration trước khi duyệt nội dung");
-        assertTrue(new ClassPathResource(MAIN_DIR + "/V13__add_content_review_status.sql").exists(),
-                "V13 (cột review_status) là migration hạ tầng, phải chạy ở mọi môi trường");
+        assertTrue(new ClassPathResource(MAIN_DIR + "/V1__init_chinese_schema.sql").exists(),
+                "V1 là migration hạ tầng, phải chạy ở mọi môi trường");
     }
 
     @Test

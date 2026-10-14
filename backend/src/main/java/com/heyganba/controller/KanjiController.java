@@ -31,7 +31,7 @@ public class KanjiController {
     private final KanjiService kanjiService;
     private final RateLimiterService rateLimiterService;
 
-    @GetMapping("/kanji")
+    @GetMapping({"/kanji", "/hanzi"})
     public ResponseEntity<ApiResponse<List<KanjiResponse>>> getKanji(
             @AuthenticationPrincipal UserPrincipal currentUser,
             @RequestParam(required = false) String lesson,
@@ -42,7 +42,7 @@ public class KanjiController {
         return ResponseEntity.ok(ApiResponse.success(kanji));
     }
 
-    @GetMapping("/kanji/{id}")
+    @GetMapping({"/kanji/{id}", "/hanzi/{id}"})
     public ResponseEntity<ApiResponse<KanjiResponse>> getKanjiById(
             @AuthenticationPrincipal UserPrincipal currentUser,
             @PathVariable Long id
@@ -57,7 +57,7 @@ public class KanjiController {
         return ResponseEntity.ok(ApiResponse.success(kanjiService.getRadicals(id)));
     }
 
-    @PostMapping("/kanji/{id}/progress")
+    @PostMapping({"/kanji/{id}/progress", "/hanzi/{id}/progress"})
     public ResponseEntity<ApiResponse<KanjiProgressResponse>> recordPractice(
             @AuthenticationPrincipal UserPrincipal currentUser,
             @PathVariable Long id
