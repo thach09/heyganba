@@ -207,7 +207,7 @@ export const ToneContourWave: React.FC = () => {
             </div>
 
             <div className="text-xs text-fg-38">
-              💡 Mẹo ghi nhớ: Thanh 1 giữ hơi ngang bằng và ngân đều; Thanh 4 dứt khoát như chặt chém; Thanh 3 nhấn xuống tận đáy cổ họng rồi mới nhấc lên.
+              <span className="font-serif font-semibold text-cinnabar">「诀」</span> Mẹo ghi nhớ: Thanh 1 giữ hơi ngang bằng và ngân đều; Thanh 4 dứt khoát như chặt chém; Thanh 3 nhấn xuống tận đáy cổ họng rồi mới nhấc lên.
             </div>
           </div>
         </div>

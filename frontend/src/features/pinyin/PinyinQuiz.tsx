@@ -5,6 +5,7 @@ import { speakChinese } from '../../services/chineseSpeech';
 import { RedSealStamp } from '../../components/RedSealStamp';
 import { FloatingExpReward } from '../../components/FloatingExpReward';
 import { progressApi } from '../progress/api';
+import { useCompanion } from '../companion/useCompanionStore';
 
 interface QuizQuestion {
   id: number;
@@ -130,6 +131,7 @@ export const PinyinQuiz: React.FC = () => {
   const [score, setScore] = useState(0);
   const [quizFinished, setQuizFinished] = useState(false);
   const [showExpFloat, setShowExpFloat] = useState(false);
+  const { triggerReaction, rewardBamboo } = useCompanion();
 
   const currentQ = QUIZ_QUESTIONS[currentIndex];
 
@@ -147,6 +149,9 @@ export const PinyinQuiz: React.FC = () => {
     const isCorrect = option === currentQ.correctAnswer;
     if (isCorrect) {
       setScore((prev) => prev + 1);
+      triggerReaction('correct');
+    } else {
+      triggerReaction('mistake');
     }
   };
 
@@ -158,6 +163,7 @@ export const PinyinQuiz: React.FC = () => {
     } else {
       setQuizFinished(true);
       setShowExpFloat(true);
+      rewardBamboo(2);
       void confetti({
         particleCount: 80,
         spread: 60,

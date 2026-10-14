@@ -3,6 +3,7 @@ import { Volume2, BookOpen, Activity, Award } from 'lucide-react';
 import { PinyinTable } from './PinyinTable';
 import { ToneContourWave } from './ToneContourWave';
 import { PinyinQuiz } from './PinyinQuiz';
+import { StudyPetCompanion } from '../companion/StudyPetCompanion';
 
 type StationTab = 'TABLE' | 'TONES' | 'QUIZ';
 
@@ -12,7 +13,7 @@ export const PinyinStationView: React.FC = () => {
   return (
     <div className="mx-auto flex w-full max-w-[1100px] flex-col gap-6">
       {/* Station Header */}
-      <div className="flex flex-col gap-2 border-b border-rule pb-5 sm:flex-row sm:items-end sm:justify-between">
+      <div className="flex flex-col gap-4 border-b border-rule pb-5 md:flex-row md:items-center md:justify-between">
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-cinnabar">
             <span className="inline-block h-2 w-2 rounded-full bg-cinnabar" />
@@ -26,20 +27,9 @@ export const PinyinStationView: React.FC = () => {
           </p>
         </div>
 
-        {/* Quick Nav Badges */}
-        <div className="flex items-center gap-2 pt-2 sm:pt-0">
-          <div className="flex items-center gap-1.5 rounded border border-rule bg-card px-3 py-1.5 text-xs text-fg-60">
-            <Volume2 size={14} className="text-cinnabar" />
-            <span>21 Thanh mẫu</span>
-          </div>
-          <div className="flex items-center gap-1.5 rounded border border-rule bg-card px-3 py-1.5 text-xs text-fg-60">
-            <BookOpen size={14} className="text-jade" />
-            <span>36 Vận mẫu</span>
-          </div>
-          <div className="flex items-center gap-1.5 rounded border border-rule bg-card px-3 py-1.5 text-xs text-fg-60">
-            <Award size={14} className="text-gold" />
-            <span>4 Thanh điệu</span>
-          </div>
+        {/* Companion Dock & Quick Stats */}
+        <div className="flex items-center gap-3">
+          <StudyPetCompanion />
         </div>
       </div>
 

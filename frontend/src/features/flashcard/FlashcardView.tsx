@@ -9,6 +9,8 @@ import { speakChinese } from '../../services/chineseSpeech';
 import { RedSealStamp } from '../../components/RedSealStamp';
 import { FloatingExpReward } from '../../components/FloatingExpReward';
 import { apiRequest } from '../../lib/api/client';
+import { StudyPetCompanion } from '../companion/StudyPetCompanion';
+import { useCompanion } from '../companion/useCompanionStore';
 
 type StationTab = 'flashcard' | 'quiz';
 type MasteryFilter = 'ALL' | 'LEARNING' | 'MASTERED';
@@ -17,6 +19,7 @@ export const FlashcardView: React.FC = () => {
   const { user } = useAuth();
   const userId = user?.userId;
   const { run, cancel } = useRequestScope(userId);
+  const { triggerReaction, rewardBamboo } = useCompanion();
 
   const [items, setItems] = useState<FlashcardDueItem[]>([]);
   const [stats, setStats] = useState<FlashcardStats | null>(null);
@@ -171,12 +174,15 @@ export const FlashcardView: React.FC = () => {
       });
 
       if (isSuccess) {
+        triggerReaction('correct');
         setExpReward(15);
         if (delta >= 20) {
           setSealText('熟');
           setShowSeal(true);
           setTimeout(() => setShowSeal(false), 2000);
         }
+      } else {
+        triggerReaction('mistake');
       }
     } catch {
       // Offline fallback
@@ -236,7 +242,10 @@ export const FlashcardView: React.FC = () => {
     setQuizSubmitted(true);
     setQuizIsCorrect(correct);
     if (correct) {
+      triggerReaction('correct');
       setQuizScore((prev) => prev + 1);
+    } else {
+      triggerReaction('mistake');
     }
   };
 
@@ -254,6 +263,8 @@ export const FlashcardView: React.FC = () => {
       setExpReward(20);
       setSealText('通');
       setShowSeal(true);
+      rewardBamboo(2);
+      triggerReaction('cheer');
 
       // Award +20 EXP on backend
       try {
@@ -302,31 +313,34 @@ export const FlashcardView: React.FC = () => {
           {error && <p className="mt-1 text-xs text-red">{error}</p>}
         </div>
 
-        {/* Tab switcher */}
-        <div className="inline-flex rounded border border-rule bg-card p-1 text-xs font-medium">
-          <button
-            type="button"
-            onClick={() => setTab('flashcard')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 transition-colors ${
-              tab === 'flashcard' ? 'bg-fg text-bg font-semibold' : 'text-fg-60 hover:text-fg'
-            }`}
-          >
-            <Layers className="h-3.5 w-3.5" />
-            <span>Thẻ 3D ({filteredItems.length})</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              setTab('quiz');
-              handleResetQuiz();
-            }}
-            className={`flex items-center gap-1.5 px-3 py-1.5 transition-colors ${
-              tab === 'quiz' ? 'bg-fg text-bg font-semibold' : 'text-fg-60 hover:text-fg'
-            }`}
-          >
-            <Dumbbell className="h-3.5 w-3.5" />
-            <span>Luyện tập +20 EXP</span>
-          </button>
+        <div className="flex flex-wrap items-center gap-3">
+          <StudyPetCompanion compact={true} />
+          {/* Tab switcher */}
+          <div className="inline-flex rounded border border-rule bg-card p-1 text-xs font-medium">
+            <button
+              type="button"
+              onClick={() => setTab('flashcard')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 transition-colors ${
+                tab === 'flashcard' ? 'bg-fg text-bg font-semibold' : 'text-fg-60 hover:text-fg'
+              }`}
+            >
+              <Layers className="h-3.5 w-3.5" />
+              <span>Thẻ 3D ({filteredItems.length})</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setTab('quiz');
+                handleResetQuiz();
+              }}
+              className={`flex items-center gap-1.5 px-3 py-1.5 transition-colors ${
+                tab === 'quiz' ? 'bg-fg text-bg font-semibold' : 'text-fg-60 hover:text-fg'
+              }`}
+            >
+              <Dumbbell className="h-3.5 w-3.5" />
+              <span>Luyện tập +20 EXP</span>
+            </button>
+          </div>
         </div>
       </div>
 

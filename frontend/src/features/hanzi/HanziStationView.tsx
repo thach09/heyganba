@@ -3,12 +3,14 @@ import { Volume2, Play, RefreshCw, PenTool, CheckCircle, Search } from 'lucide-r
 import confetti from 'canvas-confetti';
 import { useAuth } from '../../app/useAuth';
 import { useRequestScope } from '../../lib/hooks/useRequestScope';
-import { hanziApi } from '../kanji/api';
-import type { HanziDto } from '../kanji/types';
+import { hanziApi } from './api';
+import type { HanziDto } from './types';
 import { speakChinese } from '../../services/chineseSpeech';
 import { RedSealStamp } from '../../components/RedSealStamp';
 import { FloatingExpReward } from '../../components/FloatingExpReward';
 import { progressApi } from '../progress/api';
+import { StudyPetCompanion } from '../companion/StudyPetCompanion';
+import { useCompanion } from '../companion/useCompanionStore';
 
 // Fallback seed characters if backend list is empty or offline
 const FALLBACK_HANZI: HanziDto[] = [
@@ -44,6 +46,7 @@ export const HanziStationView: React.FC = () => {
   const [isQuizCompleted, setIsQuizCompleted] = useState(false);
   const [showExpReward, setShowExpReward] = useState(false);
   const [masteryScores, setMasteryScores] = useState<Record<string, number>>({});
+  const { triggerReaction, rewardBamboo } = useCompanion();
 
   const writerRef = useRef<any>(null);
   const writerContainerRef = useRef<HTMLDivElement | null>(null);
@@ -112,6 +115,8 @@ export const HanziStationView: React.FC = () => {
           onComplete: async () => {
             setIsQuizCompleted(true);
             setShowExpReward(true);
+            triggerReaction('correct');
+            rewardBamboo(2);
             void confetti({ particleCount: 70, spread: 60, origin: { y: 0.6 } });
 
             // Call Backend Practice Progress API
@@ -190,22 +195,26 @@ export const HanziStationView: React.FC = () => {
           </p>
         </div>
 
-        {/* Level Badges */}
-        <div className="flex items-center gap-1.5">
-          {[1, 2, 3, 4, 5, 6].map((lvl) => (
-            <button
-              key={lvl}
-              type="button"
-              onClick={() => setHskFilter(lvl)}
-              className={`cursor-pointer px-2.5 py-1 text-xs font-semibold transition-all ${
-                hskFilter === lvl
-                  ? 'border border-cinnabar bg-cinnabar text-white shadow-xs'
-                  : 'border border-rule bg-card text-fg-60 hover:text-fg'
-              }`}
-            >
-              HSK {lvl}
-            </button>
-          ))}
+        {/* Companion & Level Badges */}
+        <div className="flex flex-col items-end gap-3 sm:flex-row sm:items-center">
+          <div className="flex items-center gap-1.5">
+            {[1, 2, 3, 4, 5, 6].map((lvl) => (
+              <button
+                key={lvl}
+                type="button"
+                onClick={() => setHskFilter(lvl)}
+                className={`cursor-pointer px-2.5 py-1 text-xs font-semibold transition-all ${
+                  hskFilter === lvl
+                    ? 'border border-cinnabar bg-cinnabar text-white shadow-xs'
+                    : 'border border-rule bg-card text-fg-60 hover:text-fg'
+                }`}
+              >
+                HSK {lvl}
+              </button>
+            ))}
+          </div>
+
+          <StudyPetCompanion />
         </div>
       </div>
 
@@ -343,8 +352,8 @@ export const HanziStationView: React.FC = () => {
                   <CheckCircle size={16} /> Xuất sắc! Bạn đã viết đúng nét chữ Hán này và nhận +15 EXP!
                 </div>
               ) : (
-                <p className="text-xs text-cinnabar font-medium">
-                  ✍️ Dùng chuột hoặc ngón tay để vẽ từng nét vào khung 米字格 theo đúng thứ tự!
+                <p className="flex items-center gap-1.5 text-xs text-cinnabar font-medium">
+                  <PenTool size={13} className="shrink-0" /> Dùng chuột hoặc ngón tay để vẽ từng nét vào khung 米字格 theo đúng thứ tự!
                 </p>
               )}
             </div>
@@ -418,7 +427,7 @@ export const HanziStationView: React.FC = () => {
             {/* Decomposition (Chiết tự) */}
             {selectedChar.decomposition && (
               <div className="rounded border border-rule/60 bg-tint/50 p-3 text-xs leading-relaxed text-fg">
-                <span className="font-semibold text-gold">💡 Chiết tự & Mẹo nhớ: </span>
+                <span className="font-serif font-semibold text-gold">「析」 Chiết tự & Mẹo nhớ: </span>
                 {selectedChar.decomposition}
               </div>
             )}

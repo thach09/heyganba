@@ -5,6 +5,8 @@ import type { HeatmapDay } from '../progress/types';
 import type { UserExp } from './types';
 import { useAuth } from '../../app/useAuth';
 import React, { useEffect, useMemo, useState } from 'react';
+import { CompanionWidget } from '../companion/CompanionWidget';
+import { OrientalCard } from '../../components/OrientalCard';
 
 /**
  * Dashboard - the reflection surface (see DESIGN.md):
@@ -225,7 +227,7 @@ export const DashboardView: React.FC = () => {
 
         <div className="text-right max-[900px]:text-left">
           <div className="flex items-center justify-end gap-2 max-[900px]:justify-start">
-            <span className={`inline-flex items-center px-1.5 py-0.5 text-[10px] font-medium tracking-[0.1em] border ${rankTone.border} ${rankTone.bg} ${rankTone.text}`}>
+            <span className={`inline-flex items-center px-2 py-0.5 text-[10.5px] font-medium tracking-[0.1em] border ${rankTone.border} ${rankTone.bg} ${rankTone.text} rounded-sm`}>
               {rankName} (Tier {rankTier})
             </span>
             <span className="text-[10.5px] uppercase tracking-[0.16em] text-fg-38">Kinh nghiệm</span>
@@ -251,15 +253,31 @@ export const DashboardView: React.FC = () => {
         </div>
       </header>
 
-      <section className="mt-12 grid grid-cols-2 gap-x-16 gap-y-12 max-[900px]:grid-cols-1 max-[900px]:gap-11">
-        <Tracker days={heatmap} />
-        <WeekStats
-          items={user ? weekItems : null}
-          correct={user ? weekCorrect : null}
-          learned={user ? (flashStats?.learnedWords ?? null) : null}
-        />
-        <ActivityChart days={chartDays} metric="itemCount" label="Lượt học" />
-        <ActivityChart days={chartDays} metric="correctCount" label="Trả lời đúng" />
+      {/* Prominent Companion Pet Widget */}
+      <div className="mt-8">
+        <CompanionWidget />
+      </div>
+
+      <section className="mt-10 grid grid-cols-2 gap-x-12 gap-y-10 max-[900px]:grid-cols-1 max-[900px]:gap-8">
+        <OrientalCard tag="Mật độ học" tagVariant="cinnabar" className="p-6">
+          <Tracker days={heatmap} />
+        </OrientalCard>
+
+        <OrientalCard tag="Tổng kết" tagVariant="gold" className="p-6">
+          <WeekStats
+            items={user ? weekItems : null}
+            correct={user ? weekCorrect : null}
+            learned={user ? (flashStats?.learnedWords ?? null) : null}
+          />
+        </OrientalCard>
+
+        <OrientalCard tag="Xu hướng 30 ngày" tagVariant="ink" className="p-6">
+          <ActivityChart days={chartDays} metric="itemCount" label="Lượt học" />
+        </OrientalCard>
+
+        <OrientalCard tag="Tỉ lệ chính xác" tagVariant="jade" className="p-6">
+          <ActivityChart days={chartDays} metric="correctCount" label="Trả lời đúng" />
+        </OrientalCard>
       </section>
     </>
   );
