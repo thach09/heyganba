@@ -36,10 +36,9 @@ const toLocalDate = (isoDate: string) => {
 /** 0 = Monday ... 6 = Sunday (heatmap columns run Mon -> Sun) */
 const mondayFirstIndex = (date: Date) => (date.getDay() + 6) % 7;
 
-const Caption: React.FC<{ vi: string; jp: string }> = ({ vi, jp }) => (
+const Caption: React.FC<{ text: string }> = ({ text }) => (
   <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-fg-38">
-    {vi}{' '}
-    <span className="ml-2 font-serif text-[12.5px] font-normal normal-case tracking-[0.06em]">{jp}</span>
+    {text}
   </div>
 );
 
@@ -68,7 +67,7 @@ const Tracker: React.FC<{ days: HeatmapDay[] }> = ({ days }) => {
   return (
     <div>
       <div className="flex items-baseline justify-between gap-6">
-        <Caption vi="Hoạt động" jp="記録" />
+        <Caption text="Hoạt động" />
         <div className="inline-flex items-center gap-1.5 text-[10.5px] text-fg-38">
           ít
           {INTENSITY.map((opacity) => (
@@ -109,7 +108,7 @@ const WeekStats: React.FC<{ items: number | null; correct: number | null; learne
   learned,
 }) => (
   <div className="flex h-full flex-col">
-    <Caption vi="Tuần này" jp="今週" />
+    <Caption text="Tuần này" />
     <div className="mt-[22px] flex flex-1 flex-col justify-between">
       <StatRow label="Lượt học" value={items} />
       <StatRow label="Trả lời đúng" value={correct} />
@@ -119,11 +118,10 @@ const WeekStats: React.FC<{ items: number | null; correct: number | null; learne
 );
 
 /** 30-day ink bar chart - today is the brightest, the last 7 days are brighter than the rest */
-const ActivityChart: React.FC<{ days: HeatmapDay[]; metric: 'itemCount' | 'correctCount'; vi: string; jp: string }> = ({
+const ActivityChart: React.FC<{ days: HeatmapDay[]; metric: 'itemCount' | 'correctCount'; label: string }> = ({
   days,
   metric,
-  vi,
-  jp,
+  label,
 }) => {
   const values = useMemo(() => days.map((day) => day[metric]), [days, metric]);
   const max = Math.max(1, ...values);
@@ -132,7 +130,7 @@ const ActivityChart: React.FC<{ days: HeatmapDay[]; metric: 'itemCount' | 'corre
   return (
     <div>
       <div className="flex items-baseline justify-between gap-6">
-        <Caption vi={vi} jp={jp} />
+        <Caption text={label} />
         <div className="text-[10.5px] text-fg-38">
           {values.length === 0 ? '—' : `${formatNumber(total)} · 30 ngày`}
         </div>
@@ -217,13 +215,12 @@ export const DashboardView: React.FC = () => {
     month: '2-digit',
     year: 'numeric',
   });
-  const jpDate = new Intl.DateTimeFormat('ja-JP', { month: 'long', day: 'numeric' }).format(now);
 
   return (
     <>
       <header className="flex items-start justify-between gap-10 max-[900px]:flex-col max-[900px]:gap-7">
         <div className="pt-0.5 text-[12.5px] text-fg-38">
-          {viDate} <span className="ml-2 font-serif">{jpDate}</span>
+          {viDate}
         </div>
 
         <div className="text-right max-[900px]:text-left">
@@ -261,8 +258,8 @@ export const DashboardView: React.FC = () => {
           correct={user ? weekCorrect : null}
           learned={user ? (flashStats?.learnedWords ?? null) : null}
         />
-        <ActivityChart days={chartDays} metric="itemCount" vi="Lượt học" jp="学習" />
-        <ActivityChart days={chartDays} metric="correctCount" vi="Trả lời đúng" jp="正解" />
+        <ActivityChart days={chartDays} metric="itemCount" label="Lượt học" />
+        <ActivityChart days={chartDays} metric="correctCount" label="Trả lời đúng" />
       </section>
     </>
   );

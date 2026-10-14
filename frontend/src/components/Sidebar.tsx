@@ -22,7 +22,8 @@ interface SidebarProps {
 const itemBase =
   'relative flex w-full items-baseline gap-2.5 border-0 bg-transparent p-0 text-left font-sans text-sm text-fg cursor-pointer focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-[3px] focus-visible:outline-fg-38';
 
-const ToriiMark = () => (
+/** Chinese character mark — a simplified 文 (wén) as the brand icon */
+const ChineseMark = () => (
   <svg
     width="26"
     height="24"
@@ -31,8 +32,10 @@ const ToriiMark = () => (
     className="shrink-0 fill-none stroke-fg-60"
     strokeWidth={1.1}
     strokeLinecap="round"
+    strokeLinejoin="round"
   >
-    <path d="M2 5 H24 M4 9 H22 M6.5 9 V21 M19.5 9 V21 M13 9 V14" />
+    {/* Simplified 文 strokes */}
+    <path d="M13 4 L13 18 M7 9 L19 9 M5 14 L13 21 L21 14" />
   </svg>
 );
 
@@ -120,7 +123,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const isAdmin = user?.role === 'ROLE_ADMIN';
   const location = useLocation();
   const [charGroupOpen, setCharGroupOpen] = useState(false);
-  const charGroupActive = location.pathname.startsWith('/kana') || location.pathname.startsWith('/kanji');
+  const charGroupActive = location.pathname.startsWith('/hanzi');
   const charGroupRef = useRef<HTMLDivElement | null>(null);
 
   /**
@@ -165,10 +168,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
     >
       <div className="flex items-center justify-between gap-2.5">
         <div className="flex items-center gap-2.5">
-          <ToriiMark />
+          <ChineseMark />
           <div>
-            <div className="text-[15px] font-semibold tracking-[0.01em] text-fg">HeyGanba</div>
-            <span className="block text-[10px] uppercase tracking-[0.22em] text-fg-38">日本語</span>
+            <div className="text-[15px] font-semibold tracking-[0.01em] text-fg">Học tiếng Trung</div>
+            <span className="block text-[10px] uppercase tracking-[0.22em] text-fg-38">中文学习</span>
           </div>
         </div>
         {isOverlay && onClose && (
@@ -230,30 +233,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
           />
           <div
             role="menu"
-            className={`absolute left-full top-[-10px] z-40 ml-3.5 min-w-[180px] bg-card py-2.5 transition-opacity max-[900px]:static max-[900px]:z-auto max-[900px]:ml-0 max-[900px]:mt-2 max-[900px]:min-w-0 max-[900px]:bg-transparent max-[900px]:pl-4 ${
+            className={`absolute left-full top-[-10px] z-40 ml-3.5 min-w-[188px] bg-card py-2.5 transition-opacity max-[900px]:static max-[900px]:z-auto max-[900px]:ml-0 max-[900px]:mt-2 max-[900px]:min-w-0 max-[900px]:bg-transparent max-[900px]:pl-4 ${
               charGroupOpen ? 'visible opacity-100 max-[900px]:block' : 'invisible opacity-0 max-[900px]:hidden'
             }`}
           >
             <span aria-hidden="true" className="absolute -left-3.5 top-0 bottom-0 w-3.5 max-[900px]:hidden" />
             <Link
-              to="/kana?script=hiragana"
-              role="menuitem"
-              onClick={(event) => {
-                // Pointer click: drop focus so group-focus-within stops keeping the flyout open.
-                // Keyboard activation (detail === 0) keeps focus for further tabbing.
-                if (event.detail > 0) {
-                  event.currentTarget.blur();
-                }
-                closeFlyout();
-                onNavigate?.();
-              }}
-              className="flex w-full cursor-pointer items-baseline gap-2.5 border-0 bg-transparent px-4 py-2 text-left font-sans text-fg hover:bg-tint"
-            >
-              <span className="font-serif text-sm">ひらがな</span>
-              <span className="text-[10.5px] text-fg-38">Hiragana</span>
-            </Link>
-            <Link
-              to="/kana?script=katakana"
+              to="/hanzi"
               role="menuitem"
               onClick={(event) => {
                 if (event.detail > 0) {
@@ -264,31 +250,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
               }}
               className="flex w-full cursor-pointer items-baseline gap-2.5 border-0 bg-transparent px-4 py-2 text-left font-sans text-fg hover:bg-tint"
             >
-              <span className="font-serif text-sm">カタカナ</span>
-              <span className="text-[10.5px] text-fg-38">Katakana</span>
-            </Link>
-            <Link
-              to="/kanji"
-              role="menuitem"
-              onClick={(event) => {
-                if (event.detail > 0) {
-                  event.currentTarget.blur();
-                }
-                closeFlyout();
-                onNavigate?.();
-              }}
-              className="flex w-full cursor-pointer items-baseline gap-2.5 border-0 bg-transparent px-4 py-2 text-left font-sans text-fg hover:bg-tint"
-            >
-              <span className="font-serif text-sm">漢字</span>
-              <span className="text-[10.5px] text-fg-38">Kanji</span>
+              <span className="font-serif text-sm">汉字</span>
+              <span className="text-[10.5px] text-fg-38">Chữ Hán</span>
             </Link>
           </div>
         </div>
 
-        <NavItem to="/vocabulary" k="単語" v="Từ vựng" onNavigate={onNavigate} />
-        <NavItem to="/dictionary" k="辞書" v="Tra cứu & Sổ từ" onNavigate={onNavigate} />
-        <NavItem to="/grammar" k="文法" v="Ngữ pháp" onNavigate={onNavigate} />
-        <NavItem to="/exam" k="試験" v="Thi thử" onNavigate={onNavigate} />
+        <NavItem to="/vocabulary" k="词汇" v="Từ vựng" onNavigate={onNavigate} />
+        <NavItem to="/dictionary" k="字典" v="Tra cứu & Sổ từ" onNavigate={onNavigate} />
+        <NavItem to="/grammar" k="语法" v="Ngữ pháp" onNavigate={onNavigate} />
+        <NavItem to="/exam" k="测试" v="Luyện tập" onNavigate={onNavigate} />
 
         {isAdmin && (
           <NavItem
@@ -313,7 +284,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               </div>
             </div>
             <div className="flex items-baseline gap-1.5 text-[11px] text-fg-38">
-              <span className="font-serif">連続</span>
+              <span className="font-serif">连续</span>
               <b className="font-serif text-sm font-semibold text-fg-60">{streakCount}</b>
               <span>ngày</span>
             </div>
@@ -340,9 +311,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
           )
         )}
         <div className="text-[11px] leading-[1.8] text-fg-38">
-          <span className="font-serif text-xs">練習は嘘をつかない</span>
+          <span className="font-serif text-xs">學而時習之</span>
           <br />
-          Luyện tập không nói dối.
+          Học rồi thường xuyên ôn lại.
         </div>
       </div>
     </aside>

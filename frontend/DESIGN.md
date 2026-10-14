@@ -1,6 +1,6 @@
-# Design — HeyGanba
+# Design — Học tiếng Trung
 
-Hệ thị giác "mực trên giấy", đảo tối. Chữ Nhật là nhân vật chính, chữ Việt là sàn đọc.
+Hệ thị giác "mực trên giấy", đảo tối. Chữ Hán là nhân vật chính, chữ Việt là sàn đọc, Pinyin là chúu thích.
 
 ---
 
@@ -24,18 +24,19 @@ Cấm: gradient, glow, bóng đổ, kính mờ, xám riêng ngoài thang mực.
 
 ### Chữ
 
-- **JP — `Noto Serif JP`** (300/400/600): tiêu đề, nav, nội dung học
+- **ZH — `Noto Serif SC`** (300/400/600): tiêu đề, nav, nội dung học (chữ Hán lớn)
+- **Pinyin — `Noto Sans SC`** (400/500): âm đọc, ghi chú Pinyin
 - **VI — `Be Vietnam Pro`** (400/500/600): nhãn, ghi chú, nút
 
 Thang chữ dùng thật:
 
 | Cỡ | Vai |
 |---|---|
-| 76px serif 300 | chữ học lớn (kana, từ) |
+| 76px serif 300 | chữ học lớn (Hán, từ) |
 | 30px sans 600 | tiêu đề màn |
 | 22–24px serif 600 | con số trạng thái (cấp, EXP) |
-| 21px serif 300 | câu ví dụ tiếng Nhật |
-| 16–18px | nav JP, nghĩa từ |
+| 18–21px sans 400 | Pinyin có dấu thanh |
+| 16–18px | nav Hán, nghĩa từ |
 | 13.5–14.5px | body |
 | 12.5px | chữ phụ |
 | 10.5–11px caps, tracking .14–.18em | nhãn nhỏ |
@@ -60,7 +61,7 @@ Không dùng font mảnh ở cỡ nhỏ — body tối thiểu 12.5px; nét mả
 
 ## 3. Thành phần
 
-**Sidebar** — 5 mục: `今日 · 文字 · 単語 · 文法 · 試験`. Nhóm `文字 · Chữ viết` mở dropdown `ひらがな / カタカナ / 漢字` bằng hover (chuột — qua pointer events, không dựa vào `@media (hover:hover)`), tap (mobile) hoặc click; đóng bằng rời chuột, click ngoài, Esc hoặc blur. Flyout: nền `--card`, rộng tối thiểu `188px`, mục cách `9px 18px`, hover tint `rgba(236,236,230,.05)`. Mục đang xem: vạch xanh `2px` bên trái mục cha + chữ JP đậm + nhãn VI màu `--rank`.
+**Sidebar** — 5 mục: `今日 · 文字 · 词汇 · 语法 · 测试`. Nhóm `文字 · Chữ viết` mở dropdown `汉字` (Chữ Hán) bằng hover (chuột), tap (mobile) hoặc click; đóng bằng rời chuột, click ngoài, Esc hoặc blur. Flyout: nền `--card`, rộng tối thiểu `188px`, mục cách `9px 18px`, hover tint `rgba(236,236,230,.05)`. Mục đang xem: vạch xanh `2px` bên trái mục cha + chữ Hán đậm + nhãn VI màu `--rank`.
 
 **Tracker** — heatmap mật độ mực 24 tuần × 7 ngày. Ô vuông (`aspect-ratio:1`), gap `3px`, tự giãn kín cột. Mật độ = opacity mực: `0.06 / 0.22 / 0.44 / 0.66 / 0.9`. Nhãn thứ `9px` ở hàng T2/T4/T6; legend ô `8px` "ít → nhiều".
 
