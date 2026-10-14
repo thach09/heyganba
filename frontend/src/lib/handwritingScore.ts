@@ -70,7 +70,7 @@ export function gradeHandwriting(referenceChar: string, strokes: CanvasPoint[][]
     ctx.fillStyle = '#000';
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
     const scale = referenceChar.length === 1 ? 0.74 : referenceChar.length === 2 ? 0.52 : 0.36;
-    ctx.font = `400 ${Math.round(SCORE_SIZE * scale)}px 'Noto Serif JP', serif`;
+    ctx.font = `400 ${Math.round(SCORE_SIZE * scale)}px 'Noto Serif SC', 'Noto Serif JP', serif`;
     ctx.fillText(referenceChar, SCORE_SIZE / 2, SCORE_SIZE * 0.52);
   });
   const written = mask(ctx => {

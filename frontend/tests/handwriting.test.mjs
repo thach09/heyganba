@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { compareInk, skeletonize } from '../src/features/kana/handwritingScore.ts';
+import { compareInk, skeletonize } from '../src/lib/handwritingScore.ts';
 
 const size = 100;
 const mask = (...lines) => {

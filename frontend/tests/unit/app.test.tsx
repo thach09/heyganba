@@ -5,10 +5,10 @@ import { App } from '../../src/App';
 
 vi.mock('../../src/features/dashboard/DashboardView', () => ({ DashboardView: () => <h1>Dashboard station</h1> }));
 vi.mock('../../src/features/admin/AdminView', () => ({ AdminView: () => <h1>Admin station</h1> }));
-vi.mock('../../src/features/kana/KanaStationView', () => ({ KanaStationView: ({ script }: { script: string }) => <h1>Kana station {script}</h1> }));
+vi.mock('../../src/features/pinyin/PinyinStationView', () => ({ PinyinStationView: () => <h1>Pinyin station</h1> }));
 vi.mock('../../src/features/flashcard/FlashcardView', () => ({ FlashcardView: () => <h1>SRS station</h1> }));
 vi.mock('../../src/features/dictionary/DictionaryNotebookView', () => ({ DictionaryNotebookView: () => <h1>Dictionary station</h1> }));
-vi.mock('../../src/features/kanji/KanjiStationView', () => ({ KanjiStationView: () => <h1>Kanji station</h1> }));
+vi.mock('../../src/features/hanzi/HanziStationView', () => ({ HanziStationView: () => <h1>Hanzi station</h1> }));
 vi.mock('../../src/features/grammar/GrammarView', () => ({ GrammarView: () => <h1>Grammar station</h1> }));
 vi.mock('../../src/features/grammar/GrammarRulePage', () => ({ GrammarRulePage: () => <h1>Grammar detail</h1> }));
 vi.mock('../../src/features/exam/ExamView', () => ({ ExamView: () => <h1>Exam station</h1> }));
@@ -69,9 +69,14 @@ test('session expiration removes the signed-in shell and displays a safe notice'
   expect(screen.getByRole('status').textContent).toContain('Phiên đăng nhập đã hết hạn');
 });
 
-test('katakana selection is restored from the URL on a fresh mount', async () => {
-  mount('/kana?script=katakana');
-  expect(await screen.findByText('Kana station KATAKANA')).toBeTruthy();
+test('legacy /kana redirects to /pinyin on mount', async () => {
+  mount('/kana');
+  expect(await screen.findByText('Pinyin station')).toBeTruthy();
+});
+
+test('legacy /kanji redirects to /hanzi on mount', async () => {
+  mount('/kanji');
+  expect(await screen.findByText('Hanzi station')).toBeTruthy();
 });
 
 test('logout network failure retains the profile and offers a retry', async () => {
