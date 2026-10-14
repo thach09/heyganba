@@ -1,3 +1,5 @@
+import { apiRequest } from '../../lib/api/client';
+
 export interface RadicalDto {
   id: number;
   radical: string;
@@ -6,20 +8,31 @@ export interface RadicalDto {
   meaning: string;
 }
 
-export interface KanjiDto {
+export interface HanziDto {
   id: number;
   character: string;
+  traditional?: string | null;
+  pinyin?: string | null;
+  hanViet?: string | null;
+  sinoVietnamese?: string | null;
+  meaning?: string | null;
+  meaningVi?: string | null;
+  radical?: string | null;
   strokeCount: number;
-  onyomi: string | null;
-  kunyomi: string | null;
-  sinoVietnamese: string;
-  meaning: string;
-  mnemonic: string | null;
-  lessonSlug: string | null;
-  lessonTitle: string | null;
-  radicals: RadicalDto[];
+  hskLevel?: number | null;
+  decomposition?: string | null;
+  exampleWordsJson?: string | null;
   practiceCount: number;
+  masteryScore?: number;
+  onyomi?: string | null;
+  kunyomi?: string | null;
+  mnemonic?: string | null;
+  lessonSlug?: string | null;
+  lessonTitle?: string | null;
+  radicals?: RadicalDto[];
 }
+
+export type KanjiDto = HanziDto;
 
 export interface KanjiProgressResult {
   kanjiId: number;
@@ -27,3 +40,14 @@ export interface KanjiProgressResult {
   practiceCount: number;
   lastPracticedAt: string;
 }
+
+export const hanziApi = {
+  list: (query: string, options: RequestInit = {}) =>
+    apiRequest<HanziDto[]>(`/hanzi${query ? `?${query}` : ''}`, options),
+  radicals: (options: RequestInit = {}) =>
+    apiRequest<RadicalDto[]>('/radicals', options),
+  progress: (id: number, options: RequestInit = {}) =>
+    apiRequest<KanjiProgressResult>(`/kanji/${id}/progress`, options),
+};
+
+export const kanjiApi = hanziApi;

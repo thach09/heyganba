@@ -6,8 +6,8 @@ import { ErrorBoundary } from './ErrorBoundary';
 const Dashboard = lazy(() => import('../features/dashboard/DashboardView').then(m => ({ default: m.DashboardView })));
 const Flashcard = lazy(() => import('../features/flashcard/FlashcardView').then(m => ({ default: m.FlashcardView })));
 const Dictionary = lazy(() => import('../features/dictionary/DictionaryNotebookView').then(m => ({ default: m.DictionaryNotebookView })));
-// KanjiStationView is temporarily reused as HanziStation — full conversion follows after data model update
-const Hanzi = lazy(() => import('../features/kanji/KanjiStationView').then(m => ({ default: m.KanjiStationView })));
+const Pinyin = lazy(() => import('../features/pinyin/PinyinStationView').then(m => ({ default: m.PinyinStationView })));
+const Hanzi = lazy(() => import('../features/hanzi/HanziStationView').then(m => ({ default: m.HanziStationView })));
 const Grammar = lazy(() => import('../features/grammar/GrammarView').then(m => ({ default: m.GrammarView })));
 const GrammarRule = lazy(() => import('../features/grammar/GrammarRulePage').then(m => ({ default: m.GrammarRulePage })));
 const Exam = lazy(() => import('../features/exam/ExamView').then(m => ({ default: m.ExamView })));
@@ -29,6 +29,7 @@ export function AppRoutes() {
   return <ErrorBoundary key={location.pathname}><Suspense fallback={<p role="status" className="py-6 text-[12.5px] text-fg-60">Đang tải trạm học...</p>}>
     <Routes>
       <Route path="/" element={<Dashboard />} />
+      <Route path="/pinyin" element={<Pinyin />} />
       <Route path="/vocabulary" element={<Flashcard />} />
       <Route path="/dictionary" element={<Dictionary />} />
       <Route path="/hanzi" element={<Hanzi />} />
@@ -36,8 +37,8 @@ export function AppRoutes() {
       <Route path="/grammar/:ruleId" element={<GrammarRule />} />
       <Route path="/exam" element={<Exam />} />
       <Route path="/admin" element={<AdminRoute />} />
-      {/* Legacy Japanese routes: redirect so old deep links stay functional */}
-      <Route path="/kana" element={<Navigate to="/" replace />} />
+      {/* Legacy routes: redirect so old deep links stay functional */}
+      <Route path="/kana" element={<Navigate to="/pinyin" replace />} />
       <Route path="/kanji" element={<Navigate to="/hanzi" replace />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

@@ -1,8 +1,13 @@
 import { apiRequest } from '../../lib/api/client';
-import type { KanjiDto, RadicalDto, KanjiProgressResult } from './types';
+import type { HanziDto, RadicalDto, KanjiProgressResult } from './types';
 
-export const kanjiApi = {
-  list: (query: string, options: RequestInit = {}) => apiRequest<KanjiDto[]>(`/kanji${query ? `?${query}` : ''}`, options),
-  radicals: (options: RequestInit = {}) => apiRequest<RadicalDto[]>('/radicals', options),
-  progress: (id: number, options: RequestInit = {}) => apiRequest<KanjiProgressResult>(`/kanji/${id}/progress`, options),
+export const hanziApi = {
+  list: (query: string, options: RequestInit = {}) =>
+    apiRequest<HanziDto[]>(`/hanzi${query ? `?${query}` : ''}`, options),
+  radicals: (options: RequestInit = {}) =>
+    apiRequest<RadicalDto[]>('/radicals', options),
+  progress: (id: number, options: RequestInit = {}) =>
+    apiRequest<KanjiProgressResult>(`/kanji/${id}/progress`, options),
 };
+
+export const kanjiApi = hanziApi;
