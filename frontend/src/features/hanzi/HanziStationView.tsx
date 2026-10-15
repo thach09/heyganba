@@ -141,7 +141,7 @@ export const HanziStationView: React.FC = () => {
     } catch (err) {
       console.error('Failed to instantiate HanziWriter:', err);
     }
-  }, [selectedChar, mode]);
+  }, [selectedChar, mode, triggerReaction, rewardBamboo]);
 
   const handlePlayAudio = () => {
     speakChinese(selectedChar.character);

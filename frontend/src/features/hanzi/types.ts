@@ -1,4 +1,3 @@
-import { apiRequest } from '../../lib/api/client';
 
 export interface RadicalDto {
   id: number;

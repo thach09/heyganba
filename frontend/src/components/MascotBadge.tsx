@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flame, Shield, Award, Sparkles } from 'lucide-react';
+import { Flame } from 'lucide-react';
 
 interface MascotMilestone {
   minStreak: number;

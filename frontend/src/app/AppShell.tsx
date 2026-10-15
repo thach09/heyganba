@@ -4,6 +4,7 @@ import { Sidebar } from '../components/Sidebar';
 import { useAuth } from './useAuth';
 import { AppRoutes } from './routes';
 import { progressApi } from '../features/progress/api';
+import { OrientalDecorBackground } from '../components/OrientalDecorBackground';
 
 /** The breakpoint must match the `@media (max-width: 900px)` query in index.css. */
 const MOBILE_BREAKPOINT_QUERY = '(max-width: 900px)';
@@ -128,6 +129,9 @@ export function AppShell() {
 
   return (
     <div className="relative z-[1] flex min-h-screen">
+      {/* Authentic Guochao Chinese Background Decor */}
+      <OrientalDecorBackground />
+
       {/* Menu backdrop: only rendered while the sidebar is open as a mobile overlay */}
       {isSidebarOverlay && (
         <div

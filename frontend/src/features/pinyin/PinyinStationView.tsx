@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Volume2, BookOpen, Activity, Award } from 'lucide-react';
+import { BookOpen, Activity, Award } from 'lucide-react';
 import { PinyinTable } from './PinyinTable';
 import { ToneContourWave } from './ToneContourWave';
 import { PinyinQuiz } from './PinyinQuiz';
