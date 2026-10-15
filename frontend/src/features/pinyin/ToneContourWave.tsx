@@ -1,14 +1,29 @@
-import React, { useState } from 'react';
-import { Volume2 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Volume2, AlertCircle } from 'lucide-react';
 import { TONES } from './pinyinData';
-import { speakChinese } from '../../services/chineseSpeech';
+import { speakChinese, stopChineseSpeech } from '../../services/chineseSpeech';
 
 export const ToneContourWave: React.FC = () => {
   const [selectedToneIndex, setSelectedToneIndex] = useState(0);
+  const [audioWarning, setAudioWarning] = useState<string | null>(null);
   const selectedTone = TONES[selectedToneIndex];
 
-  const handlePlay = (text: string) => {
-    speakChinese(text);
+  useEffect(() => {
+    return () => {
+      stopChineseSpeech();
+    };
+  }, []);
+
+  const handlePlay = (hanzi: string) => {
+    stopChineseSpeech();
+    const result = speakChinese(hanzi);
+    if (result === 'no-voice') {
+      setAudioWarning('Thiết bị chưa cài gói giọng Quan thoại (zh-CN). Vui lòng kiểm tra cài đặt âm thanh hệ điều hành.');
+    } else if (result === 'unsupported' || result === 'error') {
+      setAudioWarning('Trình duyệt chưa hỗ trợ phát âm thanh này.');
+    } else {
+      setAudioWarning(null);
+    }
   };
 
   return (
@@ -33,7 +48,7 @@ export const ToneContourWave: React.FC = () => {
                   type="button"
                   onClick={() => {
                     setSelectedToneIndex(idx);
-                    handlePlay(tone.example);
+                    handlePlay(tone.hanzi);
                   }}
                   className={`cursor-pointer px-3.5 py-1.5 text-xs font-semibold transition-all ${
                     isSelected
@@ -177,18 +192,31 @@ export const ToneContourWave: React.FC = () => {
 
               <button
                 type="button"
-                onClick={() => handlePlay(selectedTone.example)}
+                onClick={() => handlePlay(selectedTone.hanzi)}
                 className="inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-cinnabar/30 bg-cinnabar/10 text-cinnabar transition-all hover:scale-105 hover:bg-cinnabar hover:text-white"
-                title={`Nghe phát âm mẫu: ${selectedTone.example}`}
+                title={`Nghe phát âm mẫu: ${selectedTone.example} (${selectedTone.hanzi})`}
                 aria-label={`Nghe phát âm mẫu: ${selectedTone.example}`}
               >
                 <Volume2 size={20} />
               </button>
             </div>
 
+            {audioWarning && (
+              <div className="flex items-center gap-2 rounded bg-amber-500/10 border border-amber-500/20 px-3 py-2 text-xs text-amber-400">
+                <AlertCircle size={14} className="shrink-0" />
+                <span>{audioWarning}</span>
+              </div>
+            )}
+
             <p className="text-[13px] leading-relaxed text-fg-60 border-l-2 border-cinnabar pl-3">
               {selectedTone.descriptionVi}
             </p>
+
+            {selectedTone.pitchCurveContext && (
+              <div className="rounded border border-amber-500/20 bg-amber-500/10 p-3 text-xs text-amber-300 leading-relaxed">
+                <b>💡 Ngữ cảnh khẩu ngữ: </b>{selectedTone.pitchCurveContext}
+              </div>
+            )}
 
             {/* Example Card */}
             <div className="mt-2 rounded border border-rule bg-tint p-4">
@@ -206,8 +234,8 @@ export const ToneContourWave: React.FC = () => {
               </div>
             </div>
 
-            <div className="text-xs text-fg-38">
-              <span className="font-serif font-semibold text-cinnabar">「诀」</span> Mẹo ghi nhớ: Thanh 1 giữ hơi ngang bằng và ngân đều; Thanh 4 dứt khoát như chặt chém; Thanh 3 nhấn xuống tận đáy cổ họng rồi mới nhấc lên.
+            <div className="text-xs text-fg-38 leading-relaxed">
+              <span className="font-serif font-semibold text-cinnabar">「诀」</span> Mẹo khẩu ngữ: Thanh 1 giữ hơi ngang bằng ngân đều; Thanh 4 dứt khoát; Thanh 3 khi đứng một mình đọc 214, nhưng trong câu liên tục phần lớn đọc là "Nửa thanh 3" (hạ giọng 211, không uốn đuôi).
             </div>
           </div>
         </div>

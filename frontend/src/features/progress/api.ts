@@ -6,8 +6,10 @@ import type { UserExp } from '../dashboard/types';
 export interface PracticeProgressRequest {
   targetType: 'PINYIN' | 'HANZI' | 'VOCAB';
   targetKey: string;
-  masteryScore: number;
+  masteryScore?: number;
   expEarned?: number;
+  scoreDelta?: number;
+  isCorrect?: boolean;
 }
 
 export interface PracticeProgressResponse {
@@ -15,8 +17,10 @@ export interface PracticeProgressResponse {
   targetKey: string;
   masteryScore: number;
   practiceCount: number;
-  expEarned: number;
+  expAwarded: number;
   totalExp: number;
+  level?: number;
+  expIntoLevel?: number;
 }
 
 export interface CharacterMasteryDto {
