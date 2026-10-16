@@ -1,49 +1,115 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import confetti from 'canvas-confetti';
-import { Volume2, RotateCcw, ArrowRight, Star, Layers, Dumbbell, Sparkles } from 'lucide-react';
+import {
+  Volume2,
+  RotateCcw,
+  BookOpen,
+  Calendar,
+  BookmarkPlus,
+  CheckCircle2,
+  AlertTriangle,
+  ShieldCheck,
+  Eye,
+  EyeOff,
+  Plus,
+  X,
+  RefreshCw,
+  Search,
+} from 'lucide-react';
 import { useAuth } from '../../app/useAuth';
 import { useRequestScope } from '../../lib/hooks/useRequestScope';
-import { flashcardApi } from './api';
-import type { FlashcardDueItem, FlashcardStats } from './types';
-import { speakChinese } from '../../services/chineseSpeech';
+import { flashcardApi, vocabularyApi, notebookApi } from './api';
+import type {
+  FlashcardDueItem,
+  FlashcardStats,
+  FlashcardReviewResult,
+  SrsRating,
+  VocabularyLesson,
+  VocabularyWord,
+} from './types';
+import { useSearchParams } from 'react-router-dom';
+import type { VocabNotebook } from '../dictionary/types';
+import { speakChinese, stopChineseSpeech } from '../../services/chineseSpeech';
 import { RedSealStamp } from '../../components/RedSealStamp';
-import { FloatingExpReward } from '../../components/FloatingExpReward';
-import { apiRequest } from '../../lib/api/client';
 import { StudyPetCompanion } from '../companion/StudyPetCompanion';
 import { useCompanion } from '../companion/useCompanionStore';
+import { checkPinyinAnswer } from '../pinyin/pinyinData';
 
-type StationTab = 'flashcard' | 'quiz';
-type MasteryFilter = 'ALL' | 'LEARNING' | 'MASTERED';
+type MainViewMode = 'LESSONS' | 'SRS';
+type LessonSubMode = 'LIST' | 'STUDY' | 'QUIZ';
 
 export const FlashcardView: React.FC = () => {
-  const { user } = useAuth();
+  const { user, requireLogin } = useAuth();
   const userId = user?.userId;
   const { run, cancel } = useRequestScope(userId);
   const { triggerReaction, rewardBamboo } = useCompanion();
 
-  const [items, setItems] = useState<FlashcardDueItem[]>([]);
+  // Search params for preview query
+  const [searchParams, setSearchParams] = useSearchParams();
+  // Query parameter NEVER grants ROLE_ADMIN; role strictly comes from authenticated session
+  const isAdmin = user?.role === 'ROLE_ADMIN';
+  const previewParam = searchParams.get('preview') === '1' || searchParams.get('preview') === 'true';
+
+  // Admin Preview Toggle (Strictly restricted to authenticated ROLE_ADMIN)
+  const [adminPreviewDisabled, setAdminPreviewDisabled] = useState<boolean>(false);
+  const adminPreviewActive = isAdmin && (previewParam || !adminPreviewDisabled);
+  const attemptedUnauthorizedPreview = !isAdmin && (previewParam || searchParams.get('admin') === '1');
+
+  const togglePreview = () => {
+    if (!isAdmin) {
+      requireLogin();
+      return;
+    }
+    const nextActive = !adminPreviewActive;
+    setAdminPreviewDisabled(!nextActive);
+    const newParams = new URLSearchParams(searchParams);
+    if (nextActive) {
+      newParams.set('preview', '1');
+    } else {
+      newParams.delete('preview');
+    }
+    setSearchParams(newParams);
+  };
+
+  // Top Tabs
+  const [mainMode, setMainMode] = useState<MainViewMode>('LESSONS');
+
+  // Lesson Catalog State
+  const [lessons, setLessons] = useState<VocabularyLesson[]>([]);
+  const [selectedLesson, setSelectedLesson] = useState<VocabularyLesson | null>(null);
+  const [lessonWords, setLessonWords] = useState<VocabularyWord[]>([]);
+  const [lessonSubMode, setLessonSubMode] = useState<LessonSubMode>('LIST');
+  const [studyWordIndex, setStudyWordIndex] = useState(0);
+  const [studyFlipped, setStudyFlipped] = useState(false);
+  const [searchWordQuery, setSearchWordQuery] = useState('');
+
+  // SRS Due Session State
+  const [dueItems, setDueItems] = useState<FlashcardDueItem[]>([]);
   const [stats, setStats] = useState<FlashcardStats | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [srsIndex, setSrsIndex] = useState(0);
+  const [srsFlipped, setSrsFlipped] = useState(false);
+  const [srsSubmitting, setSrsSubmitting] = useState(false);
+  const [srsError, setSrsError] = useState<string | null>(null);
+  const [currentAttemptId, setCurrentAttemptId] = useState<string | null>(null);
+  const [pendingRating, setPendingRating] = useState<SrsRating | null>(null);
+  const [srsSessionFinished, setSrsSessionFinished] = useState(false);
+  const [srsReviewedCount, setSrsReviewedCount] = useState(0);
+  const [lastSrsResult, setLastSrsResult] = useState<FlashcardReviewResult | null>(null);
 
-  // Station State
-  const [tab, setTab] = useState<StationTab>('flashcard');
-  const [hskFilter, setHskFilter] = useState<number>(1);
-  const [lessonFilter, setLessonFilter] = useState<number | 'ALL'>('ALL');
-  const [masteryFilter, setMasteryFilter] = useState<MasteryFilter>('ALL');
-  const [searchQuery, setSearchQuery] = useState('');
-
-  // 3D Flashcard State
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isFlipped, setIsFlipped] = useState(false);
-  const [expReward, setExpReward] = useState<number | null>(null);
+  // Red Seal Animation & Feedback
   const [showSeal, setShowSeal] = useState(false);
   const [sealText, setSealText] = useState('通');
 
-  // Mastery scores map: vocabularyId -> score (0-100)
-  const [masteryMap, setMasteryMap] = useState<Record<number, number>>({});
+  // Notebook Save Modal State
+  const [notebookModalOpen, setNotebookModalOpen] = useState(false);
+  const [wordToSave, setWordToSave] = useState<{ id: number; word: string; pinyin?: string | null } | null>(null);
+  const [userNotebooks, setUserNotebooks] = useState<VocabNotebook[]>([]);
+  const [selectedNotebookId, setSelectedNotebookId] = useState<number | 'NEW'>('NEW');
+  const [newNotebookTitle, setNewNotebookTitle] = useState('');
+  const [notebookSaveLoading, setNotebookSaveLoading] = useState(false);
+  const [notebookFeedback, setNotebookFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
-  // Practice Quiz State
+  // Practice Quiz State for Lesson
   const [quizIndex, setQuizIndex] = useState(0);
   const [quizScore, setQuizScore] = useState(0);
   const [quizAnswer, setQuizAnswer] = useState('');
@@ -52,190 +118,305 @@ export const FlashcardView: React.FC = () => {
   const [quizFinished, setQuizFinished] = useState(false);
   const [selectedChoice, setSelectedChoice] = useState<string | null>(null);
 
-  // Load vocabulary & stats
-  const loadData = useCallback(async () => {
+  // General Loading & Error State
+  const [loading, setLoading] = useState(false);
+  const [generalError, setGeneralError] = useState<string | null>(null);
+
+  // Stop Chinese TTS audio when navigating away or changing subviews
+  useEffect(() => {
+    return () => {
+      stopChineseSpeech();
+    };
+  }, []);
+
+  // 1. Load Lessons Catalog
+  const loadLessons = useCallback(async () => {
     setLoading(true);
-    const loaded = await run('FlashcardView-load', signal =>
+    setGeneralError(null);
+
+    const res = await run('load-lessons', signal => vocabularyApi.lessons({ signal }));
+    if (res && res.success && res.data) {
+      setLessons(res.data);
+      if (!selectedLesson && res.data.length > 0) {
+        setSelectedLesson(res.data[0]);
+      }
+    } else {
+      setLessons([]);
+      setSelectedLesson(null);
+      if (res && !res.success) {
+        setGeneralError(res.message || 'Không thể kết nối máy chủ để tải danh sách bài học.');
+      }
+    }
+    setLoading(false);
+  }, [run, selectedLesson]);
+
+  // 2. Load Words for Selected Lesson
+  const loadSelectedLessonWords = useCallback(async (slug: string) => {
+    setLoading(true);
+    setGeneralError(null);
+
+    const res = await run('load-lesson-words', signal => vocabularyApi.lessonWords(slug, { signal }));
+    if (res && res.success && res.data) {
+      setLessonWords(res.data);
+    } else {
+      setLessonWords([]);
+      if (res && !res.success) {
+        setGeneralError(res.message || 'Không thể tải danh sách từ vựng của bài học.');
+      }
+    }
+    setStudyWordIndex(0);
+    setStudyFlipped(false);
+    setQuizIndex(0);
+    setQuizFinished(false);
+    setQuizScore(0);
+    setLoading(false);
+  }, [run]);
+
+  // 3. Load SRS Due Session
+  const loadSrsData = useCallback(async () => {
+    setLoading(true);
+    setSrsError(null);
+
+    const loaded = await run('load-srs', signal =>
       Promise.all([
         flashcardApi.due({ signal }),
         flashcardApi.stats({ signal }),
-        apiRequest<any[]>('/progress/mastery?targetType=VOCAB', { signal }),
       ])
     );
     if (!loaded) return;
-    const [dueRes, statsRes, masteryRes] = loaded;
+    const [dueRes, statsRes] = loaded;
 
-    if (dueRes.success && dueRes.data) {
-      setItems(dueRes.data);
-      setCurrentIndex(0);
-      setIsFlipped(false);
+    if (dueRes && dueRes.success && dueRes.data) {
+      setDueItems(dueRes.data);
+      setSrsIndex(0);
+      setSrsFlipped(false);
+      setSrsSessionFinished(dueRes.data.length === 0);
     } else {
-      setError(dueRes.message || 'Không tải được danh sách từ vựng.');
-    }
-
-    if (statsRes.success && statsRes.data) {
-      setStats(statsRes.data);
-    }
-
-    if (masteryRes.success && Array.isArray(masteryRes.data)) {
-      const map: Record<number, number> = {};
-      for (const m of masteryRes.data) {
-        const id = Number(m.targetKey);
-        if (!isNaN(id)) {
-          map[id] = m.masteryScore ?? 0;
-        }
+      setDueItems([]);
+      setSrsSessionFinished(true);
+      if (dueRes && !dueRes.success) {
+        setSrsError(dueRes.message || 'Không thể tải danh sách ôn tập SRS từ máy chủ.');
       }
-      setMasteryMap(map);
+    }
+
+    if (statsRes && statsRes.success && statsRes.data) {
+      setStats(statsRes.data);
+    } else {
+      setStats(null);
     }
     setLoading(false);
   }, [run]);
 
+  // Initial load
   useEffect(() => {
-    void loadData();
-    return () => cancel('FlashcardView-load');
-  }, [loadData, cancel]);
+    void loadLessons();
+    void loadSrsData();
+    return () => {
+      cancel('load-lessons');
+      cancel('load-srs');
+    };
+  }, [loadLessons, loadSrsData, cancel]);
 
-  // Filtered items
-  const filteredItems = useMemo(() => {
-    return items.filter((item) => {
-      // HSK Level filter
-      if (item.hskLevel && item.hskLevel !== hskFilter) return false;
+  // When selected lesson changes, load its words
+  useEffect(() => {
+    if (selectedLesson) {
+      void loadSelectedLessonWords(selectedLesson.slug);
+    }
+  }, [selectedLesson, loadSelectedLessonWords]);
 
-      // Lesson filter
-      if (lessonFilter !== 'ALL' && item.lessonNumber && item.lessonNumber !== lessonFilter) {
-        return false;
-      }
+  // Filtered lesson words for list view
+  const filteredLessonWords = useMemo(() => {
+    if (!searchWordQuery.trim()) return lessonWords;
+    const q = searchWordQuery.trim().toLowerCase();
+    return lessonWords.filter(w =>
+      w.word.toLowerCase().includes(q) ||
+      (w.pinyin && w.pinyin.toLowerCase().includes(q)) ||
+      (w.meaningVi && w.meaningVi.toLowerCase().includes(q)) ||
+      (w.hanViet && w.hanViet.toLowerCase().includes(q))
+    );
+  }, [lessonWords, searchWordQuery]);
 
-      // Mastery filter
-      const score = masteryMap[item.vocabularyId] ?? ((item.repetitions ?? 0) > 2 ? 80 : 20);
-      if (masteryFilter === 'LEARNING' && score >= 80) return false;
-      if (masteryFilter === 'MASTERED' && score < 80) return false;
+  // Current word in study mode
+  const currentStudyWord = lessonWords[studyWordIndex] || lessonWords[0];
 
-      // Search query
-      if (searchQuery.trim()) {
-        const q = searchQuery.trim().toLowerCase();
-        const matchWord = item.word?.toLowerCase().includes(q);
-        const matchPinyin = item.pinyin?.toLowerCase().includes(q);
-        const matchHanViet = item.hanViet?.toLowerCase().includes(q) || item.sinoVietnamese?.toLowerCase().includes(q);
-        const matchMeaning = item.meaningVi?.toLowerCase().includes(q) || item.meaning?.toLowerCase().includes(q);
-        if (!matchWord && !matchPinyin && !matchHanViet && !matchMeaning) return false;
-      }
+  // Current item in SRS mode
+  const currentSrsItem = dueItems[srsIndex] || dueItems[0];
 
-      return true;
-    });
-  }, [items, hskFilter, lessonFilter, masteryFilter, searchQuery, masteryMap]);
+  // Distinct due vs new in SRS session
+  const srsDueCounts = useMemo(() => {
+    const dueCount = dueItems.filter(i => !i.isNew).length;
+    const newCount = dueItems.filter(i => i.isNew).length;
+    return { dueCount, newCount };
+  }, [dueItems]);
 
-  const currentItem = filteredItems[currentIndex] || filteredItems[0];
+  // Open Notebook Save Modal
+  const handleOpenNotebookModal = async (vocab: { id: number; word: string; pinyin?: string | null }) => {
+    if (!user && !isAdmin) {
+      requireLogin();
+      return;
+    }
+    setWordToSave(vocab);
+    setNotebookFeedback(null);
+    setNotebookModalOpen(true);
 
-  // Helper to get mastery stars (1 to 5)
-  const getStars = (vocabId: number) => {
-    const score = masteryMap[vocabId] ?? 20;
-    return Math.min(5, Math.max(1, Math.ceil(score / 20)));
-  };
-
-  // Flip flashcard
-  const handleFlip = () => {
-    setIsFlipped((prev) => !prev);
-  };
-
-  // Play audio TTS
-  const handlePlayAudio = (e?: React.MouseEvent) => {
-    e?.stopPropagation();
-    if (currentItem) {
-      speakChinese(currentItem.word);
+    // Load user notebooks
+    const res = await notebookApi.list();
+    if (res.success && res.data && res.data.length > 0) {
+      setUserNotebooks(res.data);
+      setSelectedNotebookId(res.data[0].id);
+    } else if (isAdmin) {
+      setUserNotebooks([
+        {
+          id: 99,
+          title: 'Sổ từ mẫu (Admin Preview)',
+          description: 'Sổ từ cá nhân dùng để thử nghiệm',
+          isPublicSample: false,
+          itemCount: 3,
+          createdAt: new Date().toISOString(),
+          items: [],
+        },
+      ]);
+      setSelectedNotebookId(99);
+    } else {
+      setSelectedNotebookId('NEW');
+      setNewNotebookTitle('Từ vựng yêu thích');
     }
   };
 
-  // SRS Rating action
-  const handleRate = async (rating: 'AGAIN' | 'HARD' | 'GOOD' | 'EASY') => {
-    if (!currentItem) return;
-
-    const isSuccess = rating === 'GOOD' || rating === 'EASY';
-    const delta = rating === 'EASY' ? 25 : rating === 'GOOD' ? 15 : rating === 'HARD' ? 5 : -10;
+  // Submit Save to Notebook
+  const handleSaveToNotebook = async () => {
+    if (!wordToSave || (!user && !isAdmin)) return;
+    setNotebookSaveLoading(true);
+    setNotebookFeedback(null);
 
     try {
-      await apiRequest('/progress/practice', {
-        method: 'POST',
-        body: JSON.stringify({
-          targetType: 'VOCAB',
-          targetKey: String(currentItem.vocabularyId),
-          scoreDelta: delta,
-          isCorrect: isSuccess,
-        }),
-      });
+      let targetId: number;
+      if (selectedNotebookId === 'NEW') {
+        const title = newNotebookTitle.trim() || 'Sổ từ mới';
+        const createRes = await notebookApi.create({ title, description: 'Sổ lưu từ vựng cá nhân' });
+        if (!createRes.success || !createRes.data) {
+          throw new Error(createRes.message || 'Không thể tạo sổ từ mới.');
+        }
+        targetId = createRes.data.id;
+      } else {
+        targetId = selectedNotebookId;
+      }
 
-      // Update local mastery
-      setMasteryMap((prev) => {
-        const cur = prev[currentItem.vocabularyId] ?? 30;
-        return {
-          ...prev,
-          [currentItem.vocabularyId]: Math.min(100, Math.max(0, cur + delta)),
-        };
+      const addRes = await notebookApi.addWord(targetId, { vocabularyId: wordToSave.id });
+      if (addRes.success) {
+        setNotebookFeedback({
+          type: 'success',
+          message: `Đã lưu từ "${wordToSave.word}" vào sổ thành công!`,
+        });
+        setTimeout(() => {
+          setNotebookModalOpen(false);
+          setNotebookFeedback(null);
+        }, 1400);
+      } else {
+        setNotebookFeedback({
+          type: 'error',
+          message: addRes.message || 'Không thể lưu từ vào sổ này.',
+        });
+      }
+    } catch (err: any) {
+      setNotebookFeedback({
+        type: 'error',
+        message: err.message || 'Lỗi mạng khi lưu từ vào sổ cá nhân.',
       });
+    } finally {
+      setNotebookSaveLoading(false);
+    }
+  };
 
-      if (isSuccess) {
+  // --- SRS Review Submission ---
+  const handleSrsRate = async (rating: SrsRating) => {
+    if (!currentSrsItem || srsSubmitting) return;
+
+    // Generate or reuse attemptId to ensure idempotent retry
+    const attemptId = currentAttemptId || crypto.randomUUID();
+    setCurrentAttemptId(attemptId);
+    setPendingRating(rating);
+    setSrsSubmitting(true);
+    setSrsError(null);
+
+    const res = await flashcardApi.review({
+      vocabularyId: currentSrsItem.vocabularyId,
+      rating,
+      attemptId,
+    });
+
+    setSrsSubmitting(false);
+
+    if (res.success && res.data) {
+      // Success: advance card and refresh local state
+      setLastSrsResult(res.data);
+      setCurrentAttemptId(null);
+      setPendingRating(null);
+      setSrsReviewedCount(prev => prev + 1);
+
+      // Trigger companion reaction based on rating
+      if (rating === 'GOOD' || rating === 'EASY') {
         triggerReaction('correct');
-        setExpReward(15);
-        if (delta >= 20) {
+        if (rating === 'EASY') {
           setSealText('熟');
           setShowSeal(true);
-          setTimeout(() => setShowSeal(false), 2000);
+          setTimeout(() => setShowSeal(false), 1600);
         }
       } else {
         triggerReaction('mistake');
       }
-    } catch {
-      // Offline fallback
-    }
 
-    setIsFlipped(false);
-    if (currentIndex < filteredItems.length - 1) {
-      setCurrentIndex((prev) => prev + 1);
+      setSrsFlipped(false);
+      if (srsIndex < dueItems.length - 1) {
+        setSrsIndex(prev => prev + 1);
+      } else {
+        setSrsSessionFinished(true);
+        confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
+        rewardBamboo(2);
+      }
     } else {
-      setCurrentIndex(0);
+      // Failure: keep card and input, allow explicit retry
+      setSrsError(res.message || 'Không thể kết nối máy chủ để lưu kết quả SRS. Thẻ được giữ nguyên để bạn thử lại.');
     }
   };
 
-  // --- Practice Quiz Logic ---
+  // Retry the pending SRS rating
+  const handleSrsRetry = () => {
+    if (pendingRating) {
+      void handleSrsRate(pendingRating);
+    }
+  };
+
+  // --- Practice Quiz within Lesson ---
   const quizPool = useMemo(() => {
-    return filteredItems.slice(0, 10);
-  }, [filteredItems]);
+    return lessonWords.slice(0, 10);
+  }, [lessonWords]);
 
   const currentQuizItem = quizPool[quizIndex];
   const isTypingQuestion = quizIndex % 2 === 1;
 
-  // Generate 4 multiple choice options
   const quizChoices = useMemo(() => {
     if (!currentQuizItem) return [];
-    const correct = currentQuizItem.meaningVi || currentQuizItem.meaning || '';
-    const distractors = items
-      .filter((w) => w.vocabularyId !== currentQuizItem.vocabularyId)
-      .map((w) => w.meaningVi || w.meaning || '')
+    const correct = currentQuizItem.meaningVi || '';
+    const distractors = lessonWords
+      .filter(w => w.id !== currentQuizItem.id)
+      .map(w => w.meaningVi || '')
       .filter(Boolean)
       .slice(0, 3);
     const pool = [correct, ...distractors];
-    // Deterministic distribution to avoid impure Math.random during render
     return pool.sort((a, b) => a.localeCompare(b));
-  }, [currentQuizItem, items]);
-
-  const handleChoiceSelect = (choice: string) => {
-    if (quizSubmitted) return;
-    setSelectedChoice(choice);
-  };
+  }, [currentQuizItem, lessonWords]);
 
   const handleQuizSubmit = () => {
     if (quizSubmitted || !currentQuizItem) return;
 
     let correct = false;
     if (isTypingQuestion) {
-      const normalizedInput = quizAnswer.trim().toLowerCase().replace(/\s+/g, '');
-      const expectedPinyin = (currentQuizItem.pinyinNormalized || currentQuizItem.pinyin || '')
-        .toLowerCase()
-        .replace(/\s+/g, '');
-      const expectedHanzi = currentQuizItem.word.trim();
-      correct = normalizedInput === expectedPinyin || normalizedInput === expectedHanzi;
+      // Use checkPinyinAnswer: handles tones, rejects Hanzi, preserves u/ü
+      const expected = currentQuizItem.pinyin || '';
+      correct = checkPinyinAnswer(quizAnswer, expected);
     } else {
-      const expected = currentQuizItem.meaningVi || currentQuizItem.meaning || '';
+      const expected = currentQuizItem.meaningVi || '';
       correct = selectedChoice === expected;
     }
 
@@ -243,557 +424,1089 @@ export const FlashcardView: React.FC = () => {
     setQuizIsCorrect(correct);
     if (correct) {
       triggerReaction('correct');
-      setQuizScore((prev) => prev + 1);
+      setQuizScore(prev => prev + 1);
     } else {
       triggerReaction('mistake');
     }
   };
 
-  const handleQuizNext = async () => {
+  const handleQuizNext = () => {
     if (quizIndex < quizPool.length - 1) {
-      setQuizIndex((prev) => prev + 1);
-      setQuizAnswer('');
-      setSelectedChoice(null);
+      setQuizIndex(prev => prev + 1);
       setQuizSubmitted(false);
       setQuizIsCorrect(null);
+      setQuizAnswer('');
+      setSelectedChoice(null);
     } else {
-      // Finish quiz!
       setQuizFinished(true);
-      confetti({ particleCount: 70, spread: 60, origin: { y: 0.6 } });
-      setExpReward(20);
-      setSealText('通');
-      setShowSeal(true);
-      rewardBamboo(2);
-      triggerReaction('cheer');
-
-      // Award +20 EXP on backend
-      try {
-        await apiRequest('/progress/practice', {
-          method: 'POST',
-          body: JSON.stringify({
-            targetType: 'VOCAB',
-            targetKey: 'QUIZ_SESSION',
-            scoreDelta: 20,
-            isCorrect: true,
-          }),
-        });
-      } catch {}
+      confetti({ particleCount: 60, spread: 70, origin: { y: 0.6 } });
+      rewardBamboo(1);
     }
   };
 
-  const handleResetQuiz = () => {
-    setQuizIndex(0);
-    setQuizScore(0);
-    setQuizAnswer('');
-    setSelectedChoice(null);
-    setQuizSubmitted(false);
-    setQuizIsCorrect(null);
-    setQuizFinished(false);
-    setShowSeal(false);
-  };
-
   return (
-    <div className="mx-auto flex w-full max-w-[960px] flex-col gap-6 py-6">
-      {/* Floating EXP micro-animation */}
-      {expReward && <FloatingExpReward amount={expReward} onComplete={() => setExpReward(null)} />}
-
-      {/* Top Header & Core Nav Tabs */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-rule pb-4">
-        <div>
-          <div className="flex items-center gap-3">
-            <h1 className="font-serif text-2xl font-bold tracking-tight text-fg">Trạm Từ Vựng · 词汇</h1>
-            <span className="rounded bg-gold/15 px-2 py-0.5 font-sans text-xs font-semibold text-gold">
-              HSK 1-6
+    <div className="mx-auto flex w-full max-w-[1100px] flex-col gap-6">
+      {/* Top Academic Review Banner */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded border border-amber-500/30 bg-amber-500/10 p-3.5 text-xs text-amber-200">
+        <div className="flex items-center gap-2">
+          <AlertTriangle size={16} className="text-amber-400 shrink-0" />
+          <div>
+            <span className="font-bold text-amber-300">Milestone M2.1 · Bản thảo chờ thẩm định (PENDING_REVIEW)</span>
+            <span className="text-amber-200/80 block sm:inline sm:ml-2">
+              (Bài mẫu: Chào hỏi & giới thiệu bản thân đối chiếu Giáo trình Hán ngữ; đang chờ chuyên gia phê duyệt)
             </span>
           </div>
-          <p className="mt-1 text-xs text-fg-60">
-            Học từ vựng tiếng Trung qua Thẻ nhớ 3D, Âm Hán Việt và Luyện gõ Pinyin.
-            {stats && <span className="ml-2 text-fg-38">· Cần ôn hôm nay: {stats.dueToday}</span>}
-          </p>
-          {error && <p className="mt-1 text-xs text-red">{error}</p>}
         </div>
-
-        <div className="flex flex-wrap items-center gap-3">
-          <StudyPetCompanion compact={true} />
-          {/* Tab switcher */}
-          <div className="inline-flex rounded border border-rule bg-card p-1 text-xs font-medium">
-            <button
-              type="button"
-              onClick={() => setTab('flashcard')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 transition-colors ${
-                tab === 'flashcard' ? 'bg-fg text-bg font-semibold' : 'text-fg-60 hover:text-fg'
-              }`}
-            >
-              <Layers className="h-3.5 w-3.5" />
-              <span>Thẻ 3D ({filteredItems.length})</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setTab('quiz');
-                handleResetQuiz();
-              }}
-              className={`flex items-center gap-1.5 px-3 py-1.5 transition-colors ${
-                tab === 'quiz' ? 'bg-fg text-bg font-semibold' : 'text-fg-60 hover:text-fg'
-              }`}
-            >
-              <Dumbbell className="h-3.5 w-3.5" />
-              <span>Luyện tập +20 EXP</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Filter Bar */}
-      <div className="flex flex-wrap items-center gap-3 bg-card/60 p-3 text-xs">
-        {/* HSK Level Filter */}
-        <div className="flex items-center gap-1.5">
-          <span className="font-medium text-fg-38">Cấp độ:</span>
-          {[1, 2, 3, 4, 5, 6].map((lvl) => (
-            <button
-              key={lvl}
-              type="button"
-              onClick={() => {
-                setHskFilter(lvl);
-                setCurrentIndex(0);
-              }}
-              className={`px-2 py-0.5 border ${
-                hskFilter === lvl
-                  ? 'border-gold bg-gold/20 text-gold font-bold'
-                  : 'border-rule text-fg-60 hover:border-rule-strong hover:text-fg'
-              }`}
-            >
-              HSK {lvl}
-            </button>
-          ))}
-        </div>
-
-        <span className="h-4 w-[1px] bg-rule" />
-
-        {/* Lesson Filter */}
-        <div className="flex items-center gap-1.5">
-          <span className="font-medium text-fg-38">Bài học:</span>
-          {(['ALL', 1, 2, 3] as const).map((l) => (
-            <button
-              key={l}
-              type="button"
-              onClick={() => {
-                setLessonFilter(l);
-                setCurrentIndex(0);
-              }}
-              className={`px-2 py-0.5 border ${
-                lessonFilter === l
-                  ? 'border-fg bg-fg text-bg font-semibold'
-                  : 'border-rule text-fg-60 hover:border-rule-strong hover:text-fg'
-              }`}
-            >
-              {l === 'ALL' ? 'Tất cả' : `Bài ${l}`}
-            </button>
-          ))}
-        </div>
-
-        <span className="h-4 w-[1px] bg-rule" />
-
-        {/* Mastery Filter */}
-        <div className="flex items-center gap-1.5">
-          <span className="font-medium text-fg-38">Trạng thái:</span>
-          <select
-            value={masteryFilter}
-            onChange={(e) => {
-              setMasteryFilter(e.target.value as MasteryFilter);
-              setCurrentIndex(0);
-            }}
-            className="border border-rule bg-bg px-2 py-0.5 text-fg text-xs focus:border-fg"
-          >
-            <option value="ALL">Tất cả</option>
-            <option value="LEARNING">Đang học</option>
-            <option value="MASTERED">Đã thông thạo (≥80%)</option>
-          </select>
-        </div>
-
-        {/* Search input */}
-        <div className="ml-auto flex items-center">
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => {
-              setSearchQuery(e.target.value);
-              setCurrentIndex(0);
-            }}
-            placeholder="Tìm chữ Hán, Pinyin, Hán Việt..."
-            className="w-48 border border-rule bg-bg px-2.5 py-1 text-xs text-fg placeholder:text-fg-38 focus:border-fg focus:outline-none"
-          />
-        </div>
-      </div>
-
-      {/* Loading & Empty States */}
-      {loading && (
-        <div className="flex h-64 items-center justify-center text-xs text-fg-60">
-          Đang tải dữ liệu từ vựng tiếng Trung...
-        </div>
-      )}
-
-      {!loading && filteredItems.length === 0 && (
-        <div className="flex h-64 flex-col items-center justify-center text-center">
-          <p className="font-serif text-lg text-fg-60">Không tìm thấy từ vựng phù hợp</p>
-          <p className="mt-1 text-xs text-fg-38">Thử đổi bộ lọc HSK, Bài học hoặc từ khoá tìm kiếm.</p>
-        </div>
-      )}
-
-      {/* MODE 1: 3D Flashcard Mode */}
-      {!loading && tab === 'flashcard' && currentItem && (
-        <div className="flex flex-col items-center gap-6">
-          {/* Card Meta & Mastery Bar */}
-          <div className="flex w-full max-w-[560px] items-center justify-between text-xs text-fg-60">
-            <div className="flex items-center gap-2">
-              <span className="font-mono text-fg-38">
-                {currentIndex + 1} / {filteredItems.length}
+        <div className="flex items-center gap-2 self-end sm:self-auto">
+          {isAdmin ? (
+            <>
+              <span className="inline-flex items-center gap-1 rounded bg-cinnabar/20 text-cinnabar border border-cinnabar/30 px-2 py-0.5 text-[11px] font-semibold">
+                <ShieldCheck size={13} /> Admin
               </span>
-              <span>· HSK {currentItem.hskLevel || 1}</span>
-              <span>· Bài {currentItem.lessonNumber || 1}</span>
-            </div>
+              <button
+                type="button"
+                onClick={togglePreview}
+                className="inline-flex items-center gap-1 rounded border border-amber-400/40 bg-card px-2.5 py-1 text-[11px] font-semibold text-amber-300 hover:bg-tint cursor-pointer transition-colors"
+              >
+                {adminPreviewActive ? <EyeOff size={13} /> : <Eye size={13} />}
+                {adminPreviewActive ? 'Tắt xem trước' : 'Bật xem trước (Admin Preview)'}
+              </button>
+            </>
+          ) : !user ? (
+            <button
+              type="button"
+              onClick={requireLogin}
+              className="inline-flex items-center gap-1 rounded border border-amber-400/40 bg-card px-2.5 py-1 text-[11px] font-semibold text-amber-300 hover:bg-tint cursor-pointer transition-colors"
+            >
+              <ShieldCheck size={13} /> Đăng nhập Admin
+            </button>
+          ) : (
+            <span className="inline-flex items-center gap-1 rounded bg-stone-700/50 text-stone-300 border border-stone-600/50 px-2 py-0.5 text-[11px]">
+              Tài khoản học viên
+            </span>
+          )}
+        </div>
+      </div>
 
-            {/* Mastery Stars */}
-            <div className="flex items-center gap-1" title="Độ thông thạo từ">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Star
-                  key={i}
-                  className={`h-3.5 w-3.5 ${
-                    i < getStars(currentItem.vocabularyId)
-                      ? 'fill-gold text-gold'
-                      : 'text-fg-38'
+      {attemptedUnauthorizedPreview && (
+        <div className="flex items-center gap-2 rounded border border-rose-500/40 bg-rose-500/10 p-3 text-xs text-rose-300">
+          <AlertTriangle size={16} className="text-rose-400 shrink-0" />
+          <span>
+            <strong>Từ chối quyền truy cập xem trước (?preview=1)</strong>: Chế độ xem trước nội dung chưa kiểm duyệt chỉ dành riêng cho tài khoản Quản trị viên (<code className="font-mono">ROLE_ADMIN</code>). Tài khoản thông thường hoặc khách không có quyền xem trước.
+          </span>
+        </div>
+      )}
+
+      {generalError && (
+        <div className="flex items-center justify-between rounded border border-rose-500/30 bg-rose-500/10 p-3 text-xs text-rose-300">
+          <div className="flex items-center gap-2">
+            <AlertTriangle size={15} className="shrink-0 text-rose-400" />
+            <span>{generalError}</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setGeneralError(null)}
+            className="text-rose-400 hover:text-rose-200 cursor-pointer"
+          >
+            <X size={14} />
+          </button>
+        </div>
+      )}
+
+      {/* Main Station Header */}
+      <div className="flex flex-col gap-4 border-b border-rule pb-5 md:flex-row md:items-center md:justify-between">
+        <div>
+          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-cinnabar">
+            <span className="inline-block h-2 w-2 rounded-full bg-cinnabar" />
+            Trạm 2 · 词汇与记忆 · Từ vựng & Sổ từ · [M2.1 Hoạt động thật]
+            {loading && <RefreshCw size={13} className="animate-spin text-cinnabar inline ml-1" />}
+          </div>
+          <h1 className="mt-1 font-serif text-3xl font-bold tracking-tight text-fg">
+            Từ vựng & Ôn tập SRS
+          </h1>
+          <p className="mt-1.5 max-w-2xl text-xs leading-relaxed text-fg-60">
+            Nắm chắc từ vựng tiếng Trung qua ngữ cảnh thực tế, lưu từ vào sổ cá nhân và ghi nhớ dài hạn bằng thuật toán lặp lại ngắt quãng SRS (SM-2).
+          </p>
+        </div>
+
+        {/* Companion Dock */}
+        <div className="flex items-center gap-3">
+          <StudyPetCompanion />
+        </div>
+      </div>
+
+      {/* Primary Mode Tabs: Học theo bài vs Ôn đến hạn (SRS) */}
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-rule pb-2">
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => {
+              stopChineseSpeech();
+              setMainMode('LESSONS');
+            }}
+            className={`flex items-center gap-2 border-b-2 px-4 py-2 font-serif text-sm font-semibold transition-all cursor-pointer ${
+              mainMode === 'LESSONS'
+                ? 'border-cinnabar text-cinnabar'
+                : 'border-transparent text-fg-60 hover:text-fg'
+            }`}
+          >
+            <BookOpen size={16} /> Học theo bài (Giáo trình)
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              stopChineseSpeech();
+              setMainMode('SRS');
+            }}
+            className={`flex items-center gap-2 border-b-2 px-4 py-2 font-serif text-sm font-semibold transition-all cursor-pointer ${
+              mainMode === 'SRS'
+                ? 'border-cinnabar text-cinnabar'
+                : 'border-transparent text-fg-60 hover:text-fg'
+            }`}
+          >
+            <Calendar size={16} /> Ôn đến hạn (SRS SM-2)
+            {stats && stats.dueToday > 0 && (
+              <span className="rounded-full bg-cinnabar px-2 py-0.5 text-[11px] font-bold text-white">
+                {stats.dueToday}
+              </span>
+            )}
+          </button>
+        </div>
+
+        {/* Stats Pill */}
+        {stats && (
+          <div className="hidden sm:flex items-center gap-3 text-xs text-fg-60">
+            <span>Đã học: <b className="text-fg">{stats.learnedWords}</b> từ</span>
+            <span>·</span>
+            <span>Đến hạn: <b className="text-gold">{stats.dueToday}</b> thẻ</span>
+            <span>·</span>
+            <span>Streak: <b className="text-cinnabar">{stats.currentStreak}</b> ngày 🔥</span>
+          </div>
+        )}
+      </div>
+
+      {/* ========================================================
+          MODE 1: HỌC THEO BÀI (LESSON CATALOG & STUDY)
+         ======================================================== */}
+      {mainMode === 'LESSONS' && (
+        <div className="flex flex-col gap-6">
+          {/* Lesson Selector Card Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {lessons.map(lesson => {
+              const isSelected = selectedLesson?.id === lesson.id;
+              return (
+                <div
+                  key={lesson.id}
+                  onClick={() => {
+                    stopChineseSpeech();
+                    setSelectedLesson(lesson);
+                    setLessonSubMode('LIST');
+                  }}
+                  className={`flex flex-col justify-between rounded border p-4.5 cursor-pointer transition-all ${
+                    isSelected
+                      ? 'border-cinnabar bg-cinnabar/5 ring-1 ring-cinnabar/30'
+                      : 'border-rule bg-card hover:border-fg-38 hover:bg-card/80'
                   }`}
-                />
-              ))}
-            </div>
+                >
+                  <div>
+                    <div className="flex items-center justify-between text-[11px] text-fg-38">
+                      <span className="font-semibold text-cinnabar uppercase tracking-wider">
+                        {lesson.curriculumLevel}
+                      </span>
+                      <span>{lesson.wordCount} từ vựng</span>
+                    </div>
+                    <h3 className="mt-1.5 font-serif text-base font-bold text-fg">
+                      {lesson.title}
+                    </h3>
+                    <p className="mt-1 text-xs text-fg-60 line-clamp-2 leading-relaxed">
+                      {lesson.description}
+                    </p>
+                  </div>
+                  <div className="mt-4 flex items-center justify-between pt-3 border-t border-rule/50 text-xs">
+                    <span className="text-[11px] font-mono text-amber-300/80">
+                      Bản thảo M2.1
+                    </span>
+                    <span className="font-medium text-cinnabar flex items-center gap-1 text-[11px]">
+                      {isSelected ? 'Đang chọn' : 'Xem bài'} →
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
           </div>
 
-          {/* 3D Flashcard Container */}
-          <div
-            className="perspective-1000 w-full max-w-[560px] cursor-pointer"
-            onClick={handleFlip}
-          >
-            <div
-              className={`relative min-h-[340px] w-full transition-transform duration-500 transform-style-3d ${
-                isFlipped ? 'rotate-y-180' : ''
-              }`}
-            >
-              {/* FRONT SIDE */}
-              <div className="absolute inset-0 flex flex-col justify-between border border-rule bg-card p-8 backface-hidden shadow-lg transition-colors hover:border-rule-strong">
-                {/* Top header */}
-                <div className="flex items-center justify-between">
-                  <span className="border border-gold/40 bg-gold/10 px-2 py-0.5 text-[11px] font-semibold text-gold">
-                    HSK {currentItem.hskLevel || 1}
-                  </span>
+          {/* Regular user warning if no approved lessons are visible */}
+          {lessons.length === 0 && !isAdmin && (
+            <div className="flex flex-col items-center justify-center rounded border border-rule bg-card p-10 text-center">
+              <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-amber-500/10 text-amber-400 mb-3">
+                <AlertTriangle size={24} />
+              </div>
+              <h3 className="font-serif text-lg font-bold text-fg">
+                Chưa có bài học nào được phê duyệt chính thức
+              </h3>
+              <p className="mt-2 max-w-md text-xs leading-relaxed text-fg-60">
+                Nội dung từ vựng M2.1 hiện đang trong quy trình thẩm định học thuật (<b>PENDING_REVIEW</b>). Theo quy định an toàn dữ liệu học thuật, học viên sẽ được mở bài ngay khi chuyên gia hoàn tất ký duyệt.
+              </p>
+              <button
+                type="button"
+                onClick={requireLogin}
+                className="mt-5 inline-flex items-center gap-1.5 rounded border border-cinnabar bg-cinnabar px-4 py-2 text-xs font-semibold text-white"
+              >
+                <ShieldCheck size={14} /> Đăng nhập tài khoản Quản trị để Xem trước
+              </button>
+            </div>
+          )}
+
+          {/* Selected Lesson Workspace */}
+          {selectedLesson && lessonWords.length > 0 && (
+            <div className="flex flex-col gap-5 rounded border border-rule bg-card p-6">
+              {/* Lesson Submenu Header */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-rule pb-4">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="rounded bg-cinnabar/10 px-2 py-0.5 font-serif text-[11px] font-bold text-cinnabar border border-cinnabar/30">
+                      {selectedLesson.curriculumLevel}
+                    </span>
+                    <h2 className="font-serif text-xl font-bold text-fg">
+                      {selectedLesson.title}
+                    </h2>
+                  </div>
+                  <p className="mt-1 text-xs text-fg-60">
+                    {selectedLesson.description} · Tổng cộng: <b>{lessonWords.length} từ</b>
+                  </p>
+                </div>
+
+                {/* Sub-mode switch */}
+                <div className="flex items-center gap-1 bg-surface p-1 rounded border border-rule self-start sm:self-auto">
                   <button
                     type="button"
-                    onClick={handlePlayAudio}
-                    title="Phát âm tiếng Trung"
-                    className="flex h-8 w-8 items-center justify-center border border-rule text-fg-60 transition-colors hover:border-fg hover:text-fg"
+                    onClick={() => {
+                      stopChineseSpeech();
+                      setLessonSubMode('LIST');
+                    }}
+                    className={`px-3 py-1 text-xs font-semibold rounded cursor-pointer transition-colors ${
+                      lessonSubMode === 'LIST'
+                        ? 'bg-card text-cinnabar shadow-sm'
+                        : 'text-fg-60 hover:text-fg'
+                    }`}
                   >
-                    <Volume2 className="h-4 w-4" />
+                    Danh sách từ ({lessonWords.length})
                   </button>
-                </div>
-
-                {/* Main Hanzi */}
-                <div className="my-auto flex flex-col items-center justify-center text-center">
-                  <span className="font-serif text-6xl font-medium tracking-wide text-fg">
-                    {currentItem.word}
-                  </span>
-                  {currentItem.traditional && currentItem.traditional !== currentItem.word && (
-                    <span className="mt-2 text-xs text-fg-38">
-                      Phồn thể: {currentItem.traditional}
-                    </span>
-                  )}
-                </div>
-
-                {/* Bottom hint */}
-                <div className="flex items-center justify-between text-[11px] text-fg-38">
-                  <span>Nhấn vào thẻ hoặc phím Space để lật</span>
-                  <span>{currentItem.partOfSpeech || 'Từ vựng'}</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      stopChineseSpeech();
+                      setLessonSubMode('STUDY');
+                      setStudyWordIndex(0);
+                      setStudyFlipped(false);
+                    }}
+                    className={`px-3 py-1 text-xs font-semibold rounded cursor-pointer transition-colors ${
+                      lessonSubMode === 'STUDY'
+                        ? 'bg-card text-cinnabar shadow-sm'
+                        : 'text-fg-60 hover:text-fg'
+                    }`}
+                  >
+                    Học thẻ từ
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      stopChineseSpeech();
+                      setLessonSubMode('QUIZ');
+                      setQuizIndex(0);
+                      setQuizScore(0);
+                      setQuizFinished(false);
+                    }}
+                    className={`px-3 py-1 text-xs font-semibold rounded cursor-pointer transition-colors ${
+                      lessonSubMode === 'QUIZ'
+                        ? 'bg-card text-cinnabar shadow-sm'
+                        : 'text-fg-60 hover:text-fg'
+                    }`}
+                  >
+                    Luyện phản xạ
+                  </button>
                 </div>
               </div>
 
-              {/* BACK SIDE */}
-              <div className="absolute inset-0 flex flex-col justify-between border border-rule bg-card p-8 rotate-y-180 backface-hidden shadow-lg">
-                {/* Red Seal Stamp animation if mastered */}
-                {showSeal && (
-                  <div className="absolute right-6 top-6 z-20">
-                    <RedSealStamp text={sealText} size={58} />
+              {/* Sub-view 1: WORD LIST TABLE */}
+              {lessonSubMode === 'LIST' && (
+                <div className="flex flex-col gap-4">
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="relative flex-1 max-w-xs">
+                      <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-fg-38" />
+                      <input
+                        type="text"
+                        placeholder="Tìm từ, Pinyin, nghĩa..."
+                        value={searchWordQuery}
+                        onChange={e => setSearchWordQuery(e.target.value)}
+                        className="w-full rounded border border-rule bg-surface pl-8 pr-3 py-1.5 text-xs text-fg placeholder:text-fg-38 focus:border-cinnabar focus:outline-none"
+                      />
+                    </div>
+                    <span className="text-xs text-fg-60">
+                      Hiển thị {filteredLessonWords.length} / {lessonWords.length} từ
+                    </span>
                   </div>
-                )}
 
-                {/* Back Top */}
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="font-serif text-xl text-fg-60">{currentItem.word}</span>
+                  <div className="overflow-x-auto rounded border border-rule">
+                    <table className="w-full text-left text-xs">
+                      <thead className="bg-surface text-fg-60 uppercase text-[10px] tracking-wider border-b border-rule">
+                        <tr>
+                          <th className="p-3">Từ vựng</th>
+                          <th className="p-3">Pinyin & Hán Việt</th>
+                          <th className="p-3">Từ loại & Nghĩa</th>
+                          <th className="p-3">Ngữ cảnh ví dụ</th>
+                          <th className="p-3 text-right">Thao tác</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-rule font-sans">
+                        {filteredLessonWords.map(word => (
+                          <tr key={word.id} className="hover:bg-surface/50 transition-colors">
+                            <td className="p-3">
+                              <div className="flex items-center gap-2">
+                                <span className="font-serif text-2xl font-bold text-fg">
+                                  {word.word}
+                                </span>
+                                <button
+                                  type="button"
+                                  onClick={() => speakChinese(word.word)}
+                                  title="Nghe phát âm từ"
+                                  className="p-1 rounded text-fg-60 hover:text-cinnabar hover:bg-tint cursor-pointer transition-colors"
+                                >
+                                  <Volume2 size={15} />
+                                </button>
+                              </div>
+                            </td>
+                            <td className="p-3">
+                              <div className="font-semibold text-gold text-sm">{word.pinyin}</div>
+                              <div className="text-[11px] text-fg-38 uppercase">HV: {word.hanViet}</div>
+                            </td>
+                            <td className="p-3">
+                              <span className="inline-block rounded bg-tint px-1.5 py-0.5 text-[10px] text-fg-60 font-medium mb-1">
+                                {word.partOfSpeech || 'Từ vựng'}
+                              </span>
+                              <div className="font-medium text-fg">{word.meaningVi}</div>
+                            </td>
+                            <td className="p-3 max-w-[280px]">
+                              {word.exampleZh ? (
+                                <div>
+                                  <div className="flex items-center gap-1.5">
+                                    <span className="font-serif text-fg/90">{word.exampleZh}</span>
+                                    <button
+                                      type="button"
+                                      onClick={() => speakChinese(word.exampleZh!)}
+                                      title="Nghe cả câu ví dụ"
+                                      className="text-fg-38 hover:text-cinnabar cursor-pointer"
+                                    >
+                                      <Volume2 size={12} />
+                                    </button>
+                                  </div>
+                                  <div className="text-[11px] text-gold/80">{word.examplePinyin}</div>
+                                  <div className="text-[11px] text-fg-60">{word.exampleVi}</div>
+                                </div>
+                              ) : (
+                                <span className="text-fg-38 italic">Chưa có ví dụ</span>
+                              )}
+                            </td>
+                            <td className="p-3 text-right">
+                              <button
+                                type="button"
+                                onClick={() => void handleOpenNotebookModal({ id: word.id, word: word.word, pinyin: word.pinyin })}
+                                className="inline-flex items-center gap-1 rounded border border-rule bg-card px-2.5 py-1 text-[11px] font-medium text-fg-60 hover:border-cinnabar hover:text-cinnabar cursor-pointer transition-colors"
+                              >
+                                <BookmarkPlus size={13} /> Lưu sổ từ
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
+
+              {/* Sub-view 2: INTERACTIVE FLASHCARD STUDY */}
+              {lessonSubMode === 'STUDY' && currentStudyWord && (
+                <div className="mx-auto flex w-full max-w-[560px] flex-col items-center gap-6 py-4">
+                  {/* Progress Header */}
+                  <div className="flex w-full items-center justify-between text-xs text-fg-60">
+                    <span>
+                      Từ {studyWordIndex + 1} / {lessonWords.length}
+                    </span>
+                    <span className="text-fg-38">
+                      Nhấn vào thẻ hoặc phím cách để lật
+                    </span>
+                  </div>
+
+                  {/* 3D Flashcard Container */}
+                  <div
+                    onClick={() => setStudyFlipped(prev => !prev)}
+                    className="group relative h-[320px] w-full cursor-pointer perspective-1000"
+                  >
+                    <div
+                      className={`relative h-full w-full rounded border border-rule transition-transform duration-500 transform-style-3d ${
+                        studyFlipped ? 'rotate-y-180' : ''
+                      }`}
+                    >
+                      {/* FRONT SIDE (No answer leak!) */}
+                      <div className="absolute inset-0 flex flex-col justify-between bg-card p-8 backface-hidden shadow-lg">
+                        <div className="flex items-center justify-between text-[11px] text-fg-38">
+                          <span className="uppercase tracking-wider font-semibold text-cinnabar">
+                            {selectedLesson.title}
+                          </span>
+                          <span>{currentStudyWord.partOfSpeech || 'Từ vựng'}</span>
+                        </div>
+
+                        <div className="my-auto flex flex-col items-center text-center">
+                          <span className="font-serif text-6xl font-bold tracking-wide text-fg">
+                            {currentStudyWord.word}
+                          </span>
+                          {currentStudyWord.traditional && currentStudyWord.traditional !== currentStudyWord.word && (
+                            <span className="mt-2 text-xs text-fg-38">
+                              Phồn thể: {currentStudyWord.traditional}
+                            </span>
+                          )}
+                        </div>
+
+                        <div className="flex items-center justify-between text-[11px] text-fg-38">
+                          <span>Bấm để lật xem phiên âm & ngữ cảnh</span>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              speakChinese(currentStudyWord.word);
+                            }}
+                            className="inline-flex items-center gap-1 text-fg-60 hover:text-cinnabar"
+                          >
+                            <Volume2 size={13} /> Nghe phát âm
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* BACK SIDE */}
+                      <div className="absolute inset-0 flex flex-col justify-between bg-card p-8 rotate-y-180 backface-hidden shadow-lg">
+                        <div className="flex items-center justify-between text-[11px]">
+                          <div className="flex items-center gap-2">
+                            <span className="font-serif text-lg font-bold text-fg">{currentStudyWord.word}</span>
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                speakChinese(currentStudyWord.word);
+                              }}
+                              className="text-fg-60 hover:text-cinnabar"
+                            >
+                              <Volume2 size={14} />
+                            </button>
+                          </div>
+                          <span className="rounded border border-cinnabar/30 bg-cinnabar/10 px-2 py-0.5 text-xs font-semibold text-cinnabar uppercase">
+                            Hán Việt: {currentStudyWord.hanViet}
+                          </span>
+                        </div>
+
+                        <div className="my-auto flex flex-col items-center text-center">
+                          <span className="font-sans text-2xl font-bold tracking-wide text-gold">
+                            {currentStudyWord.pinyin}
+                          </span>
+                          <span className="mt-2 text-lg font-semibold text-fg">
+                            {currentStudyWord.meaningVi}
+                          </span>
+
+                          {currentStudyWord.exampleZh && (
+                            <div className="mt-4 max-w-[440px] rounded border border-rule/60 bg-surface/80 p-3 text-left">
+                              <div className="flex items-center justify-between">
+                                <span className="font-serif text-xs font-medium text-fg/90">
+                                  {currentStudyWord.exampleZh}
+                                </span>
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    speakChinese(currentStudyWord.exampleZh!);
+                                  }}
+                                  title="Nghe câu ví dụ"
+                                  className="text-fg-38 hover:text-cinnabar"
+                                >
+                                  <Volume2 size={13} />
+                                </button>
+                              </div>
+                              <div className="text-[11px] text-gold/80">{currentStudyWord.examplePinyin}</div>
+                              <div className="text-[11px] text-fg-60">{currentStudyWord.exampleVi}</div>
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="flex items-center justify-between text-[11px] text-fg-38">
+                          <span>Bấm để lật lại mặt chữ Hán</span>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              void handleOpenNotebookModal({ id: currentStudyWord.id, word: currentStudyWord.word, pinyin: currentStudyWord.pinyin });
+                            }}
+                            className="inline-flex items-center gap-1 text-cinnabar hover:underline"
+                          >
+                            <BookmarkPlus size={13} /> Lưu vào sổ từ
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Navigation Footer */}
+                  <div className="flex w-full items-center justify-between gap-3">
                     <button
                       type="button"
-                      onClick={handlePlayAudio}
-                      title="Nghe phát âm"
-                      className="flex h-7 w-7 items-center justify-center border border-rule text-fg-60 hover:text-fg"
+                      disabled={studyWordIndex === 0}
+                      onClick={() => {
+                        stopChineseSpeech();
+                        setStudyFlipped(false);
+                        setStudyWordIndex(prev => Math.max(0, prev - 1));
+                      }}
+                      className="rounded border border-rule bg-card px-4 py-2 text-xs font-semibold text-fg-60 hover:text-fg disabled:opacity-30 cursor-pointer"
                     >
-                      <Volume2 className="h-3.5 w-3.5" />
+                      ← Từ trước
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => void handleOpenNotebookModal({ id: currentStudyWord.id, word: currentStudyWord.word, pinyin: currentStudyWord.pinyin })}
+                      className="inline-flex items-center gap-1.5 rounded border border-cinnabar/40 bg-card px-4 py-2 text-xs font-semibold text-cinnabar hover:bg-tint cursor-pointer"
+                    >
+                      <BookmarkPlus size={14} /> Lưu sổ cá nhân
+                    </button>
+
+                    <button
+                      type="button"
+                      disabled={studyWordIndex === lessonWords.length - 1}
+                      onClick={() => {
+                        stopChineseSpeech();
+                        setStudyFlipped(false);
+                        setStudyWordIndex(prev => Math.min(lessonWords.length - 1, prev + 1));
+                      }}
+                      className="rounded border border-rule bg-card px-4 py-2 text-xs font-semibold text-fg-60 hover:text-fg disabled:opacity-30 cursor-pointer"
+                    >
+                      Từ tiếp →
                     </button>
                   </div>
-
-                  {/* Prominent Âm Hán Việt Badge */}
-                  <span className="rounded border border-cinnabar/40 bg-cinnabar/10 px-2.5 py-0.5 font-sans text-xs font-bold tracking-wide text-cinnabar">
-                    Hán Việt: {(currentItem.hanViet || currentItem.sinoVietnamese || 'Đang cập nhật').toUpperCase()}
-                  </span>
+                  <p className="text-[11px] text-fg-38 text-center">
+                    * Lưu ý: Ôn tập tự do trong bài học không ảnh hưởng tới lịch giãn cách SRS của giáo trình.
+                  </p>
                 </div>
+              )}
 
-                {/* Back Content */}
-                <div className="my-auto flex flex-col items-center text-center">
-                  {/* Pinyin */}
-                  <span className="font-sans text-2xl font-semibold tracking-wide text-gold">
-                    {currentItem.pinyin || currentItem.reading}
-                  </span>
+              {/* Sub-view 3: PRACTICE QUIZ FOR LESSON */}
+              {lessonSubMode === 'QUIZ' && (
+                <div className="mx-auto w-full max-w-[560px] py-4">
+                  {!quizFinished && currentQuizItem ? (
+                    <div className="flex flex-col gap-6 rounded border border-rule bg-card p-8 shadow-md">
+                      <div className="flex items-center justify-between border-b border-rule pb-3 text-xs text-fg-60">
+                        <span>Câu hỏi {quizIndex + 1} / {quizPool.length}</span>
+                        <span className="font-semibold text-gold">Điểm: {quizScore}</span>
+                      </div>
 
-                  {/* Vietnamese Meaning */}
-                  <span className="mt-3 text-lg font-medium text-fg">
-                    {currentItem.meaningVi || currentItem.meaning}
-                  </span>
+                      <div className="flex flex-col items-center gap-3 text-center">
+                        <span className="text-xs uppercase tracking-widest text-fg-38 font-semibold">
+                          {isTypingQuestion ? 'Luyện gõ Pinyin (Không lộ phiên âm)' : 'Chọn nghĩa tiếng Việt đúng'}
+                        </span>
+                        {/* Display Hanzi */}
+                        <span className="font-serif text-5xl font-bold text-fg">
+                          {currentQuizItem.word}
+                        </span>
 
-                  {/* Bilingual Example Sentence */}
-                  {(currentItem.exampleZh || currentItem.exampleSentence) && (
-                    <div className="mt-4 max-w-[460px] border-t border-rule/60 pt-3 text-left">
-                      <p className="font-serif text-xs text-fg/90">
-                        {currentItem.exampleZh || currentItem.exampleSentence}
+                        {/* Pronunciation button only AFTER submit or for audio cue */}
+                        {quizSubmitted && (
+                          <div className="flex items-center gap-2">
+                            <span className="font-sans text-sm font-medium text-gold">
+                              {currentQuizItem.pinyin}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => speakChinese(currentQuizItem.word)}
+                              className="text-fg-38 hover:text-cinnabar cursor-pointer"
+                            >
+                              <Volume2 size={14} />
+                            </button>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Question Answer Inputs */}
+                      {isTypingQuestion ? (
+                        <div className="flex flex-col gap-2">
+                          <label className="text-xs text-fg-60">
+                            Nhập Pinyin (hỗ trợ cả dấu `nǐ hǎo` hoặc số thanh `ni3 hao3`):
+                          </label>
+                          <input
+                            type="text"
+                            value={quizAnswer}
+                            disabled={quizSubmitted}
+                            onChange={e => setQuizAnswer(e.target.value)}
+                            onKeyDown={e => {
+                              if (e.key === 'Enter') handleQuizSubmit();
+                            }}
+                            placeholder="Ví dụ: ni3 hao3 hoặc nǐ hǎo..."
+                            className="rounded border border-rule bg-surface p-3 font-sans text-sm text-fg placeholder:text-fg-38 focus:border-cinnabar focus:outline-none"
+                          />
+                        </div>
+                      ) : (
+                        <div className="grid grid-cols-1 gap-2.5">
+                          {quizChoices.map((choice, idx) => (
+                            <button
+                              key={idx}
+                              type="button"
+                              disabled={quizSubmitted}
+                              onClick={() => setSelectedChoice(choice)}
+                              className={`rounded border p-3 text-left text-xs font-medium transition-all cursor-pointer ${
+                                selectedChoice === choice
+                                  ? 'border-cinnabar bg-cinnabar/10 text-cinnabar font-semibold'
+                                  : 'border-rule bg-surface hover:border-fg-38 text-fg-90'
+                              } ${
+                                quizSubmitted && choice === currentQuizItem.meaningVi
+                                  ? 'border-jade bg-jade/10 text-jade font-bold'
+                                  : ''
+                              }`}
+                            >
+                              {choice}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Feedback on submit */}
+                      {quizSubmitted && (
+                        <div className={`p-3 rounded text-xs leading-relaxed ${
+                          quizIsCorrect ? 'bg-jade/10 text-jade border border-jade/30' : 'bg-red/10 text-red border border-red/30'
+                        }`}>
+                          <b>{quizIsCorrect ? '✓ Chính xác!' : '✗ Chưa đúng!'}</b>
+                          <div className="mt-1 text-fg-90">
+                            Đáp án Pinyin: <b className="text-gold font-sans">{currentQuizItem.pinyin}</b> · Nghĩa: <b>{currentQuizItem.meaningVi}</b>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Footer Actions */}
+                      <div className="flex justify-end gap-2 pt-2 border-t border-rule">
+                        {!quizSubmitted ? (
+                          <button
+                            type="button"
+                            onClick={handleQuizSubmit}
+                            className="rounded bg-cinnabar px-5 py-2 font-serif text-xs font-semibold text-white hover:opacity-90 cursor-pointer"
+                          >
+                            Xác nhận đáp án
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={handleQuizNext}
+                            className="inline-flex items-center gap-1 rounded bg-cinnabar px-5 py-2 font-serif text-xs font-semibold text-white hover:opacity-90 cursor-pointer"
+                          >
+                            Câu tiếp theo →
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  ) : (
+                    /* Quiz Finished Card */
+                    <div className="flex flex-col items-center justify-center rounded border border-rule bg-card p-10 text-center">
+                      <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-jade/10 text-jade mb-3">
+                        <CheckCircle2 size={28} />
+                      </div>
+                      <h3 className="font-serif text-xl font-bold text-fg">
+                        Hoàn thành bài luyện phản xạ!
+                      </h3>
+                      <p className="mt-2 text-xs text-fg-60">
+                        Bạn đã trả lời đúng <b>{quizScore}</b> / {quizPool.length} câu hỏi của bài học này.
                       </p>
-                      {(currentItem.examplePinyin || currentItem.exampleReading) && (
-                        <p className="font-sans text-[11px] text-gold/80">
-                          {currentItem.examplePinyin || currentItem.exampleReading}
-                        </p>
-                      )}
-                      {(currentItem.exampleVi || currentItem.exampleMeaning) && (
-                        <p className="text-[11px] text-fg-60">
-                          {currentItem.exampleVi || currentItem.exampleMeaning}
-                        </p>
-                      )}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setQuizIndex(0);
+                          setQuizScore(0);
+                          setQuizFinished(false);
+                          setQuizSubmitted(false);
+                        }}
+                        className="mt-5 inline-flex items-center gap-1.5 rounded border border-cinnabar bg-cinnabar px-5 py-2 text-xs font-semibold text-white cursor-pointer"
+                      >
+                        <RotateCcw size={14} /> Luyện lại bài này
+                      </button>
                     </div>
                   )}
                 </div>
-
-                {/* Flip back hint */}
-                <div className="text-center text-[11px] text-fg-38">
-                  Nhấn để lật lại chữ Hán
-                </div>
-              </div>
+              )}
             </div>
-          </div>
-
-          {/* Rating Action Buttons (SRS interval) */}
-          <div className="flex w-full max-w-[560px] items-center justify-between gap-2">
-            <button
-              type="button"
-              onClick={() => void handleRate('AGAIN')}
-              className="flex-1 border border-red/40 py-2 text-xs font-medium text-red transition-colors hover:bg-red/10"
-            >
-              Chưa nhớ (-10)
-            </button>
-            <button
-              type="button"
-              onClick={() => void handleRate('HARD')}
-              className="flex-1 border border-rule py-2 text-xs font-medium text-fg-60 transition-colors hover:border-fg hover:text-fg"
-            >
-              Khó (+5)
-            </button>
-            <button
-              type="button"
-              onClick={() => void handleRate('GOOD')}
-              className="flex-1 border border-jade/50 bg-jade/10 py-2 text-xs font-semibold text-jade transition-colors hover:bg-jade/20"
-            >
-              Thuộc (+15 EXP)
-            </button>
-            <button
-              type="button"
-              onClick={() => void handleRate('EASY')}
-              className="flex-1 border border-gold/50 bg-gold/10 py-2 text-xs font-bold text-gold transition-colors hover:bg-gold/20"
-            >
-              Dễ dàng (+25)
-            </button>
-          </div>
+          )}
         </div>
       )}
 
-      {/* MODE 2: Practice Quiz & Pinyin Typing Mode */}
-      {!loading && tab === 'quiz' && (
-        <div className="mx-auto w-full max-w-[620px]">
-          {/* Quiz in progress */}
-          {!quizFinished && currentQuizItem && (
-            <div className="flex flex-col gap-6 border border-rule bg-card p-8 shadow-md">
-              {/* Quiz progress */}
-              <div className="flex items-center justify-between border-b border-rule pb-3 text-xs text-fg-60">
-                <span>
-                  Câu hỏi {quizIndex + 1} / {quizPool.length}
+      {/* ========================================================
+          MODE 2: ÔN ĐẾN HẠN (SRS SM-2)
+         ======================================================== */}
+      {mainMode === 'SRS' && (
+        <div className="mx-auto flex w-full max-w-[560px] flex-col items-center gap-6">
+          {/* Active SRS Session */}
+          {!srsSessionFinished && currentSrsItem ? (
+            <div className="flex w-full flex-col items-center gap-5">
+              {/* Session Counter and Split */}
+              <div className="flex w-full items-center justify-between text-xs text-fg-60">
+                <span className="font-medium">
+                  Thẻ {srsIndex + 1} / {dueItems.length}
                 </span>
-                <span className="font-semibold text-gold">Điểm: {quizScore}</span>
-              </div>
-
-              {/* Question prompt */}
-              <div className="flex flex-col items-center gap-3 text-center">
-                <span className="text-xs uppercase tracking-widest text-fg-38">
-                  {isTypingQuestion ? 'Luyện gõ Pinyin / Chữ Hán' : 'Chọn nghĩa tiếng Việt đúng'}
-                </span>
-                <span className="font-serif text-5xl font-semibold text-fg">
-                  {currentQuizItem.word}
-                </span>
-                <div className="flex items-center gap-2">
-                  <span className="font-sans text-sm font-medium text-gold">
-                    {currentQuizItem.pinyin || currentQuizItem.reading}
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => speakChinese(currentQuizItem.word)}
-                    className="text-fg-38 hover:text-fg"
-                  >
-                    <Volume2 className="h-4 w-4" />
-                  </button>
-                </div>
-                <span className="text-xs text-cinnabar font-medium">
-                  Hán Việt: {(currentQuizItem.hanViet || currentQuizItem.sinoVietnamese || '').toUpperCase()}
+                <span className="text-[11px] text-fg-38">
+                  Đến hạn ôn: <b className="text-gold">{srsDueCounts.dueCount}</b> · Từ mới: <b className="text-jade">{srsDueCounts.newCount}</b>
                 </span>
               </div>
 
-              {/* Multiple Choice Mode */}
-              {!isTypingQuestion && (
-                <div className="flex flex-col gap-2.5">
-                  {quizChoices.map((choice, i) => {
-                    const isSelected = selectedChoice === choice;
-                    const isCorrectChoice = choice === (currentQuizItem.meaningVi || currentQuizItem.meaning);
-                    let btnStyle = 'border-rule hover:border-fg text-fg';
-
-                    if (quizSubmitted) {
-                      if (isCorrectChoice) {
-                        btnStyle = 'border-jade bg-jade/15 text-jade font-semibold';
-                      } else if (isSelected) {
-                        btnStyle = 'border-red bg-red/15 text-red';
-                      } else {
-                        btnStyle = 'border-rule/40 text-fg-38';
-                      }
-                    } else if (isSelected) {
-                      btnStyle = 'border-gold bg-gold/15 text-gold font-medium';
-                    }
-
-                    return (
-                      <button
-                        key={i}
-                        type="button"
-                        disabled={quizSubmitted}
-                        onClick={() => handleChoiceSelect(choice)}
-                        className={`flex items-center justify-between border p-3 text-left text-xs transition-colors ${btnStyle}`}
-                      >
-                        <span>{choice}</span>
-                        <span className="font-mono text-[10px] text-fg-38">[{i + 1}]</span>
-                      </button>
-                    );
-                  })}
+              {/* Red Seal Overlay */}
+              {showSeal && (
+                <div className="absolute z-30 pointer-events-none mt-20">
+                  <RedSealStamp text={sealText} size={64} />
                 </div>
               )}
 
-              {/* Typing Mode */}
-              {isTypingQuestion && (
-                <div className="flex flex-col gap-3">
-                  <label className="text-xs text-fg-60">
-                    Nhập Pinyin (ví dụ: <span className="text-gold font-mono">{currentQuizItem.pinyinNormalized}</span>) hoặc gõ chữ Hán:
-                  </label>
-                  <input
-                    type="text"
-                    disabled={quizSubmitted}
-                    value={quizAnswer}
-                    onChange={(e) => setQuizAnswer(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        if (!quizSubmitted) handleQuizSubmit();
-                        else handleQuizNext();
-                      }
-                    }}
-                    placeholder="Gõ pinyin hoặc chữ Hán rồi bấm Enter..."
-                    className="border border-rule bg-bg p-3 text-sm font-sans text-fg focus:border-gold focus:outline-none"
-                    autoFocus
-                  />
-                  {quizSubmitted && !quizIsCorrect && (
-                    <div className="text-xs text-red">
-                      Đáp án đúng:{' '}
-                      <span className="font-bold text-fg">
-                        {currentQuizItem.pinyin} ({currentQuizItem.pinyinNormalized})
+              {/* 3D Flashcard */}
+              <div
+                onClick={() => setSrsFlipped(prev => !prev)}
+                className="group relative h-[320px] w-full cursor-pointer perspective-1000"
+              >
+                <div
+                  className={`relative h-full w-full rounded border border-rule transition-transform duration-500 transform-style-3d ${
+                    srsFlipped ? 'rotate-y-180' : ''
+                  }`}
+                >
+                  {/* FRONT: ONLY Hanzi (No answer leaks!) */}
+                  <div className="absolute inset-0 flex flex-col justify-between bg-card p-8 backface-hidden shadow-lg">
+                    <div className="flex items-center justify-between text-[11px] text-fg-38">
+                      <span className="font-semibold text-cinnabar uppercase tracking-wide">
+                        {currentSrsItem.isNew ? '🌱 Từ mới đưa vào phiên' : '⏳ Đến hạn ôn tập'}
+                      </span>
+                      <span>{currentSrsItem.partOfSpeech || 'Từ vựng'}</span>
+                    </div>
+
+                    <div className="my-auto flex flex-col items-center text-center">
+                      <span className="font-serif text-6xl font-bold tracking-wide text-fg">
+                        {currentSrsItem.word}
+                      </span>
+                      {currentSrsItem.traditional && currentSrsItem.traditional !== currentSrsItem.word && (
+                        <span className="mt-2 text-xs text-fg-38">
+                          Phồn thể: {currentSrsItem.traditional}
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="flex items-center justify-between text-[11px] text-fg-38">
+                      <span>Bấm vào thẻ hoặc phím cách để lật</span>
+                      <span>Nhớ lại phát âm & nghĩa trước khi lật</span>
+                    </div>
+                  </div>
+
+                  {/* BACK: Full information */}
+                  <div className="absolute inset-0 flex flex-col justify-between bg-card p-8 rotate-y-180 backface-hidden shadow-lg">
+                    <div className="flex items-center justify-between text-[11px]">
+                      <div className="flex items-center gap-2">
+                        <span className="font-serif text-lg font-bold text-fg">{currentSrsItem.word}</span>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            speakChinese(currentSrsItem.word);
+                          }}
+                          className="text-fg-60 hover:text-cinnabar"
+                        >
+                          <Volume2 size={14} />
+                        </button>
+                      </div>
+                      <span className="rounded border border-cinnabar/30 bg-cinnabar/10 px-2 py-0.5 text-xs font-semibold text-cinnabar uppercase">
+                        Hán Việt: {currentSrsItem.hanViet || currentSrsItem.sinoVietnamese || 'Đang cập nhật'}
                       </span>
                     </div>
-                  )}
+
+                    <div className="my-auto flex flex-col items-center text-center">
+                      <span className="font-sans text-2xl font-bold tracking-wide text-gold">
+                        {currentSrsItem.pinyin || currentSrsItem.reading}
+                      </span>
+                      <span className="mt-2 text-lg font-semibold text-fg">
+                        {currentSrsItem.meaningVi || currentSrsItem.meaning}
+                      </span>
+
+                      {(currentSrsItem.exampleZh || currentSrsItem.exampleSentence) && (
+                        <div className="mt-4 max-w-[440px] rounded border border-rule/60 bg-surface/80 p-3 text-left">
+                          <div className="flex items-center justify-between">
+                            <span className="font-serif text-xs font-medium text-fg/90">
+                              {currentSrsItem.exampleZh || currentSrsItem.exampleSentence}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                speakChinese(currentSrsItem.exampleZh || currentSrsItem.exampleSentence!);
+                              }}
+                              className="text-fg-38 hover:text-cinnabar"
+                            >
+                              <Volume2 size={13} />
+                            </button>
+                          </div>
+                          <div className="text-[11px] text-gold/80">
+                            {currentSrsItem.examplePinyin || currentSrsItem.exampleReading}
+                          </div>
+                          <div className="text-[11px] text-fg-60">
+                            {currentSrsItem.exampleVi || currentSrsItem.exampleMeaning}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="flex items-center justify-between text-[11px] text-fg-38">
+                      <span>Bấm để lật lại chữ Hán</span>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          void handleOpenNotebookModal({
+                            id: currentSrsItem.vocabularyId,
+                            word: currentSrsItem.word,
+                            pinyin: currentSrsItem.pinyin,
+                          });
+                        }}
+                        className="inline-flex items-center gap-1 text-cinnabar hover:underline"
+                      >
+                        <BookmarkPlus size={13} /> Lưu sổ từ
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Error notice if rating submission failed */}
+              {srsError && (
+                <div className="w-full rounded border border-red/40 bg-red/10 p-3 text-xs text-red flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <AlertTriangle size={15} className="shrink-0" />
+                    <span>{srsError}</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleSrsRetry}
+                    className="ml-3 shrink-0 rounded bg-red px-2.5 py-1 text-[11px] font-semibold text-white hover:opacity-90 cursor-pointer"
+                  >
+                    Thử lại
+                  </button>
                 </div>
               )}
 
-              {/* Action Buttons */}
-              <div className="flex items-center justify-between pt-2">
-                {!quizSubmitted ? (
-                  <button
-                    type="button"
-                    onClick={handleQuizSubmit}
-                    disabled={!isTypingQuestion && !selectedChoice}
-                    className="ml-auto bg-fg px-6 py-2 text-xs font-semibold text-bg transition-opacity disabled:opacity-40"
-                  >
-                    Kiểm tra
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={() => void handleQuizNext()}
-                    className="ml-auto flex items-center gap-1.5 bg-jade px-6 py-2 text-xs font-bold text-bg hover:opacity-90"
-                  >
-                    <span>Tiếp tục</span>
-                    <ArrowRight className="h-3.5 w-3.5" />
-                  </button>
-                )}
+              {/* 4 SRS Rating Buttons */}
+              <div className="grid w-full grid-cols-4 gap-2">
+                <button
+                  type="button"
+                  disabled={srsSubmitting}
+                  onClick={() => void handleSrsRate('FORGOT')}
+                  className="flex flex-col items-center justify-center rounded border border-red/40 bg-card py-2.5 text-xs font-semibold text-red hover:bg-red/10 disabled:opacity-50 cursor-pointer transition-colors"
+                >
+                  <span>Chưa nhớ</span>
+                  <span className="text-[10px] opacity-75 font-normal">Quên</span>
+                </button>
+                <button
+                  type="button"
+                  disabled={srsSubmitting}
+                  onClick={() => void handleSrsRate('HARD')}
+                  className="flex flex-col items-center justify-center rounded border border-rule bg-card py-2.5 text-xs font-semibold text-fg-60 hover:border-fg hover:text-fg disabled:opacity-50 cursor-pointer transition-colors"
+                >
+                  <span>Khó</span>
+                  <span className="text-[10px] opacity-75 font-normal">Gợi ý</span>
+                </button>
+                <button
+                  type="button"
+                  disabled={srsSubmitting}
+                  onClick={() => void handleSrsRate('GOOD')}
+                  className="flex flex-col items-center justify-center rounded border border-jade/50 bg-jade/10 py-2.5 text-xs font-semibold text-jade hover:bg-jade/20 disabled:opacity-50 cursor-pointer transition-colors"
+                >
+                  <span>Thuộc</span>
+                  <span className="text-[10px] opacity-75 font-normal">Nhớ được</span>
+                </button>
+                <button
+                  type="button"
+                  disabled={srsSubmitting}
+                  onClick={() => void handleSrsRate('EASY')}
+                  className="flex flex-col items-center justify-center rounded border border-gold/50 bg-gold/10 py-2.5 text-xs font-bold text-gold hover:bg-gold/20 disabled:opacity-50 cursor-pointer transition-colors"
+                >
+                  <span>Rất dễ</span>
+                  <span className="text-[10px] opacity-75 font-normal">Khắc sâu</span>
+                </button>
               </div>
             </div>
-          )}
+          ) : (
+            /* SRS Completion Screen (Does NOT loop endlessly!) */
+            <div className="flex flex-col items-center justify-center rounded border border-rule bg-card p-10 text-center w-full">
+              <div className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-jade/10 text-jade mb-4">
+                <CheckCircle2 size={32} />
+              </div>
+              <h2 className="font-serif text-2xl font-bold text-fg">
+                Xong phiên ôn tập hôm nay!
+              </h2>
+              <p className="mt-2 text-xs text-fg-60 max-w-sm leading-relaxed">
+                Bạn đã ôn xong <b>{srsReviewedCount} thẻ</b> trong phiên này. Thuật toán SM-2 đã cập nhật ngày ôn tiếp theo cho từng từ.
+              </p>
 
-          {/* Quiz Finished Screen */}
-          {quizFinished && (
-            <div className="relative flex flex-col items-center gap-6 border border-rule bg-card p-10 text-center shadow-lg">
-              {/* Red Seal Stamp animation */}
-              {showSeal && (
-                <div className="absolute right-8 top-8">
-                  <RedSealStamp text="通" size={72} />
+              {lastSrsResult && (
+                <div className="mt-4 rounded bg-surface p-3 text-xs text-fg-60 flex gap-4">
+                  <span>Khoảng cách: <b>{lastSrsResult.intervalDays} ngày</b></span>
+                  <span>·</span>
+                  <span>Lặp lại: <b>{lastSrsResult.repetitions} lần</b></span>
+                  <span>·</span>
+                  <span>Chuỗi: <b className="text-cinnabar">{lastSrsResult.currentStreak} ngày 🔥</b></span>
                 </div>
               )}
 
-              <Sparkles className="h-10 w-10 text-gold" />
-              <div>
-                <h2 className="font-serif text-2xl font-bold text-fg">Hoàn thành bài luyện tập!</h2>
-                <p className="mt-1 text-xs text-fg-60">
-                  Bạn trả lời đúng {quizScore} / {quizPool.length} câu hỏi.
-                </p>
-              </div>
-
-              <div className="rounded-full border border-gold/40 bg-gold/10 px-5 py-2 font-sans text-sm font-bold text-gold">
-                +20 EXP Đã được cộng vào tài khoản!
-              </div>
-
-              <div className="flex gap-3">
+              <div className="mt-6 flex flex-wrap gap-3 justify-center">
                 <button
                   type="button"
-                  onClick={handleResetQuiz}
-                  className="flex items-center gap-1.5 border border-rule px-4 py-2 text-xs font-medium text-fg hover:border-fg"
+                  onClick={() => setMainMode('LESSONS')}
+                  className="inline-flex items-center gap-1.5 rounded bg-cinnabar px-5 py-2 font-serif text-xs font-semibold text-white cursor-pointer"
                 >
-                  <RotateCcw className="h-3.5 w-3.5" />
-                  <span>Luyện lại</span>
+                  <BookOpen size={14} /> Học từ mới theo bài
                 </button>
                 <button
                   type="button"
-                  onClick={() => setTab('flashcard')}
-                  className="bg-fg px-5 py-2 text-xs font-semibold text-bg hover:opacity-90"
+                  onClick={() => void loadSrsData()}
+                  className="inline-flex items-center gap-1.5 rounded border border-rule bg-surface px-4 py-2 font-serif text-xs font-semibold text-fg-60 hover:text-fg cursor-pointer"
                 >
-                  Về Thẻ học 3D
+                  <RefreshCw size={14} /> Kiểm tra lại danh sách
                 </button>
               </div>
             </div>
           )}
+        </div>
+      )}
+
+      {/* ========================================================
+          MODAL: LƯU TỪ VÀO SỔ CÁ NHÂN (NOTEBOOK MODAL)
+         ======================================================== */}
+      {notebookModalOpen && wordToSave && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
+          <div className="relative w-full max-w-md rounded border border-rule bg-card p-6 shadow-2xl">
+            <button
+              type="button"
+              onClick={() => {
+                setNotebookModalOpen(false);
+                setNotebookFeedback(null);
+              }}
+              className="absolute right-4 top-4 text-fg-38 hover:text-fg"
+            >
+              <X size={16} />
+            </button>
+
+            <div className="flex items-center gap-2">
+              <BookmarkPlus size={20} className="text-cinnabar" />
+              <h3 className="font-serif text-lg font-bold text-fg">
+                Lưu vào Sổ từ vựng cá nhân
+              </h3>
+            </div>
+
+            <p className="mt-1.5 text-xs text-fg-60">
+              Lưu từ <b className="font-serif text-fg">{wordToSave.word}</b> ({wordToSave.pinyin}) vào sổ tay để bạn tự gom nhóm ôn luyện.
+            </p>
+
+            {/* Disclaimer */}
+            <div className="mt-3 rounded border border-rule/60 bg-surface p-2.5 text-[11px] text-fg-60 leading-relaxed">
+              💡 <b>Quy tắc hệ thống:</b> Lưu từ vào sổ tay cá nhân phục vụ tự luyện riêng, <b>hoàn toàn không làm thay đổi lịch ôn SRS giáo trình</b>.
+            </div>
+
+            {/* Feedback Message */}
+            {notebookFeedback && (
+              <div
+                className={`mt-3 rounded p-2.5 text-xs ${
+                  notebookFeedback.type === 'success'
+                    ? 'border border-jade/30 bg-jade/10 text-jade'
+                    : 'border border-red/30 bg-red/10 text-red'
+                }`}
+              >
+                {notebookFeedback.message}
+              </div>
+            )}
+
+            {/* Notebook Selector */}
+            <div className="mt-4 flex flex-col gap-3">
+              <label className="text-xs font-medium text-fg-90">
+                Chọn sổ tay lưu trữ:
+              </label>
+
+              {userNotebooks.length > 0 && (
+                <div className="flex flex-col gap-1.5 max-h-40 overflow-y-auto">
+                  {userNotebooks.map(nb => (
+                    <label
+                      key={nb.id}
+                      className={`flex items-center justify-between rounded border p-2.5 text-xs cursor-pointer transition-colors ${
+                        selectedNotebookId === nb.id
+                          ? 'border-cinnabar bg-cinnabar/5 font-semibold text-cinnabar'
+                          : 'border-rule hover:bg-surface text-fg-90'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="radio"
+                          name="notebook"
+                          checked={selectedNotebookId === nb.id}
+                          onChange={() => setSelectedNotebookId(nb.id)}
+                          className="accent-cinnabar"
+                        />
+                        <span>{nb.title}</span>
+                      </div>
+                      <span className="text-[11px] text-fg-38">{nb.itemCount} từ</span>
+                    </label>
+                  ))}
+                </div>
+              )}
+
+              {/* Option to create new */}
+              <label
+                className={`flex items-center gap-2 rounded border p-2.5 text-xs cursor-pointer ${
+                  selectedNotebookId === 'NEW'
+                    ? 'border-cinnabar bg-cinnabar/5 font-semibold text-cinnabar'
+                    : 'border-rule hover:bg-surface text-fg-90'
+                }`}
+              >
+                <input
+                  type="radio"
+                  name="notebook"
+                  checked={selectedNotebookId === 'NEW'}
+                  onChange={() => setSelectedNotebookId('NEW')}
+                  className="accent-cinnabar"
+                />
+                <span className="flex items-center gap-1">
+                  <Plus size={13} /> Tạo sổ mới
+                </span>
+              </label>
+
+              {selectedNotebookId === 'NEW' && (
+                <input
+                  type="text"
+                  placeholder="Nhập tên sổ mới (vd: Từ hay quên, Từ giao tiếp...)"
+                  value={newNotebookTitle}
+                  onChange={e => setNewNotebookTitle(e.target.value)}
+                  className="rounded border border-rule bg-surface p-2 text-xs text-fg placeholder:text-fg-38 focus:border-cinnabar focus:outline-none"
+                />
+              )}
+            </div>
+
+            <div className="mt-6 flex justify-end gap-2">
+              <button
+                type="button"
+                onClick={() => setNotebookModalOpen(false)}
+                className="rounded border border-rule px-4 py-2 text-xs font-semibold text-fg-60 hover:text-fg cursor-pointer"
+              >
+                Hủy bỏ
+              </button>
+              <button
+                type="button"
+                disabled={notebookSaveLoading}
+                onClick={handleSaveToNotebook}
+                className="rounded bg-cinnabar px-5 py-2 font-serif text-xs font-semibold text-white hover:opacity-90 disabled:opacity-50 cursor-pointer"
+              >
+                {notebookSaveLoading ? 'Đang lưu...' : 'Xác nhận lưu'}
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
   );
 };
-
-export default FlashcardView;

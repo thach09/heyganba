@@ -248,7 +248,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               className="flex w-full cursor-pointer items-baseline gap-2.5 border-0 bg-transparent px-4 py-2 text-left font-sans text-fg hover:bg-tint"
             >
               <span className="font-serif text-sm">拼音</span>
-              <span className="text-[10.5px] text-fg-38">Pinyin & Thanh điệu</span>
+              <span className="text-[10.5px] text-fg-38">Pinyin & Phát âm</span>
             </Link>
             <Link
               to="/hanzi"

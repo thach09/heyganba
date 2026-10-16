@@ -1,47 +1,44 @@
-# Product
+# Product — Frontend Briefing
 
-Canonical product scope and approved, unimplemented roadmap: [../PRODUCT.md](../PRODUCT.md). This file retains the frontend briefing.
+Canonical product scope and approved roadmap: [../PRODUCT.md](../PRODUCT.md).
+Chi tiết lộ trình các cột mốc M1–M3: [../docs/curriculum-roadmap-m1-m3.md](../docs/curriculum-roadmap-m1-m3.md).
 
 <!-- impeccable:product-schema 1 -->
 
 ## Platform
 
-web
+web (ưu tiên responsive bình đẳng trên cả laptop desktop và điện thoại mobile).
 
 ## Users
 
-- **Hiện tại (đã xác nhận):** chính người tạo sản phẩm (Thach) — tự học tiếng Nhật, dùng luân phiên **laptop và điện thoại**. Cả hai là môi trường sử dụng thật, không có môi trường "phụ".
-- **Mục tiêu sau này (định hướng):** người học tiếng Nhật nói chung — sản phẩm không giới hạn ở sinh viên FPT.
+Người Việt mới bắt đầu học tiếng Trung (HSK 1–3), tự học hoặc học có bổ trợ. Môi trường sử dụng thật: luân phiên laptop và điện thoại.
 
 ## Product Purpose
 
-Giúp việc học tiếng Nhật trở nên **dễ dàng và có quy trình**, dựa trên các **phương pháp đã được nghiên cứu và chứng minh** (ví dụ: lặp lại ngắt quãng SM-2), kèm tips & tricks cụ thể — không phải một kho nội dung để tự bơi.
-
-Giáo trình khởi đầu: **Dekiru Nihongo (JPD113 & JPD123)** — mượn cấu trúc từ FPT, viết lại thành giáo trình của sản phẩm. Định hướng dài hạn: mở rộng thành app học tiếng Nhật chung.
-
-## Positioning
-
-Kết hợp đồng thời 3 thứ sản phẩm lân cận khó sao chép cùng lúc: (1) phương pháp học có cơ sở khoa học (SRS/streak/5 trạm có cấu trúc), (2) nội dung qua quy trình kiểm duyệt, (3) kiến trúc không khóa cứng vào một giáo trình đơn lẻ.
+Giúp việc học tiếng Trung cho người Việt trở nên **dễ dàng, chuẩn xác và có phương pháp khoa học**:
+1. **Nền tảng phát âm Pinyin chuẩn** (Đề án Pinyin Hán ngữ 1958: 21 thanh mẫu, 36 vận mẫu, 4 thanh điệu, quy tắc chính tả, biến điệu).
+2. **Từ vựng & Chữ Hán đa giác quan**: Ghi nhớ mặt chữ qua ô Mễ tự cách, câu ví dụ thực tế và lặp lại ngắt quãng SM-2.
+3. **Ngữ pháp ứng dụng**: So sánh đối chiếu ngữ pháp Việt - Trung để tránh lỗi tư duy dịch thô (word-by-word).
 
 ## Operating Context
 
-- Web app, dùng thật trên cả điện thoại và laptop — responsive là yêu cầu cốt lõi, không phải phần phụ.
-- Nội dung học thuật bằng tiếng Nhật; giao diện bằng tiếng Việt.
+- Web app, dùng thật trên cả điện thoại (390px) và laptop (1440px) — responsive là yêu cầu cốt lõi.
+- Giao diện bằng tiếng Việt; nội dung chữ Hán dùng phông `Noto Serif SC`, Pinyin dùng `Noto Sans SC`.
 - Nội dung mới phải ở trạng thái `PENDING_REVIEW`; chỉ hiện cho người học sau khi admin duyệt (`APPROVED`).
-- "Một ngày học" tính theo múi giờ `Asia/Ho_Chi_Minh` ở mọi môi trường.
-- Production đang chạy tại heyganba.site (backend Render + frontend Vercel); có môi trường staging riêng.
-- Nội dung học thuật phải viết lại bằng lời của mình — không copy nguyên văn nguồn có bản quyền.
+- "Một ngày học" tính theo múi giờ `Asia/Ho_Chi_Minh`.
+- Nhãn thương hiệu trung tính: "Học tiếng Trung".
+- M1 (Pinyin & phát âm) đã hoàn thiện (trạng thái `PENDING_REVIEW`); M2.1 (Bài mẫu Từ vựng & SRS "Chào hỏi & giới thiệu bản thân", 10 từ cốt lõi, lưu sổ cá nhân độc lập với SRS) đã hoàn thiện (trạng thái `PENDING_REVIEW`); M2.2+ và M3 là các cột mốc tiếp theo.
 
 ## Capabilities and Constraints
 
 Đã có (đã xác nhận):
 
-- 5 trạm: Kana (canvas viết tay) · Flashcard + SRS (SM-2, cache Redis/memory) · Kanji & bộ thủ · Trợ từ/ngữ pháp · Thi thử + Đấu trường (streak heatmap, leaderboard).
+- 5 trạm: Kana (canvas viết tay) · Từ vựng & SRS (`/vocabulary`, SM-2, cache Redis/memory) · Kanji & bộ thủ · Trợ từ/ngữ pháp · Thi thử + Đấu trường (streak heatmap, leaderboard).
 - Phân quyền RBAC `ROLE_ADMIN` / `ROLE_USER`; đăng nhập JWT.
-- Quy trình duyệt nội dung + endpoint `content/review-status`.
+- Quy trình duyệt nội dung + endpoint `content/review-status` và `ContentAccess`.
 - Hệ cấp độ + EXP: EXP chỉ cộng từ hoạt động học thật (thẻ ôn, chữ viết, câu trả lời đúng); hiển thị bằng thanh EXP màu đai.
 - Thông thạo từng chữ: mức độ trải nghiệm + độ chính xác theo từng chữ, suy từ dữ liệu học tập hiện có (SRS cho từ vựng, số lần luyện cho kanji; kana bổ sung sau). Về sau dùng để điều chỉnh interval SRS và gợi ý phương pháp nâng cao theo mức thông thạo.
-- Phiên ôn từ vựng là trắc nghiệm (chọn nghĩa tiếng Việt hoặc cách đọc kana); chấm tự động vào SRS: đúng `GOOD`, sai `FORGOT`.
+- Phiên ôn từ vựng SRS theo SM-2 chuẩn 4 mức: `FORGOT`, `HARD`, `GOOD`, `EASY`; gửi `attemptId` kháng lặp; tách biệt rõ ràng với Sổ từ vựng cá nhân. Chuyển thẻ chỉ khi máy chủ xác nhận thành công. Gõ Pinyin bảo toàn thanh điệu và phân biệt `u`/`ü`.
 
 Chưa quyết (không được tự suy diễn):
 

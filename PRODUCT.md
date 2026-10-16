@@ -23,16 +23,18 @@ cả laptop và điện thoại. Nền kỹ thuật tái sử dụng từ HeyGan
 - Thi thử (chấm điểm phía server)
 - Admin panel
 
-**Đang chuyển đổi UI (branch feat/chinese-platform-conversion):**
-- Sidebar: nhãn tiếng Trung, xóa kana, thêm /hanzi
-- Dashboard: xóa bilingual JP/VI, giữ tiếng Việt
-- KanjiStationView tạm dùng lại cho /hanzi — cần refactor thành HanziStation
+**Đã hoàn thiện ở branch feat/chinese-platform-conversion:**
+- M1 — Pinyin & phát âm: Trang `/pinyin` chuẩn hoá tên "Pinyin & phát âm", hỗ trợ 2 chế độ ("Học từ đầu" 6 chặng và "Bảng tra cứu" 21 thanh mẫu, 36 vận mẫu chuẩn theo Đề án Pinyin 1958, 4 thanh điệu + thanh nhẹ, quy tắc chính tả, biến điệu, bài luyện nhận biết và gõ Pinyin, tích hợp cộng EXP thật; trạng thái `PENDING_REVIEW`).
+- M2.1 — Bài mẫu Từ vựng & SRS ("Chào hỏi & giới thiệu bản thân", 10 từ cốt lõi): Route `/vocabulary` (redirect từ `/flashcards` và `/flashcard`). Tách bạch rõ 2 luồng: "Học theo bài (Giáo trình)" từ API catalog thực tế (không dùng due-today làm catalog) và "Ôn đến hạn (SRS SM-2)" qua `POST /flashcard/review` với enum chuẩn `FORGOT, HARD, GOOD, EASY` và UUID attemptId kháng lặp. Tích hợp Sổ từ vựng cá nhân độc lập với lịch SRS. Trạng thái `PENDING_REVIEW` với Staging Migration `V4__sample_lesson_greetings.sql`.
+- Chinese Speech Synthesis: Tích hợp Web Speech API chuẩn giọng Quan thoại (`zh-CN`), phát âm theo chữ Hán mẫu, có cảnh báo khi thiếu voice và ngắt audio khi chuyển trang.
+- Hanzi Station (`/hanzi`): Khung luyện viết chữ Hán theo ô Mễ tự cách (米字格) và tra cứu bộ thủ.
+- Đồng hành học tập: Hệ thống linh vật Voxel 3D Companion Pet (Gấu trúc, Gấu đỏ, Khỉ vàng, Mèo hoàng gia) xoay 360°, tiến hoá khi học.
+- Giao diện chủ đạo: Imperial Forbidden City & Three Kingdoms dark theme, nhãn thương hiệu trung tính "Học tiếng Trung".
 
-**Chưa có / Cần phát triển:**
-- Nội dung tiếng Trung (chữ Hán, Pinyin, từ vựng, ngữ pháp): chưa seed
-- Pinyin station (phát âm, thanh điệu): chưa có component
-- TTS tiếng Trung: cần thay japaneseSpeech bằng Chinese TTS
-- Dữ liệu tiếng Nhật trong DB: chưa tách; cần migration language_code
+**Định hướng các milestone tiếp theo (xem docs/curriculum-roadmap-m1-m3.md):**
+- M2.2+: Mở rộng kho từ vựng theo chủ đề/bài học, bổ sung audio mẫu đã thẩm định và kiểm chứng mapping HSK.
+- M3: Mẫu câu và ngữ pháp có bài tập phản hồi giải thích chi tiết.
+- Tách ngôn ngữ trong DB: Chờ xác nhận founder về migration `language_code`.
 
 ## Nội dung
 
@@ -62,13 +64,14 @@ vào bảng vocabulary, kanji, grammar_rules bằng migration mới:
 
 **Quyết định này cần xác nhận của founder trước khi thực hiện migration.**
 
-## Roadmap đã duyệt — CHƯA TRIỂN KHAI
+## Roadmap đã duyệt & Kế hoạch phát triển
 
-1. Pinyin station (phát âm, thanh điệu)
-2. Nội dung tiếng Trung (từ vựng, chữ Hán, ngữ pháp)
-3. Tách ngôn ngữ trong DB (migration language_code)
-4. Chinese TTS thay thế Japanese TTS
-5. HanziStation (refactor từ KanjiStationView)
+1. [x] Pinyin & phát âm (M1) — Hoàn thành (Lộ trình 6 chặng, Bảng 21+2 thanh mẫu / 36 vận mẫu, 4 thanh điệu, quy tắc chính tả, biến điệu, quiz bàn phím; đang PENDING_REVIEW).
+2. [-] M2.1 — Bài mẫu Từ vựng & SRS ("Chào hỏi & giới thiệu bản thân", 10 từ vựng cốt lõi, đối chiếu Giáo trình Hán ngữ, kết nối Sổ từ cá nhân và SRS SM-2; đang PENDING_REVIEW). M2.2+ sẽ tiếp tục mở rộng.
+3. [ ] M3: Mẫu câu và điểm ngữ pháp nền tảng HSK 1 kèm bài tập phản hồi.
+4. [ ] Tách ngôn ngữ trong DB (migration `language_code` — chờ founder xác nhận).
+5. [x] Chinese Speech Synthesis (Web Speech API Quan thoại zh-CN).
+6. [ ] Mở rộng HanziStation (hoàn thiện thứ tự nét và thư viện chữ Hán HSK 1).
 
 ## Bằng chứng và giới hạn
 

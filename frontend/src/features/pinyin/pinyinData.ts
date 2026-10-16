@@ -54,6 +54,26 @@ export const PINYIN_METADATA: PinyinMetadata = {
 };
 
 /**
+ * Quyết định quyền truy cập nội dung Pinyin dựa trên trạng thái kiểm duyệt và vai trò người dùng.
+ * Quy tắc bảo mật:
+ * 1. Nếu reviewStatus === 'APPROVED': Mọi người dùng (kể cả khách) đều xem được.
+ * 2. Nếu reviewStatus === 'PENDING_REVIEW': Chỉ người dùng có vai trò 'ROLE_ADMIN' mới có thể
+ *    kích hoạt xem trước. Người dùng thông thường dù cố tình thêm ?preview=1 trên URL vẫn
+ *    tuyệt đối KHÔNG được vượt qua màn hình chờ duyệt.
+ */
+export function canAccessPinyinContent(
+  reviewStatus: 'PENDING_REVIEW' | 'APPROVED',
+  userRole: string | undefined | null,
+  adminPreviewActive: boolean = true
+): boolean {
+  if (reviewStatus === 'APPROVED') {
+    return true;
+  }
+  const isAdmin = userRole === 'ROLE_ADMIN';
+  return isAdmin && adminPreviewActive;
+}
+
+/**
  * Chuẩn hoá Pinyin chính xác:
  * - Chuyển cả dạng thanh điệu có dấu (hǎo) và dạng số thanh (hao3) về dạng canonical: base + tone number (hao3).
  * - Phân biệt nghiêm ngặt giữa u và ü (ü -> v: lù -> lu4, lǜ -> lv4, không bao giờ nhầm).
@@ -69,6 +89,9 @@ export function canonicalizePinyin(raw: string): string {
   const numMatch = s.match(/[1-5]$/);
   if (numMatch) {
     explicitTone = numMatch[0];
+    if (explicitTone === '5') {
+      explicitTone = ''; // Thanh nhẹ (neutral tone) quy ước tương đương không ghi số
+    }
     s = s.slice(0, -1);
   }
 
@@ -106,6 +129,91 @@ export function canonicalizePinyin(raw: string): string {
   s = s.replace(/ü/g, 'v');
   const tone = explicitTone || markTone || charTone;
   return s.trim() + (tone || '');
+}
+
+/**
+ * Tách một chuỗi Pinyin (có hoặc không có khoảng trắng) thành danh sách các âm tiết hợp lệ.
+ * - Hỗ trợ tách theo dấu cách / gạch nối / dấu nháy: "ni hao", "xī'ān".
+ * - Hỗ trợ tách sau số thanh (1-5): "ni3hao3" -> ["ni3", "hao3"], "xie4xie" -> ["xie4", "xie"].
+ * - Hỗ trợ tách từ ghép dính liền có thanh điệu: "xièxie" -> ["xiè", "xie"], "zàijiàn" -> ["zài", "jiàn"], "shénme" -> ["shén", "me"].
+ */
+export function splitPinyinWordIntoSyllables(raw: string): string[] {
+  if (!raw) return [];
+  const s = raw.trim();
+
+  // 1. Tách trước các dấu phân cách rõ ràng (khoảng trắng, gạch ngang, gạch dưới, nháy đơn)
+  const chunks = s.split(/[\s\-_']+/).filter(Boolean);
+  const result: string[] = [];
+
+  for (const chunk of chunks) {
+    // 2. Nếu trong chunk có số thanh điệu (1-5) theo sau là ký tự chữ cái -> tách ngay sau số
+    let separated = chunk.replace(/([1-5])(?=[a-zA-ZüÜvV])/g, '$1 ');
+
+    // 3. Tách các âm tiết dính liền dựa trên ranh giới ngữ âm:
+    // Phụ âm đầu (zh, ch, sh hoặc b,p,m,f,d,t,n,l,g,k,h,j,q,x,r,z,c,s,y,w)
+    // khi đi liền sau nguyên âm hoặc coda (ng, n, r) của âm tiết trước và đứng trước nguyên âm tiếp theo.
+    let prev = '';
+    while (prev !== separated) {
+      prev = separated;
+      separated = separated.replace(
+        /([aeiouvüAEIOUVÜ\u0300-\u036fāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜ](?:ng|[nr])?)(zh|ch|sh|[bpmfdtnlgkhjqxrzcsyw])([aeiouvüAEIOUVÜ\u0300-\u036fāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜ])/gi,
+        '$1 $2$3'
+      );
+    }
+
+    const subTokens = separated.split(/\s+/).filter(Boolean);
+    result.push(...subTokens);
+  }
+
+  return result;
+}
+
+/**
+ * Chuẩn hoá Pinyin cho cụm từ hoặc từ đơn nhiều âm tiết:
+ * - Hỗ trợ cả từ 1 âm tiết (hǎo) và từ nhiều âm tiết (nǐ hǎo, xièxie, duìbuqǐ).
+ * - Hỗ trợ nhập có dấu (nǐ hǎo) hoặc số thanh (ni3 hao3, ni3hao3).
+ * - Nghiêm ngặt từ chối chữ Hán (nếu học viên dán nguyên chữ Hán vào ô nhập Pinyin thì bị tính sai).
+ * - Bảo toàn nghiêm ngặt phân biệt thanh điệu và u/ü.
+ */
+export function canonicalizeChineseWordPinyin(raw: string): string {
+  if (!raw) return '';
+  const trimmed = raw.trim();
+
+  // Từ chối tuyệt đối chữ Hán (Unicode Han characters: \u4e00-\u9fff, \u3400-\u4dbf)
+  if (/[\u4e00-\u9fff\u3400-\u4dbf]/.test(trimmed)) {
+    return '__HANZI_REJECTED__';
+  }
+
+  const syllables = splitPinyinWordIntoSyllables(trimmed);
+  if (syllables.length === 0) return '';
+  return syllables.map(t => canonicalizePinyin(t)).join(' ');
+}
+
+/**
+ * Kiểm tra câu trả lời Pinyin của học viên đối với từ vựng tiếng Trung:
+ * - Không nhận chính chữ Hán đang hiển thị làm đáp án đúng của câu hỏi yêu cầu nhập Pinyin.
+ * - So sánh dạng chuẩn hoá cả khi học viên gõ có hoặc không có dấu cách giữa các âm tiết.
+ * - Giữ nguyên tính chính xác của thanh điệu và âm u/ü (hào != hǎo, lù != lǜ).
+ */
+export function checkPinyinAnswer(userAnswer: string, expectedPinyin: string): boolean {
+  if (!userAnswer || !expectedPinyin) return false;
+
+  const canonicalUser = canonicalizeChineseWordPinyin(userAnswer);
+  if (canonicalUser === '__HANZI_REJECTED__') {
+    return false;
+  }
+
+  const canonicalExpected = canonicalizeChineseWordPinyin(expectedPinyin);
+
+  // So sánh trực tiếp
+  if (canonicalUser === canonicalExpected) {
+    return true;
+  }
+
+  // So sánh dạng liền nhau (bỏ khoảng cách) nhưng giữ nguyên số thanh và phân biệt u/ü
+  const userCompact = canonicalUser.replace(/\s+/g, '');
+  const expectedCompact = canonicalExpected.replace(/\s+/g, '');
+  return userCompact.length > 0 && userCompact === expectedCompact;
 }
 
 export interface PinyinItem {

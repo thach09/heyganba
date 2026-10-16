@@ -8,21 +8,32 @@ import { PinyinQuiz } from './PinyinQuiz';
 import { StudyPetCompanion } from '../companion/StudyPetCompanion';
 import { stopChineseSpeech } from '../../services/chineseSpeech';
 import { useAuth } from '../../app/useAuth';
-import { PINYIN_METADATA } from './pinyinData';
+import { PINYIN_METADATA, canAccessPinyinContent } from './pinyinData';
 
 type StationTab = 'STEPS' | 'TABLE' | 'TONES' | 'QUIZ';
 
 export const PinyinStationView: React.FC = () => {
-  const { user } = useAuth();
+  const { user, requireLogin } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState<StationTab>('STEPS');
 
-  // Kiểm tra quyền Admin hoặc chế độ xem trước (Preview Mode)
+  // Kiểm tra quyền Admin
   const isAdmin = user?.role === 'ROLE_ADMIN';
   const previewParam = searchParams.get('preview') === '1' || searchParams.get('preview') === 'true';
-  const [manualPreview, setManualPreview] = useState<boolean>(previewParam || isAdmin);
 
-  const canViewContent = isAdmin || manualPreview;
+  // Admin có thể chủ động bật/tắt preview (mặc định bật cho Admin nếu không bị tắt)
+  const [adminPreviewDisabled, setAdminPreviewDisabled] = useState<boolean>(false);
+  const adminPreviewActive = isAdmin && (previewParam || !adminPreviewDisabled);
+
+  // Phân quyền chuẩn: Chỉ khi APPROVED hoặc khi là ADMIN có bật preview mới được xem nội dung.
+  // Người dùng thường (dù thêm ?preview=1 trên URL) vẫn KHÔNG được vượt qua màn chờ duyệt.
+  const canViewContent = canAccessPinyinContent(
+    PINYIN_METADATA.reviewStatus,
+    user?.role,
+    adminPreviewActive
+  );
+
+  const attemptedUnauthorizedPreview = !isAdmin && previewParam;
 
   useEffect(() => {
     return () => {
@@ -36,10 +47,14 @@ export const PinyinStationView: React.FC = () => {
   };
 
   const togglePreview = () => {
-    const nextState = !manualPreview;
-    setManualPreview(nextState);
+    if (!isAdmin) {
+      requireLogin();
+      return;
+    }
+    const nextActive = !adminPreviewActive;
+    setAdminPreviewDisabled(!nextActive);
     const newParams = new URLSearchParams(searchParams);
-    if (nextState) {
+    if (nextActive) {
       newParams.set('preview', '1');
     } else {
       newParams.delete('preview');
@@ -61,23 +76,37 @@ export const PinyinStationView: React.FC = () => {
           </div>
         </div>
         <div className="flex items-center gap-2 self-end sm:self-auto">
-          {isAdmin && (
-            <span className="inline-flex items-center gap-1 rounded bg-cinnabar/20 text-cinnabar border border-cinnabar/30 px-2 py-0.5 text-[11px] font-semibold">
-              <ShieldCheck size={13} /> Admin
+          {isAdmin ? (
+            <>
+              <span className="inline-flex items-center gap-1 rounded bg-cinnabar/20 text-cinnabar border border-cinnabar/30 px-2 py-0.5 text-[11px] font-semibold">
+                <ShieldCheck size={13} /> Admin
+              </span>
+              <button
+                type="button"
+                onClick={togglePreview}
+                className="inline-flex items-center gap-1 rounded border border-amber-400/40 bg-card px-2.5 py-1 text-[11px] font-semibold text-amber-300 hover:bg-tint cursor-pointer transition-colors"
+              >
+                {canViewContent ? <EyeOff size={13} /> : <Eye size={13} />}
+                {canViewContent ? 'Tắt xem trước' : 'Bật xem trước (Admin Preview)'}
+              </button>
+            </>
+          ) : !user ? (
+            <button
+              type="button"
+              onClick={requireLogin}
+              className="inline-flex items-center gap-1 rounded border border-amber-400/40 bg-card px-2.5 py-1 text-[11px] font-semibold text-amber-300 hover:bg-tint cursor-pointer transition-colors"
+            >
+              <ShieldCheck size={13} /> Đăng nhập Admin
+            </button>
+          ) : (
+            <span className="inline-flex items-center gap-1 rounded bg-stone-700/50 text-stone-300 border border-stone-600/50 px-2 py-0.5 text-[11px]">
+              Tài khoản học viên
             </span>
           )}
-          <button
-            type="button"
-            onClick={togglePreview}
-            className="inline-flex items-center gap-1 rounded border border-amber-400/40 bg-card px-2.5 py-1 text-[11px] font-semibold text-amber-300 hover:bg-tint cursor-pointer transition-colors"
-          >
-            {canViewContent ? <EyeOff size={13} /> : <Eye size={13} />}
-            {canViewContent ? 'Tắt xem trước' : 'Bật xem trước (Admin Preview)'}
-          </button>
         </div>
       </div>
 
-      {/* Gating Screen: When content is unreviewed and user is regular without preview */}
+      {/* Gating Screen: When content is unreviewed and user is regular or not admin preview */}
       {!canViewContent ? (
         <div className="flex flex-col items-center justify-center rounded border border-rule bg-card p-10 text-center">
           <div className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-amber-500/10 text-amber-400 mb-4">
@@ -90,14 +119,42 @@ export const PinyinStationView: React.FC = () => {
             Nội dung phát âm M1 được biên soạn đối chiếu theo <b>Đề án Pinyin Hán ngữ 1958</b> và đang ở trạng thái <span className="font-mono text-amber-300 font-semibold">PENDING_REVIEW</span>.
             Theo quy tắc an toàn dữ liệu học thuật của nền tảng HeyGanba, nội dung chưa mở tự do cho học viên đại trà khi chưa được phê duyệt chính thức (<span className="font-mono text-emerald-400">APPROVED</span>).
           </p>
+
+          {/* Cảnh báo nếu học viên thông thường cố tình gắn ?preview=1 */}
+          {attemptedUnauthorizedPreview && (
+            <div className="mt-5 w-full max-w-md rounded border border-rose-500/40 bg-rose-500/10 p-3.5 text-left text-xs text-rose-300">
+              <p className="font-bold flex items-center gap-1.5 text-rose-200">
+                <AlertTriangle size={15} className="shrink-0 text-rose-400" />
+                Truy cập xem trước bị từ chối (?preview=1)
+              </p>
+              <p className="mt-1 text-rose-200/90 leading-relaxed">
+                Chế độ xem trước nội dung chưa kiểm duyệt chỉ dành riêng cho tài khoản Quản trị viên (<code>ROLE_ADMIN</code>). Tài khoản thông thường hoặc khách không có quyền xem trước.
+              </p>
+            </div>
+          )}
+
           <div className="mt-6 flex flex-wrap gap-3 justify-center">
-            <button
-              type="button"
-              onClick={togglePreview}
-              className="inline-flex items-center gap-1.5 border border-cinnabar bg-cinnabar px-5 py-2 font-serif text-xs font-semibold text-white transition-opacity hover:opacity-90 cursor-pointer"
-            >
-              <Eye size={14} /> Mở chế độ Xem trước (Admin Preview)
-            </button>
+            {isAdmin ? (
+              <button
+                type="button"
+                onClick={togglePreview}
+                className="inline-flex items-center gap-1.5 border border-cinnabar bg-cinnabar px-5 py-2 font-serif text-xs font-semibold text-white transition-opacity hover:opacity-90 cursor-pointer"
+              >
+                <Eye size={14} /> Mở chế độ Xem trước (Admin Preview)
+              </button>
+            ) : !user ? (
+              <button
+                type="button"
+                onClick={requireLogin}
+                className="inline-flex items-center gap-1.5 border border-cinnabar bg-cinnabar px-5 py-2 font-serif text-xs font-semibold text-white transition-opacity hover:opacity-90 cursor-pointer"
+              >
+                <ShieldCheck size={14} /> Đăng nhập tài khoản Quản trị viên (Admin)
+              </button>
+            ) : (
+              <div className="text-xs text-fg-60">
+                Tài khoản: <b className="text-fg">{user.email}</b> (Học viên) — Vui lòng chờ quản trị viên và giáo viên phê duyệt chính thức.
+              </div>
+            )}
           </div>
         </div>
       ) : (

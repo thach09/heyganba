@@ -1,3 +1,35 @@
+export type SrsRating = 'FORGOT' | 'HARD' | 'GOOD' | 'EASY';
+
+export interface VocabularyLesson {
+  id: number;
+  slug: string;
+  title: string;
+  description: string;
+  curriculumLevel: string;
+  orderIndex: number;
+  wordCount: number;
+}
+
+export interface VocabularyWord {
+  id: number;
+  word: string;
+  traditional?: string | null;
+  pinyin?: string | null;
+  pinyinNormalized?: string | null;
+  hanViet?: string | null;
+  partOfSpeech?: string | null;
+  meaningVi?: string | null;
+  hskLevel?: number | null;
+  lessonNumber?: number | null;
+  exampleZh?: string | null;
+  examplePinyin?: string | null;
+  exampleVi?: string | null;
+  audioUrl?: string | null;
+  reviewStatus: string;
+  lessonSlug?: string | null;
+  lessonTitle?: string | null;
+}
+
 export interface FlashcardDueItem {
   vocabularyId: number;
   word: string;

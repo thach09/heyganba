@@ -100,6 +100,8 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/auth/**",
                                 "/dictionary/**",
+                                "/vocabulary/**",
+                                "/vocab/**",
                                 "/audio/**",
                                 "/radicals/**",
                                 "/health",

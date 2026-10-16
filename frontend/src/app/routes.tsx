@@ -38,6 +38,8 @@ export function AppRoutes() {
       <Route path="/exam" element={<Exam />} />
       <Route path="/admin" element={<AdminRoute />} />
       {/* Legacy routes: redirect so old deep links stay functional */}
+      <Route path="/flashcards" element={<Navigate to="/vocabulary" replace />} />
+      <Route path="/flashcard" element={<Navigate to="/vocabulary" replace />} />
       <Route path="/kana" element={<Navigate to="/pinyin" replace />} />
       <Route path="/kanji" element={<Navigate to="/hanzi" replace />} />
       <Route path="*" element={<Navigate to="/" replace />} />
