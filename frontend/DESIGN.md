@@ -26,7 +26,7 @@ Nhãn, nút, input, bảng và modal đều theo theme. Không dùng nền hoặ
 
 Theme được lưu trong localStorage và đồng bộ giữa tab. Lần đầu theo cài đặt hệ điều hành. Nút theme ở sidebar và header mobile, có tên truy cập và focus bàn phím.
 
-Họa tiết: góc hồi văn `回纹` nằm trong phần đệm, chữ `学而时习之` / `温故知新` là trang trí ẩn khỏi screen reader. Đèn lồng nằm ở trần trang cao tối đa 68px, không nhận thao tác, ẩn khi cuộn quá 20px. Lắc nhẹ ±2.5° trong 4.5 giây, tôn trọng reduced-motion. Không đặt chữ, dấu triện hoặc họa tiết lên nội dung khác.
+Họa tiết: góc hồi văn `回纹` nằm trong phần đệm, chữ `学而时习之` / `温故知新` là trang trí ẩn khỏi screen reader. Đèn lồng Khổng Minh trôi trong bầu trời đêm phía trên trang, không nhận thao tác. Không đặt chữ, dấu triện hoặc họa tiết lên nội dung khác.
 
 ### Chữ
 

@@ -286,7 +286,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </nav>
 
       <div className="mt-auto flex flex-col gap-3 pt-6">
-        <ThemeToggle />
         {user ? (
           <>
             <div className="min-w-0">
@@ -304,27 +303,41 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <b className="font-serif text-sm font-semibold text-fg-60">{streakCount}</b>
               <span>ngày</span>
             </div>
-            {onLogout && (
+            <div className="flex items-center justify-between gap-2">
+              {onLogout && (
+                <button
+                  type="button"
+                  onClick={onLogout}
+                  className="cursor-pointer self-start border border-rule-strong bg-transparent px-3 py-1.5 text-[10.5px] font-semibold uppercase tracking-[0.12em] text-fg transition-colors hover:bg-fg hover:text-bg"
+                >
+                  Đăng xuất
+                </button>
+              )}
+              <ThemeToggle />
+            </div>
+            {onChangePassword && (
               <button
                 type="button"
-                onClick={onLogout}
-                className="cursor-pointer self-start border border-rule-strong bg-transparent px-3 py-1.5 text-[10.5px] font-semibold uppercase tracking-[0.12em] text-fg transition-colors hover:bg-fg hover:text-bg"
+                onClick={onChangePassword}
+                className="min-h-9 cursor-pointer self-start bg-transparent text-[12.5px] text-fg-60 hover:text-fg"
               >
-                Đăng xuất
+                Đổi mật khẩu
               </button>
             )}
-            {onChangePassword && <button type="button" onClick={onChangePassword} className="min-h-11 cursor-pointer self-start bg-transparent text-[12.5px] text-fg-60 hover:text-fg">Đổi mật khẩu</button>}
           </>
         ) : (
-          onOpenAuthModal && (
-            <button
-              type="button"
-              onClick={onOpenAuthModal}
-              className="cursor-pointer self-start border border-fg bg-fg px-3.5 py-1.5 text-[10.5px] font-semibold uppercase tracking-[0.12em] text-bg transition-opacity hover:opacity-85"
-            >
-              Đăng nhập
-            </button>
-          )
+          <div className="flex items-center justify-between gap-2">
+            {onOpenAuthModal && (
+              <button
+                type="button"
+                onClick={onOpenAuthModal}
+                className="cursor-pointer self-start border border-fg bg-fg px-3.5 py-1.5 text-[10.5px] font-semibold uppercase tracking-[0.12em] text-bg transition-opacity hover:opacity-85"
+              >
+                Đăng nhập
+              </button>
+            )}
+            <ThemeToggle />
+          </div>
         )}
         <div className="text-[11px] leading-[1.8] text-fg-38">
           <span className="font-serif text-xs">学而时习之</span>

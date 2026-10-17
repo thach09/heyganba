@@ -58,7 +58,7 @@
   --animate-pet-wag: pet-wag 1.6s ease-in-out infinite;
   --animate-pet-chew: pet-chew 0.5s ease-in-out infinite;
   --animate-pet-float: pet-float 2.4s ease-in-out infinite;
-  --animate-lantern-sway: lantern-sway 4.5s ease-in-out infinite alternate;
+  --animate-lantern-sway: lantern-sway 6s ease-in-out infinite alternate;
   --animate-lantern-glow: lantern-glow 3.5s ease-in-out infinite alternate;
 
   @keyframes caret-blink {
@@ -160,10 +160,10 @@
 
   @keyframes lantern-sway {
     0% {
-      transform: rotate(-2.5deg);
+      transform: translateY(0) rotate(-1.5deg);
     }
     100% {
-      transform: rotate(2.5deg);
+      transform: translateY(-14px) rotate(1.8deg);
     }
   }
 

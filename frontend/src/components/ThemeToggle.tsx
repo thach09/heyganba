@@ -1,12 +1,60 @@
 import { Moon, Sun } from 'lucide-react';
 import { useTheme } from '../app/useTheme';
 
-export function ThemeToggle({ compact = false }: { compact?: boolean }) {
+export function ThemeToggle({ className = '' }: { className?: string; compact?: boolean }) {
   const { theme, toggleTheme } = useTheme();
-  const label = theme === 'light' ? '宣纸 · Sáng (Giấy Tuyên)' : '砚台 · Tối (Nghiên Mực)';
-  return <button type="button" onClick={toggleTheme} aria-label={`Đổi giao diện: ${label}`} aria-pressed={theme === 'light'}
-    title={label} className="inline-flex min-h-10 cursor-pointer items-center gap-2 border border-rule-strong bg-card px-3 py-2 text-[12.5px] leading-relaxed text-fg hover:border-fg">
-    {theme === 'light' ? <Sun size={16} aria-hidden="true" /> : <Moon size={16} aria-hidden="true" />}
-    {!compact && <span>{label}</span>}
-  </button>;
+  const isDark = theme === 'dark';
+  const label = isDark
+    ? 'Chế độ tối (Nghiên Mực) — Bấm để chuyển sang chế độ sáng'
+    : 'Chế độ sáng (Giấy Tuyên) — Bấm để chuyển sang chế độ tối';
+
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={isDark}
+      aria-label={label}
+      title={label}
+      onClick={toggleTheme}
+      className={`group relative inline-flex min-h-[40px] min-w-[44px] cursor-pointer items-center justify-center bg-transparent p-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-ink focus-visible:ring-offset-2 focus-visible:ring-offset-bg ${className}`}
+    >
+      {/* Switch track pill */}
+      <span
+        aria-hidden="true"
+        className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full border transition-colors duration-200 ${
+          isDark
+            ? 'border-rule-strong bg-surface-elevated text-gold-ink'
+            : 'border-rule-strong bg-surface text-fg-60'
+        }`}
+      >
+        {/* Track Sun Icon (left) */}
+        <Sun
+          size={11}
+          className={`absolute left-1.5 transition-opacity duration-150 ${
+            isDark ? 'opacity-30 text-fg-38' : 'opacity-100 text-gold-ink'
+          }`}
+        />
+        {/* Track Moon Icon (right) */}
+        <Moon
+          size={11}
+          className={`absolute right-1.5 transition-opacity duration-150 ${
+            isDark ? 'opacity-100 text-gold-ink' : 'opacity-30 text-fg-38'
+          }`}
+        />
+
+        {/* Sliding Thumb Knob */}
+        <span
+          className={`inline-flex h-4.5 w-4.5 transform items-center justify-center rounded-full bg-card shadow-sm border border-rule transition-transform duration-200 ease-in-out ${
+            isDark ? 'translate-x-[22px]' : 'translate-x-[2px]'
+          }`}
+        >
+          {isDark ? (
+            <Moon size={10} className="text-gold-ink" />
+          ) : (
+            <Sun size={10} className="text-gold-ink" />
+          )}
+        </span>
+      </span>
+    </button>
+  );
 }
