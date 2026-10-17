@@ -27,7 +27,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Opt-in disposable PostgreSQL rehearsal test for Milestone M2.1.1.
+ * Opt-in disposable PostgreSQL rehearsal test for Milestones M2.1 & M2.2.
  * Only runs when -Dpostgres.rehearsal=true is provided to prevent touching local developer DB.
  * Validates isolated rehearsal databases without DROP DATABASE or flyway.clean().
  */
@@ -102,10 +102,10 @@ class PostgresSchemaStagingRehearsalTest {
         }
     }
 
-    private String loadV4MigrationSql() throws Exception {
-        try (InputStream is = getClass().getResourceAsStream("/db/migration-staging/V4__sample_lesson_greetings.sql")) {
+    private String loadStagingMigrationSql(String filename) throws Exception {
+        try (InputStream is = getClass().getResourceAsStream("/db/migration-staging/" + filename)) {
             if (is == null) {
-                throw new IllegalStateException("Không tìm thấy file db/migration-staging/V4__sample_lesson_greetings.sql trên classpath");
+                throw new IllegalStateException("Không tìm thấy file db/migration-staging/" + filename + " trên classpath");
             }
             return new String(is.readAllBytes(), StandardCharsets.UTF_8);
         }
@@ -113,7 +113,7 @@ class PostgresSchemaStagingRehearsalTest {
 
     @Test
     @Order(1)
-    @DisplayName("Case A (Schema chính thức): Chỉ nạp db/migration (V1-V3), không có V4, lessons không có intro-greetings")
+    @DisplayName("Case A (Schema chính thức): Chỉ nạp db/migration (V1-V3), không có V4/V5, lessons không chứa bài staging")
     void caseA_officialSchemaOnly() throws Exception {
         String urlA = getUrlA();
         String user = getDbUser();
@@ -136,7 +136,7 @@ class PostgresSchemaStagingRehearsalTest {
         try (Connection conn = DriverManager.getConnection(urlA, user, pass);
              Statement stmt = conn.createStatement()) {
 
-            // 1. flyway_schema_history has V1, V2, V3 and no V4
+            // 1. flyway_schema_history has V1, V2, V3 and no V4 or V5
             try (ResultSet rs = stmt.executeQuery("SELECT version, success FROM flyway_schema_history ORDER BY installed_rank")) {
                 assertThat(rs.next()).isTrue();
                 assertThat(rs.getString("version")).isEqualTo("1");
@@ -150,11 +150,12 @@ class PostgresSchemaStagingRehearsalTest {
                 assertThat(rs.getString("version")).isEqualTo("3");
                 assertThat(rs.getBoolean("success")).isTrue();
 
-                assertThat(rs.next()).isFalse(); // Absolutely NO V4
+                assertThat(rs.next()).isFalse(); // Absolutely NO V4 or V5
             }
 
-            // 2. Lessons table does NOT contain intro-greetings
-            try (ResultSet rs = stmt.executeQuery("SELECT count(*) FROM lessons WHERE slug = 'intro-greetings'")) {
+            // 2. Lessons table does NOT contain staging lessons (M2.1 & M2.2)
+            try (ResultSet rs = stmt.executeQuery(
+                    "SELECT count(*) FROM lessons WHERE slug IN ('intro-greetings', 'family-members', 'time-calendar', 'dining-shopping')")) {
                 assertThat(rs.next()).isTrue();
                 assertThat(rs.getInt(1)).isEqualTo(0);
             }
@@ -170,7 +171,7 @@ class PostgresSchemaStagingRehearsalTest {
 
     @Test
     @Order(2)
-    @DisplayName("Case B (Schema local/staging): Nạp db/migration + db/migration-staging, V4 có 10 từ pending, sequence đồng bộ, SQL idempotent")
+    @DisplayName("Case B (Schema local/staging): Nạp db/migration + db/migration-staging (V1-V5), M2.1 + M2.2 có 50 từ pending, sequence đồng bộ, SQL idempotent")
     void caseB_stagingSchemaWithV4() throws Exception {
         String urlB = getUrlB();
         String user = getDbUser();
@@ -188,45 +189,73 @@ class PostgresSchemaStagingRehearsalTest {
 
         var result = flyway.migrate();
         assertThat(result.success).isTrue();
-        assertThat(result.migrationsExecuted).isEqualTo(4);
+        assertThat(result.migrationsExecuted).isEqualTo(5); // V1, V2, V3, V4, V5
 
         try (Connection conn = DriverManager.getConnection(urlB, user, pass);
              Statement stmt = conn.createStatement()) {
 
-            // 1. flyway_schema_history contains V1, V2, V3, and V4
-            try (ResultSet rs = stmt.executeQuery("SELECT version, success FROM flyway_schema_history WHERE version = '4'")) {
+            // 1. flyway_schema_history contains V1, V2, V3, V4, and V5
+            try (ResultSet rs = stmt.executeQuery("SELECT version, success FROM flyway_schema_history WHERE version IN ('4', '5') ORDER BY version")) {
                 assertThat(rs.next()).isTrue();
+                assertThat(rs.getString("version")).isEqualTo("4");
+                assertThat(rs.getBoolean("success")).isTrue();
+
+                assertThat(rs.next()).isTrue();
+                assertThat(rs.getString("version")).isEqualTo("5");
                 assertThat(rs.getBoolean("success")).isTrue();
             }
 
-            // 2. intro-greetings lesson exists
-            long lessonId;
+            // 2. M2.1 sample lesson: intro-greetings (10 words)
+            long introLessonId;
             try (ResultSet rs = stmt.executeQuery("SELECT id, slug, title FROM lessons WHERE slug = 'intro-greetings'")) {
                 assertThat(rs.next()).isTrue();
-                lessonId = rs.getLong("id");
+                introLessonId = rs.getLong("id");
                 assertThat(rs.getString("title")).isEqualTo("Chào hỏi và giới thiệu bản thân");
             }
-
-            // 3. Exactly 10 words for intro-greetings, all PENDING_REVIEW and needs_human_check = true
             try (PreparedStatement ps = conn.prepareStatement(
                     "SELECT count(*) FROM vocabulary WHERE lesson_id = ? AND review_status = 'PENDING_REVIEW' AND needs_human_check = true")) {
-                ps.setLong(1, lessonId);
+                ps.setLong(1, introLessonId);
                 try (ResultSet rs = ps.executeQuery()) {
                     assertThat(rs.next()).isTrue();
                     assertThat(rs.getInt(1)).isEqualTo(10);
                 }
             }
 
-            // Total words for intro-greetings is strictly 10
-            try (PreparedStatement ps = conn.prepareStatement("SELECT count(*) FROM vocabulary WHERE lesson_id = ?")) {
-                ps.setLong(1, lessonId);
-                try (ResultSet rs = ps.executeQuery()) {
-                    assertThat(rs.next()).isTrue();
-                    assertThat(rs.getInt(1)).isEqualTo(10);
+            // 3. M2.2 thematic lessons: family-members (13), time-calendar (14), dining-shopping (13)
+            String[] m22Slugs = {"family-members", "time-calendar", "dining-shopping"};
+            int[] expectedCounts = {13, 14, 13};
+
+            for (int i = 0; i < m22Slugs.length; i++) {
+                String slug = m22Slugs[i];
+                int expectedCount = expectedCounts[i];
+                long lessonId;
+                try (PreparedStatement ps = conn.prepareStatement("SELECT id FROM lessons WHERE slug = ?")) {
+                    ps.setString(1, slug);
+                    try (ResultSet rs = ps.executeQuery()) {
+                        assertThat(rs.next()).as("Lesson %s must exist", slug).isTrue();
+                        lessonId = rs.getLong("id");
+                    }
+                }
+                try (PreparedStatement ps = conn.prepareStatement(
+                        "SELECT count(*) FROM vocabulary WHERE lesson_id = ? AND review_status = 'PENDING_REVIEW' AND needs_human_check = true")) {
+                    ps.setLong(1, lessonId);
+                    try (ResultSet rs = ps.executeQuery()) {
+                        assertThat(rs.next()).isTrue();
+                        assertThat(rs.getInt(1))
+                                .as("Lesson %s must contain exactly %d pending words", slug, expectedCount)
+                                .isEqualTo(expectedCount);
+                    }
                 }
             }
 
-            // 4. Pre-existing HSK1 lessons (1, 2, 3) remain APPROVED (38 authentic words unaffected by V4)
+            // Total pending words in staging is strictly 50 (10 in M2.1 + 40 in M2.2)
+            try (ResultSet rs = stmt.executeQuery(
+                    "SELECT count(*) FROM vocabulary WHERE review_status = 'PENDING_REVIEW' AND needs_human_check = true")) {
+                assertThat(rs.next()).isTrue();
+                assertThat(rs.getInt(1)).isEqualTo(50);
+            }
+
+            // 4. Pre-existing HSK1 lessons (1, 2, 3) remain APPROVED (38 authentic words unaffected by V4 or V5)
             try (ResultSet rs = stmt.executeQuery(
                     "SELECT count(*) FROM vocabulary WHERE lesson_id IN (1, 2, 3) AND review_status = 'APPROVED'")) {
                 assertThat(rs.next()).isTrue();
@@ -243,23 +272,25 @@ class PostgresSchemaStagingRehearsalTest {
             assertThat(reRunResult.success).isTrue();
             assertThat(reRunResult.migrationsExecuted).isEqualTo(0);
 
-            // 6. Idempotency Check Part 2: Re-executing full V4 SQL script directly causes 0 duplicate rows
-            String fullV4Sql = loadV4MigrationSql();
+            // 6. Idempotency Check Part 2: Re-executing full V4 & V5 SQL scripts directly causes 0 duplicate rows
+            String fullV4Sql = loadStagingMigrationSql("V4__sample_lesson_greetings.sql");
             stmt.execute(fullV4Sql);
 
-            // Assert lesson still exists as exactly 1 row
-            try (ResultSet rs = stmt.executeQuery("SELECT count(*) FROM lessons WHERE slug = 'intro-greetings'")) {
+            String fullV5Sql = loadStagingMigrationSql("V5__hsk1_thematic_curriculum_expansion.sql");
+            stmt.execute(fullV5Sql);
+
+            // Assert staging lessons still exist as exactly 4 rows (1 M2.1 + 3 M2.2)
+            try (ResultSet rs = stmt.executeQuery(
+                    "SELECT count(*) FROM lessons WHERE slug IN ('intro-greetings', 'family-members', 'time-calendar', 'dining-shopping')")) {
                 assertThat(rs.next()).isTrue();
-                assertThat(rs.getInt(1)).isEqualTo(1);
+                assertThat(rs.getInt(1)).isEqualTo(4);
             }
 
-            // Assert vocabulary for this lesson is still strictly 10 rows
-            try (PreparedStatement ps = conn.prepareStatement("SELECT count(*) FROM vocabulary WHERE lesson_id = ?")) {
-                ps.setLong(1, lessonId);
-                try (ResultSet rs = ps.executeQuery()) {
-                    assertThat(rs.next()).isTrue();
-                    assertThat(rs.getInt(1)).isEqualTo(10);
-                }
+            // Assert total pending words are still strictly 50 rows
+            try (ResultSet rs = stmt.executeQuery(
+                    "SELECT count(*) FROM vocabulary WHERE review_status = 'PENDING_REVIEW' AND needs_human_check = true")) {
+                assertThat(rs.next()).isTrue();
+                assertThat(rs.getInt(1)).isEqualTo(50);
             }
 
             // 7. Sequence safety test: insert a new lesson without explicit ID; generated key must exceed MAX(id)
@@ -305,7 +336,7 @@ class PostgresSchemaStagingRehearsalTest {
                 ps.setString(6, "Động từ");
                 ps.setString(7, "Kiểm tra");
                 ps.setInt(8, 1);
-                ps.setLong(9, lessonId);
+                ps.setLong(9, introLessonId);
                 ps.setString(10, "PENDING_REVIEW");
                 ps.executeUpdate();
                 try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
@@ -329,7 +360,7 @@ class PostgresSchemaStagingRehearsalTest {
 
     @Test
     @Order(3)
-    @DisplayName("Case C (Hibernate Validation): Thực sự khởi động Spring với PostgreSQL và ddl-auto=validate")
+    @DisplayName("Case C (Hibernate Validation): Thực sự khởi động Spring với PostgreSQL và ddl-auto=validate trên Schema Staging (V1-V5)")
     void caseC_hibernateSchemaValidation() throws Exception {
         String urlB = getUrlB();
         String user = getDbUser();

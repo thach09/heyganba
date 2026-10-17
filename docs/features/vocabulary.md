@@ -156,3 +156,42 @@ Hệ thống phân tách rạch ròi 2 chế độ học tập:
      - Nội dung bài học và 10 từ vựng cốt lõi tiếp tục giữ nguyên trạng thái **`PENDING_REVIEW`**.
      - Kết quả kiểm chứng này xác nhận tính toàn vẹn của **Migration DDL/DML và Hibernate Entity Schema Validation** trên PostgreSQL 16.15 thực tế; **chưa thay thế việc thẩm định học thuật** từ chuyên gia và **chưa thay thế việc kiểm thử toàn bộ API backend trên PostgreSQL** (các API tests vẫn đang chạy trên H2 test profile).
 
+---
+
+## 7. Milestone M2.2 — Mở rộng Kho từ vựng Chủ đề HSK 1 & Bộ lọc Cấp độ (PENDING_REVIEW)
+
+> **Trạng thái**: **Hoàn thiện Kỹ thuật & Migration Staging (Nội dung giữ PENDING_REVIEW)**  
+> **Phạm vi M2.2**: Bổ sung **3 bài học chủ đề HSK 1** với **40 từ vựng sinh hoạt thường nhật**, mở rộng hệ thống bộ lọc cấp độ (`Nhập môn` vs `HSK 1`), tìm kiếm chủ đề bài học, và nhãn đánh dấu trạng thái chờ duyệt trên từng từ vựng.
+
+### A. Danh mục 3 Bài học Chủ đề & 40 Từ vựng HSK 1 Mới:
+
+1. **Bài học 1: Gia đình & Xưng hô (`family-members`) — HSK 1 (13 từ vựng)**:
+   - Từ vựng: `家` (nhà, gia đình), `爸爸` (bố), `妈妈` (mẹ), `哥哥` (anh trai), `姐姐` (chị gái), `弟弟` (em trai), `妹妹` (em gái), `儿子` (con trai), `女儿` (con gái), `有` (có), `没` (không có / phủ định quá khứ), `个` (lượng từ cái, người), `几` (mấy, bao nhiêu).
+   - Ngữ cảnh ví dụ song ngữ: Giới thiệu các thành viên trong gia đình và cấu trúc lượng từ căn bản.
+2. **Bài học 2: Thời gian & Lịch (`time-calendar`) — HSK 1 (14 từ vựng)**:
+   - Từ vựng: `现在` (bây giờ), `点` (giờ), `分` (phút), `今天` (hôm nay), `明天` (ngày mai), `昨天` (hôm qua), `年` (năm), `月` (tháng), `号` (ngày, số), `星期` (tuần, thứ), `上午` (buổi sáng), `中午` (buổi trưa), `下午` (buổi chiều), `时候` (khi, lúc).
+   - Ngữ cảnh ví dụ song ngữ: Hỏi giờ, ngày tháng, hẹn gặp và các mốc thời gian trong ngày.
+3. **Bài học 3: Ăn uống & Mua sắm (`dining-shopping`) — HSK 1 (13 từ vựng)**:
+   - Từ vựng: `吃` (ăn), `喝` (uống), `茶` (trà), `水` (nước), `米饭` (cơm trắng), `苹果` (táo), `菜` (món ăn, rau), `买` (mua), `钱` (tiền), `块` (đồng, tệ), `喜欢` (thích), `想` (muốn, nghĩ), `多少` (bao nhiêu).
+   - Ngữ cảnh ví dụ song ngữ: Gọi món, mua hàng và diễn đạt sở thích sinh hoạt.
+
+### B. Cơ chế Kỹ thuật & Bảo vệ Dữ liệu:
+
+1. **Cách ly Staging & Quản trị Nội dung Học thuật**:
+   - File di trú: `backend/src/main/resources/db/migration-staging/V5__hsk1_thematic_curriculum_expansion.sql`.
+   - Toàn bộ 40 từ vựng được gán tường minh `review_status = 'PENDING_REVIEW'` và `needs_human_check = true`.
+   - Tổng cộng sau M2.2: Có đúng **50 từ vựng pending** (10 từ M2.1 + 40 từ M2.2) trên 4 bài học staging.
+   - **Bảo toàn 38 từ vựng gốc** của bài 1–3 (`APPROVED`) trong seed V2; tuyệt đối không can thiệp trạng thái dữ liệu cũ.
+   - Idempotency & Sequence Sync: Cả `lessons` và `vocabulary` đều được bảo vệ bằng `ON CONFLICT DO UPDATE` và `WHERE NOT EXISTS`, đồng thời gọi `SELECT setval(pg_get_serial_sequence(...), COALESCE((SELECT MAX(id) FROM ...), 1))` để ngăn ngừa xung đột ID khi tạo mới bản ghi.
+
+2. **Frontend UI/UX Nâng cao (`FlashcardView.tsx`)**:
+   - **Thanh lọc Cấp độ Giáo trình**: Hỗ trợ chuyển đổi nhanh giữa `Tất cả`, `Nhập môn`, và `HSK 1` kèm số lượng bài học tương ứng.
+   - **Tìm kiếm Chủ đề**: Tìm theo tiêu đề, mô tả hoặc slug bài học theo thời gian thực; có màn hình trạng thái rỗng và nút huỷ lọc thuận tiện.
+   - **Phân định Cột mốc**: Hiển thị rõ `Bản thảo Nhập môn / M2.1` vs `Bản thảo HSK1 / M2.2` trên từng thẻ bài học.
+   - **Huy hiệu Chờ duyệt (`Chờ duyệt`)**: Đánh dấu trực quan các từ vựng chưa qua thẩm định học thuật trên bảng từ vựng bài học.
+   - **Không sinh dữ liệu giả**: Duy trì nguyên tắc không tráo đổi fake state, giữ nguyên payload khi có lỗi mạng và phản hồi trung thực kết quả từ backend.
+
+3. **Kiểm thử Tự động & Rehearsal**:
+   - **Frontend**: Bổ sung bộ test chuyên biệt `frontend/tests/unit/flashcard-m22.test.tsx` kiểm thử toàn bộ luồng lọc cấp độ, tìm kiếm, hiển thị huy hiệu `Chờ duyệt`, luyện phản xạ quiz Pinyin, và xử lý lỗi mạng trung thực.
+   - **PostgreSQL Rehearsal**: Nâng cấp `PostgresSchemaStagingRehearsalTest.java` và `scripts/verify-postgres-m21.ps1` kiểm tra toàn bộ 5 version Flyway (V1–V5), kiểm chứng kép idempotency cho cả V4 và V5, xác nhận 50 từ pending, 38 từ approved, đồng bộ sequence và Hibernate `ddl-auto=validate`.
+

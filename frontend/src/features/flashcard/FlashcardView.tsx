@@ -303,13 +303,37 @@ export const FlashcardView: React.FC = () => {
     }
   };
 
-  // Filtered lessons based on Admin Preview vs Student View
+  // Curriculum Level Filter & Catalog Search State
+  const [selectedLevelFilter, setSelectedLevelFilter] = useState<string>('ALL');
+  const [catalogSearchQuery, setCatalogSearchQuery] = useState<string>('');
+
+  const availableLevels = useMemo(() => {
+    const set = new Set<string>();
+    lessons.forEach(l => {
+      if (l.curriculumLevel) set.add(l.curriculumLevel);
+    });
+    return Array.from(set).sort();
+  }, [lessons]);
+
+  // Filtered lessons based on Admin Preview vs Student View + Level Filter + Search
   const displayedLessons = useMemo(() => {
+    let list = lessons;
     if (isAdmin && !adminPreviewActive) {
-      return lessons.filter(l => l.wordCount > 0);
+      list = list.filter(l => l.wordCount > 0);
     }
-    return lessons;
-  }, [lessons, isAdmin, adminPreviewActive]);
+    if (selectedLevelFilter !== 'ALL') {
+      list = list.filter(l => l.curriculumLevel === selectedLevelFilter);
+    }
+    if (catalogSearchQuery.trim()) {
+      const q = catalogSearchQuery.trim().toLowerCase();
+      list = list.filter(l =>
+        l.title.toLowerCase().includes(q) ||
+        (l.description && l.description.toLowerCase().includes(q)) ||
+        l.slug.toLowerCase().includes(q)
+      );
+    }
+    return list;
+  }, [lessons, isAdmin, adminPreviewActive, selectedLevelFilter, catalogSearchQuery]);
 
   // Filtered lesson words for list view
   const filteredLessonWords = useMemo(() => {
@@ -585,9 +609,9 @@ export const FlashcardView: React.FC = () => {
         <div className="flex items-center gap-2">
           <AlertTriangle size={16} className="text-amber-400 shrink-0" />
           <div>
-            <span className="font-bold text-amber-300">Milestone M2.1 · Bản thảo chờ thẩm định (PENDING_REVIEW)</span>
+            <span className="font-bold text-amber-300">Milestone M2.2 · Kho từ vựng chủ đề HSK 1 & Ôn tập SRS (PENDING_REVIEW)</span>
             <span className="text-amber-200/80 block sm:inline sm:ml-2">
-              (Bài mẫu: Chào hỏi & giới thiệu bản thân đối chiếu Giáo trình Hán ngữ; đang chờ chuyên gia phê duyệt)
+              (Bao gồm các bài theo chủ đề: Nhập môn, Gia đình, Thời gian, Ăn uống & Mua sắm; đang chờ chuyên gia phê duyệt)
             </span>
           </div>
         </div>
@@ -668,7 +692,7 @@ export const FlashcardView: React.FC = () => {
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-cinnabar">
             <span className="inline-block h-2 w-2 rounded-full bg-cinnabar" />
-            Trạm 2 · 词汇与记忆 · Từ vựng & Sổ từ · [M2.1 Hoạt động thật]
+            Trạm 2 · 词汇与记忆 · Từ vựng & Sổ từ · [M2.2 Hoạt động thật]
             {(catalogLoading || lessonWordsLoading) && <RefreshCw size={13} className="animate-spin text-cinnabar inline ml-1" />}
           </div>
           <h1 className="mt-1 font-serif text-3xl font-bold tracking-tight text-fg">
@@ -738,6 +762,63 @@ export const FlashcardView: React.FC = () => {
          ======================================================== */}
       {mainMode === 'LESSONS' && (
         <div className="flex flex-col gap-6">
+          {/* Level Filter & Catalog Search */}
+          {lessons.length > 0 && (
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-surface/40 p-3 rounded border border-rule/60">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-xs font-semibold text-fg-60 mr-1">Cấp độ:</span>
+                <button
+                  type="button"
+                  onClick={() => setSelectedLevelFilter('ALL')}
+                  className={`rounded px-2.5 py-1 text-xs font-medium transition-colors cursor-pointer ${
+                    selectedLevelFilter === 'ALL'
+                      ? 'bg-cinnabar text-white font-semibold'
+                      : 'border border-rule bg-card text-fg-60 hover:text-fg'
+                  }`}
+                >
+                  Tất cả ({lessons.length})
+                </button>
+                {availableLevels.map(lvl => {
+                  const count = lessons.filter(l => l.curriculumLevel === lvl).length;
+                  return (
+                    <button
+                      key={lvl}
+                      type="button"
+                      onClick={() => setSelectedLevelFilter(lvl)}
+                      className={`rounded px-2.5 py-1 text-xs font-medium transition-colors cursor-pointer ${
+                        selectedLevelFilter === lvl
+                          ? 'bg-cinnabar text-white font-semibold'
+                          : 'border border-rule bg-card text-fg-60 hover:text-fg'
+                      }`}
+                    >
+                      {lvl} ({count})
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="relative w-full sm:w-64">
+                <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-fg-38" />
+                <input
+                  type="text"
+                  placeholder="Tìm chủ đề bài học..."
+                  value={catalogSearchQuery}
+                  onChange={e => setCatalogSearchQuery(e.target.value)}
+                  className="w-full rounded border border-rule bg-surface pl-8 pr-7 py-1.5 text-xs text-fg placeholder:text-fg-38 focus:border-cinnabar focus:outline-none"
+                />
+                {catalogSearchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => setCatalogSearchQuery('')}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-fg-38 hover:text-fg cursor-pointer"
+                  >
+                    <X size={13} />
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
+
           {/* Lesson Selector Card Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {displayedLessons.map(lesson => {
@@ -772,7 +853,7 @@ export const FlashcardView: React.FC = () => {
                   </div>
                   <div className="mt-4 flex items-center justify-between pt-3 border-t border-rule/50 text-xs">
                     <span className="text-[11px] font-mono text-amber-300/80">
-                      Bản thảo M2.1
+                      {lesson.curriculumLevel === 'HSK 1' ? 'Bản thảo HSK1 / M2.2' : 'Bản thảo Nhập môn / M2.1'}
                     </span>
                     <span className="font-medium text-cinnabar flex items-center gap-1 text-[11px]">
                       {isSelected ? 'Đang chọn' : 'Xem bài'} →
@@ -783,8 +864,27 @@ export const FlashcardView: React.FC = () => {
             })}
           </div>
 
+          {/* Empty search/filter state */}
+          {displayedLessons.length === 0 && lessons.length > 0 && (
+            <div className="flex flex-col items-center justify-center rounded border border-rule bg-card p-8 text-center">
+              <p className="text-xs text-fg-60">
+                Không tìm thấy bài học phù hợp với bộ lọc hoặc từ khoá "{catalogSearchQuery}".
+              </p>
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedLevelFilter('ALL');
+                  setCatalogSearchQuery('');
+                }}
+                className="mt-3 text-xs text-cinnabar hover:underline cursor-pointer"
+              >
+                Xoá bộ lọc & tìm lại
+              </button>
+            </div>
+          )}
+
           {/* Regular user warning if no approved lessons are visible */}
-          {displayedLessons.length === 0 && (!isAdmin || !adminPreviewActive) && (
+          {displayedLessons.length === 0 && lessons.length === 0 && (!isAdmin || !adminPreviewActive) && (
             <div className="flex flex-col items-center justify-center rounded border border-rule bg-card p-10 text-center">
               <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-amber-500/10 text-amber-400 mb-3">
                 <AlertTriangle size={24} />
@@ -793,7 +893,7 @@ export const FlashcardView: React.FC = () => {
                 Chưa có bài học nào được phê duyệt chính thức
               </h3>
               <p className="mt-2 max-w-md text-xs leading-relaxed text-fg-60">
-                Nội dung từ vựng M2.1 hiện đang trong quy trình thẩm định học thuật (<b>PENDING_REVIEW</b>). Theo quy định an toàn dữ liệu học thuật, học viên sẽ được mở bài ngay khi chuyên gia hoàn tất ký duyệt.
+                Nội dung từ vựng M2.1 & M2.2 hiện đang trong quy trình thẩm định học thuật (<b>PENDING_REVIEW</b>). Theo quy định an toàn dữ liệu học thuật, học viên sẽ được mở bài ngay khi chuyên gia hoàn tất ký duyệt.
               </p>
               {isAdmin ? (
                 <button
@@ -924,6 +1024,14 @@ export const FlashcardView: React.FC = () => {
                                 <span className="font-serif text-2xl font-bold text-fg">
                                   {word.word}
                                 </span>
+                                {word.reviewStatus === 'PENDING_REVIEW' && (
+                                  <span
+                                    title="Nội dung chờ chuyên gia học thuật ký duyệt"
+                                    className="rounded bg-amber-500/10 border border-amber-500/30 px-1.5 py-0.5 text-[10px] font-mono text-amber-300"
+                                  >
+                                    Chờ duyệt
+                                  </span>
+                                )}
                                 <button
                                   type="button"
                                   onClick={() => speakChinese(word.word)}

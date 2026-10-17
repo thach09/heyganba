@@ -1,13 +1,13 @@
-﻿# ==============================================================================
+# ==============================================================================
 # Script: scripts/verify-postgres-m21.ps1
-# Mục đích: Kiểm chứng PostgreSQL trong môi trường cô lập cho Milestone M2.1.1
+# Mục đích: Kiểm chứng PostgreSQL trong môi trường cô lập cho Milestone M2.1 & M2.2
 #
 # Kiểm tra:
 # 1. Trường hợp A (Schema chính thức): Chỉ nạp db/migration (V1-V3)
-# 2. Trường hợp B (Schema local/staging): Nạp db/migration + db/migration-staging (V1-V4)
+# 2. Trường hợp B (Schema local/staging): Nạp db/migration + db/migration-staging (V1-V5)
 # 3. Hibernate ddl-auto=validate thực sự chạy trên PostgreSQL không dùng create/create-drop
-# 4. Bài intro-greetings có đúng 10 từ pending, không gán nhầm; nội dung cũ không bị đổi trạng thái
-# 5. Schema chính thức không nạp V4
+# 4. Các bài học staging có đúng 50 từ pending, không gán nhầm; nội dung cũ không bị đổi trạng thái
+# 5. Schema chính thức không nạp V4 & V5
 # 6. Đồng bộ sequence BIGSERIAL: bản ghi tự sinh ID lớn hơn MAX(id) thực tế
 # 7. Phân biệt rõ: Flyway migrate lại nạp 0 migration mới & SQL seed tự chống trùng khi tái chạy
 # 8. Xác minh kết quả thực thi qua Surefire XML (không failures, không errors, không skipped)
@@ -221,12 +221,12 @@ try {
 
     Write-Host "`n[5/5] TỔNG KẾT KẾT QUẢ KIỂM CHỨNG POSTGRESQL:" -ForegroundColor Green
     Write-Host "-----------------------------------------------------------------" -ForegroundColor Green
-    Write-Host " ✓ Case A (Schema chính thức): Chỉ có V1-V3, không có V4, không có bài intro-greetings: PASS" -ForegroundColor Green
-    Write-Host " ✓ Case B (Schema local/staging): Có V1-V4, đúng 10 từ pending cho bài intro-greetings: PASS" -ForegroundColor Green
+    Write-Host " ✓ Case A (Schema chính thức): Chỉ có V1-V3, không có V4/V5, không có bài học staging: PASS" -ForegroundColor Green
+    Write-Host " ✓ Case B (Schema local/staging): Có V1-V5, đúng 50 từ pending cho 4 bài học M2.1 & M2.2: PASS" -ForegroundColor Green
     Write-Host " ✓ Từ vựng HSK1 bài 1-3 trước đó không bị đổi trạng thái (38 từ vẫn APPROVED): PASS" -ForegroundColor Green
     Write-Host " ✓ Đồng bộ sequence BIGSERIAL: bản ghi tự sinh ID lớn hơn MAX(id) thực tế: PASS" -ForegroundColor Green
     Write-Host " ✓ Flyway idempotency: chạy lại migrate khi schema đã đủ nạp 0 migration mới: PASS" -ForegroundColor Green
-    Write-Host " ✓ SQL seed idempotency: nạp lại toàn bộ file SQL V4 không tạo bản ghi trùng: PASS" -ForegroundColor Green
+    Write-Host " ✓ SQL seed idempotency: nạp lại toàn bộ file SQL V4 & V5 không tạo bản ghi trùng: PASS" -ForegroundColor Green
     Write-Host " ✓ Hibernate/Spring ddl-auto=validate thực sự kết nối PostgreSQL và thành công: PASS" -ForegroundColor Green
     Write-Host " ✓ Surefire XML verification: cả 3 test cases đều thực thi thành công (0 fail, 0 error, 0 skip): PASS" -ForegroundColor Green
     Write-Host "-----------------------------------------------------------------" -ForegroundColor Green
