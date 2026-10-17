@@ -38,10 +38,17 @@ import { checkPinyinAnswer } from '../pinyin/pinyinData';
 type MainViewMode = 'LESSONS' | 'SRS';
 type LessonSubMode = 'LIST' | 'STUDY' | 'QUIZ';
 
+interface PendingSrsAttempt {
+  readonly accountId: number;
+  readonly vocabularyId: number;
+  readonly rating: SrsRating;
+  readonly attemptId: string;
+}
+
 export const FlashcardView: React.FC = () => {
   const { user, requireLogin } = useAuth();
   const userId = user?.userId;
-  const { run, cancel } = useRequestScope(userId);
+  const { run, cancel, isActive } = useRequestScope(userId);
   const { triggerReaction, rewardBamboo } = useCompanion();
 
   // Search params for preview query
@@ -51,6 +58,7 @@ export const FlashcardView: React.FC = () => {
   const previewParam = searchParams.get('preview') === '1' || searchParams.get('preview') === 'true';
 
   // Admin Preview Toggle (Strictly restricted to authenticated ROLE_ADMIN)
+  // When active: shows all drafts/pending review. When inactive: previews student view (approved only).
   const [adminPreviewDisabled, setAdminPreviewDisabled] = useState<boolean>(false);
   const adminPreviewActive = isAdmin && (previewParam || !adminPreviewDisabled);
   const attemptedUnauthorizedPreview = !isAdmin && (previewParam || searchParams.get('admin') === '1');
@@ -78,20 +86,26 @@ export const FlashcardView: React.FC = () => {
   const [lessons, setLessons] = useState<VocabularyLesson[]>([]);
   const [selectedLesson, setSelectedLesson] = useState<VocabularyLesson | null>(null);
   const [lessonWords, setLessonWords] = useState<VocabularyWord[]>([]);
+  const [catalogLoading, setCatalogLoading] = useState(false);
+  const [catalogError, setCatalogError] = useState<string | null>(null);
+  const [lessonWordsLoading, setLessonWordsLoading] = useState(false);
+  const [lessonWordsError, setLessonWordsError] = useState<string | null>(null);
+
+  // Lesson Sub-mode State
   const [lessonSubMode, setLessonSubMode] = useState<LessonSubMode>('LIST');
   const [studyWordIndex, setStudyWordIndex] = useState(0);
   const [studyFlipped, setStudyFlipped] = useState(false);
   const [searchWordQuery, setSearchWordQuery] = useState('');
 
-  // SRS Due Session State
+  // SRS Due Session State (Decoupled from Lesson catalog)
   const [dueItems, setDueItems] = useState<FlashcardDueItem[]>([]);
   const [stats, setStats] = useState<FlashcardStats | null>(null);
   const [srsIndex, setSrsIndex] = useState(0);
   const [srsFlipped, setSrsFlipped] = useState(false);
   const [srsSubmitting, setSrsSubmitting] = useState(false);
+  const [srsLoading, setSrsLoading] = useState(false);
   const [srsError, setSrsError] = useState<string | null>(null);
-  const [currentAttemptId, setCurrentAttemptId] = useState<string | null>(null);
-  const [pendingRating, setPendingRating] = useState<SrsRating | null>(null);
+  const [pendingAttempt, setPendingAttempt] = useState<PendingSrsAttempt | null>(null);
   const [srsSessionFinished, setSrsSessionFinished] = useState(false);
   const [srsReviewedCount, setSrsReviewedCount] = useState(0);
   const [lastSrsResult, setLastSrsResult] = useState<FlashcardReviewResult | null>(null);
@@ -106,6 +120,8 @@ export const FlashcardView: React.FC = () => {
   const [userNotebooks, setUserNotebooks] = useState<VocabNotebook[]>([]);
   const [selectedNotebookId, setSelectedNotebookId] = useState<number | 'NEW'>('NEW');
   const [newNotebookTitle, setNewNotebookTitle] = useState('');
+  const [notebookListLoading, setNotebookListLoading] = useState(false);
+  const [notebookListError, setNotebookListError] = useState<string | null>(null);
   const [notebookSaveLoading, setNotebookSaveLoading] = useState(false);
   const [notebookFeedback, setNotebookFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
@@ -118,42 +134,41 @@ export const FlashcardView: React.FC = () => {
   const [quizFinished, setQuizFinished] = useState(false);
   const [selectedChoice, setSelectedChoice] = useState<string | null>(null);
 
-  // General Loading & Error State
-  const [loading, setLoading] = useState(false);
-  const [generalError, setGeneralError] = useState<string | null>(null);
-
-  // Stop Chinese TTS audio when navigating away or changing subviews
+  // Stop Chinese TTS audio when navigating away or unmounting
   useEffect(() => {
     return () => {
       stopChineseSpeech();
     };
   }, []);
 
-  // 1. Load Lessons Catalog
+  // 1. Load Lessons Catalog (Public / Guest readable; does not touch SRS)
   const loadLessons = useCallback(async () => {
-    setLoading(true);
-    setGeneralError(null);
+    setCatalogLoading(true);
+    setCatalogError(null);
 
     const res = await run('load-lessons', signal => vocabularyApi.lessons({ signal }));
     if (res && res.success && res.data) {
       setLessons(res.data);
-      if (!selectedLesson && res.data.length > 0) {
-        setSelectedLesson(res.data[0]);
-      }
+      setSelectedLesson(prev => {
+        if (prev && res.data.some(l => l.id === prev.id)) {
+          return prev;
+        }
+        return res.data[0] || null;
+      });
     } else {
       setLessons([]);
       setSelectedLesson(null);
       if (res && !res.success) {
-        setGeneralError(res.message || 'Không thể kết nối máy chủ để tải danh sách bài học.');
+        setCatalogError(res.message || 'Không thể kết nối máy chủ để tải danh sách bài học.');
       }
     }
-    setLoading(false);
-  }, [run, selectedLesson]);
+    setCatalogLoading(false);
+  }, [run]);
 
-  // 2. Load Words for Selected Lesson
+  // 2. Load Words for Selected Lesson (Public / Guest readable; independent of SRS)
   const loadSelectedLessonWords = useCallback(async (slug: string) => {
-    setLoading(true);
-    setGeneralError(null);
+    setLessonWordsLoading(true);
+    setLessonWordsError(null);
 
     const res = await run('load-lesson-words', signal => vocabularyApi.lessonWords(slug, { signal }));
     if (res && res.success && res.data) {
@@ -161,7 +176,7 @@ export const FlashcardView: React.FC = () => {
     } else {
       setLessonWords([]);
       if (res && !res.success) {
-        setGeneralError(res.message || 'Không thể tải danh sách từ vựng của bài học.');
+        setLessonWordsError(res.message || 'Không thể tải danh sách từ vựng của bài học.');
       }
     }
     setStudyWordIndex(0);
@@ -169,12 +184,30 @@ export const FlashcardView: React.FC = () => {
     setQuizIndex(0);
     setQuizFinished(false);
     setQuizScore(0);
-    setLoading(false);
+    setLessonWordsLoading(false);
   }, [run]);
 
-  // 3. Load SRS Due Session
+  // 3. Refresh Stats only (Does NOT reset or advance current SRS card session)
+  const refreshStats = useCallback(async () => {
+    if (!user) {
+      setStats(null);
+      return;
+    }
+    const res = await run('refresh-srs-stats', signal => flashcardApi.stats({ signal }));
+    if (res && res.success && res.data) {
+      setStats(res.data);
+    }
+  }, [user, run]);
+
+  // 4. Load SRS Due Session (Authenticated only; never called for guests)
   const loadSrsData = useCallback(async () => {
-    setLoading(true);
+    if (!user) {
+      setDueItems([]);
+      setStats(null);
+      setSrsSessionFinished(true);
+      return;
+    }
+    setSrsLoading(true);
     setSrsError(null);
 
     const loaded = await run('load-srs', signal =>
@@ -190,6 +223,7 @@ export const FlashcardView: React.FC = () => {
       setDueItems(dueRes.data);
       setSrsIndex(0);
       setSrsFlipped(false);
+      setPendingAttempt(null);
       setSrsSessionFinished(dueRes.data.length === 0);
     } else {
       setDueItems([]);
@@ -204,37 +238,94 @@ export const FlashcardView: React.FC = () => {
     } else {
       setStats(null);
     }
-    setLoading(false);
-  }, [run]);
+    setSrsLoading(false);
+  }, [user, run]);
 
-  // Initial load
+  // Initial load on mount
   useEffect(() => {
     void loadLessons();
-    void loadSrsData();
-    return () => {
-      cancel('load-lessons');
-      cancel('load-srs');
-    };
-  }, [loadLessons, loadSrsData, cancel]);
-
-  // When selected lesson changes, load its words
-  useEffect(() => {
-    if (selectedLesson) {
-      void loadSelectedLessonWords(selectedLesson.slug);
+    if (user) {
+      void refreshStats();
     }
-  }, [selectedLesson, loadSelectedLessonWords]);
+  }, [loadLessons, refreshStats, user]);
+
+  // When selected lesson changes, ONLY load its words (SRS is completely untouched!)
+  const selectedSlug = selectedLesson?.slug;
+  useEffect(() => {
+    if (selectedSlug) {
+      void loadSelectedLessonWords(selectedSlug);
+    } else {
+      setLessonWords([]);
+    }
+  }, [selectedSlug, loadSelectedLessonWords]);
+
+  // When user identity / session changes (login, logout, switch account):
+  // Cancel previous requests and wipe account-scoped state
+  useEffect(() => {
+    cancel('load-srs');
+    cancel('refresh-srs-stats');
+    cancel('srs-review');
+    cancel('load-notebooks');
+
+    setDueItems([]);
+    setStats(null);
+    setSrsIndex(0);
+    setSrsFlipped(false);
+    setSrsSubmitting(false);
+    setSrsError(null);
+    setPendingAttempt(null);
+    setSrsSessionFinished(false);
+    setSrsReviewedCount(0);
+    setLastSrsResult(null);
+
+    setUserNotebooks([]);
+    setSelectedNotebookId('NEW');
+    setWordToSave(null);
+    setNotebookModalOpen(false);
+    setNotebookFeedback(null);
+    setNotebookListError(null);
+
+    void loadLessons();
+    if (user) {
+      void refreshStats();
+      if (mainMode === 'SRS') {
+        void loadSrsData();
+      }
+    }
+  }, [userId]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Switch to SRS Tab
+  const handleSwitchToSrs = () => {
+    stopChineseSpeech();
+    setMainMode('SRS');
+    if (user && dueItems.length === 0 && !srsSessionFinished) {
+      void loadSrsData();
+    }
+  };
+
+  // Filtered lessons based on Admin Preview vs Student View
+  const displayedLessons = useMemo(() => {
+    if (isAdmin && !adminPreviewActive) {
+      return lessons.filter(l => l.wordCount > 0);
+    }
+    return lessons;
+  }, [lessons, isAdmin, adminPreviewActive]);
 
   // Filtered lesson words for list view
   const filteredLessonWords = useMemo(() => {
-    if (!searchWordQuery.trim()) return lessonWords;
+    let list = lessonWords;
+    if (isAdmin && !adminPreviewActive) {
+      list = list.filter(w => w.reviewStatus === 'APPROVED');
+    }
+    if (!searchWordQuery.trim()) return list;
     const q = searchWordQuery.trim().toLowerCase();
-    return lessonWords.filter(w =>
+    return list.filter(w =>
       w.word.toLowerCase().includes(q) ||
       (w.pinyin && w.pinyin.toLowerCase().includes(q)) ||
       (w.meaningVi && w.meaningVi.toLowerCase().includes(q)) ||
       (w.hanViet && w.hanViet.toLowerCase().includes(q))
     );
-  }, [lessonWords, searchWordQuery]);
+  }, [lessonWords, searchWordQuery, isAdmin, adminPreviewActive]);
 
   // Current word in study mode
   const currentStudyWord = lessonWords[studyWordIndex] || lessonWords[0];
@@ -249,43 +340,49 @@ export const FlashcardView: React.FC = () => {
     return { dueCount, newCount };
   }, [dueItems]);
 
-  // Open Notebook Save Modal
+  // Load Notebooks
+  const loadUserNotebooks = async () => {
+    setNotebookListLoading(true);
+    setNotebookListError(null);
+
+    const res = await run('load-notebooks', signal => notebookApi.list({ signal }));
+    setNotebookListLoading(false);
+
+    if (res && res.success && res.data) {
+      setUserNotebooks(res.data);
+      if (res.data.length > 0) {
+        setSelectedNotebookId(res.data[0].id);
+      } else {
+        setSelectedNotebookId('NEW');
+        setNewNotebookTitle('Từ vựng yêu thích');
+      }
+    } else {
+      setUserNotebooks([]);
+      if (res && !res.success) {
+        setNotebookListError(res.message || 'Không thể tải danh sách sổ từ cá nhân.');
+      }
+    }
+  };
+
+  // Open Notebook Save Modal (Never injects fake mock notebooks!)
   const handleOpenNotebookModal = async (vocab: { id: number; word: string; pinyin?: string | null }) => {
-    if (!user && !isAdmin) {
+    if (!user) {
       requireLogin();
       return;
     }
     setWordToSave(vocab);
     setNotebookFeedback(null);
+    setNotebookListError(null);
+    setUserNotebooks([]);
+    setSelectedNotebookId('NEW');
+    setNewNotebookTitle('');
     setNotebookModalOpen(true);
-
-    // Load user notebooks
-    const res = await notebookApi.list();
-    if (res.success && res.data && res.data.length > 0) {
-      setUserNotebooks(res.data);
-      setSelectedNotebookId(res.data[0].id);
-    } else if (isAdmin) {
-      setUserNotebooks([
-        {
-          id: 99,
-          title: 'Sổ từ mẫu (Admin Preview)',
-          description: 'Sổ từ cá nhân dùng để thử nghiệm',
-          isPublicSample: false,
-          itemCount: 3,
-          createdAt: new Date().toISOString(),
-          items: [],
-        },
-      ]);
-      setSelectedNotebookId(99);
-    } else {
-      setSelectedNotebookId('NEW');
-      setNewNotebookTitle('Từ vựng yêu thích');
-    }
+    await loadUserNotebooks();
   };
 
-  // Submit Save to Notebook
+  // Submit Save to Notebook (If creation succeeds, retains created ID to prevent duplicate notebooks on retry)
   const handleSaveToNotebook = async () => {
-    if (!wordToSave || (!user && !isAdmin)) return;
+    if (!wordToSave || !user || notebookSaveLoading) return;
     setNotebookSaveLoading(true);
     setNotebookFeedback(null);
 
@@ -298,6 +395,9 @@ export const FlashcardView: React.FC = () => {
           throw new Error(createRes.message || 'Không thể tạo sổ từ mới.');
         }
         targetId = createRes.data.id;
+        // Retain created notebook so retry will NOT duplicate creation
+        setSelectedNotebookId(targetId);
+        setUserNotebooks(prev => [createRes.data!, ...prev.filter(n => n.id !== targetId)]);
       } else {
         targetId = selectedNotebookId;
       }
@@ -328,62 +428,96 @@ export const FlashcardView: React.FC = () => {
     }
   };
 
-  // --- SRS Review Submission ---
+  // --- SRS Review Submission with Immutable Attempt Lock ---
   const handleSrsRate = async (rating: SrsRating) => {
+    if (!user) {
+      requireLogin();
+      return;
+    }
     if (!currentSrsItem || srsSubmitting) return;
 
-    // Generate or reuse attemptId to ensure idempotent retry
-    const attemptId = currentAttemptId || crypto.randomUUID();
-    setCurrentAttemptId(attemptId);
-    setPendingRating(rating);
+    // While waiting for resolution of a pending attempt for this card, lock against rating changes
+    if (pendingAttempt && pendingAttempt.vocabularyId === currentSrsItem.vocabularyId) {
+      return;
+    }
+
+    const attempt: PendingSrsAttempt = {
+      accountId: user.userId,
+      vocabularyId: currentSrsItem.vocabularyId,
+      rating,
+      attemptId: crypto.randomUUID(),
+    };
+    setPendingAttempt(attempt);
+    await executeSrsAttempt(attempt);
+  };
+
+  const executeSrsAttempt = async (attempt: PendingSrsAttempt) => {
+    if (srsSubmitting) return;
+    const targetAccountId = attempt.accountId;
+    const targetVocabId = attempt.vocabularyId;
+
     setSrsSubmitting(true);
     setSrsError(null);
 
-    const res = await flashcardApi.review({
-      vocabularyId: currentSrsItem.vocabularyId,
-      rating,
-      attemptId,
-    });
+    try {
+      const res = await run('srs-review', signal =>
+        flashcardApi.review(
+          {
+            vocabularyId: attempt.vocabularyId,
+            rating: attempt.rating,
+            attemptId: attempt.attemptId,
+          },
+          { signal }
+        )
+      );
 
-    setSrsSubmitting(false);
+      // Verify response is still valid for current active user and card
+      if (!isActive() || !user || user.userId !== targetAccountId || currentSrsItem?.vocabularyId !== targetVocabId) {
+        return;
+      }
 
-    if (res.success && res.data) {
-      // Success: advance card and refresh local state
-      setLastSrsResult(res.data);
-      setCurrentAttemptId(null);
-      setPendingRating(null);
-      setSrsReviewedCount(prev => prev + 1);
+      if (res && res.success && res.data) {
+        setLastSrsResult(res.data);
+        setPendingAttempt(null);
+        setSrsReviewedCount(prev => prev + 1);
 
-      // Trigger companion reaction based on rating
-      if (rating === 'GOOD' || rating === 'EASY') {
-        triggerReaction('correct');
-        if (rating === 'EASY') {
-          setSealText('熟');
-          setShowSeal(true);
-          setTimeout(() => setShowSeal(false), 1600);
+        if (attempt.rating === 'GOOD' || attempt.rating === 'EASY') {
+          triggerReaction('correct');
+          if (attempt.rating === 'EASY') {
+            setSealText('熟');
+            setShowSeal(true);
+            setTimeout(() => setShowSeal(false), 1600);
+          }
+        } else {
+          triggerReaction('mistake');
         }
-      } else {
-        triggerReaction('mistake');
-      }
 
-      setSrsFlipped(false);
-      if (srsIndex < dueItems.length - 1) {
-        setSrsIndex(prev => prev + 1);
+        setSrsFlipped(false);
+        if (srsIndex < dueItems.length - 1) {
+          setSrsIndex(prev => prev + 1);
+        } else if (!srsSessionFinished) {
+          setSrsSessionFinished(true);
+          confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
+          rewardBamboo(2);
+        }
+
+        // Refresh stats asynchronously without resetting the active session
+        void refreshStats();
       } else {
-        setSrsSessionFinished(true);
-        confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
-        rewardBamboo(2);
+        // Failure: keep card and input, allow explicit retry
+        setSrsError(res?.message || 'Không thể kết nối máy chủ để lưu kết quả SRS. Thẻ được giữ nguyên để bạn thử lại.');
       }
-    } else {
-      // Failure: keep card and input, allow explicit retry
-      setSrsError(res.message || 'Không thể kết nối máy chủ để lưu kết quả SRS. Thẻ được giữ nguyên để bạn thử lại.');
+    } catch (err: any) {
+      setSrsError(err.message || 'Lỗi mạng khi lưu kết quả SRS.');
+    } finally {
+      setSrsSubmitting(false);
     }
   };
 
-  // Retry the pending SRS rating
+  // Retry the pending SRS rating with the exact same immutable payload
   const handleSrsRetry = () => {
-    if (pendingRating) {
-      void handleSrsRate(pendingRating);
+    if (pendingAttempt) {
+      void executeSrsAttempt(pendingAttempt);
     }
   };
 
@@ -469,7 +603,7 @@ export const FlashcardView: React.FC = () => {
                 className="inline-flex items-center gap-1 rounded border border-amber-400/40 bg-card px-2.5 py-1 text-[11px] font-semibold text-amber-300 hover:bg-tint cursor-pointer transition-colors"
               >
                 {adminPreviewActive ? <EyeOff size={13} /> : <Eye size={13} />}
-                {adminPreviewActive ? 'Tắt xem trước' : 'Bật xem trước (Admin Preview)'}
+                {adminPreviewActive ? 'Chuyển sang góc nhìn học viên' : 'Bật xem trước bản nháp Admin'}
               </button>
             </>
           ) : !user ? (
@@ -497,15 +631,31 @@ export const FlashcardView: React.FC = () => {
         </div>
       )}
 
-      {generalError && (
+      {catalogError && (
         <div className="flex items-center justify-between rounded border border-rose-500/30 bg-rose-500/10 p-3 text-xs text-rose-300">
           <div className="flex items-center gap-2">
             <AlertTriangle size={15} className="shrink-0 text-rose-400" />
-            <span>{generalError}</span>
+            <span>{catalogError}</span>
           </div>
           <button
             type="button"
-            onClick={() => setGeneralError(null)}
+            onClick={() => setCatalogError(null)}
+            className="text-rose-400 hover:text-rose-200 cursor-pointer"
+          >
+            <X size={14} />
+          </button>
+        </div>
+      )}
+
+      {lessonWordsError && (
+        <div className="flex items-center justify-between rounded border border-rose-500/30 bg-rose-500/10 p-3 text-xs text-rose-300">
+          <div className="flex items-center gap-2">
+            <AlertTriangle size={15} className="shrink-0 text-rose-400" />
+            <span>{lessonWordsError}</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setLessonWordsError(null)}
             className="text-rose-400 hover:text-rose-200 cursor-pointer"
           >
             <X size={14} />
@@ -519,7 +669,7 @@ export const FlashcardView: React.FC = () => {
           <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-cinnabar">
             <span className="inline-block h-2 w-2 rounded-full bg-cinnabar" />
             Trạm 2 · 词汇与记忆 · Từ vựng & Sổ từ · [M2.1 Hoạt động thật]
-            {loading && <RefreshCw size={13} className="animate-spin text-cinnabar inline ml-1" />}
+            {(catalogLoading || lessonWordsLoading) && <RefreshCw size={13} className="animate-spin text-cinnabar inline ml-1" />}
           </div>
           <h1 className="mt-1 font-serif text-3xl font-bold tracking-tight text-fg">
             Từ vựng & Ôn tập SRS
@@ -554,10 +704,7 @@ export const FlashcardView: React.FC = () => {
           </button>
           <button
             type="button"
-            onClick={() => {
-              stopChineseSpeech();
-              setMainMode('SRS');
-            }}
+            onClick={handleSwitchToSrs}
             className={`flex items-center gap-2 border-b-2 px-4 py-2 font-serif text-sm font-semibold transition-all cursor-pointer ${
               mainMode === 'SRS'
                 ? 'border-cinnabar text-cinnabar'
@@ -565,6 +712,7 @@ export const FlashcardView: React.FC = () => {
             }`}
           >
             <Calendar size={16} /> Ôn đến hạn (SRS SM-2)
+            {srsLoading && <RefreshCw size={13} className="animate-spin text-cinnabar inline ml-1" />}
             {stats && stats.dueToday > 0 && (
               <span className="rounded-full bg-cinnabar px-2 py-0.5 text-[11px] font-bold text-white">
                 {stats.dueToday}
@@ -592,7 +740,7 @@ export const FlashcardView: React.FC = () => {
         <div className="flex flex-col gap-6">
           {/* Lesson Selector Card Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {lessons.map(lesson => {
+            {displayedLessons.map(lesson => {
               const isSelected = selectedLesson?.id === lesson.id;
               return (
                 <div
@@ -636,7 +784,7 @@ export const FlashcardView: React.FC = () => {
           </div>
 
           {/* Regular user warning if no approved lessons are visible */}
-          {lessons.length === 0 && !isAdmin && (
+          {displayedLessons.length === 0 && (!isAdmin || !adminPreviewActive) && (
             <div className="flex flex-col items-center justify-center rounded border border-rule bg-card p-10 text-center">
               <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-amber-500/10 text-amber-400 mb-3">
                 <AlertTriangle size={24} />
@@ -647,13 +795,23 @@ export const FlashcardView: React.FC = () => {
               <p className="mt-2 max-w-md text-xs leading-relaxed text-fg-60">
                 Nội dung từ vựng M2.1 hiện đang trong quy trình thẩm định học thuật (<b>PENDING_REVIEW</b>). Theo quy định an toàn dữ liệu học thuật, học viên sẽ được mở bài ngay khi chuyên gia hoàn tất ký duyệt.
               </p>
-              <button
-                type="button"
-                onClick={requireLogin}
-                className="mt-5 inline-flex items-center gap-1.5 rounded border border-cinnabar bg-cinnabar px-4 py-2 text-xs font-semibold text-white"
-              >
-                <ShieldCheck size={14} /> Đăng nhập tài khoản Quản trị để Xem trước
-              </button>
+              {isAdmin ? (
+                <button
+                  type="button"
+                  onClick={togglePreview}
+                  className="mt-5 inline-flex items-center gap-1.5 rounded border border-cinnabar bg-cinnabar px-4 py-2 text-xs font-semibold text-white cursor-pointer"
+                >
+                  <Eye size={14} /> Bật xem trước bản nháp Admin
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={requireLogin}
+                  className="mt-5 inline-flex items-center gap-1.5 rounded border border-cinnabar bg-cinnabar px-4 py-2 text-xs font-semibold text-white cursor-pointer"
+                >
+                  <ShieldCheck size={14} /> Đăng nhập tài khoản Quản trị để Xem trước
+                </button>
+              )}
             </div>
           )}
 
@@ -1143,8 +1301,27 @@ export const FlashcardView: React.FC = () => {
          ======================================================== */}
       {mainMode === 'SRS' && (
         <div className="mx-auto flex w-full max-w-[560px] flex-col items-center gap-6">
-          {/* Active SRS Session */}
-          {!srsSessionFinished && currentSrsItem ? (
+          {!user ? (
+            /* Guest Prompt: Do not call authenticated SRS endpoints */
+            <div className="flex flex-col items-center justify-center rounded border border-rule bg-card p-10 text-center w-full">
+              <div className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-cinnabar/10 text-cinnabar mb-4">
+                <Calendar size={32} />
+              </div>
+              <h2 className="font-serif text-2xl font-bold text-fg">
+                Ôn tập ngắt quãng (SRS SM-2)
+              </h2>
+              <p className="mt-2 text-xs text-fg-60 max-w-sm leading-relaxed">
+                Tính năng ghi nhớ dài hạn qua thuật toán SRS yêu cầu tài khoản học viên để lưu tiến độ ôn tập và lịch giãn cách cá nhân.
+              </p>
+              <button
+                type="button"
+                onClick={requireLogin}
+                className="mt-6 inline-flex items-center gap-1.5 rounded bg-cinnabar px-5 py-2 font-serif text-xs font-semibold text-white cursor-pointer"
+              >
+                Đăng nhập để bắt đầu ôn tập
+              </button>
+            </div>
+          ) : !srsSessionFinished && currentSrsItem ? (
             <div className="flex w-full flex-col items-center gap-5">
               {/* Session Counter and Split */}
               <div className="flex w-full items-center justify-between text-xs text-fg-60">
@@ -1281,23 +1458,31 @@ export const FlashcardView: React.FC = () => {
                 <div className="w-full rounded border border-red/40 bg-red/10 p-3 text-xs text-red flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <AlertTriangle size={15} className="shrink-0" />
-                    <span>{srsError}</span>
+                    <div>
+                      <span>{srsError}</span>
+                      {pendingAttempt && (
+                        <div className="mt-1 text-[11px] opacity-80">
+                          Đang chờ gửi lại mức đánh giá: <b>{pendingAttempt.rating}</b> (Payload đã khóa cố định).
+                        </div>
+                      )}
+                    </div>
                   </div>
                   <button
                     type="button"
                     onClick={handleSrsRetry}
-                    className="ml-3 shrink-0 rounded bg-red px-2.5 py-1 text-[11px] font-semibold text-white hover:opacity-90 cursor-pointer"
+                    disabled={srsSubmitting}
+                    className="ml-3 shrink-0 rounded bg-red px-2.5 py-1 text-[11px] font-semibold text-white hover:opacity-90 disabled:opacity-50 cursor-pointer"
                   >
-                    Thử lại
+                    {srsSubmitting ? 'Đang gửi lại...' : 'Thử lại'}
                   </button>
                 </div>
               )}
 
-              {/* 4 SRS Rating Buttons */}
+              {/* 4 SRS Rating Buttons (Disabled when locked on a pending attempt) */}
               <div className="grid w-full grid-cols-4 gap-2">
                 <button
                   type="button"
-                  disabled={srsSubmitting}
+                  disabled={srsSubmitting || (pendingAttempt !== null && pendingAttempt.vocabularyId === currentSrsItem.vocabularyId)}
                   onClick={() => void handleSrsRate('FORGOT')}
                   className="flex flex-col items-center justify-center rounded border border-red/40 bg-card py-2.5 text-xs font-semibold text-red hover:bg-red/10 disabled:opacity-50 cursor-pointer transition-colors"
                 >
@@ -1306,7 +1491,7 @@ export const FlashcardView: React.FC = () => {
                 </button>
                 <button
                   type="button"
-                  disabled={srsSubmitting}
+                  disabled={srsSubmitting || (pendingAttempt !== null && pendingAttempt.vocabularyId === currentSrsItem.vocabularyId)}
                   onClick={() => void handleSrsRate('HARD')}
                   className="flex flex-col items-center justify-center rounded border border-rule bg-card py-2.5 text-xs font-semibold text-fg-60 hover:border-fg hover:text-fg disabled:opacity-50 cursor-pointer transition-colors"
                 >
@@ -1315,7 +1500,7 @@ export const FlashcardView: React.FC = () => {
                 </button>
                 <button
                   type="button"
-                  disabled={srsSubmitting}
+                  disabled={srsSubmitting || (pendingAttempt !== null && pendingAttempt.vocabularyId === currentSrsItem.vocabularyId)}
                   onClick={() => void handleSrsRate('GOOD')}
                   className="flex flex-col items-center justify-center rounded border border-jade/50 bg-jade/10 py-2.5 text-xs font-semibold text-jade hover:bg-jade/20 disabled:opacity-50 cursor-pointer transition-colors"
                 >
@@ -1324,7 +1509,7 @@ export const FlashcardView: React.FC = () => {
                 </button>
                 <button
                   type="button"
-                  disabled={srsSubmitting}
+                  disabled={srsSubmitting || (pendingAttempt !== null && pendingAttempt.vocabularyId === currentSrsItem.vocabularyId)}
                   onClick={() => void handleSrsRate('EASY')}
                   className="flex flex-col items-center justify-center rounded border border-gold/50 bg-gold/10 py-2.5 text-xs font-bold text-gold hover:bg-gold/20 disabled:opacity-50 cursor-pointer transition-colors"
                 >
@@ -1428,6 +1613,32 @@ export const FlashcardView: React.FC = () => {
               <label className="text-xs font-medium text-fg-90">
                 Chọn sổ tay lưu trữ:
               </label>
+
+              {notebookListLoading && (
+                <div className="flex items-center gap-2 rounded border border-rule/50 bg-surface/50 p-3 text-xs text-fg-60">
+                  <RefreshCw size={14} className="animate-spin text-cinnabar" />
+                  <span>Đang tải danh sách sổ từ cá nhân...</span>
+                </div>
+              )}
+
+              {notebookListError && (
+                <div className="flex items-center justify-between rounded border border-red/40 bg-red/10 p-2.5 text-xs text-red">
+                  <span>{notebookListError}</span>
+                  <button
+                    type="button"
+                    onClick={() => void loadUserNotebooks()}
+                    className="ml-2 shrink-0 rounded bg-red px-2.5 py-1 text-[11px] font-semibold text-white hover:opacity-90 cursor-pointer"
+                  >
+                    Tải lại danh sách
+                  </button>
+                </div>
+              )}
+
+              {!notebookListLoading && userNotebooks.length === 0 && !notebookListError && (
+                <div className="rounded border border-rule/60 bg-surface/60 p-2.5 text-[11px] text-fg-60">
+                  Bạn chưa có sổ tay nào. Hãy tạo sổ tay đầu tiên để gom nhóm ôn luyện!
+                </div>
+              )}
 
               {userNotebooks.length > 0 && (
                 <div className="flex flex-col gap-1.5 max-h-40 overflow-y-auto">

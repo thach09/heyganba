@@ -27,7 +27,7 @@ Giúp việc học tiếng Trung cho người Việt trở nên **dễ dàng, ch
 - Nội dung mới phải ở trạng thái `PENDING_REVIEW`; chỉ hiện cho người học sau khi admin duyệt (`APPROVED`).
 - "Một ngày học" tính theo múi giờ `Asia/Ho_Chi_Minh`.
 - Nhãn thương hiệu trung tính: "Học tiếng Trung".
-- M1 (Pinyin & phát âm) đã hoàn thiện (trạng thái `PENDING_REVIEW`); M2.1 (Bài mẫu Từ vựng & SRS "Chào hỏi & giới thiệu bản thân", 10 từ cốt lõi, lưu sổ cá nhân độc lập với SRS) đã hoàn thiện (trạng thái `PENDING_REVIEW`); M2.2+ và M3 là các cột mốc tiếp theo.
+- M1 (Pinyin & phát âm) đã hoàn thiện (trạng thái `PENDING_REVIEW`); M2.1 / M2.1.1 (Bài mẫu Từ vựng & SRS "Chào hỏi & giới thiệu bản thân", 10 từ cốt lõi, lưu sổ cá nhân độc lập với SRS, khóa payload SRS, phân lập vòng đời bài học, hoàn tất kiểm chứng PostgreSQL 16.15 rehearsal) đã hoàn thiện (nội dung ở trạng thái `PENDING_REVIEW`); M2.2+ và M3 là các cột mốc tiếp theo.
 
 ## Capabilities and Constraints
 

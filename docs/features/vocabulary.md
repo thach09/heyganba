@@ -97,7 +97,62 @@ Hệ thống phân tách rạch ròi 2 chế độ học tập:
      - `DictionaryNotebookApiTest` & `VocabNotebookServiceTest`: Phân lập sổ cá nhân theo `userId`, người khác không xem/sửa được sổ riêng.
 
 ### B. Giới hạn Kỹ thuật & Nội dung Cần Xác minh Thêm (Chưa Đạt Chuẩn Production)
-1. **Môi trường cơ sở dữ liệu kiểm thử**: Toàn bộ 43 backend tests ở trên thực thi trên **H2 in-memory test database (v2.3.232)**; việc áp dụng Flyway staging migration `V4__sample_lesson_greetings.sql` trên **PostgreSQL production/staging instance thực tế vẫn chưa được xác minh trực tiếp**.
+1. **Môi trường cơ sở dữ liệu kiểm thử**: Bộ 43 backend API integration tests ở trên thực thi trên **H2 in-memory test database (v2.3.232)**; việc áp dụng Flyway staging migration `V4__sample_lesson_greetings.sql` và xác thực Hibernate schema đã được **kiểm chứng thực tế thành công trên PostgreSQL 16.15 qua Docker rehearsal cô lập**. Tuy nhiên, đây là kiểm chứng migration/schema; toàn bộ bộ API tests vẫn chạy trên H2 trong CI/CD, chưa chuyển đổi sang PostgreSQL suite đầy đủ.
 2. **Thẩm định học thuật**: Toàn bộ 10 từ vựng và câu ví dụ của bài mẫu M2.1 vẫn ở trạng thái **`PENDING_REVIEW`** (cờ `needs_human_check = true`), chưa có xác minh đối chiếu trên bản in vật lý và chưa có phê duyệt độc lập từ chuyên gia ngôn ngữ; không tuyên bố đạt chuẩn HSK.
 3. **Chất lượng Audio**: Hệ thống hiện tại sử dụng Web Speech API client-side làm âm thanh tạm thời; chưa có file ghi âm phòng thu từ người bản xứ (native studio recordings).
 4. **Quy định phát hành**: File di trú `V4` chỉ tồn tại ở `db/migration-staging`. Khi phát hành chính thức sau này, bắt buộc tạo migration mới trong `db/migration` với version riêng và quyết định duyệt riêng, không chuyển nguyên file V4 từ staging sang.
+
+---
+
+## 6. Biên bản M2.1.1 — Sửa lỗi tích hợp & Kiểm chứng PostgreSQL Rehearsal
+
+### A. Các vấn đề tích hợp đã sửa:
+1. **Xoá sổ từ giả còn sót (FlashcardView.tsx)**:
+   - Gỡ bỏ hoàn toàn nhánh tạo sổ giả `id: 99`, `title: "Sổ từ mẫu (Admin Preview)"`, `itemCount: 3`.
+   - Khi API danh sách sổ rỗng: hiển thị lựa chọn tạo sổ mới tường minh.
+   - Khi API lỗi: hiển thị thông báo lỗi mạng/máy chủ kèm nút **"Tải lại danh sách"**; không thay thế lỗi bằng dữ liệu giả.
+   - Khi tạo sổ mới thành công nhưng lưu từ thất bại: giữ nguyên ID sổ vừa tạo (`selectedNotebookId = targetId`) để lượt bấm Thử lại không tạo thêm sổ trùng.
+2. **Tách biệt vòng đời Bài học & Phiên SRS**:
+   - `loadLessons` không còn phụ thuộc `selectedLesson` (dùng functional state updater).
+   - Đổi bài chỉ nạp từ vựng của bài đó (`loadSelectedLessonWords`), hoàn toàn không chạm tới hoặc reset phiên SRS đang diễn ra.
+   - Khách vãng lai xem catalog bình thường; khi chuyển sang tab SRS sẽ thấy màn hình nhắc đăng nhập, không gửi request 401 không cần thiết.
+   - Tách biệt hoàn toàn loading/error states: `catalogLoading`/`catalogError`, `lessonWordsLoading`/`lessonWordsError`, `srsLoading`/`srsError`, `notebookListLoading`/`notebookListError`.
+   - Khi đăng nhập/đổi tài khoản: huỷ toàn bộ kênh request cũ (`useRequestScope`), xoá state riêng tư của người trước và tải lại đúng dữ liệu của tài khoản mới.
+   - Sau khi chấm điểm SRS thành công, gọi `refreshStats()` để cập nhật số liệu mà không reset vị trí thẻ đang ôn.
+   - Nút **Admin Preview** có tác dụng thật: khi Admin tắt xem trước, giao diện lọc sang góc nhìn học viên (chỉ thấy bài/từ đã `APPROVED`); khi bật, Admin thấy đầy đủ bản nháp `PENDING_REVIEW`.
+3. **Khóa cố định Payload của lượt đánh giá SRS chờ gửi**:
+   - Sử dụng cấu trúc `PendingSrsAttempt` bất biến gồm: `accountId`, `vocabularyId`, `rating`, `attemptId`.
+   - Khi có lượt đánh giá đang chờ kết quả hoặc chờ retry, 4 nút rating bị khóa không cho đổi rating khác cho cùng thẻ.
+   - Nút Thử lại gửi đúng toàn bộ payload ban đầu (cùng `attemptId` và `rating`) để backend replay chống ghi trùng.
+   - Bọc submission trong `try/finally` đảm bảo cờ submitting được giải phóng; chặn gửi đồng thời.
+   - Xác thực phiên/tài khoản khi response trả về; response từ phiên/tài khoản cũ không được chuyển thẻ của phiên mới.
+   - Giữ thẻ khi lưu thất bại; màn hình kết thúc và phần thưởng companion chỉ kích hoạt đúng một lần. Không gọi `/progress/practice` tránh nhân đôi phần thưởng.
+4. **Hiệu chỉnh Migration Staging V4 (`V4__sample_lesson_greetings.sql`)**:
+   - Xoá bỏ câu lệnh `UPDATE vocabulary SET review_status = 'PENDING_REVIEW' WHERE review_status = 'APPROVED';` gây nguy cơ demote toàn bộ từ vựng đã duyệt của hệ thống.
+   - Bổ sung đồng bộ sequence cho bảng `lessons` và `vocabulary` (`SELECT setval(pg_get_serial_sequence(...), ...)`).
+   - Thêm mệnh đề `WHERE NOT EXISTS (SELECT 1 FROM vocabulary ex WHERE ex.word = v.word AND ex.lesson_id = l.id)` để thực sự ngăn trùng dữ liệu khi chạy lại V4.
+
+### B. Kết quả Kiểm thử & Kiểm chứng Thực tế:
+1. **Frontend**:
+   - `npm run lint`: **0 errors**, 15 warnings (toàn bộ là warning có sẵn ở codebase cũ).
+   - `npm run build`: **SUCCESS** (`✓ built in 1.63s`).
+   - Bộ test `frontend/tests/unit/flashcard-lifecycle.test.tsx`: **6/6 tests PASSED** (modal sổ từ, chống tạo sổ trùng, khóa payload SRS, đổi bài không reset SRS, khách xem SRS).
+   - Bộ test `frontend/tests/unit/pinyin.test.ts`: **13/13 tests PASSED**.
+2. **PostgreSQL Rehearsal Thực tế (Maintainer đã chạy trên PostgreSQL 16.15 qua Docker)**:
+   - **Xử lý môi trường build**: Lỗi xung đột `AuditLog.class` (tồn dư từ đợt tái cấu trúc trước) đã được giải quyết dứt điểm sau khi chạy `mvn clean test-compile`.
+   - **Định dạng script**: File [scripts/verify-postgres-m21.ps1](file:///d:/GitHub/heyganba/scripts/verify-postgres-m21.ps1) được lưu dưới định dạng **UTF-8 with BOM** để tương thích tối đa với Windows PowerShell 5.1 và PowerShell 7.
+   - **Lệnh thực thi**:
+     ```powershell
+     Set-Location "D:\GitHub\heyganba\backend"
+     mvn clean test-compile
+     Set-Location "D:\GitHub\heyganba"
+     & "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -ExecutionPolicy Bypass -File ".\scripts\verify-postgres-m21.ps1"
+     ```
+   - **Kết quả xác thực Surefire XML** (`TEST-com.heyganba.PostgresSchemaStagingRehearsalTest.xml`): **Cả 3 test cases đều PASS (0 failure, 0 error, 0 skip)**:
+     - **Case A (`caseA_officialSchemaOnly`) — PASS**: Nạp V1-V3 trên `heyganba_rehearsal_a`, không có V4, bài `intro-greetings` không tồn tại, 38 từ HSK 1 của bài 1–3 bảo toàn trạng thái `APPROVED`.
+     - **Case B (`caseB_stagingSchemaWithV4`) — PASS**: Nạp V1-V4 trên `heyganba_rehearsal_b`, bài `intro-greetings` có đúng 10 từ `PENDING_REVIEW` (`needs_human_check = true`), 38 từ cũ không bị đổi trạng thái; sequence tự sinh ID lớn hơn `MAX(id)` thực tế; kiểm tra kép Idempotency: Flyway migrate lại nạp 0 migration mới và nạp lại toàn bộ file SQL V4 không tạo bản ghi trùng lặp.
+     - **Case C (`caseC_hibernateSchemaValidation`) — PASS**: Khởi động Spring context với PostgreSQL Schema Staging, khoá datasource qua command-line arguments, `ApplicationContextInitializer` kiểm tra trước refresh, Hibernate thực hiện `ddl-auto=validate` thành công (không dùng `create` hay `create-drop`), xác nhận kết nối `DataSource` thực tế trỏ thẳng tới database B.
+   - **Phạm vi & Giới hạn khẳng định**:
+     - Nội dung bài học và 10 từ vựng cốt lõi tiếp tục giữ nguyên trạng thái **`PENDING_REVIEW`**.
+     - Kết quả kiểm chứng này xác nhận tính toàn vẹn của **Migration DDL/DML và Hibernate Entity Schema Validation** trên PostgreSQL 16.15 thực tế; **chưa thay thế việc thẩm định học thuật** từ chuyên gia và **chưa thay thế việc kiểm thử toàn bộ API backend trên PostgreSQL** (các API tests vẫn đang chạy trên H2 test profile).
+
