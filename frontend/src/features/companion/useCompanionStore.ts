@@ -85,8 +85,8 @@ export function useCompanion() {
     setTimeout(() => setMood('idle'), 2400);
   }, []);
 
-  const triggerReaction = useCallback((type: 'correct' | 'mistake' | 'practicing' | 'cheer') => {
-    if (type === 'correct' || type === 'cheer') {
+  const triggerReaction = useCallback((type: 'correct' | 'mistake' | 'practicing' | 'cheer' | 'happy') => {
+    if (type === 'correct' || type === 'cheer' || type === 'happy') {
       setMood('happy');
       setAffectionExp(prev => prev + (type === 'cheer' ? 15 : 5));
       setTimeout(() => setMood('idle'), 2500);

@@ -127,4 +127,24 @@ class AdminContentServiceTest {
         assertThat(existing.getReviewStatus()).isEqualTo(com.heyganba.model.enums.ReviewStatus.ARCHIVED);
         verify(auditLogService).logAction(eq(admin), eq("grammar_exercises"), eq(20L), eq("ARCHIVE"), eq("テスト問題"), eq("ARCHIVED"));
     }
+
+    @Test
+    @DisplayName("Admin duyệt tất cả các mục PENDING_REVIEW và ghi nhận audit log")
+    void approveAllPending_updatesAllAndLogsAction() {
+        when(vocabularyRepository.bulkApprovePending()).thenReturn(10);
+        when(kanjiRepository.bulkApprovePending()).thenReturn(5);
+        when(grammarRuleRepository.bulkApprovePending()).thenReturn(2);
+        when(grammarExerciseRepository.bulkApprovePending()).thenReturn(4);
+        when(kanaRepository.bulkApprovePending()).thenReturn(1);
+
+        int total = adminContentService.approveAllPending(admin);
+
+        assertThat(total).isEqualTo(22);
+        verify(vocabularyRepository).bulkApprovePending();
+        verify(kanjiRepository).bulkApprovePending();
+        verify(grammarRuleRepository).bulkApprovePending();
+        verify(grammarExerciseRepository).bulkApprovePending();
+        verify(kanaRepository).bulkApprovePending();
+        verify(auditLogService).logAction(eq(admin), eq("review_queue"), eq(0L), eq("BULK_APPROVE"), isNull(), eq("Approved 22 pending items"));
+    }
 }

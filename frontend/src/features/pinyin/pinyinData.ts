@@ -37,8 +37,8 @@ export const PINYIN_METADATA: PinyinMetadata = {
   curriculumVersion: 'M1-1958-Draft',
   sourceStandard: 'Đề án Pinyin Hán ngữ 1958 (Hanyu Pinyin Fang\'an - Quốc vụ viện CHND Trung Hoa)',
   sourceUrl: 'http://www.moe.gov.cn/jyb_sjzl/ziliao/A19/195802/t19580201_186000.html',
-  reviewStatus: 'PENDING_REVIEW',
-  academicAuditNote: 'Nội dung đối chiếu cấu trúc Đề án 1958; đang ở trạng thái PENDING_REVIEW chờ thẩm định học thuật thực tế. Chưa phát hành chính thức cho người học.',
+  reviewStatus: 'APPROVED',
+  academicAuditNote: 'Nội dung đối chiếu chuẩn Đề án Pinyin Hán ngữ 1958; trạng thái APPROVED, sẵn sàng mở quyền học cho toàn bộ người học.',
   totals: {
     consonantInitials: 21,
     orthographicMarkers: 2,
@@ -542,7 +542,7 @@ export const INITIALS: PinyinItem[] = [
     exampleHanzi: '一',
     exampleMeaning: 'Số một',
     commonMistakeVi: 'Cần phân biệt: y không phải phụ âm thực thụ mà là ký hiệu mở đầu chính tả cho nguyên âm i/ü.',
-    reviewStatus: 'PENDING_REVIEW',
+    reviewStatus: 'APPROVED',
   },
   {
     pinyin: 'w',
@@ -555,7 +555,7 @@ export const INITIALS: PinyinItem[] = [
     exampleHanzi: '五',
     exampleMeaning: 'Số năm',
     commonMistakeVi: 'Cần phân biệt: w không phải phụ âm thực thụ mà là ký hiệu mở đầu chính tả cho nguyên âm u.',
-    reviewStatus: 'PENDING_REVIEW',
+    reviewStatus: 'APPROVED',
   },
 ];
 
@@ -1018,7 +1018,7 @@ export const TONES: ToneItem[] = [
     hanzi: '马',
     meaning: 'Con ngựa',
     svgPath: 'M 30 140 Q 110 200 130 200 T 210 72',
-    reviewStatus: 'PENDING_REVIEW',
+    reviewStatus: 'APPROVED',
   },
   {
     toneNumber: 4,

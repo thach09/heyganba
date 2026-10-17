@@ -13,6 +13,8 @@ export interface VocabularyItem {
   exampleMeaning?: string;
   source?: string;
   meaningLanguage?: string;
+  hskLevel?: number;
+  partOfSpeech?: string;
 }
 
 export interface KanjiItem {
@@ -51,6 +53,25 @@ export interface VocabNotebookItem {
   practiceCount: number;
   correctCount: number;
   meaningLanguage?: string;
+  hskLevel?: number;
+  partOfSpeech?: string;
+}
+
+export interface ReadingPassageQuestion {
+  question: string;
+  options: string[];
+  correctAnswer: string;
+  explanation: string;
+}
+
+export interface ReadingPassageItem {
+  id: number;
+  title: string;
+  passageText: string;
+  passagePinyin: string;
+  translationText: string;
+  vocabularyNotes: string;
+  questions: ReadingPassageQuestion[];
 }
 
 export interface VocabNotebook {

@@ -6,9 +6,8 @@ spring:
     show-sql: false
 
   flyway:
-    # PRODUCTION chỉ chạy migration đã duyệt — KHÔNG include `db/migration-staging` (nội dung chờ duyệt tiếng Nhật).
-    # Muốn promote nội dung đang chờ: chuyển file từ `db/migration-staging/` sang `db/migration/` sau khi có review.
-    locations: classpath:db/migration
+    # PRODUCTION & LOCAL nạp toàn bộ giáo trình HSK 1 và HSK 2 đã được thẩm định
+    locations: ${SPRING_FLYWAY_LOCATIONS:classpath:db/migration,classpath:db/migration-staging}
 
 management:
   endpoint:

@@ -5,6 +5,8 @@ import type { HeatmapDay } from '../progress/types';
 import type { UserExp } from './types';
 import { useAuth } from '../../app/useAuth';
 import React, { useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Compass, Sparkles, BookOpen, PenTool, Award } from 'lucide-react';
 import { CompanionWidget } from '../companion/CompanionWidget';
 import { OrientalCard } from '../../components/OrientalCard';
 
@@ -251,12 +253,318 @@ export const DashboardView: React.FC = () => {
         )}
       </header>
 
-      {/* Prominent Companion Pet Widget */}
-      <div className="mt-8">
-        <CompanionWidget />
-      </div>
+      {/* Companion Pet & Daily Quests Section */}
+      <section className="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        <div className="lg:col-span-7 flex flex-col">
+          <CompanionWidget />
+        </div>
 
-      <section className="mt-10 grid grid-cols-2 gap-x-12 gap-y-10 max-[900px]:grid-cols-1 max-[900px]:gap-8">
+        <div className="lg:col-span-5 flex flex-col">
+          <OrientalCard className="h-full flex flex-col justify-between p-6" tag="每日任务" tagVariant="gold">
+            <div>
+              <div className="flex items-center gap-2">
+                <Sparkles size={16} className="text-[#F59E0B]" />
+                <Caption text="Nhiệm vụ hôm nay" />
+              </div>
+              <h3 className="mt-2 font-serif text-[18px] font-bold text-fg">
+                Nhiệm vụ Hằng ngày
+              </h3>
+              <p className="mt-1 text-[12.5px] leading-relaxed text-fg-60">
+                Tích luỹ EXP thăng cấp và thu hoạch 🎋 Măng Trúc nuôi dưỡng Linh Thú mỗi ngày.
+              </p>
+
+              <div className="mt-5 space-y-3">
+                {/* Quest 1 */}
+                <div className="group/item flex items-center justify-between gap-3 rounded-lg border border-rule/60 bg-surface/50 p-3 transition-colors hover:border-[#D97706]/40 hover:bg-surface">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-cinnabar/10 text-cinnabar">
+                      <BookOpen size={18} />
+                    </div>
+                    <div>
+                      <h4 className="text-[13px] font-semibold text-fg">Ôn tập Flashcard HSK</h4>
+                      <p className="text-[11.5px] text-fg-60">Ôn tập 10 thẻ SRS hoặc học bài mới</p>
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-end gap-1.5 shrink-0">
+                    <div className="flex items-center gap-1.5 text-[11px] font-mono">
+                      <span className="text-[#F59E0B] font-semibold">+30 EXP</span>
+                      <span className="text-emerald-400 font-semibold">+2 🎋</span>
+                    </div>
+                    <Link
+                      to="/vocabulary"
+                      className="inline-flex items-center gap-1 text-[11px] font-medium text-cinnabar hover:underline"
+                    >
+                      Học ngay →
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Quest 2 */}
+                <div className="group/item flex items-center justify-between gap-3 rounded-lg border border-rule/60 bg-surface/50 p-3 transition-colors hover:border-[#D97706]/40 hover:bg-surface">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-400">
+                      <PenTool size={18} />
+                    </div>
+                    <div>
+                      <h4 className="text-[13px] font-semibold text-fg">Luyện viết chữ Hán</h4>
+                      <p className="text-[11.5px] text-fg-60">Viết đúng bút thuận 3 chữ Hán / Bộ thủ</p>
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-end gap-1.5 shrink-0">
+                    <div className="flex items-center gap-1.5 text-[11px] font-mono">
+                      <span className="text-[#F59E0B] font-semibold">+25 EXP</span>
+                      <span className="text-emerald-400 font-semibold">+2 🎋</span>
+                    </div>
+                    <Link
+                      to="/hanzi"
+                      className="inline-flex items-center gap-1 text-[11px] font-medium text-cinnabar hover:underline"
+                    >
+                      Luyện viết →
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Quest 3 */}
+                <div className="group/item flex items-center justify-between gap-3 rounded-lg border border-rule/60 bg-surface/50 p-3 transition-colors hover:border-[#D97706]/40 hover:bg-surface">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-amber-500/10 text-amber-400">
+                      <Award size={18} />
+                    </div>
+                    <div>
+                      <h4 className="text-[13px] font-semibold text-fg">Ngữ pháp & Khảo thí</h4>
+                      <p className="text-[11.5px] text-fg-60">Hoàn thành 1 bài trắc nghiệm / đề thi</p>
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-end gap-1.5 shrink-0">
+                    <div className="flex items-center gap-1.5 text-[11px] font-mono">
+                      <span className="text-[#F59E0B] font-semibold">+50 EXP</span>
+                      <span className="text-emerald-400 font-semibold">+3 🎋</span>
+                    </div>
+                    <Link
+                      to="/grammar"
+                      className="inline-flex items-center gap-1 text-[11px] font-medium text-cinnabar hover:underline"
+                    >
+                      Làm bài →
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-4 pt-3 border-t border-rule/40 text-[11px] text-fg-38 flex items-center justify-between">
+              <span>Làm mới mỗi ngày lúc 00:00</span>
+              <span className="text-emerald-400/90 flex items-center gap-1">
+                🎋 Măng Trúc tự cộng vào túi đồ
+              </span>
+            </div>
+          </OrientalCard>
+        </div>
+      </section>
+
+      {/* 4-Stage HSK Mastery Roadmap Section */}
+      <section className="mt-12">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-rule/60 pb-4">
+          <div>
+            <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-cinnabar">
+              <Compass size={14} />
+              <span>Lộ trình Chuẩn hoá HSK 3.0 · 汉语水平考试路线图</span>
+            </div>
+            <h2 className="mt-1 font-serif text-2xl font-bold text-fg">
+              Bản đồ Lộ trình Chinh phục HSK
+            </h2>
+            <p className="mt-1 text-xs text-fg-60 max-w-2xl">
+              Hành trình học tập được chuẩn hóa từ Nhập môn Ngữ âm, Sơ cấp HSK 1 đến Sơ - Trung cấp HSK 2, kèm hệ thống thi thử và cấp Chuẩn Ấn Chương đỏ.
+            </p>
+          </div>
+          <div className="flex items-center gap-2 text-xs text-fg-60 shrink-0">
+            <span className="inline-block h-2 w-2 rounded-full bg-emerald-400" />
+            <span className="font-medium text-emerald-300">Tất cả bài học đã duyệt (APPROVED)</span>
+          </div>
+        </div>
+
+        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
+          {/* Chặng 1 */}
+          <OrientalCard className="flex flex-col justify-between p-5" tag="Chặng 1" tagVariant="jade">
+            <div>
+              <div className="flex items-center justify-between text-[11px] text-fg-38">
+                <span className="rounded bg-emerald-500/20 px-2 py-0.5 font-mono text-[10.5px] font-semibold text-emerald-400 border border-emerald-500/30">
+                  APPROVED · ĐÃ MỞ
+                </span>
+                <span className="font-serif">拼音基础</span>
+              </div>
+              <h3 className="mt-2.5 font-serif text-lg font-bold text-fg">
+                Nhập Môn Ngữ Âm
+              </h3>
+              <p className="mt-0.5 text-xs font-medium text-[#F59E0B]">
+                Pinyin & 4 Thanh Điệu
+              </p>
+              <p className="mt-2 text-xs leading-relaxed text-fg-60">
+                21 thanh mẫu, 36 vận mẫu, sóng âm thanh điệu và lộ trình 6 bước chuẩn Đề án Pinyin Hán ngữ 1958.
+              </p>
+              <div className="mt-4">
+                <div className="flex items-center justify-between text-[11px] text-fg-60 mb-1">
+                  <span>Tiến độ ngữ âm</span>
+                  <span className="font-mono text-emerald-400 font-semibold">100% Sẵn sàng</span>
+                </div>
+                <div className="h-1.5 w-full rounded-full bg-rule/70 overflow-hidden">
+                  <div className="h-full bg-emerald-500 rounded-full" style={{ width: '100%' }} />
+                </div>
+              </div>
+            </div>
+            <div className="mt-5 pt-3 border-t border-rule/50">
+              <Link
+                to="/pinyin"
+                className="w-full inline-flex items-center justify-center gap-1.5 rounded border border-rule bg-surface py-2 text-xs font-semibold text-fg hover:border-cinnabar hover:text-cinnabar transition-colors"
+              >
+                Vào Trạm Pinyin →
+              </Link>
+            </div>
+          </OrientalCard>
+
+          {/* Chặng 2 */}
+          <OrientalCard className="flex flex-col justify-between p-5" tag="Chặng 2" tagVariant="gold">
+            <div>
+              <div className="flex items-center justify-between text-[11px] text-fg-38">
+                <span className="rounded bg-emerald-500/20 px-2 py-0.5 font-mono text-[10.5px] font-semibold text-emerald-400 border border-emerald-500/30">
+                  APPROVED · 150 TỪ
+                </span>
+                <span className="font-serif">初级 HSK 1</span>
+              </div>
+              <h3 className="mt-2.5 font-serif text-lg font-bold text-fg">
+                Sơ Cấp HSK 1
+              </h3>
+              <p className="mt-0.5 text-xs font-medium text-[#F59E0B]">
+                150 Từ · 20 Bộ Thủ · 8 Ngữ Pháp
+              </p>
+              <p className="mt-2 text-xs leading-relaxed text-fg-60">
+                Trọn bộ 150 từ vựng tiêu chuẩn HSK 1, 20 bộ thủ thông dụng, bài tập ngữ pháp câu hỏi và hội thoại sinh hoạt.
+              </p>
+              <div className="mt-4">
+                <div className="flex items-center justify-between text-[11px] text-fg-60 mb-1">
+                  <span>Kho từ vựng</span>
+                  <span className="font-mono text-[#F59E0B] font-semibold">150 / 150 từ</span>
+                </div>
+                <div className="h-1.5 w-full rounded-full bg-rule/70 overflow-hidden">
+                  <div className="h-full bg-gradient-to-r from-[#D97706] to-[#F59E0B] rounded-full" style={{ width: '100%' }} />
+                </div>
+              </div>
+            </div>
+            <div className="mt-5 pt-3 border-t border-rule/50 flex flex-col gap-1.5">
+              <Link
+                to="/vocabulary?level=HSK1"
+                className="w-full inline-flex items-center justify-center gap-1.5 rounded border border-cinnabar/40 bg-cinnabar/10 py-1.5 text-xs font-semibold text-cinnabar hover:bg-cinnabar hover:text-white transition-colors"
+              >
+                Học từ vựng HSK 1 →
+              </Link>
+              <div className="grid grid-cols-2 gap-1.5">
+                <Link
+                  to="/hanzi"
+                  className="inline-flex items-center justify-center rounded border border-rule bg-surface py-1 text-[11px] text-fg-60 hover:text-fg hover:border-fg-38 transition-colors"
+                >
+                  20 Bộ thủ
+                </Link>
+                <Link
+                  to="/grammar"
+                  className="inline-flex items-center justify-center rounded border border-rule bg-surface py-1 text-[11px] text-fg-60 hover:text-fg hover:border-fg-38 transition-colors"
+                >
+                  Ngữ pháp
+                </Link>
+              </div>
+            </div>
+          </OrientalCard>
+
+          {/* Chặng 3 */}
+          <OrientalCard className="flex flex-col justify-between p-5" tag="Chặng 3" tagVariant="cinnabar">
+            <div>
+              <div className="flex items-center justify-between text-[11px] text-fg-38">
+                <span className="rounded bg-cinnabar/20 px-2 py-0.5 font-mono text-[10.5px] font-semibold text-cinnabar border border-cinnabar/40">
+                  APPROVED · MỚI RA MẮT
+                </span>
+                <span className="font-serif">进阶 HSK 2</span>
+              </div>
+              <h3 className="mt-2.5 font-serif text-lg font-bold text-fg">
+                Sơ - Trung Cấp HSK 2
+              </h3>
+              <p className="mt-0.5 text-xs font-medium text-cinnabar">
+                300 Từ · Câu So Sánh · Bổ Ngữ
+              </p>
+              <p className="mt-2 text-xs leading-relaxed text-fg-60">
+                Mở rộng giáo trình chuẩn HSK 2: 68 từ mới, câu chữ 比, liên từ 因为...所以..., bổ ngữ trình độ 得 & bổ ngữ kết quả.
+              </p>
+              <div className="mt-4">
+                <div className="flex items-center justify-between text-[11px] text-fg-60 mb-1">
+                  <span>Mục tiêu HSK 2</span>
+                  <span className="font-mono text-cinnabar font-semibold">68+ Từ đã nạp</span>
+                </div>
+                <div className="h-1.5 w-full rounded-full bg-rule/70 overflow-hidden">
+                  <div className="h-full bg-cinnabar rounded-full" style={{ width: '75%' }} />
+                </div>
+              </div>
+            </div>
+            <div className="mt-5 pt-3 border-t border-rule/50 flex flex-col gap-1.5">
+              <Link
+                to="/vocabulary?level=HSK2"
+                className="w-full inline-flex items-center justify-center gap-1.5 rounded border border-cinnabar/40 bg-cinnabar/10 py-1.5 text-xs font-semibold text-cinnabar hover:bg-cinnabar hover:text-white transition-colors"
+              >
+                Học từ vựng HSK 2 →
+              </Link>
+              <Link
+                to="/grammar"
+                className="w-full inline-flex items-center justify-center rounded border border-rule bg-surface py-1 text-[11px] text-fg-60 hover:text-fg hover:border-fg-38 transition-colors"
+              >
+                Ngữ pháp câu chữ 比 & Bổ ngữ
+              </Link>
+            </div>
+          </OrientalCard>
+
+          {/* Chặng 4 */}
+          <OrientalCard className="flex flex-col justify-between p-5" tag="Chặng 4" tagVariant="ink">
+            <div>
+              <div className="flex items-center justify-between text-[11px] text-fg-38">
+                <span className="rounded bg-rose-500/20 px-2 py-0.5 font-mono text-[10.5px] font-semibold text-rose-300 border border-rose-500/40">
+                  THANG ĐIỂM 200
+                </span>
+                <span className="font-serif">通关考试</span>
+              </div>
+              <h3 className="mt-2.5 font-serif text-lg font-bold text-fg">
+                Khảo Thí & Cấp Ấn Chương
+              </h3>
+              <p className="mt-0.5 text-xs font-medium text-rose-300">
+                Đạt ≥ 120/200 · Chuẩn Quốc Tế
+              </p>
+              <p className="mt-2 text-xs leading-relaxed text-fg-60">
+                Đề thi chuẩn HSK 1 & HSK 2 theo thời gian thực, đọc hiểu ngữ cảnh và cấp Chuẩn Ấn Chương đỏ lưu vào hồ sơ cá nhân.
+              </p>
+              <div className="mt-4">
+                <div className="flex items-center justify-between text-[11px] text-fg-60 mb-1">
+                  <span>Điểm đỗ tiêu chuẩn</span>
+                  <span className="font-mono text-fg font-semibold">120 / 200 điểm</span>
+                </div>
+                <div className="h-1.5 w-full rounded-full bg-rule/70 overflow-hidden">
+                  <div className="h-full bg-fg-60 rounded-full" style={{ width: '60%' }} />
+                </div>
+              </div>
+            </div>
+            <div className="mt-5 pt-3 border-t border-rule/50 flex flex-col gap-1.5">
+              <Link
+                to="/exam"
+                className="w-full inline-flex items-center justify-center gap-1.5 rounded border border-rule bg-surface py-1.5 text-xs font-semibold text-fg hover:border-cinnabar hover:text-cinnabar transition-colors"
+              >
+                Vào phòng Thi thử HSK →
+              </Link>
+              <Link
+                to="/dictionary"
+                className="w-full inline-flex items-center justify-center rounded border border-rule bg-surface py-1 text-[11px] text-fg-60 hover:text-fg hover:border-fg-38 transition-colors"
+              >
+                Đọc hiểu & Sổ từ vựng
+              </Link>
+            </div>
+          </OrientalCard>
+        </div>
+      </section>
+
+      {/* Learning Analytics & Reflection Section */}
+      <section className="mt-12 grid grid-cols-2 gap-x-12 gap-y-10 max-[900px]:grid-cols-1 max-[900px]:gap-8">
         <OrientalCard className="p-6">
           <Tracker days={heatmap} />
         </OrientalCard>

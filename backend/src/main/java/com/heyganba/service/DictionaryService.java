@@ -91,7 +91,7 @@ public class DictionaryService {
 
     private Word dictionaryWord(DictionaryEntry d) {
         return new Word(-d.getId(), d.getWord(), d.getReading(), d.getMeaning(), d.getVietnameseMeaning(), d.getVietnameseStatus(), null,
-                null, null, null, "JMdict / EDRDG", "en");
+                null, null, null, "JMdict / EDRDG", "en", null, null);
     }
 
     private static int relevance(String word, String reading, String english, String vietnamese, String sinoVietnamese,

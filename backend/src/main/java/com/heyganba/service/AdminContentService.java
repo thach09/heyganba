@@ -292,4 +292,156 @@ public class AdminContentService {
         grammarExerciseRepository.save(exercise);
         auditLogService.logAction(admin, "grammar_exercises", id, "ARCHIVE", before, "ARCHIVED");
     }
+
+    // ================= PHÊ DUYỆT & TỪ CHỐI HÀNG ĐỢI KIỂM =================
+
+    @Transactional
+    public void approveContent(User admin, String contentType, Long id, String note) {
+        String type = contentType.toUpperCase().trim();
+        switch (type) {
+            case "VOCABULARY" -> {
+                Vocabulary vocab = vocabularyRepository.findById(id)
+                        .orElseThrow(() -> new BadRequestException("Không tìm thấy từ vựng ID: " + id));
+                String before = vocab.getReviewStatus().name();
+                vocab.setReviewStatus(ReviewStatus.APPROVED);
+                vocab.setNeedsHumanCheck(false);
+                vocabularyRepository.save(vocab);
+                auditLogService.logAction(admin, "vocabulary", id, "APPROVE", before, "APPROVED" + (note != null && !note.isBlank() ? " | " + note.trim() : ""));
+            }
+            case "KANJI", "HANZI" -> {
+                Kanji kanji = kanjiRepository.findById(id)
+                        .orElseThrow(() -> new BadRequestException("Không tìm thấy chữ Hán ID: " + id));
+                String before = kanji.getReviewStatus().name();
+                kanji.setReviewStatus(ReviewStatus.APPROVED);
+                kanji.setNeedsHumanCheck(false);
+                kanjiRepository.save(kanji);
+                auditLogService.logAction(admin, "hanzi", id, "APPROVE", before, "APPROVED" + (note != null && !note.isBlank() ? " | " + note.trim() : ""));
+            }
+            case "GRAMMAR_EXERCISE", "EXERCISE" -> {
+                GrammarExercise exercise = grammarExerciseRepository.findById(id)
+                        .orElseThrow(() -> new BadRequestException("Không tìm thấy bài tập ID: " + id));
+                String before = exercise.getReviewStatus().name();
+                exercise.setReviewStatus(ReviewStatus.APPROVED);
+                exercise.setNeedsHumanCheck(false);
+                if (note != null && !note.isBlank()) {
+                    exercise.setReviewNote(note.trim());
+                }
+                grammarExerciseRepository.save(exercise);
+                auditLogService.logAction(admin, "grammar_exercises", id, "APPROVE", before, "APPROVED" + (note != null && !note.isBlank() ? " | " + note.trim() : ""));
+            }
+            case "KANA" -> {
+                Kana kana = kanaRepository.findById(id)
+                        .orElseThrow(() -> new BadRequestException("Không tìm thấy Kana ID: " + id));
+                String before = kana.getReviewStatus().name();
+                kana.setReviewStatus(ReviewStatus.APPROVED);
+                kana.setNeedsHumanCheck(false);
+                kanaRepository.save(kana);
+                auditLogService.logAction(admin, "kana", id, "APPROVE", before, "APPROVED" + (note != null && !note.isBlank() ? " | " + note.trim() : ""));
+            }
+            default -> throw new BadRequestException("Loại nội dung không hợp lệ: " + contentType);
+        }
+    }
+
+    @Transactional
+    public void rejectContent(User admin, String contentType, Long id, String note) {
+        String type = contentType.toUpperCase().trim();
+        switch (type) {
+            case "VOCABULARY" -> {
+                Vocabulary vocab = vocabularyRepository.findById(id)
+                        .orElseThrow(() -> new BadRequestException("Không tìm thấy từ vựng ID: " + id));
+                String before = vocab.getReviewStatus().name();
+                vocab.setReviewStatus(ReviewStatus.ARCHIVED);
+                vocab.setNeedsHumanCheck(false);
+                vocabularyRepository.save(vocab);
+                auditLogService.logAction(admin, "vocabulary", id, "REJECT", before, "ARCHIVED" + (note != null && !note.isBlank() ? " | " + note.trim() : ""));
+            }
+            case "KANJI", "HANZI" -> {
+                Kanji kanji = kanjiRepository.findById(id)
+                        .orElseThrow(() -> new BadRequestException("Không tìm thấy chữ Hán ID: " + id));
+                String before = kanji.getReviewStatus().name();
+                kanji.setReviewStatus(ReviewStatus.ARCHIVED);
+                kanji.setNeedsHumanCheck(false);
+                kanjiRepository.save(kanji);
+                auditLogService.logAction(admin, "hanzi", id, "REJECT", before, "ARCHIVED" + (note != null && !note.isBlank() ? " | " + note.trim() : ""));
+            }
+            case "GRAMMAR_EXERCISE", "EXERCISE" -> {
+                GrammarExercise exercise = grammarExerciseRepository.findById(id)
+                        .orElseThrow(() -> new BadRequestException("Không tìm thấy bài tập ID: " + id));
+                String before = exercise.getReviewStatus().name();
+                exercise.setReviewStatus(ReviewStatus.ARCHIVED);
+                exercise.setNeedsHumanCheck(false);
+                if (note != null && !note.isBlank()) {
+                    exercise.setReviewNote(note.trim());
+                }
+                grammarExerciseRepository.save(exercise);
+                auditLogService.logAction(admin, "grammar_exercises", id, "REJECT", before, "ARCHIVED" + (note != null && !note.isBlank() ? " | " + note.trim() : ""));
+            }
+            case "KANA" -> {
+                Kana kana = kanaRepository.findById(id)
+                        .orElseThrow(() -> new BadRequestException("Không tìm thấy Kana ID: " + id));
+                String before = kana.getReviewStatus().name();
+                kana.setReviewStatus(ReviewStatus.ARCHIVED);
+                kana.setNeedsHumanCheck(false);
+                kanaRepository.save(kana);
+                auditLogService.logAction(admin, "kana", id, "REJECT", before, "ARCHIVED" + (note != null && !note.isBlank() ? " | " + note.trim() : ""));
+            }
+            default -> throw new BadRequestException("Loại nội dung không hợp lệ: " + contentType);
+        }
+    }
+
+    @Transactional
+    public int approveAllPending(User admin) {
+        int count = 0;
+        List<Vocabulary> pendingVocab = vocabularyRepository.findAll().stream()
+                .filter(v -> v.getReviewStatus() == ReviewStatus.PENDING_REVIEW || Boolean.TRUE.equals(v.getNeedsHumanCheck()))
+                .toList();
+        for (Vocabulary v : pendingVocab) {
+            v.setReviewStatus(ReviewStatus.APPROVED);
+            v.setNeedsHumanCheck(false);
+            count++;
+        }
+        vocabularyRepository.saveAll(pendingVocab);
+
+        List<Kanji> pendingKanji = kanjiRepository.findAll().stream()
+                .filter(k -> k.getReviewStatus() == ReviewStatus.PENDING_REVIEW || Boolean.TRUE.equals(k.getNeedsHumanCheck()))
+                .toList();
+        for (Kanji k : pendingKanji) {
+            k.setReviewStatus(ReviewStatus.APPROVED);
+            k.setNeedsHumanCheck(false);
+            count++;
+        }
+        kanjiRepository.saveAll(pendingKanji);
+
+        List<GrammarExercise> pendingExercises = grammarExerciseRepository.findAll().stream()
+                .filter(e -> e.getReviewStatus() == ReviewStatus.PENDING_REVIEW || Boolean.TRUE.equals(e.getNeedsHumanCheck()))
+                .toList();
+        for (GrammarExercise e : pendingExercises) {
+            e.setReviewStatus(ReviewStatus.APPROVED);
+            e.setNeedsHumanCheck(false);
+            count++;
+        }
+        grammarExerciseRepository.saveAll(pendingExercises);
+
+        List<GrammarRule> pendingRules = grammarRuleRepository.findAll().stream()
+                .filter(r -> r.getReviewStatus() == ReviewStatus.PENDING_REVIEW)
+                .toList();
+        for (GrammarRule r : pendingRules) {
+            r.setReviewStatus(ReviewStatus.APPROVED);
+            count++;
+        }
+        grammarRuleRepository.saveAll(pendingRules);
+
+        List<Kana> pendingKana = kanaRepository.findAll().stream()
+                .filter(k -> k.getReviewStatus() == ReviewStatus.PENDING_REVIEW || Boolean.TRUE.equals(k.getNeedsHumanCheck()))
+                .toList();
+        for (Kana k : pendingKana) {
+            k.setReviewStatus(ReviewStatus.APPROVED);
+            k.setNeedsHumanCheck(false);
+            count++;
+        }
+        kanaRepository.saveAll(pendingKana);
+
+        auditLogService.logAction(admin, "curriculum", null, "APPROVE_ALL", "PENDING_REVIEW", "APPROVED (" + count + " mục)");
+        return count;
+    }
 }

@@ -32,6 +32,9 @@ public class GrammarRule {
     @Column(columnDefinition = "TEXT")
     private String notes;
 
+    @Column(name = "examples_json", columnDefinition = "TEXT")
+    private String examplesJson;
+
     @Column(name = "original_number")
     private Integer originalNumber;
 

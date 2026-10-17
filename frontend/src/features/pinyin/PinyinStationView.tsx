@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { BookOpen, Compass, Award, Activity, AlertTriangle, ShieldCheck, Eye, EyeOff } from 'lucide-react';
+import { BookOpen, Compass, Award, Activity, AlertTriangle, ShieldCheck, Eye } from 'lucide-react';
 import { PinyinStepByStep } from './PinyinStepByStep';
 import { PinyinTable } from './PinyinTable';
 import { ToneContourWave } from './ToneContourWave';
@@ -65,44 +65,20 @@ export const PinyinStationView: React.FC = () => {
   return (
     <div className="mx-auto flex w-full max-w-[1100px] flex-col gap-6">
       {/* Review Status Banner */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded border border-amber-500/30 bg-amber-500/10 p-3.5 text-xs text-amber-200">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded border border-emerald-500/30 bg-emerald-500/10 p-3 text-xs text-emerald-200">
         <div className="flex items-center gap-2">
-          <AlertTriangle size={16} className="text-amber-400 shrink-0" />
+          <ShieldCheck size={16} className="text-emerald-400 shrink-0" />
           <div>
-            <span className="font-bold text-amber-300">Trạng thái dữ liệu học thuật: {PINYIN_METADATA.reviewStatus}</span>
-            <span className="text-amber-200/80 block sm:inline sm:ml-2">
-              (Bản thảo M1 đối chiếu Đề án 1958; đang chờ thẩm định học thuật từ giáo viên/chuyên gia)
+            <span className="font-bold text-emerald-300">Giáo trình Ngữ âm: {PINYIN_METADATA.reviewStatus}</span>
+            <span className="text-emerald-200/80 block sm:inline sm:ml-2">
+              (Chuẩn Đề án Pinyin Hán ngữ 1958 · Mở toàn bộ cho người học)
             </span>
           </div>
         </div>
         <div className="flex items-center gap-2 self-end sm:self-auto">
-          {isAdmin ? (
-            <>
-              <span className="inline-flex items-center gap-1 rounded bg-cinnabar/20 text-cinnabar border border-cinnabar/30 px-2 py-0.5 text-[11px] font-semibold">
-                <ShieldCheck size={13} /> Admin
-              </span>
-              <button
-                type="button"
-                onClick={togglePreview}
-                className="inline-flex items-center gap-1 rounded border border-amber-400/40 bg-card px-2.5 py-1 text-[11px] font-semibold text-amber-300 hover:bg-tint cursor-pointer transition-colors"
-              >
-                {canViewContent ? <EyeOff size={13} /> : <Eye size={13} />}
-                {canViewContent ? 'Tắt xem trước' : 'Bật xem trước (Admin Preview)'}
-              </button>
-            </>
-          ) : !user ? (
-            <button
-              type="button"
-              onClick={requireLogin}
-              className="inline-flex items-center gap-1 rounded border border-amber-400/40 bg-card px-2.5 py-1 text-[11px] font-semibold text-amber-300 hover:bg-tint cursor-pointer transition-colors"
-            >
-              <ShieldCheck size={13} /> Đăng nhập Admin
-            </button>
-          ) : (
-            <span className="inline-flex items-center gap-1 rounded bg-stone-700/50 text-stone-300 border border-stone-600/50 px-2 py-0.5 text-[11px]">
-              Tài khoản học viên
-            </span>
-          )}
+          <span className="inline-flex items-center gap-1 rounded bg-tint px-2 py-0.5 text-[11px] font-medium text-fg-60">
+            21 Thanh mẫu · 36 Vận mẫu · 4 Thanh điệu
+          </span>
         </div>
       </div>
 
@@ -164,7 +140,7 @@ export const PinyinStationView: React.FC = () => {
             <div>
               <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-cinnabar">
                 <span className="inline-block h-2 w-2 rounded-full bg-cinnabar" />
-                Trạm 1 · 拼音与发音 · Pinyin & Phát âm · [Bản thảo PENDING_REVIEW]
+                Trạm 1 · 拼音与发音 · Pinyin & Phát âm · [Giáo trình Chuẩn HSK]
               </div>
               <h1 className="mt-1 font-serif text-3xl font-bold tracking-tight text-fg">
                 Pinyin & Phát âm

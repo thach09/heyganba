@@ -417,7 +417,7 @@ export const AdminView: React.FC = () => {
           }`}
         >
           <ShieldAlert size={13} />
-          <span>Cần kiểm</span>
+          <span>Thẩm định Học thuật (Cần kiểm)</span>
         </button>
         <button
           type="button"

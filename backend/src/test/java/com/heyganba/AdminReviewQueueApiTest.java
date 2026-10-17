@@ -173,4 +173,34 @@ class AdminReviewQueueApiTest extends ContentApiTestBase {
         mockMvc.perform(get("/admin/review-queue"))
                 .andExpect(status().isUnauthorized());
     }
+
+    @Test
+    @DisplayName("POST /admin/review-queue/approve-all: Admin phê duyệt toàn bộ hàng đợi thành công")
+    void adminApproveAllPendingSuccess() throws Exception {
+        seedExercises();
+        String token = adminAccessToken("queue.approveall@heyganba.vn");
+
+        mockMvc.perform(post("/admin/review-queue/approve-all").header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success", is(true)))
+                .andExpect(jsonPath("$.data.approvedCount", greaterThanOrEqualTo(1)))
+                .andExpect(jsonPath("$.data.status", is("ALL_APPROVED")));
+    }
+
+    @Test
+    @DisplayName("POST /admin/review-queue/approve-all: user thường bị chặn 403")
+    void approveAllStandardUserForbidden() throws Exception {
+        String userToken = registerAndGetToken("queue.approveall.user@heyganba.vn");
+
+        mockMvc.perform(post("/admin/review-queue/approve-all").header("Authorization", "Bearer " + userToken))
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.error", is("FORBIDDEN")));
+    }
+
+    @Test
+    @DisplayName("POST /admin/review-queue/approve-all: ẩn danh bị chặn 401")
+    void approveAllAnonymousUnauthorized() throws Exception {
+        mockMvc.perform(post("/admin/review-queue/approve-all"))
+                .andExpect(status().isUnauthorized());
+    }
 }

@@ -92,6 +92,44 @@ public class AdminController {
         return ResponseEntity.ok(ApiResponse.success(adminContentService.reviewQueue(limit, onlyNeedsCheck)));
     }
 
+    @PostMapping("/review-queue/{contentType}/{id}/approve")
+    public ResponseEntity<ApiResponse<Void>> approveReviewItem(
+            @AuthenticationPrincipal UserPrincipal admin,
+            @PathVariable String contentType,
+            @PathVariable Long id,
+            @RequestBody(required = false) Map<String, String> body
+    ) {
+        User user = userRepository.getReferenceById(admin.getId());
+        String note = body != null ? body.get("note") : null;
+        adminContentService.approveContent(user, contentType, id, note);
+        return ResponseEntity.ok(ApiResponse.success(null, "Đã phê duyệt nội dung"));
+    }
+
+    @PostMapping("/review-queue/{contentType}/{id}/reject")
+    public ResponseEntity<ApiResponse<Void>> rejectReviewItem(
+            @AuthenticationPrincipal UserPrincipal admin,
+            @PathVariable String contentType,
+            @PathVariable Long id,
+            @RequestBody(required = false) Map<String, String> body
+    ) {
+        User user = userRepository.getReferenceById(admin.getId());
+        String note = body != null ? body.get("note") : null;
+        adminContentService.rejectContent(user, contentType, id, note);
+        return ResponseEntity.ok(ApiResponse.success(null, "Đã từ chối/lưu trữ nội dung"));
+    }
+
+    @PostMapping("/review-queue/approve-all")
+    public ResponseEntity<ApiResponse<Map<String, Object>>> approveAllPending(
+            @AuthenticationPrincipal UserPrincipal admin
+    ) {
+        User user = userRepository.getReferenceById(admin.getId());
+        int approvedCount = adminContentService.approveAllPending(user);
+        return ResponseEntity.ok(ApiResponse.success(
+                Map.of("approvedCount", approvedCount),
+                "Đã tự động phê duyệt toàn bộ " + approvedCount + " mục nội dung giáo trình."
+        ));
+    }
+
     // ================= 2FA QUẢN TRỊ VIÊN =================
 
     @GetMapping("/2fa/status")

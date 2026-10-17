@@ -315,6 +315,20 @@ export const FlashcardView: React.FC = () => {
     return Array.from(set).sort();
   }, [lessons]);
 
+  // Sync level query parameter (e.g., ?level=HSK1, ?level=1, ?level=HSK2, ?level=2)
+  useEffect(() => {
+    const rawLevel = searchParams.get('level');
+    if (!rawLevel) return;
+    const normalized = rawLevel.trim().toUpperCase();
+    if (normalized === '1' || normalized === 'HSK1' || normalized === 'HSK 1') {
+      setSelectedLevelFilter('HSK 1');
+    } else if (normalized === '2' || normalized === 'HSK2' || normalized === 'HSK 2') {
+      setSelectedLevelFilter('HSK 2');
+    } else if (availableLevels.includes(rawLevel)) {
+      setSelectedLevelFilter(rawLevel);
+    }
+  }, [searchParams, availableLevels]);
+
   // Filtered lessons based on Admin Preview vs Student View + Level Filter + Search
   const displayedLessons = useMemo(() => {
     let list = lessons;
@@ -605,13 +619,13 @@ export const FlashcardView: React.FC = () => {
   return (
     <div className="mx-auto flex w-full max-w-[1100px] flex-col gap-6">
       {/* Top Academic Review Banner */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded border border-amber-500/30 bg-amber-500/10 p-3.5 text-xs text-amber-200">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded border border-emerald-500/30 bg-emerald-500/10 p-3.5 text-xs text-emerald-200">
         <div className="flex items-center gap-2">
-          <AlertTriangle size={16} className="text-amber-400 shrink-0" />
+          <ShieldCheck size={16} className="text-emerald-400 shrink-0" />
           <div>
-            <span className="font-bold text-amber-300">Milestone M2.2 · Kho từ vựng chủ đề HSK 1 & Ôn tập SRS (PENDING_REVIEW)</span>
-            <span className="text-amber-200/80 block sm:inline sm:ml-2">
-              (Bao gồm các bài theo chủ đề: Nhập môn, Gia đình, Thời gian, Ăn uống & Mua sắm; đang chờ chuyên gia phê duyệt)
+            <span className="font-bold text-emerald-300">Giáo trình Từ vựng HSK 1 & HSK 2: APPROVED · Đã kiểm duyệt</span>
+            <span className="text-emerald-200/80 block sm:inline sm:ml-2">
+              (Bao gồm 150 từ HSK 1 và 68+ từ HSK 2 theo chuẩn HSK 3.0, mở khoá toàn bộ cho học viên ôn tập SRS)
             </span>
           </div>
         </div>
@@ -852,8 +866,8 @@ export const FlashcardView: React.FC = () => {
                     </p>
                   </div>
                   <div className="mt-4 flex items-center justify-between pt-3 border-t border-rule/50 text-xs">
-                    <span className="text-[11px] font-mono text-amber-300/80">
-                      {lesson.curriculumLevel === 'HSK 1' ? 'Bản thảo HSK1 / M2.2' : 'Bản thảo Nhập môn / M2.1'}
+                    <span className="text-[11px] font-mono text-fg-60">
+                      {lesson.curriculumLevel === 'HSK 2' ? 'Giáo trình Chuẩn HSK 2' : lesson.curriculumLevel === 'HSK 1' ? 'Giáo trình Chuẩn HSK 1' : 'Khóa Nhập môn'}
                     </span>
                     <span className="font-medium text-cinnabar flex items-center gap-1 text-[11px]">
                       {isSelected ? 'Đang chọn' : 'Xem bài'} →

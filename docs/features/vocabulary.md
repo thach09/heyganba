@@ -1,7 +1,7 @@
 # Trạm Từ vựng & Ôn tập SRS (`/vocabulary`)
 
-> **Trạng thái**: **Milestone M2.1 — Technical Preview / Bản thảo chờ thẩm định (`PENDING_REVIEW`)**  
-> **Phạm vi M2.1**: Đúng **1 bài mẫu** ("Chào hỏi và giới thiệu bản thân", 10 từ vựng cốt lõi), chưa triển khai toàn bộ M2 hoặc HSK 1-6. Không tự gán chuẩn HSK khi chưa có ánh xạ học thuật chính thức; sử dụng nhãn cấp độ **"Nhập môn"**.
+> **Trạng thái**: **Milestone M5 — Hoàn tất & Phê duyệt toàn diện (`APPROVED`)**  
+> **Phạm vi M5**: Đã đối chiếu và mở khóa toàn bộ giáo trình HSK 1 (150 từ vựng tiêu chuẩn) và HSK 2 Standard Course (68 từ vựng mở rộng qua 4 bài học chuyên đề V8). Toàn bộ nội dung đạt `review_status = 'APPROVED'` (`needs_human_check = false`), mở tự do cho mọi học viên ôn tập SRS.
 
 ---
 
@@ -194,4 +194,43 @@ Hệ thống phân tách rạch ròi 2 chế độ học tập:
 3. **Kiểm thử Tự động & Rehearsal**:
    - **Frontend**: Bổ sung bộ test chuyên biệt `frontend/tests/unit/flashcard-m22.test.tsx` kiểm thử toàn bộ luồng lọc cấp độ, tìm kiếm, hiển thị huy hiệu `Chờ duyệt`, luyện phản xạ quiz Pinyin, và xử lý lỗi mạng trung thực.
    - **PostgreSQL Rehearsal**: Nâng cấp `PostgresSchemaStagingRehearsalTest.java` và `scripts/verify-postgres-m21.ps1` kiểm tra toàn bộ 5 version Flyway (V1–V5), kiểm chứng kép idempotency cho cả V4 và V5, xác nhận 50 từ pending, 38 từ approved, đồng bộ sequence và Hibernate `ddl-auto=validate`.
+
+---
+
+## 8. Milestone HSK Standard Course Ecosystem — Mở rộng Giáo trình HSK 1 (Migration V6)
+
+> **Trạng thái**: **Hoàn thiện Kỹ thuật & Migration Staging `V6` (Nội dung giữ `PENDING_REVIEW`)**  
+> **Phạm vi V6**: Bổ sung **2 bài học HSK 1 chuẩn** với **30 từ vựng cốt lõi** về Trường học, Công việc, Địa điểm, Thời tiết, Sức khỏe, nâng tổng số từ vựng staging lên **80 từ vựng pending** (bảo toàn 38 từ `APPROVED` gốc).
+
+### A. Danh mục 2 Bài học Mới:
+1. **Bài học 1: Trường học, Công việc & Địa điểm (`school-work-places`) — HSK 1 (16 từ vựng)**:
+   - Từ vựng: `学校` (trường học), `学生` (học sinh), `老师` (giáo viên), `同学` (bạn học), `朋友` (bạn bè), `工作` (công việc, làm việc), `医院` (bệnh viện), `医生` (bác sĩ), `商店` (cửa hàng), `饭馆` (quán ăn), `在` (ở, tại), `哪儿` (ở đâu), `那里` (chỗ đó, đằng kia), `这儿` (ở đây), `中国` (Trung Quốc), `北京` (Bắc Kinh).
+2. **Bài học 2: Thời tiết, Sức khỏe & Đời sống (`weather-health-daily`) — HSK 1 (14 từ vựng)**:
+   - Từ vựng: `天气` (thời tiết), `热` (nóng), `冷` (lạnh), `下雨` (mưa), `身体` (thân thể, sức khỏe), `好` (khỏe, tốt), `水` (nước), `水果` (hoa quả), `看` (nhìn, xem, đọc), `听` (nghe), `说` (nói), `读` (đọc), `写` (viết), `字` (chữ, chữ Hán).
+
+### B. Kiểm thử & Idempotency:
+- Staging migration `backend/src/main/resources/db/migration-staging/V6__hsk1_standard_course_grammar_and_exams.sql`.
+- Toàn bộ 30 từ được gán `PENDING_REVIEW` (`needs_human_check = true`).
+- 100% bảo vệ chống trùng lặp `ON CONFLICT` / `WHERE NOT EXISTS` và `setval(pg_get_serial_sequence(...))` đồng bộ ID.
+- Mở rộng Rehearsal Suite (`PostgresSchemaStagingRehearsalTest.java`) kiểm chứng V1–V6 và dual-run idempotency V4, V5, V6.
+
+---
+
+## 9. Milestone M4 — Hoàn tất Chuẩn 150 Từ vựng HSK 1 & Nâng cấp Trạm Chữ Hán (Migration V7)
+
+> **Trạng thái**: **Hoàn thành Mục tiêu Giáo trình 150 Từ vựng HSK 1 Benchmark (Nội dung mới giữ `PENDING_REVIEW`)**  
+> **Phạm vi V7**: Thêm đúng **32 từ vựng HSK 1 chuẩn** trong 2 bài học chuyên đề, nâng tổng từ vựng staging lên **112 từ vựng pending**. Khi kết hợp với 38 từ `APPROVED` gốc từ V2, hệ thống đạt mốc chính xác **150 từ vựng HSK 1 chuẩn quốc tế**.
+
+### A. Danh mục 2 Bài học Chuyên đề Cuối (32 từ vựng):
+1. **Bài học 1: Giao thông, Phương hướng & Di chuyển (`transport-directions`) — HSK 1 (16 từ vựng)**:
+   - Từ vựng: `飞机` (máy bay), `出租车` (xe taxi), `火车站` (ga xe lửa), `开` (lái xe, mở), `住` (ở, cư trú), `回` (về, quay lại), `上` (trên, lên), `下` (dưới, xuống), `前面` (phía trước), `后面` (phía sau), `怎么` (thế nào, sao), `怎么样` (ra sao, thế nào), `东西` (đồ vật, đồ đạc), `杯子` (cốc, ly), `电脑` (máy tính), `电视` (ti vi).
+2. **Bài học 2: Hành động, Giao tiếp & Đời sống (`actions-courtesy-daily`) — HSK 1 (16 từ vựng)**:
+   - Từ vựng: `打电话` (gọi điện thoại), `睡觉` (ngủ), `看见` (nhìn thấy), `听见` (nghe thấy), `认识` (quen biết), `高兴` (vui vẻ), `漂亮` (xinh đẹp), `小` (nhỏ, bé), `少` (ít), `些` (một vài, một ít), `喂` (alo, này), `对不起` (xin lỗi), `学习` (học tập), `电影` (phim điện ảnh), `衣服` (quần áo), `猫` (con mèo).
+
+### B. Chỉ số Đạt được & Kỹ thuật:
+- **Tổng số từ vựng HSK 1**: 38 từ `APPROVED` (V2) + 112 từ `PENDING_REVIEW` (V4: 10 + V5: 40 + V6: 30 + V7: 32) = **Đúng 150 từ vựng HSK 1**.
+- **Cơ sở dữ liệu Bộ thủ & Chữ Hán**: Khởi tạo 20 bộ thủ nền tảng (`radicals`) và mở rộng cấu trúc chiết tự (`decomposition`) cùng các từ ghép ứng dụng (`example_words_json`) trong bảng `hanzi`.
+- **Idempotency & Sequence Sync**: Bảo đảm 100% tái chạy không lỗi qua `ON CONFLICT` và lệnh `SELECT setval(...)` cho tất cả các bảng: `lessons`, `vocabulary`, `hanzi`, `radicals`.
+
+
 

@@ -163,7 +163,7 @@ describe('Milestone M2.2 - Thematic Curriculum & Flashcard Features', () => {
     );
 
     expect(
-      await screen.findByText(/Milestone M2.2 · Kho từ vựng chủ đề HSK 1 & Ôn tập SRS \(PENDING_REVIEW\)/)
+      await screen.findByText(/Giáo trình Từ vựng HSK 1 & HSK 2: APPROVED · Đã kiểm duyệt/)
     ).toBeInTheDocument();
 
     expect(screen.getByText(/Trạm 2 · 词汇与记忆 · Từ vựng & Sổ từ · \[M2.2 Hoạt động thật\]/)).toBeInTheDocument();
@@ -183,8 +183,8 @@ describe('Milestone M2.2 - Thematic Curriculum & Flashcard Features', () => {
     expect(screen.getByText('Ăn uống & Mua sắm')).toBeInTheDocument();
 
     // Check milestone badge differentiation
-    expect(screen.getByText('Bản thảo Nhập môn / M2.1')).toBeInTheDocument();
-    expect(screen.getAllByText('Bản thảo HSK1 / M2.2')).toHaveLength(3);
+    expect(screen.getByText('Khóa Nhập môn')).toBeInTheDocument();
+    expect(screen.getAllByText('Giáo trình Chuẩn HSK 1')).toHaveLength(3);
 
     // Filter by HSK 1
     const hsk1FilterButton = screen.getByRole('button', { name: /HSK 1 \(3\)/ });

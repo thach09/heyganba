@@ -29,6 +29,14 @@ export interface HanziDto {
   lessonSlug?: string | null;
   lessonTitle?: string | null;
   radicals?: RadicalDto[];
+  reviewStatus?: string | null;
+  needsHumanCheck?: boolean | null;
+}
+
+export interface ExampleWordItem {
+  word: string;
+  pinyin: string;
+  vi: string;
 }
 
 export type KanjiDto = HanziDto;

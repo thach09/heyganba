@@ -11,6 +11,23 @@ export const adminApi = {
   twoFactorEnable: (options: RequestInit = {}) => apiRequest<void>('/admin/2fa/enable', options),
   twoFactorDisable: (options: RequestInit = {}) => apiRequest<void>('/admin/2fa/disable', options),
   reviewQueue: (onlyNeedsCheck: boolean, options: RequestInit = {}) => apiRequest<ReviewQueueItem[]>(`/admin/review-queue?limit=100&onlyNeedsCheck=${onlyNeedsCheck}`, options),
+  approveReviewItem: (contentType: string, id: number, note?: string, options: RequestInit = {}) =>
+    apiRequest<void>(`/admin/review-queue/${contentType}/${id}/approve`, {
+      ...options,
+      method: 'POST',
+      body: JSON.stringify({ note: note || '' }),
+    }),
+  rejectReviewItem: (contentType: string, id: number, note?: string, options: RequestInit = {}) =>
+    apiRequest<void>(`/admin/review-queue/${contentType}/${id}/reject`, {
+      ...options,
+      method: 'POST',
+      body: JSON.stringify({ note: note || '' }),
+    }),
+  approveAllReviewItems: (options: RequestInit = {}) =>
+    apiRequest<{ approvedCount: number }>('/admin/review-queue/approve-all', {
+      ...options,
+      method: 'POST',
+    }),
   vocabulary: (query: string, options: RequestInit = {}) => apiRequest<VocabularyAdminItem[]>(`/admin/vocabulary${query.trim() ? `?q=${encodeURIComponent(query.trim())}` : '?size=50'}`, options),
   kanji: (query: string, options: RequestInit = {}) => apiRequest<KanjiAdminItem[]>(`/admin/kanji${query.trim() ? `?q=${encodeURIComponent(query.trim())}` : '?size=50'}`, options),
   exercises: (query: string, options: RequestInit = {}) => apiRequest<ExerciseAdminItem[]>(`/admin/exercises${query.trim() ? `?q=${encodeURIComponent(query.trim())}` : '?size=50'}`, options),

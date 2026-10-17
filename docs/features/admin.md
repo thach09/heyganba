@@ -11,6 +11,7 @@
   - Hiển thị danh sách các mục chờ duyệt (`review-queue`): từ vựng, ngữ pháp, kanji.
   - Các mục có cờ `needs_human_check = TRUE` được ưu tiên xếp lên đầu kèm ghi chú kiểm tra (`reviewNote`) và nguồn đối chiếu (`sourceRef`).
   - Hỗ trợ thao tác duyệt nhanh: Duyệt (Approve), Từ chối (Reject).
+  - **1-Click Duyệt tất cả (Bulk Approve)**: Nút "Duyệt tất cả" cho phép phê duyệt hàng loạt toàn bộ các mục `PENDING_REVIEW` còn lại trong hệ thống trong một transaction duy nhất qua endpoint `POST /api/v1/admin/review-queue/approve-all` và tự động ghi nhận AuditLog.
 - **Quản lý học liệu CRUD (Tab TỪ VỰNG, HÁN TỰ, BÀI TẬP)**:
   - **Từ vựng (Vocabulary)**: Danh sách từ vựng có tìm kiếm, lọc theo bài học; Form thêm mới và chỉnh sửa trực tiếp qua Modal; Xoá từ vựng.
   - **Hán tự (Kanji)**: Bảng tra cứu chữ Hán, số nét, âm On/Kun, Hán Việt; Modal thêm/sửa Kanji đầy đủ các trường; Xoá Kanji.

@@ -28,7 +28,9 @@ public record KanjiResponse(
         String lessonSlug,
         String lessonTitle,
         List<RadicalResponse> radicals,
-        int practiceCount
+        int practiceCount,
+        String reviewStatus,
+        Boolean needsHumanCheck
 ) {
     public static KanjiResponse from(Kanji kanji, int practiceCount) {
         List<RadicalResponse> radicals = kanji.getRadicals() != null
@@ -58,7 +60,9 @@ public record KanjiResponse(
                 kanji.getLesson() != null ? kanji.getLesson().getSlug() : null,
                 kanji.getLesson() != null ? kanji.getLesson().getTitle() : null,
                 radicals,
-                practiceCount
+                practiceCount,
+                kanji.getReviewStatus() != null ? kanji.getReviewStatus().name() : "APPROVED",
+                kanji.getNeedsHumanCheck()
         );
     }
 }

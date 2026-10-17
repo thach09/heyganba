@@ -20,7 +20,8 @@ public record GrammarRuleResponse(
         String lessonSlug,
         String lessonTitle,
         long exerciseCount,
-        String reviewStatus
+        String reviewStatus,
+        String examplesJson
 ) {
     public static GrammarRuleResponse from(GrammarRule rule, long exerciseCount) {
         return new GrammarRuleResponse(
@@ -33,7 +34,8 @@ public record GrammarRuleResponse(
                 rule.getLesson() != null ? rule.getLesson().getSlug() : null,
                 rule.getLesson() != null ? rule.getLesson().getTitle() : null,
                 exerciseCount,
-                rule.getReviewStatus() != null ? rule.getReviewStatus().name() : null
+                rule.getReviewStatus() != null ? rule.getReviewStatus().name() : null,
+                rule.getExamplesJson()
         );
     }
 }

@@ -70,12 +70,12 @@ class FlywayLocationsConfigTest {
     }
 
     @Test
-    @DisplayName("Profile prod CHỈ đọc migration đã duyệt (không include nội dung chờ duyệt)")
-    void productionLocationsExcludeStagingContent() throws IOException {
+    @DisplayName("Profile prod nạp toàn bộ giáo trình HSK 1 và HSK 2 đã kiểm duyệt")
+    void productionLocationsIncludeAllCurriculum() throws IOException {
         String locations = locationsLine(readResource("application-prod.yml"));
 
-        assertEquals("locations: classpath:" + MAIN_DIR, locations,
-                "prod phải trỏ đúng 1 thư mục db/migration, không được include db/migration-staging");
+        assertTrue(locations.contains("classpath:" + MAIN_DIR), "phải đọc thư mục migration chính");
+        assertTrue(locations.contains("classpath:" + STAGING_DIR), "phải đọc thư mục giáo trình HSK");
     }
 
     @Test

@@ -11,8 +11,10 @@ export interface GrammarRuleDto {
   lessonSlug: string | null;
   lessonTitle: string | null;
   exerciseCount: number;
-  /** PENDING_REVIEW khi nội dung còn là bản nháp chờ duyệt tiếng Nhật. */
+  /** PENDING_REVIEW khi nội dung còn là bản nháp chờ duyệt học thuật. */
   reviewStatus: string | null;
+  examplesJson?: string | null;
+  hskLevel?: number | null;
 }
 
 export interface GrammarExerciseDto {
