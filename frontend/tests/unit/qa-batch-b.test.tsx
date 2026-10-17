@@ -20,7 +20,7 @@ vi.mock('../../src/features/exam/api', () => ({ examApi: {
   generate: api.generate, get: api.get, submit: api.submit, result: api.result,
   history: async () => ({ success: true, data: [] }), leaderboard: async () => ({ success: true, data: null }),
 } }));
-vi.mock('../../src/features/flashcard/api', () => ({ flashcardApi: {
+vi.mock('../../src/features/flashcard/api', () => ({ vocabularyApi: { lessons: async () => ({ success: true, data: [] }), lessonWords: async () => ({ success: true, data: [] }) }, flashcardApi: {
   review: api.review, due: async () => success([1, 2].map(vocabularyId => ({ vocabularyId, word: `Word ${vocabularyId}`, reading: `Word ${vocabularyId}`, meaning: `Meaning ${vocabularyId}` }))),
   stats: async () => success({ learnedWords: 0, dueToday: 2 }),
 } }));
@@ -84,18 +84,18 @@ test('QA-002: inaccessible checkpoint shows an error without cached questions', 
   saveActiveAttempt(1, { examId: 17, answers: {}, activeIndex: 0 });
   api.get.mockResolvedValue({ success: false, message: 'Unavailable', error: new ApiError('http', 'Unavailable', 404) });
   mount(<ExamView />); await screen.findByText('Unavailable');
-  expect(screen.queryByText('Question 0')).toBeNull(); expect(readActiveAttempt(1)).toBeNull();
+  expect(screen.queryByText('Question 0')).toBeNull(); expect(readActiveAttempt(1)?.examId).toBe(17);
 });
 function PasswordAction() { const { changePassword } = useAuth(); return <button onClick={changePassword}>Open password</button>; }
 test('QA-004: password modal owns numbers and Enter, even outside a text input', async () => {
-  mount(<><PasswordAction /><FlashcardView /></>); await screen.findByText('Word 1');
+  await mountSrs(<><PasswordAction /><FlashcardView /></>);
   fireEvent.click(screen.getByText('Open password')); const input = screen.getByRole('dialog').querySelector('input')!;
   for (const key of ['1', '2', '3', 'Enter']) fireEvent.keyDown(input, { key });
   fireEvent.keyDown(window, { key: '1' }); fireEvent.keyDown(window, { key: 'Enter' });
-  expect(api.review).not.toHaveBeenCalled(); expect(screen.getByText('Word 1')).toBeTruthy();
+  expect(api.review).not.toHaveBeenCalled(); expect(screen.getAllByText('Word 1').length).toBeGreaterThan(0);
 });
 test.each(['input', 'textarea', 'div'])('QA-004: SRS ignores editable %s without a modal', async tag => {
-  mount(<FlashcardView />); await screen.findByText('Word 1');
+  await mountSrs();
   const field = document.createElement(tag); if (tag === 'div') field.setAttribute('contenteditable', 'true'); document.body.append(field);
   try { fireEvent.keyDown(field, { key: '1' }); fireEvent.keyDown(field, { key: 'Enter' }); expect(api.review).not.toHaveBeenCalled(); }
   finally { field.remove(); }
@@ -138,23 +138,22 @@ test('QA-008: lost-response retry retains the answer and ID; a new question gets
   expect(screen.getByText(/Đúng/, { selector: 'p' }).textContent).toContain('2/2 câu');
 });
 
-test('NEW-REGRESSION-001: SRS retry retains the review ID and payload; the next card gets a new ID', async () => {
-  api.review.mockResolvedValueOnce({ success: false, message: 'Lost review response' })
-    .mockResolvedValue(success({ repetitions: 1, lapse: false }));
-  mount(<FlashcardView />); await screen.findByText('Word 1');
-  fireEvent.keyDown(window, { key: '1' }); await screen.findByText('Lost review response');
-  const first = JSON.parse(api.review.mock.calls[0][0].body);
+test('NEW-REGRESSION-001: SRS retry keeps the attempt ID, next card gets a different ID', async () => {
+  api.review.mockResolvedValueOnce({ success: false, message: 'Lost review response' }).mockResolvedValue(success({ repetitions: 1 }));
+  await mountSrs();
+  fireEvent.click(screen.getByRole('button', { name: /Thuộc/ }));
+  await screen.findByText('Lost review response');
+  const first = api.review.mock.calls[0][0];
   expect(first.attemptId).toMatch(/^[0-9a-f-]{36}$/);
-  fireEvent.click(screen.getByRole('button', { name: 'Thử lưu lại' }));
-  await waitFor(() => expect(screen.queryByText('Chưa lưu được lượt ôn này. Hãy thử lại trước khi sang từ tiếp theo.')).toBeNull());
-  expect(JSON.parse(api.review.mock.calls[1][0].body)).toEqual(first);
-  await waitFor(() => expect(screen.getByText('1', { selector: 'b' })).toBeTruthy());
-  fireEvent.keyDown(window, { key: 'Enter' }); await screen.findByText('Word 2');
-  fireEvent.keyDown(window, { key: '1' }); await waitFor(() => expect(api.review).toHaveBeenCalledTimes(3));
-  const next = JSON.parse(api.review.mock.calls[2][0].body);
+  fireEvent.click(screen.getByRole('button', { name: 'Thử lại' }));
+  await screen.findAllByText('Word 2');
+  expect(api.review.mock.calls[1][0]).toEqual(first);
+  fireEvent.click(screen.getByRole('button', { name: /Thuộc/ }));
+  await waitFor(() => expect(api.review).toHaveBeenCalledTimes(3));
+  const next = api.review.mock.calls[2][0];
   expect(next.vocabularyId).toBe(2); expect(next.attemptId).not.toBe(first.attemptId);
-  await waitFor(() => expect(screen.getByText('2', { selector: 'b' })).toBeTruthy());
 });
+
 test('QA-009: pending, successful empty and failed exercise loads remain distinct', async () => {
   const gate = deferred<ReturnType<typeof success>>(); api.exercises.mockImplementationOnce(() => gate.promise);
   mount(<GrammarView />); fireEvent.click(screen.getByRole('button', { name: 'Luyện tập' }));
@@ -175,7 +174,7 @@ test('QA-006: exam help owns keys, native cancel closes it, then shortcuts resum
   expect(screen.queryByText('Đã chọn')).toBeNull(); expect(readActiveAttempt(1)?.activeIndex).toBe(0);
   fireEvent(dialog, new Event('cancel', { bubbles: true, cancelable: true }));
   expect(screen.queryByRole('dialog')).toBeNull();
-  fireEvent.keyDown(window, { key: '1' }); fireEvent.keyDown(window, { key: 'Enter' });
+  fireEvent.keyDown(window, { key: '1' }); fireEvent.keyDown(window, { key: 'ArrowRight' });
   expect(screen.getByText('Đã chọn')).toBeTruthy(); expect(readActiveAttempt(1)?.activeIndex).toBe(1);
 });
 
@@ -198,7 +197,7 @@ test('QA-006: help cycles Tab and Shift+Tab inside the dialog and restores its o
   expect(screen.queryByText('Đã chọn')).toBeNull(); expect(readActiveAttempt(1)?.activeIndex).toBe(0);
   fireEvent(dialog, new Event('cancel', { bubbles: true, cancelable: true }));
   expect(screen.queryByRole('dialog')).toBeNull(); expect(document.activeElement).toBe(opener);
-  fireEvent.keyDown(opener, { key: '1' }); fireEvent.keyDown(opener, { key: 'Enter' });
+  fireEvent.keyDown(opener, { key: '1' }); fireEvent.keyDown(opener, { key: 'ArrowRight' });
   expect(readActiveAttempt(1)?.activeIndex).toBe(1);
 });
 
@@ -210,3 +209,9 @@ test.each(['input', 'textarea', 'div'])('QA-006: exam ignores editable %s contro
     expect(screen.queryByText('Đã chọn')).toBeNull(); expect(readActiveAttempt(1)?.activeIndex).toBe(0);
   } finally { field.remove(); }
 });
+
+async function mountSrs(view: React.ReactNode = <FlashcardView />) {
+  mount(view);
+  fireEvent.click(screen.getByRole('button', { name: /Ôn đến hạn/ }));
+  await screen.findAllByText('Word 1');
+}

@@ -47,6 +47,8 @@ import org.springframework.test.context.ActiveProfiles;
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 public abstract class ContentApiTestBase {
+    @Autowired
+    protected com.heyganba.repository.MockExamPresetRepository mockExamPresetRepository;
 
     @Autowired
     protected GrammarExerciseRepository grammarExerciseRepository;
@@ -131,6 +133,7 @@ public abstract class ContentApiTestBase {
         }
         examResultRepository.deleteAll();
         mockExamRepository.deleteAll();
+        mockExamPresetRepository.deleteAll();
         studyActivityRepository.deleteAll();
         auditLogRepository.deleteAll();
         readingPassageRepository.deleteAll();

@@ -36,9 +36,14 @@ public class KanjiController {
             @AuthenticationPrincipal UserPrincipal currentUser,
             @RequestParam(required = false) String lesson,
             @RequestParam(required = false) Long radical,
-            @RequestParam(required = false) String search
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) Integer hsk
     ) {
         List<KanjiResponse> kanji = kanjiService.getKanji(currentUser.getId(), lesson, radical, search);
+        if (hsk != null) {
+            if (hsk < 1 || hsk > 6) throw new com.heyganba.common.exception.BadRequestException("HSK level must be between 1 and 6");
+            kanji = kanji.stream().filter(item -> item.hskLevel() == hsk).toList();
+        }
         return ResponseEntity.ok(ApiResponse.success(kanji));
     }
 

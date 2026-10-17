@@ -1,8 +1,9 @@
 import type { ReadingPassageItem } from './types';
+import m6Readings from './m6ReadingData.json';
 
 export const HSK1_READING_PASSAGES: ReadingPassageItem[] = [
   {
-    id: 1,
+    id: 1, hskLevel: 1,
     title: 'Ở trường học (在学校)',
     passageText: '大卫是美国人，他是我们学校的学生。大卫很喜欢学汉语。他的老师是王老师，王老师是很好的人。大卫有两个好朋友，他们都是中国人。今天下午大卫和他的朋友在学校看书。',
     passagePinyin: 'Dàwèi shì Měiguó rén, tā shì wǒmen xuéxiào de xuésheng. Dàwèi hěn xǐhuan xué Hànyǔ. Tā de lǎoshī shì Wáng lǎoshī, Wáng lǎoshī shì hěn hǎo de rén. Dàwèi yǒu liǎng gè hǎo péngyou, tāmen dōu shì Zhōngguó rén. Jīntiān xiàwǔ Dàwèi hé tā de péngyou zài xuéxiào kàn shū.',
@@ -24,7 +25,7 @@ export const HSK1_READING_PASSAGES: ReadingPassageItem[] = [
     ]
   },
   {
-    id: 2,
+    id: 2, hskLevel: 1,
     title: 'Tại quán ăn & Mua sắm (在饭馆和商店)',
     passageText: '中午十二点，李明去饭馆吃饭。他想吃中国菜。他点了一碗米饭和一个菜，还喝了一杯热茶。一共二十五块钱。吃完饭后，李明去商店买苹果。苹果六块钱一斤，他买了三斤。',
     passagePinyin: 'Zhōngwǔ shí\'èr diǎn, Lǐ Míng qù fànguǎn chī fàn. Tā xiǎng chī Zhōngguó cài. Tā diǎnle yì wǎn mǐfàn hé yí gè cài, hái hēle yì bēi rè chá. Yígòng èrshíwǔ kuài qián. Chī wán fàn hòu, Lǐ Míng qù shāngdiàn mǎi píngguǒ. Píngguǒ liù kuài qián yì jīn, tā mǎile sān jīn.',
@@ -46,7 +47,7 @@ export const HSK1_READING_PASSAGES: ReadingPassageItem[] = [
     ]
   },
   {
-    id: 3,
+    id: 3, hskLevel: 1,
     title: 'Hẹn gặp cuối tuần (周末见面)',
     passageText: '今天是星期六，北京的天气很好，不冷也不热。我和小王约好明天上午九点去北京大学玩。小王说他会骑自行车来。明天下午我们要一起去听中国音乐，我很期待明天！',
     passagePinyin: 'Jīntiān shì xīngqīliù, Běijīng de tiānqì hěn hǎo, bù lěng yě bú rè. Wǒ hé Xiǎo Wáng yuē hǎo míngtiān shàngwǔ jiǔ diǎn qù Běijīng Dàxué wán. Xiǎo Wáng shuō tā huì qí zìxíngchē lái. Míngtiān xiàwǔ wǒmen yào yìqǐ qù tīng Zhōngguó yīnyuè, wǒ hěn qīdài míngtiān!',
@@ -71,7 +72,7 @@ export const HSK1_READING_PASSAGES: ReadingPassageItem[] = [
 
 export const HSK2_READING_PASSAGES: ReadingPassageItem[] = [
   {
-    id: 4,
+    id: 4, hskLevel: 2,
     title: 'Du lịch đến Bắc Kinh (去北京旅游)',
     passageText: '虽然现在是冬天，但是北京的风景非常漂亮。我和妻子坐飞机去北京旅游。在机场，服务员热情地帮助我们找到了出租车。我们住的宾馆离故宫很近。虽然天气比南方冷得多，但是我们玩得非常高兴！',
     passagePinyin: 'Suīrán xiànzài shì dōngtiān, dànshì Běijīng de fēngjǐng fēicháng piàoliang. Wǒ hé qīzi zuò fēijī qù Běijīng lǚyóu. Zài jīchǎng, fúwùyuán rèqíng de bāngzhù wǒmen zhǎodàole chūzūchē. Wǒmen zhù de bīnguǎn lí Gùgōng hěn jìn. Suīrán tiānqì bǐ nánfāng lěng de duō, dànshì wǒmen wán de fēicháng gāoxìng!',
@@ -93,7 +94,7 @@ export const HSK2_READING_PASSAGES: ReadingPassageItem[] = [
     ]
   },
   {
-    id: 5,
+    id: 5, hskLevel: 2,
     title: 'Một ngày sinh nhật ý nghĩa (有意义的生日)',
     passageText: '今天是我的生日。早上起床后，丈夫送给我一块非常漂亮的手表。下午朋友们来我的房间庆祝，我们一起唱歌、跳舞、吃蛋糕和西瓜。因为大家都很热情，所以我今天觉得特别快乐！',
     passagePinyin: 'Jīntiān shì wǒ de shēngrì. Zǎoshang qǐchuáng hòu, zhàngfu sòng gěi wǒ yí kuài fēicháng piàoliang de shǒubiǎo. Xiàwǔ péngyoumen lái wǒ de fángjiān qìngzhù, wǒmen yìqǐ chàng gē, tiào wǔ, chī dàngāo hé xīguā. Yīnwèi dàjiā dōu hěn rèqíng, suǒyǐ wǒ jīntiān juéde tèbié kuàilè!',
@@ -119,5 +120,6 @@ export const HSK2_READING_PASSAGES: ReadingPassageItem[] = [
 export const ALL_READING_PASSAGES: ReadingPassageItem[] = [
   ...HSK1_READING_PASSAGES,
   ...HSK2_READING_PASSAGES,
+  ...m6Readings,
 ];
 

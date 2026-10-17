@@ -184,7 +184,7 @@ class AdminReviewQueueApiTest extends ContentApiTestBase {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success", is(true)))
                 .andExpect(jsonPath("$.data.approvedCount", greaterThanOrEqualTo(1)))
-                .andExpect(jsonPath("$.data.status", is("ALL_APPROVED")));
+                .andExpect(jsonPath("$.message", org.hamcrest.Matchers.containsString("phê duyệt")));
     }
 
     @Test

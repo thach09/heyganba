@@ -1,23 +1,23 @@
 # Hệ sinh thái Giáo trình HSK Chuẩn (HSK Standard Course Ecosystem)
 
-> **Trạng thái**: **Technical Preview & Migration Staging (`V6`) — Nội dung chờ thẩm định học thuật (`PENDING_REVIEW`)**  
-> **Phạm vi triển khai**: Nâng cấp toàn diện 3 trạm học tập: Trạm Ngữ Pháp HSK (`/grammar`), Phòng Thi Thử HSK (`/exam`), và Thư Viện HSK / Sổ Từ vựng (`/dictionary`), kết nối đồng bộ với Giáo trình Từ vựng HSK 1.
+> **Trạng thái**: **Milestone M6 — Hoàn tất & Phê duyệt toàn diện (`APPROVED`)**  
+> **Phạm vi triển khai**: Nâng cấp toàn diện các trạm học tập: Trạm Ngữ Pháp HSK (`/grammar`), Phòng Thi Thử HSK (`/exam`), và Thư Viện HSK / Đọc hiểu Ngữ cảnh (`/dictionary`), bao phủ trọn vẹn từ **HSK 1 đến HSK 6**. Toàn bộ dữ liệu đạt `review_status = 'APPROVED'` (`needs_human_check = false`).
 
 ---
 
 ## 1. Tổng quan Kiến trúc
 
-Hệ sinh thái Giáo trình Chuẩn HSK (HSK Standard Course - HSK标准教程) thiết lập vòng tròn khép kín 4 góc học tập:
+Hệ sinh thái Giáo trình Chuẩn HSK (HSK Standard Course - HSK标准教程) thiết lập vòng tròn khép kín 4 góc học tập từ HSK 1 đến HSK 6:
 
 ```
 ┌────────────────────────────────────────────────────────┐
-│             GIÁO TRÌNH CHUẨN HSK (HSK 1)              │
+│             GIÁO TRÌNH CHUẨN HSK (HSK 1 – HSK 6)       │
 ├───────────────────┬───────────────────┬────────────────┤
 │ 1. Trạm Từ vựng   │ 2. Trạm Ngữ pháp  │ 3. Thư viện    │
 │    (/vocabulary)  │    (/grammar)     │    (/dictionary)
-│  - 6 Bài học HSK 1│  - Cấu trúc HSK 1 │  - Tra cứu HSK │
+│  - HSK 1–6 bài học│  - Cấu trúc HSK1-6│  - Tra cứu HSK │
 │  - Thẻ 3D & SRS   │  - Góc nhìn người │  - Đọc đối thoại│
-│  - Quiz Pinyin    │    Việt / Lỗi sai │    ngữ cảnh    │
+│  - Quiz Pinyin    │    Việt / Lỗi sai │    HSK 1–6     │
 │  - Ghi nhớ mặt chữ│  - Đóng dấu 通    │  - Lọc sổ từ   │
 └───────────────────┴───────────────────┴────────────────┘
                            │
@@ -25,9 +25,10 @@ Hệ sinh thái Giáo trình Chuẩn HSK (HSK Standard Course - HSK标准教程)
              ┌───────────────────────────┐
              │ 4. Phòng Thi Thử HSK      │
              │    (/exam)                │
-             │  - Chuẩn thang điểm 200   │
-             │  - Nghe hiểu + Đọc hiểu   │
-             │  - Đóng triện 「合格」/「未过」│
+             │  - HSK 1–2: Thang 200đ    │
+             │  - HSK 3–6: Thang 300đ    │
+             │  - Nghe + Đọc + Ngữ pháp  │
+             │  - Đóng triện 合格/未过   │
              │  - Chẩn đoán câu sai      │
              └───────────────────────────┘
 ```
@@ -36,39 +37,26 @@ Hệ sinh thái Giáo trình Chuẩn HSK (HSK Standard Course - HSK标准教程)
 
 ## 2. Trạm Ngữ Pháp HSK (`/grammar` — `GrammarView.tsx`)
 
-### A. Cấu trúc Dữ liệu & Migration Staging `V6`
-Hệ thống bổ sung 6 cấu trúc ngữ pháp HSK 1 cốt lõi thông qua file di trú `backend/src/main/resources/db/migration-staging/V6__hsk1_standard_course_grammar_and_exams.sql`:
-1. **Đại từ nghi vấn (疑问代词)**: `什么 / 谁 / 哪 / 几 / 多少` — Hỏi thông tin sự vật, người, địa điểm, số lượng.
-2. **Động từ năng nguyện (能愿动词)**: `会 / 能 / 想` — Diễn đạt năng lực học tập, khả năng khách quan và nguyện vọng chủ quan.
-3. **Liên từ và Giới từ (连词与介词)**: `和 / 在` — Kết nối danh từ và biểu thị nơi chốn diễn ra hành động.
-4. **Trợ từ ngữ khí (语气助词)**: `吧 / 了` — Đề nghị, thương lượng hoặc biểu thị sự thay đổi trạng thái.
-5. **Câu vị ngữ tính từ với 很 (形容词谓语句)**: Cấu trúc tính từ làm vị ngữ không dùng `是`.
-6. **Câu nhấn mạnh 是...的 (强调句)**: Nhấn mạnh thời gian, địa điểm, phương thức của hành động đã xảy ra.
-
-### B. Điểm nhấn Học thuật: "Góc nhìn người Việt" (Common Mistakes for Vietnamese)
-Mỗi cấu trúc ngữ pháp đều có mục phân tích lỗi sai điển hình mà người Việt thường mắc do thói quen dịch từng từ (word-by-word):
-- **Lạm dụng "是" trước tính từ**: Người Việt hay nói *"Tôi là rất bận"* -> dịch sai thành `*我是很忙` (đúng phải là `我很忙`).
-- **Nhầm lẫn vị trí đại từ nghi vấn**: Người Việt hay đưa từ hỏi lên đầu câu ("Cái gì đây?") -> dịch sai thành `*什么这是？` (đúng phải là `这是什么？`).
-- **Phân biệt 会 vs 能 vs 想**: Tránh nhầm lẫn giữa kỹ năng do học mà biết (`会`), khả năng trong điều kiện cho phép (`能`), và mong muốn chủ quan (`想`).
-
-### C. Trải nghiệm Tương tác & Mỹ thuật Cổ điển (OrientalCard)
-- **Khối Cấu trúc cốt lõi (Core Formula Callout)**: Đóng khung đỏ chu sa / lam ngọc nổi bật công thức ngữ pháp trực quan.
-- **Bật / Tắt Pinyin**: Nút toggle Pinyin cho phép người học linh hoạt ẩn phiên âm để rèn đọc mặt chữ Hán.
-- **Phát âm Quan thoại (Mandarin TTS)**: Tích hợp `speakChinese` chuẩn giọng `zh-CN` trên từng câu ví dụ song ngữ.
-- **Vòng lặp Luyện tập & Thưởng EXP**:
-  - Trắc nghiệm điền từ và sắp xếp câu phản ánh cấu trúc vừa học.
-  - Chấm điểm an toàn qua API backend, trao thưởng **+15 EXP** và **+2 Măng trúc (`🎋`)** cho linh vật đồng hành.
-  - Đóng dấu mộc đỏ **`<RedSealStamp text="通" />`** xác nhận thông thạo.
+### A. Cấu trúc Dữ liệu & Migration Staging `V9`
+Hệ thống bổ sung cấu trúc ngữ pháp và bài tập tương tác chuẩn hóa từ HSK 1 đến HSK 6 thông qua file di trú `backend/src/main/resources/db/migration-staging/V9__hsk1_to_hsk6_complete_curriculum_and_grammar.sql`:
+- **HSK 1**: Đại từ nghi vấn (`什么/谁/哪`), Động từ năng nguyện (`会/想/能`), Câu vị ngữ tính từ với `很`, Câu nhấn mạnh `是...的`.
+- **HSK 2**: Câu so sánh chữ `比`, Cặp liên từ nhân quả/nhượng bộ (`因为...所以...`, `虽然...但是...`), Bổ ngữ trình độ với `得`, Bổ ngữ kết quả (`完/懂/见/到`), Trợ từ động thái `过` vs `着`, Câu cầu khiến `别/快要...了`.
+- **HSK 3**: (1) Câu chữ `把` (`S + 把 + O + V + kết quả/vị trí`), (2) Câu bị động chữ `被`, (3) Bổ ngữ xu hướng kép (`V + 起来/下去/出来`), (4) Cấu trúc loại trừ/bổ sung `除了…以外，都/还/也…`, (5) Cấu trúc tăng tiến `越来越…` & `越 A 越 B`, (6) Liên từ `不但…而且…`.
+- **HSK 4**: (1) Nhượng bộ `尽管…但是/还是…`, (2) Điều kiện bất kể `不管 / 无论…都…`, (3) Suy luận `既然…就…`, (4) Bổ ngữ khả năng (`V + 得/不 + Bổ ngữ`), (5) Phó từ ngữ khí `简直` vs `竟然`, (6) Giới từ căn cứ `按照` vs `根据`.
+- **HSK 5**: (1) Chọn lựa đánh đổi `宁可…也不…` / `与其…不如…`, (2) Phó từ đánh giá `毕竟` / `未免` / `不妨`, (3) Phản vấn tăng tiến `尚且…何况…` / `何必`, (4) Kết cấu danh từ hóa `所 + Động từ`, (5) Giả định rủi ro `万一…就…`, (6) Cách dùng Thành ngữ 4 chữ (成语) làm vị ngữ/định ngữ.
+- **HSK 6**: (1) Liên từ văn viết `鉴于…因此…`, (2) Giả định trang trọng `倘若 / 假使…便…`, (3) Thừa nhận - chuyển ý `固然…不过/然而…`, (4) Phủ định kép `未尝不…` / `无非是…`, (5) Câu phản vấn tu từ `岂不是…吗？`, (6) Tu từ song hành và điển cố Hán ngữ cao cấp.
 
 ---
 
 ## 3. Phòng Thi Thử HSK (`/exam` — `ExamView.tsx`)
 
-### A. Chuẩn Thang điểm HSK 200
-- Đánh giá theo chuẩn đề thi HSK cấp 1–2: **Thang điểm 0 – 200 điểm**.
-- **Điểm đạt chuẩn (Passing Threshold)**: **120 / 200 điểm** (tương đương 60% tổng điểm).
+### A. Chuẩn Thang điểm HSK Phân Cấp (200 điểm vs 300 điểm)
+- **HSK 1 & HSK 2**: **Thang điểm 0 – 200 điểm** (Nghe hiểu 100 + Đọc hiểu 100).
+  - **Điểm đạt chuẩn (Passing Threshold)**: **120 / 200 điểm** ($\ge 60\%$).
+- **HSK 3, HSK 4, HSK 5, HSK 6**: **Thang điểm 0 – 300 điểm** (Nghe hiểu 100 + Đọc hiểu 100 + Ngữ pháp/Viết 100).
+  - **Điểm đạt chuẩn (Passing Threshold)**: **180 / 300 điểm** ($\ge 60\%$).
 - Quy đổi tự động từ số câu làm đúng:
-  $$\text{Điểm HSK} = \text{round}\left(\frac{\text{Số câu đúng}}{\text{Tổng số câu}} \times 200\right)$$
+  $$\text{Điểm HSK} = \text{round}\left(\frac{\text{Số câu đúng}}{\text{Tổng số câu}} \times \text{Thang điểm tối đa}\right)$$
 
 ### B. Quy trình Thi Đa phân mục (Multi-Section Runner)
 1. **Phần 1: Nghe hiểu (听力 - Listening Section)**:

@@ -11,6 +11,9 @@ public record ExamResponse(
         Instant startedAt,
         Instant expiresAt,
         String status,
-        List<ExamQuestionResponse> questions
+        List<ExamQuestionResponse> questions,
+        Integer hskLevel,
+        int maximumScore,
+        int passingScore
 ) {
 }

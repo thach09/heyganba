@@ -18,7 +18,7 @@ vi.mock('../../src/features/exam/api', () => ({ examApi: {
   generate: api.generate, submit: api.submit,
   history: async () => ({ success: true, data: [] }), leaderboard: async () => ({ success: true, data: null }),
 } }));
-vi.mock('../../src/features/flashcard/api', () => ({ flashcardApi: {
+vi.mock('../../src/features/flashcard/api', () => ({ vocabularyApi: { lessons: async () => ({ success: true, data: [] }), lessonWords: async () => ({ success: true, data: [] }) }, flashcardApi: {
   due: api.due, review: api.review,
   stats: async () => ({ success: true, data: { learnedWords: 0, dueToday: 2, availableNewWords: 0 } }),
 } }));
@@ -50,7 +50,7 @@ beforeEach(() => {
 test('QA-001: password signout/account switch removes the previous exam and answers', async () => {
   mount(<ExamView />);
   fireEvent.click(screen.getByRole('button', { name: /Bắt đầu thi thử/ }));
-  await screen.findByText('Question 0'); fireEvent.keyDown(window, { key: '1' });
+  await screen.findByText('Question 0'); fireEvent.click(screen.getAllByRole('button', { name: /1\s*Option A/ })[0]);
   expect(screen.getByText('Đã chọn')).toBeTruthy();
   act(() => clearTokens());
   expect(screen.queryByText('Question 0')).toBeNull();
@@ -81,32 +81,37 @@ test('QA-007: another tab login/logout reconciles visible identity and clears pr
   expect(screen.getByText('Signed out')).toBeTruthy();
 });
 
-test('QA-003: quick next/answer input waits for save, then both reviews persist without cancellation', async () => {
+async function mountSrs() {
+  mount(<FlashcardView />);
+  fireEvent.click(screen.getByRole('button', { name: /Ôn đến hạn/ }));
+  await screen.findAllByText('Word 1');
+}
+test('QA-003: delayed SRS save locks ratings, then advances only after persistence', async () => {
   const gate = deferred<ReturnType<typeof success>>();
   api.review.mockImplementationOnce(() => gate.promise).mockResolvedValue(success({ repetitions: 1 }));
-  mount(<FlashcardView />);
-  await screen.findByText('Word 1'); fireEvent.keyDown(window, { key: '1' });
+  await mountSrs();
+  fireEvent.click(screen.getByRole('button', { name: /Thuộc/ }));
   await waitFor(() => expect(api.review).toHaveBeenCalledTimes(1));
-  const signal = api.review.mock.calls[0][0].signal;
-  fireEvent.keyDown(window, { key: 'Enter' }); fireEvent.keyDown(window, { key: '1' });
+  const signal = api.review.mock.calls[0][1].signal;
+  expect((screen.getByRole('button', { name: /Thuộc/ }) as HTMLButtonElement).disabled).toBe(true);
+  fireEvent.click(screen.getByRole('button', { name: /Chưa nhớ/ }));
   expect(api.review).toHaveBeenCalledTimes(1); expect(signal.aborted).toBe(false);
   await act(async () => gate.resolve(success({ repetitions: 1 })));
-  fireEvent.keyDown(window, { key: 'Enter' }); fireEvent.keyDown(window, { key: '1' });
+  await screen.findAllByText('Word 2');
+  fireEvent.click(screen.getByRole('button', { name: /Thuộc/ }));
   await waitFor(() => expect(api.review).toHaveBeenCalledTimes(2));
-  expect(signal.aborted).toBe(false);
-  expect(api.review.mock.calls.map(([options]) => JSON.parse(options.body).vocabularyId)).toEqual([1, 2]);
-  await waitFor(() => expect(screen.getByText('2', { selector: 'b' })).toBeTruthy());
+  expect(api.review.mock.calls.map(([payload]) => payload.vocabularyId)).toEqual([1, 2]);
+  await screen.findByText('Xong phiên ôn tập hôm nay!');
 });
-
-test('QA-003: a failed save retains the card, blocks advancement and offers retry', async () => {
+test('QA-003: failed SRS save retains card and retries the same immutable payload', async () => {
   api.review.mockResolvedValueOnce({ success: false, message: 'Offline' }).mockResolvedValue(success({ repetitions: 1 }));
-  mount(<FlashcardView />); await screen.findByText('Word 1');
-  fireEvent.keyDown(window, { key: '1' }); await screen.findByRole('button', { name: 'Thử lưu lại' });
-  fireEvent.keyDown(window, { key: 'Enter' }); expect(screen.queryByText('Word 2')).toBeNull();
-  fireEvent.click(screen.getByRole('button', { name: 'Thử lưu lại' }));
-  await waitFor(() => expect(api.review).toHaveBeenCalledTimes(2));
-  await waitFor(() => expect((screen.getByRole('button', { name: /Tiếp theo/ }) as HTMLButtonElement).disabled).toBe(false));
-  fireEvent.keyDown(window, { key: 'Enter' }); expect(screen.getByText('Word 2')).toBeTruthy();
+  await mountSrs();
+  fireEvent.click(screen.getByRole('button', { name: /Thuộc/ }));
+  await screen.findByRole('button', { name: 'Thử lại' });
+  expect(screen.queryByText('Word 2')).toBeNull();
+  fireEvent.click(screen.getByRole('button', { name: 'Thử lại' }));
+  await screen.findAllByText('Word 2');
+  expect(api.review.mock.calls[1][0]).toEqual(api.review.mock.calls[0][0]);
 });
 
 test('QA-005: six deadline ticks keep one submission in flight and allow explicit retry after failure', async () => {

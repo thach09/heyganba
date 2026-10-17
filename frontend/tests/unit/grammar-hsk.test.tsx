@@ -40,15 +40,15 @@ vi.mock('../../src/app/useAuth', () => ({
   }),
 }));
 
-const sampleRules: GrammarRuleDto[] = [
+const sampleRules = [
   {
     id: 1,
     lessonId: 1,
     title: 'Đại từ nghi vấn 什么 (Cái gì)',
-    structureFormula: 'Chủ ngữ + 是 + 什么？ / Động từ + 什么？',
+    structure: 'Chủ ngữ + 是 + 什么？ / Động từ + 什么？',
     explanation: 'Dùng để hỏi về đồ vật, sự vật hoặc danh xưng.',
     hskLevel: 1,
-    commonMistakesVi: 'Người Việt hay nhầm vị trí của 什么 đặt ở đầu câu như tiếng Việt.',
+    notes: 'Người Việt hay nhầm vị trí của 什么 đặt ở đầu câu như tiếng Việt.',
     reviewStatus: 'PENDING_REVIEW',
     examples: [
       {
@@ -69,10 +69,10 @@ const sampleRules: GrammarRuleDto[] = [
     id: 2,
     lessonId: 2,
     title: 'Câu vị ngữ tính từ với 很',
-    structureFormula: 'Chủ ngữ + 很 + Tính từ',
+    structure: 'Chủ ngữ + 很 + Tính từ',
     explanation: 'Trong câu khẳng định đơn giản có tính từ làm vị ngữ, cần thêm phó từ mức độ như 很.',
     hskLevel: 1,
-    commonMistakesVi: 'Người Việt rất hay dùng "是" trước tính từ (sai: *我是很好).',
+    notes: 'Người Việt rất hay dùng "是" trước tính từ (sai: *我是很好).',
     reviewStatus: 'APPROVED',
     examples: [
       {
@@ -87,10 +87,10 @@ const sampleRules: GrammarRuleDto[] = [
     id: 3,
     lessonId: 5,
     title: 'Trợ từ kết cấu 得 biểu thị mức độ',
-    structureFormula: 'Động từ + 得 + Mức độ',
+    structure: 'Động từ + 得 + Mức độ',
     explanation: 'Dùng để miêu tả, đánh giá kết quả hoặc trạng thái của hành động.',
     hskLevel: 2,
-    commonMistakesVi: 'Hay nhầm trợ từ 得 với 的 và 地.',
+    notes: 'Hay nhầm trợ từ 得 với 的 và 地.',
     reviewStatus: 'APPROVED',
     examples: [
       {
@@ -101,7 +101,8 @@ const sampleRules: GrammarRuleDto[] = [
       },
     ],
   },
-];
+].map((rule, index) => ({ ...rule, number: index + 1, lessonSlug: null, lessonTitle: null, exerciseCount: 1,
+  examplesJson: JSON.stringify(rule.examples.map(ex => ({ zh: ex.sentenceZh, pinyin: ex.pinyin, vi: ex.meaningVi }))) })) satisfies GrammarRuleDto[];
 
 describe('HSK Grammar Lab (GrammarView)', () => {
   beforeEach(() => {
@@ -141,7 +142,7 @@ describe('HSK Grammar Lab (GrammarView)', () => {
     expect(screen.getByText('Trợ từ kết cấu 得 biểu thị mức độ')).toBeTruthy();
 
     // Click HSK 1 filter chip
-    const hsk1Filter = screen.getByRole('button', { name: 'HSK 1' });
+    const hsk1Filter = screen.getByRole('button', { name: /^HSK 1 \(/ });
     fireEvent.click(hsk1Filter);
 
     // HSK 1 rules remain, HSK 2 rule is filtered out
@@ -157,7 +158,8 @@ describe('HSK Grammar Lab (GrammarView)', () => {
       </MemoryRouter>
     );
 
-    expect(await screen.findByText('Chủ ngữ + 是 + 什么？ / Động từ + 什么？')).toBeTruthy();
+    fireEvent.click(await screen.findByText('Đại từ nghi vấn 什么 (Cái gì)'));
+    expect((await screen.findAllByText('Chủ ngữ + 是 + 什么？ / Động từ + 什么？'))[0]).toBeTruthy();
     expect(screen.getByText(/Người Việt hay nhầm vị trí của 什么 đặt ở đầu câu/)).toBeTruthy();
   });
 
@@ -168,6 +170,7 @@ describe('HSK Grammar Lab (GrammarView)', () => {
       </MemoryRouter>
     );
 
+    fireEvent.click(await screen.findByText('Đại từ nghi vấn 什么 (Cái gì)'));
     expect(await screen.findByText('Zhè shì shénme?')).toBeTruthy();
 
     // Find and click Toggle Pinyin button
@@ -186,8 +189,9 @@ describe('HSK Grammar Lab (GrammarView)', () => {
       </MemoryRouter>
     );
 
+    fireEvent.click(await screen.findByText('Đại từ nghi vấn 什么 (Cái gì)'));
     await screen.findByText('这是什么？');
-    const audioButtons = screen.getAllByRole('button', { name: /Nghe câu/ });
+    const audioButtons = screen.getAllByRole('button', { name: /Nghe phát âm chuẩn Quan thoại/ });
     fireEvent.click(audioButtons[0]);
 
     expect(mockSpeakChinese).toHaveBeenCalledWith('这是什么？');
@@ -215,6 +219,6 @@ describe('HSK Grammar Lab (GrammarView)', () => {
     expect(mockGrammarApi.check).toHaveBeenCalledTimes(1);
     expect(mockRewardBamboo).toHaveBeenCalledWith(2);
     expect(screen.getByText('通')).toBeTruthy();
-    expect(screen.getByText(/\+15 EXP/)).toBeTruthy();
+    expect(mockTriggerReaction).toHaveBeenCalledWith('happy');
   });
 });

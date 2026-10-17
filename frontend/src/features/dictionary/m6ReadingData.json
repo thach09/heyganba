@@ -1,0 +1,134 @@
+[
+  {
+    "id": 6,
+    "hskLevel": 3,
+    "title": "Giúp bạn tìm hành lý (找行李)",
+    "passageText": "小林到机场以后，发现自己的行李不见了。他很着急，马上向工作人员求助。工作人员请他出示护照，并检查了行李信息。最后，他们在旁边的房间找到了行李。小林终于放心了。",
+    "translationText": "Sau khi đến sân bay, Tiểu Lâm phát hiện hành lý của mình không thấy đâu. Anh rất sốt ruột, lập tức nhờ nhân viên giúp. Nhân viên đề nghị anh xuất trình hộ chiếu và kiểm tra thông tin hành lý. Cuối cùng họ tìm thấy hành lý ở phòng bên cạnh. Tiểu Lâm cuối cùng đã yên tâm.",
+    "vocabularyNotes": "行李: hành lý, 护照: hộ chiếu, 着急: sốt ruột, 放心: yên tâm.",
+    "questions": [
+      {
+        "question": "小林为什么着急？",
+        "options": [
+          "行李不见了",
+          "忘了买票",
+          "飞机晚点了",
+          "护照过期了"
+        ],
+        "correctAnswer": "行李不见了",
+        "explanation": "Tiểu Lâm phát hiện hành lý không thấy đâu."
+      },
+      {
+        "question": "最后在哪里找到了行李？",
+        "options": [
+          "旁边的房间",
+          "地铁上",
+          "家里",
+          "学校"
+        ],
+        "correctAnswer": "旁边的房间",
+        "explanation": "Nhân viên tìm thấy hành lý ở phòng bên cạnh."
+      }
+    ],
+    "passagePinyin": "xiǎo lín dào jī chǎng yǐ hòu ， fā xiàn zì jǐ de xíng lǐ bú jiàn le 。 tā hěn zháo jí ， mǎ shàng xiàng gōng zuò rén yuán qiú zhù 。 gōng zuò rén yuán qǐng tā chū shì hù zhào ， bìng jiǎn chá le xíng lǐ xìn xī 。 zuì hòu ， tā men zài páng biān de fáng jiān zhǎo dào le xíng lǐ 。 xiǎo lín zhōng yú fàng xīn le 。"
+  },
+  {
+    "id": 7,
+    "hskLevel": 4,
+    "title": "Thay đổi kế hoạch công việc (调整计划)",
+    "passageText": "为了提高工作质量，团队决定每周交流一次经验。起初，有人担心这样会增加压力。尽管大家的看法不同，负责人还是认真听取了意见，并按照实际情况调整计划。一个月后，大家发现交流有助于减少误会，也更愿意承担责任。",
+    "translationText": "Để nâng cao chất lượng công việc, nhóm quyết định trao đổi kinh nghiệm mỗi tuần một lần. Ban đầu có người lo điều này làm tăng áp lực. Mặc dù ý kiến khác nhau, người phụ trách vẫn nghiêm túc lắng nghe và điều chỉnh kế hoạch theo tình hình thực tế. Sau một tháng mọi người thấy trao đổi giúp giảm hiểu lầm và cũng sẵn lòng nhận trách nhiệm hơn.",
+    "vocabularyNotes": "质量: chất lượng, 压力: áp lực, 误会: hiểu lầm, 责任: trách nhiệm.",
+    "questions": [
+      {
+        "question": "团队为什么决定交流经验？",
+        "options": [
+          "提高工作质量",
+          "取消所有会议",
+          "减少工资",
+          "更换办公室"
+        ],
+        "correctAnswer": "提高工作质量",
+        "explanation": "Đầu bài nêu mục đích là nâng cao chất lượng công việc."
+      },
+      {
+        "question": "负责人如何处理不同意见？",
+        "options": [
+          "认真听取并调整计划",
+          "拒绝听取",
+          "立即批评所有人",
+          "完全取消交流"
+        ],
+        "correctAnswer": "认真听取并调整计划",
+        "explanation": "Người phụ trách lắng nghe ý kiến và điều chỉnh theo thực tế."
+      }
+    ],
+    "passagePinyin": "wèi le tí gāo gōng zuò zhì liàng ， tuán duì jué dìng měi zhōu jiāo liú yī cì jīng yàn 。 qǐ chū ， yǒu rén dān xīn zhè yàng huì zēng jiā yā lì 。 jǐn guǎn dà jiā de kàn fǎ bù tóng ， fù zé rén hái shì rèn zhēn tīng qǔ le yì jiàn ， bìng àn zhào shí jì qíng kuàng tiáo zhěng jì huà 。 yí gè yuè hòu ， dà jiā fā xiàn jiāo liú yǒu zhù yú jiǎn shǎo wù huì ， yě gèng yuàn yì chéng dān zé rèn 。"
+  },
+  {
+    "id": 8,
+    "hskLevel": 5,
+    "title": "Đọc thông tin trên truyền thông (面对信息)",
+    "passageText": "面对媒体上层出不穷的信息，我们不应盲目接受，也不必一概拒绝。与其只看标题，不如仔细分析内容，区分事实与主观看法。一个观点即使流传很广，也未必可靠。珍惜自己的注意力，既能提高阅读效率，也有助于形成独立的判断。",
+    "translationText": "Trước thông tin xuất hiện không ngừng trên truyền thông, chúng ta không nên tiếp nhận mù quáng cũng không cần bác bỏ tất cả. Thay vì chỉ xem tiêu đề, nên phân tích kỹ nội dung, phân biệt sự thật và ý kiến chủ quan. Một quan điểm dù được lan truyền rộng cũng chưa chắc đáng tin. Trân trọng sự chú ý của mình vừa nâng cao hiệu suất đọc vừa giúp hình thành phán đoán độc lập.",
+    "vocabularyNotes": "媒体: truyền thông, 盲目: mù quáng, 主观: chủ quan, 效率: hiệu suất.",
+    "questions": [
+      {
+        "question": "作者建议怎样阅读信息？",
+        "options": [
+          "分析内容并区分事实与看法",
+          "只看标题",
+          "全部拒绝",
+          "只相信热门观点"
+        ],
+        "correctAnswer": "分析内容并区分事实与看法",
+        "explanation": "Tác giả khuyên phân tích nội dung và phân biệt sự thật với ý kiến."
+      },
+      {
+        "question": "流传很广的观点一定可靠吗？",
+        "options": [
+          "不一定",
+          "一定可靠",
+          "完全没有价值",
+          "只要标题长就可靠"
+        ],
+        "correctAnswer": "不一定",
+        "explanation": "即使流传很广，也未必可靠 nghĩa là dù phổ biến cũng chưa chắc đáng tin."
+      }
+    ],
+    "passagePinyin": "miàn duì méi tǐ shàng céng chū bù qióng de xìn xī ， wǒ men bù yīng máng mù jiē shòu ， yě bù bì yī gài jù jué 。 yǔ qí zhǐ kàn biāo tí ， bù rú zǐ xì fēn xī nèi róng ， qū fēn shì shí yǔ zhǔ guān kàn fǎ 。 yí gè guān diǎn jí shǐ liú chuán hěn guǎng ， yě wèi bì kě kào 。 zhēn xī zì jǐ de zhù yì lì ， jì néng tí gāo yuè dú xiào lǜ ， yě yǒu zhù yú xíng chéng dú lì de pàn duàn 。"
+  },
+  {
+    "id": 9,
+    "hskLevel": 6,
+    "title": "Đổi mới và trách nhiệm (创新与责任)",
+    "passageText": "创新固然能够推动发展，然而衡量一项方案的价值，不能只看短期效率。鉴于公共资源有限，决策者更应严谨地评估长期影响。透明的讨论与持续的实践相辅相成，既能弥补个人判断的不足，也有助于形成共识。归根结底，真正的进步应当经得起时间的检验，而非仅仅追求一时的轰动。",
+    "translationText": "Đổi mới cố nhiên có thể thúc đẩy phát triển, tuy nhiên khi đánh giá giá trị một phương án không thể chỉ nhìn hiệu suất ngắn hạn. Xét thấy nguồn lực công có hạn, người ra quyết định càng cần đánh giá nghiêm cẩn tác động lâu dài. Thảo luận minh bạch và thực hành liên tục bổ trợ nhau, vừa bù đắp hạn chế trong phán đoán cá nhân vừa giúp hình thành đồng thuận. Xét đến cùng tiến bộ thực sự cần chịu được thử thách của thời gian, chứ không chỉ theo đuổi tiếng vang nhất thời.",
+    "vocabularyNotes": "严谨: nghiêm cẩn, 相辅相成: bổ trợ nhau, 弥补: bù đắp, 共识: đồng thuận.",
+    "questions": [
+      {
+        "question": "作者认为评估方案时不应只看什么？",
+        "options": [
+          "短期效率",
+          "长期影响",
+          "公共资源",
+          "讨论过程"
+        ],
+        "correctAnswer": "短期效率",
+        "explanation": "Tác giả nói không thể chỉ nhìn hiệu suất ngắn hạn."
+      },
+      {
+        "question": "讨论与实践是什么关系？",
+        "options": [
+          "相辅相成",
+          "完全对立",
+          "互不相关",
+          "可以互相取代"
+        ],
+        "correctAnswer": "相辅相成",
+        "explanation": "Bài đọc nói thảo luận minh bạch và thực hành liên tục bổ trợ lẫn nhau."
+      }
+    ],
+    "passagePinyin": "chuàng xīn gù rán néng gòu tuī dòng fā zhǎn ， rán ér héng liáng yī xiàng fāng àn de jià zhí ， bù néng zhǐ kàn duǎn qī xiào lǜ 。 jiàn yú gōng gòng zī yuán yǒu xiàn ， jué cè zhě gèng yīng yán jǐn dì píng gū cháng qī yǐng xiǎng 。 tòu míng de tǎo lùn yǔ chí xù de shí jiàn xiāng fǔ xiāng chéng ， jì néng mí bǔ gè rén pàn duàn de bù zú ， yě yǒu zhù yú xíng chéng gòng shí 。 guī gēn jié dǐ ， zhēn zhèng de jìn bù yīng dāng jīng dé qǐ shí jiān de jiǎn yàn ， ér fēi jǐn jǐn zhuī qiú yī shí de hōng dòng 。"
+  }
+]

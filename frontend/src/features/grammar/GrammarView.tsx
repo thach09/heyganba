@@ -15,11 +15,7 @@ import { speakChinese } from '../../services/chineseSpeech';
 import type { GrammarCheckResult, GrammarExerciseDto, GrammarRuleDto } from './types';
 import { learningKeyboardBlocked } from '../../lib/learningKeyboard';
 
-const HSK_LEVEL_OPTIONS = [
-  { level: 'ALL', label: 'Tất cả' },
-  { level: 'HSK 1', label: 'HSK 1' },
-  { level: 'HSK 2', label: 'HSK 2' },
-];
+const HSK_LEVEL_OPTIONS = [{ level: 'ALL', label: 'Tất cả' }, ...[1, 2, 3, 4, 5, 6].map(n => ({ level: `HSK ${n}`, label: `HSK ${n}` }))];
 
 const LESSON_OPTIONS = [
   { slug: 'intro-greetings', label: 'Bài 1: Chào hỏi' },
@@ -195,7 +191,7 @@ export const GrammarView: React.FC = () => {
     return rules.filter((rule) => {
       if (selectedHskLevel !== 'ALL') {
         const targetLevel = Number(selectedHskLevel.replace('HSK ', ''));
-        if (rule.hskLevel && rule.hskLevel !== targetLevel) return false;
+        if (rule.hskLevel !== targetLevel) return false;
       }
       if (lesson && rule.lessonSlug !== lesson) {
         return false;
@@ -228,8 +224,7 @@ export const GrammarView: React.FC = () => {
 
       if (
         answerAttempt.current &&
-        answerAttempt.current.exerciseId === current.id &&
-        answerAttempt.current.userAnswer === option
+        answerAttempt.current.exerciseId === current.id
       ) {
         // reuse same attempt
       } else {
@@ -471,7 +466,7 @@ export const GrammarView: React.FC = () => {
   return (
     <div className="mx-auto flex w-full max-w-[1100px] flex-col">
       {/* Station header */}
-      <div className="flex items-center justify-between gap-6">
+      <div className="flex min-w-0 flex-wrap items-center justify-between gap-6">
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-cinnabar">
             <span className="inline-block h-2 w-2 rounded-full bg-cinnabar" />
@@ -523,9 +518,9 @@ export const GrammarView: React.FC = () => {
                   key={opt.level}
                   type="button"
                   className={chipClass(selectedHskLevel === opt.level)}
-                  onClick={() => setSelectedHskLevel(opt.level)}
+                  onClick={() => { setSelectedHskLevel(opt.level); setSelectedRule(null); setDetailOpen(false); }}
                 >
-                  {opt.label}
+                  {opt.label} ({rules.filter(rule => opt.level === 'ALL' || rule.hskLevel === Number(opt.level.slice(-1))).length})
                 </button>
               ))}
             </div>
@@ -787,7 +782,7 @@ export const GrammarView: React.FC = () => {
                       type="button"
                       disabled={checking || selectedOption !== null || Boolean(result)}
                       onClick={() => void submitAnswer(option)}
-                      className={`flex items-center gap-3 rounded border px-4 py-3 text-left transition-all disabled:cursor-default ${
+                      className={`flex min-w-0 flex-wrap items-center gap-3 rounded border px-4 py-3 text-left transition-all disabled:cursor-default ${
                         result ? 'cursor-default' : 'cursor-pointer'
                       } ${tone}`}
                     >

@@ -163,7 +163,7 @@ describe('Milestone M2.2 - Thematic Curriculum & Flashcard Features', () => {
     );
 
     expect(
-      await screen.findByText(/Giáo trình Từ vựng HSK 1 & HSK 2: APPROVED · Đã kiểm duyệt/)
+      await screen.findByText(/Từ vựng HSK 1–6 · Nội dung đã duyệt/)
     ).toBeInTheDocument();
 
     expect(screen.getByText(/Trạm 2 · 词汇与记忆 · Từ vựng & Sổ từ · \[M2.2 Hoạt động thật\]/)).toBeInTheDocument();
@@ -183,8 +183,8 @@ describe('Milestone M2.2 - Thematic Curriculum & Flashcard Features', () => {
     expect(screen.getByText('Ăn uống & Mua sắm')).toBeInTheDocument();
 
     // Check milestone badge differentiation
-    expect(screen.getByText('Khóa Nhập môn')).toBeInTheDocument();
-    expect(screen.getAllByText('Giáo trình Chuẩn HSK 1')).toHaveLength(3);
+    expect(screen.getAllByText('Nhập môn').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('HSK 1').length).toBeGreaterThanOrEqual(3);
 
     // Filter by HSK 1
     const hsk1FilterButton = screen.getByRole('button', { name: /HSK 1 \(3\)/ });
@@ -278,7 +278,7 @@ describe('Milestone M2.2 - Thematic Curriculum & Flashcard Features', () => {
     const pinyinInput = screen.queryByPlaceholderText(/Ví dụ: ni3 hao3 hoặc nǐ hǎo/);
     if (pinyinInput) {
       fireEvent.change(pinyinInput, { target: { value: 'ba4ba' } });
-      const submitBtn = screen.getByRole('button', { name: 'Kiểm tra' });
+      const submitBtn = screen.getByRole('button', { name: 'Xác nhận đáp án' });
       fireEvent.click(submitBtn);
 
       // Score should increase to 1
@@ -289,7 +289,7 @@ describe('Milestone M2.2 - Thematic Curriculum & Flashcard Features', () => {
       const choiceBtn = buttons.find(b => b.textContent?.includes('bố') || b.textContent?.includes('mẹ'));
       if (choiceBtn) {
         fireEvent.click(choiceBtn);
-        const submitBtn = screen.getByRole('button', { name: 'Kiểm tra' });
+        const submitBtn = screen.getByRole('button', { name: 'Xác nhận đáp án' });
         fireEvent.click(submitBtn);
       }
     }

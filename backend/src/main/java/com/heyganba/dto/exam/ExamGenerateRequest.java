@@ -11,6 +11,11 @@ public record ExamGenerateRequest(
 
         @Min(value = 5, message = "durationMinutes must be at least 5")
         @Max(value = 120, message = "durationMinutes must be at most 120")
-        Integer durationMinutes
+        Integer durationMinutes,
+
+        @Min(1) @Max(6) Integer hskLevel
 ) {
+    public ExamGenerateRequest(Integer totalQuestions, Integer durationMinutes) {
+        this(totalQuestions, durationMinutes, null);
+    }
 }

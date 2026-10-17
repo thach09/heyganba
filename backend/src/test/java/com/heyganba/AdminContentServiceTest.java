@@ -131,20 +131,23 @@ class AdminContentServiceTest {
     @Test
     @DisplayName("Admin duyệt tất cả các mục PENDING_REVIEW và ghi nhận audit log")
     void approveAllPending_updatesAllAndLogsAction() {
-        when(vocabularyRepository.bulkApprovePending()).thenReturn(10);
-        when(kanjiRepository.bulkApprovePending()).thenReturn(5);
-        when(grammarRuleRepository.bulkApprovePending()).thenReturn(2);
-        when(grammarExerciseRepository.bulkApprovePending()).thenReturn(4);
-        when(kanaRepository.bulkApprovePending()).thenReturn(1);
-
+        Vocabulary vocabulary = Vocabulary.builder().reviewStatus(com.heyganba.model.enums.ReviewStatus.PENDING_REVIEW).build();
+        Kanji hanzi = Kanji.builder().reviewStatus(com.heyganba.model.enums.ReviewStatus.PENDING_REVIEW).build();
+        GrammarExercise exercise = GrammarExercise.builder().reviewStatus(com.heyganba.model.enums.ReviewStatus.PENDING_REVIEW).build();
+        com.heyganba.model.entity.GrammarRule rule = com.heyganba.model.entity.GrammarRule.builder().reviewStatus(com.heyganba.model.enums.ReviewStatus.PENDING_REVIEW).build();
+        com.heyganba.model.entity.Kana kana = com.heyganba.model.entity.Kana.builder().reviewStatus(com.heyganba.model.enums.ReviewStatus.PENDING_REVIEW).build();
+        when(vocabularyRepository.findAll()).thenReturn(java.util.List.of(vocabulary));
+        when(kanjiRepository.findAll()).thenReturn(java.util.List.of(hanzi));
+        when(grammarExerciseRepository.findAll()).thenReturn(java.util.List.of(exercise));
+        when(grammarRuleRepository.findAll()).thenReturn(java.util.List.of(rule));
+        when(kanaRepository.findAll()).thenReturn(java.util.List.of(kana));
         int total = adminContentService.approveAllPending(admin);
-
-        assertThat(total).isEqualTo(22);
-        verify(vocabularyRepository).bulkApprovePending();
-        verify(kanjiRepository).bulkApprovePending();
-        verify(grammarRuleRepository).bulkApprovePending();
-        verify(grammarExerciseRepository).bulkApprovePending();
-        verify(kanaRepository).bulkApprovePending();
-        verify(auditLogService).logAction(eq(admin), eq("review_queue"), eq(0L), eq("BULK_APPROVE"), isNull(), eq("Approved 22 pending items"));
+        assertThat(total).isEqualTo(5);
+        assertThat(vocabulary.getReviewStatus()).isEqualTo(com.heyganba.model.enums.ReviewStatus.APPROVED);
+        assertThat(hanzi.getReviewStatus()).isEqualTo(com.heyganba.model.enums.ReviewStatus.APPROVED);
+        assertThat(exercise.getReviewStatus()).isEqualTo(com.heyganba.model.enums.ReviewStatus.APPROVED);
+        assertThat(rule.getReviewStatus()).isEqualTo(com.heyganba.model.enums.ReviewStatus.APPROVED);
+        assertThat(kana.getReviewStatus()).isEqualTo(com.heyganba.model.enums.ReviewStatus.APPROVED);
+        verify(auditLogService).logAction(eq(admin), eq("curriculum"), isNull(), eq("APPROVE_ALL"), eq("PENDING_REVIEW"), eq("APPROVED (5 mục)"));
     }
 }

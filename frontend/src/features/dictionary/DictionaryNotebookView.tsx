@@ -53,6 +53,7 @@ const DictionaryNotebookSessionView: React.FC = () => {
   const [notebookFilter, setNotebookFilter] = useState('');
 
   // Contextual reading state
+  const [readingLevel, setReadingLevel] = useState<number | 'ALL'>('ALL');
   const [selectedPassageId, setSelectedPassageId] = useState<number>(1);
   const [showPinyin, setShowPinyin] = useState(true);
   const [showTranslation, setShowTranslation] = useState(false);
@@ -499,7 +500,7 @@ const DictionaryNotebookSessionView: React.FC = () => {
                   <div className="grid gap-3 min-[768px]:grid-cols-3">
                     {searchResult.kanjis.map((k) => (
                       <div key={k.id} className="border border-rule bg-card p-4">
-                        <div className="flex items-center gap-3">
+                        <div className="flex min-w-0 flex-wrap items-center gap-3">
                           <span className="flex h-12 w-12 items-center justify-center border border-rule bg-bg font-serif text-[24px] font-bold text-fg">
                             {k.character}
                           </span>
@@ -775,23 +776,33 @@ const DictionaryNotebookSessionView: React.FC = () => {
 
       {/* TAB 3: CONTEXTUAL READING (ĐỌC HIỂU NGỮ CẢNH HSK) */}
       {activeTab === 'READING' && (() => {
-        const activePassage = ALL_READING_PASSAGES.find((p) => p.id === selectedPassageId) || ALL_READING_PASSAGES[0];
+        const passages = ALL_READING_PASSAGES.filter(p => readingLevel === 'ALL' || p.hskLevel === readingLevel);
+        const activePassage = passages.find((p) => p.id === selectedPassageId) || passages[0];
         return (
           <div className="mt-8 flex flex-col gap-6">
             <div>
               <div className="flex items-center gap-2">
-                <span className="rounded bg-seal/10 px-2 py-0.5 text-[11px] font-semibold text-seal">HSK 1 · HSK 2</span>
+                <span className="rounded bg-seal/10 px-2 py-0.5 text-[11px] font-semibold text-seal">HSK 1–6</span>
                 <span className={labelClass}>Contextual Dialogues & Reading</span>
               </div>
               <h3 className="mt-1 font-serif text-[18px] font-semibold text-fg">Đọc hiểu ngữ cảnh & Hội thoại ngắn</h3>
               <p className="mt-1 text-[12.5px] text-fg-60">
-                Luyện tập đọc văn bản ngữ cảnh HSK 1 & HSK 2. Bạn có thể bật/tắt Pinyin để rèn phản xạ nhận biết mặt chữ Hán và nghe giọng chuẩn để đối chiếu ngữ điệu.
+                Luyện tập đọc văn bản ngữ cảnh HSK 1–6. Bạn có thể bật/tắt Pinyin để rèn phản xạ nhận biết mặt chữ Hán và nghe giọng chuẩn để đối chiếu ngữ điệu.
               </p>
             </div>
 
+            <div className="flex flex-wrap gap-2" aria-label="Cấp độ bài đọc">
+              {(['ALL', 1, 2, 3, 4, 5, 6] as const).map(level => (
+                <button type="button" key={level} aria-pressed={readingLevel === level}
+                  className="border border-rule-strong px-3 py-2 text-[12.5px] leading-relaxed text-fg-60"
+                  onClick={() => { setReadingLevel(level); setReadingAnswers({}); setReadingChecked(false); setShowTranslation(false); }}>
+                  {level === 'ALL' ? 'Tất cả' : `HSK ${level}`} ({ALL_READING_PASSAGES.filter(p => level === 'ALL' || p.hskLevel === level).length})
+                </button>
+              ))}
+            </div>
             {/* Passage Selector */}
             <div className="flex flex-wrap gap-2">
-              {ALL_READING_PASSAGES.map((passage) => {
+              {passages.map((passage) => {
                 const isSelected = passage.id === activePassage.id;
                 return (
                   <button
@@ -818,7 +829,7 @@ const DictionaryNotebookSessionView: React.FC = () => {
             {/* Main Reading Card */}
             <div className="rounded border border-rule bg-card p-6 shadow-sm">
               <div className="flex flex-wrap items-center justify-between gap-3 border-b border-rule pb-4">
-                <div className="flex items-center gap-2.5">
+                <div className="flex min-w-0 flex-wrap items-center gap-2.5">
                   <BookOpen size={18} className="text-seal" />
                   <h4 className="font-serif text-[17px] font-semibold text-fg">{activePassage.title}</h4>
                 </div>

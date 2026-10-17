@@ -51,7 +51,7 @@ class FlywayLocationsConfigTest {
                 .getResources("classpath:" + directory + "/*.sql");
         return Arrays.stream(resources)
                 .map(Resource::getFilename)
-                .filter(name -> name != null)
+                .filter(name -> name != null && name.matches("V[0-9].*__.*\\.sql"))
                 .sorted()
                 .toList();
     }

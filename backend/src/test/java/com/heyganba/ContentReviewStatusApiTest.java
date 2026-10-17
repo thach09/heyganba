@@ -105,7 +105,7 @@ class ContentReviewStatusApiTest extends ContentApiTestBase {
 
         MvcResult result = mockMvc.perform(get("/content/review-status").header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.types", hasSize(5)))
+                .andExpect(jsonPath("$.data.types", hasSize(6)))
                 .andExpect(jsonPath("$.data.allApproved", is(false)))
                 .andExpect(jsonPath("$.data.totalPendingReview", greaterThan(0)))
                 .andExpect(jsonPath("$.data.stagingOnlyMigrations", notNullValue()))

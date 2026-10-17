@@ -68,6 +68,7 @@ export const ExamView: React.FC = () => {
   const navigate = useNavigate();
   const { run, cancel } = useRequestScope(user?.userId);
   const [phase, setPhase] = useState<Phase>('IDLE');
+  const [hskLevel, setHskLevel] = useState(1);
   const [totalQuestions, setTotalQuestions] = useState(20);
   const [durationMinutes, setDurationMinutes] = useState(20);
   const [exam, setExam] = useState<ExamDto | null>(null);
@@ -227,7 +228,7 @@ export const ExamView: React.FC = () => {
   /** Play question audio via browser Mandarin TTS */
   const playQuestionAudio = (question: ExamQuestion, event: React.MouseEvent) => {
     event.stopPropagation();
-    const text = question.audioText ?? question.questionText;
+    const text = question.audioText ?? (question as unknown as { audioPrompt?: string }).audioPrompt ?? question.questionText;
     if (isChineseSpeechSupported()) {
       speakChinese(text);
     } else {
@@ -244,7 +245,7 @@ export const ExamView: React.FC = () => {
       examApi.generate({
         signal,
         method: 'POST',
-        body: JSON.stringify({ totalQuestions, durationMinutes }),
+        body: JSON.stringify({ totalQuestions, durationMinutes, hskLevel }),
       })
     );
     if (!res) return;
@@ -354,10 +355,12 @@ export const ExamView: React.FC = () => {
       }
 
       if (event.key === 'ArrowRight' && activeIndex < exam.questions.length - 1) {
+        checkpointAttempt(exam, answers, activeIndex + 1);
         setActiveIndex((i) => i + 1);
         return;
       }
       if (event.key === 'ArrowLeft' && activeIndex > 0) {
+        checkpointAttempt(exam, answers, activeIndex - 1);
         setActiveIndex((i) => i - 1);
       }
     };
@@ -371,7 +374,7 @@ export const ExamView: React.FC = () => {
       <div className="mx-auto flex w-full max-w-[560px] flex-col items-center pt-16 text-center">
         <span className="font-serif text-[38px] font-bold leading-none text-fg">模拟考</span>
         <p className="mt-5 text-[13px] leading-[1.9] text-fg-60">
-          Đăng nhập để thi thử đề chuẩn HSK 1–3, chấm điểm tự động và xếp hạng theo lớp. Đề thi được tạo ngẫu nhiên từ ngân hàng câu hỏi chính thức.
+          Đăng nhập để luyện thi HSK 1–6, chấm điểm tự động và xếp hạng theo lớp. Đề được tạo từ nội dung đã duyệt theo cấp độ.
         </p>
         <div className="mt-7">
           <SubmitButton onClick={onRequireLogin}>Đăng nhập / Đăng ký</SubmitButton>
@@ -383,15 +386,17 @@ export const ExamView: React.FC = () => {
   const currentUserId = user?.userId;
 
   // Scaled HSK score on official 200-point scale
-  const scaledHskScore = result ? Math.round((result.correctCount / Math.max(1, result.totalCount)) * 200) : 0;
-  const isHskPassed = scaledHskScore >= 120;
+  const maximumScore = result?.maximumScore ?? exam?.maximumScore ?? (hskLevel <= 2 ? 200 : 300);
+  const passingScore = result?.passingScore ?? maximumScore * 0.6;
+  const scaledHskScore = result?.scaledScore ?? (result ? Math.round(result.scorePercent * maximumScore / 100) : 0);
+  const isHskPassed = scaledHskScore >= passingScore;
 
   return (
     <div className="mx-auto flex w-full max-w-[1100px] flex-col">
       {/* Station Header */}
-      <div className="flex items-center justify-between gap-6">
+      <div className="flex min-w-0 flex-wrap items-center justify-between gap-6">
         <div>
-          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-cinnabar">
+          <div className="flex min-w-0 flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-wider text-cinnabar">
             <span className="inline-block h-2 w-2 rounded-full bg-cinnabar" />
             Trạm 5 · 模拟考试 · Phòng Thi Thử HSK · [Hoạt động thật]
           </div>
@@ -399,7 +404,7 @@ export const ExamView: React.FC = () => {
             Thi Thử HSK &amp; Đánh Giá Năng Lực
           </h1>
           <p className="mt-1.5 max-w-2xl text-xs leading-relaxed text-fg-60">
-            Mô phỏng đề thi năng lực Hán ngữ HSK chuẩn (Phần Nghe 听力, Phần Đọc &amp; Điền từ 阅读), tính điểm theo thang 200 điểm chính thức và cấp dấu triện đạt chuẩn.
+            Luyện theo cấp độ HSK 1–6: thang 200 điểm cho HSK 1–2, thang 300 điểm cho HSK 3–6. Đây là bài luyện nội bộ, không cấp chứng chỉ HSK.
           </p>
         </div>
         <button
@@ -440,24 +445,29 @@ export const ExamView: React.FC = () => {
       {phase === 'IDLE' && resumeState === 'none' && (
         <>
           {/* Exam Setup Card */}
-          <div className="mt-8 rounded-xl border border-rule bg-card p-6 shadow-md">
+          <div className="mt-8 min-w-0 bg-card p-6">
             <div className="flex flex-col gap-5">
               <div className="flex flex-wrap items-center justify-between gap-4 border-b border-rule pb-4">
                 <div>
                   <h3 className="font-serif text-lg font-bold text-fg">
-                    Đề Thi Thử HSK 1 Chuẩn (HSK 1 全真模拟卷)
+                    Bài luyện thi HSK {hskLevel}
                   </h3>
                   <p className="text-xs text-fg-60 mt-0.5">
-                    Thang điểm HSK: <b>200 điểm</b> · Ngưỡng đạt chuẩn: <b>120 / 200 điểm (≥ 60%)</b>
+                    Thang điểm HSK: <b>{hskLevel <= 2 ? 200 : 300} điểm</b> · Ngưỡng đạt chuẩn: <b>{hskLevel <= 2 ? 120 : 180} / {hskLevel <= 2 ? 200 : 300} điểm (≥ 60%)</b>
                   </p>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex min-w-0 flex-wrap items-center gap-2">
                   <span className="rounded bg-cinnabar/10 border border-cinnabar/30 px-2.5 py-1 text-xs font-semibold text-cinnabar">
-                    HSK 1 Chuẩn Hán ngữ
+                    HSK {hskLevel} · Bài luyện nội bộ
                   </span>
                 </div>
               </div>
 
+              <div className="flex flex-wrap gap-2" aria-label="Cấp độ đề thi">
+                {[1, 2, 3, 4, 5, 6].map(level => <button key={level} type="button" aria-pressed={hskLevel === level}
+                  className={chipClass(hskLevel === level)} onClick={() => setHskLevel(level)}>HSK {level}</button>)}
+              </div>
+              <p className="text-[12.5px] leading-relaxed text-fg-60">{hskLevel <= 2 ? 'Nghe 100 + Đọc 100' : 'Nghe 100 + Đọc 100 + Ngữ pháp 100'}. Phần nghe dùng TTS, phần ngữ pháp thay cho viết tự luận trong bài luyện này.</p>
               <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className={labelClass}>Số lượng câu hỏi</span>
@@ -622,7 +632,7 @@ export const ExamView: React.FC = () => {
                 </thead>
                 <tbody>
                   {history.map((item) => {
-                    const scaled = Math.round((item.scorePercent / 100) * 200);
+                    const scaled = item.scaledScore ?? Math.round((item.scorePercent / 100) * (item.maximumScore ?? 200));
                     return (
                       <tr key={item.examId}>
                         <td className={tdClass}>Đề #{item.examId}</td>
@@ -630,8 +640,8 @@ export const ExamView: React.FC = () => {
                           {item.correctCount}/{item.totalCount}
                         </td>
                         <td className={tdNumClass}>
-                          <span className={scaled >= 120 ? 'text-jade font-semibold' : 'text-fg-60'}>
-                            {scaled}/200 ({item.scorePercent}%)
+                          <span className={scaled >= (item.passingScore ?? 120) ? 'text-jade font-semibold' : 'text-fg-60'}>
+                            {scaled}/{item.maximumScore ?? 200} ({item.scorePercent}%)
                           </span>
                         </td>
                         <td className={tdNumClass}>
@@ -707,7 +717,7 @@ export const ExamView: React.FC = () => {
             {exam.questions.map((question, index) => {
               const selected = answers[question.index];
               const active = index === activeIndex;
-              const isListening = question.type === 'KANA' || question.type === 'VOCABULARY';
+              const isListening = question.type === 'LISTENING' || question.type === 'KANA' || question.type === 'VOCABULARY';
 
               return (
                 <div
@@ -718,18 +728,18 @@ export const ExamView: React.FC = () => {
                     checkpointAttempt(exam, answers, index);
                   }}
                   className={`cursor-pointer rounded-xl border p-5 transition-all ${
-                    active ? 'border-cinnabar bg-card ring-1 ring-cinnabar/30' : 'border-rule hover:border-rule-strong bg-card/60'
+                    active ? 'border-fg bg-card' : 'border-rule hover:border-rule-strong bg-card/60'
                   }`}
                 >
                   <div className="flex flex-wrap items-center justify-between gap-3 border-b border-rule/50 pb-2.5">
-                    <div className="flex items-center gap-3">
+                    <div className="flex min-w-0 flex-wrap items-center gap-3">
                       <span className="text-[11.5px] font-bold text-fg">Câu {index + 1}</span>
                       <span className="rounded bg-tint px-2 py-0.5 text-[10.5px] font-medium text-fg-60">
-                        {isListening ? 'Phần 1: Nghe hiểu (听力)' : 'Phần 2: Đọc hiểu & Ngữ pháp (阅读)'}
+                        {isListening ? 'Phần 1: Nghe hiểu (听力)' : question.type === 'GRAMMAR' && maximumScore === 300 ? 'Phần 3: Ngữ pháp (语法)' : 'Phần 2: Đọc hiểu & Ngữ pháp (阅读)'}
                       </span>
                     </div>
 
-                    <div className="flex items-center gap-2">
+                    <div className="flex min-w-0 flex-wrap items-center gap-2">
                       <button
                         type="button"
                         onClick={(event) => playQuestionAudio(question, event)}
@@ -787,18 +797,18 @@ export const ExamView: React.FC = () => {
         <div className="mt-8 rounded-xl border border-rule bg-card p-8 shadow-xl">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 border-b border-rule pb-6">
             <div>
-              <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-cinnabar">
+              <div className="flex min-w-0 flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-wider text-cinnabar">
                 Báo cáo Kết quả Kỳ thi HSK Chuẩn
               </div>
               <h3 className="mt-2 font-serif text-3xl font-bold text-fg">
-                Kết quả: <span className="text-gold">{scaledHskScore}</span> / 200 điểm
+                Kết quả: <span className="text-gold">{scaledHskScore} / {maximumScore}</span> điểm
               </h3>
               <p className="mt-1 text-sm text-fg-60">
                 Đúng {result.correctCount}/{result.totalCount} câu ({result.scorePercent}%) · Chuỗi streak {result.currentStreak} ngày 🔥
               </p>
               <div className="mt-2">
                 <span className={`text-sm font-bold ${isHskPassed ? 'text-jade' : 'text-rose-400'}`}>
-                  {isHskPassed ? '「合格」 ĐẠT TIÊU CHUẨN NĂNG LỰC HSK (≥ 120 điểm)' : '「未合格」 CHƯA ĐẠT TIÊU CHUẨN (< 120 điểm)'}
+                  {isHskPassed ? `「合格」 Đạt chuẩn bài luyện (≥ ${passingScore} điểm)` : `「未过」 Cần ôn luyện thêm (< ${passingScore} điểm)`}
                 </span>
               </div>
             </div>
@@ -819,28 +829,32 @@ export const ExamView: React.FC = () => {
               Phân tích chi tiết từng câu hỏi &amp; Chẩn đoán kiến thức:
             </h4>
 
-            {result.details.map((detail) => (
+            {result.details.map((detail, idx) => {
+              const qIndex = detail.index ?? (detail as unknown as { questionIndex?: number }).questionIndex ?? idx;
+              const isCorrect = detail.correct ?? (detail as unknown as { isCorrect?: boolean }).isCorrect ?? false;
+              const userChoice = detail.submittedAnswer ?? (detail as unknown as { userAnswer?: string }).userAnswer ?? '';
+              return (
               <div
-                key={detail.index}
+                key={qIndex}
                 className={`rounded-lg border p-4 transition-all ${
-                  detail.correct
+                  isCorrect
                     ? 'border-jade/30 bg-jade/5'
                     : 'border-rose-500/30 bg-rose-500/5'
                 }`}
               >
                 <div className="flex flex-wrap items-center justify-between gap-3 text-[11.5px]">
-                  <div className="flex items-center gap-2">
-                    <span className="font-semibold text-fg">Câu {detail.index + 1}</span>
+                  <div className="flex min-w-0 flex-wrap items-center gap-2">
+                    <span className="font-semibold text-fg">Câu {qIndex + 1}</span>
                     <span
                       className={`rounded px-2 py-0.5 font-bold ${
-                        detail.correct ? 'bg-jade/20 text-jade' : 'bg-rose-500/20 text-rose-400'
+                        isCorrect ? 'bg-jade/20 text-jade' : 'bg-rose-500/20 text-rose-400'
                       }`}
                     >
-                      {detail.correct ? '✓ Đúng' : '✗ Sai'}
+                      {isCorrect ? '✓ Đúng' : '✗ Sai'}
                     </span>
                   </div>
 
-                  {!detail.correct && (
+                  {!isCorrect && (
                     <button
                       type="button"
                       onClick={() => navigate('/grammar')}
@@ -856,9 +870,9 @@ export const ExamView: React.FC = () => {
                 </p>
 
                 <div className="mt-2 text-xs text-fg-60">
-                  {!detail.correct && (
+                  {!isCorrect && (
                     <span className="mr-3">
-                      Bạn chọn: <span className="font-serif font-bold text-rose-400">{detail.submittedAnswer || '—'}</span>
+                      Bạn chọn: <span className="font-serif font-bold text-rose-400">{userChoice || '—'}</span>
                     </span>
                   )}
                   <span>
@@ -889,7 +903,7 @@ export const ExamView: React.FC = () => {
       {/* Help Modal */}
       {helpOpen && (
         <Modal
-          title="Hướng dẫn phòng thi thử HSK"
+          title="Hướng dẫn phòng thi thử"
           onClose={() => setHelpOpen(false)}
           maxWidthClass="max-w-[460px]"
           initialFocus={helpHeading}
@@ -899,7 +913,7 @@ export const ExamView: React.FC = () => {
             Hướng dẫn thi thử HSK Chuẩn
           </h3>
           <p className="mt-3 text-[13px] leading-[1.8] text-fg-60">
-            Chọn số câu hỏi và thời gian để bắt đầu làm bài. Đề thi được sinh ngẫu nhiên từ ngân hàng câu hỏi ngữ pháp, pinyin và chữ Hán HSK đã kiểm duyệt. Chấm điểm hoàn toàn tự động ở máy chủ với thang chuẩn 200 điểm của Hanban/CTI (ngưỡng đạt: 120/200 điểm).
+            Chọn số câu hỏi và thời gian để bắt đầu làm bài. Đề thi được sinh ngẫu nhiên từ ngân hàng câu hỏi ngữ pháp, pinyin và chữ Hán HSK đã kiểm duyệt. Chấm điểm tại máy chủ: HSK 1–2 đạt 120/200, HSK 3–6 đạt 180/300. Bài luyện ngữ pháp thay cho viết tự luận, không tương đương đề HSK chính thức.
             <br /><br />
             Phím tắt: bấm phím 1–4 để chọn nhanh đáp án, mũi tên trái/phải để chuyển câu. Khi hết giờ, bài làm sẽ tự động được nộp.
           </p>

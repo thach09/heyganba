@@ -65,6 +65,7 @@ export interface ReadingPassageQuestion {
 }
 
 export interface ReadingPassageItem {
+  hskLevel: number;
   id: number;
   title: string;
   passageText: string;

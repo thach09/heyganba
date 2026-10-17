@@ -44,6 +44,7 @@ public class ContentReviewStatusService {
     private final KanjiRepository kanjiRepository;
     private final GrammarRuleRepository grammarRuleRepository;
     private final GrammarExerciseRepository grammarExerciseRepository;
+    private final com.heyganba.repository.MockExamPresetRepository mockExamPresetRepository;
 
     @Transactional(readOnly = true)
     public ContentReviewStatusResponse getStatus() {
@@ -61,7 +62,10 @@ public class ContentReviewStatusService {
                         grammarRuleRepository.countByReviewStatus(ReviewStatus.PENDING_REVIEW), 0L),
                 statusOf("GRAMMAR_EXERCISE", grammarExerciseRepository.count(),
                         grammarExerciseRepository.countByReviewStatus(ReviewStatus.PENDING_REVIEW),
-                        grammarExerciseRepository.countByNeedsHumanCheckTrue())
+                        grammarExerciseRepository.countByNeedsHumanCheckTrue()),
+                statusOf("MOCK_EXAM_PRESET", mockExamPresetRepository.count(),
+                        mockExamPresetRepository.countByReviewStatus(ReviewStatus.PENDING_REVIEW),
+                        mockExamPresetRepository.countByNeedsHumanCheckTrue())
         );
 
         long totalPending = types.stream().mapToLong(ContentTypeReviewStatus::pendingReview).sum();

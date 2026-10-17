@@ -171,7 +171,7 @@ class PostgresSchemaStagingRehearsalTest {
 
     @Test
     @Order(2)
-    @DisplayName("Case B (Schema local/staging M5): Nạp db/migration + db/migration-staging (V1-V8), tự động phê duyệt toàn bộ (APPROVED), 150 từ HSK 1 + 68 từ HSK 2, sequence đồng bộ, SQL idempotent")
+    @DisplayName("Case B (Schema local/staging M6): Nạp db/migration + db/migration-staging (V1-V9), tự động phê duyệt toàn bộ (APPROVED), 150 từ HSK 1 + 68 từ HSK 2, sequence đồng bộ, SQL idempotent")
     void caseB_stagingSchemaWithV4() throws Exception {
         String urlB = getUrlB();
         String user = getDbUser();
@@ -189,13 +189,13 @@ class PostgresSchemaStagingRehearsalTest {
 
         var result = flyway.migrate();
         assertThat(result.success).isTrue();
-        assertThat(result.migrationsExecuted).isEqualTo(8); // V1, V2, V3, V4, V5, V6, V7, V8
+        assertThat(result.migrationsExecuted).isEqualTo(9); // V1, V2, V3, V4, V5, V6, V7, V8
 
         try (Connection conn = DriverManager.getConnection(urlB, user, pass);
              Statement stmt = conn.createStatement()) {
 
             // 1. flyway_schema_history contains V1 through V8
-            try (ResultSet rs = stmt.executeQuery("SELECT version, success FROM flyway_schema_history WHERE version IN ('4', '5', '6', '7', '8') ORDER BY CAST(version AS INTEGER)")) {
+            try (ResultSet rs = stmt.executeQuery("SELECT version, success FROM flyway_schema_history WHERE version IN ('4', '5', '6', '7', '8', '9') ORDER BY CAST(version AS INTEGER)")) {
                 assertThat(rs.next()).isTrue();
                 assertThat(rs.getString("version")).isEqualTo("4");
                 assertThat(rs.getBoolean("success")).isTrue();
@@ -214,6 +214,9 @@ class PostgresSchemaStagingRehearsalTest {
 
                 assertThat(rs.next()).isTrue();
                 assertThat(rs.getString("version")).isEqualTo("8");
+                assertThat(rs.getBoolean("success")).isTrue();
+                assertThat(rs.next()).isTrue();
+                assertThat(rs.getString("version")).isEqualTo("9");
                 assertThat(rs.getBoolean("success")).isTrue();
             }
 
@@ -241,7 +244,7 @@ class PostgresSchemaStagingRehearsalTest {
                 "hsk2-travel-weather", "hsk2-sports-health",
                 "hsk2-work-errands", "hsk2-comparisons-feelings"
             };
-            int[] expectedCounts = {13, 14, 13, 16, 14, 16, 16, 17, 17, 17, 17};
+            int[] expectedCounts = {13, 14, 13, 16, 14, 16, 16, 17, 16, 17, 23};
 
             for (int i = 0; i < stagingSlugs.length; i++) {
                 String slug = stagingSlugs[i];
@@ -284,7 +287,7 @@ class PostgresSchemaStagingRehearsalTest {
             try (ResultSet rs = stmt.executeQuery(
                     "SELECT count(*) FROM vocabulary WHERE hsk_level = 1")) {
                 assertThat(rs.next()).isTrue();
-                assertThat(rs.getInt(1)).isEqualTo(150);
+                assertThat(rs.getInt(1)).isEqualTo(182);
             }
 
             // Total HSK 2 vocabulary reaches 68 words
@@ -313,20 +316,44 @@ class PostgresSchemaStagingRehearsalTest {
             assertThat(reRunResult.migrationsExecuted).isEqualTo(0);
 
             // 6. Idempotency Check Part 2: Re-executing full V4, V5, V6, V7 & V8 SQL scripts directly causes 0 duplicate rows
-            String fullV4Sql = loadStagingMigrationSql("V4__sample_lesson_greetings.sql");
-            stmt.execute(fullV4Sql);
-
-            String fullV5Sql = loadStagingMigrationSql("V5__hsk1_thematic_curriculum_expansion.sql");
-            stmt.execute(fullV5Sql);
-
-            String fullV6Sql = loadStagingMigrationSql("V6__hsk1_standard_course_grammar_and_exams.sql");
-            stmt.execute(fullV6Sql);
-
-            String fullV7Sql = loadStagingMigrationSql("V7__hsk1_complete_150_vocab_and_hanzi_radicals.sql");
-            stmt.execute(fullV7Sql);
-
-            String fullV8Sql = loadStagingMigrationSql("V8__hsk2_standard_course_and_approve_all_curriculum.sql");
-            stmt.execute(fullV8Sql);
+            String[] tables = {"lessons", "vocabulary", "hanzi", "radicals", "grammar_rules", "grammar_exercises", "reading_passages", "mock_exams", "mock_exam_presets"};
+            java.util.Map<String, Long> before = new java.util.HashMap<>();
+            for (String table : tables) {
+                try (ResultSet rs = stmt.executeQuery("SELECT count(*) FROM " + table)) { rs.next(); before.put(table, rs.getLong(1)); }
+            }
+            String[] migrations = {
+                "V4__sample_lesson_greetings.sql", "V5__hsk1_thematic_curriculum_expansion.sql",
+                "V6__hsk1_standard_course_grammar_and_exams.sql", "V7__hsk1_complete_150_vocab_and_hanzi_radicals.sql",
+                "V8__hsk2_standard_course_and_approve_all_curriculum.sql", "V9__hsk1_to_hsk6_complete_curriculum_and_grammar.sql"
+            };
+            for (int repeat = 0; repeat < 2; repeat++) {
+                for (String migration : migrations) stmt.execute(loadStagingMigrationSql(migration));
+                for (String table : tables) {
+                    try (ResultSet rs = stmt.executeQuery("SELECT count(*) FROM " + table)) {
+                        rs.next(); assertThat(rs.getLong(1)).as("Idempotency: %s", table).isEqualTo(before.get(table));
+                    }
+                }
+            }
+            for (int level = 1; level <= 6; level++) {
+                for (String table : List.of("vocabulary", "grammar_rules", "hanzi", "reading_passages")) {
+                    try (ResultSet rs = stmt.executeQuery("SELECT count(*) FROM " + table + " WHERE hsk_level = " + level + " AND review_status = 'APPROVED'")) {
+                        rs.next(); assertThat(rs.getInt(1)).as("%s HSK %d", table, level).isPositive();
+                        if (level >= 3 && table.equals("vocabulary")) assertThat(rs.getInt(1)).isGreaterThanOrEqualTo(45);
+                        if (level >= 3 && table.equals("grammar_rules")) assertThat(rs.getInt(1)).isGreaterThanOrEqualTo(5);
+                    }
+                }
+                try (ResultSet rs = stmt.executeQuery("SELECT count(*) FROM grammar_exercises e JOIN grammar_rules r ON r.id=e.grammar_rule_id WHERE r.hsk_level=" + level + " AND e.review_status='APPROVED' AND NOT e.needs_human_check")) {
+                    rs.next(); assertThat(rs.getInt(1)).isGreaterThanOrEqualTo(level >= 3 ? 10 : 1);
+                }
+            }
+            for (String table : tables) {
+                try (ResultSet rs = stmt.executeQuery("SELECT nextval(pg_get_serial_sequence('" + table + "','id')), COALESCE((SELECT MAX(id) FROM " + table + "),0)")) {
+                    rs.next(); assertThat(rs.getLong(1)).as("Sequence: %s", table).isGreaterThan(rs.getLong(2));
+                }
+            }
+            try (ResultSet rs = stmt.executeQuery("SELECT count(*) FROM mock_exam_presets WHERE review_status='APPROVED' AND maximum_score=CASE WHEN hsk_level<=2 THEN 200 ELSE 300 END AND passing_score=CASE WHEN hsk_level<=2 THEN 120 ELSE 180 END")) {
+                rs.next(); assertThat(rs.getInt(1)).isEqualTo(6);
+            }
 
             // Assert staging lessons still exist as exactly 12 rows (1 M2.1 + 3 M2.2 + 2 V6 + 2 V7 + 4 V8)
             try (ResultSet rs = stmt.executeQuery(
@@ -346,7 +373,7 @@ class PostgresSchemaStagingRehearsalTest {
             try (ResultSet rs = stmt.executeQuery(
                     "SELECT count(*) FROM vocabulary WHERE hsk_level = 1")) {
                 assertThat(rs.next()).isTrue();
-                assertThat(rs.getInt(1)).isEqualTo(150);
+                assertThat(rs.getInt(1)).isEqualTo(182);
             }
 
             // Assert total HSK 2 vocabulary still strictly at least 68 rows
@@ -438,7 +465,7 @@ class PostgresSchemaStagingRehearsalTest {
             try (PreparedStatement ps = conn.prepareStatement(
                     "INSERT INTO hanzi (character, traditional, pinyin, han_viet, radical, stroke_count, hsk_level, meaning_vi, review_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS)) {
-                ps.setString(1, "试");
+                ps.setString(1, "龘");
                 ps.setString(2, "試");
                 ps.setString(3, "shì");
                 ps.setString(4, "thí");

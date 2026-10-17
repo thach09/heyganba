@@ -1,0 +1,338 @@
+# level|word|meaning_vi|part_of_speech|example_zh|example_vi
+1|爱|yêu|Động từ|我爱我的家。|Tôi yêu gia đình mình.
+1|八|tám|Số từ|现在八点。|Bây giờ là tám giờ.
+1|本|quyển|Lượng từ|我有一本书。|Tôi có một quyển sách.
+1|不|không|Phó từ|我不是老师。|Tôi không phải giáo viên.
+1|大|to, lớn|Tính từ|这个房间很大。|Căn phòng này rất lớn.
+1|的|của (trợ từ kết cấu)|Trợ từ|这是我的书。|Đây là sách của tôi.
+1|都|đều|Phó từ|我们都是学生。|Chúng tôi đều là học sinh.
+1|多|nhiều|Tính từ|这里的人很多。|Người ở đây rất đông.
+1|二|hai|Số từ|今天是二月二日。|Hôm nay là ngày hai tháng hai.
+1|分钟|phút|Danh từ|请等五分钟。|Xin đợi năm phút.
+1|狗|chó|Danh từ|我家有一只狗。|Nhà tôi có một con chó.
+1|和|và, cùng|Liên từ|我和妈妈去商店。|Tôi và mẹ đi cửa hàng.
+1|会|biết (kỹ năng), sẽ|Động từ năng nguyện|我会说汉语。|Tôi biết nói tiếng Hán.
+1|九|chín|Số từ|九点见。|Hẹn gặp lúc chín giờ.
+1|了|rồi (trợ từ)|Trợ từ|我吃饭了。|Tôi ăn cơm rồi.
+1|零|không (số)|Số từ|现在是零点。|Bây giờ là không giờ.
+1|六|sáu|Số từ|我有六本书。|Tôi có sáu quyển sách.
+1|吗|không (trợ từ nghi vấn)|Trợ từ|你是学生吗？|Bạn là học sinh phải không?
+1|那|kia, đó|Đại từ|那是我的家。|Kia là nhà tôi.
+1|呢|thế còn (trợ từ ngữ khí)|Trợ từ|我很好，你呢？|Tôi khỏe, còn bạn?
+1|能|có thể (năng lực, điều kiện)|Động từ năng nguyện|你能来吗？|Bạn có thể đến không?
+1|七|bảy|Số từ|我七点起床。|Tôi dậy lúc bảy giờ.
+1|日|ngày|Danh từ|今天是三月一日。|Hôm nay là ngày một tháng ba.
+1|三|ba|Số từ|这里有三个人。|Ở đây có ba người.
+1|十|mười|Số từ|这本书十块钱。|Quyển sách này mười đồng.
+1|谁|ai|Đại từ|他是谁？|Anh ấy là ai?
+1|水果|trái cây|Danh từ|我喜欢吃水果。|Tôi thích ăn trái cây.
+1|四|bốn|Số từ|我买了四个苹果。|Tôi mua bốn quả táo.
+1|岁|tuổi|Lượng từ|她今年六岁。|Năm nay cô bé sáu tuổi.
+1|他|anh ấy, ông ấy|Đại từ|他是我的朋友。|Anh ấy là bạn của tôi.
+1|她|cô ấy, bà ấy|Đại từ|她是老师。|Cô ấy là giáo viên.
+1|太|quá|Phó từ|今天太热了。|Hôm nay nóng quá.
+1|我们|chúng tôi, chúng ta|Đại từ|我们去学校。|Chúng tôi đến trường.
+1|五|năm (số)|Số từ|我要五个苹果。|Tôi muốn năm quả táo.
+1|先生|ông, ngài|Danh từ|王先生在家吗？|Ông Vương có ở nhà không?
+1|小姐|cô, tiểu thư|Danh từ|李小姐，你好。|Chào cô Lý.
+1|一|một|Số từ|我有一个问题。|Tôi có một câu hỏi.
+1|椅子|ghế|Danh từ|请坐在椅子上。|Xin ngồi trên ghế.
+1|在|ở, đang|Động từ / Giới từ|我在学校。|Tôi ở trường.
+1|这|này, đây|Đại từ|这是我的书。|Đây là sách của tôi.
+1|桌子|bàn|Danh từ|书在桌子上。|Sách ở trên bàn.
+1|字|chữ|Danh từ|这个字怎么读？|Chữ này đọc thế nào?
+2|吧|nhé, nào|Trợ từ|我们走吧。|Chúng ta đi thôi.
+2|帮助|giúp đỡ|Động từ|谢谢你的帮助。|Cảm ơn sự giúp đỡ của bạn.
+2|报纸|báo giấy|Danh từ|爸爸在看报纸。|Bố đang đọc báo.
+2|出|ra|Động từ|他出去了。|Anh ấy ra ngoài rồi.
+2|穿|mặc|Động từ|今天我穿白衣服。|Hôm nay tôi mặc áo trắng.
+2|船|thuyền|Danh từ|我们坐船去。|Chúng tôi đi bằng thuyền.
+2|次|lần|Lượng từ|我去过两次。|Tôi đã đến hai lần.
+2|从|từ|Giới từ|从这里走到学校。|Đi bộ từ đây đến trường.
+2|错|sai|Tính từ|这个字写错了。|Chữ này viết sai rồi.
+2|大家|mọi người|Đại từ|大家都来了。|Mọi người đều đến rồi.
+2|到|đến|Động từ|我八点到学校。|Tám giờ tôi đến trường.
+2|第一|thứ nhất|Số từ|这是第一课。|Đây là bài thứ nhất.
+2|懂|hiểu|Động từ|我听懂了。|Tôi nghe hiểu rồi.
+2|非常|rất, vô cùng|Phó từ|这里非常安静。|Ở đây rất yên tĩnh.
+2|高|cao|Tính từ|他比我高。|Anh ấy cao hơn tôi.
+2|给|cho|Giới từ|请给我一杯水。|Xin cho tôi một cốc nước.
+2|公斤|kilôgam|Danh từ|苹果一公斤十元。|Táo một kilôgam mười tệ.
+2|公司|công ty|Danh từ|我在这家公司工作。|Tôi làm việc ở công ty này.
+2|还|vẫn, còn|Phó từ|他还在学校。|Anh ấy vẫn ở trường.
+2|孩子|trẻ em, con|Danh từ|孩子在家里。|Đứa trẻ ở trong nhà.
+2|好吃|ngon|Tính từ|这个菜很好吃。|Món này rất ngon.
+2|欢迎|hoan nghênh|Động từ|欢迎你来我家。|Hoan nghênh bạn đến nhà tôi.
+2|回答|trả lời|Động từ|请回答这个问题。|Xin trả lời câu hỏi này.
+2|件|chiếc, việc|Lượng từ|我买了一件衣服。|Tôi mua một chiếc áo.
+2|教室|phòng học|Danh từ|教室里没有人。|Trong phòng học không có ai.
+2|介绍|giới thiệu|Động từ|我介绍一下我的朋友。|Tôi giới thiệu một chút về bạn của tôi.
+2|进|vào|Động từ|请进。|Mời vào.
+2|就|liền, ngay|Phó từ|我马上就来。|Tôi đến ngay đây.
+2|可能|có thể, có khả năng|Động từ năng nguyện|明天可能下雨。|Ngày mai có thể mưa.
+2|可以|có thể, được phép|Động từ năng nguyện|我可以坐这里吗？|Tôi có thể ngồi ở đây không?
+2|课|tiết học, bài học|Danh từ|今天有三节课。|Hôm nay có ba tiết học.
+2|累|mệt|Tính từ|今天我很累。|Hôm nay tôi rất mệt.
+2|离|cách|Giới từ|我家离学校很近。|Nhà tôi cách trường rất gần.
+2|两|hai|Số từ|我要两杯茶。|Tôi muốn hai cốc trà.
+2|路|đường|Danh từ|这条路很长。|Con đường này rất dài.
+2|旅游|du lịch|Động từ|我们去北京旅游。|Chúng tôi đến Bắc Kinh du lịch.
+2|卖|bán|Động từ|这家店卖水果。|Cửa hàng này bán trái cây.
+2|忙|bận|Tính từ|你今天忙吗？|Hôm nay bạn bận không?
+2|每|mỗi|Đại từ|我每天看书。|Tôi đọc sách mỗi ngày.
+2|门|cửa|Danh từ|请开门。|Xin mở cửa.
+2|男人|đàn ông|Danh từ|那个男人是老师。|Người đàn ông đó là giáo viên.
+2|您|ngài, ông, bà|Đại từ|您好，请坐。|Xin chào, mời ông ngồi.
+2|女人|phụ nữ|Danh từ|那个女人是医生。|Người phụ nữ đó là bác sĩ.
+2|旁边|bên cạnh|Danh từ vị trí|银行在学校旁边。|Ngân hàng ở cạnh trường.
+2|起床|thức dậy|Động từ|我每天六点起床。|Mỗi ngày tôi thức dậy lúc sáu giờ.
+2|去年|năm ngoái|Danh từ thời gian|我去年去了中国。|Năm ngoái tôi đã đến Trung Quốc.
+2|让|để, bảo|Động từ|老师让我读课文。|Thầy bảo tôi đọc bài khóa.
+2|上班|đi làm|Động từ|我坐车去上班。|Tôi đi xe đi làm.
+2|送|tặng, đưa|Động từ|我送你一本书。|Tôi tặng bạn một quyển sách.
+2|它|nó|Đại từ|这只猫很小，它很可爱。|Con mèo này rất nhỏ, nó rất đáng yêu.
+2|踢|đá|Động từ|他喜欢踢足球。|Anh ấy thích đá bóng.
+2|题|câu hỏi, bài tập|Danh từ|这道题很难。|Câu này rất khó.
+2|外|ngoài|Danh từ vị trí|他在门外。|Anh ấy ở ngoài cửa.
+2|完|xong|Bổ ngữ|我吃完饭了。|Tôi ăn cơm xong rồi.
+2|玩|chơi|Động từ|孩子在外面玩。|Đứa trẻ chơi ở bên ngoài.
+2|晚上|buổi tối|Danh từ thời gian|晚上我在家学习。|Buổi tối tôi học ở nhà.
+2|为|vì, cho|Giới từ|谢谢你为我做饭。|Cảm ơn bạn đã nấu cơm cho tôi.
+2|问|hỏi|Động từ|我想问一个问题。|Tôi muốn hỏi một câu.
+2|洗|rửa, giặt|Động từ|吃饭前要洗手。|Trước khi ăn cần rửa tay.
+2|小时|giờ, tiếng đồng hồ|Danh từ|我学了两个小时。|Tôi đã học hai tiếng.
+2|笑|cười|Động từ|她笑了。|Cô ấy cười rồi.
+2|新|mới|Tính từ|这是我的新书。|Đây là sách mới của tôi.
+2|姓|mang họ|Động từ|我姓王。|Tôi họ Vương.
+2|雪|tuyết|Danh từ|外面下雪了。|Bên ngoài tuyết rơi rồi.
+2|要|muốn, cần|Động từ năng nguyện|我要一杯茶。|Tôi muốn một cốc trà.
+2|也|cũng|Phó từ|我也喜欢汉语。|Tôi cũng thích tiếng Hán.
+2|一起|cùng nhau|Phó từ|我们一起吃饭吧。|Chúng ta cùng ăn cơm nhé.
+2|右边|bên phải|Danh từ vị trí|商店在右边。|Cửa hàng ở bên phải.
+2|鱼|cá|Danh từ|我喜欢吃鱼。|Tôi thích ăn cá.
+2|元|tệ, đồng|Danh từ|这本书十元。|Quyển sách này mười tệ.
+2|再|lại, nữa|Phó từ|请再说一次。|Xin nói lại một lần nữa.
+2|早上|buổi sáng|Danh từ thời gian|早上我喝牛奶。|Buổi sáng tôi uống sữa.
+2|张|tờ, chiếc|Lượng từ|这里有一张桌子。|Ở đây có một chiếc bàn.
+2|长|dài|Tính từ|这条裙子太长了。|Chiếc váy này dài quá.
+2|找|tìm|Động từ|我在找我的手机。|Tôi đang tìm điện thoại của mình.
+2|真|thật|Phó từ|这本书真有意思。|Quyển sách này thật thú vị.
+2|正在|đang|Phó từ|他正在做饭。|Anh ấy đang nấu cơm.
+2|知道|biết|Động từ|我不知道他的名字。|Tôi không biết tên anh ấy.
+2|自行车|xe đạp|Danh từ|我骑自行车上学。|Tôi đi xe đạp đến trường.
+2|走|đi bộ, đi|Động từ|我们走着去。|Chúng ta đi bộ đến đó.
+2|左边|bên trái|Danh từ vị trí|医院在左边。|Bệnh viện ở bên trái.
+3|把|đem, lấy (đánh dấu tân ngữ)|Giới từ|请把门关上。|Xin đóng cửa lại.
+3|被|bị, được|Giới từ|我的书被他拿走了。|Sách của tôi bị anh ấy lấy đi rồi.
+3|除了|ngoài, trừ|Giới từ|除了他，大家都来了。|Ngoài anh ấy ra, mọi người đều đến rồi.
+3|以外|ngoài|Danh từ vị trí|除了汉语以外，我还学英语。|Ngoài tiếng Hán, tôi còn học tiếng Anh.
+3|越来越|càng ngày càng|Cấu trúc|天气越来越冷了。|Thời tiết càng ngày càng lạnh.
+3|不但|không những|Liên từ|他不但会说，还会写。|Anh ấy không những biết nói mà còn biết viết.
+3|而且|mà còn|Liên từ|她很聪明，而且很努力。|Cô ấy thông minh mà còn rất nỗ lực.
+3|感兴趣|có hứng thú|Cụm động từ|我对历史感兴趣。|Tôi có hứng thú với lịch sử.
+3|影响|ảnh hưởng|Động từ|天气会影响心情。|Thời tiết có thể ảnh hưởng tâm trạng.
+3|环境|môi trường|Danh từ|这里的环境很好。|Môi trường ở đây rất tốt.
+3|解决|giải quyết|Động từ|我们一起解决问题。|Chúng ta cùng giải quyết vấn đề.
+3|决定|quyết định|Động từ|我决定明天出发。|Tôi quyết định ngày mai xuất phát.
+3|其实|thực ra|Phó từ|其实我已经知道了。|Thực ra tôi đã biết rồi.
+3|终于|cuối cùng|Phó từ|我们终于到了。|Cuối cùng chúng tôi đã đến.
+3|必须|bắt buộc phải|Phó từ|你必须带护照。|Bạn bắt buộc phải mang hộ chiếu.
+3|成绩|thành tích, điểm số|Danh từ|他的成绩很好。|Điểm số của anh ấy rất tốt.
+3|护照|hộ chiếu|Danh từ|我的护照在包里。|Hộ chiếu của tôi ở trong túi.
+3|行李|hành lý|Danh từ|请看好自己的行李。|Xin trông coi hành lý của mình.
+3|空调|điều hòa|Danh từ|请打开空调。|Xin bật điều hòa.
+3|地铁|tàu điện ngầm|Danh từ|我坐地铁上班。|Tôi đi tàu điện ngầm đi làm.
+3|电子邮件|thư điện tử|Danh từ|我给老师发了一封电子邮件。|Tôi gửi cho thầy một thư điện tử.
+3|参加|tham gia|Động từ|我想参加比赛。|Tôi muốn tham gia cuộc thi.
+3|照顾|chăm sóc|Động từ|她在家照顾孩子。|Cô ấy chăm sóc con ở nhà.
+3|满意|hài lòng|Tính từ|我对这个结果很满意。|Tôi rất hài lòng với kết quả này.
+3|害怕|sợ|Động từ|孩子害怕一个人睡觉。|Đứa trẻ sợ ngủ một mình.
+3|着急|sốt ruột|Tính từ|别着急，车快来了。|Đừng sốt ruột, xe sắp đến rồi.
+3|变化|thay đổi|Danh từ|这个城市的变化很大。|Thành phố này thay đổi rất nhiều.
+3|健康|khỏe mạnh, sức khỏe|Tính từ|健康比什么都重要。|Sức khỏe quan trọng hơn mọi thứ.
+3|重要|quan trọng|Tính từ|这件事很重要。|Việc này rất quan trọng.
+3|简单|đơn giản|Tính từ|这个问题很简单。|Vấn đề này rất đơn giản.
+3|奇怪|kỳ lạ|Tính từ|这个声音很奇怪。|Âm thanh này rất kỳ lạ.
+3|聪明|thông minh|Tính từ|这个孩子很聪明。|Đứa trẻ này rất thông minh.
+3|热情|nhiệt tình|Tính từ|这里的人很热情。|Người ở đây rất nhiệt tình.
+3|努力|nỗ lực|Động từ|我们要努力学习。|Chúng ta cần nỗ lực học tập.
+3|认真|nghiêm túc|Tính từ|请认真检查。|Xin kiểm tra thật kỹ.
+3|礼貌|lễ phép, lịch sự|Danh từ|对人要有礼貌。|Cần lịch sự với người khác.
+3|借|mượn, cho mượn|Động từ|我想借一本书。|Tôi muốn mượn một quyển sách.
+3|还|trả lại|Động từ|明天我把书还给你。|Ngày mai tôi trả sách cho bạn.
+3|换|đổi|Động từ|我想换一件衣服。|Tôi muốn đổi một chiếc áo.
+3|搬|chuyển, dọn|Động từ|我们下个月搬家。|Tháng sau chúng tôi chuyển nhà.
+3|打扫|quét dọn|Động từ|我在打扫房间。|Tôi đang quét dọn phòng.
+3|检查|kiểm tra|Động từ|请检查一下护照。|Xin kiểm tra hộ chiếu một chút.
+3|发烧|sốt|Động từ|他今天发烧了。|Hôm nay anh ấy bị sốt.
+3|感冒|cảm cúm|Động từ|我感冒了，想休息。|Tôi bị cảm, muốn nghỉ ngơi.
+3|习惯|thói quen, quen|Danh từ|我习惯早起。|Tôi quen dậy sớm.
+4|尽管|mặc dù|Liên từ|尽管很累，他还是来了。|Mặc dù rất mệt, anh ấy vẫn đến.
+4|既然|đã, một khi|Liên từ|既然来了，就坐一会儿吧。|Đã đến rồi thì ngồi một lát nhé.
+4|不管|bất kể|Liên từ|不管多忙，我都学习。|Dù bận thế nào tôi cũng học.
+4|无论|bất luận|Liên từ|无论结果如何，我都接受。|Dù kết quả thế nào tôi cũng chấp nhận.
+4|不仅|không chỉ|Liên từ|他不仅聪明，而且认真。|Anh ấy không chỉ thông minh mà còn nghiêm túc.
+4|哪怕|dù cho|Liên từ|哪怕下雨，我也要去。|Dù trời mưa tôi cũng sẽ đi.
+4|稍微|hơi, một chút|Phó từ|请稍微等一下。|Xin đợi một chút.
+4|简直|quả thực, thật là|Phó từ|这简直太好了。|Điều này thật quá tốt.
+4|竟然|vậy mà, không ngờ|Phó từ|他竟然忘了。|Không ngờ anh ấy lại quên.
+4|顺便|tiện thể|Phó từ|我去银行，顺便买点东西。|Tôi đi ngân hàng, tiện thể mua ít đồ.
+4|究竟|rốt cuộc|Phó từ|你究竟想说什么？|Rốt cuộc bạn muốn nói gì?
+4|按照|theo, dựa theo|Giới từ|请按照要求完成。|Xin hoàn thành theo yêu cầu.
+4|通过|thông qua|Giới từ|通过练习，我进步了。|Thông qua luyện tập, tôi đã tiến bộ.
+4|责任|trách nhiệm|Danh từ|这是我的责任。|Đây là trách nhiệm của tôi.
+4|经验|kinh nghiệm|Danh từ|他有丰富的工作经验。|Anh ấy có kinh nghiệm làm việc phong phú.
+4|压力|áp lực|Danh từ|最近工作压力很大。|Gần đây áp lực công việc rất lớn.
+4|态度|thái độ|Danh từ|他的态度很认真。|Thái độ của anh ấy rất nghiêm túc.
+4|羡慕|ngưỡng mộ, ao ước|Động từ|我很羡慕你的生活。|Tôi rất ngưỡng mộ cuộc sống của bạn.
+4|误会|hiểu lầm|Động từ|你误会我的意思了。|Bạn hiểu lầm ý tôi rồi.
+4|克服|khắc phục|Động từ|我们要克服困难。|Chúng ta cần khắc phục khó khăn.
+4|坚持|kiên trì|Động từ|我坚持每天运动。|Tôi kiên trì vận động mỗi ngày.
+4|总结|tổng kết|Động từ|请总结今天的讨论。|Xin tổng kết cuộc thảo luận hôm nay.
+4|计划|kế hoạch|Danh từ|我们需要一个计划。|Chúng ta cần một kế hoạch.
+4|收入|thu nhập|Danh từ|他的收入很稳定。|Thu nhập của anh ấy rất ổn định.
+4|质量|chất lượng|Danh từ|我们重视产品质量。|Chúng tôi coi trọng chất lượng sản phẩm.
+4|安全|an toàn|Tính từ|这里很安全。|Ở đây rất an toàn.
+4|法律|pháp luật|Danh từ|人人都要遵守法律。|Mọi người đều phải tuân thủ pháp luật.
+4|规定|quy định|Danh từ|请遵守学校的规定。|Xin tuân thủ quy định của trường.
+4|保护|bảo vệ|Động từ|我们应该保护环境。|Chúng ta nên bảo vệ môi trường.
+4|节约|tiết kiệm|Động từ|请节约用水。|Xin tiết kiệm nước.
+4|鼓励|khuyến khích|Động từ|老师鼓励我继续学习。|Thầy khuyến khích tôi tiếp tục học.
+4|批评|phê bình|Động từ|他接受了批评。|Anh ấy đã tiếp nhận lời phê bình.
+4|道歉|xin lỗi|Động từ|我要向你道歉。|Tôi muốn xin lỗi bạn.
+4|原谅|tha thứ|Động từ|请原谅我的错误。|Xin tha thứ cho lỗi của tôi.
+4|拒绝|từ chối|Động từ|她拒绝了这个邀请。|Cô ấy từ chối lời mời này.
+4|接受|chấp nhận|Động từ|我接受你的建议。|Tôi chấp nhận đề nghị của bạn.
+4|证明|chứng minh|Động từ|事实证明他是对的。|Sự thật chứng minh anh ấy đúng.
+4|解释|giải thích|Động từ|请解释这个词的意思。|Xin giải thích nghĩa của từ này.
+4|怀疑|nghi ngờ|Động từ|我怀疑这个消息的真实性。|Tôi nghi ngờ tính xác thực của tin này.
+4|后悔|hối hận|Động từ|我不后悔这个决定。|Tôi không hối hận về quyết định này.
+4|骄傲|kiêu ngạo, tự hào|Tính từ|我们为你感到骄傲。|Chúng tôi cảm thấy tự hào về bạn.
+4|害羞|xấu hổ, thẹn thùng|Tính từ|她有点儿害羞。|Cô ấy hơi thẹn thùng.
+4|冷静|bình tĩnh|Tính từ|请保持冷静。|Xin giữ bình tĩnh.
+4|普遍|phổ biến|Tính từ|这种现象很普遍。|Hiện tượng này rất phổ biến.
+4|丰富|phong phú|Tính từ|这本书的内容很丰富。|Nội dung quyển sách này rất phong phú.
+5|何必|hà tất|Phó từ|何必为小事生气呢？|Hà tất phải giận vì việc nhỏ?
+5|何况|huống chi|Liên từ|大人尚且觉得难，何况孩子呢？|Người lớn còn thấy khó, huống chi trẻ em?
+5|未免|e rằng quá|Phó từ|这样说未免太早了。|Nói như vậy e rằng quá sớm.
+5|不妨|ngại gì, thử|Phó từ|你不妨试一试。|Bạn thử một lần xem.
+5|宁可|thà|Phó từ|我宁可走路，也不坐他的车。|Tôi thà đi bộ cũng không đi xe của anh ấy.
+5|索性|dứt khoát, cứ thế|Phó từ|雨太大，我们索性不出门了。|Mưa to quá, chúng tôi dứt khoát không ra ngoài nữa.
+5|幸亏|may mà|Phó từ|幸亏你提醒了我。|May mà bạn đã nhắc tôi.
+5|万一|nhỡ, lỡ như|Liên từ|万一下雨，就取消活动。|Nhỡ trời mưa thì hủy hoạt động.
+5|总之|tóm lại|Liên từ|总之，我们需要更多时间。|Tóm lại, chúng ta cần thêm thời gian.
+5|毕竟|dù sao thì|Phó từ|他毕竟还是个孩子。|Dù sao nó vẫn là một đứa trẻ.
+5|所谓|cái gọi là|Tính từ|这就是所谓的成功吗？|Đây là cái gọi là thành công sao?
+5|趋势|xu hướng|Danh từ|我们要了解市场趋势。|Chúng ta cần hiểu xu hướng thị trường.
+5|效率|hiệu suất|Danh từ|这个方法提高了效率。|Phương pháp này nâng cao hiệu suất.
+5|危机|khủng hoảng|Danh từ|公司面临危机。|Công ty đối mặt với khủng hoảng.
+5|竞争|cạnh tranh|Động từ|这两家公司正在竞争。|Hai công ty này đang cạnh tranh.
+5|现象|hiện tượng|Danh từ|这种现象值得研究。|Hiện tượng này đáng nghiên cứu.
+5|观念|quan niệm|Danh từ|他的观念发生了变化。|Quan niệm của anh ấy đã thay đổi.
+5|传统|truyền thống|Danh từ|我们尊重当地的传统。|Chúng tôi tôn trọng truyền thống địa phương.
+5|讲究|chú trọng, cầu kỳ|Động từ|她很讲究礼貌。|Cô ấy rất chú trọng phép lịch sự.
+5|体会|cảm nhận, lĩnh hội|Động từ|我能体会你的心情。|Tôi có thể hiểu tâm trạng của bạn.
+5|安慰|an ủi|Động từ|朋友来安慰我。|Bạn đến an ủi tôi.
+5|犹豫|do dự|Động từ|他犹豫了很久。|Anh ấy do dự rất lâu.
+5|佩服|khâm phục|Động từ|我很佩服她的勇气。|Tôi rất khâm phục lòng dũng cảm của cô ấy.
+5|惭愧|hổ thẹn|Tính từ|我为自己的行为感到惭愧。|Tôi hổ thẹn về hành vi của mình.
+5|忽略|bỏ qua, xem nhẹ|Động từ|不要忽略细节。|Đừng xem nhẹ chi tiết.
+5|彻底|triệt để|Tính từ|问题得到彻底解决。|Vấn đề được giải quyết triệt để.
+5|明显|rõ ràng|Tính từ|他的进步很明显。|Sự tiến bộ của anh ấy rất rõ ràng.
+5|偶然|tình cờ|Phó từ|我偶然遇到了老朋友。|Tôi tình cờ gặp bạn cũ.
+5|必然|tất yếu|Tính từ|这不是必然的结果。|Đây không phải kết quả tất yếu.
+5|客观|khách quan|Tính từ|请客观地评价。|Xin đánh giá khách quan.
+5|主观|chủ quan|Tính từ|这只是我的主观看法。|Đây chỉ là cách nhìn chủ quan của tôi.
+5|盲目|mù quáng|Tính từ|不要盲目跟随别人。|Đừng mù quáng làm theo người khác.
+5|谦虚|khiêm tốn|Tính từ|他一直很谦虚。|Anh ấy luôn rất khiêm tốn.
+5|谨慎|thận trọng|Tính từ|做决定时要谨慎。|Khi quyết định cần thận trọng.
+5|乐观|lạc quan|Tính từ|她对未来很乐观。|Cô ấy rất lạc quan về tương lai.
+5|悲观|bi quan|Tính từ|不要对生活太悲观。|Đừng quá bi quan về cuộc sống.
+5|呼吁|kêu gọi|Động từ|大家呼吁保护环境。|Mọi người kêu gọi bảo vệ môi trường.
+5|采取|áp dụng, tiến hành|Động từ|我们必须采取行动。|Chúng ta phải hành động.
+5|促进|thúc đẩy|Động từ|交流能促进理解。|Giao lưu có thể thúc đẩy sự thấu hiểu.
+5|改善|cải thiện|Động từ|他们努力改善生活。|Họ nỗ lực cải thiện cuộc sống.
+5|承担|gánh vác|Động từ|我愿意承担责任。|Tôi sẵn lòng gánh vác trách nhiệm.
+5|珍惜|trân trọng|Động từ|我们应该珍惜时间。|Chúng ta nên trân trọng thời gian.
+5|把握|nắm bắt|Động từ|请把握这次机会。|Xin nắm bắt cơ hội này.
+5|自私|ích kỷ|Tính từ|这种想法太自私了。|Suy nghĩ này quá ích kỷ.
+5|独立|độc lập|Tính từ|她已经能够独立生活。|Cô ấy đã có thể sống độc lập.
+6|鉴于|xét thấy|Giới từ|鉴于天气恶劣，活动取消。|Xét thấy thời tiết xấu, hoạt động bị hủy.
+6|一旦|một khi|Liên từ|一旦决定，就不要犹豫。|Một khi đã quyết định thì đừng do dự.
+6|倘若|nếu như|Liên từ|倘若有机会，我愿意参加。|Nếu có cơ hội, tôi sẵn lòng tham gia.
+6|固然|cố nhiên|Liên từ|经验固然重要，学习也不可少。|Kinh nghiệm cố nhiên quan trọng, học tập cũng không thể thiếu.
+6|岂不|há chẳng|Phó từ|这样做岂不更好？|Làm thế này há chẳng tốt hơn sao?
+6|无非|chẳng qua|Phó từ|他无非是想帮忙。|Anh ấy chẳng qua muốn giúp đỡ.
+6|未尝|chưa từng, chưa hẳn|Phó từ|这未尝不是一件好事。|Đây chưa hẳn không phải là việc tốt.
+6|归根结底|xét đến cùng|Thành ngữ|归根结底，还是要靠自己。|Xét đến cùng vẫn phải dựa vào bản thân.
+6|相辅相成|bổ trợ lẫn nhau|Thành ngữ|理论与实践相辅相成。|Lý thuyết và thực hành bổ trợ lẫn nhau.
+6|潜移默化|ảnh hưởng ngầm dần dần|Thành ngữ|阅读在潜移默化中影响着他。|Việc đọc ảnh hưởng đến anh ấy một cách âm thầm dần dần.
+6|刻不容缓|không thể trì hoãn|Thành ngữ|解决这个问题刻不容缓。|Giải quyết vấn đề này không thể trì hoãn.
+6|举足轻重|có vai trò hết sức quan trọng|Thành ngữ|他在团队中举足轻重。|Anh ấy giữ vai trò hết sức quan trọng trong nhóm.
+6|屡见不鲜|thường thấy, không còn lạ|Thành ngữ|这种情况已经屡见不鲜。|Tình huống này đã thường gặp, không còn lạ.
+6|精益求精|đã tốt còn muốn tốt hơn|Thành ngữ|他对工作精益求精。|Anh ấy luôn muốn làm công việc tốt hơn nữa.
+6|不可思议|không thể tưởng tượng nổi|Thành ngữ|这个结果令人不可思议。|Kết quả này khiến người ta không thể tưởng tượng nổi.
+6|恍然大悟|bỗng nhiên hiểu ra|Thành ngữ|听了解释，我恍然大悟。|Nghe giải thích xong, tôi bỗng hiểu ra.
+6|博大精深|rộng lớn và sâu sắc|Thành ngữ|中国文化博大精深。|Văn hóa Trung Quốc rộng lớn và sâu sắc.
+6|循序渐进|tiến dần theo trình tự|Thành ngữ|学习应该循序渐进。|Việc học nên tiến dần theo trình tự.
+6|全力以赴|dốc toàn lực|Thành ngữ|我们将全力以赴。|Chúng tôi sẽ dốc toàn lực.
+6|理所当然|đương nhiên, hợp lẽ|Thành ngữ|不要把帮助看作理所当然。|Đừng xem sự giúp đỡ là điều đương nhiên.
+6|斟酌|cân nhắc kỹ|Động từ|这个词需要仔细斟酌。|Từ này cần cân nhắc kỹ.
+6|妥协|thỏa hiệp|Động từ|双方终于达成妥协。|Hai bên cuối cùng đã đạt thỏa hiệp.
+6|遏制|kiềm chế, ngăn chặn|Động từ|我们需要遏制污染。|Chúng ta cần ngăn chặn ô nhiễm.
+6|普及|phổ cập|Động từ|学校努力普及科学知识。|Nhà trường nỗ lực phổ cập kiến thức khoa học.
+6|赋予|trao cho|Động từ|作者赋予人物新的意义。|Tác giả trao cho nhân vật ý nghĩa mới.
+6|酝酿|ấp ủ, chuẩn bị hình thành|Động từ|这个计划还在酝酿中。|Kế hoạch này vẫn đang được ấp ủ.
+6|诠释|diễn giải|Động từ|这篇文章诠释了他的观点。|Bài viết này diễn giải quan điểm của anh ấy.
+6|崛起|trỗi dậy|Động từ|这座城市正在崛起。|Thành phố này đang trỗi dậy.
+6|蓬勃|bừng bừng, mạnh mẽ|Tính từ|这里的文化事业蓬勃发展。|Sự nghiệp văn hóa ở đây phát triển mạnh mẽ.
+6|敏锐|nhạy bén|Tính từ|她的观察力很敏锐。|Khả năng quan sát của cô ấy rất nhạy bén.
+6|严谨|nghiêm cẩn, chặt chẽ|Tính từ|他的研究态度很严谨。|Thái độ nghiên cứu của anh ấy rất nghiêm cẩn.
+6|洞察|nhìn thấu|Động từ|他能洞察问题的本质。|Anh ấy có thể nhìn thấu bản chất vấn đề.
+6|衡量|đánh giá, cân đo|Động từ|不能只用金钱衡量成功。|Không thể chỉ dùng tiền bạc để đánh giá thành công.
+6|弥补|bù đắp|Động từ|我们需要弥补不足。|Chúng ta cần bù đắp thiếu sót.
+6|淘汰|đào thải|Động từ|旧设备逐渐被淘汰。|Thiết bị cũ dần bị đào thải.
+6|呼吁|kêu gọi|Động từ|他们呼吁加强合作。|Họ kêu gọi tăng cường hợp tác.
+6|捍卫|bảo vệ vững chắc|Động từ|我们要捍卫自己的权利。|Chúng ta cần bảo vệ quyền lợi của mình.
+6|履行|thực hiện, thi hành|Động từ|他认真履行职责。|Anh ấy nghiêm túc thực hiện chức trách.
+6|造诣|trình độ thành tựu|Danh từ|他在书法方面造诣很深。|Anh ấy có trình độ rất sâu về thư pháp.
+6|棘手|khó giải quyết|Tính từ|这是一个棘手的问题。|Đây là một vấn đề khó giải quyết.
+6|侥幸|may mắn tình cờ, cầu may|Phó từ|他侥幸通过了考试。|Anh ấy may mắn vượt qua kỳ thi.
+6|敷衍|làm qua loa|Động từ|不要敷衍自己的工作。|Đừng làm công việc của mình qua loa.
+6|瞻仰|chiêm ngưỡng với lòng kính trọng|Động từ|大家前来瞻仰纪念碑。|Mọi người đến chiêm ngưỡng đài tưởng niệm với lòng kính trọng.
+6|震撼|chấn động|Động từ|这场演出震撼了观众。|Buổi biểu diễn này làm khán giả chấn động.
+6|融洽|hòa thuận|Tính từ|他们的关系很融洽。|Quan hệ của họ rất hòa thuận.
+3|安静|yên tĩnh|Tính từ|图书馆里很安静。|Trong thư viện rất yên tĩnh.
+3|办法|cách, biện pháp|Danh từ|我们还有别的办法。|Chúng ta vẫn còn cách khác.
+3|办公室|văn phòng|Danh từ|老师在办公室。|Thầy ở văn phòng.
+3|城市|thành phố|Danh từ|这个城市很美。|Thành phố này rất đẹp.
+3|地图|bản đồ|Danh từ|请给我一张地图。|Xin cho tôi một tấm bản đồ.
+3|方便|thuận tiện|Tính từ|坐地铁很方便。|Đi tàu điện ngầm rất thuận tiện.
+3|根据|căn cứ theo|Giới từ|请根据课文回答问题。|Xin trả lời câu hỏi dựa theo bài khóa.
+3|兴趣|hứng thú|Danh từ|我对音乐有兴趣。|Tôi có hứng thú với âm nhạc.
+4|安排|sắp xếp|Động từ|请安排会议时间。|Xin sắp xếp thời gian họp.
+4|科学|khoa học|Danh từ|我对科学很感兴趣。|Tôi rất có hứng thú với khoa học.
+4|交流|giao lưu, trao đổi|Động từ|我们经常交流学习经验。|Chúng tôi thường trao đổi kinh nghiệm học tập.
+5|媒体|truyền thông|Danh từ|媒体正在关注这件事。|Truyền thông đang chú ý đến việc này.
+5|分析|phân tích|Động từ|我们先分析原因。|Trước tiên chúng ta phân tích nguyên nhân.
+5|观点|quan điểm|Danh từ|请说明你的观点。|Xin nói rõ quan điểm của bạn.
+5|合作|hợp tác|Động từ|双方愿意继续合作。|Hai bên sẵn lòng tiếp tục hợp tác.
+5|文学|văn học|Danh từ|她喜欢中国文学。|Cô ấy thích văn học Trung Quốc.
+5|成语|thành ngữ|Danh từ|这个成语是什么意思？|Thành ngữ này có nghĩa là gì?
+5|逻辑|lôgic|Danh từ|这段话的逻辑很清楚。|Lôgic của đoạn nói này rất rõ ràng.
+5|结论|kết luận|Danh từ|不要急着下结论。|Đừng vội kết luận.
+6|安居乐业|an cư lạc nghiệp|Thành ngữ|人人都希望安居乐业。|Ai cũng mong an cư lạc nghiệp.
+6|半途而废|bỏ dở giữa chừng|Thành ngữ|学习不能半途而废。|Học tập không thể bỏ dở giữa chừng.
+6|不言而喻|không nói cũng hiểu|Thành ngữ|健康的重要性不言而喻。|Tầm quan trọng của sức khỏe không nói cũng hiểu.
+6|层出不穷|xuất hiện liên tiếp không dứt|Thành ngữ|新的想法层出不穷。|Ý tưởng mới xuất hiện liên tiếp không dứt.
+6|从容不迫|ung dung, bình tĩnh|Thành ngữ|她从容不迫地回答问题。|Cô ấy bình tĩnh trả lời câu hỏi.
+6|颁布|ban bố|Động từ|新规定已经颁布。|Quy định mới đã được ban bố.
+6|弊端|điểm bất cập|Danh từ|我们需要消除这些弊端。|Chúng ta cần loại bỏ những bất cập này.
+6|财政|tài chính công|Danh từ|报告讨论了财政问题。|Báo cáo đã bàn về vấn đề tài chính công.
+6|策略|sách lược|Danh từ|我们需要调整策略。|Chúng ta cần điều chỉnh sách lược.
+6|阐述|trình bày rõ|Động từ|请阐述你的理由。|Xin trình bày rõ lý do của bạn.
+6|创新|đổi mới, sáng tạo|Động từ|这个团队不断创新。|Nhóm này không ngừng đổi mới.
+6|筹备|trù bị, chuẩn bị|Động từ|他们正在筹备会议。|Họ đang chuẩn bị hội nghị.
+6|承诺|cam kết|Danh từ|他履行了自己的承诺。|Anh ấy đã thực hiện cam kết của mình.
+6|储备|dự trữ|Động từ|我们需要储备粮食。|Chúng ta cần dự trữ lương thực.
+6|倡导|đề xướng|Động từ|学校倡导节约用水。|Nhà trường đề xướng tiết kiệm nước.

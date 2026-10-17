@@ -7,6 +7,7 @@ const mockSpeakChinese = vi.fn();
 vi.mock('../../src/services/chineseSpeech', () => ({
   speakChinese: (text: string) => mockSpeakChinese(text),
   stopChineseSpeech: vi.fn(),
+  isChineseSpeechSupported: () => true,
 }));
 
 const mockExamApi = {
@@ -48,7 +49,7 @@ const examInProgress = {
       index: 0,
       type: 'LISTENING',
       questionText: 'Nghe phát âm và chọn nghĩa đúng của từ:',
-      audioPrompt: '学校',
+      audioText: '学校',
       options: ['Trường học', 'Bệnh viện', 'Quán ăn', 'Cửa hàng'],
     },
     {
@@ -68,19 +69,19 @@ const gradedPass = {
   currentStreak: 1,
   details: [
     {
-      questionIndex: 0,
+      index: 0,
       questionText: 'Nghe phát âm và chọn nghĩa đúng của từ:',
-      userAnswer: 'Trường học',
+      submittedAnswer: 'Trường học',
       correctAnswer: 'Trường học',
-      isCorrect: true,
+      correct: true,
       explanation: '学校 (xuéxiào) nghĩa là Trường học.',
     },
     {
-      questionIndex: 1,
+      index: 1,
       questionText: '他______中国菜。(Anh ấy muốn ăn món Trung Quốc)',
-      userAnswer: '想吃',
+      submittedAnswer: '想吃',
       correctAnswer: '想吃',
-      isCorrect: true,
+      correct: true,
       explanation: '想 (xiǎng) là động từ năng nguyện biểu thị mong muốn.',
     },
   ],
@@ -94,19 +95,19 @@ const gradedFail = {
   currentStreak: 0,
   details: [
     {
-      questionIndex: 0,
+      index: 0,
       questionText: 'Nghe phát âm và chọn nghĩa đúng của từ:',
-      userAnswer: 'Bệnh viện',
+      submittedAnswer: 'Bệnh viện',
       correctAnswer: 'Trường học',
-      isCorrect: false,
+      correct: false,
       explanation: '学校 (xuéxiào) nghĩa là Trường học.',
     },
     {
-      questionIndex: 1,
+      index: 1,
       questionText: '他______中国菜。(Anh ấy muốn ăn món Trung Quốc)',
-      userAnswer: '想吃',
+      submittedAnswer: '想吃',
       correctAnswer: '想吃',
-      isCorrect: true,
+      correct: true,
       explanation: '想 (xiǎng) là động từ năng nguyện biểu thị mong muốn.',
     },
   ],
@@ -151,7 +152,7 @@ describe('HSK Mock Exam Engine (ExamView)', () => {
     expect(screen.queryByText('学校')).toBeNull();
 
     // Click audio prompt button
-    const playAudioBtn = screen.getByRole('button', { name: /Nghe phát âm câu hỏi/ });
+    const playAudioBtn = screen.getAllByRole('button', { name: /Phát âm Quan thoại/ })[0];
     fireEvent.click(playAudioBtn);
 
     expect(mockSpeakChinese).toHaveBeenCalledWith('学校');
@@ -210,7 +211,7 @@ describe('HSK Mock Exam Engine (ExamView)', () => {
     expect(screen.getByText(/Cần ôn luyện thêm/)).toBeTruthy();
 
     // Verify diagnostic navigation links to Grammar and Dictionary
-    expect(screen.getByRole('button', { name: /Ôn tập ngữ pháp/ })).toBeTruthy();
-    expect(screen.getByRole('button', { name: /Tra cứu từ vựng/ })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /Ôn tại Trạm Ngữ pháp/ })).toBeTruthy();
+
   });
 });

@@ -27,7 +27,7 @@ Giúp việc học tiếng Trung cho người Việt trở nên **dễ dàng, ch
 - Nội dung mới phải ở trạng thái `PENDING_REVIEW`; chỉ hiện cho người học sau khi admin duyệt (`APPROVED`).
 - "Một ngày học" tính theo múi giờ `Asia/Ho_Chi_Minh`.
 - Nhãn thương hiệu trung tính: "Học tiếng Trung".
-- M1 (Pinyin & phát âm), M2.1 / M2.1.1 (Bài mẫu Từ vựng & SRS), M2.2 (Kho từ vựng Chủ đề HSK 1), HSK Standard Course Ecosystem (Staging V6), M4 (Chuẩn 150 từ HSK 1 & Trạm Chữ Hán) và M5 (Tự động Phê duyệt toàn bộ Giáo trình APPROVED, Mở rộng HSK 2 Standard Course V8, Bản đồ Lộ trình Chinh phục HSK & Nhiệm vụ Hằng ngày trên Dashboard, 1-Click Bulk Approve trên Admin Console) đã hoàn thiện và được đánh dấu APPROVED toàn diện để người học trải nghiệm không bị chặn cổng duyệt.
+- M1 (Pinyin & phát âm), M2.1 / M2.1.1 (Bài mẫu Từ vựng & SRS), M2.2 (Kho từ vựng Chủ đề HSK 1), HSK Standard Course Ecosystem (Staging V6), M4 (Chuẩn 150 từ HSK 1 & Trạm Chữ Hán), M5 (Tự động Phê duyệt toàn bộ Giáo trình APPROVED, Mở rộng HSK 2 Standard Course V8, Bản đồ Lộ trình HSK Dashboard), và M6 (Sửa lỗi UI Text Overlap trên OrientalCard & Dashboard, Mở rộng toàn diện giáo trình HSK 1 đến HSK 6 V9 với thi thử 200đ/300đ) đã hoàn thiện và được đánh dấu APPROVED toàn diện để người học trải nghiệm không bị chặn cổng duyệt.
 
 ## Capabilities and Constraints
 

@@ -453,7 +453,7 @@ export const HanziStationView: React.FC = () => {
         {/* HSK Level Filter */}
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-[11px] font-semibold uppercase tracking-wider text-fg-38">Cấp độ HSK:</span>
-          {(['ALL', 1, 2, 3] as const).map((lvl) => (
+          {(['ALL', 1, 2, 3, 4, 5, 6] as const).map((lvl) => (
             <button
               key={lvl}
               type="button"
@@ -506,7 +506,7 @@ export const HanziStationView: React.FC = () => {
             />
           </div>
 
-          <div className="grid grid-cols-4 gap-2 max-h-[500px] overflow-y-auto pr-1">
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(94px,1fr))] gap-2 max-h-[500px] overflow-y-auto pr-1">
             {filteredCharacters.map((c) => {
               const isSelected = selectedChar.character === c.character;
               const isPending = c.reviewStatus === 'PENDING_REVIEW' || c.needsHumanCheck;
@@ -524,7 +524,7 @@ export const HanziStationView: React.FC = () => {
                 >
                   {/* Pending Badge */}
                   {isPending && (
-                    <span className="absolute left-1 top-1 rounded bg-amber-500/15 px-1 py-0.2 text-[8px] font-semibold text-amber-500">
+                    <span className="mb-1 text-[12.5px] leading-relaxed text-red">
                       Chờ duyệt
                     </span>
                   )}
@@ -541,7 +541,7 @@ export const HanziStationView: React.FC = () => {
 
                   {/* Tiny Mastery indicator */}
                   {score >= 80 && (
-                    <span className="absolute right-1 top-1 h-1.5 w-1.5 rounded-full bg-jade" />
+                    <span className="mt-1 h-1.5 w-1.5 bg-rank" />
                   )}
                 </button>
               );
@@ -618,7 +618,7 @@ export const HanziStationView: React.FC = () => {
 
               {/* Red Seal Stamp upon Quiz Completion */}
               {isQuizCompleted && (
-                <div className="pointer-events-none absolute bottom-4 right-4 z-20">
+                <div className="pointer-events-none flex justify-end py-3">
                   <RedSealStamp text="通" size={84} />
                 </div>
               )}

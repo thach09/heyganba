@@ -10,7 +10,11 @@ public record ExamSubmitResponse(
         double scorePercent,
         Integer durationSeconds,
         int currentStreak,
-        List<QuestionResult> details
+        List<QuestionResult> details,
+        Integer hskLevel,
+        int maximumScore,
+        int passingScore,
+        double scaledScore
 ) {
     public record QuestionResult(
             int index,

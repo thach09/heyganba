@@ -21,7 +21,8 @@ public record GrammarRuleResponse(
         String lessonTitle,
         long exerciseCount,
         String reviewStatus,
-        String examplesJson
+        String examplesJson,
+        Integer hskLevel
 ) {
     public static GrammarRuleResponse from(GrammarRule rule, long exerciseCount) {
         return new GrammarRuleResponse(
@@ -35,7 +36,8 @@ public record GrammarRuleResponse(
                 rule.getLesson() != null ? rule.getLesson().getTitle() : null,
                 exerciseCount,
                 rule.getReviewStatus() != null ? rule.getReviewStatus().name() : null,
-                rule.getExamplesJson()
+                rule.getExamplesJson(),
+                rule.getHskLevel()
         );
     }
 }

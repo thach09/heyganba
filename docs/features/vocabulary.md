@@ -228,9 +228,24 @@ Hệ thống phân tách rạch ròi 2 chế độ học tập:
    - Từ vựng: `打电话` (gọi điện thoại), `睡觉` (ngủ), `看见` (nhìn thấy), `听见` (nghe thấy), `认识` (quen biết), `高兴` (vui vẻ), `漂亮` (xinh đẹp), `小` (nhỏ, bé), `少` (ít), `些` (một vài, một ít), `喂` (alo, này), `对不起` (xin lỗi), `学习` (học tập), `电影` (phim điện ảnh), `衣服` (quần áo), `猫` (con mèo).
 
 ### B. Chỉ số Đạt được & Kỹ thuật:
-- **Tổng số từ vựng HSK 1**: 38 từ `APPROVED` (V2) + 112 từ `PENDING_REVIEW` (V4: 10 + V5: 40 + V6: 30 + V7: 32) = **Đúng 150 từ vựng HSK 1**.
-- **Cơ sở dữ liệu Bộ thủ & Chữ Hán**: Khởi tạo 20 bộ thủ nền tảng (`radicals`) và mở rộng cấu trúc chiết tự (`decomposition`) cùng các từ ghép ứng dụng (`example_words_json`) trong bảng `hanzi`.
-- **Idempotency & Sequence Sync**: Bảo đảm 100% tái chạy không lỗi qua `ON CONFLICT` và lệnh `SELECT setval(...)` cho tất cả các bảng: `lessons`, `vocabulary`, `hanzi`, `radicals`.
+---
+
+## 10. Milestone M6 — Mở rộng Toàn diện Giáo trình HSK 1 đến HSK 6 (Migration V9)
+
+> **Trạng thái**: **Hoàn tất & Phê duyệt toàn diện (`APPROVED`)**  
+> **Phạm vi V9**: Bổ sung trọn bộ bài học và từ vựng từ HSK 1 đến HSK 6 (HSK 2 hoàn thiện, HSK 3: 45+ từ, HSK 4: 45+ từ, HSK 5: 45+ từ, HSK 6: 45+ từ và Thành ngữ 4 chữ Chengyu). Toàn bộ nội dung đạt `review_status = 'APPROVED'` (`needs_human_check = false`).
+
+### A. Danh mục Bài học Mở rộng theo Cấp độ:
+1. **HSK 3 (Trung cấp)**: `hsk3-life-environment`, `hsk3-work-culture`, `hsk3-travel-problem-solving` với các từ: `把`, `被`, `除了`, `以外`, `越来越`, `不但`, `而且`, `感兴趣`, `影响`, `环境`, `解决`, `决定`, `其实`, `终于`, `必须`, `成绩`, `护照`, `行李`, `空调`, `地铁`, `电子邮件`, `参加`, `照顾`, `满意`, `害怕`, `着急`, `变化`, `健康`, `重要`, `简单`, `奇怪`, `聪明`, `热情`, `努力`, `认真`, `礼貌`, `借`, `还`, `换`, `搬`, `打扫`, `检查`, `发烧`, `感冒`, `习惯`.
+2. **HSK 4 (Trung-Cao cấp)**: `hsk4-career-society`, `hsk4-science-psychology`, `hsk4-culture-communication` với các từ: `尽管`, `既然`, `不管`, `无论`, `不仅`, `哪怕`, `稍微`, `简直`, `竟然`, `顺便`, `究竟`, `按照`, `通过`, `责任`, `经验`, `压力`, `态度`, `羡慕`, `误会`, `克服`, `坚持`, `总结`, `计划`, `收入`, `质量`, `安全`, `法律`, `规定`, `保护`, `节约`, `鼓励`, `批评`, `道歉`, `原谅`, `拒绝`, `接受`, `证明`, `解释`, `怀疑`, `后悔`, `骄傲`, `害羞`, `冷静`, `普遍`, `丰富`.
+3. **HSK 5 (Cao cấp)**: `hsk5-economy-media`, `hsk5-literature-idioms`, `hsk5-debate-philosophy` với các từ & thành ngữ: `何必`, `何况`, `未免`, `不妨`, `宁可`, `索性`, `幸亏`, `万一`, `总之`, `毕竟`, `所谓`, `趋势`, `效率`, `危机`, `竞争`, `现象`, `观念`, `传统`, `讲究`, `体会`, `安慰`, `犹豫`, `佩服`, `惭愧`, `忽略`, `彻底`, `明显`, `偶然`, `必然`, `客观`, `主观`, `盲目`, `谦虚`, `谨慎`, `乐观`, `悲观`, `呼吁`, `采取`, `促进`, `改善`, `承担`, `珍惜`, `把握`, `自私`, `独立`.
+4. **HSK 6 (Tinh thông)**: `hsk6-academic-governance`, `hsk6-classical-idioms-rhetoric` với các từ ngữ học thuật và Thành ngữ 4 chữ (成语): `鉴于`, `一旦`, `倘若`, `固然`, `岂不`, `无非`, `未尝`, `归根结底`, `相辅相成`, `潜移默化`, `刻不容缓`, `举足轻重`, `屡见不鲜`, `精益求精`, `不可思议`, `恍然大悟`, `博大精深`, `循序渐进`, `全力以赴`, `理所当然`, `斟酌`, `妥协`, `遏制`, `普及`, `赋予`, `酝酿`, `诠释`, `崛起`, `蓬勃`, `敏锐`, `严谨`, `洞察`, `衡量`, `弥补`, `淘汰`, `呼吁`, `捍卫`, `履行`, `造诣`, `棘手`, `侥幸`, `敷衍`, `瞻仰`, `震撼`, `融洽`.
+
+### B. Nâng cấp Giao diện Trạm Từ vựng (`/vocabulary`):
+- Hỗ trợ đầy đủ bộ lọc cấp độ: `Tất cả`, `Nhập môn`, `HSK 1`, `HSK 2`, `HSK 3`, `HSK 4`, `HSK 5`, `HSK 6` kèm bộ đếm bài học.
+- Đồng bộ 2 chiều URL query (`?level=HSK1` .. `?level=HSK6`, `?level=INTRO`).
+- Tìm kiếm từ vựng theo chữ Hán, Pinyin, Hán Việt và nghĩa tiếng Việt không giật lag.
+- Đảm bảo bố cục co giãn tốt trên 1440px desktop, 1024px tablet, 390px mobile không vỡ layout.
 
 
 

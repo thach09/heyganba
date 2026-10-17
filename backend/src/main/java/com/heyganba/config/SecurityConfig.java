@@ -102,7 +102,6 @@ public class SecurityConfig {
                                 "/dictionary/**",
                                 "/vocabulary/**",
                                 "/vocab/**",
-                                "/audio/**",
                                 "/radicals/**",
                                 "/health",
                                 "/actuator/health",

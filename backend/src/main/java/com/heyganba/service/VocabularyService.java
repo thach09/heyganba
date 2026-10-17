@@ -42,7 +42,7 @@ public class VocabularyService {
                         lesson.getSlug(),
                         lesson.getTitle(),
                         lesson.getDescription(),
-                        lesson.getCurriculumLevel(),
+                        lesson.getCurriculumLevel().replaceAll("HSK\\s*([1-6])", "HSK $1"),
                         lesson.getOrderIndex(),
                         wordCount
                 ));

@@ -16,6 +16,9 @@ import java.time.Instant;
 @Builder
 public class GrammarRule {
 
+    @Column(name = "hsk_level")
+    private Integer hskLevel;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

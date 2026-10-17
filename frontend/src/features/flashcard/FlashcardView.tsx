@@ -153,7 +153,7 @@ export const FlashcardView: React.FC = () => {
         if (prev && res.data.some(l => l.id === prev.id)) {
           return prev;
         }
-        return res.data[0] || null;
+        return null; // The filtered catalog below chooses the first eligible lesson.
       });
     } else {
       setLessons([]);
@@ -170,7 +170,7 @@ export const FlashcardView: React.FC = () => {
     setLessonWordsLoading(true);
     setLessonWordsError(null);
 
-    const res = await run('load-lesson-words', signal => vocabularyApi.lessonWords(slug, { signal }));
+    const res = await run('load-lesson-words', signal => vocabularyApi.lessonWords(slug, { signal })).catch(error => ({ success: false, data: undefined, message: error instanceof Error ? error.message : 'Kh?ng t?i ???c b?i h?c.' }));
     if (res && res.success && res.data) {
       setLessonWords(res.data);
     } else {
@@ -303,31 +303,19 @@ export const FlashcardView: React.FC = () => {
     }
   };
 
-  // Curriculum Level Filter & Catalog Search State
-  const [selectedLevelFilter, setSelectedLevelFilter] = useState<string>('ALL');
+  // URL is the source of truth, including back/forward and removing the filter.
+  const rawLevel = (searchParams.get('level') || '').trim().toUpperCase().replace(/\s/g, '');
+  const selectedLevelFilter = /^(HSK)?[1-6]$/.test(rawLevel)
+    ? `HSK ${rawLevel.slice(-1)}` : rawLevel === 'INTRO' ? 'Nhập môn' : 'ALL';
   const [catalogSearchQuery, setCatalogSearchQuery] = useState<string>('');
-
-  const availableLevels = useMemo(() => {
-    const set = new Set<string>();
-    lessons.forEach(l => {
-      if (l.curriculumLevel) set.add(l.curriculumLevel);
-    });
-    return Array.from(set).sort();
-  }, [lessons]);
-
-  // Sync level query parameter (e.g., ?level=HSK1, ?level=1, ?level=HSK2, ?level=2)
-  useEffect(() => {
-    const rawLevel = searchParams.get('level');
-    if (!rawLevel) return;
-    const normalized = rawLevel.trim().toUpperCase();
-    if (normalized === '1' || normalized === 'HSK1' || normalized === 'HSK 1') {
-      setSelectedLevelFilter('HSK 1');
-    } else if (normalized === '2' || normalized === 'HSK2' || normalized === 'HSK 2') {
-      setSelectedLevelFilter('HSK 2');
-    } else if (availableLevels.includes(rawLevel)) {
-      setSelectedLevelFilter(rawLevel);
-    }
-  }, [searchParams, availableLevels]);
+  const availableLevels = ['Nhập môn', ...[1, 2, 3, 4, 5, 6].map(n => `HSK ${n}`)];
+  const setSelectedLevelFilter = (level: string) => {
+    const params = new URLSearchParams(searchParams);
+    if (level === 'ALL') params.delete('level');
+    else params.set('level', level === 'Nhập môn' ? 'INTRO' : level.replace(' ', ''));
+    setSearchParams(params);
+    setSelectedLesson(null);
+  };
 
   // Filtered lessons based on Admin Preview vs Student View + Level Filter + Search
   const displayedLessons = useMemo(() => {
@@ -348,6 +336,13 @@ export const FlashcardView: React.FC = () => {
     }
     return list;
   }, [lessons, isAdmin, adminPreviewActive, selectedLevelFilter, catalogSearchQuery]);
+
+  useEffect(() => {
+    if (!displayedLessons.some(lesson => lesson.id === selectedLesson?.id)) {
+      setSelectedLesson(displayedLessons[0] ?? null);
+      setLessonWords([]);
+    }
+  }, [displayedLessons, selectedLesson?.id]);
 
   // Filtered lesson words for list view
   const filteredLessonWords = useMemo(() => {
@@ -623,9 +618,9 @@ export const FlashcardView: React.FC = () => {
         <div className="flex items-center gap-2">
           <ShieldCheck size={16} className="text-emerald-400 shrink-0" />
           <div>
-            <span className="font-bold text-emerald-300">Giáo trình Từ vựng HSK 1 & HSK 2: APPROVED · Đã kiểm duyệt</span>
+            <span className="font-bold text-emerald-300">Từ vựng HSK 1–6 · Nội dung đã duyệt</span>
             <span className="text-emerald-200/80 block sm:inline sm:ml-2">
-              (Bao gồm 150 từ HSK 1 và 68+ từ HSK 2 theo chuẩn HSK 3.0, mở khoá toàn bộ cho học viên ôn tập SRS)
+              (Học theo chủ đề và ôn tập SRS theo cấp độ)
             </span>
           </div>
         </div>
@@ -852,7 +847,7 @@ export const FlashcardView: React.FC = () => {
                   }`}
                 >
                   <div>
-                    <div className="flex items-center justify-between text-[11px] text-fg-38">
+                    <div className="flex min-w-0 flex-wrap items-center justify-between gap-2 text-[11px] text-fg-38">
                       <span className="font-semibold text-cinnabar uppercase tracking-wider">
                         {lesson.curriculumLevel}
                       </span>
@@ -865,9 +860,9 @@ export const FlashcardView: React.FC = () => {
                       {lesson.description}
                     </p>
                   </div>
-                  <div className="mt-4 flex items-center justify-between pt-3 border-t border-rule/50 text-xs">
+                  <div className="mt-4 flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-rule/50 text-xs">
                     <span className="text-[11px] font-mono text-fg-60">
-                      {lesson.curriculumLevel === 'HSK 2' ? 'Giáo trình Chuẩn HSK 2' : lesson.curriculumLevel === 'HSK 1' ? 'Giáo trình Chuẩn HSK 1' : 'Khóa Nhập môn'}
+                      {lesson.curriculumLevel || 'Nhập môn'}
                     </span>
                     <span className="font-medium text-cinnabar flex items-center gap-1 text-[11px]">
                       {isSelected ? 'Đang chọn' : 'Xem bài'} →
@@ -1120,16 +1115,16 @@ export const FlashcardView: React.FC = () => {
                   {/* 3D Flashcard Container */}
                   <div
                     onClick={() => setStudyFlipped(prev => !prev)}
-                    className="group relative h-[320px] w-full cursor-pointer perspective-1000"
+                    className="group relative min-h-[320px] w-full cursor-pointer perspective-1000"
                   >
                     <div
-                      className={`relative h-full w-full rounded border border-rule transition-transform duration-500 transform-style-3d ${
+                      className={`grid min-h-[320px] w-full border border-rule transition-transform duration-500 transform-style-3d ${
                         studyFlipped ? 'rotate-y-180' : ''
                       }`}
                     >
                       {/* FRONT SIDE (No answer leak!) */}
-                      <div className="absolute inset-0 flex flex-col justify-between bg-card p-8 backface-hidden shadow-lg">
-                        <div className="flex items-center justify-between text-[11px] text-fg-38">
+                      <div className="col-start-1 row-start-1 flex min-w-0 flex-col justify-between gap-5 bg-card p-8 backface-hidden shadow-lg">
+                        <div className="flex min-w-0 flex-wrap items-center justify-between gap-2 text-[11px] text-fg-38">
                           <span className="uppercase tracking-wider font-semibold text-cinnabar">
                             {selectedLesson.title}
                           </span>
@@ -1137,7 +1132,7 @@ export const FlashcardView: React.FC = () => {
                         </div>
 
                         <div className="my-auto flex flex-col items-center text-center">
-                          <span className="font-serif text-6xl font-bold tracking-wide text-fg">
+                          <span className="break-words font-serif text-[clamp(32px,9vw,60px)] font-bold tracking-wide text-fg">
                             {currentStudyWord.word}
                           </span>
                           {currentStudyWord.traditional && currentStudyWord.traditional !== currentStudyWord.word && (
@@ -1147,7 +1142,7 @@ export const FlashcardView: React.FC = () => {
                           )}
                         </div>
 
-                        <div className="flex items-center justify-between text-[11px] text-fg-38">
+                        <div className="flex min-w-0 flex-wrap items-center justify-between gap-2 text-[11px] text-fg-38">
                           <span>Bấm để lật xem phiên âm & ngữ cảnh</span>
                           <button
                             type="button"
@@ -1163,8 +1158,8 @@ export const FlashcardView: React.FC = () => {
                       </div>
 
                       {/* BACK SIDE */}
-                      <div className="absolute inset-0 flex flex-col justify-between bg-card p-8 rotate-y-180 backface-hidden shadow-lg">
-                        <div className="flex items-center justify-between text-[11px]">
+                      <div className="col-start-1 row-start-1 flex min-w-0 flex-col justify-between gap-5 bg-card p-8 rotate-y-180 backface-hidden shadow-lg">
+                        <div className="flex min-w-0 flex-wrap items-center justify-between gap-2 text-[11px]">
                           <div className="flex items-center gap-2">
                             <span className="font-serif text-lg font-bold text-fg">{currentStudyWord.word}</span>
                             <button
@@ -1215,7 +1210,7 @@ export const FlashcardView: React.FC = () => {
                           )}
                         </div>
 
-                        <div className="flex items-center justify-between text-[11px] text-fg-38">
+                        <div className="flex min-w-0 flex-wrap items-center justify-between gap-2 text-[11px] text-fg-38">
                           <span>Bấm để lật lại mặt chữ Hán</span>
                           <button
                             type="button"
@@ -1457,7 +1452,7 @@ export const FlashcardView: React.FC = () => {
 
               {/* Red Seal Overlay */}
               {showSeal && (
-                <div className="absolute z-30 pointer-events-none mt-20">
+                <div className="flex justify-center py-3 pointer-events-none">
                   <RedSealStamp text={sealText} size={64} />
                 </div>
               )}
@@ -1465,16 +1460,16 @@ export const FlashcardView: React.FC = () => {
               {/* 3D Flashcard */}
               <div
                 onClick={() => setSrsFlipped(prev => !prev)}
-                className="group relative h-[320px] w-full cursor-pointer perspective-1000"
+                className="group relative min-h-[320px] w-full cursor-pointer perspective-1000"
               >
                 <div
-                  className={`relative h-full w-full rounded border border-rule transition-transform duration-500 transform-style-3d ${
+                  className={`grid min-h-[320px] w-full border border-rule transition-transform duration-500 transform-style-3d ${
                     srsFlipped ? 'rotate-y-180' : ''
                   }`}
                 >
                   {/* FRONT: ONLY Hanzi (No answer leaks!) */}
-                  <div className="absolute inset-0 flex flex-col justify-between bg-card p-8 backface-hidden shadow-lg">
-                    <div className="flex items-center justify-between text-[11px] text-fg-38">
+                  <div className="col-start-1 row-start-1 flex min-w-0 flex-col justify-between gap-5 bg-card p-8 backface-hidden shadow-lg">
+                    <div className="flex min-w-0 flex-wrap items-center justify-between gap-2 text-[11px] text-fg-38">
                       <span className="font-semibold text-cinnabar uppercase tracking-wide">
                         {currentSrsItem.isNew ? '🌱 Từ mới đưa vào phiên' : '⏳ Đến hạn ôn tập'}
                       </span>
@@ -1482,7 +1477,7 @@ export const FlashcardView: React.FC = () => {
                     </div>
 
                     <div className="my-auto flex flex-col items-center text-center">
-                      <span className="font-serif text-6xl font-bold tracking-wide text-fg">
+                      <span className="break-words font-serif text-[clamp(32px,9vw,60px)] font-bold tracking-wide text-fg">
                         {currentSrsItem.word}
                       </span>
                       {currentSrsItem.traditional && currentSrsItem.traditional !== currentSrsItem.word && (
@@ -1492,15 +1487,15 @@ export const FlashcardView: React.FC = () => {
                       )}
                     </div>
 
-                    <div className="flex items-center justify-between text-[11px] text-fg-38">
+                    <div className="flex min-w-0 flex-wrap items-center justify-between gap-2 text-[11px] text-fg-38">
                       <span>Bấm vào thẻ hoặc phím cách để lật</span>
                       <span>Nhớ lại phát âm & nghĩa trước khi lật</span>
                     </div>
                   </div>
 
                   {/* BACK: Full information */}
-                  <div className="absolute inset-0 flex flex-col justify-between bg-card p-8 rotate-y-180 backface-hidden shadow-lg">
-                    <div className="flex items-center justify-between text-[11px]">
+                  <div className="col-start-1 row-start-1 flex min-w-0 flex-col justify-between gap-5 bg-card p-8 rotate-y-180 backface-hidden shadow-lg">
+                    <div className="flex min-w-0 flex-wrap items-center justify-between gap-2 text-[11px]">
                       <div className="flex items-center gap-2">
                         <span className="font-serif text-lg font-bold text-fg">{currentSrsItem.word}</span>
                         <button
@@ -1554,7 +1549,7 @@ export const FlashcardView: React.FC = () => {
                       )}
                     </div>
 
-                    <div className="flex items-center justify-between text-[11px] text-fg-38">
+                    <div className="flex min-w-0 flex-wrap items-center justify-between gap-2 text-[11px] text-fg-38">
                       <span>Bấm để lật lại chữ Hán</span>
                       <button
                         type="button"

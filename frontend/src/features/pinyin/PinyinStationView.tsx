@@ -152,7 +152,7 @@ export const PinyinStationView: React.FC = () => {
             </div>
 
             {/* Companion Dock */}
-            <div className="flex items-center gap-3">
+            <div className="flex min-w-0 flex-wrap items-center gap-3">
               <StudyPetCompanion />
             </div>
           </div>

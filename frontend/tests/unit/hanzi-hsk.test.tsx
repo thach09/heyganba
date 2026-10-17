@@ -2,13 +2,13 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import { HanziStationView } from '../../src/features/hanzi/HanziStationView';
-import { speakChinese } from '../../services/chineseSpeech';
+import { speakChinese } from '../../src/services/chineseSpeech';
 import { progressApi } from '../../src/features/progress/api';
 import { hanziApi } from '../../src/features/hanzi/api';
 
 // Hoisted test state & fixtures
 const fixture = vi.hoisted(() => ({
-  user: { id: 1, role: 'ROLE_USER', fullName: 'Học viên HSK' } as any,
+  user: { userId: 1, role: 'ROLE_USER', fullName: 'Học viên HSK' } as any,
   lastQuizOptions: null as any,
   writerMock: {
     animateCharacter: vi.fn(),
@@ -133,8 +133,8 @@ describe('Hanzi & Radicals Station (Trạm Chữ Hán HSK 1)', () => {
     expect(screen.getByText('口 Khẩu')).toBeInTheDocument();
 
     // Characters in grid
-    expect(await screen.findByText('人')).toBeInTheDocument();
-    expect(screen.getByText('好')).toBeInTheDocument();
+    expect((await screen.findAllByText('人'))[0]).toBeInTheDocument();
+    expect(screen.getAllByText('好')[0]).toBeInTheDocument();
     expect(screen.getByText('你')).toBeInTheDocument();
 
     // Pending review badge for character '你'
@@ -148,22 +148,22 @@ describe('Hanzi & Radicals Station (Trạm Chữ Hán HSK 1)', () => {
       </MemoryRouter>
     );
 
-    await screen.findByText('人');
+    await screen.findAllByText('人');
 
     // Click radical '女 Nữ'
     const femaleRadicalBtn = screen.getByText('女 Nữ');
     fireEvent.click(femaleRadicalBtn);
 
     // '好' has radical '女', should remain visible
-    expect(screen.getByText('好')).toBeInTheDocument();
+    expect(screen.getAllByText('好')[0]).toBeInTheDocument();
     // '人' does not have radical '女', should not be in the filtered list
-    expect(screen.queryByText('Nhân')).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /^人 / })).not.toBeInTheDocument();
 
     // Search query test
-    const searchInput = screen.getByPlaceholderText(/Tìm theo Hán tự, Pinyin, Hán Việt/i);
+    const searchInput = screen.getByPlaceholderText(/Tìm theo chữ Hán, Pinyin, Hán Việt/i);
     fireEvent.change(searchInput, { target: { value: 'Hảo' } });
 
-    expect(screen.getByText('好')).toBeInTheDocument();
+    expect(screen.getAllByText('好')[0]).toBeInTheDocument();
   });
 
   test('3. Displays Chiết tự (decomposition) and applied HSK compound words with TTS audio playback', async () => {
@@ -173,14 +173,14 @@ describe('Hanzi & Radicals Station (Trạm Chữ Hán HSK 1)', () => {
       </MemoryRouter>
     );
 
-    await screen.findByText('人');
+    await screen.findAllByText('人');
 
     // Select character '好'
-    const charHaoBtn = screen.getByText('好');
+    const charHaoBtn = screen.getAllByText('好')[0];
     fireEvent.click(charHaoBtn);
 
     // Check Sino-Vietnamese reading
-    expect(await screen.findByText(/Âm Hán Việt: Hảo/i)).toBeInTheDocument();
+    expect((await screen.findAllByText('Hảo'))[0]).toBeInTheDocument();
 
     // Check decomposition (Chiết tự)
     expect(screen.getByText(/女 \(Nữ\) \+ 子 \(Tử\)/i)).toBeInTheDocument();
@@ -192,7 +192,7 @@ describe('Hanzi & Radicals Station (Trạm Chữ Hán HSK 1)', () => {
 
     // Test Mandarin TTS audio playback on the main character
     const audioBtns = screen.getAllByRole('button');
-    const speakBtn = audioBtns.find((b) => b.getAttribute('title')?.includes('Phát âm') || b.querySelector('svg'));
+    const speakBtn = screen.getByTitle('Nghe phát âm chữ Hán');
     expect(speakBtn).toBeDefined();
     if (speakBtn) {
       fireEvent.click(speakBtn);
@@ -207,7 +207,7 @@ describe('Hanzi & Radicals Station (Trạm Chữ Hán HSK 1)', () => {
       </MemoryRouter>
     );
 
-    await screen.findByText('人');
+    await screen.findAllByText('人');
 
     // Switch to quiz mode "Luyện viết tay"
     const quizModeBtn = screen.getByRole('button', { name: /Luyện viết tay/i });
@@ -218,7 +218,7 @@ describe('Hanzi & Radicals Station (Trạm Chữ Hán HSK 1)', () => {
     });
 
     // Simulate completion of the handwriting stroke quiz
-    fixture.lastQuizOptions.onComplete();
+    await fixture.lastQuizOptions.onComplete();
 
     // Red seal stamp should appear: <RedSealStamp text="通" />
     expect(await screen.findByText('通')).toBeInTheDocument();
