@@ -23,8 +23,6 @@ export interface HanziDto {
   exampleWordsJson?: string | null;
   practiceCount: number;
   masteryScore?: number;
-  onyomi?: string | null;
-  kunyomi?: string | null;
   mnemonic?: string | null;
   lessonSlug?: string | null;
   lessonTitle?: string | null;
@@ -39,10 +37,9 @@ export interface ExampleWordItem {
   vi: string;
 }
 
-export type KanjiDto = HanziDto;
 
-export interface KanjiProgressResult {
-  kanjiId: number;
+export interface HanziProgressResult {
+  hanziId: number;
   character: string;
   practiceCount: number;
   lastPracticedAt: string;

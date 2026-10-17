@@ -5,6 +5,7 @@ import com.heyganba.dto.progress.UserExpResponse;
 import com.heyganba.model.entity.ExamResult;
 import com.heyganba.model.entity.StudyActivity;
 import com.heyganba.repository.ExamResultRepository;
+import com.heyganba.repository.DailyQuestClaimRepository;
 import com.heyganba.repository.StudyActivityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ExpService {
 
+    private final DailyQuestClaimRepository questClaims;
     private final ExpConfig expConfig;
     private final StudyActivityRepository studyActivityRepository;
     private final ExamResultRepository examResultRepository;
@@ -50,7 +52,8 @@ public class ExpService {
             examExp += Math.round(expConfig.getExamBase() * (percent / 100.0));
         }
 
-        long totalExp = exerciseExp + srsExp + examExp;
+        long questExp = questClaims == null ? 0 : questClaims.findByUserId(userId).stream().mapToLong(com.heyganba.model.entity.DailyQuestClaim::getRewardExp).sum();
+        long totalExp = exerciseExp + srsExp + examExp + questExp;
         int level = (int) (totalExp / EXP_PER_LEVEL) + 1;
         long expIntoLevel = totalExp % EXP_PER_LEVEL;
 

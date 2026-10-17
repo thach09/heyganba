@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.Duration;
 import java.util.List;
 
+@org.springframework.validation.annotation.Validated
 @RestController
 @RequestMapping("/flashcard")
 @RequiredArgsConstructor
@@ -38,7 +39,7 @@ public class FlashcardController {
     @GetMapping("/due-today")
     public ResponseEntity<ApiResponse<List<FlashcardDueResponse>>> getDueToday(
             @AuthenticationPrincipal UserPrincipal currentUser,
-            @RequestParam(required = false) Integer newLimit
+            @RequestParam(required = false) @jakarta.validation.constraints.Min(0) @jakarta.validation.constraints.Max(100) Integer newLimit
     ) {
         List<FlashcardDueResponse> items = flashcardService.getDueToday(currentUser.getId(), newLimit);
         return ResponseEntity.ok(ApiResponse.success(items));

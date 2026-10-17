@@ -82,6 +82,8 @@ public class ExamService {
     private final com.heyganba.repository.MockExamPresetRepository mockExamPresetRepository;
     private final ExamResultRepository examResultRepository;
     private final GrammarExerciseRepository grammarExerciseRepository;
+    @org.springframework.beans.factory.annotation.Value("${app.legacy-phonetics-enabled:false}")
+    private boolean legacyPhoneticsEnabled;
     private final KanaRepository kanaRepository;
     private final VocabularyRepository vocabularyRepository;
     private final ReadingPassageRepository readingPassageRepository;
@@ -129,6 +131,7 @@ public class ExamService {
         int durationMinutes = clamp(request.durationMinutes(), MIN_DURATION_MINUTES, MAX_DURATION_MINUTES, DEFAULT_DURATION_MINUTES);
 
         Integer level = request.hskLevel();
+        if (level == null && !legacyPhoneticsEnabled) level = 1;
         if (level != null) {
             var preset = mockExamPresetRepository.findByHskLevelAndReviewStatus(level, ReviewStatus.APPROVED)
                     .filter(p -> !Boolean.TRUE.equals(p.getNeedsHumanCheck()))
@@ -159,6 +162,7 @@ public class ExamService {
     // -----------------------------------------------------------------
     @Transactional
     public ExamSubmitResponse submit(Long userId, Long examId, ExamSubmitRequest request) {
+        userRepository.findLockedById(userId).orElseThrow(() -> new ResourceNotFoundException("Người dùng", "id", userId));
         MockExam exam = mockExamRepository.findByIdAndUserId(examId, userId)
                 .orElseThrow(() -> new ResourceNotFoundException("MockExam", "id", examId));
 
@@ -314,7 +318,7 @@ public class ExamService {
         List<Vocabulary> words = new ArrayList<>(vocabularyRepository.findCourseWords().stream()
                 .filter(v -> v.getReviewStatus() == ReviewStatus.APPROVED && Integer.valueOf(level).equals(v.getHskLevel())).toList());
         List<GrammarExercise> grammar = new ArrayList<>(grammarExerciseRepository.findAll().stream()
-                .filter(e -> e.getReviewStatus() == ReviewStatus.APPROVED && e.getGrammarRule() != null
+                .filter(e -> !"SENTENCE_ORDER".equals(e.getExerciseType()) && e.getReviewStatus() == ReviewStatus.APPROVED && e.getGrammarRule() != null
                         && e.getGrammarRule().getReviewStatus() == ReviewStatus.APPROVED
                         && Integer.valueOf(level).equals(e.getGrammarRule().getHskLevel())).toList());
         Collections.shuffle(words, random);
@@ -445,6 +449,7 @@ public class ExamService {
 
         List<GrammarExercise> pool = new ArrayList<>(
                 ContentAccess.visibleOnly(grammarExerciseRepository.findAll(), GrammarExercise::getReviewStatus));
+        pool.removeIf(e -> "SENTENCE_ORDER".equals(e.getExerciseType()));
         Collections.shuffle(pool, random);
 
         List<Question> questions = new ArrayList<>();

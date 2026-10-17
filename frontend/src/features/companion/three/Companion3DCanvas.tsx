@@ -216,8 +216,8 @@ export function Companion3DCanvas({
       {/* Speech Bubble */}
       {showSpeechBubble && (
         <div
-          className={`pointer-events-none mb-2 max-w-[210px] rounded-xl border border-[#2a2c3a] bg-[#12141c]/95 px-3 py-1.5 shadow-[0_4px_16px_rgba(0,0,0,0.5)] backdrop-blur-md transition-all duration-300 ${
-            mood === 'happy' ? 'border-[#D97706]/60 shadow-[0_0_15px_rgba(217,119,6,0.3)]' : ''
+          className={`pointer-events-none mb-2 max-w-[210px] rounded-xl border border-rule bg-card/95 px-3 py-1.5  backdrop-blur-md transition-all duration-300 ${
+            mood === 'happy' ? 'border-gold/60 ' : ''
           }`}
         >
           <p className="font-serif text-[12.5px] font-medium tracking-wide text-fg">
@@ -227,7 +227,7 @@ export function Companion3DCanvas({
             {currentQuote.vi}
           </p>
           {/* Arrow */}
-          <div className="absolute -bottom-1.5 left-1/2 h-2.5 w-2.5 -translate-x-1/2 rotate-45 border-r border-b border-[#2a2c3a] bg-[#12141c]" />
+          <div className="absolute -bottom-1.5 left-1/2 h-2.5 w-2.5 -translate-x-1/2 rotate-45 border-r border-b border-rule bg-card" />
         </div>
       )}
 

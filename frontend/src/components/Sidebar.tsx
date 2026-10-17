@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ChevronLeft, X } from 'lucide-react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import type { AuthResponse } from '../lib/api/types';
+import { ThemeToggle } from './ThemeToggle';
 
 interface SidebarProps {
   /** Mobile: close the drawer after choosing a nav item; desktop keeps it open. */
@@ -24,16 +25,16 @@ const itemBase =
 
 /** Chinese Imperial Seal Stamp (朱砂玉印 - khắc chữ 漢) as the platform brand icon */
 const ChineseSealStamp = () => (
-  <div className="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-[3px] border border-[#D97706]/70 bg-[#B91C1C]/20 shadow-[0_0_12px_rgba(185,28,28,0.35)]">
-    <div className="absolute inset-[2px] rounded-[2px] border border-[#B91C1C]/70" />
-    <span className="relative z-10 font-serif text-[15px] font-black leading-none text-[#EF4444]">
+  <div className="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-[3px] border border-gold/70 bg-cinnabar/20 ">
+    <div className="absolute inset-[2px] rounded-[2px] border border-cinnabar/70" />
+    <span className="relative z-10 font-serif text-[15px] font-black leading-none text-cinnabar-ink">
       漢
     </span>
   </div>
 );
 
 const ActiveTick = () => (
-  <span aria-hidden="true" className="absolute -left-4 top-1 bottom-1 w-0.5 bg-[#D97706] shadow-[0_0_8px_rgba(217,119,6,0.7)]" />
+  <span aria-hidden="true" className="absolute -left-4 top-1 bottom-1 w-0.5 bg-gold " />
 );
 
 const iconButton =
@@ -153,7 +154,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <aside
-      className={`fixed inset-y-0 left-0 z-20 flex w-[216px] flex-col overflow-visible overscroll-contain bg-[#0a0b10]/95 border-r border-[#1e202b] backdrop-blur-md pb-8 pl-8 pr-4 pt-10 transition-transform duration-150 max-[900px]:overflow-y-auto max-[900px]:z-[100] max-[900px]:w-[min(280px,82vw)] max-[900px]:p-6 ${
+      className={`fixed inset-y-0 left-0 z-20 flex w-[216px] flex-col overflow-visible overscroll-contain bg-card/95 border-r border-rule backdrop-blur-md pb-8 pl-8 pr-4 pt-10 transition-transform duration-150 max-[900px]:overflow-y-auto max-[900px]:z-[100] max-[900px]:w-[min(280px,82vw)] max-[900px]:p-6 ${
         isOpen ? 'translate-x-0' : '-translate-x-full'
       }`}
       aria-label="Thanh điều hướng chính"
@@ -166,7 +167,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <div className="font-sans text-[16px] font-bold tracking-tight text-fg whitespace-nowrap">
               Học tiếng Trung
             </div>
-            <span className="block font-sans text-[11px] font-medium tracking-[0.16em] text-[#E5A93C]">
+            <span className="block font-sans text-[11px] font-medium tracking-[0.16em] text-gold-ink">
               中文学习 · 华语
             </span>
           </div>
@@ -285,6 +286,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </nav>
 
       <div className="mt-auto flex flex-col gap-3 pt-6">
+        <ThemeToggle />
         {user ? (
           <>
             <div className="min-w-0">

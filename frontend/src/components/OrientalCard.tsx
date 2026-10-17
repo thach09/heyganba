@@ -15,14 +15,14 @@ export function OrientalCard({
   tag,
   bookmark,
   tagVariant = 'cinnabar',
-  hoverCorners: _hoverCorners,
+  hoverCorners = true,
   active = false,
   ...props
 }: OrientalCardProps) {
   const displayTag = bookmark || tag;
   return (
     <div
-      className={`min-w-0 bg-card p-5 leading-relaxed ${active ? 'text-fg' : ''} ${className}`}
+      data-lattice={hoverCorners} className={`oriental-card relative min-w-0 bg-card p-5 leading-relaxed ${active ? 'text-fg' : ''} ${className}`}
       {...props}
     >
       {displayTag && (
@@ -30,6 +30,7 @@ export function OrientalCard({
           <span className={`break-words text-[12.5px] leading-relaxed ${tagVariant === 'jade' ? 'text-rank' : 'text-fg-60'}`}>
             {displayTag}
           </span>
+          <span aria-hidden="true" className="ml-auto shrink-0 font-serif text-[11px] leading-none text-fg/20 [writing-mode:vertical-rl]">温故知新</span>
           {bookmark && tag && bookmark !== tag && (
             <span className="break-words text-[12px] leading-relaxed text-fg-38">
               {tag}

@@ -31,12 +31,12 @@ export interface VocabularyAdminItem {
   reviewStatus?: string;
 }
 
-export interface KanjiAdminItem {
+export interface HanziAdminItem {
   id: number;
   character: string;
   strokeCount: number;
-  onyomi?: string;
-  kunyomi?: string;
+  pinyin?: string;
+  traditional?: string;
   sinoVietnamese?: string;
   meaning: string;
   mnemonic?: string;

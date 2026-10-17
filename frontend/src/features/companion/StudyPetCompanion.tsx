@@ -24,9 +24,9 @@ export function StudyPetCompanion({
   if (compact) {
     return (
       <div
-        className={`relative inline-flex items-center gap-2 rounded-lg border border-rule bg-[#1A1B18]/90 px-2.5 py-1 shadow-sm backdrop-blur-sm ${className}`}
+        className={`relative inline-flex items-center gap-2 rounded-lg border border-rule bg-card/90 px-2.5 py-1  backdrop-blur-sm ${className}`}
       >
-        <div className="flex items-center gap-1 rounded-full border border-rule/80 bg-black/40 px-2 py-0.5 text-[10.5px] font-medium text-[#2E7D6B]">
+        <div className="flex items-center gap-1 rounded-full border border-rule/80 bg-tint px-2 py-0.5 text-[10.5px] font-medium text-jade-ink">
           <FoodIcon type={activePet.foodIcon} className="h-3 w-3" />
           <span>{bambooCount}</span>
         </div>
@@ -49,10 +49,10 @@ export function StudyPetCompanion({
 
   return (
     <div
-      className={`relative inline-flex flex-col items-center rounded-xl border border-rule bg-[#1A1B18]/90 p-3 shadow-md backdrop-blur-sm ${className}`}
+      className={`relative inline-flex flex-col items-center rounded-xl border border-rule bg-card/90 p-3  backdrop-blur-sm ${className}`}
     >
       {/* Food Badge */}
-      <div className="mb-1 flex items-center gap-1 rounded-full border border-rule/80 bg-black/40 px-2 py-0.5 text-[10.5px] font-medium text-[#2E7D6B]">
+      <div className="mb-1 flex items-center gap-1 rounded-full border border-rule/80 bg-tint px-2 py-0.5 text-[10.5px] font-medium text-jade-ink">
         <FoodIcon type={activePet.foodIcon} className="h-3.5 w-3.5" />
         <span>{bambooCount}</span>
       </div>

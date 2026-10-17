@@ -12,10 +12,11 @@
     <artifactId>heyganba-backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>heyganba-backend</name>
-    <description>HeyGanba Japanese Learning Platform Backend API</description>
+    <description>Chinese learning platform backend API</description>
 
     <properties>
         <java.version>21</java.version>
+        <build.output.root>${project.basedir}/target</build.output.root>
         <jjwt.version>0.12.6</jjwt.version>
         <!-- Compatible security patches newer than the Spring Boot 3.5 BOM. -->
         <tomcat.version>10.1.60</tomcat.version>
@@ -124,6 +125,7 @@
     </dependencies>
 
     <build>
+        <directory>${build.output.root}</directory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

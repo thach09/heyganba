@@ -184,7 +184,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 placeholder="123456"
                 value={twoFactorCode}
                 onChange={(e) => setTwoFactorCode(e.target.value.replace(/\D/g, ''))}
-                className={`${inputClass} mt-2 font-mono text-[16px] text-center tracking-widest`}
+                className={`${inputClass} mt-2 font-sans text-[16px] text-center tracking-widest`}
               />
             </div>
           )}

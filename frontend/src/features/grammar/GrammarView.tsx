@@ -1,4 +1,5 @@
 import { useRequestScope } from '../../lib/hooks/useRequestScope';
+import { SentenceOrderExercise } from './SentenceOrderExercise';
 import { grammarApi } from './api';
 import { useAuth } from '../../app/useAuth';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -81,6 +82,7 @@ export const GrammarView: React.FC = () => {
   const [rules, setRules] = useState<GrammarRuleDto[]>([]);
   const [selectedHskLevel, setSelectedHskLevel] = useState<string>('ALL');
   const [lesson, setLesson] = useState<string>('');
+  const [exerciseType, setExerciseType] = useState<'MULTIPLE_CHOICE' | 'SENTENCE_ORDER'>('MULTIPLE_CHOICE');
   const [mistakeOnly, setMistakeOnly] = useState(false);
   const [selectedRule, setSelectedRule] = useState<GrammarRuleDto | null>(null);
   const [search, setSearch] = useState('');
@@ -171,14 +173,14 @@ export const GrammarView: React.FC = () => {
       if (!res) return;
 
       if (res.success && res.data) {
-        setExercises(res.data);
+        setExercises(res.data.filter(exercise => (exercise.exerciseType ?? 'MULTIPLE_CHOICE') === exerciseType && (selectedHskLevel === 'ALL' || exercise.hskLevel === Number(selectedHskLevel.slice(-1)))));
         setExerciseState('loaded');
       } else {
         setExerciseError(res.message || 'Không tải được bài tập.');
         setExerciseState('error');
       }
     },
-    [run, userId]
+    [run, userId, exerciseType, selectedHskLevel]
   );
 
   useEffect(() => {
@@ -297,7 +299,7 @@ export const GrammarView: React.FC = () => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (learningKeyboardBlocked(event)) return;
 
-      if (['1', '2', '3', '4'].includes(event.key) && current) {
+      if (['1', '2', '3', '4'].includes(event.key) && current && current.exerciseType !== 'SENTENCE_ORDER') {
         const option = current.options[Number(event.key) - 1];
         if (option) {
           void submitAnswer(option);
@@ -346,7 +348,7 @@ export const GrammarView: React.FC = () => {
     ? selectedRule.structure
     : mistakeOnly
       ? 'toàn bộ nhóm bẫy'
-      : 'tất cả điểm ngữ pháp';
+      : `điểm ngữ pháp ${selectedHskLevel === 'ALL' ? 'tất cả cấp' : selectedHskLevel}`;
 
   const selectedRuleExamples = selectedRule ? parseExamples(selectedRule.examplesJson) : [];
 
@@ -355,24 +357,24 @@ export const GrammarView: React.FC = () => {
     <div className="flex flex-col gap-4">
       <div>
         <div className="flex items-center justify-between text-[11px] text-fg-38 mb-1">
-          <span className="font-semibold text-cinnabar uppercase tracking-wider">
+          <span className="font-semibold text-cinnabar-ink uppercase tracking-wider">
             {selectedRule.lessonTitle || 'Giáo trình chuẩn HSK'}
           </span>
-          <span className="font-mono text-fg-60">#{selectedRule.number}</span>
+          <span className="font-sans text-fg-60">#{selectedRule.number}</span>
         </div>
         <h2 className="font-serif text-2xl font-bold text-fg leading-snug">
           {selectedRule.title}
         </h2>
         {selectedRule.reviewStatus && selectedRule.reviewStatus !== 'APPROVED' && (
-          <span className="inline-block mt-1.5 rounded bg-amber-500/10 border border-amber-500/30 px-2 py-0.5 text-[10.5px] font-mono text-amber-300">
+          <span className="inline-block mt-1.5 rounded bg-gold/10 border border-gold/30 px-2 py-0.5 text-[10.5px] font-sans text-gold-ink">
             Bản thảo chờ duyệt (PENDING_REVIEW)
           </span>
         )}
       </div>
 
       {/* Core Formula Box (Cấu trúc cốt lõi) */}
-      <div className="rounded-lg border border-cinnabar/40 bg-cinnabar/10 p-3.5 shadow-inner">
-        <span className="text-[10.5px] font-semibold uppercase tracking-wider text-cinnabar/80 block mb-1">
+      <div className="rounded-lg border border-cinnabar/40 bg-cinnabar/10 p-3.5 ">
+        <span className="text-[10.5px] font-semibold uppercase tracking-wider text-cinnabar-ink block mb-1">
           Cấu trúc cốt lõi (核心句型):
         </span>
         <div className="font-serif text-[17px] font-bold text-fg leading-relaxed">
@@ -388,12 +390,12 @@ export const GrammarView: React.FC = () => {
 
       {/* Common Mistake Notes (Lưu ý góc nhìn người Việt) */}
       {selectedRule.notes && (
-        <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-3.5 text-xs text-amber-200">
-          <div className="flex items-center gap-1.5 font-semibold text-amber-300 mb-1">
+        <div className="rounded-lg border border-gold/30 bg-gold/10 p-3.5 text-xs text-gold-ink">
+          <div className="flex items-center gap-1.5 font-semibold text-gold-ink mb-1">
             <TriangleAlert size={14} className="shrink-0" />
             Lưu ý lỗi thường gặp (Góc nhìn người Việt):
           </div>
-          <p className="leading-relaxed text-amber-200/90 text-[11.5px]">{selectedRule.notes}</p>
+          <p className="leading-relaxed text-gold-ink text-[11.5px]">{selectedRule.notes}</p>
         </div>
       )}
 
@@ -405,7 +407,7 @@ export const GrammarView: React.FC = () => {
             <button
               type="button"
               onClick={() => setShowPinyin((prev) => !prev)}
-              className="cursor-pointer text-[11px] font-medium text-fg-60 hover:text-cinnabar transition-colors"
+              className="cursor-pointer text-[11px] font-medium text-fg-60 hover:text-cinnabar-ink transition-colors"
             >
               {showPinyin ? 'Ẩn Pinyin' : 'Hiện Pinyin'}
             </button>
@@ -419,13 +421,13 @@ export const GrammarView: React.FC = () => {
                     type="button"
                     onClick={() => speakChinese(ex.zh)}
                     title="Nghe phát âm chuẩn Quan thoại"
-                    className="cursor-pointer text-fg-38 hover:text-cinnabar transition-colors p-1"
+                    className="cursor-pointer text-fg-38 hover:text-cinnabar-ink transition-colors p-1"
                   >
                     <Volume2 size={13} />
                   </button>
                 </div>
                 {showPinyin && ex.pinyin && (
-                  <div className="text-[11px] font-sans text-gold mt-0.5">{ex.pinyin}</div>
+                  <div className="text-[11px] font-sans text-gold-ink mt-0.5">{ex.pinyin}</div>
                 )}
                 {ex.vi && <div className="text-[11.5px] text-fg-60 mt-0.5">{ex.vi}</div>}
               </div>
@@ -468,15 +470,15 @@ export const GrammarView: React.FC = () => {
       {/* Station header */}
       <div className="flex min-w-0 flex-wrap items-center justify-between gap-6">
         <div>
-          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-cinnabar">
+          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-cinnabar-ink">
             <span className="inline-block h-2 w-2 rounded-full bg-cinnabar" />
-            Trạm 4 · 语法与句型 · Trạm Ngữ pháp HSK · [Hoạt động thật]
+            Trạm 4 · 语法与句型 · Trạm Ngữ pháp HSK
           </div>
           <h1 className="mt-1 font-serif text-3xl font-bold tracking-tight text-fg">
             Ngữ pháp HSK &amp; Luyện phản xạ
           </h1>
           <p className="mt-1.5 max-w-2xl text-xs leading-relaxed text-fg-60">
-            Nắm vững các cấu trúc ngữ pháp tiếng Trung chuẩn HSK 1–3 qua phương pháp so sánh đối chiếu Việt - Trung, lưu ý lỗi người Việt thường mắc và bài tập phản xạ tương tác.
+            Học các cấu trúc ngữ pháp tiếng Trung theo phạm vi HSK 1–6 qua phương pháp so sánh đối chiếu Việt - Trung, lưu ý lỗi người Việt thường mắc và bài tập phản xạ tương tác.
           </p>
         </div>
         <button
@@ -499,7 +501,7 @@ export const GrammarView: React.FC = () => {
             disabled={checking}
             onClick={() => setMode(tab.key)}
             className={`cursor-pointer border-0 border-b-2 bg-transparent px-0.5 pb-2 text-[12.5px] transition-colors ${
-              mode === tab.key ? 'border-cinnabar font-semibold text-cinnabar' : 'border-transparent text-fg-38 hover:text-fg'
+              mode === tab.key ? 'border-cinnabar font-semibold text-cinnabar-ink' : 'border-transparent text-fg-38 hover:text-fg'
             }`}
           >
             {tab.label}
@@ -574,11 +576,11 @@ export const GrammarView: React.FC = () => {
           {error && <p className="mt-4 text-[12.5px] text-red">{error}</p>}
 
           {pendingReviewRules > 0 && (
-            <p className="mt-4 flex items-start gap-2 text-[11.5px] leading-[1.7] text-amber-300/90 rounded border border-amber-500/20 bg-amber-500/10 p-3">
-              <TriangleAlert size={14} className="mt-0.5 shrink-0 text-amber-400" />
+            <p className="mt-4 flex items-start gap-2 text-[11.5px] leading-[1.7] text-gold-ink rounded border border-gold/20 bg-gold/10 p-3">
+              <TriangleAlert size={14} className="mt-0.5 shrink-0 text-gold-ink" />
               <span>
-                Nội dung học thuật: <strong className="text-amber-200">{pendingReviewRules}</strong>/{rules.length} điểm ngữ pháp
-                đang ở trạng thái <b>PENDING_REVIEW</b> chờ hội đồng chuyên gia học thuật ký duyệt chính thức.
+                Nội dung học thuật: <strong className="text-gold-ink">{pendingReviewRules}</strong>/{rules.length} điểm ngữ pháp
+                đang ở trạng thái <b>PENDING_REVIEW</b> chờ duyệt học thuật.
               </span>
             </p>
           )}
@@ -608,11 +610,11 @@ export const GrammarView: React.FC = () => {
                         <span className="font-serif text-[17px] font-bold text-fg leading-snug">
                           {rule.title}
                         </span>
-                        <span className="shrink-0 text-[11px] font-medium text-cinnabar">
+                        <span className="shrink-0 text-[11px] font-medium text-cinnabar-ink">
                           {rule.exerciseCount} câu
                         </span>
                       </div>
-                      <div className="font-sans text-[12.5px] text-gold font-medium">
+                      <div className="font-sans text-[12.5px] text-gold-ink font-medium">
                         {rule.structure}
                       </div>
                       <p className="text-[12px] leading-relaxed text-fg-60 line-clamp-2 mt-0.5">
@@ -624,7 +626,7 @@ export const GrammarView: React.FC = () => {
                           {rule.lessonTitle ? ` · ${rule.lessonTitle}` : ''}
                         </span>
                         {rule.reviewStatus !== 'APPROVED' && (
-                          <span className="font-mono text-amber-300">Chờ duyệt</span>
+                          <span className="font-sans text-gold-ink">Chờ duyệt</span>
                         )}
                       </div>
                     </button>
@@ -680,6 +682,9 @@ export const GrammarView: React.FC = () => {
 
       {mode === 'PRACTICE' && (
         <div className="mt-8 flex flex-col">
+          <div className="mb-4 flex flex-wrap gap-2" aria-label="Dạng bài tập">
+            {(['MULTIPLE_CHOICE', 'SENTENCE_ORDER'] as const).map(type => <button key={type} type="button" disabled={checking} onClick={() => setExerciseType(type)} className={chipClass(exerciseType === type)}>{type === 'MULTIPLE_CHOICE' ? '选词填空 · Trắc nghiệm' : '连词成句 · Sắp xếp câu'}</button>)}
+          </div>
           {/* Practice scope */}
           <div className="flex flex-wrap items-center gap-2.5">
             <button
@@ -750,11 +755,11 @@ export const GrammarView: React.FC = () => {
           )}
 
           {current && (
-            <div className="mt-6 rounded-xl border border-rule bg-card p-6 shadow-md max-w-[620px]">
+            <div className="mt-6 rounded-xl border border-rule bg-card p-6  max-w-[620px]">
               <div className="flex flex-wrap items-center justify-between gap-3 border-b border-rule pb-3">
                 <span className="font-serif text-[14px] font-semibold text-fg-80">{current.ruleTitle}</span>
                 {current.isCommonMistake && (
-                  <span className="flex items-center gap-1 rounded bg-rose-500/10 border border-rose-500/30 px-2 py-0.5 text-[11px] text-rose-400">
+                  <span className="flex items-center gap-1 rounded bg-cinnabar/10 border border-cinnabar/30 px-2 py-0.5 text-[11px] text-cinnabar-ink">
                     <TriangleAlert size={12} />
                     Nhóm bẫy người Việt
                   </span>
@@ -765,14 +770,14 @@ export const GrammarView: React.FC = () => {
                 {current.questionText}
               </p>
 
-              <div className="mt-6 flex flex-col gap-2.5">
+              {current.exerciseType === 'SENTENCE_ORDER' ? <SentenceOrderExercise key={current.id} tokens={current.options} disabled={checking || selectedOption !== null || Boolean(result)} onSubmit={answer => void submitAnswer(answer)} /> : <div className="mt-6 flex flex-col gap-2.5">
                 {current.options.map((option, optionIndex) => {
                   const isCorrectOption = result && option === result.correctAnswer;
                   const isChosenWrong = result && option === selectedOption && !result.correct;
                   const tone = isCorrectOption
-                    ? 'border-jade bg-jade/10 text-jade font-semibold'
+                    ? 'border-jade bg-jade/10 text-jade-ink font-semibold'
                     : isChosenWrong
-                      ? 'border-rose-500 bg-rose-500/10 text-rose-400'
+                      ? 'border-cinnabar bg-cinnabar/10 text-cinnabar-ink'
                       : result
                         ? 'border-rule text-fg-38'
                         : 'border-rule bg-surface hover:border-fg-60 text-fg';
@@ -793,7 +798,7 @@ export const GrammarView: React.FC = () => {
                     </button>
                   );
                 })}
-              </div>
+              </div>}
 
               {selectedOption !== null && !checking && !result && (
                 <div className="mt-6 text-[12.5px] text-fg-60">
@@ -830,8 +835,8 @@ export const GrammarView: React.FC = () => {
                   Câu tiếp theo
                 </SubmitButton>
                 {result?.correct && (
-                  <span className="text-xs text-jade font-medium animate-pulse">
-                    +2 🎋 Mầm trúc linh vật &amp; +EXP
+                  <span className="text-xs text-jade-ink font-medium animate-pulse">
+                    +EXP · Tiến độ nhiệm vụ đã cập nhật
                   </span>
                 )}
               </div>
@@ -868,7 +873,7 @@ export const GrammarView: React.FC = () => {
             <p className="mt-4 text-[13px] leading-[1.9] text-fg-60">
               Tab <strong>Tra cứu</strong>: lọc theo cấp độ HSK, chủ đề bài học hoặc tìm kiếm theo cấu trúc / ý nghĩa / lưu ý (gõ không dấu vẫn tìm được), bấm một điểm ngữ pháp để xem cấu trúc cốt lõi, ví dụ song ngữ kèm phát âm Quan thoại và phân tích lỗi người Việt thường mắc.
               <br /><br />
-              Tab <strong>Luyện tập</strong>: chọn đáp án bằng phím 1–4 hoặc click chuột, nhấn Enter để sang câu kế tiếp. Mỗi câu trả lời đúng được cộng EXP thật và thưởng mầm trúc 🎋 cho linh vật học tập.
+              Tab <strong>Luyện tập</strong>: chọn đáp án bằng phím 1–4 hoặc click chuột, nhấn Enter để sang câu kế tiếp. Mỗi câu trả lời đúng được cộng EXP. Hoàn thành nhiệm vụ hằng ngày để nhận măng trúc trên bảng tổng quan.
             </p>
           </div>
         </div>

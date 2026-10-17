@@ -52,7 +52,7 @@ export const ToneContourWave: React.FC = () => {
                   }}
                   className={`cursor-pointer px-3.5 py-1.5 text-xs font-semibold transition-all ${
                     isSelected
-                      ? 'border border-cinnabar bg-cinnabar text-white shadow-sm'
+                      ? 'border border-cinnabar bg-cinnabar text-on-accent '
                       : 'border border-rule bg-tint text-fg hover:border-rule-strong'
                   }`}
                 >
@@ -67,7 +67,7 @@ export const ToneContourWave: React.FC = () => {
         <div className="mt-6 grid grid-cols-1 items-center gap-8 md:grid-cols-2">
           {/* SVG Pitch Coordinate Canvas */}
           <div className="relative flex flex-col items-center justify-center rounded border border-rule/50 bg-bg p-4">
-            <div className="absolute left-4 top-3 text-[11px] font-mono font-medium text-fg-38">
+            <div className="absolute left-4 top-3 text-[11px] font-sans font-medium text-fg-38">
               Thang cao độ (Pitch 1-5)
             </div>
 
@@ -99,7 +99,7 @@ export const ToneContourWave: React.FC = () => {
                     x="35"
                     y={grid.y + 4}
                     textAnchor="end"
-                    className="fill-fg-38 font-mono text-[11px]"
+                    className="fill-fg-38 font-sans text-[11px]"
                   >
                     {grid.level}
                   </text>
@@ -138,7 +138,7 @@ export const ToneContourWave: React.FC = () => {
                   strokeWidth="4.5"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className="transition-all duration-300 filter drop-shadow-[0_2px_6px_rgba(225,29,72,0.35)]"
+                  className="transition-all duration-300 filter drop-"
                 />
               )}
 
@@ -171,7 +171,7 @@ export const ToneContourWave: React.FC = () => {
             </svg>
 
             <div className="mt-2 text-center text-xs text-fg-38">
-              Đường lượn cao độ: <span className="font-mono font-bold text-cinnabar">{selectedTone.pitchCurve}</span>
+              Đường lượn cao độ: <span className="font-sans font-bold text-cinnabar-ink">{selectedTone.pitchCurve}</span>
             </div>
           </div>
 
@@ -179,13 +179,13 @@ export const ToneContourWave: React.FC = () => {
           <div className="flex flex-col gap-4">
             <div className="flex items-start justify-between">
               <div>
-                <span className="inline-block rounded-xs bg-cinnabar/10 px-2 py-0.5 text-[11px] font-semibold text-cinnabar">
+                <span className="inline-block rounded-xs bg-cinnabar/10 px-2 py-0.5 text-[11px] font-semibold text-cinnabar-ink">
                   {selectedTone.nameZh}
                 </span>
                 <h4 className="mt-1 font-serif text-xl font-bold text-fg">
                   {selectedTone.nameVi}
                 </h4>
-                <div className="font-mono text-sm text-fg-60">
+                <div className="font-sans text-sm text-fg-60">
                   Ký hiệu: <span className="font-bold text-fg">{selectedTone.symbol}</span>
                 </div>
               </div>
@@ -193,7 +193,7 @@ export const ToneContourWave: React.FC = () => {
               <button
                 type="button"
                 onClick={() => handlePlay(selectedTone.hanzi)}
-                className="inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-cinnabar/30 bg-cinnabar/10 text-cinnabar transition-all hover:scale-105 hover:bg-cinnabar hover:text-white"
+                className="inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-cinnabar/30 bg-cinnabar/10 text-cinnabar-ink transition-all hover:scale-105 hover:bg-cinnabar hover:text-on-accent"
                 title={`Nghe phát âm mẫu: ${selectedTone.example} (${selectedTone.hanzi})`}
                 aria-label={`Nghe phát âm mẫu: ${selectedTone.example}`}
               >
@@ -202,7 +202,7 @@ export const ToneContourWave: React.FC = () => {
             </div>
 
             {audioWarning && (
-              <div className="flex items-center gap-2 rounded bg-amber-500/10 border border-amber-500/20 px-3 py-2 text-xs text-amber-400">
+              <div className="flex items-center gap-2 rounded bg-gold/10 border border-gold/20 px-3 py-2 text-xs text-gold-ink">
                 <AlertCircle size={14} className="shrink-0" />
                 <span>{audioWarning}</span>
               </div>
@@ -213,7 +213,7 @@ export const ToneContourWave: React.FC = () => {
             </p>
 
             {selectedTone.pitchCurveContext && (
-              <div className="rounded border border-amber-500/20 bg-amber-500/10 p-3 text-xs text-amber-300 leading-relaxed">
+              <div className="rounded border border-gold/20 bg-gold/10 p-3 text-xs text-gold-ink leading-relaxed">
                 <b>💡 Ngữ cảnh khẩu ngữ: </b>{selectedTone.pitchCurveContext}
               </div>
             )}
@@ -225,7 +225,7 @@ export const ToneContourWave: React.FC = () => {
                 <span className="font-serif text-3xl font-bold text-fg">
                   {selectedTone.hanzi}
                 </span>
-                <span className="font-mono text-lg font-semibold text-cinnabar">
+                <span className="font-sans text-lg font-semibold text-cinnabar-ink">
                   {selectedTone.example}
                 </span>
                 <span className="text-sm text-fg-60">
@@ -235,7 +235,7 @@ export const ToneContourWave: React.FC = () => {
             </div>
 
             <div className="text-xs text-fg-38 leading-relaxed">
-              <span className="font-serif font-semibold text-cinnabar">「诀」</span> Mẹo khẩu ngữ: Thanh 1 giữ hơi ngang bằng ngân đều; Thanh 4 dứt khoát; Thanh 3 khi đứng một mình đọc 214, nhưng trong câu liên tục phần lớn đọc là "Nửa thanh 3" (hạ giọng 211, không uốn đuôi).
+              <span className="font-serif font-semibold text-cinnabar-ink">「诀」</span> Mẹo khẩu ngữ: Thanh 1 giữ hơi ngang bằng ngân đều; Thanh 4 dứt khoát; Thanh 3 khi đứng một mình đọc 214, nhưng trong câu liên tục phần lớn đọc là "Nửa thanh 3" (hạ giọng 211, không uốn đuôi).
             </div>
           </div>
         </div>

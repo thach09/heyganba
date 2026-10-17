@@ -38,7 +38,7 @@ class ExpServiceTest {
         expConfig.setExerciseCorrect(10);
         expConfig.setSrsSession(50);
         expConfig.setExamBase(100);
-        expService = new ExpService(expConfig, studyActivityRepository, examResultRepository);
+        expService = new ExpService(org.mockito.Mockito.mock(com.heyganba.repository.DailyQuestClaimRepository.class), expConfig, studyActivityRepository, examResultRepository);
     }
 
     @Test

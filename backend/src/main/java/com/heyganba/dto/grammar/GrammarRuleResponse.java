@@ -8,7 +8,7 @@ import com.heyganba.model.entity.GrammarRule;
  * `number` là số LIÊN TỤC theo đúng thứ tự dạy trong app (1..n) — không lộ khoảng trống của tài liệu gốc.
  * Số gốc của nguồn nằm trong `grammar_rules.source_ref` (field nội bộ, cố tình không có trong DTO này).
  *
- * `reviewStatus` = PENDING_REVIEW khi nội dung còn là bản nháp chờ duyệt tiếng Nhật (UI hiện badge cảnh báo).
+ * `reviewStatus` = PENDING_REVIEW khi nội dung còn là bản nháp chờ duyệt tiếng Trung (UI hiện badge cảnh báo).
  */
 public record GrammarRuleResponse(
         Long id,

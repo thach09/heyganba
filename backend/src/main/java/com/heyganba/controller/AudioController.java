@@ -19,15 +19,16 @@ import java.net.URI;
 import java.time.Duration;
 
 /**
- * Audio TTS cho tiếng Nhật (thay Web Speech API của trình duyệt bằng Google Translate TTS + cache).
+ * Audio TTS cho tiếng Trung (thay Web Speech API của trình duyệt bằng Google Translate TTS + cache).
  *
  * Bảo vệ:
  *  - Endpoint KHÔNG nằm trong danh sách public của `SecurityConfig` ⇒ phải đăng nhập mới gọi được (tránh bị
  *    dùng làm proxy TTS miễn phí).
- *  - Chỉ nhận chuỗi kana/kanji ngắn (kiểm ở {@link TtsAudioService}).
+ *  - Chỉ nhận chuỗi chữ Hán ngắn (kiểm ở {@link TtsAudioService}).
  *  - Rate limit theo user: 120 request/phút.
  *  - File sinh ra được cache (DB hoặc Cloudflare R2) nên mỗi chuỗi chỉ gọi Google 1 lần.
  */
+@org.springframework.validation.annotation.Validated
 @RestController
 @RequestMapping("/audio")
 @RequiredArgsConstructor
@@ -39,10 +40,10 @@ public class AudioController {
     private final TtsAudioService ttsAudioService;
     private final RateLimiterService rateLimiterService;
 
-    /** Cách đọc bằng kana: `/api/v1/audio/tts?text=よっか`. */
+    /** Câu Quan thoại: `/api/v1/audio/tts?text=你好`. */
     @GetMapping("/tts")
     public ResponseEntity<byte[]> getTts(
-            @RequestParam("text") String text,
+            @RequestParam("text") @jakarta.validation.constraints.Size(max=200) String text,
             @AuthenticationPrincipal UserPrincipal currentUser
     ) {
         String rateKey = "audio-tts:" + (currentUser != null ? "user:" + currentUser.getId() : "anonymous");

@@ -6,7 +6,7 @@ import com.heyganba.model.entity.Kanji;
 import java.util.Comparator;
 import java.util.List;
 
-/** Chi tiết 1 chữ Hán / Kanji trả về cho UI */
+/** Chi tiết 1 chữ Hán trả về cho UI */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record KanjiResponse(
         Long id,
@@ -20,8 +20,6 @@ public record KanjiResponse(
         String meaningVi,
         String decomposition,
         String exampleWordsJson,
-        String onyomi,
-        String kunyomi,
         String sinoVietnamese,
         String meaning,
         String mnemonic,
@@ -52,8 +50,6 @@ public record KanjiResponse(
                 kanji.getMeaningVi(),
                 kanji.getDecomposition(),
                 kanji.getExampleWordsJson(),
-                kanji.getOnyomi(),
-                kanji.getKunyomi(),
                 kanji.getSinoVietnamese(),
                 kanji.getMeaning(),
                 kanji.getMnemonic(),

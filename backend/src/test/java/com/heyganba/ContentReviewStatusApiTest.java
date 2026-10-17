@@ -33,6 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Test endpoint trạng thái duyệt nội dung (Phase 4/5): bảo đảm nội dung nháp KHÔNG bị coi là đã sẵn sàng
  * và danh sách migration staging-only được báo đúng.
  */
+@org.springframework.test.context.TestPropertySource(properties="app.legacy-phonetics-enabled=true")
 class ContentReviewStatusApiTest extends ContentApiTestBase {
 
     @Autowired

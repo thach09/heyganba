@@ -79,10 +79,10 @@ const EggIcon: React.FC<{ className?: string }> = ({ className = 'w-8 h-8' }) =>
 );
 
 const MILESTONES: MascotMilestone[] = [
-  { minStreak: 30, label: 'Kim Long (金龙)', note: 'Bậc thầy kiên trì', color: 'text-[#D97706]', Icon: DragonIcon },
-  { minStreak: 14, label: 'Chu Tước (朱雀)', note: 'Bay cao, học đều', color: 'text-[#C83E31]', Icon: PhoenixIcon },
-  { minStreak: 7, label: 'Thanh Điểu (青鸟)', note: 'Đã thành thói quen tuần', color: 'text-[#2E7D6B]', Icon: JadeBirdIcon },
-  { minStreak: 3, label: 'Ấu Điểu (幼鸟)', note: 'Bắt đầu vững vàng', color: 'text-[#EAB308]', Icon: FledglingIcon },
+  { minStreak: 30, label: 'Kim Long (金龙)', note: 'Bậc thầy kiên trì', color: 'text-gold-ink', Icon: DragonIcon },
+  { minStreak: 14, label: 'Chu Tước (朱雀)', note: 'Bay cao, học đều', color: 'text-cinnabar-ink', Icon: PhoenixIcon },
+  { minStreak: 7, label: 'Thanh Điểu (青鸟)', note: 'Đã thành thói quen tuần', color: 'text-jade-ink', Icon: JadeBirdIcon },
+  { minStreak: 3, label: 'Ấu Điểu (幼鸟)', note: 'Bắt đầu vững vàng', color: 'text-gold-ink', Icon: FledglingIcon },
   { minStreak: 1, label: 'Sơ Khai (初开)', note: 'Khởi đầu tốt', color: 'text-fg-60', Icon: HatchingIcon },
   { minStreak: 0, label: 'Thái Cực Noãn', note: 'Học 1 ngày để nở', color: 'text-fg-38', Icon: EggIcon },
 ];
@@ -106,7 +106,7 @@ export const MascotBadge: React.FC<MascotBadgeProps> = ({ longestStreak, current
         <div className="flex items-center gap-1.5">
           <span className="font-serif text-[13.5px] font-bold text-fg">{milestone.label}</span>
           <span className="inline-flex items-center gap-1 rounded bg-rule/50 px-1.5 py-0.2 text-[10px] text-fg-60">
-            <Flame className="h-3 w-3 text-[#C83E31]" />
+            <Flame className="h-3 w-3 text-cinnabar-ink" />
             {longestStreak} ngày
           </span>
         </div>

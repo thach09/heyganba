@@ -21,6 +21,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdminContentService {
 
+    @org.springframework.beans.factory.annotation.Value("${app.legacy-phonetics-enabled:false}")
+    private boolean legacyPhoneticsEnabled;
     private final KanaRepository kanaRepository;
     private final VocabularyRepository vocabularyRepository;
     private final KanjiRepository kanjiRepository;
@@ -38,7 +40,7 @@ public class AdminContentService {
      * Hàng đợi cho tab "Cần kiểm" của admin panel (GET /admin/review-queue).
      *
      * Thứ tự: mọi item `needs_human_check = TRUE` lên ĐẦU (đúng yêu cầu quy trình duyệt), sau đó mới tới phần
-     * đã đối chiếu được nguồn — nhờ vậy người biết tiếng Nhật không phải tự lọc thủ công.
+     * đã đối chiếu được nguồn — nhờ vậy người biết tiếng Trung không phải tự lọc thủ công.
      *
      * @param limit          số dòng tối đa (chặn trần {@value #MAX_REVIEW_QUEUE_SIZE})
      * @param onlyNeedsCheck true = chỉ trả các item cần người kiểm
@@ -60,7 +62,7 @@ public class AdminContentService {
         Pageable pageable = PageRequest.of(0, limit);
         List<AdminReviewQueueItem> items = new ArrayList<>();
 
-        for (Kana kana : kanaRepository.findByNeedsHumanCheckOrderByIdAsc(needsCheck, pageable)) {
+        for (Kana kana : legacyPhoneticsEnabled ? kanaRepository.findByNeedsHumanCheckOrderByIdAsc(needsCheck, pageable) : List.<Kana>of()) {
             items.add(new AdminReviewQueueItem("KANA", kana.getId(), kana.getCharacter(),
                     kana.getRomaji() + " · " + kana.getKanaType(), Boolean.TRUE.equals(kana.getNeedsHumanCheck()),
                     kana.getReviewStatus().name(), kana.getSourceRef(), null));
@@ -71,7 +73,7 @@ public class AdminContentService {
                     vocab.getReviewStatus().name(), vocab.getSourceRef(), null));
         }
         for (Kanji kanjiItem : kanjiRepository.findByNeedsHumanCheckOrderByIdAsc(needsCheck, pageable)) {
-            items.add(new AdminReviewQueueItem("KANJI", kanjiItem.getId(), kanjiItem.getCharacter(),
+            items.add(new AdminReviewQueueItem("HANZI", kanjiItem.getId(), kanjiItem.getCharacter(),
                     kanjiItem.getMeaning(), Boolean.TRUE.equals(kanjiItem.getNeedsHumanCheck()),
                     kanjiItem.getReviewStatus().name(), kanjiItem.getSourceRef(), null));
         }
@@ -175,8 +177,8 @@ public class AdminContentService {
         Kanji kanji = Kanji.builder()
                 .character(req.getCharacter().trim())
                 .strokeCount(req.getStrokeCount())
-                .onyomi(req.getOnyomi() != null ? req.getOnyomi().trim() : null)
-                .kunyomi(req.getKunyomi() != null ? req.getKunyomi().trim() : null)
+                .pinyin(req.getPinyin() != null ? req.getPinyin().trim() : null)
+                .traditional(req.getTraditional() != null ? req.getTraditional().trim() : null)
                 .sinoVietnamese(req.getSinoVietnamese() != null ? req.getSinoVietnamese().trim() : null)
                 .meaning(req.getMeaning().trim())
                 .mnemonic(req.getMnemonic() != null ? req.getMnemonic().trim() : null)
@@ -192,7 +194,7 @@ public class AdminContentService {
     @Transactional
     public Kanji updateKanji(User admin, Long id, AdminKanjiRequest req) {
         Kanji kanji = kanjiRepository.findById(id)
-                .orElseThrow(() -> new BadRequestException("Không tìm thấy Kanji ID: " + id));
+                .orElseThrow(() -> new BadRequestException("Không tìm thấy chữ Hán ID: " + id));
 
         String before = kanji.getCharacter() + " (" + kanji.getMeaning() + ")";
 
@@ -203,8 +205,8 @@ public class AdminContentService {
 
         kanji.setCharacter(req.getCharacter().trim());
         kanji.setStrokeCount(req.getStrokeCount());
-        kanji.setOnyomi(req.getOnyomi() != null ? req.getOnyomi().trim() : null);
-        kanji.setKunyomi(req.getKunyomi() != null ? req.getKunyomi().trim() : null);
+        kanji.setPinyin(req.getPinyin() != null ? req.getPinyin().trim() : null);
+        kanji.setTraditional(req.getTraditional() != null ? req.getTraditional().trim() : null);
         kanji.setSinoVietnamese(req.getSinoVietnamese() != null ? req.getSinoVietnamese().trim() : null);
         kanji.setMeaning(req.getMeaning().trim());
         kanji.setMnemonic(req.getMnemonic() != null ? req.getMnemonic().trim() : null);
@@ -218,7 +220,7 @@ public class AdminContentService {
     @Transactional
     public void deleteKanji(User admin, Long id) {
         Kanji kanji = kanjiRepository.findById(id)
-                .orElseThrow(() -> new BadRequestException("Không tìm thấy Kanji ID: " + id));
+                .orElseThrow(() -> new BadRequestException("Không tìm thấy chữ Hán ID: " + id));
         String before = kanji.getCharacter();
         kanji.setReviewStatus(ReviewStatus.ARCHIVED);
         kanjiRepository.save(kanji);
@@ -331,7 +333,7 @@ public class AdminContentService {
             }
             case "KANA" -> {
                 Kana kana = kanaRepository.findById(id)
-                        .orElseThrow(() -> new BadRequestException("Không tìm thấy Kana ID: " + id));
+                        .orElseThrow(() -> new BadRequestException("Không tìm thấy mục phát âm ID: " + id));
                 String before = kana.getReviewStatus().name();
                 kana.setReviewStatus(ReviewStatus.APPROVED);
                 kana.setNeedsHumanCheck(false);
@@ -378,7 +380,7 @@ public class AdminContentService {
             }
             case "KANA" -> {
                 Kana kana = kanaRepository.findById(id)
-                        .orElseThrow(() -> new BadRequestException("Không tìm thấy Kana ID: " + id));
+                        .orElseThrow(() -> new BadRequestException("Không tìm thấy mục phát âm ID: " + id));
                 String before = kana.getReviewStatus().name();
                 kana.setReviewStatus(ReviewStatus.ARCHIVED);
                 kana.setNeedsHumanCheck(false);

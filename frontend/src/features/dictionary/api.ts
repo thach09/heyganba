@@ -7,6 +7,7 @@ export const dictionaryApi = {
   create: (options: RequestInit = {}) => apiRequest<VocabNotebook>('/notebooks', options),
   clone: (id: number, options: RequestInit = {}) => apiRequest<VocabNotebook>(`/notebooks/clone-sample/${id}`, options),
   addWord: (id: number, options: RequestInit = {}) => apiRequest<VocabNotebook>(`/notebooks/${id}/items`, options),
+  updateNote: (id: number, wordId: number, options: RequestInit = {}) => apiRequest<VocabNotebook>(`/notebooks/${id}/items/${wordId}`, options),
   removeWord: (id: number, wordId: number, options: RequestInit = {}) => apiRequest<void>(`/notebooks/${id}/items/${wordId}`, options),
   remove: (id: number, options: RequestInit = {}) => apiRequest<void>(`/notebooks/${id}`, options),
   practice: (id: number, options: RequestInit = {}) => apiRequest<PracticeResult>(`/notebooks/${id}/practice-result`, options),

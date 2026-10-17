@@ -2,7 +2,7 @@ package com.heyganba.dto.kanji;
 
 import com.heyganba.model.entity.Radical;
 
-/** Bộ thủ kèm tên tiếng Nhật, số nét và nghĩa tiếng Việt. */
+/** Bộ thủ kèm tên tiếng Trung, số nét và nghĩa tiếng Việt. */
 public record RadicalResponse(
         Long id,
         String radical,

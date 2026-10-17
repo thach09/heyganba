@@ -14,15 +14,7 @@ import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 
-/**
- * Gọi Google Translate TTS (`translate.google.com/translate_tts`) — endpoint KHÔNG chính thức, không SLA,
- * không API key ⇒ CHỈ được gọi một lần cho mỗi chuỗi kana, mọi lần sau đọc từ cache (xem TtsAudioService).
- *
- * Quy tắc ngữ âm: đầu vào PHẢI là chuỗi kana (hiragana/katakana). Nếu truyền chữ kanji, TTS đọc theo cách đọc
- * phổ biến nhất nên sai với từ ghép (vd 日 trong 日曜日) — vì vậy tầng gọi phải đưa cách đọc kana.
- *
- * `tl=ja` đúng language code tiếng Nhật; `client=tw-ob` + User-Agent cần thiết vì endpoint chặn request "trần".
- */
+/** Mandarin speech provider; cached by language and text. Unofficial endpoint, no SLA. */
 @Component
 public class GoogleTranslateTtsClient implements TtsClient {
 
@@ -37,10 +29,10 @@ public class GoogleTranslateTtsClient implements TtsClient {
             .build();
 
     @Override
-    public byte[] synthesize(String kanaText) {
+    public byte[] synthesize(String text) {
         String url = ENDPOINT
-                + "?ie=UTF-8&client=tw-ob&tl=ja&total=1&idx=0&textlen=" + kanaText.length()
-                + "&q=" + URLEncoder.encode(kanaText, StandardCharsets.UTF_8);
+                + "?ie=UTF-8&client=tw-ob&tl=zh-CN&total=1&idx=0&textlen=" + text.length()
+                + "&q=" + URLEncoder.encode(text, StandardCharsets.UTF_8);
 
         HttpRequest request = HttpRequest.newBuilder(URI.create(url))
                 .header("User-Agent", USER_AGENT)
@@ -52,16 +44,16 @@ public class GoogleTranslateTtsClient implements TtsClient {
             HttpResponse<byte[]> response = httpClient.send(request, HttpResponse.BodyHandlers.ofByteArray());
             byte[] body = response.body();
             if (response.statusCode() != 200 || body == null || body.length == 0) {
-                log.warn("Google TTS trả về mã {} cho chuỗi dài {} ký tự", response.statusCode(), kanaText.length());
-                throw new BadRequestException("Dịch vụ đọc tiếng Nhật tạm thời không khả dụng. Vui lòng thử lại sau.");
+                log.warn("Google TTS trả về mã {} cho chuỗi dài {} ký tự", response.statusCode(), text.length());
+                throw new BadRequestException("Dịch vụ đọc tiếng Trung tạm thời không khả dụng. Vui lòng thử lại sau.");
             }
             return body;
         } catch (IOException ex) {
             log.warn("Không gọi được Google TTS: {}", ex.getMessage());
-            throw new BadRequestException("Dịch vụ đọc tiếng Nhật tạm thời không khả dụng. Vui lòng thử lại sau.");
+            throw new BadRequestException("Dịch vụ đọc tiếng Trung tạm thời không khả dụng. Vui lòng thử lại sau.");
         } catch (InterruptedException ex) {
             Thread.currentThread().interrupt();
-            throw new BadRequestException("Dịch vụ đọc tiếng Nhật bị ngắt. Vui lòng thử lại sau.");
+            throw new BadRequestException("Dịch vụ đọc tiếng Trung bị ngắt. Vui lòng thử lại sau.");
         }
     }
 }

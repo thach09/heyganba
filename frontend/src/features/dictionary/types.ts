@@ -17,12 +17,12 @@ export interface VocabularyItem {
   partOfSpeech?: string;
 }
 
-export interface KanjiItem {
+export interface HanziItem {
   id: number;
   character: string;
   strokeCount: number;
-  onyomi?: string;
-  kunyomi?: string;
+  pinyin?: string;
+  traditional?: string;
   sinoVietnamese?: string;
   meaning: string;
   mnemonic?: string;
@@ -32,7 +32,7 @@ export interface DictionarySearchResponse {
   query: string;
   totalMatches: number;
   vocabularies: VocabularyItem[];
-  kanjis: KanjiItem[];
+  hanzis: HanziItem[];
   page: number;
   hasMore: boolean;
 }

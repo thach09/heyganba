@@ -50,6 +50,7 @@ const DictionaryNotebookSessionView: React.FC = () => {
   const [customNote, setCustomNote] = useState('');
 
   // Notebook word filter
+  const [noteDrafts, setNoteDrafts] = useState<Record<number,string>>({});
   const [notebookFilter, setNotebookFilter] = useState('');
 
   // Contextual reading state
@@ -110,7 +111,7 @@ const DictionaryNotebookSessionView: React.FC = () => {
     if (!res) return;
       if (sequence !== searchSequence.current) return;
       if (res.success && res.data) {
-        setSearchResult(previous => page > 0 && previous ? { ...res.data, vocabularies: [...previous.vocabularies, ...res.data.vocabularies], kanjis: previous.kanjis } : res.data);
+        setSearchResult(previous => page > 0 && previous ? { ...res.data, vocabularies: [...previous.vocabularies, ...res.data.vocabularies], hanzis: previous.hanzis } : res.data);
       } else {
         showNotice(res.message || 'Không thể tra cứu từ điển vào lúc này.');
       }
@@ -211,6 +212,17 @@ const DictionaryNotebookSessionView: React.FC = () => {
       setSelectedNotebook(res.data);
     }
     else showNotice(res.message || 'Chưa nhận được nhóm mẫu. Vui lòng thử lại.');
+  };
+
+  const saveNote = async (item: VocabNotebookItem) => {
+    if (!selectedNotebook || savingRef.current) return;
+    savingRef.current = true; setSaving(true);
+    try {
+      const res = await run('dictionaryApi.updateNote', signal => dictionaryApi.updateNote(selectedNotebook.id, item.vocabularyId, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ customNote: noteDrafts[item.id] ?? item.customNote ?? '' }), signal }));
+      if (!res) return;
+      if (res.success && res.data) { setSelectedNotebook(res.data); setNotebooks(prev => prev.map(book => book.id === res.data!.id ? res.data! : book)); showNotice('Đã lưu ghi chú.'); }
+      else showNotice(res.message || 'Không lưu được ghi chú.');
+    } finally { if (isActive()) { savingRef.current = false; setSaving(false); } }
   };
 
   const handleAddWordSubmit = async (e: React.FormEvent) => {
@@ -332,7 +344,7 @@ const DictionaryNotebookSessionView: React.FC = () => {
       <div className="flex flex-wrap items-start justify-between gap-5">
         <div>
           <div className={labelClass}>
-            Dictionary & Notebooks{' '}
+            Từ điển & Sổ từ{' '}
             <span className="ml-2 font-serif text-[12.5px] font-normal normal-case tracking-[0.06em]">词典 · 生词本</span>
           </div>
           <h2 className="mt-3 text-[17px] font-semibold text-fg">Tra cứu Từ điển & Kho từ vựng cá nhân</h2>
@@ -492,13 +504,13 @@ const DictionaryNotebookSessionView: React.FC = () => {
               )}
 
               {/* Hanzi matches */}
-              {searchResult.kanjis.length > 0 && (
+              {searchResult.hanzis.length > 0 && (
                 <div>
                   <h3 className="mb-4 text-[13px] font-semibold uppercase tracking-[0.12em] text-fg-60">
-                    Chữ Hán — Hanzi ({searchResult.kanjis.length})
+                    Chữ Hán — Hanzi ({searchResult.hanzis.length})
                   </h3>
                   <div className="grid gap-3 min-[768px]:grid-cols-3">
-                    {searchResult.kanjis.map((k) => (
+                    {searchResult.hanzis.map((k) => (
                       <div key={k.id} className="border border-rule bg-card p-4">
                         <div className="flex min-w-0 flex-wrap items-center gap-3">
                           <span className="flex h-12 w-12 items-center justify-center border border-rule bg-bg font-serif text-[24px] font-bold text-fg">
@@ -510,10 +522,10 @@ const DictionaryNotebookSessionView: React.FC = () => {
                             <div className="text-[10px] text-fg-38">{k.strokeCount} nét</div>
                           </div>
                         </div>
-                        {(k.onyomi || k.kunyomi) && (
+                        {(k.pinyin || k.traditional) && (
                           <div className="mt-3 border-t border-rule/50 pt-2 text-[11px] text-fg-38">
-                            {k.onyomi && <div>On: {k.onyomi}</div>}
-                            {k.kunyomi && <div>Kun: {k.kunyomi}</div>}
+                            {k.pinyin && <div>Pinyin: {k.pinyin}</div>}
+                            {k.traditional && <div>Phồn thể: {k.traditional}</div>}
                           </div>
                         )}
                       </div>
@@ -536,7 +548,7 @@ const DictionaryNotebookSessionView: React.FC = () => {
       {/* TAB 2: NOTEBOOKS */}
       {activeTab === 'NOTEBOOKS' && (
         <div className="mt-8 flex flex-col gap-10">
-          <p className="text-[12.5px] leading-[1.8] text-fg-60">Từ JMdict trong sổ có nghĩa tiếng Anh. Nguồn: <a className="underline" href="https://www.edrdg.org/jmdict/j_jmdict.html" target="_blank" rel="noreferrer">JMdict / EDRDG</a> · <a className="underline" href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noreferrer">CC BY-SA 4.0</a>.</p>
+          <p className="text-[12.5px] leading-[1.8] text-fg-60">Lưu từ tiếng Trung, thêm ghi chú và luyện nhanh ngay trong sổ cá nhân.</p>
           <label className="flex flex-wrap items-center gap-3 text-[12.5px] text-fg-60">Luyện theo
             <select value={practiceKind} onChange={e => setPracticeKind(e.target.value as 'MEANING' | 'READING')} className="min-h-11 border border-rule-strong bg-card px-3 text-fg">
               <option value="MEANING">Nghĩa của từ</option><option value="READING">Phiên âm Pinyin (chữ Hán)</option>
@@ -744,7 +756,7 @@ const DictionaryNotebookSessionView: React.FC = () => {
                           <td className="border-b border-rule py-3 font-serif text-fg-60">{item.reading}</td>
                           <td className="border-b border-rule py-3 text-fg-38">{item.sinoVietnamese || '—'}</td>
                           <td className="border-b border-rule py-3 text-fg">{item.meaning}{item.vietnameseMeaning ? ` · ${item.vietnameseStatus === 'ASSISTED' ? 'Việt tham khảo: ' : 'Việt: '}${item.vietnameseMeaning}` : ''}</td>
-                          <td className="border-b border-rule py-3 text-fg-38">{item.customNote || '—'}</td>
+                          <td className="border-b border-rule py-3 text-fg-60">{selectedNotebook.isPublicSample ? item.customNote || '—' : <div className="min-w-40 space-y-2"><textarea aria-label={`Ghi chú cho ${item.word}`} maxLength={2000} value={noteDrafts[item.id] ?? item.customNote ?? ''} onChange={event => setNoteDrafts(prev => ({ ...prev, [item.id]: event.target.value }))} className="w-full border border-rule bg-card p-2 text-xs text-fg" /><button type="button" disabled={saving} onClick={() => void saveNote(item)} className="text-xs text-jade-ink underline">Lưu ghi chú</button></div>}</td>
                           <td className="border-b border-rule px-3 py-3 text-fg-60">{item.practiceCount ? `${item.correctCount}/${item.practiceCount} đúng` : 'Chưa luyện'}</td>
                           <td className="border-b border-rule py-3 text-right">
                             <button
@@ -783,7 +795,7 @@ const DictionaryNotebookSessionView: React.FC = () => {
             <div>
               <div className="flex items-center gap-2">
                 <span className="rounded bg-seal/10 px-2 py-0.5 text-[11px] font-semibold text-seal">HSK 1–6</span>
-                <span className={labelClass}>Contextual Dialogues & Reading</span>
+                <span className={labelClass}>Đọc hiểu & Hội thoại</span>
               </div>
               <h3 className="mt-1 font-serif text-[18px] font-semibold text-fg">Đọc hiểu ngữ cảnh & Hội thoại ngắn</h3>
               <p className="mt-1 text-[12.5px] text-fg-60">
@@ -827,7 +839,7 @@ const DictionaryNotebookSessionView: React.FC = () => {
             </div>
 
             {/* Main Reading Card */}
-            <div className="rounded border border-rule bg-card p-6 shadow-sm">
+            <div className="rounded border border-rule bg-card p-6 ">
               <div className="flex flex-wrap items-center justify-between gap-3 border-b border-rule pb-4">
                 <div className="flex min-w-0 flex-wrap items-center gap-2.5">
                   <BookOpen size={18} className="text-seal" />
@@ -897,7 +909,7 @@ const DictionaryNotebookSessionView: React.FC = () => {
             </div>
 
             {/* Comprehension Quiz Card */}
-            <div className="rounded border border-rule bg-card p-6 shadow-sm">
+            <div className="rounded border border-rule bg-card p-6 ">
               <div className="flex items-center justify-between border-b border-rule pb-3">
                 <h4 className="font-serif text-[16px] font-semibold text-fg">Kiểm tra hiểu bài (阅读理解)</h4>
                 <span className="text-[11px] text-fg-38">{activePassage.questions.length} câu hỏi đọc hiểu</span>
@@ -920,7 +932,7 @@ const DictionaryNotebookSessionView: React.FC = () => {
                           let style = 'border-rule bg-bg text-fg hover:border-fg';
                           if (readingChecked) {
                             if (opt === q.correctAnswer) {
-                              style = 'border-jade bg-jade/10 text-jade font-semibold';
+                              style = 'border-jade bg-jade/10 text-jade-ink font-semibold';
                             } else if (isOptionChosen) {
                               style = 'border-red bg-red/10 text-red';
                             } else {
@@ -949,7 +961,7 @@ const DictionaryNotebookSessionView: React.FC = () => {
                       {readingChecked && (
                         <div
                           className={`mt-3 rounded p-2.5 text-[12px] leading-[1.7] ${
-                            isCorrect ? 'border border-jade/30 bg-jade/10 text-jade' : 'border border-red/30 bg-red/10 text-red'
+                            isCorrect ? 'border border-jade/30 bg-jade/10 text-jade-ink' : 'border border-red/30 bg-red/10 text-red'
                           }`}
                         >
                           <div className="font-semibold">{isCorrect ? '✓ Chính xác!' : '✗ Chưa đúng'}</div>

@@ -254,8 +254,8 @@ class KanjiApiTest extends com.heyganba.support.ContentApiTestBase {
         mockMvc.perform(get("/kanji/" + kanjiHon.getId()).header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.strokeCount", is(5)))
-                .andExpect(jsonPath("$.data.onyomi", is("ホン")))
-                .andExpect(jsonPath("$.data.kunyomi", is("もと")))
+                .andExpect(jsonPath("$.data.pinyin", is("ホン")))
+                .andExpect(jsonPath("$.data.traditional", is("もと")))
                 .andExpect(jsonPath("$.data.mnemonic", is("Cái cây (木) có vạch chỉ phần gốc → gốc, nguồn")));
 
         mockMvc.perform(get("/kanji/999999").header("Authorization", "Bearer " + token))

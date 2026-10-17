@@ -66,7 +66,7 @@ export const PinyinTable: React.FC = () => {
           }}
           className={`cursor-pointer px-4 py-2.5 font-serif text-sm font-semibold transition-colors ${
             tab === 'INITIALS'
-              ? 'border-b-2 border-cinnabar text-cinnabar'
+              ? 'border-b-2 border-cinnabar text-cinnabar-ink'
               : 'text-fg-60 hover:text-fg'
           }`}
         >
@@ -80,7 +80,7 @@ export const PinyinTable: React.FC = () => {
           }}
           className={`cursor-pointer px-4 py-2.5 font-serif text-sm font-semibold transition-colors ${
             tab === 'FINALS'
-              ? 'border-b-2 border-cinnabar text-cinnabar'
+              ? 'border-b-2 border-cinnabar text-cinnabar-ink'
               : 'text-fg-60 hover:text-fg'
           }`}
         >
@@ -94,7 +94,7 @@ export const PinyinTable: React.FC = () => {
           }}
           className={`cursor-pointer px-4 py-2.5 font-serif text-sm font-semibold transition-colors ${
             tab === 'TONES'
-              ? 'border-b-2 border-cinnabar text-cinnabar'
+              ? 'border-b-2 border-cinnabar text-cinnabar-ink'
               : 'text-fg-60 hover:text-fg'
           }`}
         >
@@ -108,7 +108,7 @@ export const PinyinTable: React.FC = () => {
           }}
           className={`cursor-pointer px-4 py-2.5 font-serif text-sm font-semibold transition-colors ${
             tab === 'PAIRS'
-              ? 'border-b-2 border-cinnabar text-cinnabar'
+              ? 'border-b-2 border-cinnabar text-cinnabar-ink'
               : 'text-fg-60 hover:text-fg'
           }`}
         >
@@ -122,7 +122,7 @@ export const PinyinTable: React.FC = () => {
           }}
           className={`cursor-pointer px-4 py-2.5 font-serif text-sm font-semibold transition-colors ${
             tab === 'RULES'
-              ? 'border-b-2 border-cinnabar text-cinnabar'
+              ? 'border-b-2 border-cinnabar text-cinnabar-ink'
               : 'text-fg-60 hover:text-fg'
           }`}
         >
@@ -132,7 +132,7 @@ export const PinyinTable: React.FC = () => {
 
       {/* Audio Voice Warning */}
       {audioWarning && (
-        <div className="flex items-center gap-2 rounded bg-amber-500/10 border border-amber-500/20 px-4 py-2.5 text-xs text-amber-400">
+        <div className="flex items-center gap-2 rounded bg-gold/10 border border-gold/20 px-4 py-2.5 text-xs text-gold-ink">
           <AlertCircle size={15} className="shrink-0" />
           <span>{audioWarning}</span>
         </div>
@@ -151,7 +151,7 @@ export const PinyinTable: React.FC = () => {
               onClick={() => setInitialFilter(grp)}
               className={`cursor-pointer rounded px-2.5 py-1 text-xs transition-colors ${
                 initialFilter === grp
-                  ? 'bg-cinnabar text-white font-medium'
+                  ? 'bg-cinnabar text-on-accent font-medium'
                   : 'bg-card border border-rule text-fg-60 hover:text-fg'
               }`}
             >
@@ -173,7 +173,7 @@ export const PinyinTable: React.FC = () => {
               onClick={() => setFinalFilter(grp)}
               className={`cursor-pointer rounded px-2.5 py-1 text-xs transition-colors ${
                 finalFilter === grp
-                  ? 'bg-cinnabar text-white font-medium'
+                  ? 'bg-cinnabar text-on-accent font-medium'
                   : 'bg-card border border-rule text-fg-60 hover:text-fg'
               }`}
             >
@@ -202,15 +202,15 @@ export const PinyinTable: React.FC = () => {
                       }}
                       className={`group relative flex flex-col items-center justify-center rounded border p-3 text-center transition-all cursor-pointer ${
                         isSelected
-                          ? 'border-cinnabar bg-cinnabar/10 shadow-sm'
+                          ? 'border-cinnabar bg-cinnabar/10 '
                           : 'border-rule bg-card hover:border-rule-strong hover:bg-tint'
                       }`}
                     >
-                      <span className="font-mono text-xl font-bold text-fg group-hover:text-cinnabar">
+                      <span className="font-sans text-xl font-bold text-fg group-hover:text-cinnabar-ink">
                         {item.pinyin}
                       </span>
                       {item.ipa && (
-                        <span className="mt-0.5 text-[10px] font-mono text-fg-38">
+                        <span className="mt-0.5 text-[10px] font-sans text-fg-38">
                           {item.ipa}
                         </span>
                       )}
@@ -237,15 +237,15 @@ export const PinyinTable: React.FC = () => {
                       }}
                       className={`group relative flex flex-col items-center justify-center rounded border p-3 text-center transition-all cursor-pointer ${
                         isSelected
-                          ? 'border-cinnabar bg-cinnabar/10 shadow-sm'
+                          ? 'border-cinnabar bg-cinnabar/10 '
                           : 'border-rule bg-card hover:border-rule-strong hover:bg-tint'
                       }`}
                     >
-                      <span className="font-mono text-lg font-bold text-fg group-hover:text-cinnabar">
+                      <span className="font-sans text-lg font-bold text-fg group-hover:text-cinnabar-ink">
                         {item.pinyin}
                       </span>
                       {item.ipa && (
-                        <span className="text-[10px] font-mono text-fg-38">
+                        <span className="text-[10px] font-sans text-fg-38">
                           {item.ipa}
                         </span>
                       )}
@@ -272,15 +272,15 @@ export const PinyinTable: React.FC = () => {
                       }}
                       className={`flex flex-col items-start rounded border p-4 text-left transition-all cursor-pointer ${
                         isSelected
-                          ? 'border-cinnabar bg-cinnabar/10 shadow-sm'
+                          ? 'border-cinnabar bg-cinnabar/10 '
                           : 'border-rule bg-card hover:border-rule-strong hover:bg-tint'
                       }`}
                     >
                       <div className="flex w-full items-center justify-between">
-                        <span className="font-mono text-xl font-bold text-cinnabar">
+                        <span className="font-sans text-xl font-bold text-cinnabar-ink">
                           {t.symbol}
                         </span>
-                        <span className="font-mono text-xs rounded bg-rule/50 px-2 py-0.5 text-fg-60">
+                        <span className="font-sans text-xs rounded bg-rule/50 px-2 py-0.5 text-fg-60">
                           {t.pitchCurve}
                         </span>
                       </div>
@@ -310,10 +310,10 @@ export const PinyinTable: React.FC = () => {
               <div className="mt-4 flex flex-col gap-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="font-mono text-3xl font-bold text-cinnabar">
+                    <div className="font-sans text-3xl font-bold text-cinnabar-ink">
                       {selectedInitial.pinyin}
                     </div>
-                    <div className="text-xs text-fg-38 font-mono">
+                    <div className="text-xs text-fg-38 font-sans">
                       IPA: {selectedInitial.ipa} · Nhóm: {selectedInitial.group}
                     </div>
                   </div>
@@ -321,7 +321,7 @@ export const PinyinTable: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => handlePlay(selectedInitial.hanziVoice)}
-                      className="inline-flex items-center gap-1.5 rounded-full border border-cinnabar/40 bg-cinnabar/10 px-3 py-1 text-xs font-semibold text-cinnabar hover:bg-cinnabar hover:text-white transition-colors cursor-pointer"
+                      className="inline-flex items-center gap-1.5 rounded-full border border-cinnabar/40 bg-cinnabar/10 px-3 py-1 text-xs font-semibold text-cinnabar-ink hover:bg-cinnabar hover:text-on-accent transition-colors cursor-pointer"
                       title="Nghe âm tiết quy ước của thanh mẫu kèm nguyên âm"
                     >
                       <Volume2 size={14} /> Nghe âm tiết quy ước ({selectedInitial.hanziVoice})
@@ -331,12 +331,12 @@ export const PinyinTable: React.FC = () => {
                 </div>
 
                 <div className="rounded border border-rule/60 bg-tint p-3 text-xs leading-relaxed text-fg">
-                  <span className="font-semibold text-cinnabar">Khẩu hình: </span>
+                  <span className="font-semibold text-cinnabar-ink">Khẩu hình: </span>
                   {selectedInitial.vietnameseGuide}
                 </div>
 
                 {selectedInitial.commonMistakeVi && (
-                  <div className="rounded border border-amber-500/20 bg-amber-500/10 p-3 text-xs leading-relaxed text-amber-300">
+                  <div className="rounded border border-gold/20 bg-gold/10 p-3 text-xs leading-relaxed text-gold-ink">
                     <span className="font-semibold">Lưu ý cho người Việt: </span>
                     {selectedInitial.commonMistakeVi}
                   </div>
@@ -347,14 +347,14 @@ export const PinyinTable: React.FC = () => {
                     <span className="text-[11px] uppercase tracking-wider text-fg-38">Ví dụ tiêu biểu</span>
                     <div className="flex items-baseline gap-2">
                       <span className="font-serif text-2xl font-bold text-fg">{selectedInitial.exampleHanzi}</span>
-                      <span className="font-mono text-sm font-semibold text-cinnabar">{selectedInitial.exampleWord}</span>
+                      <span className="font-sans text-sm font-semibold text-cinnabar-ink">{selectedInitial.exampleWord}</span>
                       <span className="text-xs text-fg-60">({selectedInitial.exampleMeaning})</span>
                     </div>
                   </div>
                   <button
                     type="button"
                     onClick={() => handlePlay(selectedInitial.exampleHanzi)}
-                    className="inline-flex items-center gap-1 rounded border border-rule px-2.5 py-1 text-xs text-fg hover:border-cinnabar hover:text-cinnabar transition-colors cursor-pointer"
+                    className="inline-flex items-center gap-1 rounded border border-rule px-2.5 py-1 text-xs text-fg hover:border-cinnabar hover:text-cinnabar-ink transition-colors cursor-pointer"
                     title={`Nghe từ ví dụ: ${selectedInitial.exampleWord}`}
                   >
                     <Volume2 size={13} /> Nghe từ ví dụ
@@ -367,17 +367,17 @@ export const PinyinTable: React.FC = () => {
               <div className="mt-4 flex flex-col gap-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="font-mono text-3xl font-bold text-cinnabar">
+                    <div className="font-sans text-3xl font-bold text-cinnabar-ink">
                       {selectedFinal.pinyin}
                     </div>
-                    <div className="text-xs text-fg-38 font-mono">
+                    <div className="text-xs text-fg-38 font-sans">
                       IPA: {selectedFinal.ipa} · {selectedFinal.group}
                     </div>
                   </div>
                   <button
                     type="button"
                     onClick={() => handlePlay(selectedFinal.hanziVoice)}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-cinnabar/40 bg-cinnabar/10 px-3 py-1 text-xs font-semibold text-cinnabar hover:bg-cinnabar hover:text-white transition-colors cursor-pointer"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-cinnabar/40 bg-cinnabar/10 px-3 py-1 text-xs font-semibold text-cinnabar-ink hover:bg-cinnabar hover:text-on-accent transition-colors cursor-pointer"
                     title={`Nghe âm vận mẫu đại diện: ${selectedFinal.hanziVoice}`}
                   >
                     <Volume2 size={14} /> Nghe âm đại diện ({selectedFinal.hanziVoice})
@@ -385,12 +385,12 @@ export const PinyinTable: React.FC = () => {
                 </div>
 
                 <div className="rounded border border-rule/60 bg-tint p-3 text-xs leading-relaxed text-fg">
-                  <span className="font-semibold text-cinnabar">Cách ghép vần: </span>
+                  <span className="font-semibold text-cinnabar-ink">Cách ghép vần: </span>
                   {selectedFinal.vietnameseGuide}
                 </div>
 
                 {selectedFinal.commonMistakeVi && (
-                  <div className="rounded border border-amber-500/20 bg-amber-500/10 p-3 text-xs leading-relaxed text-amber-300">
+                  <div className="rounded border border-gold/20 bg-gold/10 p-3 text-xs leading-relaxed text-gold-ink">
                     <span className="font-semibold">Lưu ý: </span>
                     {selectedFinal.commonMistakeVi}
                   </div>
@@ -401,14 +401,14 @@ export const PinyinTable: React.FC = () => {
                     <span className="text-[11px] uppercase tracking-wider text-fg-38">Từ vựng ví dụ</span>
                     <div className="flex items-baseline gap-2">
                       <span className="font-serif text-2xl font-bold text-fg">{selectedFinal.exampleHanzi}</span>
-                      <span className="font-mono text-sm font-semibold text-cinnabar">{selectedFinal.exampleWord}</span>
+                      <span className="font-sans text-sm font-semibold text-cinnabar-ink">{selectedFinal.exampleWord}</span>
                       <span className="text-xs text-fg-60">({selectedFinal.exampleMeaning})</span>
                     </div>
                   </div>
                   <button
                     type="button"
                     onClick={() => handlePlay(selectedFinal.exampleHanzi)}
-                    className="inline-flex items-center gap-1 rounded border border-rule px-2.5 py-1 text-xs text-fg hover:border-cinnabar hover:text-cinnabar transition-colors cursor-pointer"
+                    className="inline-flex items-center gap-1 rounded border border-rule px-2.5 py-1 text-xs text-fg hover:border-cinnabar hover:text-cinnabar-ink transition-colors cursor-pointer"
                     title={`Nghe từ ví dụ: ${selectedFinal.exampleWord}`}
                   >
                     <Volume2 size={13} /> Nghe từ ví dụ
@@ -421,7 +421,7 @@ export const PinyinTable: React.FC = () => {
               <div className="mt-4 flex flex-col gap-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="font-mono text-3xl font-bold text-cinnabar">
+                    <div className="font-sans text-3xl font-bold text-cinnabar-ink">
                       {selectedTone.symbol}
                     </div>
                     <div className="text-xs font-semibold text-fg">
@@ -431,7 +431,7 @@ export const PinyinTable: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => handlePlay(selectedTone.hanzi)}
-                    className="inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-cinnabar/30 bg-cinnabar/10 text-cinnabar hover:bg-cinnabar hover:text-white transition-colors"
+                    className="inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-cinnabar/30 bg-cinnabar/10 text-cinnabar-ink hover:bg-cinnabar hover:text-on-accent transition-colors"
                     title={`Nghe phát âm: ${selectedTone.example}`}
                     aria-label={`Nghe phát âm: ${selectedTone.example}`}
                   >
@@ -440,11 +440,11 @@ export const PinyinTable: React.FC = () => {
                 </div>
 
                 <div className="rounded border border-rule/60 bg-tint p-3 text-xs leading-relaxed text-fg">
-                  <span className="font-semibold text-cinnabar">Quy luật cao độ: </span>
+                  <span className="font-semibold text-cinnabar-ink">Quy luật cao độ: </span>
                   {selectedTone.descriptionVi}
                 </div>
 
-                <div className="rounded border border-gold/20 bg-gold/10 p-3 text-xs leading-relaxed text-gold">
+                <div className="rounded border border-gold/20 bg-gold/10 p-3 text-xs leading-relaxed text-gold-ink">
                   <span className="font-semibold">Gợi ý gần đúng: </span>
                   {selectedTone.guidelineVi}
                 </div>
@@ -453,7 +453,7 @@ export const PinyinTable: React.FC = () => {
                   <span className="text-[11px] uppercase tracking-wider text-fg-38">Ví dụ tiêu biểu</span>
                   <div className="flex items-baseline gap-2">
                     <span className="font-serif text-2xl font-bold text-fg">{selectedTone.hanzi}</span>
-                    <span className="font-mono text-sm font-semibold text-cinnabar">{selectedTone.example}</span>
+                    <span className="font-sans text-sm font-semibold text-cinnabar-ink">{selectedTone.example}</span>
                     <span className="text-xs text-fg-60">({selectedTone.meaning})</span>
                   </div>
                 </div>
@@ -468,7 +468,7 @@ export const PinyinTable: React.FC = () => {
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
           {CONFUSING_SOUND_PAIRS.map((pair) => (
             <div key={pair.id} className="rounded border border-rule bg-card p-5 flex flex-col gap-3">
-              <h4 className="font-serif text-base font-bold text-cinnabar flex items-center gap-2">
+              <h4 className="font-serif text-base font-bold text-cinnabar-ink flex items-center gap-2">
                 <Sparkles size={16} /> {pair.title}
               </h4>
               <p className="text-xs text-fg-60 leading-relaxed">
@@ -477,26 +477,26 @@ export const PinyinTable: React.FC = () => {
 
               <div className="grid grid-cols-2 gap-3 mt-1">
                 <div className="rounded border border-rule/60 bg-tint p-3 flex flex-col items-center text-center">
-                  <span className="font-mono text-lg font-bold text-fg">{pair.soundA.pinyin}</span>
-                  <span className="font-serif text-xl font-bold text-cinnabar mt-1">{pair.soundA.hanzi}</span>
+                  <span className="font-sans text-lg font-bold text-fg">{pair.soundA.pinyin}</span>
+                  <span className="font-serif text-xl font-bold text-cinnabar-ink mt-1">{pair.soundA.hanzi}</span>
                   <span className="text-[11px] text-fg-38 mt-1">{pair.soundA.note}</span>
                   <button
                     type="button"
                     onClick={() => handlePlay(pair.soundA.hanzi.slice(0, 1))}
-                    className="mt-2 inline-flex items-center gap-1 text-[11px] text-cinnabar hover:underline cursor-pointer"
+                    className="mt-2 inline-flex items-center gap-1 text-[11px] text-cinnabar-ink hover:underline cursor-pointer"
                   >
                     <Volume2 size={13} /> Nghe âm A
                   </button>
                 </div>
 
                 <div className="rounded border border-rule/60 bg-tint p-3 flex flex-col items-center text-center">
-                  <span className="font-mono text-lg font-bold text-fg">{pair.soundB.pinyin}</span>
-                  <span className="font-serif text-xl font-bold text-cinnabar mt-1">{pair.soundB.hanzi}</span>
+                  <span className="font-sans text-lg font-bold text-fg">{pair.soundB.pinyin}</span>
+                  <span className="font-serif text-xl font-bold text-cinnabar-ink mt-1">{pair.soundB.hanzi}</span>
                   <span className="text-[11px] text-fg-38 mt-1">{pair.soundB.note}</span>
                   <button
                     type="button"
                     onClick={() => handlePlay(pair.soundB.hanzi.slice(0, 1))}
-                    className="mt-2 inline-flex items-center gap-1 text-[11px] text-cinnabar hover:underline cursor-pointer"
+                    className="mt-2 inline-flex items-center gap-1 text-[11px] text-cinnabar-ink hover:underline cursor-pointer"
                   >
                     <Volume2 size={13} /> Nghe âm B
                   </button>
@@ -504,7 +504,7 @@ export const PinyinTable: React.FC = () => {
               </div>
 
               <div className="mt-1 rounded bg-cinnabar/5 border border-cinnabar/20 p-2.5 text-xs text-fg-60">
-                <span className="font-semibold text-cinnabar">Mẹo thực tế: </span>
+                <span className="font-semibold text-cinnabar-ink">Mẹo thực tế: </span>
                 {pair.contrastExplanation}
               </div>
             </div>
@@ -518,12 +518,12 @@ export const PinyinTable: React.FC = () => {
           {/* Spelling Rules */}
           <div>
             <h4 className="font-serif text-base font-bold text-fg mb-3 flex items-center gap-2">
-              <BookOpen size={16} className="text-cinnabar" /> Quy tắc viết Pinyin quan trọng
+              <BookOpen size={16} className="text-cinnabar-ink" /> Quy tắc viết Pinyin quan trọng
             </h4>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
               {SPELLING_RULES.map((r) => (
                 <div key={r.id} className="rounded border border-rule bg-card p-4 flex flex-col gap-2.5">
-                  <h5 className="font-serif text-sm font-semibold text-cinnabar">{r.title}</h5>
+                  <h5 className="font-serif text-sm font-semibold text-cinnabar-ink">{r.title}</h5>
                   <p className="text-xs text-fg-60 leading-relaxed font-medium">{r.summary}</p>
                   <ul className="text-[11px] text-fg-38 list-disc list-inside space-y-1">
                     {r.details.map((d, idx) => (
@@ -531,11 +531,11 @@ export const PinyinTable: React.FC = () => {
                     ))}
                   </ul>
                   <div className="mt-auto border-t border-rule pt-2 flex flex-col gap-1 text-xs">
-                    <span className="text-[10px] uppercase text-fg-38 font-mono">Ví dụ:</span>
+                    <span className="text-[10px] uppercase text-fg-38 font-sans">Ví dụ:</span>
                     {r.examples.map((ex, idx) => (
                       <div key={idx} className="flex items-center justify-between text-[11px]">
                         <span className="text-fg-60">{ex.original} → <b className="text-fg">{ex.written}</b></span>
-                        <span className="font-serif text-cinnabar">{ex.hanzi} ({ex.meaning})</span>
+                        <span className="font-serif text-cinnabar-ink">{ex.hanzi} ({ex.meaning})</span>
                       </div>
                     ))}
                   </div>
@@ -547,32 +547,32 @@ export const PinyinTable: React.FC = () => {
           {/* Tone Sandhi Rules */}
           <div className="border-t border-rule pt-5">
             <h4 className="font-serif text-base font-bold text-fg mb-3 flex items-center gap-2">
-              <Sparkles size={16} className="text-cinnabar" /> Quy tắc biến điệu thiết yếu (Tone Sandhi)
+              <Sparkles size={16} className="text-cinnabar-ink" /> Quy tắc biến điệu thiết yếu (Tone Sandhi)
             </h4>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
               {TONE_SANDHI_RULES.map((sr) => (
                 <div key={sr.id} className="rounded border border-rule bg-card p-4 flex flex-col gap-2.5">
                   <div className="flex items-center justify-between">
-                    <h5 className="font-serif text-sm font-semibold text-cinnabar">{sr.title}</h5>
+                    <h5 className="font-serif text-sm font-semibold text-cinnabar-ink">{sr.title}</h5>
                   </div>
-                  <div className="rounded bg-cinnabar/10 px-2.5 py-1 text-xs font-mono font-bold text-cinnabar w-fit">
+                  <div className="rounded bg-cinnabar/10 px-2.5 py-1 text-xs font-sans font-bold text-cinnabar-ink w-fit">
                     {sr.ruleFormula}
                   </div>
                   <p className="text-xs text-fg-60 leading-relaxed">{sr.explanationVi}</p>
                   <div className="mt-auto border-t border-rule pt-2 flex flex-col gap-1.5 text-xs">
-                    <span className="text-[10px] uppercase text-fg-38 font-mono">Ví dụ biến điệu:</span>
+                    <span className="text-[10px] uppercase text-fg-38 font-sans">Ví dụ biến điệu:</span>
                     {sr.examples.map((ex, idx) => (
                       <div key={idx} className="flex items-center justify-between text-[11px] bg-tint px-2 py-1 rounded">
                         <div>
                           <span className="line-through text-fg-38 mr-1.5">{ex.pinyinWritten}</span>
-                          <span className="font-semibold text-cinnabar">→ {ex.pinyinSpoken}</span>
+                          <span className="font-semibold text-cinnabar-ink">→ {ex.pinyinSpoken}</span>
                         </div>
                         <div className="flex items-center gap-1.5">
                           <span className="font-serif text-fg">{ex.hanzi}</span>
                           <button
                             type="button"
                             onClick={() => handlePlay(ex.hanzi)}
-                            className="text-cinnabar hover:opacity-80 cursor-pointer"
+                            className="text-cinnabar-ink hover:opacity-80 cursor-pointer"
                             title="Nghe phát âm"
                           >
                             <Volume2 size={13} />

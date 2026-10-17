@@ -32,7 +32,7 @@ export const FloatingExpReward: React.FC<FloatingExpRewardProps> = ({
 
   return (
     <div
-      className={`pointer-events-none fixed z-50 flex items-center gap-1.5 rounded-full border border-gold/40 bg-card/95 px-3 py-1 font-sans text-xs font-bold text-gold shadow-lg shadow-gold/20 backdrop-blur-sm animate-[float-exp_1.2s_ease-out_forwards] ${className}`}
+      className={`pointer-events-none fixed z-50 flex items-center gap-1.5 rounded-full border border-gold/40 bg-card/95 px-3 py-1 font-sans text-xs font-bold text-gold-ink  shadow-gold/20 backdrop-blur-sm animate-[float-exp_1.2s_ease-out_forwards] ${className}`}
       style={{
         left: '50%',
         top: '40%',
@@ -41,7 +41,7 @@ export const FloatingExpReward: React.FC<FloatingExpRewardProps> = ({
       role="status"
       aria-live="polite"
     >
-      <Sparkles className="h-3.5 w-3.5 animate-spin text-gold" style={{ animationDuration: '3s' }} />
+      <Sparkles className="h-3.5 w-3.5 animate-spin text-gold-ink" style={{ animationDuration: '3s' }} />
       <span>+{amount} EXP</span>
       {label && <span className="text-[10px] text-fg-60">· {label}</span>}
     </div>

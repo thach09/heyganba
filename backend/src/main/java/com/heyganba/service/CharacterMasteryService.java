@@ -25,7 +25,7 @@ public class CharacterMasteryService {
 
     @Transactional
     public PracticeProgressResponse recordPractice(Long userId, PracticeProgressRequest request) {
-        User user = userRepository.findById(userId)
+        User user = userRepository.findLockedById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found: " + userId));
 
         String targetType = request.targetType() != null ? request.targetType().toUpperCase() : "HANZI";
@@ -45,9 +45,7 @@ public class CharacterMasteryService {
 
         int currentScore = mastery.getMasteryScore() != null ? mastery.getMasteryScore() : 0;
         int delta;
-        if (request.scoreDelta() != null) {
-            delta = request.scoreDelta();
-        } else if (Boolean.FALSE.equals(request.isCorrect())) {
+        if (Boolean.FALSE.equals(request.isCorrect())) {
             delta = -5;
         } else {
             delta = "VOCAB".equals(targetType) ? 20 : ("HANZI".equals(targetType) ? 15 : 10);
@@ -58,8 +56,8 @@ public class CharacterMasteryService {
         masteryRepository.save(mastery);
 
         // Award EXP based on practice target: 10 to 20 EXP
-        int expAwarded = "VOCAB".equals(targetType) ? 20 : ("HANZI".equals(targetType) ? 15 : 10);
-        int correctUnits = "VOCAB".equals(targetType) ? 2 : 1; // 1 unit = 10 EXP in ExpConfig
+        int expAwarded = Boolean.FALSE.equals(request.isCorrect()) ? 0 : expService.getExerciseCorrectExp();
+        int correctUnits = Boolean.FALSE.equals(request.isCorrect()) ? 0 : 1; // 1 unit = 10 EXP in ExpConfig
         studyActivityService.record(user, targetType, 1, correctUnits, Instant.now());
 
         UserExpResponse expResponse = expService.calculateUserExp(userId);

@@ -49,6 +49,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Phase 5 — Thi thử: sinh đề từ nội dung có sẵn, chấm điểm phía server, chống xem/nộp đề của người khác,
  * streak + heatmap + leaderboard sau khi thi.
  */
+@org.springframework.test.context.TestPropertySource(properties="app.legacy-phonetics-enabled=true")
 class ExamApiTest extends com.heyganba.support.ContentApiTestBase {
 
     private static final int EXAM_QUESTIONS = 5;

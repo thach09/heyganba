@@ -1,5 +1,5 @@
 import { apiRequest } from '../../lib/api/client';
-import type { HanziDto, RadicalDto, KanjiProgressResult } from './types';
+import type { HanziDto, RadicalDto, HanziProgressResult } from './types';
 
 export const hanziApi = {
   list: (query: string, options: RequestInit = {}) =>
@@ -7,7 +7,5 @@ export const hanziApi = {
   radicals: (options: RequestInit = {}) =>
     apiRequest<RadicalDto[]>('/radicals', options),
   progress: (id: number, options: RequestInit = {}) =>
-    apiRequest<KanjiProgressResult>(`/kanji/${id}/progress`, options),
+    apiRequest<HanziProgressResult>(`/hanzi/${id}/progress`, options),
 };
-
-export const kanjiApi = hanziApi;

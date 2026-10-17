@@ -52,7 +52,7 @@ vi.mock('../../src/features/hanzi/api', () => ({
 
 vi.mock('../../src/features/progress/api', () => ({
   progressApi: {
-    practice: vi.fn().mockResolvedValue({ success: true, data: { expEarned: 15 } }),
+    practice: vi.fn().mockResolvedValue({ success: true, data: { expAwarded: 10, masteryScore: 15 } }),
     mastery: vi.fn().mockResolvedValue({ success: true, data: [] }),
   },
 }));
@@ -200,7 +200,7 @@ describe('Hanzi & Radicals Station (Trạm Chữ Hán HSK 1)', () => {
     }
   });
 
-  test('4. Handwriting quiz completion rewards +2 Bamboo 🎋, calls progress API, and displays RedSealStamp', async () => {
+  test('4. Handwriting completion records evidence and displays the server-confirmed reward', async () => {
     render(
       <MemoryRouter>
         <HanziStationView />
@@ -227,9 +227,9 @@ describe('Hanzi & Radicals Station (Trạm Chữ Hán HSK 1)', () => {
     expect(progressApi.practice).toHaveBeenCalledWith(
       expect.objectContaining({
         targetType: 'HANZI',
-        masteryScore: 100,
-        expEarned: 15,
-      })
+        isCorrect: true,
+      }),
+      expect.objectContaining({ signal: expect.any(AbortSignal) })
     );
   });
 });

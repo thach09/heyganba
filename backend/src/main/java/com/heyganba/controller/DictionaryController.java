@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@org.springframework.validation.annotation.Validated
 @RestController
 @RequestMapping("/dictionary")
 @RequiredArgsConstructor
@@ -29,9 +30,9 @@ public class DictionaryController {
 
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<DictionarySearchResponse>> search(
-            @RequestParam(required = false, defaultValue = "") String q,
-            @RequestParam(required = false) String query,
-            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "") @jakarta.validation.constraints.Size(max=200) String q,
+            @RequestParam(required = false) @jakarta.validation.constraints.Size(max=200) String query,
+            @RequestParam(defaultValue = "0") @jakarta.validation.constraints.Min(0) @jakarta.validation.constraints.Max(10000) int page,
             HttpServletRequest request
     ) {
         limitPublicRequest(request);
@@ -52,7 +53,7 @@ public class DictionaryController {
         }
     }
 
-    @GetMapping("/kanji-radicals")
+    @GetMapping({"/hanzi-radicals", "/kanji-radicals"})
     public ResponseEntity<ApiResponse<java.util.List<com.heyganba.dto.kanji.RadicalResponse>>> radicals() {
         return ResponseEntity.ok(ApiResponse.success(kanjiService.getRadicals(null)));
     }

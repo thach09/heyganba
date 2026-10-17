@@ -24,7 +24,7 @@ test.each([
   ['NONE', 'Việt', 'Chưa có nghĩa Việt đã đối chiếu'],
 ])('shows the correct Vietnamese provenance label for %s results', async (status, label, vietnameseMeaning) => {
   fixture.search.mockResolvedValue({ success: true, data: {
-    query: 'dog', totalMatches: 1, page: 0, hasMore: false, kanjis: [],
+    query: 'dog', totalMatches: 1, page: 0, hasMore: false, hanzis: [],
     vocabularies: [{ id: 1258330, word: '犬', reading: 'いぬ', meaning: 'dog',
       vietnameseMeaning: status === 'NONE' ? undefined : vietnameseMeaning, vietnameseStatus: status, meaningLanguage: 'en' }],
   } });

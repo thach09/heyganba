@@ -5,9 +5,9 @@ import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import { RefreshCw, CheckCircle2, XCircle, Search, Filter, ShieldCheck, AlertTriangle, BookOpen, FileText } from 'lucide-react';
 
 const CONTENT_LABEL: Record<string, string> = {
-  KANA: 'Kana',
+  KANA: 'Phát âm (tương thích dữ liệu cũ)',
   VOCABULARY: 'Từ vựng (词汇)',
-  KANJI: 'Chữ Hán (汉字)',
+  HANZI: 'Chữ Hán (汉字)',
   GRAMMAR_EXERCISE: 'Bài tập ngữ pháp (语法练习)',
 };
 
@@ -18,7 +18,7 @@ export const ReviewQueuePanel: React.FC = () => {
   const { run, cancel } = useRequestScope();
   const [items, setItems] = useState<ReviewQueueItem[]>([]);
   const [onlyNeedsCheck, setOnlyNeedsCheck] = useState(false);
-  const [typeFilter, setTypeFilter] = useState<'ALL' | 'VOCABULARY' | 'KANJI' | 'GRAMMAR_EXERCISE'>('ALL');
+  const [typeFilter, setTypeFilter] = useState<'ALL' | 'VOCABULARY' | 'HANZI' | 'GRAMMAR_EXERCISE'>('ALL');
   const [statusFilter, setStatusFilter] = useState<'ALL' | 'PENDING' | 'APPROVED' | 'NEEDS_CHECK'>('ALL');
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
@@ -114,10 +114,10 @@ export const ReviewQueuePanel: React.FC = () => {
     const pending = items.filter((i) => i.reviewStatus === 'PENDING_REVIEW').length;
     const approved = items.filter((i) => i.reviewStatus === 'APPROVED').length;
     const vocab = items.filter((i) => i.contentType === 'VOCABULARY').length;
-    const kanji = items.filter((i) => i.contentType === 'KANJI').length;
+    const hanzi = items.filter((i) => i.contentType === 'HANZI').length;
     const exercises = items.filter((i) => i.contentType === 'GRAMMAR_EXERCISE').length;
 
-    return { total, needsCheck, pending, approved, vocab, kanji, exercises };
+    return { total, needsCheck, pending, approved, vocab, hanzi, exercises };
   }, [items]);
 
   // Filtered items
@@ -176,7 +176,7 @@ export const ReviewQueuePanel: React.FC = () => {
           </div>
           <p className="mt-1 text-[12.5px] leading-[1.7] text-fg-60">
             Kiểm tra và phê duyệt nội dung học thuật tiếng Trung (từ vựng, chữ Hán, bài tập). Sử dụng nút{' '}
-            <strong className="text-emerald-500">Duyệt tất cả</strong> để phê duyệt nhanh toàn bộ giáo trình.
+            <strong className="text-jade-ink">Duyệt tất cả</strong> để phê duyệt nhanh toàn bộ giáo trình.
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -184,7 +184,7 @@ export const ReviewQueuePanel: React.FC = () => {
             type="button"
             disabled={bulkApproving || loading}
             onClick={() => void handleApproveAll()}
-            className="flex cursor-pointer items-center gap-1.5 border border-emerald-600 bg-emerald-600/10 px-3 py-1.5 text-[11px] font-semibold text-emerald-600 hover:bg-emerald-600/20 transition-colors dark:text-emerald-400"
+            className="flex cursor-pointer items-center gap-1.5 border border-jade bg-jade/10 px-3 py-1.5 text-[11px] font-semibold text-jade-ink hover:bg-jade/20 transition-colors dark:text-jade-ink"
             title="Tự động phê duyệt toàn bộ nội dung giáo trình"
           >
             <CheckCircle2 size={13} className={bulkApproving ? 'animate-spin' : ''} />
@@ -212,7 +212,7 @@ export const ReviewQueuePanel: React.FC = () => {
 
       {/* Notifications */}
       {successToast && (
-        <div className="flex items-center gap-2 border-l-2 border-emerald-500 bg-tint px-4 py-2.5 text-[12.5px] text-emerald-600 dark:text-emerald-400">
+        <div className="flex items-center gap-2 border-l-2 border-jade bg-tint px-4 py-2.5 text-[12.5px] text-jade-ink dark:text-jade-ink">
           <CheckCircle2 size={15} />
           <span>{successToast}</span>
         </div>
@@ -251,20 +251,20 @@ export const ReviewQueuePanel: React.FC = () => {
         <div
           onClick={() => setStatusFilter(statusFilter === 'PENDING' ? 'ALL' : 'PENDING')}
           className={`border p-3 cursor-pointer transition-colors ${
-            statusFilter === 'PENDING' ? 'bg-card border-amber-500/60 ring-1 ring-amber-500/30' : 'bg-card/50 border-rule hover:border-amber-500/40'
+            statusFilter === 'PENDING' ? 'bg-card border-gold/60 ring-1 ring-gold/30' : 'bg-card/50 border-rule hover:border-gold/40'
           }`}
         >
-          <div className="text-[10.5px] font-semibold uppercase tracking-wider text-amber-500">Chờ duyệt</div>
-          <div className="mt-1 font-serif text-[20px] font-semibold text-amber-500">{counts.pending}</div>
+          <div className="text-[10.5px] font-semibold uppercase tracking-wider text-gold-ink">Chờ duyệt</div>
+          <div className="mt-1 font-serif text-[20px] font-semibold text-gold-ink">{counts.pending}</div>
         </div>
         <div
           onClick={() => setStatusFilter(statusFilter === 'APPROVED' ? 'ALL' : 'APPROVED')}
           className={`border p-3 cursor-pointer transition-colors ${
-            statusFilter === 'APPROVED' ? 'bg-card border-emerald-500/60 ring-1 ring-emerald-500/30' : 'bg-card/50 border-rule hover:border-emerald-500/40'
+            statusFilter === 'APPROVED' ? 'bg-card border-jade/60 ring-1 ring-jade/30' : 'bg-card/50 border-rule hover:border-jade/40'
           }`}
         >
-          <div className="text-[10.5px] font-semibold uppercase tracking-wider text-emerald-500">Đã duyệt</div>
-          <div className="mt-1 font-serif text-[20px] font-semibold text-emerald-500">{counts.approved}</div>
+          <div className="text-[10.5px] font-semibold uppercase tracking-wider text-jade-ink">Đã duyệt</div>
+          <div className="mt-1 font-serif text-[20px] font-semibold text-jade-ink">{counts.approved}</div>
         </div>
         <div className="bg-card border border-rule p-3">
           <div className="flex items-center gap-1 text-[10.5px] font-semibold uppercase tracking-wider text-fg-38">
@@ -278,7 +278,7 @@ export const ReviewQueuePanel: React.FC = () => {
             <ShieldCheck size={11} />
             <span>Chữ Hán</span>
           </div>
-          <div className="mt-1 font-serif text-[20px] font-semibold text-fg">{counts.kanji}</div>
+          <div className="mt-1 font-serif text-[20px] font-semibold text-fg">{counts.hanzi}</div>
         </div>
         <div className="bg-card border border-rule p-3">
           <div className="flex items-center gap-1 text-[10.5px] font-semibold uppercase tracking-wider text-fg-38">
@@ -316,12 +316,12 @@ export const ReviewQueuePanel: React.FC = () => {
           </button>
           <button
             type="button"
-            onClick={() => setTypeFilter('KANJI')}
+            onClick={() => setTypeFilter('HANZI')}
             className={`cursor-pointer px-2.5 py-1 text-[11px] font-medium transition-colors ${
-              typeFilter === 'KANJI' ? 'bg-tint font-semibold text-fg border border-rule-strong' : 'text-fg-60 hover:text-fg'
+              typeFilter === 'HANZI' ? 'bg-tint font-semibold text-fg border border-rule-strong' : 'text-fg-60 hover:text-fg'
             }`}
           >
-            Chữ Hán ({counts.kanji})
+            Chữ Hán ({counts.hanzi})
           </button>
           <button
             type="button"
@@ -401,9 +401,9 @@ export const ReviewQueuePanel: React.FC = () => {
                       <span
                         className={`text-[10.5px] font-medium ${
                           item.reviewStatus === 'APPROVED'
-                            ? 'text-emerald-500'
+                            ? 'text-jade-ink'
                             : item.reviewStatus === 'PENDING_REVIEW'
-                            ? 'text-amber-500'
+                            ? 'text-gold-ink'
                             : 'text-fg-38'
                         }`}
                       >
@@ -421,7 +421,7 @@ export const ReviewQueuePanel: React.FC = () => {
                         <p className="font-medium text-red/90">{item.reviewNote}</p>
                       )}
                       {item.sourceRef && (
-                        <p className="mt-0.5 text-[10.5px] text-fg-38 font-mono">{item.sourceRef}</p>
+                        <p className="mt-0.5 text-[10.5px] text-fg-38 font-sans">{item.sourceRef}</p>
                       )}
                       {!item.reviewNote && !item.sourceRef && (
                         <span className="text-[11px] text-fg-38 italic">—</span>
@@ -437,7 +437,7 @@ export const ReviewQueuePanel: React.FC = () => {
                         className={`flex items-center gap-1 border px-2.5 py-1 text-[11px] font-medium transition-colors ${
                           item.reviewStatus === 'APPROVED'
                             ? 'cursor-not-allowed border-rule text-fg-38 opacity-60'
-                            : 'cursor-pointer border-emerald-600/40 text-emerald-600 hover:bg-emerald-500/10 dark:text-emerald-400'
+                            : 'cursor-pointer border-jade/40 text-jade-ink hover:bg-jade/10 dark:text-jade-ink'
                         }`}
                         title="Phê duyệt nội dung học thuật"
                       >

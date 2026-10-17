@@ -1,4 +1,4 @@
-# AI Agent Working Guidelines — Japanese Learning Platform
+# AI Agent Working Guidelines — Chinese Learning Platform
 
 Tài liệu này dùng để brief cho agent code (Claude Code hoặc tương đương) trước khi bắt tay vào bất kỳ phase nào trong `roadmap.md`.
 
@@ -14,8 +14,8 @@ Agent phải tự đóng đồng thời các vai trò sau trong mọi tác vụ,
 
 **QA / Tester** — với mỗi tính năng, viết test cho luồng chính và ít nhất 1 edge case; test riêng cho phân quyền (user thường không gọi được API admin).
 
-**Giáo viên tiếng Nhật** — với nội dung học thuật (kana / kanji / từ vựng / ngữ pháp / ví dụ / mnemonic), agent tự soạn nội dung
-thay vì chờ người duyệt từng câu, nhưng phải: bám đúng ngữ pháp tiếng Nhật, viết lại bằng lời của mình (không copy nguyên văn
+**Giáo viên tiếng Trung** — với nội dung học thuật (Pinyin / chữ Hán / từ vựng / ngữ pháp / ví dụ / mnemonic), agent tự soạn nội dung
+thay vì chờ người duyệt từng câu, nhưng phải: bám đúng ngữ pháp tiếng Trung, viết lại bằng lời của mình (không copy nguyên văn
 nguồn có bản quyền), gắn cảnh báo `DRAFT — chờ duyệt` ở đầu mỗi file seed, và **tự tra cứu nguồn ngoài khi không chắc chắn**
 (cách đọc hiếm, số nét, license dữ liệu bên thứ ba...) rồi ghi lại kết quả kiểm chứng trong báo cáo tiến độ.
 
@@ -24,13 +24,13 @@ nguồn có bản quyền), gắn cảnh báo `DRAFT — chờ duyệt` ở đ�
 **Được phép:**
 - Tạo/sửa file trong phạm vi phase đang làm.
 - Viết và chạy Flyway migration mới.
-- Seed dữ liệu đã được duyệt (không tự bịa nội dung tiếng Nhật).
+- Seed dữ liệu đã được duyệt (không tự bịa nội dung tiếng Trung).
 - Viết test, cập nhật `docs/` và `CHANGELOG`.
 
 **Không được phép:**
 - Đổi kiến trúc lõi đã chốt (stack, schema bảng lõi, cơ chế auth) mà không xin xác nhận trước.
 - Xoá hoặc sửa dữ liệu production ngoài phạm vi migration đã duyệt.
-- Tự seed nội dung tiếng Nhật (kana/kanji/từ vựng/ngữ pháp) vào bảng chính thức khi chưa có xác nhận đã qua người biết tiếng Nhật duyệt — chỉ được đưa vào bảng nháp/staging.
+- Tự seed nội dung tiếng Trung (Pinyin/chữ Hán/từ vựng/ngữ pháp) vào bảng chính thức khi chưa có xác nhận đã qua người biết tiếng Trung duyệt — chỉ được đưa vào bảng nháp/staging.
 - Thêm dependency mới ngoài phạm vi phase mà không nêu lý do.
 - Tự chuyển sang phase tiếp theo khi phase hiện tại chưa được xác nhận hoàn thành.
 
@@ -52,7 +52,7 @@ Sau mỗi phase, agent báo cáo ngắn gọn gồm 3 phần:
 
 Đã từng làm vỡ migration 2 lần, các điểm sau phải tự kiểm trước khi commit:
 
-- **Không được để dấu `;` bên trong chuỗi** (kể cả tiếng Việt/Nhật): Flyway tách statement theo `;` nên file sẽ vỡ với lỗi
+- **Không được để dấu `;` bên trong chuỗi** (kể cả tiếng Việt/Trung): Flyway tách statement theo `;` nên file sẽ vỡ với lỗi
   `syntax error at or near ")"`. Dùng dấu phẩy hoặc chữ "và".
 - **Dòng cuối trong danh sách `VALUES` không có dấu phẩy thừa** trước `)`.
 - **Thứ tự cột phải khớp giữa danh sách giá trị và alias** `AS x(col1, col2, ...)` — hay sai khi vừa thêm cột `slug` vừa thêm
@@ -84,7 +84,7 @@ Sau mỗi phase, agent báo cáo ngắn gọn gồm 3 phần:
 
 ## Quy tắc nội dung chờ duyệt & múi giờ (quyết định của Thach — bắt buộc tuân thủ)
 
-- **Nội dung CHƯA được duyệt tiếng Nhật phải nằm ở `backend/src/main/resources/db/migration-staging`**, không được
+- **Nội dung CHƯA được duyệt tiếng Trung phải nằm ở `backend/src/main/resources/db/migration-staging`**, không được
   đặt vào `db/migration` (thư mục đó chạy ở CẢ production). `application-prod.yml` chỉ trỏ `classpath:db/migration`;
   local/staging trỏ cả 2 thư mục. Guard test: `FlywayLocationsConfigTest` (kiểm tra cả version trùng giữa 2 thư mục).
   Promote = chuyển file sang `db/migration` + `UPDATE review_status='APPROVED'` sau khi có người duyệt.
@@ -125,7 +125,7 @@ Sau mỗi phase, agent báo cáo ngắn gọn gồm 3 phần:
 
 ## Kinh nghiệm viết integration test
 
-- Test class nào chạm bảng nội dung (kana / vocabulary / kanji / grammar) phải `extends ContentApiTestBase`
+- Test class nào chạm bảng nội dung (phát âm / từ vựng / chữ Hán / ngữ pháp) phải `extends ContentApiTestBase`
   (`src/test/java/com/heyganba/support/`) để xoá dữ liệu theo đúng thứ tự khoá ngoại — nếu không, test sẽ đỏ tuỳ theo
   thứ tự chạy của Surefire chứ không phải do code sai.
 - **Mọi class test đụng bảng người dùng (users / roles / streaks / exam / study_activity) cũng phải extend base class**,
@@ -202,7 +202,7 @@ Sau mỗi phase, agent báo cáo ngắn gọn gồm 3 phần:
   `fonts.gstatic.com` cho `font-src`) vì `index.css` import font qua CDN; `style-src` cũng cần `'unsafe-inline'`
   do app dùng inline style của React. **Bắt buộc có `worker-src 'self' blob:`** (kèm `child-src` cho Safari cũ) vì
   `canvas-confetti` tạo worker từ `URL.createObjectURL(new Blob(...))` — thiếu `worker-src blob:` thì 5 màn hình
-  có hiệu ứng chúc mừng (Kana quiz, Flashcard, Grammar, Exam, Station placeholder) sẽ lỗi khi hoàn thành bài.
+  có hiệu ứng chúc mừng (Pinyin quiz, Flashcard, Grammar, Exam, Station placeholder) sẽ lỗi khi hoàn thành bài.
   Nếu thêm dịch vụ ngoài (Sentry, R2 audio…) thì phải cập nhật CSP tương ứng (`connect-src` / `media-src`).
 
 ## Kinh nghiệm tạo môi trường staging (đã làm thật 27/09/2026)
@@ -261,7 +261,7 @@ Sau mỗi phase, agent báo cáo ngắn gọn gồm 3 phần:
 
 ## Quy tắc nội dung chờ duyệt + bài học khi sửa hàng loạt (27/09/2026)
 
-- **Mọi endpoint trả nội dung học phải lọc qua `ContentAccess`**: thêm/sửa endpoint đọc kana/kanji/grammar/vocabulary/đề thi
+- **Mọi endpoint trả nội dung học phải lọc qua `ContentAccess`**: thêm/sửa endpoint đọc phát âm/chữ Hán/ngữ pháp/từ vựng/đề thi
   thì phải dùng `ContentAccess.visibleOnly(list, Entity::getReviewStatus)` (danh sách) hoặc
   `ContentAccess.requireVisible(status, "Entity", id)` (theo id → 404 khi là bản nháp và không phải admin).
   Guard test: `ContentReviewVisibilityTest`. Quên bước này = rò rỉ nội dung chưa duyệt ra ngoài (đã xảy ra thật).
@@ -288,7 +288,7 @@ Sau mỗi phase, agent báo cáo ngắn gọn gồm 3 phần:
 - `frontend/src/index.css` là **1 file ~2300 dòng, không có CSS linter**: `vite build` và `tsc` **không** báo lỗi cấu trúc
   dấu ngoặc. Vì CSS nesting là hợp lệ, khi một rule/`@media` quên đóng thì **toàn bộ đoạn CSS phía sau bị nhốt vào bên
   trong** → style chỉ còn áp dụng khi khớp điều kiện của rule/`@media` đó.
-- Đã xảy ra thật: `@media (max-width: 720px) {` + `.kana-cell-char {` để hở → CSS Phase 2–5 (flashcard, kanji, grammar,
+- Đã xảy ra thật: `@media (max-width: 720px) {` + `.pinyin-cell-char {` để hở → CSS Phase 2–5 (flashcard, chữ Hán, grammar,
   exam) nằm hết trong `@media ≤720px`; một `@media (max-width: 1100px) {` thứ hai nhốt thêm cả Phase 4–5. Triệu chứng
   người dùng thấy: bảng xếp hạng mất kẻ ô và dính cột, chữ dính nhau, các panel xếp sai, **chỉ đúng khi thu nhỏ cửa sổ
   ≤720px**. Sửa bằng cách đóng đúng rule và gom mọi override responsive vào **một `@media` duy nhất ở cuối file**.
@@ -296,7 +296,7 @@ Sau mỗi phase, agent báo cáo ngắn gọn gồm 3 phần:
   selector top-level phải in `depth=0`):
   ```powershell
   $d=0; Get-Content frontend\src\index.css | ForEach-Object {
-    if ($_ -match '^\s*(\.(exam-table|grammar-shell|grammar-layout|flashcard-shell|kanji-layout|heat-legend|mascot-badge)[^\w-])') { "depth=$d  $($_.Trim())" }
+    if ($_ -match '^\s*(\.(exam-table|grammar-shell|grammar-layout|flashcard-shell|hanzi-layout|heat-legend|mascot-badge)[^\w-])') { "depth=$d  $($_.Trim())" }
     $d += ([regex]::Matches($_,'\{')).Count - ([regex]::Matches($_,'\}')).Count
   }; "final depth=$d"
   ```

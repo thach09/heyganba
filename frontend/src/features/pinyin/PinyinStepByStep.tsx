@@ -82,7 +82,7 @@ export const PinyinStepByStep: React.FC<Props> = ({ onGoToQuiz, onGoToTable }) =
       renderContent: () => (
         <div className="flex flex-col gap-5 text-sm">
           <div className="rounded border border-cinnabar/20 bg-cinnabar/5 p-4 text-xs leading-relaxed text-fg">
-            <b className="text-cinnabar">Khái niệm cốt lõi: </b>
+            <b className="text-cinnabar-ink">Khái niệm cốt lõi: </b>
             Pinyin (Hán ngữ Phiên âm / 汉语拼音) là hệ thống ký âm bằng chữ cái Latinh được ban hành chính thức năm 1958, dùng để <b>ghi lại cách đọc</b> của chữ Hán.
             <div className="mt-1 text-fg-60">
               ⚠️ <i>Lưu ý quan trọng:</i> Pinyin <b>không phải là chữ viết</b> của tiếng Trung. Người Trung Quốc đọc và viết bằng <b>Chữ Hán (汉字)</b>; Pinyin chỉ là chiếc cầu nối để học phát âm lúc ban đầu.
@@ -95,22 +95,22 @@ export const PinyinStepByStep: React.FC<Props> = ({ onGoToQuiz, onGoToTable }) =
             </h4>
             <div className="flex flex-wrap items-center justify-center gap-2 rounded border border-rule bg-card p-4 text-center">
               <div className="rounded bg-tint px-3 py-2 border border-rule">
-                <span className="block font-mono text-base font-bold text-cinnabar">Thanh mẫu</span>
+                <span className="block font-sans text-base font-bold text-cinnabar-ink">Thanh mẫu</span>
                 <span className="text-[11px] text-fg-38">Phụ âm đầu (21 âm)</span>
               </div>
               <span className="text-lg font-bold text-fg-38">+</span>
               <div className="rounded bg-tint px-3 py-2 border border-rule">
-                <span className="block font-mono text-base font-bold text-gold">Vận mẫu</span>
+                <span className="block font-sans text-base font-bold text-gold-ink">Vận mẫu</span>
                 <span className="text-[11px] text-fg-38">Phần vần (36 âm)</span>
               </div>
               <span className="text-lg font-bold text-fg-38">+</span>
               <div className="rounded bg-tint px-3 py-2 border border-rule">
-                <span className="block font-mono text-base font-bold text-emerald-400">Thanh điệu</span>
+                <span className="block font-sans text-base font-bold text-jade-ink">Thanh điệu</span>
                 <span className="text-[11px] text-fg-38">Dấu thanh (4 thanh)</span>
               </div>
               <span className="text-lg font-bold text-fg-38">=</span>
               <div className="rounded bg-cinnabar/10 px-4 py-2 border border-cinnabar/30">
-                <span className="block font-mono text-lg font-bold text-cinnabar">Âm tiết hoàn chỉnh</span>
+                <span className="block font-sans text-lg font-bold text-cinnabar-ink">Âm tiết hoàn chỉnh</span>
                 <span className="text-[11px] text-fg-60">Ví dụ: m + a + ¯ = mā (妈)</span>
               </div>
             </div>
@@ -127,7 +127,7 @@ export const PinyinStepByStep: React.FC<Props> = ({ onGoToQuiz, onGoToTable }) =
 
           {/* Mini Check 1 */}
           <div className="mt-2 rounded border border-rule bg-card p-4">
-            <span className="text-[11px] font-mono uppercase tracking-wider text-gold flex items-center gap-1.5 mb-2">
+            <span className="text-[11px] font-sans uppercase tracking-wider text-gold-ink flex items-center gap-1.5 mb-2">
               <Lightbulb size={13} /> Kiểm tra nhỏ:
             </span>
             <p className="text-xs font-medium text-fg mb-3">
@@ -148,8 +148,8 @@ export const PinyinStepByStep: React.FC<Props> = ({ onGoToQuiz, onGoToTable }) =
                   className={`rounded border p-2.5 text-left text-xs transition-colors cursor-pointer ${
                     miniAnswer === opt.id
                       ? opt.id === 1
-                        ? 'border-emerald-500 bg-emerald-500/10 text-emerald-300'
-                        : 'border-rose-500 bg-rose-500/10 text-rose-300'
+                        ? 'border-jade bg-jade/10 text-jade-ink'
+                        : 'border-cinnabar bg-cinnabar/10 text-cinnabar-ink'
                       : 'border-rule bg-tint text-fg-60 hover:text-fg'
                   }`}
                 >
@@ -158,7 +158,7 @@ export const PinyinStepByStep: React.FC<Props> = ({ onGoToQuiz, onGoToTable }) =
               ))}
             </div>
             {isMiniChecked && miniAnswer === 1 && (
-              <div className="mt-2 text-xs text-emerald-400 flex items-center gap-1">
+              <div className="mt-2 text-xs text-jade-ink flex items-center gap-1">
                 <Check size={14} /> Chính xác! Gặp cặp iu/ui thì dấu thanh luôn đặt ở chữ cái đứng phía sau.
               </div>
             )}
@@ -193,12 +193,12 @@ export const PinyinStepByStep: React.FC<Props> = ({ onGoToQuiz, onGoToTable }) =
               <div key={t.num} className="rounded border border-rule bg-card p-3.5 flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between">
-                    <span className="font-serif text-sm font-bold text-cinnabar">Thanh {t.num}</span>
-                    <span className="font-mono text-[11px] rounded bg-rule/40 px-1.5 py-0.5 text-fg-38">{t.pitch}</span>
+                    <span className="font-serif text-sm font-bold text-cinnabar-ink">Thanh {t.num}</span>
+                    <span className="font-sans text-[11px] rounded bg-rule/40 px-1.5 py-0.5 text-fg-38">{t.pitch}</span>
                   </div>
                   <div className="mt-2 flex items-baseline gap-2">
                     <span className="font-serif text-2xl font-bold text-fg">{t.hanzi}</span>
-                    <span className="font-mono text-base font-bold text-cinnabar">{t.pinyin}</span>
+                    <span className="font-sans text-base font-bold text-cinnabar-ink">{t.pinyin}</span>
                     <span className="text-xs text-fg-60">({t.meaning})</span>
                   </div>
                   <p className="mt-1 text-[11px] text-fg-60 leading-normal">{t.desc}</p>
@@ -206,7 +206,7 @@ export const PinyinStepByStep: React.FC<Props> = ({ onGoToQuiz, onGoToTable }) =
                 <button
                   type="button"
                   onClick={() => handlePlay(t.hanzi)}
-                  className="mt-3 inline-flex items-center justify-center gap-1.5 rounded bg-tint border border-rule px-2 py-1.5 text-xs text-fg hover:border-cinnabar hover:text-cinnabar transition-colors cursor-pointer"
+                  className="mt-3 inline-flex items-center justify-center gap-1.5 rounded bg-tint border border-rule px-2 py-1.5 text-xs text-fg hover:border-cinnabar hover:text-cinnabar-ink transition-colors cursor-pointer"
                 >
                   <Volume2 size={13} /> Nghe mẫu "{t.pinyin}"
                 </button>
@@ -214,7 +214,7 @@ export const PinyinStepByStep: React.FC<Props> = ({ onGoToQuiz, onGoToTable }) =
             ))}
           </div>
 
-          <div className="rounded border border-amber-500/20 bg-amber-500/10 p-3 text-xs text-amber-300 leading-relaxed">
+          <div className="rounded border border-gold/20 bg-gold/10 p-3 text-xs text-gold-ink leading-relaxed">
             <b>💡 Quy tắc Nửa thanh 3 (Bán Thượng / 半上 - Cao độ 211): </b>
             Trong khẩu ngữ thực tế, khi thanh 3 đi trước thanh 1, thanh 2, thanh 4 hoặc thanh nhẹ, người bản xứ <b>chỉ hạ giọng xuống thấp (211)</b> rồi nói ngay từ tiếp theo, <b>không uốn giọng vút lên đuôi 4</b>. Chỉ đọc đủ 214 khi từ đó đứng một mình ở cuối câu hoặc khi đọc nhấn từng chữ rời rạc.
           </div>
@@ -244,7 +244,7 @@ export const PinyinStepByStep: React.FC<Props> = ({ onGoToQuiz, onGoToTable }) =
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             {/* b vs p */}
             <div className="rounded border border-rule bg-card p-4 flex flex-col gap-2">
-              <span className="font-serif text-sm font-bold text-cinnabar">Cặp 1: b [p] vs p [pʰ]</span>
+              <span className="font-serif text-sm font-bold text-cinnabar-ink">Cặp 1: b [p] vs p [pʰ]</span>
               <p className="text-xs text-fg-60 leading-relaxed">
                 • <b>b</b>: Không bật hơi (như "p" nhẹ). Ví dụ: 爸爸 (bàba).<br />
                 • <b>p</b>: Bật luồng hơi cực mạnh. Ví dụ: 苹果 (píngguǒ).
@@ -253,14 +253,14 @@ export const PinyinStepByStep: React.FC<Props> = ({ onGoToQuiz, onGoToTable }) =
                 <button
                   type="button"
                   onClick={() => handlePlay('八')}
-                  className="flex-1 rounded bg-tint border border-rule py-1 text-xs text-fg hover:text-cinnabar cursor-pointer"
+                  className="flex-1 rounded bg-tint border border-rule py-1 text-xs text-fg hover:text-cinnabar-ink cursor-pointer"
                 >
                   Nghe b (八)
                 </button>
                 <button
                   type="button"
                   onClick={() => handlePlay('坡')}
-                  className="flex-1 rounded bg-tint border border-rule py-1 text-xs text-fg hover:text-cinnabar cursor-pointer"
+                  className="flex-1 rounded bg-tint border border-rule py-1 text-xs text-fg hover:text-cinnabar-ink cursor-pointer"
                 >
                   Nghe p (坡)
                 </button>
@@ -269,7 +269,7 @@ export const PinyinStepByStep: React.FC<Props> = ({ onGoToQuiz, onGoToTable }) =
 
             {/* d vs t */}
             <div className="rounded border border-rule bg-card p-4 flex flex-col gap-2">
-              <span className="font-serif text-sm font-bold text-cinnabar">Cặp 2: d [t] vs t [tʰ]</span>
+              <span className="font-serif text-sm font-bold text-cinnabar-ink">Cặp 2: d [t] vs t [tʰ]</span>
               <p className="text-xs text-fg-60 leading-relaxed">
                 • <b>d</b>: Không bật hơi (đọc như "t"). Ví dụ: 大 (dà).<br />
                 • <b>t</b>: Bật hơi mạnh (đọc như "th"). Ví dụ: 他 (tā).
@@ -278,14 +278,14 @@ export const PinyinStepByStep: React.FC<Props> = ({ onGoToQuiz, onGoToTable }) =
                 <button
                   type="button"
                   onClick={() => handlePlay('得')}
-                  className="flex-1 rounded bg-tint border border-rule py-1 text-xs text-fg hover:text-cinnabar cursor-pointer"
+                  className="flex-1 rounded bg-tint border border-rule py-1 text-xs text-fg hover:text-cinnabar-ink cursor-pointer"
                 >
                   Nghe d (得)
                 </button>
                 <button
                   type="button"
                   onClick={() => handlePlay('特')}
-                  className="flex-1 rounded bg-tint border border-rule py-1 text-xs text-fg hover:text-cinnabar cursor-pointer"
+                  className="flex-1 rounded bg-tint border border-rule py-1 text-xs text-fg hover:text-cinnabar-ink cursor-pointer"
                 >
                   Nghe t (特)
                 </button>
@@ -294,7 +294,7 @@ export const PinyinStepByStep: React.FC<Props> = ({ onGoToQuiz, onGoToTable }) =
 
             {/* zh vs z */}
             <div className="rounded border border-rule bg-card p-4 flex flex-col gap-2">
-              <span className="font-serif text-sm font-bold text-cinnabar">Cặp 3: zh [tʂ] vs z [ts]</span>
+              <span className="font-serif text-sm font-bold text-cinnabar-ink">Cặp 3: zh [tʂ] vs z [ts]</span>
               <p className="text-xs text-fg-60 leading-relaxed">
                 • <b>zh</b>: Uốn cong đầu lưỡi lên ngạc cứng. Ví dụ: 中 (zhōng).<br />
                 • <b>z</b>: Đầu lưỡi để thẳng áp sau răng. Ví dụ: 再 (zài).
@@ -303,14 +303,14 @@ export const PinyinStepByStep: React.FC<Props> = ({ onGoToQuiz, onGoToTable }) =
                 <button
                   type="button"
                   onClick={() => handlePlay('中')}
-                  className="flex-1 rounded bg-tint border border-rule py-1 text-xs text-fg hover:text-cinnabar cursor-pointer"
+                  className="flex-1 rounded bg-tint border border-rule py-1 text-xs text-fg hover:text-cinnabar-ink cursor-pointer"
                 >
                   Nghe zh (中)
                 </button>
                 <button
                   type="button"
                   onClick={() => handlePlay('再')}
-                  className="flex-1 rounded bg-tint border border-rule py-1 text-xs text-fg hover:text-cinnabar cursor-pointer"
+                  className="flex-1 rounded bg-tint border border-rule py-1 text-xs text-fg hover:text-cinnabar-ink cursor-pointer"
                 >
                   Nghe z (再)
                 </button>
@@ -318,7 +318,7 @@ export const PinyinStepByStep: React.FC<Props> = ({ onGoToQuiz, onGoToTable }) =
             </div>
           </div>
 
-          <div className="rounded bg-gold/10 border border-gold/20 p-3 text-xs text-gold flex items-start gap-2">
+          <div className="rounded bg-gold/10 border border-gold/20 p-3 text-xs text-gold-ink flex items-start gap-2">
             <Sparkles size={15} className="shrink-0 mt-0.5" />
             <span>
               <b>Mẹo thực hành:</b> Đặt một tờ khăn giấy mỏng cách miệng 5cm. Khi phát âm các âm bật hơi (<b>p, t, k, q, ch, c</b>), luồng hơi thoát ra bắt buộc phải làm tờ giấy bay nhẹ!
@@ -350,12 +350,12 @@ export const PinyinStepByStep: React.FC<Props> = ({ onGoToQuiz, onGoToTable }) =
                 { py: 'ü', hanzi: '女 (nǚ)', tip: 'Tròn môi "uy"' },
               ].map((item) => (
                 <div key={item.py} className="rounded border border-rule bg-card p-2.5 text-center flex flex-col items-center">
-                  <span className="font-mono text-xl font-bold text-cinnabar">{item.py}</span>
+                  <span className="font-sans text-xl font-bold text-cinnabar-ink">{item.py}</span>
                   <span className="text-[11px] text-fg-60">{item.tip}</span>
                   <button
                     type="button"
                     onClick={() => handlePlay(item.hanzi.slice(0, 1))}
-                    className="mt-2 text-xs text-cinnabar hover:underline cursor-pointer flex items-center gap-1"
+                    className="mt-2 text-xs text-cinnabar-ink hover:underline cursor-pointer flex items-center gap-1"
                   >
                     <Volume2 size={12} /> {item.hanzi}
                   </button>
@@ -387,19 +387,19 @@ export const PinyinStepByStep: React.FC<Props> = ({ onGoToQuiz, onGoToTable }) =
         <div className="flex flex-col gap-5 text-sm">
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div className="rounded border border-rule bg-card p-4 flex flex-col gap-2">
-              <span className="font-serif text-sm font-bold text-cinnabar">1. Quy tắc ü bỏ 2 chấm</span>
+              <span className="font-serif text-sm font-bold text-cinnabar-ink">1. Quy tắc ü bỏ 2 chấm</span>
               <p className="text-xs text-fg-60 leading-relaxed">
                 Khi <b>ü</b> ghép với <b>j, q, x</b>, lược bỏ 2 chấm viết thành: <b>ju, qu, xu</b> (nhưng vẫn đọc là [y] tròn môi).
                 <br />
                 Khi ghép với <b>n, l</b>, bắt buộc giữ nguyên: <b>nü, lü</b>.
               </p>
-              <div className="text-xs font-mono text-fg mt-1">
+              <div className="text-xs font-sans text-fg mt-1">
                 Ví dụ: 去 (qù - đi), 女 (nǚ - nữ).
               </div>
             </div>
 
             <div className="rounded border border-rule bg-card p-4 flex flex-col gap-2">
-              <span className="font-serif text-sm font-bold text-cinnabar">2. Biến điệu hai Thanh 3</span>
+              <span className="font-serif text-sm font-bold text-cinnabar-ink">2. Biến điệu hai Thanh 3</span>
               <p className="text-xs text-fg-60 leading-relaxed">
                 <b>Thanh 3 + Thanh 3 → Thanh 2 + Thanh 3</b>.
                 <br />
@@ -408,7 +408,7 @@ export const PinyinStepByStep: React.FC<Props> = ({ onGoToQuiz, onGoToTable }) =
               <button
                 type="button"
                 onClick={() => handlePlay('你好')}
-                className="mt-auto w-fit text-xs text-cinnabar hover:underline flex items-center gap-1 cursor-pointer"
+                className="mt-auto w-fit text-xs text-cinnabar-ink hover:underline flex items-center gap-1 cursor-pointer"
               >
                 <Volume2 size={13} /> Nghe phát âm "你好" (ní hǎo)
               </button>
@@ -432,7 +432,7 @@ export const PinyinStepByStep: React.FC<Props> = ({ onGoToQuiz, onGoToTable }) =
       summary: 'Sẵn sàng kiểm tra phản xạ và nhận EXP kinh nghiệm.',
       renderContent: () => (
         <div className="flex flex-col items-center justify-center gap-4 text-center py-6">
-          <div className="h-14 w-14 rounded-full bg-cinnabar/10 border border-cinnabar/30 flex items-center justify-center text-cinnabar">
+          <div className="h-14 w-14 rounded-full bg-cinnabar/10 border border-cinnabar/30 flex items-center justify-center text-cinnabar-ink">
             <Sparkles size={28} />
           </div>
           <h4 className="font-serif text-2xl font-bold text-fg">
@@ -445,7 +445,7 @@ export const PinyinStepByStep: React.FC<Props> = ({ onGoToQuiz, onGoToTable }) =
             <button
               type="button"
               onClick={onGoToQuiz}
-              className="inline-flex items-center gap-2 rounded bg-cinnabar px-5 py-2.5 font-serif text-sm font-semibold text-white shadow-sm hover:opacity-90 transition-opacity cursor-pointer"
+              className="inline-flex items-center gap-2 rounded bg-cinnabar px-5 py-2.5 font-serif text-sm font-semibold text-on-accent  hover:opacity-90 transition-opacity cursor-pointer"
             >
               Làm bài luyện nhận biết (Nhận EXP) <ArrowRight size={16} />
             </button>
@@ -468,7 +468,7 @@ export const PinyinStepByStep: React.FC<Props> = ({ onGoToQuiz, onGoToTable }) =
     <div className="flex flex-col gap-6">
       {/* Audio Warning Banner */}
       {audioWarning && (
-        <div className="flex items-center gap-2 rounded bg-amber-500/10 border border-amber-500/20 px-4 py-2.5 text-xs text-amber-400">
+        <div className="flex items-center gap-2 rounded bg-gold/10 border border-gold/20 px-4 py-2.5 text-xs text-gold-ink">
           <AlertCircle size={15} className="shrink-0" />
           <span>{audioWarning}</span>
         </div>
@@ -477,7 +477,7 @@ export const PinyinStepByStep: React.FC<Props> = ({ onGoToQuiz, onGoToTable }) =
       {/* Step Stepper Header */}
       <div className="flex items-center justify-between border-b border-rule pb-4">
         <div>
-          <span className="text-[11px] font-mono uppercase tracking-wider text-cinnabar font-semibold">
+          <span className="text-[11px] font-sans uppercase tracking-wider text-cinnabar-ink font-semibold">
             {currentStep.badge}
           </span>
           <h3 className="font-serif text-xl font-bold text-fg mt-0.5">
@@ -538,7 +538,7 @@ export const PinyinStepByStep: React.FC<Props> = ({ onGoToQuiz, onGoToTable }) =
           <button
             type="button"
             onClick={handleNextStep}
-            className="inline-flex items-center gap-1.5 rounded bg-cinnabar px-5 py-2 text-xs font-semibold text-white hover:opacity-90 transition-opacity cursor-pointer shadow-sm"
+            className="inline-flex items-center gap-1.5 rounded bg-cinnabar px-5 py-2 text-xs font-semibold text-on-accent hover:opacity-90 transition-opacity cursor-pointer "
           >
             Chặng tiếp theo <ArrowRight size={14} />
           </button>
@@ -546,7 +546,7 @@ export const PinyinStepByStep: React.FC<Props> = ({ onGoToQuiz, onGoToTable }) =
           <button
             type="button"
             onClick={onGoToQuiz}
-            className="inline-flex items-center gap-1.5 rounded bg-cinnabar px-5 py-2 text-xs font-semibold text-white hover:opacity-90 transition-opacity cursor-pointer shadow-sm"
+            className="inline-flex items-center gap-1.5 rounded bg-cinnabar px-5 py-2 text-xs font-semibold text-on-accent hover:opacity-90 transition-opacity cursor-pointer "
           >
             Bắt đầu bài luyện <ArrowRight size={14} />
           </button>

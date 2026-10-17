@@ -171,7 +171,7 @@ class PostgresSchemaStagingRehearsalTest {
 
     @Test
     @Order(2)
-    @DisplayName("Case B (Schema local/staging M6): Nạp db/migration + db/migration-staging (V1-V9), tự động phê duyệt toàn bộ (APPROVED), 150 từ HSK 1 + 68 từ HSK 2, sequence đồng bộ, SQL idempotent")
+    @DisplayName("Case B (Schema local/staging M6): Nạp db/migration + db/migration-staging (V1-V10), tự động phê duyệt toàn bộ (APPROVED), 150 từ HSK 1 + 68 từ HSK 2, sequence đồng bộ, SQL idempotent")
     void caseB_stagingSchemaWithV4() throws Exception {
         String urlB = getUrlB();
         String user = getDbUser();
@@ -189,13 +189,13 @@ class PostgresSchemaStagingRehearsalTest {
 
         var result = flyway.migrate();
         assertThat(result.success).isTrue();
-        assertThat(result.migrationsExecuted).isEqualTo(9); // V1, V2, V3, V4, V5, V6, V7, V8
+        assertThat(result.migrationsExecuted).isEqualTo(10); // V1 through V10
 
         try (Connection conn = DriverManager.getConnection(urlB, user, pass);
              Statement stmt = conn.createStatement()) {
 
             // 1. flyway_schema_history contains V1 through V8
-            try (ResultSet rs = stmt.executeQuery("SELECT version, success FROM flyway_schema_history WHERE version IN ('4', '5', '6', '7', '8', '9') ORDER BY CAST(version AS INTEGER)")) {
+            try (ResultSet rs = stmt.executeQuery("SELECT version, success FROM flyway_schema_history WHERE version IN ('4', '5', '6', '7', '8', '9', '10') ORDER BY CAST(version AS INTEGER)")) {
                 assertThat(rs.next()).isTrue();
                 assertThat(rs.getString("version")).isEqualTo("4");
                 assertThat(rs.getBoolean("success")).isTrue();
@@ -217,6 +217,9 @@ class PostgresSchemaStagingRehearsalTest {
                 assertThat(rs.getBoolean("success")).isTrue();
                 assertThat(rs.next()).isTrue();
                 assertThat(rs.getString("version")).isEqualTo("9");
+                assertThat(rs.getBoolean("success")).isTrue();
+                assertThat(rs.next()).isTrue();
+                assertThat(rs.getString("version")).isEqualTo("10");
                 assertThat(rs.getBoolean("success")).isTrue();
             }
 
@@ -324,7 +327,7 @@ class PostgresSchemaStagingRehearsalTest {
             String[] migrations = {
                 "V4__sample_lesson_greetings.sql", "V5__hsk1_thematic_curriculum_expansion.sql",
                 "V6__hsk1_standard_course_grammar_and_exams.sql", "V7__hsk1_complete_150_vocab_and_hanzi_radicals.sql",
-                "V8__hsk2_standard_course_and_approve_all_curriculum.sql", "V9__hsk1_to_hsk6_complete_curriculum_and_grammar.sql"
+                "V8__hsk2_standard_course_and_approve_all_curriculum.sql", "V9__hsk1_to_hsk6_complete_curriculum_and_grammar.sql", "V10__learning_insights_and_sentence_order.sql"
             };
             for (int repeat = 0; repeat < 2; repeat++) {
                 for (String migration : migrations) stmt.execute(loadStagingMigrationSql(migration));

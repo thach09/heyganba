@@ -5,6 +5,7 @@ import { useAuth } from './useAuth';
 import { AppRoutes } from './routes';
 import { progressApi } from '../features/progress/api';
 import { OrientalDecorBackground } from '../components/OrientalDecorBackground';
+import { ThemeToggle } from '../components/ThemeToggle';
 
 /** The breakpoint must match the `@media (max-width: 900px)` query in index.css. */
 const MOBILE_BREAKPOINT_QUERY = '(max-width: 900px)';
@@ -169,12 +170,13 @@ export function AppShell() {
       )}
 
       {/* Main Content Area */}
+      {isMobileLayout && <div className="fixed left-12 top-2 z-40"><ThemeToggle compact /></div>}
       <div
         className={`flex min-h-screen min-w-0 flex-1 flex-col transition-[margin] duration-150 ${
           isSidebarOpen ? 'ml-[216px] max-[900px]:ml-0' : 'ml-0'
         }`}
       >
-        <main className="w-full min-w-0 flex-1 px-14 pb-14 pt-10 max-[900px]:px-5 max-[900px]:pb-10 max-[900px]:pt-16">
+        <main className="relative z-[1] w-full min-w-0 flex-1 px-14 pb-14 pt-20 max-[900px]:px-5 max-[900px]:pb-10 max-[900px]:pt-20">
           {backendHealthy === false && (
             <div className="mb-5 border-l-2 border-l-red bg-tint px-4 py-3 text-[12.5px] leading-[1.8] text-fg-60">
               Tạm thời không kết nối được với máy chủ. Vui lòng thử lại sau ít phút.

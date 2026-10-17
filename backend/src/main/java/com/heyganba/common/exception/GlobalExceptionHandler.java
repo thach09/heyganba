@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ApiResponse.<Map<String, String>>builder()
                         .success(false)
-                        .message("Validation failed")
+                        .message("Dữ liệu gửi lên chưa hợp lệ.")
                         .error(errors)
                         .build());
     }
@@ -57,7 +57,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(ApiResponse.<Void>builder()
                         .success(false)
-                        .message(ex.getMessage())
+                        .message("Không tìm thấy nội dung hoặc bạn không có quyền truy cập.")
                         .error("NOT_FOUND")
                         .build());
     }
@@ -68,7 +68,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ApiResponse.<Void>builder()
                         .success(false)
-                        .message("Malformed request body: invalid JSON format")
+                        .message("Nội dung JSON chưa hợp lệ.")
                         .error("BAD_REQUEST")
                         .build());
     }
@@ -78,7 +78,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ApiResponse.<Void>builder()
                         .success(false)
-                        .message("Missing required parameter: " + ex.getParameterName())
+                        .message("Thiếu tham số bắt buộc.")
                         .error("BAD_REQUEST")
                         .build());
     }
@@ -88,7 +88,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED)
                 .body(ApiResponse.<Void>builder()
                         .success(false)
-                        .message(ex.getMessage())
+                        .message("Phương thức không được hỗ trợ.")
                         .error("METHOD_NOT_ALLOWED")
                         .build());
     }
@@ -98,14 +98,14 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(ApiResponse.<Void>builder()
                         .success(false)
-                        .message("Endpoint not found: /" + ex.getResourcePath())
+                        .message("Không tìm thấy nội dung.")
                         .error("NOT_FOUND")
                         .build());
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<ApiResponse<Void>> handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
-        String message = "Invalid value for parameter '" + ex.getName() + "'";
+        String message = "Tham số không hợp lệ.";
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ApiResponse.<Void>builder()
                         .success(false)
@@ -139,7 +139,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(ApiResponse.<Void>builder()
                         .success(false)
-                        .message("Invalid email or password")
+                        .message("Email hoặc mật khẩu chưa đúng.")
                         .error("UNAUTHORIZED")
                         .build());
     }
@@ -149,7 +149,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(ApiResponse.<Void>builder()
                         .success(false)
-                        .message(ex.getMessage())
+                        .message("Phiên đăng nhập chưa hợp lệ.")
                         .error("AUTHENTICATION_FAILED")
                         .build());
     }
@@ -159,23 +159,35 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .body(ApiResponse.<Void>builder()
                         .success(false)
-                        .message("Access denied: You do not have permission to access this resource")
+                        .message("Bạn không có quyền truy cập nội dung này.")
                         .error("FORBIDDEN")
                         .build());
     }
 
+    @ExceptionHandler({org.springframework.dao.DataAccessException.class, java.sql.SQLException.class})
+    public ResponseEntity<ApiResponse<Void>> handleDatabaseException(Exception ex) {
+        return handleGenericException(ex);
+    }
+
+    @ExceptionHandler(jakarta.validation.ConstraintViolationException.class)
+    public ResponseEntity<ApiResponse<Void>> handleConstraintViolation(Exception ex) {
+        return ResponseEntity.badRequest().body(ApiResponse.<Void>builder().success(false).message("Tham số không hợp lệ.").error("BAD_REQUEST").build());
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Void>> handleGenericException(Exception ex) {
-        log.error("unhandled_request_failure category={}", ex.getClass().getSimpleName());
+        String correlationId = java.util.UUID.randomUUID().toString();
+        log.error("request_failure correlation_id={}", correlationId, ex);
         try {
             io.sentry.Sentry.captureException(ex);
         } catch (Throwable ignored) {
             // Sentry not initialized or not configured
         }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .header("X-Correlation-ID", correlationId)
                 .body(ApiResponse.<Void>builder()
                         .success(false)
-                        .message("An unexpected error occurred. Please try again later.")
+                        .message("Có lỗi xảy ra. Vui lòng thử lại sau.")
                         .error("INTERNAL_SERVER_ERROR")
                         .build());
     }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.Duration;
 import java.util.UUID;
 
+@org.springframework.validation.annotation.Validated
 @RestController
 @RequestMapping("/product-events")
 @RequiredArgsConstructor

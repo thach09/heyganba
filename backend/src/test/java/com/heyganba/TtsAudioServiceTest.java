@@ -27,8 +27,8 @@ import static org.mockito.Mockito.when;
 /**
  * Test cache audio TTS (quy trình mới 27/09/2026).
  *
- * Điểm quan trọng nhất: TTS của Google là endpoint KHÔNG chính thức ⇒ mỗi chuỗi kana chỉ được gọi MỘT lần,
- * các lần sau phải đọc từ cache (DB/R2), và đầu vào phải là chuỗi tiếng Nhật ngắn.
+ * Điểm quan trọng nhất: TTS của Google là endpoint KHÔNG chính thức ⇒ mỗi chuỗi chữ Hán chỉ được gọi MỘT lần,
+ * các lần sau phải đọc từ cache (DB/R2), và đầu vào phải là chuỗi tiếng Trung ngắn.
  */
 @ExtendWith(MockitoExtension.class)
 class TtsAudioServiceTest {
@@ -58,27 +58,27 @@ class TtsAudioServiceTest {
         byte[] mp3 = {1, 2, 3};
         TtsAudio cached = TtsAudio.builder()
                 .id(9L)
-                .cacheKey(AudioStorageService.cacheKeyOf("よっか"))
-                .kanaText("よっか")
+                .cacheKey(AudioStorageService.cacheKeyOf("你好"))
+                .kanaText("你好")
                 .audioBytes(mp3)
                 .storageKind("db")
                 .build();
 
         when(ttsAudioRepository.findByCacheKey(anyString())).thenReturn(Optional.empty(), Optional.of(cached));
-        when(ttsClient.synthesize("よっか")).thenReturn(mp3);
+        when(ttsClient.synthesize("你好")).thenReturn(mp3);
         when(audioStorageService.store(anyString(), anyString(), any(byte[].class))).thenReturn(cached);
 
-        TtsAudio first = ttsAudioService.getOrCreate("よっか");
-        TtsAudio second = ttsAudioService.getOrCreate(" よっか ");
+        TtsAudio first = ttsAudioService.getOrCreate("你好");
+        TtsAudio second = ttsAudioService.getOrCreate(" 你好 ");
 
-        assertThat(first.getKanaText()).isEqualTo("よっか");
+        assertThat(first.getKanaText()).isEqualTo("你好");
         assertThat(second.getAudioBytes()).isEqualTo(mp3);
-        verify(ttsClient, times(1)).synthesize("よっか");
+        verify(ttsClient, times(1)).synthesize("你好");
         verify(audioStorageService, times(1)).store(anyString(), anyString(), any(byte[].class));
     }
 
     @Test
-    @DisplayName("Chặn chuỗi không phải tiếng Nhật (tránh biến endpoint thành proxy TTS đa ngôn ngữ)")
+    @DisplayName("Chặn chuỗi không phải tiếng Trung (tránh biến endpoint thành proxy TTS đa ngôn ngữ)")
     void rejectsNonJapaneseText() {
         assertThatThrownBy(() -> ttsAudioService.getOrCreate("Hello world"))
                 .isInstanceOf(BadRequestException.class);
@@ -87,7 +87,7 @@ class TtsAudioServiceTest {
     @Test
     @DisplayName("Chặn chuỗi quá dài (> 64 ký tự) và chuỗi rỗng")
     void rejectsTooLongOrEmptyText() {
-        String tooLong = "き".repeat(65);
+        String tooLong = "你".repeat(65);
 
         assertThatThrownBy(() -> ttsAudioService.getOrCreate(tooLong))
                 .isInstanceOf(BadRequestException.class);
@@ -96,9 +96,9 @@ class TtsAudioServiceTest {
     }
 
     @Test
-    @DisplayName("Cache key ổn định theo chuỗi kana (cùng cách đọc ⇒ cùng 1 file audio)")
+    @DisplayName("Cache key ổn định theo chuỗi chữ Hán (cùng cách đọc ⇒ cùng 1 file audio)")
     void cacheKeyIsStableForSameKanaText() {
-        assertThat(AudioStorageService.cacheKeyOf("よっか")).isEqualTo(AudioStorageService.cacheKeyOf("よっか"));
-        assertThat(AudioStorageService.cacheKeyOf("よっか")).isNotEqualTo(AudioStorageService.cacheKeyOf("よんにち"));
+        assertThat(AudioStorageService.cacheKeyOf("你好")).isEqualTo(AudioStorageService.cacheKeyOf("你好"));
+        assertThat(AudioStorageService.cacheKeyOf("你好")).isNotEqualTo(AudioStorageService.cacheKeyOf("再见"));
     }
 }

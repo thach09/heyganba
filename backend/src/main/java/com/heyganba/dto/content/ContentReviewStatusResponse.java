@@ -24,7 +24,7 @@ public record ContentReviewStatusResponse(
      * @param total           tổng số bản ghi
      * @param pendingReview   số bản ghi chờ duyệt
      * @param approved        số bản ghi đã duyệt
-     * @param needsHumanCheck số bản ghi AI soạn nhưng CHƯA đối chiếu được nguồn (cần người biết tiếng Nhật kiểm)
+     * @param needsHumanCheck số bản ghi AI soạn nhưng CHƯA đối chiếu được nguồn (cần người biết tiếng Trung kiểm)
      */
     public record ContentTypeReviewStatus(
             String contentType,

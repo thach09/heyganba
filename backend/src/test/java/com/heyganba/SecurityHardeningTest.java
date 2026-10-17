@@ -41,6 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@org.springframework.test.context.TestPropertySource(properties="app.legacy-phonetics-enabled=true")
 class SecurityHardeningTest extends com.heyganba.support.ContentApiTestBase {
 
     private static final String JSON = MediaType.APPLICATION_JSON_VALUE;
@@ -98,7 +99,7 @@ class SecurityHardeningTest extends com.heyganba.support.ContentApiTestBase {
     void hstsHeaderOnlyOnSecureRequests() throws Exception {
         mockMvc.perform(get("/health").secure(true))
                 .andExpect(status().isOk())
-                .andExpect(header().string("Strict-Transport-Security", "max-age=31536000"));
+                .andExpect(header().string("Strict-Transport-Security", "max-age=31536000 ; includeSubDomains ; preload"));
 
         // Local dev (http) không nhận HSTS để không ép trình duyệt chuyển HTTPS khi phát triển.
         mockMvc.perform(get("/health"))

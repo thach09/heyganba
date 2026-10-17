@@ -7,6 +7,7 @@ import { hanziApi } from './api';
 import type { HanziDto, ExampleWordItem } from './types';
 import { speakChinese } from '../../services/chineseSpeech';
 import { RedSealStamp } from '../../components/RedSealStamp';
+import { useTheme } from '../../app/useTheme';
 import { FloatingExpReward } from '../../components/FloatingExpReward';
 import { progressApi } from '../progress/api';
 import { StudyPetCompanion } from '../companion/StudyPetCompanion';
@@ -257,6 +258,11 @@ type PracticeMode = 'ANIMATE' | 'QUIZ';
 
 export const HanziStationView: React.FC = () => {
   const { user } = useAuth();
+  return <HanziStationSession key={user?.userId ?? 'guest'} />;
+};
+const HanziStationSession: React.FC = () => {
+  const { theme } = useTheme();
+  const { user } = useAuth();
   const { run } = useRequestScope(user?.userId);
 
   const [characters, setCharacters] = useState<HanziDto[]>(FALLBACK_HANZI);
@@ -266,6 +272,8 @@ export const HanziStationView: React.FC = () => {
   const [selectedRadical, setSelectedRadical] = useState<string>('ALL');
   const [mode, setMode] = useState<PracticeMode>('ANIMATE');
   const [isQuizCompleted, setIsQuizCompleted] = useState(false);
+  const [earnedExp, setEarnedExp] = useState(0);
+  const [practiceNotice, setPracticeNotice] = useState('');
   const [showExpReward, setShowExpReward] = useState(false);
   const [masteryScores, setMasteryScores] = useState<Record<string, number>>({});
   const { triggerReaction, rewardBamboo } = useCompanion();
@@ -315,6 +323,21 @@ export const HanziStationView: React.FC = () => {
     }
   }, [selectedChar.exampleWordsJson]);
 
+  const completePractice = useCallback(async () => {
+    setIsQuizCompleted(true);
+    triggerReaction('happy');
+    if (!user) { setPracticeNotice('Đăng nhập để lưu lượt luyện viết.'); return; }
+    const response = await run('hanzi.practice', signal => progressApi.practice({ targetType: 'HANZI', targetKey: selectedChar.character, isCorrect: true }, { signal }));
+    if (!response) return;
+    if (response.success && response.data) {
+      setEarnedExp(response.data.expAwarded); setShowExpReward(true);
+      setMasteryScores(prev => ({ ...prev, [selectedChar.character]: response.data!.masteryScore }));
+      setPracticeNotice(`Đã lưu lượt viết đúng: +${response.data.expAwarded} EXP. Tiến độ nhiệm vụ đã cập nhật.`);
+      rewardBamboo(0);
+      void confetti({ particleCount: 70, spread: 60, origin: { y: 0.6 } });
+    } else setPracticeNotice(response.message || 'Chưa lưu được lượt viết. Vui lòng thử lại.');
+  }, [user, selectedChar.character, run, triggerReaction, rewardBamboo]);
+
   // Initialize or update HanziWriter when character or mode changes
   useEffect(() => {
     if (!writerContainerRef.current) return;
@@ -332,13 +355,18 @@ export const HanziStationView: React.FC = () => {
         width: 260,
         height: 260,
         padding: 24,
+        charDataLoader: (char: string) => fetch(`/hanzi-data/${encodeURIComponent(char)}.json`).then(response => {
+          if (!response.ok) throw new Error('Missing handwriting asset');
+          return response.json();
+        }),
+        onLoadCharDataError: () => setPracticeNotice('Chưa tải được dữ liệu nét viết. Vui lòng thử lại.'),
         showOutline: true,
         strokeAnimationSpeed: 1.2,
         delayBetweenStrokes: 180,
-        strokeColor: '#E11D48', // Cinnabar Red
-        radicalColor: '#F59E0B', // Imperial Gold
+        strokeColor: getComputedStyle(document.documentElement).getPropertyValue('--paper-red').trim(), // Cinnabar Red
+        radicalColor: getComputedStyle(document.documentElement).getPropertyValue('--paper-gold').trim(), // Imperial Gold
         outlineColor: 'rgba(120, 120, 120, 0.22)',
-        drawingColor: '#10B981', // Jade Green during quiz
+        drawingColor: getComputedStyle(document.documentElement).getPropertyValue('--paper-jade').trim(), // Jade Green during quiz
         drawingWidth: 16,
         showCharacter: mode === 'ANIMATE',
       });
@@ -349,36 +377,13 @@ export const HanziStationView: React.FC = () => {
         writer.animateCharacter();
       } else {
         writer.quiz({
-          onComplete: async () => {
-            setIsQuizCompleted(true);
-            setShowExpReward(true);
-            triggerReaction('happy');
-            rewardBamboo(2);
-            void confetti({ particleCount: 70, spread: 60, origin: { y: 0.6 } });
-
-            // Call Backend Practice Progress API
-            try {
-              await progressApi.practice({
-                targetType: 'HANZI',
-                targetKey: selectedChar.character,
-                masteryScore: 100,
-                expEarned: 15,
-              });
-
-              setMasteryScores((prev) => ({
-                ...prev,
-                [selectedChar.character]: Math.min(100, (prev[selectedChar.character] ?? 0) + 25),
-              }));
-            } catch (err) {
-              console.warn('Failed to record Hanzi exp:', err);
-            }
-          },
+          onComplete: () => void completePractice(),
         });
       }
     } catch (err) {
       console.error('Failed to instantiate HanziWriter:', err);
     }
-  }, [selectedChar, mode, triggerReaction, rewardBamboo]);
+  }, [selectedChar, mode, completePractice, theme]);
 
   const handlePlayAudio = (textToSpeak?: string) => {
     speakChinese(textToSpeak || selectedChar.character);
@@ -390,11 +395,7 @@ export const HanziStationView: React.FC = () => {
     } else if (writerRef.current && mode === 'QUIZ') {
       setIsQuizCompleted(false);
       writerRef.current.quiz({
-        onComplete: () => {
-          setIsQuizCompleted(true);
-          triggerReaction('happy');
-          rewardBamboo(2);
-        },
+        onComplete: () => void completePractice(),
       });
     }
   };
@@ -425,12 +426,12 @@ export const HanziStationView: React.FC = () => {
   return (
     <div className="mx-auto flex w-full max-w-[1100px] flex-col gap-6">
       {/* Floating EXP micro-animation */}
-      {showExpReward && <FloatingExpReward amount={15} onComplete={() => setShowExpReward(false)} />}
+      {showExpReward && <FloatingExpReward amount={earnedExp} onComplete={() => setShowExpReward(false)} />}
 
       {/* Header */}
       <div className="flex flex-col gap-2 border-b border-rule pb-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-cinnabar">
+          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-cinnabar-ink">
             <span className="inline-block h-2 w-2 rounded-full bg-cinnabar" />
             Trạm Chữ Hán & Bộ Thủ · 汉字笔顺与部首
           </div>
@@ -449,7 +450,7 @@ export const HanziStationView: React.FC = () => {
       </div>
 
       {/* Filter Toolbar: HSK Levels & Radical Filter Chips */}
-      <div className="flex flex-col gap-3 rounded border border-rule bg-card p-3 shadow-xs">
+      <div className="flex flex-col gap-3 rounded border border-rule bg-card p-3 ">
         {/* HSK Level Filter */}
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-[11px] font-semibold uppercase tracking-wider text-fg-38">Cấp độ HSK:</span>
@@ -460,7 +461,7 @@ export const HanziStationView: React.FC = () => {
               onClick={() => setHskFilter(lvl)}
               className={`cursor-pointer rounded px-2.5 py-1 text-xs font-semibold transition-all ${
                 hskFilter === lvl
-                  ? 'border border-cinnabar bg-cinnabar text-white shadow-xs'
+                  ? 'border border-cinnabar bg-cinnabar text-on-accent '
                   : 'border border-rule bg-bg text-fg-60 hover:text-fg'
               }`}
             >
@@ -481,7 +482,7 @@ export const HanziStationView: React.FC = () => {
                 onClick={() => setSelectedRadical(rad.radical)}
                 className={`cursor-pointer rounded px-2 py-0.5 text-[11px] font-medium transition-all ${
                   isSelected
-                    ? 'border border-gold bg-gold/15 font-semibold text-gold shadow-xs'
+                    ? 'border border-gold bg-gold/15 font-semibold text-gold-ink '
                     : 'border border-rule/70 bg-bg text-fg-60 hover:border-fg hover:text-fg'
                 }`}
               >
@@ -518,7 +519,7 @@ export const HanziStationView: React.FC = () => {
                   onClick={() => setSelectedChar(c)}
                   className={`group relative flex flex-col items-center justify-center rounded border p-2.5 text-center transition-all cursor-pointer ${
                     isSelected
-                      ? 'border-cinnabar bg-cinnabar/10 shadow-xs'
+                      ? 'border-cinnabar bg-cinnabar/10 '
                       : 'border-rule bg-card hover:border-rule-strong hover:bg-tint'
                   }`}
                 >
@@ -529,10 +530,10 @@ export const HanziStationView: React.FC = () => {
                     </span>
                   )}
 
-                  <span className="font-serif text-2xl font-bold text-fg group-hover:text-cinnabar">
+                  <span className="font-serif text-2xl font-bold text-fg group-hover:text-cinnabar-ink">
                     {c.character}
                   </span>
-                  <span className="mt-0.5 font-mono text-[11px] text-cinnabar">
+                  <span className="mt-0.5 font-sans text-[11px] text-cinnabar-ink">
                     {c.pinyin}
                   </span>
                   <span className="text-[10px] text-fg-38 truncate max-w-full">
@@ -556,7 +557,7 @@ export const HanziStationView: React.FC = () => {
 
         {/* Right Side: Interactive Mi Zi Ge Canvas + Details (7 cols) */}
         <div className="flex flex-col gap-6 lg:col-span-7">
-          <div className="flex flex-col items-center rounded border border-rule bg-card p-6 shadow-sm">
+          <div className="flex flex-col items-center rounded border border-rule bg-card p-6 ">
             {/* Mode Switcher Tabs */}
             <div className="mb-6 flex w-full justify-between items-center border-b border-rule pb-3">
               <div className="flex items-center gap-2">
@@ -565,7 +566,7 @@ export const HanziStationView: React.FC = () => {
                   onClick={() => setMode('ANIMATE')}
                   className={`cursor-pointer flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold transition-all ${
                     mode === 'ANIMATE'
-                      ? 'border border-cinnabar bg-cinnabar text-white shadow-xs'
+                      ? 'border border-cinnabar bg-cinnabar text-on-accent '
                       : 'border border-rule bg-tint text-fg-60 hover:text-fg'
                   }`}
                 >
@@ -577,11 +578,11 @@ export const HanziStationView: React.FC = () => {
                   onClick={() => setMode('QUIZ')}
                   className={`cursor-pointer flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold transition-all ${
                     mode === 'QUIZ'
-                      ? 'border border-cinnabar bg-cinnabar text-white shadow-xs'
+                      ? 'border border-cinnabar bg-cinnabar text-on-accent '
                       : 'border border-rule bg-tint text-fg-60 hover:text-fg'
                   }`}
                 >
-                  <PenTool size={14} /> Luyện viết tay (+15 EXP)
+                  <PenTool size={14} /> Luyện viết tay
                 </button>
               </div>
 
@@ -596,7 +597,7 @@ export const HanziStationView: React.FC = () => {
             </div>
 
             {/* Traditional Mi Zi Ge (米字格) Canvas Box */}
-            <div className="relative flex h-[280px] w-[280px] items-center justify-center rounded border-2 border-cinnabar/40 bg-[#FAF8F5] shadow-inner">
+            <div className="relative flex h-[280px] w-[280px] items-center justify-center rounded border-2 border-cinnabar/40 bg-card ">
               {/* Rice Paper Background Watermark Pattern */}
               <svg
                 className="pointer-events-none absolute inset-0 h-full w-full opacity-35"
@@ -604,13 +605,13 @@ export const HanziStationView: React.FC = () => {
                 aria-hidden="true"
               >
                 {/* Horizontal & Vertical Cross */}
-                <line x1="0" y1="140" x2="280" y2="140" stroke="#E11D48" strokeWidth="1" strokeDasharray="5 5" />
-                <line x1="140" y1="0" x2="140" y2="280" stroke="#E11D48" strokeWidth="1" strokeDasharray="5 5" />
+                <line x1="0" y1="140" x2="280" y2="140" stroke="var(--paper-red)" strokeWidth="1" strokeDasharray="5 5" />
+                <line x1="140" y1="0" x2="140" y2="280" stroke="var(--paper-red)" strokeWidth="1" strokeDasharray="5 5" />
                 {/* Diagonal Cross */}
-                <line x1="0" y1="0" x2="280" y2="280" stroke="#E11D48" strokeWidth="1" strokeDasharray="5 5" />
-                <line x1="0" y1="280" x2="280" y2="0" stroke="#E11D48" strokeWidth="1" strokeDasharray="5 5" />
+                <line x1="0" y1="0" x2="280" y2="280" stroke="var(--paper-red)" strokeWidth="1" strokeDasharray="5 5" />
+                <line x1="0" y1="280" x2="280" y2="0" stroke="var(--paper-red)" strokeWidth="1" strokeDasharray="5 5" />
                 {/* Outer Red Frame Inner Border */}
-                <rect x="8" y="8" width="264" height="264" fill="none" stroke="#E11D48" strokeWidth="0.8" opacity="0.4" />
+                <rect x="8" y="8" width="264" height="264" fill="none" stroke="var(--paper-red)" strokeWidth="0.8" opacity="0.4" />
               </svg>
 
               {/* HanziWriter target SVG canvas */}
@@ -631,11 +632,11 @@ export const HanziStationView: React.FC = () => {
                   Quan sát thứ tự các nét: Từ trên xuống dưới, từ trái qua phải, từ ngoài vào trong.
                 </p>
               ) : isQuizCompleted ? (
-                <div className="flex items-center gap-1.5 text-xs font-semibold text-jade">
-                  <CheckCircle size={16} /> Xuất sắc! Bạn đã viết đúng nét chữ Hán này, nhận +15 EXP và +2 🎋 măng trúc!
+                <div className="flex items-center gap-1.5 text-xs font-semibold text-jade-ink">
+                  <CheckCircle size={16} /> {practiceNotice || 'Xuất sắc! Bạn đã viết đúng nét chữ Hán này.'}
                 </div>
               ) : (
-                <p className="flex items-center gap-1.5 text-xs text-cinnabar font-medium">
+                <p className="flex items-center gap-1.5 text-xs text-cinnabar-ink font-medium">
                   <PenTool size={13} className="shrink-0" /> Dùng chuột hoặc ngón tay để vẽ từng nét vào khung 米字格 theo đúng thứ tự!
                 </p>
               )}
@@ -643,7 +644,7 @@ export const HanziStationView: React.FC = () => {
           </div>
 
           {/* Character Linguistic Details Card (OrientalCard) */}
-          <div className="flex flex-col gap-4 rounded border border-rule bg-card p-5 shadow-sm">
+          <div className="flex flex-col gap-4 rounded border border-rule bg-card p-5 ">
             <div className="flex items-start justify-between border-b border-rule pb-4">
               <div>
                 <div className="flex items-center gap-3">
@@ -652,20 +653,20 @@ export const HanziStationView: React.FC = () => {
                   </span>
                   <div className="flex flex-col">
                     <div className="flex items-center gap-2">
-                      <span className="font-mono text-lg font-bold text-cinnabar">
+                      <span className="font-sans text-lg font-bold text-cinnabar-ink">
                         {selectedChar.pinyin}
                       </span>
                       <button
                         type="button"
                         onClick={() => handlePlayAudio()}
-                        className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border border-cinnabar/30 bg-cinnabar/10 text-cinnabar hover:bg-cinnabar hover:text-white transition-all"
+                        className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border border-cinnabar/30 bg-cinnabar/10 text-cinnabar-ink hover:bg-cinnabar hover:text-on-accent transition-all"
                         title="Nghe phát âm chữ Hán"
                         aria-label={`Nghe phát âm ${selectedChar.character}`}
                       >
                         <Volume2 size={14} />
                       </button>
                       {(selectedChar.reviewStatus === 'PENDING_REVIEW' || selectedChar.needsHumanCheck) && (
-                        <span className="rounded bg-amber-500/15 px-1.5 py-0.5 text-[10px] font-semibold text-amber-500">
+                        <span className="rounded bg-gold/15 px-1.5 py-0.5 text-[10px] font-semibold text-gold-ink">
                           Chờ duyệt
                         </span>
                       )}
@@ -673,7 +674,7 @@ export const HanziStationView: React.FC = () => {
                     {/* Prominent Âm Hán Việt Badge */}
                     <div className="mt-1 flex items-center gap-1.5">
                       <span className="text-[10px] uppercase tracking-wider text-fg-38">Âm Hán Việt:</span>
-                      <span className="rounded bg-cinnabar/15 px-2 py-0.5 text-xs font-bold text-cinnabar">
+                      <span className="rounded bg-cinnabar/15 px-2 py-0.5 text-xs font-bold text-cinnabar-ink">
                         {selectedChar.sinoVietnamese || selectedChar.hanViet || 'Chưa cập nhật'}
                       </span>
                     </div>
@@ -691,7 +692,7 @@ export const HanziStationView: React.FC = () => {
                       style={{ width: `${currentScore}%` }}
                     />
                   </div>
-                  <span className="font-mono text-xs font-bold text-jade">{currentScore}%</span>
+                  <span className="font-sans text-xs font-bold text-jade-ink">{currentScore}%</span>
                 </div>
               </div>
             </div>
@@ -708,7 +709,7 @@ export const HanziStationView: React.FC = () => {
               <div className="rounded bg-tint p-3">
                 <span className="font-semibold text-fg-38 block mb-1">BỘ THỦ CẤU THÀNH & NÉT</span>
                 <p className="text-sm text-fg">
-                  Bộ thủ: <b className="font-serif text-cinnabar">{selectedChar.radical || '—'}</b> · {selectedChar.strokeCount} nét
+                  Bộ thủ: <b className="font-serif text-cinnabar-ink">{selectedChar.radical || '—'}</b> · {selectedChar.strokeCount} nét
                 </p>
               </div>
             </div>
@@ -716,7 +717,7 @@ export const HanziStationView: React.FC = () => {
             {/* Decomposition (Chiết tự & Bộ thủ cấu thành) */}
             {selectedChar.decomposition && (
               <div className="rounded border border-gold/40 bg-gold/5 p-3.5 text-xs leading-relaxed text-fg">
-                <div className="flex items-center gap-1.5 font-serif font-semibold text-gold mb-1">
+                <div className="flex items-center gap-1.5 font-serif font-semibold text-gold-ink mb-1">
                   <Sparkles size={14} />
                   <span>Chiết tự & Cấu trúc chữ Hán (字形结构):</span>
                 </div>
@@ -742,7 +743,7 @@ export const HanziStationView: React.FC = () => {
                       <div className="flex flex-col">
                         <div className="flex items-baseline gap-2">
                           <span className="font-serif text-base font-semibold text-fg">{ex.word}</span>
-                          <span className="font-mono text-xs text-cinnabar">{ex.pinyin}</span>
+                          <span className="font-sans text-xs text-cinnabar-ink">{ex.pinyin}</span>
                         </div>
                         <span className="text-[11.5px] text-fg-60">{ex.vi}</span>
                       </div>
@@ -750,7 +751,7 @@ export const HanziStationView: React.FC = () => {
                         type="button"
                         onClick={() => handlePlayAudio(ex.word)}
                         aria-label={`Nghe phát âm ${ex.word}`}
-                        className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border border-rule text-fg-60 hover:border-cinnabar hover:text-cinnabar hover:bg-cinnabar/10 transition-colors"
+                        className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border border-rule text-fg-60 hover:border-cinnabar hover:text-cinnabar-ink hover:bg-cinnabar/10 transition-colors"
                         title={`Nghe phát âm ${ex.word}`}
                       >
                         <Volume2 size={13} />

@@ -50,7 +50,7 @@ public class Kana {
 
     /**
      * TRUE = nội dung do AI soạn nhưng CHƯA đối chiếu được nguồn (cách đọc/âm biến đổi chưa tra chéo được
-     * từ điển uy tín) — phải để người biết tiếng Nhật kiểm trước.
+     * từ điển uy tín) — phải để người biết tiếng Trung kiểm trước.
      */
     @Builder.Default
     @Column(name = "needs_human_check", nullable = false)

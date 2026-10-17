@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@org.springframework.validation.annotation.Validated
 @RestController
 @RequestMapping({"/vocabulary", "/vocab"})
 @RequiredArgsConstructor
@@ -26,12 +27,12 @@ public class VocabularyController {
     }
 
     @GetMapping("/lessons/{slug}/words")
-    public ResponseEntity<ApiResponse<List<VocabularyWordResponse>>> getLessonWords(@PathVariable String slug) {
+    public ResponseEntity<ApiResponse<List<VocabularyWordResponse>>> getLessonWords(@PathVariable @jakarta.validation.constraints.Pattern(regexp="[a-z0-9-]{1,50}") String slug) {
         return ResponseEntity.ok(ApiResponse.success(vocabularyService.getLessonWords(slug)));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<VocabularyWordResponse>> getWordById(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<VocabularyWordResponse>> getWordById(@PathVariable @jakarta.validation.constraints.Positive Long id) {
         return ResponseEntity.ok(ApiResponse.success(vocabularyService.getWordById(id)));
     }
 }

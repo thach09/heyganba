@@ -74,8 +74,8 @@ test('legacy /kana redirects to /pinyin on mount', async () => {
   expect(await screen.findByText('Pinyin station')).toBeTruthy();
 });
 
-test('legacy /kanji redirects to /hanzi on mount', async () => {
-  mount('/kanji');
+test('legacy /hanzi redirects to /hanzi on mount', async () => {
+  mount('/hanzi');
   expect(await screen.findByText('Hanzi station')).toBeTruthy();
 });
 

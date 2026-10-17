@@ -33,6 +33,7 @@ import java.time.Duration;
  *
  * Ngưỡng đọc từ `app.security.auth.*` (có default) nên chỉnh được bằng biến môi trường khi cần.
  */
+@org.springframework.validation.annotation.Validated
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -107,12 +108,12 @@ public class AuthController {
 
     @PostMapping("/refresh")
     public ResponseEntity<ApiResponse<AuthResponse>> refreshToken(
-            @RequestBody(required = false) RefreshTokenRequest request,
+            @Valid @RequestBody(required = false) RefreshTokenRequest request,
             HttpServletRequest httpRequest
     ) {
         String ipKey = "auth-refresh-ip:" + ClientIpResolver.resolve(httpRequest);
         if (!rateLimiterService.tryConsume(ipKey, refreshMaxAttemptsPerIp, REFRESH_WINDOW)) {
-            throw new TooManyRequestsException("Too many token refresh attempts. Please try again later.");
+            throw new TooManyRequestsException("Bạn làm mới phiên quá nhanh. Vui lòng thử lại sau.");
         }
 
         String token = refreshCookieService.browser(httpRequest) ? refreshCookieService.token(httpRequest)
@@ -129,7 +130,7 @@ public class AuthController {
 
     @PostMapping("/logout")
     public ResponseEntity<ApiResponse<Void>> logout(
-            @RequestBody(required = false) com.heyganba.dto.auth.LogoutRequest request,
+            @Valid @RequestBody(required = false) com.heyganba.dto.auth.LogoutRequest request,
             HttpServletRequest httpRequest
     ) {
         String bearer = httpRequest.getHeader("Authorization");

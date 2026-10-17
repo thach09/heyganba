@@ -19,7 +19,7 @@ function AdminRoute() {
   return <div className="mx-auto flex w-full max-w-[520px] flex-col items-center pt-16 text-center">
     <span className="font-serif text-[30px] font-light leading-none text-fg-38">403</span>
     <h3 className="mt-4 text-[15px] font-semibold text-fg">Không có quyền truy cập</h3>
-    <p className="mt-2 text-[12.5px] leading-[1.9] text-fg-60">Vui lòng đăng nhập bằng tài khoản Administrator để truy cập khu vực này.</p>
+    <p className="mt-2 text-[12.5px] leading-[1.9] text-fg-60">Vui lòng đăng nhập bằng tài khoản quản trị viên để truy cập khu vực này.</p>
     <Link to="/" className="mt-6 text-[11.5px] text-fg-38 underline underline-offset-2 transition-colors hover:text-fg">← Về trang chủ</Link>
   </div>;
 }
@@ -41,7 +41,7 @@ export function AppRoutes() {
       <Route path="/flashcards" element={<Navigate to="/vocabulary" replace />} />
       <Route path="/flashcard" element={<Navigate to="/vocabulary" replace />} />
       <Route path="/kana" element={<Navigate to="/pinyin" replace />} />
-      <Route path="/kanji" element={<Navigate to="/hanzi" replace />} />
+      <Route path="/hanzi" element={<Navigate to="/hanzi" replace />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   </Suspense></ErrorBoundary>;

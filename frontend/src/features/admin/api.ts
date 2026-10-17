@@ -1,5 +1,5 @@
 import { apiRequest } from '../../lib/api/client';
-import type { AdminStatusData, AuditLogItem, TwoFactorStatusResponse, VocabularyAdminItem, KanjiAdminItem, ExerciseAdminItem, ReviewQueueItem } from './types';
+import type { AdminStatusData, AuditLogItem, TwoFactorStatusResponse, VocabularyAdminItem, HanziAdminItem, ExerciseAdminItem, ReviewQueueItem } from './types';
 import type { UserProfileResponse } from '../../lib/api/types';
 
 export const adminApi = {
@@ -29,8 +29,8 @@ export const adminApi = {
       method: 'POST',
     }),
   vocabulary: (query: string, options: RequestInit = {}) => apiRequest<VocabularyAdminItem[]>(`/admin/vocabulary${query.trim() ? `?q=${encodeURIComponent(query.trim())}` : '?size=50'}`, options),
-  kanji: (query: string, options: RequestInit = {}) => apiRequest<KanjiAdminItem[]>(`/admin/kanji${query.trim() ? `?q=${encodeURIComponent(query.trim())}` : '?size=50'}`, options),
+  hanzi: (query: string, options: RequestInit = {}) => apiRequest<HanziAdminItem[]>(`/admin/hanzi${query.trim() ? `?q=${encodeURIComponent(query.trim())}` : '?size=50'}`, options),
   exercises: (query: string, options: RequestInit = {}) => apiRequest<ExerciseAdminItem[]>(`/admin/exercises${query.trim() ? `?q=${encodeURIComponent(query.trim())}` : '?size=50'}`, options),
-  saveContent: (kind: 'vocabulary' | 'kanji' | 'exercises', id: number | null, options: RequestInit) => apiRequest<void>(`/admin/${kind}${id ? `/${id}` : ''}`, options),
-  deleteContent: (kind: 'vocabulary' | 'kanji' | 'exercises', id: number, options: RequestInit) => apiRequest<void>(`/admin/${kind}/${id}`, options),
+  saveContent: (kind: 'vocabulary' | 'hanzi' | 'exercises', id: number | null, options: RequestInit) => apiRequest<void>(`/admin/${kind}${id ? `/${id}` : ''}`, options),
+  deleteContent: (kind: 'vocabulary' | 'hanzi' | 'exercises', id: number, options: RequestInit) => apiRequest<void>(`/admin/${kind}/${id}`, options),
 };

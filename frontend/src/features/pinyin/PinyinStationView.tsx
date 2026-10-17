@@ -65,12 +65,12 @@ export const PinyinStationView: React.FC = () => {
   return (
     <div className="mx-auto flex w-full max-w-[1100px] flex-col gap-6">
       {/* Review Status Banner */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded border border-emerald-500/30 bg-emerald-500/10 p-3 text-xs text-emerald-200">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded border border-jade/30 bg-jade/10 p-3 text-xs text-jade-ink">
         <div className="flex items-center gap-2">
-          <ShieldCheck size={16} className="text-emerald-400 shrink-0" />
+          <ShieldCheck size={16} className="text-jade-ink shrink-0" />
           <div>
-            <span className="font-bold text-emerald-300">Giáo trình Ngữ âm: {PINYIN_METADATA.reviewStatus}</span>
-            <span className="text-emerald-200/80 block sm:inline sm:ml-2">
+            <span className="font-bold text-jade-ink">Giáo trình Ngữ âm: {PINYIN_METADATA.reviewStatus}</span>
+            <span className="text-jade-ink block sm:inline sm:ml-2">
               (Chuẩn Đề án Pinyin Hán ngữ 1958 · Mở toàn bộ cho người học)
             </span>
           </div>
@@ -85,25 +85,25 @@ export const PinyinStationView: React.FC = () => {
       {/* Gating Screen: When content is unreviewed and user is regular or not admin preview */}
       {!canViewContent ? (
         <div className="flex flex-col items-center justify-center rounded border border-rule bg-card p-10 text-center">
-          <div className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-amber-500/10 text-amber-400 mb-4">
+          <div className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-gold/10 text-gold-ink mb-4">
             <AlertTriangle size={28} />
           </div>
           <h2 className="font-serif text-2xl font-bold text-fg">
             Giáo trình Pinyin đang trong luồng kiểm duyệt
           </h2>
           <p className="mt-2.5 max-w-lg text-xs leading-relaxed text-fg-60">
-            Nội dung phát âm M1 được biên soạn đối chiếu theo <b>Đề án Pinyin Hán ngữ 1958</b> và đang ở trạng thái <span className="font-mono text-amber-300 font-semibold">PENDING_REVIEW</span>.
-            Theo quy tắc an toàn dữ liệu học thuật của nền tảng HeyGanba, nội dung chưa mở tự do cho học viên đại trà khi chưa được phê duyệt chính thức (<span className="font-mono text-emerald-400">APPROVED</span>).
+            Nội dung phát âm M1 được biên soạn đối chiếu theo <b>Đề án Pinyin Hán ngữ 1958</b> và đang ở trạng thái <span className="font-sans text-gold-ink font-semibold">PENDING_REVIEW</span>.
+            Theo quy tắc an toàn dữ liệu học thuật của nền tảng HeyGanba, nội dung chưa mở tự do cho học viên đại trà khi chưa được phê duyệt chính thức (<span className="font-sans text-jade-ink">APPROVED</span>).
           </p>
 
           {/* Cảnh báo nếu học viên thông thường cố tình gắn ?preview=1 */}
           {attemptedUnauthorizedPreview && (
-            <div className="mt-5 w-full max-w-md rounded border border-rose-500/40 bg-rose-500/10 p-3.5 text-left text-xs text-rose-300">
-              <p className="font-bold flex items-center gap-1.5 text-rose-200">
-                <AlertTriangle size={15} className="shrink-0 text-rose-400" />
+            <div className="mt-5 w-full max-w-md rounded border border-cinnabar/40 bg-cinnabar/10 p-3.5 text-left text-xs text-cinnabar-ink">
+              <p className="font-bold flex items-center gap-1.5 text-cinnabar-ink">
+                <AlertTriangle size={15} className="shrink-0 text-cinnabar-ink" />
                 Truy cập xem trước bị từ chối (?preview=1)
               </p>
-              <p className="mt-1 text-rose-200/90 leading-relaxed">
+              <p className="mt-1 text-cinnabar-ink leading-relaxed">
                 Chế độ xem trước nội dung chưa kiểm duyệt chỉ dành riêng cho tài khoản Quản trị viên (<code>ROLE_ADMIN</code>). Tài khoản thông thường hoặc khách không có quyền xem trước.
               </p>
             </div>
@@ -114,7 +114,7 @@ export const PinyinStationView: React.FC = () => {
               <button
                 type="button"
                 onClick={togglePreview}
-                className="inline-flex items-center gap-1.5 border border-cinnabar bg-cinnabar px-5 py-2 font-serif text-xs font-semibold text-white transition-opacity hover:opacity-90 cursor-pointer"
+                className="inline-flex items-center gap-1.5 border border-cinnabar bg-cinnabar px-5 py-2 font-serif text-xs font-semibold text-on-accent transition-opacity hover:opacity-90 cursor-pointer"
               >
                 <Eye size={14} /> Mở chế độ Xem trước (Admin Preview)
               </button>
@@ -122,7 +122,7 @@ export const PinyinStationView: React.FC = () => {
               <button
                 type="button"
                 onClick={requireLogin}
-                className="inline-flex items-center gap-1.5 border border-cinnabar bg-cinnabar px-5 py-2 font-serif text-xs font-semibold text-white transition-opacity hover:opacity-90 cursor-pointer"
+                className="inline-flex items-center gap-1.5 border border-cinnabar bg-cinnabar px-5 py-2 font-serif text-xs font-semibold text-on-accent transition-opacity hover:opacity-90 cursor-pointer"
               >
                 <ShieldCheck size={14} /> Đăng nhập tài khoản Quản trị viên (Admin)
               </button>
@@ -138,7 +138,7 @@ export const PinyinStationView: React.FC = () => {
           {/* Station Header */}
           <div className="flex flex-col gap-4 border-b border-rule pb-5 md:flex-row md:items-center md:justify-between">
             <div>
-              <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-cinnabar">
+              <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-cinnabar-ink">
                 <span className="inline-block h-2 w-2 rounded-full bg-cinnabar" />
                 Trạm 1 · 拼音与发音 · Pinyin & Phát âm · [Giáo trình Chuẩn HSK]
               </div>
@@ -164,7 +164,7 @@ export const PinyinStationView: React.FC = () => {
           onClick={() => handleTabChange('STEPS')}
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-serif text-sm font-semibold transition-all cursor-pointer ${
             activeTab === 'STEPS'
-              ? 'border-cinnabar text-cinnabar'
+              ? 'border-cinnabar text-cinnabar-ink'
               : 'border-transparent text-fg-60 hover:text-fg'
           }`}
         >
@@ -176,7 +176,7 @@ export const PinyinStationView: React.FC = () => {
           onClick={() => handleTabChange('TABLE')}
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-serif text-sm font-semibold transition-all cursor-pointer ${
             activeTab === 'TABLE'
-              ? 'border-cinnabar text-cinnabar'
+              ? 'border-cinnabar text-cinnabar-ink'
               : 'border-transparent text-fg-60 hover:text-fg'
           }`}
         >
@@ -188,7 +188,7 @@ export const PinyinStationView: React.FC = () => {
           onClick={() => handleTabChange('TONES')}
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-serif text-sm font-semibold transition-all cursor-pointer ${
             activeTab === 'TONES'
-              ? 'border-cinnabar text-cinnabar'
+              ? 'border-cinnabar text-cinnabar-ink'
               : 'border-transparent text-fg-60 hover:text-fg'
           }`}
         >
@@ -200,7 +200,7 @@ export const PinyinStationView: React.FC = () => {
           onClick={() => handleTabChange('QUIZ')}
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-serif text-sm font-semibold transition-all cursor-pointer ${
             activeTab === 'QUIZ'
-              ? 'border-cinnabar text-cinnabar'
+              ? 'border-cinnabar text-cinnabar-ink'
               : 'border-transparent text-fg-60 hover:text-fg'
           }`}
         >

@@ -1,6 +1,7 @@
 package com.heyganba.service;
 
 import com.heyganba.common.exception.BadRequestException;
+import com.heyganba.common.exception.ResourceNotFoundException;
 import com.heyganba.dto.notebook.*;
 import com.heyganba.model.entity.User;
 import com.heyganba.model.entity.VocabNotebook;
@@ -48,7 +49,7 @@ public class VocabNotebookService {
     @Transactional(readOnly = true)
     public VocabNotebookResponse getNotebook(Long notebookId, Long userId) {
         VocabNotebook notebook = notebookRepository.findByIdAndAccessible(notebookId, userId)
-                .orElseThrow(() -> new BadRequestException("Không tìm thấy sổ từ vựng ID: " + notebookId));
+                .orElseThrow(() -> new ResourceNotFoundException("Sổ từ", "id", notebookId));
         return toResponse(notebook);
     }
 
@@ -103,10 +104,10 @@ public class VocabNotebookService {
     @Transactional
     public VocabNotebookResponse addWordToNotebook(Long userId, Long notebookId, AddNotebookItemRequest req) {
         VocabNotebook notebook = notebookRepository.findById(notebookId)
-                .orElseThrow(() -> new BadRequestException("Không tìm thấy sổ từ vựng ID: " + notebookId));
+                .orElseThrow(() -> new ResourceNotFoundException("Sổ từ", "id", notebookId));
 
         if (notebook.getUser() == null || !notebook.getUser().getId().equals(userId)) {
-            throw new BadRequestException("Bạn không có quyền chỉnh sửa sổ từ vựng này");
+            throw new ResourceNotFoundException("Sổ từ", "id", notebookId);
         }
 
         Vocabulary vocab = dictionaryService.resolveNotebookWord(req.vocabularyId());
@@ -127,12 +128,24 @@ public class VocabNotebookService {
     }
 
     @Transactional
+    public VocabNotebookResponse updateNote(Long userId, Long notebookId, Long vocabularyId, String note) {
+        VocabNotebook notebook = notebookRepository.findById(notebookId)
+                .orElseThrow(() -> new ResourceNotFoundException("Sổ từ", "id", notebookId));
+        if (notebook.getUser() == null || !notebook.getUser().getId().equals(userId)) throw new ResourceNotFoundException("Sổ từ", "id", notebookId);
+        VocabNotebookItem item = itemRepository.findByNotebookIdAndVocabularyId(notebookId, vocabularyId)
+                .orElseThrow(() -> new ResourceNotFoundException("Từ trong sổ", "id", vocabularyId));
+        item.setCustomNote(note == null ? null : note.trim());
+        itemRepository.save(item);
+        return toResponse(notebook);
+    }
+
+    @Transactional
     public void removeWordFromNotebook(Long userId, Long notebookId, Long vocabularyId) {
         VocabNotebook notebook = notebookRepository.findById(notebookId)
-                .orElseThrow(() -> new BadRequestException("Không tìm thấy sổ từ vựng ID: " + notebookId));
+                .orElseThrow(() -> new ResourceNotFoundException("Sổ từ", "id", notebookId));
 
         if (notebook.getUser() == null || !notebook.getUser().getId().equals(userId)) {
-            throw new BadRequestException("Bạn không có quyền chỉnh sửa sổ từ vựng này");
+            throw new ResourceNotFoundException("Sổ từ", "id", notebookId);
         }
 
         itemRepository.deleteByNotebookIdAndVocabularyId(notebookId, vocabularyId);
@@ -141,7 +154,7 @@ public class VocabNotebookService {
     @Transactional
     public void deleteNotebook(Long userId, Long notebookId) {
         VocabNotebook notebook = notebookRepository.findById(notebookId)
-                .orElseThrow(() -> new BadRequestException("Không tìm thấy sổ từ vựng ID: " + notebookId));
+                .orElseThrow(() -> new ResourceNotFoundException("Sổ từ", "id", notebookId));
 
         if (notebook.getUser() == null || !notebook.getUser().getId().equals(userId)) {
             throw new BadRequestException("Bạn không có quyền xoá sổ từ vựng này");
@@ -158,7 +171,7 @@ public class VocabNotebookService {
     @Transactional
     public PracticeResultResponse recordPracticeResult(Long userId, Long notebookId, NotebookPracticeResultRequest req) {
         VocabNotebook notebook = notebookRepository.findByIdAndAccessible(notebookId, userId)
-                .orElseThrow(() -> new BadRequestException("Không tìm thấy sổ từ vựng ID: " + notebookId));
+                .orElseThrow(() -> new ResourceNotFoundException("Sổ từ", "id", notebookId));
 
         // Serialize submissions for one account, including retries from multiple devices.
         User user = userRepository.findLockedById(userId).orElseThrow(() -> new BadRequestException("Không tìm thấy tài khoản"));

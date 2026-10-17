@@ -95,7 +95,7 @@ export function CompanionWidget() {
   return (
     <>
       <OrientalCard
-        className="flex flex-col sm:flex-row items-center gap-6 p-6 border-[#282a36] bg-gradient-to-b from-[#151722]/95 via-[#101218]/95 to-[#0b0c11]/95 backdrop-blur-md shadow-[0_8px_32px_-4px_rgba(0,0,0,0.6)]"
+        className="flex flex-col sm:flex-row items-center gap-6 p-6 border-rule bg-card backdrop-blur-md "
       >
         {/* Interactive 3D Pet Display */}
         <div className="flex flex-shrink-0 flex-col items-center">
@@ -134,7 +134,7 @@ export function CompanionWidget() {
                 id="btn-switch-companion"
                 type="button"
                 onClick={() => setIsModalOpen(true)}
-                className="flex cursor-pointer items-center gap-1.5 rounded-lg border border-[#34384a] px-3 py-1.5 text-[11.5px] font-medium text-fg-60 transition-all hover:border-[#D97706]/70 hover:bg-[#D97706]/15 hover:text-[#F59E0B] shadow-sm"
+                className="flex cursor-pointer items-center gap-1.5 rounded-lg border border-rule px-3 py-1.5 text-[11.5px] font-medium text-fg-60 transition-all hover:border-gold/70 hover:bg-gold/15 hover:text-gold-ink "
               >
                 <RefreshCw className="h-3 w-3" />
                 Đổi Linh Thú
@@ -147,13 +147,13 @@ export function CompanionWidget() {
           </div>
 
           {/* Affection Level & Evolution Progress */}
-          <div className="mt-3.5 rounded-lg border border-rule/60 bg-black/30 p-3">
+          <div className="mt-3.5 rounded-lg border border-rule/60 bg-tint p-3">
             <div className="flex items-center justify-between text-[11.5px]">
               <span className="flex items-center gap-1.5 font-medium text-fg">
-                <Heart className="h-3.5 w-3.5 fill-[#C83E31] text-[#C83E31]" />
+                <Heart className="h-3.5 w-3.5 fill-cinnabar text-cinnabar-ink" />
                 Cấp độ thân mật: <strong className="text-fg">Cấp {affectionLevel}</strong>
               </span>
-              <span className="font-mono text-[11px] text-fg-60">
+              <span className="font-sans text-[11px] text-fg-60">
                 {currentLevelProgress} / 100 EXP
               </span>
             </div>
@@ -161,7 +161,7 @@ export function CompanionWidget() {
             {/* Progress Bar */}
             <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-rule">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-[#C83E31] via-[#D97706] to-[#F59E0B] transition-all duration-500"
+                className="h-full rounded-full bg-gold transition-all duration-500"
                 style={{ width: `${currentLevelProgress}%` }}
               />
             </div>
@@ -169,7 +169,7 @@ export function CompanionWidget() {
             {/* Stage evolution milestone tip */}
             <div className="mt-2 flex items-center justify-between text-[10.5px] text-fg-38">
               <span>{getEvolutionHint()}</span>
-              <span className="font-serif text-[#D97706]">
+              <span className="font-serif text-gold-ink">
                 {growthStage === 'baby' ? 'Tiến hoá: Cấp 5' : growthStage === 'junior' ? 'Tiến hoá: Cấp 10' : 'Cảnh giới tối cao'}
               </span>
             </div>
@@ -184,7 +184,7 @@ export function CompanionWidget() {
               disabled={bambooCount < 1}
               className={`flex items-center gap-2 rounded-xl border px-4 py-2 text-[12px] font-semibold transition-all ${
                 bambooCount > 0
-                  ? 'cursor-pointer border-[#2E7D6B]/60 bg-[#2E7D6B]/20 text-[#34D399] hover:bg-[#2E7D6B]/30 hover:border-[#34D399]/60 active:scale-95 shadow-[0_0_12px_rgba(46,125,107,0.25)]'
+                  ? 'cursor-pointer border-jade/60 bg-jade/20 text-jade-ink hover:bg-jade/30 hover:border-jade/60 active:scale-95 '
                   : 'cursor-not-allowed border-rule bg-rule/30 text-fg-38'
               }`}
             >
@@ -193,7 +193,7 @@ export function CompanionWidget() {
             </button>
 
             <span className="text-[11px] text-fg-38">
-              +25 EXP / lần ăn · Học 1 bài = +1 {activePet.foodNameVi}
+              +25 điểm thân thiết / lần ăn · Nhận măng từ nhiệm vụ
             </span>
           </div>
         </div>
@@ -201,10 +201,10 @@ export function CompanionWidget() {
 
       {/* Switch Pet Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4 backdrop-blur-md animate-[toast-in_0.2s_ease-out]">
-          <div className="relative w-full max-w-xl rounded-2xl border border-[#D97706]/40 bg-[#0f1118] p-6 shadow-[0_20px_50px_rgba(0,0,0,0.85),0_0_25px_rgba(217,119,6,0.15)]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-scrim/85 p-4 backdrop-blur-md animate-[toast-in_0.2s_ease-out]">
+          <div className="relative w-full max-w-xl rounded-2xl border border-gold/40 bg-card p-6 ">
             {/* Modal Header */}
-            <div className="flex items-center justify-between border-b border-[#252834] pb-3.5">
+            <div className="flex items-center justify-between border-b border-rule pb-3.5">
               <div>
                 <h4 className="font-serif text-[18px] font-bold text-fg">
                   Chọn Linh Thú Đồng Hành (Voxel 3D)
@@ -216,7 +216,7 @@ export function CompanionWidget() {
               <button
                 type="button"
                 onClick={() => setIsModalOpen(false)}
-                className="rounded-lg p-1.5 text-fg-60 transition-colors hover:bg-white/10 hover:text-fg"
+                className="rounded-lg p-1.5 text-fg-60 transition-colors hover:bg-fg/10 hover:text-fg"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -244,11 +244,11 @@ export function CompanionWidget() {
                     }}
                     className={`flex cursor-pointer items-center gap-3.5 rounded-xl border p-3 transition-all ${
                       isSelected
-                        ? 'border-[#D97706] bg-[#D97706]/15 shadow-[0_0_15px_rgba(217,119,6,0.3)]'
-                        : 'border-[#222533] bg-[#141620] hover:border-[#D97706]/40 hover:bg-[#181a26]'
+                        ? 'border-gold bg-gold/15 '
+                        : 'border-rule bg-card hover:border-gold/40 hover:bg-card'
                     }`}
                   >
-                    <div className="flex h-16 w-16 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg bg-black/40 border border-[#2a2d3d]">
+                    <div className="flex h-16 w-16 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg bg-tint border border-rule">
                       <Companion3DCanvas
                         petId={id}
                         stage="junior"
@@ -263,10 +263,10 @@ export function CompanionWidget() {
                         {pet.id === 'golden_monkey' ? '小悟空 · Ngộ Không' : `${pet.nameZh} · ${pet.nameVi}`}
                       </div>
                       <div className="mt-0.5 flex flex-wrap items-center gap-1.5">
-                        <span className="text-[11px] text-[#2E7D6B]">
+                        <span className="text-[11px] text-jade-ink">
                           {pet.titleVi}
                         </span>
-                        <span className="flex-shrink-0 rounded bg-[#C83E31]/15 px-1 py-0.2 font-serif text-[9px] font-medium text-[#C83E31]">
+                        <span className="flex-shrink-0 rounded bg-cinnabar/15 px-1 py-0.2 font-serif text-[9px] font-medium text-cinnabar-ink">
                           {pet.badge}
                         </span>
                       </div>

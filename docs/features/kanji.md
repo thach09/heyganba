@@ -1,4 +1,3 @@
-# Trạm Kanji (Legacy)
+# Tài liệu đã chuyển
 
-> Ghi chú: Tính năng này đã được chuyển đổi hoàn toàn sang **Trạm Chữ Hán (Hanzi Station)** cho nền tảng học tiếng Trung.
-> Xem tài liệu chi tiết tại: [Trạm Chữ Hán](./hanzi.md)
+Xem [hanzi.md](hanzi.md). Nội dung cũ được giữ trong lịch sử Git, không áp dụng cho sản phẩm hiện tại.

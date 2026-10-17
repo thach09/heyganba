@@ -1,3 +1,5 @@
+import { OrientalCard } from '../../components/OrientalCard';
+import { LearningInsights } from './LearningInsights';
 import { HskRoadmap } from './HskRoadmap';
 import { progressApi } from '../progress/api';
 import { flashcardApi } from '../flashcard/api';
@@ -6,18 +8,9 @@ import type { HeatmapDay } from '../progress/types';
 import type { UserExp } from './types';
 import { useAuth } from '../../app/useAuth';
 import React, { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Sparkles, BookOpen, PenTool, Award } from 'lucide-react';
 import { CompanionWidget } from '../companion/CompanionWidget';
-import { OrientalCard } from '../../components/OrientalCard';
 
-/**
- * Dashboard - the reflection surface (see DESIGN.md):
- * 24-week ink-density tracker, "This week", two 30-day charts, level/EXP.
- *
- * Real data: `/streak/heatmap` (itemCount, correctCount) + `/flashcard/stats`.
- * EXP is computed client-side from itemCount (not in the DB yet): 10 EXP per study item, 2,000 per level.
- */
+/** Dashboard metrics are derived from authenticated server progress. */
 
 const TRACKER_DAYS = 24 * 7;
 const CHART_DAYS = 30;
@@ -122,7 +115,7 @@ const WeekStats: React.FC<{ items: number | null; correct: number | null; learne
     <div className="mt-[22px] flex flex-1 flex-col justify-between">
       <StatRow label="Lượt học" value={items} />
       <StatRow label="Trả lời đúng" value={correct} />
-      <StatRow label="Từ đã thuộc" value={learned} />
+      <StatRow label="Thẻ đã ôn nhớ (tổng)" value={learned} />
     </div>
   </div>
 );
@@ -202,7 +195,8 @@ export const DashboardView: React.FC = () => {
 
   const { weekItems, weekCorrect } = useMemo(() => {
     const safeHeatmap = Array.isArray(heatmap) ? heatmap : [];
-    const last7 = safeHeatmap.slice(-7);
+    const weekDays = safeHeatmap.length ? mondayFirstIndex(toLocalDate(safeHeatmap[safeHeatmap.length - 1].date)) + 1 : 0;
+    const last7 = weekDays ? safeHeatmap.slice(-weekDays) : [];
     return {
       weekItems: last7.reduce((sum, day) => sum + (day?.itemCount || 0), 0),
       weekCorrect: last7.reduce((sum, day) => sum + (day?.correctCount || 0), 0),
@@ -225,24 +219,24 @@ export const DashboardView: React.FC = () => {
               <span className="text-fg-60 text-[13px]">Cấp</span>
               <b className="font-serif text-[22px] font-bold text-fg leading-none">{currentLevel}</b>
               <span className="mx-1 text-fg-38">·</span>
-              <span className="font-mono text-[13px] text-fg-60">
+              <span className="font-sans text-[13px] text-fg-60">
                 {formatNumber(currentExp)} / {formatNumber(nextLevelExp)} EXP
               </span>
             </div>
 
             {/* Thanh nhỏ hiển thị sắp lên cấp / kinh nghiệm chưa */}
-            <div className="flex items-center gap-2.5 rounded-full border border-[#262834] bg-[#12141a]/95 px-3 py-1 shadow-inner">
+            <div className="flex items-center gap-2.5 rounded-full border border-rule bg-card/95 px-3 py-1 ">
               <span className="text-[11px] text-fg-38">Lên cấp:</span>
               <div
                 className="relative h-2 w-28 overflow-hidden rounded-full bg-rule/70"
                 title={`Đã tích lũy ${expPercent}% để lên cấp ${currentLevel + 1}`}
               >
                 <div
-                  className="h-full rounded-full bg-gradient-to-r from-[#D97706] to-[#F59E0B] transition-all duration-500 shadow-[0_0_8px_rgba(217,119,6,0.6)]"
+                  className="h-full rounded-full bg-gold transition-all duration-500 "
                   style={{ width: `${expPercent}%` }}
                 />
               </div>
-              <span className="font-mono text-[11px] font-semibold text-[#F59E0B]">
+              <span className="font-sans text-[11px] font-semibold text-gold-ink">
                 {expPercent}%
               </span>
             </div>
@@ -261,107 +255,11 @@ export const DashboardView: React.FC = () => {
         </div>
 
         <div className="lg:col-span-5 flex flex-col">
-          <OrientalCard className="h-full flex flex-col justify-between p-6" tag="每日任务" tagVariant="gold">
-            <div>
-              <div className="flex items-center gap-2">
-                <Sparkles size={16} className="text-[#F59E0B]" />
-                <Caption text="Nhiệm vụ hôm nay" />
-              </div>
-              <h3 className="mt-2 font-serif text-[18px] font-bold text-fg">
-                Nhiệm vụ Hằng ngày
-              </h3>
-              <p className="mt-1 text-[12.5px] leading-relaxed text-fg-60">
-                Tích luỹ EXP thăng cấp và thu hoạch 🎋 Măng Trúc nuôi dưỡng Linh Thú mỗi ngày.
-              </p>
-
-              <div className="mt-5 space-y-3">
-                {/* Quest 1 */}
-                <div className="group/item flex items-center justify-between gap-3 rounded-lg border border-rule/60 bg-surface/50 p-3 transition-colors hover:border-[#D97706]/40 hover:bg-surface">
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-cinnabar/10 text-cinnabar">
-                      <BookOpen size={18} />
-                    </div>
-                    <div>
-                      <h4 className="text-[13px] font-semibold text-fg">Ôn tập Flashcard HSK</h4>
-                      <p className="text-[11.5px] text-fg-60">Ôn tập 10 thẻ SRS hoặc học bài mới</p>
-                    </div>
-                  </div>
-                  <div className="flex flex-col items-end gap-1.5 shrink-0">
-                    <div className="flex items-center gap-1.5 text-[11px] font-mono">
-                      <span className="text-[#F59E0B] font-semibold">+30 EXP</span>
-                      <span className="text-emerald-400 font-semibold">+2 🎋</span>
-                    </div>
-                    <Link
-                      to="/vocabulary"
-                      className="inline-flex items-center gap-1 text-[11px] font-medium text-cinnabar hover:underline"
-                    >
-                      Học ngay →
-                    </Link>
-                  </div>
-                </div>
-
-                {/* Quest 2 */}
-                <div className="group/item flex items-center justify-between gap-3 rounded-lg border border-rule/60 bg-surface/50 p-3 transition-colors hover:border-[#D97706]/40 hover:bg-surface">
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-400">
-                      <PenTool size={18} />
-                    </div>
-                    <div>
-                      <h4 className="text-[13px] font-semibold text-fg">Luyện viết chữ Hán</h4>
-                      <p className="text-[11.5px] text-fg-60">Viết đúng bút thuận 3 chữ Hán / Bộ thủ</p>
-                    </div>
-                  </div>
-                  <div className="flex flex-col items-end gap-1.5 shrink-0">
-                    <div className="flex items-center gap-1.5 text-[11px] font-mono">
-                      <span className="text-[#F59E0B] font-semibold">+25 EXP</span>
-                      <span className="text-emerald-400 font-semibold">+2 🎋</span>
-                    </div>
-                    <Link
-                      to="/hanzi"
-                      className="inline-flex items-center gap-1 text-[11px] font-medium text-cinnabar hover:underline"
-                    >
-                      Luyện viết →
-                    </Link>
-                  </div>
-                </div>
-
-                {/* Quest 3 */}
-                <div className="group/item flex items-center justify-between gap-3 rounded-lg border border-rule/60 bg-surface/50 p-3 transition-colors hover:border-[#D97706]/40 hover:bg-surface">
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-amber-500/10 text-amber-400">
-                      <Award size={18} />
-                    </div>
-                    <div>
-                      <h4 className="text-[13px] font-semibold text-fg">Ngữ pháp & Khảo thí</h4>
-                      <p className="text-[11.5px] text-fg-60">Hoàn thành 1 bài trắc nghiệm / đề thi</p>
-                    </div>
-                  </div>
-                  <div className="flex flex-col items-end gap-1.5 shrink-0">
-                    <div className="flex items-center gap-1.5 text-[11px] font-mono">
-                      <span className="text-[#F59E0B] font-semibold">+50 EXP</span>
-                      <span className="text-emerald-400 font-semibold">+3 🎋</span>
-                    </div>
-                    <Link
-                      to="/grammar"
-                      className="inline-flex items-center gap-1 text-[11px] font-medium text-cinnabar hover:underline"
-                    >
-                      Làm bài →
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-4 pt-3 border-t border-rule/40 text-[11px] text-fg-38 flex items-center justify-between">
-              <span>Làm mới mỗi ngày lúc 00:00</span>
-              <span className="text-emerald-400/90 flex items-center gap-1">
-                🎋 Măng Trúc tự cộng vào túi đồ
-              </span>
-            </div>
-          </OrientalCard>
+<LearningInsights section="quests" />
         </div>
       </section>
 
+      <div className="mt-8"><LearningInsights section="mastery" /></div>
       <HskRoadmap />
 
       {/* Learning Analytics & Reflection Section */}

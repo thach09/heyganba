@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.Duration;
 import java.util.List;
 
+@org.springframework.validation.annotation.Validated
 @RestController
 @RequestMapping("/grammar")
 @RequiredArgsConstructor
@@ -37,12 +38,12 @@ public class GrammarController {
     private final RateLimiterService rateLimiterService;
 
     @GetMapping("/rules")
-    public ResponseEntity<ApiResponse<List<GrammarRuleResponse>>> getRules(@RequestParam(required = false) String lesson) {
+    public ResponseEntity<ApiResponse<List<GrammarRuleResponse>>> getRules(@RequestParam(required = false) @jakarta.validation.constraints.Size(max=200) String lesson) {
         return ResponseEntity.ok(ApiResponse.success(grammarService.getRules(lesson)));
     }
 
     @GetMapping("/rules/{id}")
-    public ResponseEntity<ApiResponse<GrammarRuleResponse>> getRule(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<GrammarRuleResponse>> getRule(@PathVariable @jakarta.validation.constraints.Positive Long id) {
         return ResponseEntity.ok(ApiResponse.success(grammarService.getRuleById(id)));
     }
 
@@ -57,14 +58,14 @@ public class GrammarController {
     @PostMapping("/exercises/{id}/check")
     public ResponseEntity<ApiResponse<GrammarCheckResponse>> checkExercise(
             @AuthenticationPrincipal UserPrincipal currentUser,
-            @PathVariable Long id,
+            @PathVariable @jakarta.validation.constraints.Positive Long id,
             @Valid @RequestBody GrammarCheckRequest request
     ) {
         String rateLimitKey = "grammar-check:" + currentUser.getId();
 
         if (!rateLimiterService.tryConsume(rateLimitKey, CHECK_RATE_LIMIT, CHECK_RATE_WINDOW)) {
             throw new TooManyRequestsException(
-                    "Too many grammar submissions. Please wait a minute and try again.");
+                    "Bạn nộp bài quá nhanh. Vui lòng chờ một phút.");
         }
 
         return ResponseEntity.ok(ApiResponse.success(grammarService.checkAnswer(currentUser.getId(), id, request.userAnswer(), request.attemptId())));

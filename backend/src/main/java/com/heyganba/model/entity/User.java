@@ -24,10 +24,12 @@ public class User {
     private String email;
 
     @Column(name = "password_hash", nullable = false)
+    @com.fasterxml.jackson.annotation.JsonIgnore
     private String passwordHash;
 
     @Builder.Default
     @Column(name = "token_version", nullable = false)
+    @com.fasterxml.jackson.annotation.JsonIgnore
     private Integer tokenVersion = 0;
 
     @Column(name = "full_name", nullable = false, length = 100)
@@ -46,6 +48,7 @@ public class User {
     private String classCode;
 
     @Column(name = "two_factor_secret", length = 64)
+    @com.fasterxml.jackson.annotation.JsonIgnore
     private String twoFactorSecret;
 
     @Builder.Default

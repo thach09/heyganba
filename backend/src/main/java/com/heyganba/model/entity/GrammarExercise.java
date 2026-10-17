@@ -24,6 +24,10 @@ public class GrammarExercise {
     @JoinColumn(name = "grammar_rule_id", nullable = false)
     private GrammarRule grammarRule;
 
+    @Builder.Default
+    @Column(name = "exercise_type", nullable = false, length = 24)
+    private String exerciseType = "MULTIPLE_CHOICE";
+
     @Column(name = "question_text", nullable = false, columnDefinition = "TEXT")
     private String questionText;
 
@@ -54,13 +58,13 @@ public class GrammarExercise {
 
     /**
      * TRUE = câu do AI soạn nhưng CHƯA đối chiếu được nguồn (hoặc có thể có >1 đáp án đúng theo ngữ cảnh) —
-     * phải để người biết tiếng Nhật kiểm trước (xem docs/Internal/content-mapping-fpt-curriculum.md).
+     * phải để người biết tiếng Trung kiểm trước (xem docs/Internal/content-mapping-fpt-curriculum.md).
      */
     @Builder.Default
     @Column(name = "needs_human_check", nullable = false)
     private Boolean needsHumanCheck = false;
 
-    /** Nguồn đã dùng để đối chiếu (vd: `doc:#19 | jlpt-n5: i-adjectives`) — để truy vết về sau. */
+    /** Nguồn đã dùng để đối chiếu (vd: `doc:#19 | curriculum: cấu trúc câu`) — để truy vết về sau. */
     @Column(name = "source_ref", length = 160)
     private String sourceRef;
 

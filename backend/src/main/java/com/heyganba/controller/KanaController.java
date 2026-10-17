@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.Duration;
 import java.util.List;
 
+@org.springframework.validation.annotation.Validated
+@org.springframework.boot.autoconfigure.condition.ConditionalOnProperty(name="app.legacy-phonetics-enabled",havingValue="true")
 @RestController
 @RequestMapping("/kana")
 @RequiredArgsConstructor
@@ -49,7 +51,7 @@ public class KanaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<KanaResponse>> getKanaById(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<KanaResponse>> getKanaById(@PathVariable @jakarta.validation.constraints.Positive Long id) {
         return ResponseEntity.ok(ApiResponse.success(kanaService.getKanaById(id)));
     }
 

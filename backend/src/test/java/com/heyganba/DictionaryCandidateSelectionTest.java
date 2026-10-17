@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@org.springframework.test.context.TestPropertySource(properties="app.dictionary.legacy-catalog-enabled=true")
 class DictionaryCandidateSelectionTest extends ContentApiTestBase {
     @Autowired DictionaryEntryRepository dictionary;
     @Autowired DictionaryService search;

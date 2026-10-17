@@ -4,9 +4,11 @@ import { BrowserRouter } from 'react-router-dom'
 import * as Sentry from '@sentry/react'
 import './index.css'
 import App from './App.tsx'
+import { initializeTheme } from './app/useTheme'
 import { privateBreadcrumb, privateEvent, privateSpan } from './lib/observability/privacy'
 
 const sentryDsn = import.meta.env.VITE_SENTRY_DSN;
+initializeTheme();
 if (sentryDsn) {
   Sentry.init({
     dsn: sentryDsn,

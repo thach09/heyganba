@@ -1,13 +1,14 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { PetId, PetMood, GrowthStage } from './types';
 import { getGrowthStage } from './petData';
+import { useAuth } from '../../app/useAuth';
+import { apiRequest } from '../../lib/api/client';
 
 const STORAGE_PET_KEY = 'heyganba_companion_pet_id';
-const STORAGE_BAMBOO_KEY = 'heyganba_companion_bamboo';
-const STORAGE_EXP_KEY = 'heyganba_companion_affection_exp';
 const VALID_PETS: PetId[] = ['panda', 'red_panda', 'golden_monkey', 'imperial_cat'];
 
 export function useCompanion() {
+  const { user } = useAuth();
   const [selectedPetId, setSelectedPetId] = useState<PetId>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_PET_KEY);
@@ -17,25 +18,23 @@ export function useCompanion() {
     }
   });
 
-  const [bambooCount, setBambooCount] = useState<number>(() => {
+  const [wallet, setWallet] = useState<{ owner: number | null; bamboo: number; affectionExp: number }>({ owner: null, bamboo: 0, affectionExp: 0 });
+  const bambooCount = wallet.owner === user?.userId ? wallet.bamboo : 0;
+  const affectionExp = wallet.owner === user?.userId ? wallet.affectionExp : 0;
+  const refreshWallet = useCallback(async () => {
+    if (!user) return;
+    const owner = user.userId;
     try {
-      const saved = localStorage.getItem(STORAGE_BAMBOO_KEY);
-      const val = saved !== null ? parseInt(saved, 10) : 6;
-      return isNaN(val) ? 6 : val;
-    } catch {
-      return 6;
-    }
-  });
-
-  const [affectionExp, setAffectionExp] = useState<number>(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_EXP_KEY);
-      const val = saved !== null ? parseInt(saved, 10) : 35;
-      return isNaN(val) ? 35 : val;
-    } catch {
-      return 35;
-    }
-  });
+      const res = await apiRequest<{ bamboo: number; affectionExp: number }>('/progress/companion/wallet');
+      if (res.success && res.data) setWallet({ owner, ...res.data });
+    } catch { /* Keep the last server-confirmed balance. */ }
+  }, [user]);
+  useEffect(() => {
+    void refreshWallet();
+    const onChange = () => void refreshWallet();
+    window.addEventListener('companion-wallet-changed', onChange);
+    return () => window.removeEventListener('companion-wallet-changed', onChange);
+  }, [refreshWallet]);
 
   const [mood, setMood] = useState<PetMood>('idle');
 
@@ -46,16 +45,8 @@ export function useCompanion() {
 
   // Sync to localStorage
   useEffect(() => {
-    localStorage.setItem(STORAGE_PET_KEY, selectedPetId);
+    try { localStorage.setItem(STORAGE_PET_KEY, selectedPetId); } catch { /* Optional cosmetic preference. */ }
   }, [selectedPetId]);
-
-  useEffect(() => {
-    localStorage.setItem(STORAGE_BAMBOO_KEY, bambooCount.toString());
-  }, [bambooCount]);
-
-  useEffect(() => {
-    localStorage.setItem(STORAGE_EXP_KEY, affectionExp.toString());
-  }, [affectionExp]);
 
   const selectPet = useCallback((id: PetId) => {
     setSelectedPetId(id);
@@ -63,32 +54,29 @@ export function useCompanion() {
     setTimeout(() => setMood('idle'), 2000);
   }, []);
 
-  const feedBamboo = useCallback(() => {
-    if (bambooCount < 1) return false;
+  const feedBamboo = useCallback(async () => {
+    if (!user || bambooCount < 1) return false;
+    try {
+      const res = await apiRequest<{ bamboo: number; affectionExp: number }>('/progress/companion/feed', { method: 'POST' });
+      if (!res.success || !res.data) return false;
+      setWallet({ owner: user.userId, ...res.data });
+      window.dispatchEvent(new Event('companion-wallet-changed'));
+      setMood('eating');
+      setTimeout(() => setMood('idle'), 2400);
+      return true;
+    } catch { return false; }
+  }, [user, bambooCount]);
 
-    setBambooCount(prev => Math.max(0, prev - 1));
-    setAffectionExp(prev => prev + 25);
-    setMood('eating');
-
-    setTimeout(() => {
-      setMood('happy');
-      setTimeout(() => setMood('idle'), 1600);
-    }, 1500);
-
-    return true;
-  }, [bambooCount]);
-
-  const rewardBamboo = useCallback((amount = 2) => {
-    setBambooCount(prev => prev + amount);
-    setAffectionExp(prev => prev + amount * 10);
+  // Real awards are granted by daily quest claims, never by a client-supplied amount.
+  const rewardBamboo = useCallback((_amount = 2) => {
+    void refreshWallet();
     setMood('happy');
     setTimeout(() => setMood('idle'), 2400);
-  }, []);
+  }, [refreshWallet]);
 
   const triggerReaction = useCallback((type: 'correct' | 'mistake' | 'practicing' | 'cheer' | 'happy') => {
     if (type === 'correct' || type === 'cheer' || type === 'happy') {
       setMood('happy');
-      setAffectionExp(prev => prev + (type === 'cheer' ? 15 : 5));
       setTimeout(() => setMood('idle'), 2500);
     } else if (type === 'mistake') {
       setMood('sad');

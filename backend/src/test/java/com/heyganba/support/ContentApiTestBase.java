@@ -125,9 +125,16 @@ public abstract class ContentApiTestBase {
     @Autowired
     protected JwtTokenProvider jwtTokenProvider;
 
+    @Autowired protected com.heyganba.repository.CharacterMasteryRepository characterMasteryRepository;
+    @Autowired protected com.heyganba.repository.DailyQuestClaimRepository questClaimRepository;
+    @Autowired protected com.heyganba.repository.CompanionWalletRepository companionWalletRepository;
+
     @BeforeEach
     void cleanContentTables() {
         rateLimiterService.reset();
+        characterMasteryRepository.deleteAll();
+        questClaimRepository.deleteAll();
+        companionWalletRepository.deleteAll();
         if (revokedTokenRepository != null) {
             revokedTokenRepository.deleteAll();
         }

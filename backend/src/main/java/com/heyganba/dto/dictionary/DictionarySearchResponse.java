@@ -12,7 +12,7 @@ public record DictionarySearchResponse(
         String query,
         int totalMatches,
         List<Word> vocabularies,
-        List<KanjiResponse> kanjis,
+        List<KanjiResponse> hanzis,
         int page,
         boolean hasMore
 ) {

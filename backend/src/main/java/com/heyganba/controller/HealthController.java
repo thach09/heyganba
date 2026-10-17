@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.Instant;
 import java.util.Map;
 
+@org.springframework.validation.annotation.Validated
 @RestController
 public class HealthController {
 

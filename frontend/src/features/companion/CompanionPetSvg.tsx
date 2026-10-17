@@ -89,8 +89,8 @@ export function CompanionPetSvg({
       {/* Speech Bubble */}
       {showSpeechBubble && (
         <div
-          className={`pointer-events-none mb-2 max-w-[240px] rounded-xl border border-rule bg-[#1A1B18]/95 px-3.5 py-2 shadow-[2px_2px_0px_rgba(0,0,0,0.3)] backdrop-blur-md transition-all duration-300 ${
-            mood === 'happy' ? 'border-[#D97706]/40 shadow-[2px_2px_0px_rgba(217,119,6,0.2)]' : ''
+          className={`pointer-events-none mb-2 max-w-[240px] rounded-xl border border-rule bg-card/95 px-3.5 py-2  backdrop-blur-md transition-all duration-300 ${
+            mood === 'happy' ? 'border-gold/40 ' : ''
           }`}
         >
           <p className="font-serif text-[13px] font-medium tracking-wide text-fg">
@@ -100,7 +100,7 @@ export function CompanionPetSvg({
             {currentQuote.vi}
           </p>
           {/* Arrow */}
-          <div className="absolute -bottom-1.5 left-1/2 h-2.5 w-2.5 -translate-x-1/2 rotate-45 border-r border-b border-rule bg-[#1A1B18]" />
+          <div className="absolute -bottom-1.5 left-1/2 h-2.5 w-2.5 -translate-x-1/2 rotate-45 border-r border-b border-rule bg-card" />
         </div>
       )}
 
@@ -119,7 +119,7 @@ export function CompanionPetSvg({
           viewBox="0 0 200 200"
           width={size}
           height={size}
-          className="drop-shadow-[0_8px_16px_rgba(0,0,0,0.35)]"
+          className="drop-"
         >
           <defs>
             {/* Gradients */}

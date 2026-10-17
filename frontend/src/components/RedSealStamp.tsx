@@ -24,7 +24,7 @@ export const RedSealStamp: React.FC<RedSealStampProps> = ({
 }) => {
   return (
     <div
-      className={`relative inline-flex flex-col items-center justify-center select-none border-2 border-cinnabar bg-cinnabar/10 text-cinnabar shadow-sm ${
+      className={`relative inline-flex flex-col items-center justify-center select-none border-2 border-cinnabar bg-cinnabar/10 text-cinnabar-ink  ${
         animated ? 'animate-[seal-slam_0.45s_cubic-bezier(0.34,1.56,0.64,1)_forwards]' : 'rotate-[-12deg]'
       } ${className}`}
       style={{
@@ -38,14 +38,14 @@ export const RedSealStamp: React.FC<RedSealStampProps> = ({
       {/* Inner weathered frame */}
       <div className="flex h-full w-full flex-col items-center justify-center border border-dashed border-cinnabar/80 p-0.5">
         <span
-          className="font-serif font-bold tracking-widest leading-none text-cinnabar"
+          className="font-serif font-bold tracking-widest leading-none text-cinnabar-ink"
           style={{ fontSize: Math.round(size * 0.44) }}
         >
           {text}
         </span>
         {subText && (
           <span
-            className="mt-0.5 font-sans font-semibold tracking-tighter uppercase leading-none text-cinnabar/90"
+            className="mt-0.5 font-sans font-semibold tracking-tighter uppercase leading-none text-cinnabar-ink"
             style={{ fontSize: Math.max(9, Math.round(size * 0.16)) }}
           >
             {subText}

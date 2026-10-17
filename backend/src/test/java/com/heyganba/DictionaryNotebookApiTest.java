@@ -15,6 +15,7 @@ import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@org.springframework.test.context.TestPropertySource(properties="app.dictionary.legacy-catalog-enabled=true")
 class DictionaryNotebookApiTest extends ContentApiTestBase {
     @Autowired MockMvc mvc;
     @Autowired ObjectMapper json;
@@ -182,7 +183,7 @@ class DictionaryNotebookApiTest extends ContentApiTestBase {
                 .andExpect(status().isNotFound());
         mvc.perform(post("/notebooks/" + notebookId + "/items").header("Authorization", "Bearer " + adminAccessToken("other@test.example"))
                 .contentType(MediaType.APPLICATION_JSON).content("{\"vocabularyId\":-9000000000}"))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
         mvc.perform(get("/notebooks")).andExpect(status().isUnauthorized());
     }
 

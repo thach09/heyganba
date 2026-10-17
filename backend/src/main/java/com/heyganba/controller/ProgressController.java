@@ -23,6 +23,7 @@ import java.time.Instant;
 import java.util.List;
 
 /** Streak + heatmap + bảng xếp hạng + EXP/Rank + Character Mastery */
+@org.springframework.validation.annotation.Validated
 @RestController
 @RequiredArgsConstructor
 public class ProgressController {
@@ -44,7 +45,7 @@ public class ProgressController {
     @GetMapping({"/streak/heatmap", "/study-activities/heatmap"})
     public ResponseEntity<ApiResponse<List<StudyActivityDayResponse>>> getHeatmap(
             @AuthenticationPrincipal UserPrincipal currentUser,
-            @RequestParam(required = false, defaultValue = "" + DEFAULT_HEATMAP_DAYS) int days
+            @RequestParam(required = false, defaultValue = "" + DEFAULT_HEATMAP_DAYS) @jakarta.validation.constraints.Min(1) @jakarta.validation.constraints.Max(366) int days
     ) {
         List<StudyActivityDayResponse> heatmap = studyActivityService.getHeatmap(currentUser.getId(), days, Instant.now());
         return ResponseEntity.ok(ApiResponse.success(heatmap));
@@ -52,8 +53,8 @@ public class ProgressController {
 
     @GetMapping("/leaderboard")
     public ResponseEntity<ApiResponse<LeaderboardResponse>> getLeaderboard(
-            @RequestParam(required = false, defaultValue = "20") int limit,
-            @RequestParam(required = false) String classCode
+            @RequestParam(required = false, defaultValue = "20") @jakarta.validation.constraints.Min(1) @jakarta.validation.constraints.Max(100) int limit,
+            @RequestParam(required = false) @jakarta.validation.constraints.Size(max=200) String classCode
     ) {
         return ResponseEntity.ok(ApiResponse.success(leaderboardService.getLeaderboard(limit, classCode)));
     }
@@ -75,10 +76,10 @@ public class ProgressController {
     }
 
     @GetMapping("/progress/mastery")
-    public ResponseEntity<ApiResponse<List<CharacterMastery>>> getMastery(
+    public ResponseEntity<ApiResponse<List<com.heyganba.dto.progress.CharacterMasteryResponse>>> getMastery(
             @AuthenticationPrincipal UserPrincipal currentUser,
-            @RequestParam(required = false) String targetType
+            @RequestParam(required = false) @jakarta.validation.constraints.Size(max=200) String targetType
     ) {
-        return ResponseEntity.ok(ApiResponse.success(masteryService.getUserMastery(currentUser.getId(), targetType)));
+        return ResponseEntity.ok(ApiResponse.success(masteryService.getUserMastery(currentUser.getId(), targetType).stream().map(com.heyganba.dto.progress.CharacterMasteryResponse::from).toList()));
     }
 }

@@ -614,12 +614,12 @@ export const FlashcardView: React.FC = () => {
   return (
     <div className="mx-auto flex w-full max-w-[1100px] flex-col gap-6">
       {/* Top Academic Review Banner */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded border border-emerald-500/30 bg-emerald-500/10 p-3.5 text-xs text-emerald-200">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded border border-jade/30 bg-jade/10 p-3.5 text-xs text-jade-ink">
         <div className="flex items-center gap-2">
-          <ShieldCheck size={16} className="text-emerald-400 shrink-0" />
+          <ShieldCheck size={16} className="text-jade-ink shrink-0" />
           <div>
-            <span className="font-bold text-emerald-300">Từ vựng HSK 1–6 · Nội dung đã duyệt</span>
-            <span className="text-emerald-200/80 block sm:inline sm:ml-2">
+            <span className="font-bold text-jade-ink">Từ vựng HSK 1–6 · Nội dung đã duyệt</span>
+            <span className="text-jade-ink block sm:inline sm:ml-2">
               (Học theo chủ đề và ôn tập SRS theo cấp độ)
             </span>
           </div>
@@ -627,13 +627,13 @@ export const FlashcardView: React.FC = () => {
         <div className="flex items-center gap-2 self-end sm:self-auto">
           {isAdmin ? (
             <>
-              <span className="inline-flex items-center gap-1 rounded bg-cinnabar/20 text-cinnabar border border-cinnabar/30 px-2 py-0.5 text-[11px] font-semibold">
+              <span className="inline-flex items-center gap-1 rounded bg-cinnabar/20 text-cinnabar-ink border border-cinnabar/30 px-2 py-0.5 text-[11px] font-semibold">
                 <ShieldCheck size={13} /> Admin
               </span>
               <button
                 type="button"
                 onClick={togglePreview}
-                className="inline-flex items-center gap-1 rounded border border-amber-400/40 bg-card px-2.5 py-1 text-[11px] font-semibold text-amber-300 hover:bg-tint cursor-pointer transition-colors"
+                className="inline-flex items-center gap-1 rounded border border-gold/40 bg-card px-2.5 py-1 text-[11px] font-semibold text-gold-ink hover:bg-tint cursor-pointer transition-colors"
               >
                 {adminPreviewActive ? <EyeOff size={13} /> : <Eye size={13} />}
                 {adminPreviewActive ? 'Chuyển sang góc nhìn học viên' : 'Bật xem trước bản nháp Admin'}
@@ -643,7 +643,7 @@ export const FlashcardView: React.FC = () => {
             <button
               type="button"
               onClick={requireLogin}
-              className="inline-flex items-center gap-1 rounded border border-amber-400/40 bg-card px-2.5 py-1 text-[11px] font-semibold text-amber-300 hover:bg-tint cursor-pointer transition-colors"
+              className="inline-flex items-center gap-1 rounded border border-gold/40 bg-card px-2.5 py-1 text-[11px] font-semibold text-gold-ink hover:bg-tint cursor-pointer transition-colors"
             >
               <ShieldCheck size={13} /> Đăng nhập Admin
             </button>
@@ -656,24 +656,24 @@ export const FlashcardView: React.FC = () => {
       </div>
 
       {attemptedUnauthorizedPreview && (
-        <div className="flex items-center gap-2 rounded border border-rose-500/40 bg-rose-500/10 p-3 text-xs text-rose-300">
-          <AlertTriangle size={16} className="text-rose-400 shrink-0" />
+        <div className="flex items-center gap-2 rounded border border-cinnabar/40 bg-cinnabar/10 p-3 text-xs text-cinnabar-ink">
+          <AlertTriangle size={16} className="text-cinnabar-ink shrink-0" />
           <span>
-            <strong>Từ chối quyền truy cập xem trước (?preview=1)</strong>: Chế độ xem trước nội dung chưa kiểm duyệt chỉ dành riêng cho tài khoản Quản trị viên (<code className="font-mono">ROLE_ADMIN</code>). Tài khoản thông thường hoặc khách không có quyền xem trước.
+            <strong>Từ chối quyền truy cập xem trước (?preview=1)</strong>: Chế độ xem trước nội dung chưa kiểm duyệt chỉ dành riêng cho tài khoản Quản trị viên (<code className="font-sans">ROLE_ADMIN</code>). Tài khoản thông thường hoặc khách không có quyền xem trước.
           </span>
         </div>
       )}
 
       {catalogError && (
-        <div className="flex items-center justify-between rounded border border-rose-500/30 bg-rose-500/10 p-3 text-xs text-rose-300">
+        <div className="flex items-center justify-between rounded border border-cinnabar/30 bg-cinnabar/10 p-3 text-xs text-cinnabar-ink">
           <div className="flex items-center gap-2">
-            <AlertTriangle size={15} className="shrink-0 text-rose-400" />
+            <AlertTriangle size={15} className="shrink-0 text-cinnabar-ink" />
             <span>{catalogError}</span>
           </div>
           <button
             type="button"
             onClick={() => setCatalogError(null)}
-            className="text-rose-400 hover:text-rose-200 cursor-pointer"
+            className="text-cinnabar-ink hover:text-cinnabar-ink cursor-pointer"
           >
             <X size={14} />
           </button>
@@ -681,15 +681,15 @@ export const FlashcardView: React.FC = () => {
       )}
 
       {lessonWordsError && (
-        <div className="flex items-center justify-between rounded border border-rose-500/30 bg-rose-500/10 p-3 text-xs text-rose-300">
+        <div className="flex items-center justify-between rounded border border-cinnabar/30 bg-cinnabar/10 p-3 text-xs text-cinnabar-ink">
           <div className="flex items-center gap-2">
-            <AlertTriangle size={15} className="shrink-0 text-rose-400" />
+            <AlertTriangle size={15} className="shrink-0 text-cinnabar-ink" />
             <span>{lessonWordsError}</span>
           </div>
           <button
             type="button"
             onClick={() => setLessonWordsError(null)}
-            className="text-rose-400 hover:text-rose-200 cursor-pointer"
+            className="text-cinnabar-ink hover:text-cinnabar-ink cursor-pointer"
           >
             <X size={14} />
           </button>
@@ -699,10 +699,10 @@ export const FlashcardView: React.FC = () => {
       {/* Main Station Header */}
       <div className="flex flex-col gap-4 border-b border-rule pb-5 md:flex-row md:items-center md:justify-between">
         <div>
-          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-cinnabar">
+          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-cinnabar-ink">
             <span className="inline-block h-2 w-2 rounded-full bg-cinnabar" />
             Trạm 2 · 词汇与记忆 · Từ vựng & Sổ từ · [M2.2 Hoạt động thật]
-            {(catalogLoading || lessonWordsLoading) && <RefreshCw size={13} className="animate-spin text-cinnabar inline ml-1" />}
+            {(catalogLoading || lessonWordsLoading) && <RefreshCw size={13} className="animate-spin text-cinnabar-ink inline ml-1" />}
           </div>
           <h1 className="mt-1 font-serif text-3xl font-bold tracking-tight text-fg">
             Từ vựng & Ôn tập SRS
@@ -729,7 +729,7 @@ export const FlashcardView: React.FC = () => {
             }}
             className={`flex items-center gap-2 border-b-2 px-4 py-2 font-serif text-sm font-semibold transition-all cursor-pointer ${
               mainMode === 'LESSONS'
-                ? 'border-cinnabar text-cinnabar'
+                ? 'border-cinnabar text-cinnabar-ink'
                 : 'border-transparent text-fg-60 hover:text-fg'
             }`}
           >
@@ -740,14 +740,14 @@ export const FlashcardView: React.FC = () => {
             onClick={handleSwitchToSrs}
             className={`flex items-center gap-2 border-b-2 px-4 py-2 font-serif text-sm font-semibold transition-all cursor-pointer ${
               mainMode === 'SRS'
-                ? 'border-cinnabar text-cinnabar'
+                ? 'border-cinnabar text-cinnabar-ink'
                 : 'border-transparent text-fg-60 hover:text-fg'
             }`}
           >
             <Calendar size={16} /> Ôn đến hạn (SRS SM-2)
-            {srsLoading && <RefreshCw size={13} className="animate-spin text-cinnabar inline ml-1" />}
+            {srsLoading && <RefreshCw size={13} className="animate-spin text-cinnabar-ink inline ml-1" />}
             {stats && stats.dueToday > 0 && (
-              <span className="rounded-full bg-cinnabar px-2 py-0.5 text-[11px] font-bold text-white">
+              <span className="rounded-full bg-cinnabar px-2 py-0.5 text-[11px] font-bold text-on-accent">
                 {stats.dueToday}
               </span>
             )}
@@ -759,9 +759,9 @@ export const FlashcardView: React.FC = () => {
           <div className="hidden sm:flex items-center gap-3 text-xs text-fg-60">
             <span>Đã học: <b className="text-fg">{stats.learnedWords}</b> từ</span>
             <span>·</span>
-            <span>Đến hạn: <b className="text-gold">{stats.dueToday}</b> thẻ</span>
+            <span>Đến hạn: <b className="text-gold-ink">{stats.dueToday}</b> thẻ</span>
             <span>·</span>
-            <span>Streak: <b className="text-cinnabar">{stats.currentStreak}</b> ngày 🔥</span>
+            <span>Streak: <b className="text-cinnabar-ink">{stats.currentStreak}</b> ngày 🔥</span>
           </div>
         )}
       </div>
@@ -781,7 +781,7 @@ export const FlashcardView: React.FC = () => {
                   onClick={() => setSelectedLevelFilter('ALL')}
                   className={`rounded px-2.5 py-1 text-xs font-medium transition-colors cursor-pointer ${
                     selectedLevelFilter === 'ALL'
-                      ? 'bg-cinnabar text-white font-semibold'
+                      ? 'bg-cinnabar text-on-accent font-semibold'
                       : 'border border-rule bg-card text-fg-60 hover:text-fg'
                   }`}
                 >
@@ -796,7 +796,7 @@ export const FlashcardView: React.FC = () => {
                       onClick={() => setSelectedLevelFilter(lvl)}
                       className={`rounded px-2.5 py-1 text-xs font-medium transition-colors cursor-pointer ${
                         selectedLevelFilter === lvl
-                          ? 'bg-cinnabar text-white font-semibold'
+                          ? 'bg-cinnabar text-on-accent font-semibold'
                           : 'border border-rule bg-card text-fg-60 hover:text-fg'
                       }`}
                     >
@@ -848,7 +848,7 @@ export const FlashcardView: React.FC = () => {
                 >
                   <div>
                     <div className="flex min-w-0 flex-wrap items-center justify-between gap-2 text-[11px] text-fg-38">
-                      <span className="font-semibold text-cinnabar uppercase tracking-wider">
+                      <span className="font-semibold text-cinnabar-ink uppercase tracking-wider">
                         {lesson.curriculumLevel}
                       </span>
                       <span>{lesson.wordCount} từ vựng</span>
@@ -861,10 +861,10 @@ export const FlashcardView: React.FC = () => {
                     </p>
                   </div>
                   <div className="mt-4 flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-rule/50 text-xs">
-                    <span className="text-[11px] font-mono text-fg-60">
+                    <span className="text-[11px] font-sans text-fg-60">
                       {lesson.curriculumLevel || 'Nhập môn'}
                     </span>
-                    <span className="font-medium text-cinnabar flex items-center gap-1 text-[11px]">
+                    <span className="font-medium text-cinnabar-ink flex items-center gap-1 text-[11px]">
                       {isSelected ? 'Đang chọn' : 'Xem bài'} →
                     </span>
                   </div>
@@ -885,7 +885,7 @@ export const FlashcardView: React.FC = () => {
                   setSelectedLevelFilter('ALL');
                   setCatalogSearchQuery('');
                 }}
-                className="mt-3 text-xs text-cinnabar hover:underline cursor-pointer"
+                className="mt-3 text-xs text-cinnabar-ink hover:underline cursor-pointer"
               >
                 Xoá bộ lọc & tìm lại
               </button>
@@ -895,7 +895,7 @@ export const FlashcardView: React.FC = () => {
           {/* Regular user warning if no approved lessons are visible */}
           {displayedLessons.length === 0 && lessons.length === 0 && (!isAdmin || !adminPreviewActive) && (
             <div className="flex flex-col items-center justify-center rounded border border-rule bg-card p-10 text-center">
-              <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-amber-500/10 text-amber-400 mb-3">
+              <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-gold/10 text-gold-ink mb-3">
                 <AlertTriangle size={24} />
               </div>
               <h3 className="font-serif text-lg font-bold text-fg">
@@ -908,7 +908,7 @@ export const FlashcardView: React.FC = () => {
                 <button
                   type="button"
                   onClick={togglePreview}
-                  className="mt-5 inline-flex items-center gap-1.5 rounded border border-cinnabar bg-cinnabar px-4 py-2 text-xs font-semibold text-white cursor-pointer"
+                  className="mt-5 inline-flex items-center gap-1.5 rounded border border-cinnabar bg-cinnabar px-4 py-2 text-xs font-semibold text-on-accent cursor-pointer"
                 >
                   <Eye size={14} /> Bật xem trước bản nháp Admin
                 </button>
@@ -916,7 +916,7 @@ export const FlashcardView: React.FC = () => {
                 <button
                   type="button"
                   onClick={requireLogin}
-                  className="mt-5 inline-flex items-center gap-1.5 rounded border border-cinnabar bg-cinnabar px-4 py-2 text-xs font-semibold text-white cursor-pointer"
+                  className="mt-5 inline-flex items-center gap-1.5 rounded border border-cinnabar bg-cinnabar px-4 py-2 text-xs font-semibold text-on-accent cursor-pointer"
                 >
                   <ShieldCheck size={14} /> Đăng nhập tài khoản Quản trị để Xem trước
                 </button>
@@ -931,7 +931,7 @@ export const FlashcardView: React.FC = () => {
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-rule pb-4">
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="rounded bg-cinnabar/10 px-2 py-0.5 font-serif text-[11px] font-bold text-cinnabar border border-cinnabar/30">
+                    <span className="rounded bg-cinnabar/10 px-2 py-0.5 font-serif text-[11px] font-bold text-cinnabar-ink border border-cinnabar/30">
                       {selectedLesson.curriculumLevel}
                     </span>
                     <h2 className="font-serif text-xl font-bold text-fg">
@@ -953,7 +953,7 @@ export const FlashcardView: React.FC = () => {
                     }}
                     className={`px-3 py-1 text-xs font-semibold rounded cursor-pointer transition-colors ${
                       lessonSubMode === 'LIST'
-                        ? 'bg-card text-cinnabar shadow-sm'
+                        ? 'bg-card text-cinnabar-ink '
                         : 'text-fg-60 hover:text-fg'
                     }`}
                   >
@@ -969,7 +969,7 @@ export const FlashcardView: React.FC = () => {
                     }}
                     className={`px-3 py-1 text-xs font-semibold rounded cursor-pointer transition-colors ${
                       lessonSubMode === 'STUDY'
-                        ? 'bg-card text-cinnabar shadow-sm'
+                        ? 'bg-card text-cinnabar-ink '
                         : 'text-fg-60 hover:text-fg'
                     }`}
                   >
@@ -986,7 +986,7 @@ export const FlashcardView: React.FC = () => {
                     }}
                     className={`px-3 py-1 text-xs font-semibold rounded cursor-pointer transition-colors ${
                       lessonSubMode === 'QUIZ'
-                        ? 'bg-card text-cinnabar shadow-sm'
+                        ? 'bg-card text-cinnabar-ink '
                         : 'text-fg-60 hover:text-fg'
                     }`}
                   >
@@ -1036,7 +1036,7 @@ export const FlashcardView: React.FC = () => {
                                 {word.reviewStatus === 'PENDING_REVIEW' && (
                                   <span
                                     title="Nội dung chờ chuyên gia học thuật ký duyệt"
-                                    className="rounded bg-amber-500/10 border border-amber-500/30 px-1.5 py-0.5 text-[10px] font-mono text-amber-300"
+                                    className="rounded bg-gold/10 border border-gold/30 px-1.5 py-0.5 text-[10px] font-sans text-gold-ink"
                                   >
                                     Chờ duyệt
                                   </span>
@@ -1045,14 +1045,14 @@ export const FlashcardView: React.FC = () => {
                                   type="button"
                                   onClick={() => speakChinese(word.word)}
                                   title="Nghe phát âm từ"
-                                  className="p-1 rounded text-fg-60 hover:text-cinnabar hover:bg-tint cursor-pointer transition-colors"
+                                  className="p-1 rounded text-fg-60 hover:text-cinnabar-ink hover:bg-tint cursor-pointer transition-colors"
                                 >
                                   <Volume2 size={15} />
                                 </button>
                               </div>
                             </td>
                             <td className="p-3">
-                              <div className="font-semibold text-gold text-sm">{word.pinyin}</div>
+                              <div className="font-semibold text-gold-ink text-sm">{word.pinyin}</div>
                               <div className="text-[11px] text-fg-38 uppercase">HV: {word.hanViet}</div>
                             </td>
                             <td className="p-3">
@@ -1070,12 +1070,12 @@ export const FlashcardView: React.FC = () => {
                                       type="button"
                                       onClick={() => speakChinese(word.exampleZh!)}
                                       title="Nghe cả câu ví dụ"
-                                      className="text-fg-38 hover:text-cinnabar cursor-pointer"
+                                      className="text-fg-38 hover:text-cinnabar-ink cursor-pointer"
                                     >
                                       <Volume2 size={12} />
                                     </button>
                                   </div>
-                                  <div className="text-[11px] text-gold/80">{word.examplePinyin}</div>
+                                  <div className="text-[11px] text-gold-ink">{word.examplePinyin}</div>
                                   <div className="text-[11px] text-fg-60">{word.exampleVi}</div>
                                 </div>
                               ) : (
@@ -1086,7 +1086,7 @@ export const FlashcardView: React.FC = () => {
                               <button
                                 type="button"
                                 onClick={() => void handleOpenNotebookModal({ id: word.id, word: word.word, pinyin: word.pinyin })}
-                                className="inline-flex items-center gap-1 rounded border border-rule bg-card px-2.5 py-1 text-[11px] font-medium text-fg-60 hover:border-cinnabar hover:text-cinnabar cursor-pointer transition-colors"
+                                className="inline-flex items-center gap-1 rounded border border-rule bg-card px-2.5 py-1 text-[11px] font-medium text-fg-60 hover:border-cinnabar hover:text-cinnabar-ink cursor-pointer transition-colors"
                               >
                                 <BookmarkPlus size={13} /> Lưu sổ từ
                               </button>
@@ -1123,9 +1123,9 @@ export const FlashcardView: React.FC = () => {
                       }`}
                     >
                       {/* FRONT SIDE (No answer leak!) */}
-                      <div className="col-start-1 row-start-1 flex min-w-0 flex-col justify-between gap-5 bg-card p-8 backface-hidden shadow-lg">
+                      <div className="col-start-1 row-start-1 flex min-w-0 flex-col justify-between gap-5 bg-card p-8 backface-hidden ">
                         <div className="flex min-w-0 flex-wrap items-center justify-between gap-2 text-[11px] text-fg-38">
-                          <span className="uppercase tracking-wider font-semibold text-cinnabar">
+                          <span className="uppercase tracking-wider font-semibold text-cinnabar-ink">
                             {selectedLesson.title}
                           </span>
                           <span>{currentStudyWord.partOfSpeech || 'Từ vựng'}</span>
@@ -1150,7 +1150,7 @@ export const FlashcardView: React.FC = () => {
                               e.stopPropagation();
                               speakChinese(currentStudyWord.word);
                             }}
-                            className="inline-flex items-center gap-1 text-fg-60 hover:text-cinnabar"
+                            className="inline-flex items-center gap-1 text-fg-60 hover:text-cinnabar-ink"
                           >
                             <Volume2 size={13} /> Nghe phát âm
                           </button>
@@ -1158,7 +1158,7 @@ export const FlashcardView: React.FC = () => {
                       </div>
 
                       {/* BACK SIDE */}
-                      <div className="col-start-1 row-start-1 flex min-w-0 flex-col justify-between gap-5 bg-card p-8 rotate-y-180 backface-hidden shadow-lg">
+                      <div className="col-start-1 row-start-1 flex min-w-0 flex-col justify-between gap-5 bg-card p-8 rotate-y-180 backface-hidden ">
                         <div className="flex min-w-0 flex-wrap items-center justify-between gap-2 text-[11px]">
                           <div className="flex items-center gap-2">
                             <span className="font-serif text-lg font-bold text-fg">{currentStudyWord.word}</span>
@@ -1168,18 +1168,18 @@ export const FlashcardView: React.FC = () => {
                                 e.stopPropagation();
                                 speakChinese(currentStudyWord.word);
                               }}
-                              className="text-fg-60 hover:text-cinnabar"
+                              className="text-fg-60 hover:text-cinnabar-ink"
                             >
                               <Volume2 size={14} />
                             </button>
                           </div>
-                          <span className="rounded border border-cinnabar/30 bg-cinnabar/10 px-2 py-0.5 text-xs font-semibold text-cinnabar uppercase">
+                          <span className="rounded border border-cinnabar/30 bg-cinnabar/10 px-2 py-0.5 text-xs font-semibold text-cinnabar-ink uppercase">
                             Hán Việt: {currentStudyWord.hanViet}
                           </span>
                         </div>
 
                         <div className="my-auto flex flex-col items-center text-center">
-                          <span className="font-sans text-2xl font-bold tracking-wide text-gold">
+                          <span className="font-sans text-2xl font-bold tracking-wide text-gold-ink">
                             {currentStudyWord.pinyin}
                           </span>
                           <span className="mt-2 text-lg font-semibold text-fg">
@@ -1199,12 +1199,12 @@ export const FlashcardView: React.FC = () => {
                                     speakChinese(currentStudyWord.exampleZh!);
                                   }}
                                   title="Nghe câu ví dụ"
-                                  className="text-fg-38 hover:text-cinnabar"
+                                  className="text-fg-38 hover:text-cinnabar-ink"
                                 >
                                   <Volume2 size={13} />
                                 </button>
                               </div>
-                              <div className="text-[11px] text-gold/80">{currentStudyWord.examplePinyin}</div>
+                              <div className="text-[11px] text-gold-ink">{currentStudyWord.examplePinyin}</div>
                               <div className="text-[11px] text-fg-60">{currentStudyWord.exampleVi}</div>
                             </div>
                           )}
@@ -1218,7 +1218,7 @@ export const FlashcardView: React.FC = () => {
                               e.stopPropagation();
                               void handleOpenNotebookModal({ id: currentStudyWord.id, word: currentStudyWord.word, pinyin: currentStudyWord.pinyin });
                             }}
-                            className="inline-flex items-center gap-1 text-cinnabar hover:underline"
+                            className="inline-flex items-center gap-1 text-cinnabar-ink hover:underline"
                           >
                             <BookmarkPlus size={13} /> Lưu vào sổ từ
                           </button>
@@ -1245,7 +1245,7 @@ export const FlashcardView: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => void handleOpenNotebookModal({ id: currentStudyWord.id, word: currentStudyWord.word, pinyin: currentStudyWord.pinyin })}
-                      className="inline-flex items-center gap-1.5 rounded border border-cinnabar/40 bg-card px-4 py-2 text-xs font-semibold text-cinnabar hover:bg-tint cursor-pointer"
+                      className="inline-flex items-center gap-1.5 rounded border border-cinnabar/40 bg-card px-4 py-2 text-xs font-semibold text-cinnabar-ink hover:bg-tint cursor-pointer"
                     >
                       <BookmarkPlus size={14} /> Lưu sổ cá nhân
                     </button>
@@ -1273,10 +1273,10 @@ export const FlashcardView: React.FC = () => {
               {lessonSubMode === 'QUIZ' && (
                 <div className="mx-auto w-full max-w-[560px] py-4">
                   {!quizFinished && currentQuizItem ? (
-                    <div className="flex flex-col gap-6 rounded border border-rule bg-card p-8 shadow-md">
+                    <div className="flex flex-col gap-6 rounded border border-rule bg-card p-8 ">
                       <div className="flex items-center justify-between border-b border-rule pb-3 text-xs text-fg-60">
                         <span>Câu hỏi {quizIndex + 1} / {quizPool.length}</span>
-                        <span className="font-semibold text-gold">Điểm: {quizScore}</span>
+                        <span className="font-semibold text-gold-ink">Điểm: {quizScore}</span>
                       </div>
 
                       <div className="flex flex-col items-center gap-3 text-center">
@@ -1291,13 +1291,13 @@ export const FlashcardView: React.FC = () => {
                         {/* Pronunciation button only AFTER submit or for audio cue */}
                         {quizSubmitted && (
                           <div className="flex items-center gap-2">
-                            <span className="font-sans text-sm font-medium text-gold">
+                            <span className="font-sans text-sm font-medium text-gold-ink">
                               {currentQuizItem.pinyin}
                             </span>
                             <button
                               type="button"
                               onClick={() => speakChinese(currentQuizItem.word)}
-                              className="text-fg-38 hover:text-cinnabar cursor-pointer"
+                              className="text-fg-38 hover:text-cinnabar-ink cursor-pointer"
                             >
                               <Volume2 size={14} />
                             </button>
@@ -1333,11 +1333,11 @@ export const FlashcardView: React.FC = () => {
                               onClick={() => setSelectedChoice(choice)}
                               className={`rounded border p-3 text-left text-xs font-medium transition-all cursor-pointer ${
                                 selectedChoice === choice
-                                  ? 'border-cinnabar bg-cinnabar/10 text-cinnabar font-semibold'
+                                  ? 'border-cinnabar bg-cinnabar/10 text-cinnabar-ink font-semibold'
                                   : 'border-rule bg-surface hover:border-fg-38 text-fg-90'
                               } ${
                                 quizSubmitted && choice === currentQuizItem.meaningVi
-                                  ? 'border-jade bg-jade/10 text-jade font-bold'
+                                  ? 'border-jade bg-jade/10 text-jade-ink font-bold'
                                   : ''
                               }`}
                             >
@@ -1350,11 +1350,11 @@ export const FlashcardView: React.FC = () => {
                       {/* Feedback on submit */}
                       {quizSubmitted && (
                         <div className={`p-3 rounded text-xs leading-relaxed ${
-                          quizIsCorrect ? 'bg-jade/10 text-jade border border-jade/30' : 'bg-red/10 text-red border border-red/30'
+                          quizIsCorrect ? 'bg-jade/10 text-jade-ink border border-jade/30' : 'bg-red/10 text-red border border-red/30'
                         }`}>
                           <b>{quizIsCorrect ? '✓ Chính xác!' : '✗ Chưa đúng!'}</b>
                           <div className="mt-1 text-fg-90">
-                            Đáp án Pinyin: <b className="text-gold font-sans">{currentQuizItem.pinyin}</b> · Nghĩa: <b>{currentQuizItem.meaningVi}</b>
+                            Đáp án Pinyin: <b className="text-gold-ink font-sans">{currentQuizItem.pinyin}</b> · Nghĩa: <b>{currentQuizItem.meaningVi}</b>
                           </div>
                         </div>
                       )}
@@ -1365,7 +1365,7 @@ export const FlashcardView: React.FC = () => {
                           <button
                             type="button"
                             onClick={handleQuizSubmit}
-                            className="rounded bg-cinnabar px-5 py-2 font-serif text-xs font-semibold text-white hover:opacity-90 cursor-pointer"
+                            className="rounded bg-cinnabar px-5 py-2 font-serif text-xs font-semibold text-on-accent hover:opacity-90 cursor-pointer"
                           >
                             Xác nhận đáp án
                           </button>
@@ -1373,7 +1373,7 @@ export const FlashcardView: React.FC = () => {
                           <button
                             type="button"
                             onClick={handleQuizNext}
-                            className="inline-flex items-center gap-1 rounded bg-cinnabar px-5 py-2 font-serif text-xs font-semibold text-white hover:opacity-90 cursor-pointer"
+                            className="inline-flex items-center gap-1 rounded bg-cinnabar px-5 py-2 font-serif text-xs font-semibold text-on-accent hover:opacity-90 cursor-pointer"
                           >
                             Câu tiếp theo →
                           </button>
@@ -1383,7 +1383,7 @@ export const FlashcardView: React.FC = () => {
                   ) : (
                     /* Quiz Finished Card */
                     <div className="flex flex-col items-center justify-center rounded border border-rule bg-card p-10 text-center">
-                      <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-jade/10 text-jade mb-3">
+                      <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-jade/10 text-jade-ink mb-3">
                         <CheckCircle2 size={28} />
                       </div>
                       <h3 className="font-serif text-xl font-bold text-fg">
@@ -1400,7 +1400,7 @@ export const FlashcardView: React.FC = () => {
                           setQuizFinished(false);
                           setQuizSubmitted(false);
                         }}
-                        className="mt-5 inline-flex items-center gap-1.5 rounded border border-cinnabar bg-cinnabar px-5 py-2 text-xs font-semibold text-white cursor-pointer"
+                        className="mt-5 inline-flex items-center gap-1.5 rounded border border-cinnabar bg-cinnabar px-5 py-2 text-xs font-semibold text-on-accent cursor-pointer"
                       >
                         <RotateCcw size={14} /> Luyện lại bài này
                       </button>
@@ -1421,7 +1421,7 @@ export const FlashcardView: React.FC = () => {
           {!user ? (
             /* Guest Prompt: Do not call authenticated SRS endpoints */
             <div className="flex flex-col items-center justify-center rounded border border-rule bg-card p-10 text-center w-full">
-              <div className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-cinnabar/10 text-cinnabar mb-4">
+              <div className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-cinnabar/10 text-cinnabar-ink mb-4">
                 <Calendar size={32} />
               </div>
               <h2 className="font-serif text-2xl font-bold text-fg">
@@ -1433,7 +1433,7 @@ export const FlashcardView: React.FC = () => {
               <button
                 type="button"
                 onClick={requireLogin}
-                className="mt-6 inline-flex items-center gap-1.5 rounded bg-cinnabar px-5 py-2 font-serif text-xs font-semibold text-white cursor-pointer"
+                className="mt-6 inline-flex items-center gap-1.5 rounded bg-cinnabar px-5 py-2 font-serif text-xs font-semibold text-on-accent cursor-pointer"
               >
                 Đăng nhập để bắt đầu ôn tập
               </button>
@@ -1446,7 +1446,7 @@ export const FlashcardView: React.FC = () => {
                   Thẻ {srsIndex + 1} / {dueItems.length}
                 </span>
                 <span className="text-[11px] text-fg-38">
-                  Đến hạn ôn: <b className="text-gold">{srsDueCounts.dueCount}</b> · Từ mới: <b className="text-jade">{srsDueCounts.newCount}</b>
+                  Đến hạn ôn: <b className="text-gold-ink">{srsDueCounts.dueCount}</b> · Từ mới: <b className="text-jade-ink">{srsDueCounts.newCount}</b>
                 </span>
               </div>
 
@@ -1468,9 +1468,9 @@ export const FlashcardView: React.FC = () => {
                   }`}
                 >
                   {/* FRONT: ONLY Hanzi (No answer leaks!) */}
-                  <div className="col-start-1 row-start-1 flex min-w-0 flex-col justify-between gap-5 bg-card p-8 backface-hidden shadow-lg">
+                  <div className="col-start-1 row-start-1 flex min-w-0 flex-col justify-between gap-5 bg-card p-8 backface-hidden ">
                     <div className="flex min-w-0 flex-wrap items-center justify-between gap-2 text-[11px] text-fg-38">
-                      <span className="font-semibold text-cinnabar uppercase tracking-wide">
+                      <span className="font-semibold text-cinnabar-ink uppercase tracking-wide">
                         {currentSrsItem.isNew ? '🌱 Từ mới đưa vào phiên' : '⏳ Đến hạn ôn tập'}
                       </span>
                       <span>{currentSrsItem.partOfSpeech || 'Từ vựng'}</span>
@@ -1494,7 +1494,7 @@ export const FlashcardView: React.FC = () => {
                   </div>
 
                   {/* BACK: Full information */}
-                  <div className="col-start-1 row-start-1 flex min-w-0 flex-col justify-between gap-5 bg-card p-8 rotate-y-180 backface-hidden shadow-lg">
+                  <div className="col-start-1 row-start-1 flex min-w-0 flex-col justify-between gap-5 bg-card p-8 rotate-y-180 backface-hidden ">
                     <div className="flex min-w-0 flex-wrap items-center justify-between gap-2 text-[11px]">
                       <div className="flex items-center gap-2">
                         <span className="font-serif text-lg font-bold text-fg">{currentSrsItem.word}</span>
@@ -1504,18 +1504,18 @@ export const FlashcardView: React.FC = () => {
                             e.stopPropagation();
                             speakChinese(currentSrsItem.word);
                           }}
-                          className="text-fg-60 hover:text-cinnabar"
+                          className="text-fg-60 hover:text-cinnabar-ink"
                         >
                           <Volume2 size={14} />
                         </button>
                       </div>
-                      <span className="rounded border border-cinnabar/30 bg-cinnabar/10 px-2 py-0.5 text-xs font-semibold text-cinnabar uppercase">
+                      <span className="rounded border border-cinnabar/30 bg-cinnabar/10 px-2 py-0.5 text-xs font-semibold text-cinnabar-ink uppercase">
                         Hán Việt: {currentSrsItem.hanViet || currentSrsItem.sinoVietnamese || 'Đang cập nhật'}
                       </span>
                     </div>
 
                     <div className="my-auto flex flex-col items-center text-center">
-                      <span className="font-sans text-2xl font-bold tracking-wide text-gold">
+                      <span className="font-sans text-2xl font-bold tracking-wide text-gold-ink">
                         {currentSrsItem.pinyin || currentSrsItem.reading}
                       </span>
                       <span className="mt-2 text-lg font-semibold text-fg">
@@ -1534,12 +1534,12 @@ export const FlashcardView: React.FC = () => {
                                 e.stopPropagation();
                                 speakChinese(currentSrsItem.exampleZh || currentSrsItem.exampleSentence!);
                               }}
-                              className="text-fg-38 hover:text-cinnabar"
+                              className="text-fg-38 hover:text-cinnabar-ink"
                             >
                               <Volume2 size={13} />
                             </button>
                           </div>
-                          <div className="text-[11px] text-gold/80">
+                          <div className="text-[11px] text-gold-ink">
                             {currentSrsItem.examplePinyin || currentSrsItem.exampleReading}
                           </div>
                           <div className="text-[11px] text-fg-60">
@@ -1561,7 +1561,7 @@ export const FlashcardView: React.FC = () => {
                             pinyin: currentSrsItem.pinyin,
                           });
                         }}
-                        className="inline-flex items-center gap-1 text-cinnabar hover:underline"
+                        className="inline-flex items-center gap-1 text-cinnabar-ink hover:underline"
                       >
                         <BookmarkPlus size={13} /> Lưu sổ từ
                       </button>
@@ -1588,7 +1588,7 @@ export const FlashcardView: React.FC = () => {
                     type="button"
                     onClick={handleSrsRetry}
                     disabled={srsSubmitting}
-                    className="ml-3 shrink-0 rounded bg-red px-2.5 py-1 text-[11px] font-semibold text-white hover:opacity-90 disabled:opacity-50 cursor-pointer"
+                    className="ml-3 shrink-0 rounded bg-red px-2.5 py-1 text-[11px] font-semibold text-on-accent hover:opacity-90 disabled:opacity-50 cursor-pointer"
                   >
                     {srsSubmitting ? 'Đang gửi lại...' : 'Thử lại'}
                   </button>
@@ -1619,7 +1619,7 @@ export const FlashcardView: React.FC = () => {
                   type="button"
                   disabled={srsSubmitting || (pendingAttempt !== null && pendingAttempt.vocabularyId === currentSrsItem.vocabularyId)}
                   onClick={() => void handleSrsRate('GOOD')}
-                  className="flex flex-col items-center justify-center rounded border border-jade/50 bg-jade/10 py-2.5 text-xs font-semibold text-jade hover:bg-jade/20 disabled:opacity-50 cursor-pointer transition-colors"
+                  className="flex flex-col items-center justify-center rounded border border-jade/50 bg-jade/10 py-2.5 text-xs font-semibold text-jade-ink hover:bg-jade/20 disabled:opacity-50 cursor-pointer transition-colors"
                 >
                   <span>Thuộc</span>
                   <span className="text-[10px] opacity-75 font-normal">Nhớ được</span>
@@ -1628,7 +1628,7 @@ export const FlashcardView: React.FC = () => {
                   type="button"
                   disabled={srsSubmitting || (pendingAttempt !== null && pendingAttempt.vocabularyId === currentSrsItem.vocabularyId)}
                   onClick={() => void handleSrsRate('EASY')}
-                  className="flex flex-col items-center justify-center rounded border border-gold/50 bg-gold/10 py-2.5 text-xs font-bold text-gold hover:bg-gold/20 disabled:opacity-50 cursor-pointer transition-colors"
+                  className="flex flex-col items-center justify-center rounded border border-gold/50 bg-gold/10 py-2.5 text-xs font-bold text-gold-ink hover:bg-gold/20 disabled:opacity-50 cursor-pointer transition-colors"
                 >
                   <span>Rất dễ</span>
                   <span className="text-[10px] opacity-75 font-normal">Khắc sâu</span>
@@ -1638,7 +1638,7 @@ export const FlashcardView: React.FC = () => {
           ) : (
             /* SRS Completion Screen (Does NOT loop endlessly!) */
             <div className="flex flex-col items-center justify-center rounded border border-rule bg-card p-10 text-center w-full">
-              <div className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-jade/10 text-jade mb-4">
+              <div className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-jade/10 text-jade-ink mb-4">
                 <CheckCircle2 size={32} />
               </div>
               <h2 className="font-serif text-2xl font-bold text-fg">
@@ -1654,7 +1654,7 @@ export const FlashcardView: React.FC = () => {
                   <span>·</span>
                   <span>Lặp lại: <b>{lastSrsResult.repetitions} lần</b></span>
                   <span>·</span>
-                  <span>Chuỗi: <b className="text-cinnabar">{lastSrsResult.currentStreak} ngày 🔥</b></span>
+                  <span>Chuỗi: <b className="text-cinnabar-ink">{lastSrsResult.currentStreak} ngày 🔥</b></span>
                 </div>
               )}
 
@@ -1662,7 +1662,7 @@ export const FlashcardView: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setMainMode('LESSONS')}
-                  className="inline-flex items-center gap-1.5 rounded bg-cinnabar px-5 py-2 font-serif text-xs font-semibold text-white cursor-pointer"
+                  className="inline-flex items-center gap-1.5 rounded bg-cinnabar px-5 py-2 font-serif text-xs font-semibold text-on-accent cursor-pointer"
                 >
                   <BookOpen size={14} /> Học từ mới theo bài
                 </button>
@@ -1683,7 +1683,7 @@ export const FlashcardView: React.FC = () => {
           MODAL: LƯU TỪ VÀO SỔ CÁ NHÂN (NOTEBOOK MODAL)
          ======================================================== */}
       {notebookModalOpen && wordToSave && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-scrim/60 p-4 backdrop-blur-xs">
           <div className="relative w-full max-w-md rounded border border-rule bg-card p-6 shadow-2xl">
             <button
               type="button"
@@ -1697,7 +1697,7 @@ export const FlashcardView: React.FC = () => {
             </button>
 
             <div className="flex items-center gap-2">
-              <BookmarkPlus size={20} className="text-cinnabar" />
+              <BookmarkPlus size={20} className="text-cinnabar-ink" />
               <h3 className="font-serif text-lg font-bold text-fg">
                 Lưu vào Sổ từ vựng cá nhân
               </h3>
@@ -1717,7 +1717,7 @@ export const FlashcardView: React.FC = () => {
               <div
                 className={`mt-3 rounded p-2.5 text-xs ${
                   notebookFeedback.type === 'success'
-                    ? 'border border-jade/30 bg-jade/10 text-jade'
+                    ? 'border border-jade/30 bg-jade/10 text-jade-ink'
                     : 'border border-red/30 bg-red/10 text-red'
                 }`}
               >
@@ -1733,7 +1733,7 @@ export const FlashcardView: React.FC = () => {
 
               {notebookListLoading && (
                 <div className="flex items-center gap-2 rounded border border-rule/50 bg-surface/50 p-3 text-xs text-fg-60">
-                  <RefreshCw size={14} className="animate-spin text-cinnabar" />
+                  <RefreshCw size={14} className="animate-spin text-cinnabar-ink" />
                   <span>Đang tải danh sách sổ từ cá nhân...</span>
                 </div>
               )}
@@ -1744,7 +1744,7 @@ export const FlashcardView: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => void loadUserNotebooks()}
-                    className="ml-2 shrink-0 rounded bg-red px-2.5 py-1 text-[11px] font-semibold text-white hover:opacity-90 cursor-pointer"
+                    className="ml-2 shrink-0 rounded bg-red px-2.5 py-1 text-[11px] font-semibold text-on-accent hover:opacity-90 cursor-pointer"
                   >
                     Tải lại danh sách
                   </button>
@@ -1764,7 +1764,7 @@ export const FlashcardView: React.FC = () => {
                       key={nb.id}
                       className={`flex items-center justify-between rounded border p-2.5 text-xs cursor-pointer transition-colors ${
                         selectedNotebookId === nb.id
-                          ? 'border-cinnabar bg-cinnabar/5 font-semibold text-cinnabar'
+                          ? 'border-cinnabar bg-cinnabar/5 font-semibold text-cinnabar-ink'
                           : 'border-rule hover:bg-surface text-fg-90'
                       }`}
                     >
@@ -1788,7 +1788,7 @@ export const FlashcardView: React.FC = () => {
               <label
                 className={`flex items-center gap-2 rounded border p-2.5 text-xs cursor-pointer ${
                   selectedNotebookId === 'NEW'
-                    ? 'border-cinnabar bg-cinnabar/5 font-semibold text-cinnabar'
+                    ? 'border-cinnabar bg-cinnabar/5 font-semibold text-cinnabar-ink'
                     : 'border-rule hover:bg-surface text-fg-90'
                 }`}
               >
@@ -1827,7 +1827,7 @@ export const FlashcardView: React.FC = () => {
                 type="button"
                 disabled={notebookSaveLoading}
                 onClick={handleSaveToNotebook}
-                className="rounded bg-cinnabar px-5 py-2 font-serif text-xs font-semibold text-white hover:opacity-90 disabled:opacity-50 cursor-pointer"
+                className="rounded bg-cinnabar px-5 py-2 font-serif text-xs font-semibold text-on-accent hover:opacity-90 disabled:opacity-50 cursor-pointer"
               >
                 {notebookSaveLoading ? 'Đang lưu...' : 'Xác nhận lưu'}
               </button>

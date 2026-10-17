@@ -79,7 +79,7 @@ public class SecurityConfig {
                             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                             ApiResponse<Void> apiResponse = ApiResponse.<Void>builder()
                                     .success(false)
-                                    .message("Authentication required to access this resource")
+                                    .message("Vui lòng đăng nhập để tiếp tục.")
                                     .error("UNAUTHORIZED")
                                     .build();
                             response.getWriter().write(objectMapper.writeValueAsString(apiResponse));
@@ -89,7 +89,7 @@ public class SecurityConfig {
                             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                             ApiResponse<Void> apiResponse = ApiResponse.<Void>builder()
                                     .success(false)
-                                    .message("Access denied: You do not have permission to access this resource")
+                                    .message("Bạn không có quyền truy cập nội dung này.")
                                     .error("FORBIDDEN")
                                     .build();
                             response.getWriter().write(objectMapper.writeValueAsString(apiResponse));
@@ -114,7 +114,8 @@ public class SecurityConfig {
                 // mặc định) nên local dev qua http://localhost:8080 vẫn hoạt động bình thường.
                 .headers(headers -> headers
                         .httpStrictTransportSecurity(hsts -> hsts
-                                .includeSubDomains(false)
+                                .includeSubDomains(true)
+                                .preload(true)
                                 .maxAgeInSeconds(31536000)
                         )
                         // API chỉ phục vụ JSON qua fetch từ Vercel → chặn sniffing, chặn nhúng iframe.
@@ -124,6 +125,7 @@ public class SecurityConfig {
                         .referrerPolicy(referrer -> referrer
                                 .policy(org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN)
                         )
+                        .permissionsPolicyHeader(policy -> policy.policy("camera=(), microphone=(), geolocation=(), payment=()"))
                         .contentSecurityPolicy(csp -> csp
                                 .policyDirectives("default-src 'none'; frame-ancestors 'none'")
                         )
@@ -140,10 +142,13 @@ public class SecurityConfig {
         List<String> origins = Arrays.stream(allowedOrigins.split(","))
                 .map(String::trim)
                 .toList();
+        if (origins.stream().anyMatch(origin -> origin.isBlank() || origin.contains("*") || !(origin.startsWith("https://") || origin.startsWith("http://")))) {
+            throw new IllegalArgumentException("CORS requires explicit HTTP(S) origins");
+        }
         configuration.setAllowedOrigins(origins);
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-Requested-With", "X-Auth-Transport", "Accept"));
-        configuration.setExposedHeaders(List.of("Authorization"));
+        configuration.setExposedHeaders(List.of("Authorization", "X-Correlation-ID"));
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);
 

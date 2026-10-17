@@ -6,21 +6,27 @@ Hệ thị giác "mực trên giấy", đảo tối. Chữ Hán là nhân vật 
 
 ## 1. Nền tảng
 
-### Màu
+### Màu và theme (cập nhật theo yêu cầu audit 17/10/2026)
 
-| Token | Giá trị | Dùng cho |
+Hai giao diện: `宣纸 · Sáng (Giấy Tuyên)` và `砚台 · Tối (Nghiên Mực)`.
+Màu nguồn ở `src/theme.css`, Tailwind chỉ dùng alias token trong `@theme inline`.
+
+| Vai trò | Sáng | Tối |
 |---|---|---|
-| `--bg` | `#151614` | nền mực toàn app |
-| `--fg` | `#ECECE6` | chữ giấy |
-| `--fg-60` / `--fg-38` | `rgba(236,236,230,.60)` / `rgba(236,236,230,.34)` | chữ phụ / chữ mờ |
-| `--rule` / `--rule-strong` | `rgba(236,236,230,.14)` / `rgba(236,236,230,.30)` | đường dữ liệu / đường biên |
-| `--card` | `#1B1C19` | bề mặt phụ (flyout, thẻ học) |
-| `--rank` | `#7FA98B` | cấp độ, thanh EXP, trạng thái "đang đứng" |
-| `--red` | `#D96A5C` | chữa bài (tensaku) |
+| Nền | `#F7F3E8` | `#121211` |
+| Thẻ | `#FFFDF9` | `#1C1B19` |
+| Mực chính | `#1C1917` | `#F5F2EB` |
+| Chữ phụ | `#57534E` | `#A8A29E` |
+| Đường kẻ | `#DFD7C4` | `#2E2C28` |
+| Chu sa | `#C83E31` | `#E04F42` |
+| Ngọc | `#2E7D6B` | `#38A18C` |
+| Vàng nhấn | `#B45309` | `#E7B66A` |
 
-Luật: **đúng hai màu có việc** — xanh đai và đỏ chữa bài. Mọi thứ còn lại là mực, phân biệt bằng *độ đậm* (opacity của `--fg`). Tracker mật độ đọc bằng mực, không bằng màu.
+Nhãn, nút, input, bảng và modal đều theo theme. Không dùng nền hoặc chữ có mã màu cố định trong component. Màu hình minh họa linh thú được giữ riêng. Chữ phụ dùng mực đủ tương phản, chỉ họa tiết trang trí được dùng opacity thấp. Không tạo màu xanh hoặc xám ngoài token.
 
-Cấm: gradient, glow, bóng đổ, kính mờ, xám riêng ngoài thang mực.
+Theme được lưu trong localStorage và đồng bộ giữa tab. Lần đầu theo cài đặt hệ điều hành. Nút theme ở sidebar và header mobile, có tên truy cập và focus bàn phím.
+
+Họa tiết: góc hồi văn `回纹` nằm trong phần đệm, chữ `学而时习之` / `温故知新` là trang trí ẩn khỏi screen reader. Đèn lồng nằm ở trần trang cao tối đa 68px, không nhận thao tác, ẩn khi cuộn quá 20px. Lắc nhẹ ±2.5° trong 4.5 giây, tôn trọng reduced-motion. Không đặt chữ, dấu triện hoặc họa tiết lên nội dung khác.
 
 ### Chữ
 
@@ -108,12 +114,16 @@ Không dùng font mảnh ở cỡ nhỏ — body tối thiểu 12.5px; nét mả
   - Mỗi 10 lượt ôn flashcard SRS tích luỹ: **+50 EXP** (`app.exp.srs-session`), không cộng 50 EXP cho một thẻ đơn lẻ.
   - Hoàn thành 1 đề thi thử: **100 EXP × hệ số điểm** (`app.exp.exam-base * (score / total)`)
   - Cấu hình qua `ExpConfig`, không hardcode để dễ dàng tinh chỉnh chỉ số vận hành.
-- **Màu cấp độ:** Áp dụng **1 màu chủ đạo duy nhất (`#7FA98B` — rank green)** xuyên suốt cho toàn bộ các cấp độ. Không đổi màu lung tung giữa các cấp, chỉ thay đổi sắc độ (lightness / tone) đậm dần theo rank từ sơ cấp đến bậc thầy.
+- **Màu cấp độ:** Áp dụng **1 màu chủ đạo duy nhất (`--jade`, thích ứng sáng/tối)** xuyên suốt cho toàn bộ các cấp độ. Không đổi màu lung tung giữa các cấp, chỉ thay đổi sắc độ (lightness / tone) đậm dần theo rank từ sơ cấp đến bậc thầy.
 
-- Khối gợi nhớ / nhiệm vụ kế tiếp: đã gỡ khỏi dashboard; để dành cho phiên học/từng trạm.
+- Dashboard có nhiệm vụ theo dữ liệu thật, EXP 30/25/50 và măng 2/2/3, nhận một lần/ngày theo giờ Việt Nam.
 
 ## 5. Làm việc với hệ này
 
 - Đọc `PRODUCT.md` (sự thật sản phẩm) trước khi sửa UI
 - Style màn mới bằng **Tailwind v4** với token trong `@theme` (`src/index.css`): `text-fg-60`, `border-rule`, `font-serif`… — palette/radius/shadow mặc định đã bị xoá khỏi theme, không thể dùng
 - Sau khi sửa UI: chạy detector `.opencode/skills/impeccable/scripts/impeccable detect <đường dẫn>` (từ `frontend/`)
+
+## Chữ trên màu nhấn và tương phản (audit 17/10/2026)
+
+Màu nền/viền nhấn giữ palette đã chốt. Chữ nhỏ dùng `cinnabar-ink`, `jade-ink`, `gold-ink`: sáng lần lượt #B33127 / #246B5B / #984400; tối #F06D60 / #49B39D / #E7B66A. Tránh giảm opacity của chữ mang nội dung. `on-accent` là mực #121211 ở theme tối, giấy #FFFDF9 ở theme sáng, để chữ trên nút đỏ/ngọc/vàng đạt tương phản tối thiểu 4.5:1. Không dùng màu trắng cố định trên đỏ sáng trong theme tối.

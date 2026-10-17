@@ -125,6 +125,10 @@ public class GrammarService {
 
         String submitted = normalize(userAnswer);
         String correct = normalize(exercise.getCorrectAnswer());
+        if ("SENTENCE_ORDER".equals(exercise.getExerciseType())) {
+            submitted = submitted.replaceAll("\\s+", "");
+            correct = correct.replaceAll("\\s+", "");
+        }
         boolean isCorrect = submitted.equals(correct);
 
         // Ghi nhật ký hoạt động + chỉ tính streak khi đủ ngưỡng trong ngày (xem StreakPolicy).
@@ -159,11 +163,19 @@ public class GrammarService {
                 exercise.getGrammarRule().getId(),
                 exercise.getGrammarRule().getTitle(),
                 exercise.getQuestionText(),
-                parseOptions(exercise.getOptionsJson()),
+                shuffledOptions(exercise),
                 Boolean.TRUE.equals(exercise.getIsCommonMistake()),
                 exercise.getMistakeCategory(),
-                exercise.getReviewStatus() != null ? exercise.getReviewStatus().name() : null
+                exercise.getReviewStatus() != null ? exercise.getReviewStatus().name() : null,
+                exercise.getExerciseType(),
+                exercise.getGrammarRule().getHskLevel()
         );
+    }
+
+    private List<String> shuffledOptions(GrammarExercise exercise) {
+        var options = new java.util.ArrayList<>(parseOptions(exercise.getOptionsJson()));
+        if ("SENTENCE_ORDER".equals(exercise.getExerciseType())) java.util.Collections.shuffle(options);
+        return options;
     }
 
     private List<String> parseOptions(String optionsJson) {

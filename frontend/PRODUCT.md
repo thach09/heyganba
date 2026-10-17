@@ -1,66 +1,33 @@
-# Product — Frontend Briefing
-
-Canonical product scope and approved roadmap: [../PRODUCT.md](../PRODUCT.md).
-Chi tiết lộ trình các cột mốc M1–M3: [../docs/curriculum-roadmap-m1-m3.md](../docs/curriculum-roadmap-m1-m3.md).
+# Product — Frontend briefing
 
 <!-- impeccable:product-schema 1 -->
 
 ## Platform
 
-web (ưu tiên responsive bình đẳng trên cả laptop desktop và điện thoại mobile).
+Web responsive cho desktop 1440px, tablet 1024px và mobile 390px. Phạm vi chuẩn ở [PRODUCT.md](../PRODUCT.md), thị giác ở [DESIGN.md](DESIGN.md).
 
 ## Users
 
-Người Việt mới bắt đầu học tiếng Trung (HSK 1–3), tự học hoặc học có bổ trợ. Môi trường sử dụng thật: luân phiên laptop và điện thoại.
+Người Việt tự học tiếng Trung, từ nhập môn đến các bài luyện đại diện HSK 1–6.
 
 ## Product Purpose
 
-Giúp việc học tiếng Trung cho người Việt trở nên **dễ dàng, chuẩn xác và có phương pháp khoa học**:
-1. **Nền tảng phát âm Pinyin chuẩn** (Đề án Pinyin Hán ngữ 1958: 21 thanh mẫu, 36 vận mẫu, 4 thanh điệu, quy tắc chính tả, biến điệu).
-2. **Từ vựng & Chữ Hán đa giác quan**: Ghi nhớ mặt chữ qua ô Mễ tự cách, câu ví dụ thực tế và lặp lại ngắt quãng SM-2.
-3. **Ngữ pháp ứng dụng**: So sánh đối chiếu ngữ pháp Việt - Trung để tránh lỗi tư duy dịch thô (word-by-word).
+Giúp học phát âm, từ vựng, chữ Hán, ngữ pháp và đọc ngữ cảnh; ghi nhớ qua luyện tập và ôn cách quãng. Không hứa kết quả thi hoặc năng lực học thuật chưa kiểm định.
 
 ## Operating Context
 
-- Web app, dùng thật trên cả điện thoại (390px) và laptop (1440px) — responsive là yêu cầu cốt lõi.
-- Giao diện bằng tiếng Việt; nội dung chữ Hán dùng phông `Noto Serif SC`, Pinyin dùng `Noto Sans SC`.
-- Nội dung mới phải ở trạng thái `PENDING_REVIEW`; chỉ hiện cho người học sau khi admin duyệt (`APPROVED`).
-- "Một ngày học" tính theo múi giờ `Asia/Ho_Chi_Minh`.
-- Nhãn thương hiệu trung tính: "Học tiếng Trung".
-- M1 (Pinyin & phát âm), M2.1 / M2.1.1 (Bài mẫu Từ vựng & SRS), M2.2 (Kho từ vựng Chủ đề HSK 1), HSK Standard Course Ecosystem (Staging V6), M4 (Chuẩn 150 từ HSK 1 & Trạm Chữ Hán), M5 (Tự động Phê duyệt toàn bộ Giáo trình APPROVED, Mở rộng HSK 2 Standard Course V8, Bản đồ Lộ trình HSK Dashboard), và M6 (Sửa lỗi UI Text Overlap trên OrientalCard & Dashboard, Mở rộng toàn diện giáo trình HSK 1 đến HSK 6 V9 với thi thử 200đ/300đ) đã hoàn thiện và được đánh dấu APPROVED toàn diện để người học trải nghiệm không bị chặn cổng duyệt.
+Tiếng Việt cho thao tác, chữ Hán Noto Serif SC, tiếng Việt Be Vietnam Pro, Noto Sans SC dự phòng. Hai theme giấy Tuyên / nghiên mực dùng CSS tokens, lưu lựa chọn và đồng bộ tab. Đèn lồng chỉ trong dải trần, biến mất sau scrollY >20, tôn trọng reduced motion.
 
 ## Capabilities and Constraints
 
-Đã có (đã xác nhận):
+- Dashboard, Pinyin, chữ Hán, từ vựng/SRS, ngữ pháp, từ điển/sổ từ/đọc hiểu, thi thử và quản trị.
+- Bộ lọc HSK 1–6 phản ánh dữ liệu thực. URL cấp độ từ vựng hỗ trợ refresh/back.
+- Trắc nghiệm và sắp câu được chấm ở server, không gửi đáp án trước khi chấm. Thi thử là nội bộ, 200/120 hoặc 300/180 theo cấp.
+- Nhiệm vụ và ví măng theo tài khoản, nhận một lần/ngày ở server; không dùng số thưởng giả trong localStorage.
+- Ghi chú sổ từ là văn bản thuần, có chỉnh sửa và kiểm tra quyền sở hữu. Nội dung render qua React, không chèn HTML từ người dùng.
+- Không hiển thị dữ liệu riêng của tài khoản trước khi chuyển sang tài khoản khác. Tôn trọng cancellation và idempotency khi retry.
+- Giới hạn dữ liệu và nguồn: [nguồn giáo trình](../docs/m6-curriculum-sources.md). Nội dung mới mặc định PENDING_REVIEW, ngoại lệ V9 được yêu cầu rõ ở M6.
 
-- 5 trạm: Kana (canvas viết tay) · Từ vựng & SRS (`/vocabulary`, SM-2, cache Redis/memory) · Kanji & bộ thủ · Trợ từ/ngữ pháp · Thi thử + Đấu trường (streak heatmap, leaderboard).
-- Phân quyền RBAC `ROLE_ADMIN` / `ROLE_USER`; đăng nhập JWT.
-- Quy trình duyệt nội dung + endpoint `content/review-status` và `ContentAccess`.
-- Hệ cấp độ + EXP: EXP chỉ cộng từ hoạt động học thật (thẻ ôn, chữ viết, câu trả lời đúng); hiển thị bằng thanh EXP màu đai.
-- Thông thạo từng chữ: mức độ trải nghiệm + độ chính xác theo từng chữ, suy từ dữ liệu học tập hiện có (SRS cho từ vựng, số lần luyện cho kanji; kana bổ sung sau). Về sau dùng để điều chỉnh interval SRS và gợi ý phương pháp nâng cao theo mức thông thạo.
-- Phiên ôn từ vựng SRS theo SM-2 chuẩn 4 mức: `FORGOT`, `HARD`, `GOOD`, `EASY`; gửi `attemptId` kháng lặp; tách biệt rõ ràng với Sổ từ vựng cá nhân. Chuyển thẻ chỉ khi máy chủ xác nhận thành công. Gõ Pinyin bảo toàn thanh điệu và phân biệt `u`/`ü`.
+## Verification
 
-Chưa quyết (không được tự suy diễn):
-
-- Cơ chế mở rộng đa giáo trình / ra ngoài phạm vi FPT (thêm khóa học thế nào, ai soạn nội dung) — chưa chốt.
-- Mô hình người dùng tương lai (mở đăng ký công khai? pricing?) — chưa bàn tới.
-
-## Brand Commitments
-
-- **Tên sản phẩm: HeyGanba — bắt buộc giữ.**
-- Brand chốt 27/09/2026: **logo cổng Torii là biểu tượng thương hiệu chính thức**; **mascot chính thức** là chuỗi emoji
-  tiến hoá theo streak (🥚 → 🐣 → 🐤 → 🐥 → 🦅 → 🐉, xem `docs/roadmap.md`) — không làm thêm mascot nào khác.
-
-## Evidence on Hand
-
-- Sản phẩm chạy thật trên production; người dùng thật đầu tiên là tác giả.
-- Nội dung Dekiru (từ vựng Bài 1–7 đã seed; một phần nội dung đang chờ duyệt).
-- **Không có** testimonials, số liệu người dùng, benchmark hay nghiên cứu đo lường — công việc sau này không được bịa ra.
-
-## Product Principles
-
-1. **Phương pháp trước nội dung:** mỗi tính năng phải phục vụ một phương pháp học có cơ sở, không nhồi nội dung cho có.
-2. **Điện thoại và laptop ngang hàng:** mọi màn hình phải dùng tốt trên cả hai, không có bản "phụ".
-3. **Nội dung phải đáng tin:** qua kiểm duyệt trước khi người học thấy; không nguyên văn nguồn có bản quyền.
-4. **Không khóa cứng vào một giáo trình:** cấu trúc đủ tổng quát để thêm giáo trình/khóa khác trong tương lai.
-5. **Dễ hơn hẳn so với tự học:** giảm ma sát, tăng tính đều đặn (streak).
+Lint, unit tests, build; chụp và xem ảnh cả hai theme ở 1440/1024/390. Kiểm tra tràn ngang, badge/title, đèn lồng, modal, bảng và thao tác học thật. Không coi build thành công là bằng chứng UI không chồng chữ.

@@ -7,7 +7,7 @@ export const GROWTH_STAGES: Record<GrowthStage, GrowthStageInfo> = {
     labelVi: 'Ấu Thú',
     minLevel: 1,
     description: 'Bé con ngây ngô tròn trĩnh, lon ton tập làm quen với chữ Hán.',
-    badgeTone: 'border-[#10B981]/40 bg-[#10B981]/15 text-[#10B981]',
+    badgeTone: 'border-jade/40 bg-jade/10 text-jade-ink',
   },
   junior: {
     stage: 'junior',
@@ -15,7 +15,7 @@ export const GROWTH_STAGES: Record<GrowthStage, GrowthStageInfo> = {
     labelVi: 'Linh Thú',
     minLevel: 5,
     description: 'Bắt đầu có linh tính, đeo trang bị hộ thân và chăm chỉ dùi mài kinh sử.',
-    badgeTone: 'border-[#2E7D6B]/40 bg-[#2E7D6B]/15 text-[#2E7D6B]',
+    badgeTone: 'border-jade/40 bg-jade/10 text-jade-ink',
   },
   adult: {
     stage: 'adult',
@@ -23,7 +23,7 @@ export const GROWTH_STAGES: Record<GrowthStage, GrowthStageInfo> = {
     labelVi: 'Thần Thú',
     minLevel: 10,
     description: 'Thần thú uy phong lẫm liệt, hào quang bảo hộ người học bước vào hàng đại gia.',
-    badgeTone: 'border-[#D97706]/40 bg-[#D97706]/15 text-[#D97706]',
+    badgeTone: 'border-jade/40 bg-jade/10 text-jade-ink',
   },
 };
 
