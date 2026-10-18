@@ -2,17 +2,24 @@ import { act, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, expect, test, vi } from 'vitest';
 import { ThemeToggle } from '../../src/components/ThemeToggle';
 import { initializeTheme } from '../../src/app/useTheme';
-import { ChineseLanterns } from '../../src/components/OrientalDecorBackground';
+import { OrientalDecorBackground } from '../../src/components/OrientalDecorBackground';
 import { SentenceOrderExercise } from '../../src/features/grammar/SentenceOrderExercise';
 
 afterEach(() => { document.documentElement.removeAttribute('data-theme'); });
 test('theme toggles update both controls and survive initialization', () => {
   localStorage.setItem('chinese-learning-theme', 'light');
   initializeTheme();
-  render(<><ThemeToggle /><ThemeToggle compact /></>);
+  render(<><ThemeToggle /><ThemeToggle /></>);
   expect(document.documentElement.dataset.theme).toBe('light');
-  fireEvent.click(screen.getAllByRole('button', { name: /宣纸/ })[0]);
-  expect(screen.getAllByRole('button', { name: /砚台/ })).toHaveLength(2);
+  const switches = screen.getAllByRole('switch');
+  expect(switches).toHaveLength(2);
+  expect(switches[0]).toHaveAttribute('aria-checked', 'false');
+  expect(switches[1]).toHaveAttribute('aria-checked', 'false');
+
+  fireEvent.click(switches[0]);
+  expect(document.documentElement.dataset.theme).toBe('dark');
+  expect(switches[0]).toHaveAttribute('aria-checked', 'true');
+  expect(switches[1]).toHaveAttribute('aria-checked', 'true');
   expect(localStorage.getItem('chinese-learning-theme')).toBe('dark');
   expect(initializeTheme()).toBe('dark');
 });
@@ -20,15 +27,19 @@ test('theme reacts to another tab and works without local storage', () => {
   initializeTheme(); render(<ThemeToggle />);
   localStorage.setItem('chinese-learning-theme', 'light');
   act(() => window.dispatchEvent(new StorageEvent('storage', { key: 'chinese-learning-theme' })));
-  expect(screen.getByRole('button', { name: /宣纸/ })).toBeTruthy();
+  const toggle = screen.getByRole('switch');
+  expect(toggle).toHaveAttribute('aria-checked', 'false');
+  expect(toggle.getAttribute('aria-label')).toMatch(/sáng|Giấy Tuyên/i);
+
   const blocked = vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => { throw new Error('blocked'); });
-  fireEvent.click(screen.getByRole('button'));
+  fireEvent.click(toggle);
   expect(document.documentElement.dataset.theme).toBe('dark');
+  expect(toggle).toHaveAttribute('aria-checked', 'true');
   blocked.mockRestore();
 });
 test('ceiling lanterns disappear after 20px and return at the top', () => {
   vi.stubGlobal('scrollY', 0);
-  const { container, unmount } = render(<ChineseLanterns />);
+  const { container, unmount } = render(<OrientalDecorBackground />);
   const lanterns = container.querySelector('[data-lanterns]')!;
   expect(lanterns.className).toContain('absolute');
   expect(lanterns.className).toContain('opacity-100');

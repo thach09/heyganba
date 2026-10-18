@@ -13,14 +13,32 @@
  *    Intricate imperial palace geometric fretwork.
  * 5. Vermilion Seal Watermark (Chu Sa Triện Ấn: 志在千里 - Chí tại thiên lý).
  */
+import { useEffect, useState } from 'react';
+
 export function OrientalDecorBackground() {
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <div
       aria-hidden="true"
       className="pointer-events-none fixed inset-0 z-0 overflow-hidden select-none"
     >
       {/* 1. Floating Kongming Lanterns (Khổng Minh Đăng - 孔明灯) in the Upper Night Sky */}
-      <div className="absolute inset-x-0 top-0 h-[480px] pointer-events-none">
+      <div
+        data-lanterns
+        className={`absolute inset-x-0 top-0 h-[480px] pointer-events-none transition-opacity duration-300 motion-reduce:transition-none ${
+          isScrolled ? 'opacity-0' : 'opacity-100'
+        }`}
+      >
         {/* Lantern 1 - Top right margin, clear of content */}
         <div
           className="absolute right-[4%] top-4 animate-lantern-sway"

@@ -119,6 +119,29 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const [charGroupOpen, setCharGroupOpen] = useState(false);
   const charGroupActive = location.pathname.startsWith('/hanzi') || location.pathname.startsWith('/pinyin');
   const charGroupRef = useRef<HTMLDivElement | null>(null);
+  const asideRef = useRef<HTMLElement | null>(null);
+  const desktopToggleRef = useRef<HTMLButtonElement | null>(null);
+  const closeButtonRef = useRef<HTMLButtonElement | null>(null);
+
+  // When desktop sidebar closes, if focus was inside the collapsible content, move focus to the toggle button
+  useEffect(() => {
+    if (!isOverlay && !isOpen) {
+      if (
+        asideRef.current &&
+        asideRef.current.contains(document.activeElement) &&
+        document.activeElement !== desktopToggleRef.current
+      ) {
+        desktopToggleRef.current?.focus();
+      }
+    }
+  }, [isOpen, isOverlay]);
+
+  // When mobile drawer opens, focus the close button for instant keyboard accessibility
+  useEffect(() => {
+    if (isOverlay && isOpen) {
+      closeButtonRef.current?.focus();
+    }
+  }, [isOverlay, isOpen]);
 
   /**
    * The flyout can be opened by click/tap and would otherwise stay stuck:
@@ -138,6 +161,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     };
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
+        event.stopPropagation();
         setCharGroupOpen(false);
       }
     };
@@ -154,49 +178,62 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <aside
+      ref={asideRef}
       className={`fixed inset-y-0 left-0 z-20 flex w-[216px] flex-col overflow-visible overscroll-contain bg-card/95 border-r border-rule backdrop-blur-md pb-8 pl-8 pr-4 pt-10 transition-transform duration-150 max-[900px]:overflow-y-auto max-[900px]:z-[100] max-[900px]:w-[min(280px,82vw)] max-[900px]:p-6 ${
         isOpen ? 'translate-x-0' : '-translate-x-full'
       }`}
       aria-label="Thanh điều hướng chính"
-      inert={isOverlay && !isOpen}
+      inert={isOverlay && !isOpen ? true : undefined}
     >
-      <div className="flex items-center justify-between gap-2.5">
-        <div className="flex items-center gap-3">
-          <ChineseSealStamp />
-          <div className="min-w-0">
-            <div className="font-sans text-[16px] font-bold tracking-tight text-fg whitespace-nowrap">
-              Học tiếng Trung
-            </div>
-            <span className="block font-sans text-[11px] font-medium tracking-[0.16em] text-gold-ink">
-              中文学习 · 华语
-            </span>
-          </div>
-        </div>
-        {isOverlay && onClose && (
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Đóng thanh điều hướng"
-            title="Đóng thanh điều hướng"
-            className={iconButton}
-          >
-            <X size={18} />
-          </button>
-        )}
-      </div>
-
       {/* Edge tab attached to the sidebar: open shows ‹ on the right edge, closed slides to the screen edge and flips to › */}
       {!isOverlay && onToggleSidebar && (
         <button
+          ref={desktopToggleRef}
           type="button"
-          onClick={onToggleSidebar}
+          onClick={() => {
+            onToggleSidebar();
+            requestAnimationFrame(() => {
+              desktopToggleRef.current?.focus();
+            });
+          }}
           aria-label={isOpen ? 'Thu gọn thanh điều hướng' : 'Mở thanh điều hướng'}
           title={isOpen ? 'Thu gọn thanh điều hướng' : 'Mở thanh điều hướng'}
-          className="absolute -right-5 top-12 z-40 inline-flex h-10 w-5 cursor-pointer items-center justify-center border border-l-0 border-rule bg-card text-fg-38 transition-colors hover:border-rule-strong hover:text-fg"
+          className="absolute -right-5 top-12 z-40 inline-flex h-10 w-5 cursor-pointer items-center justify-center border border-l-0 border-rule bg-card text-fg-38 transition-colors hover:border-rule-strong hover:text-fg focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-[3px] focus-visible:outline-fg-38"
         >
           <ChevronLeft size={14} className={isOpen ? '' : 'rotate-180'} />
         </button>
       )}
+
+      {/* Collapsible sidebar content: made inert when collapsed on desktop or closed on mobile */}
+      <div
+        className="flex flex-1 flex-col min-h-0"
+        inert={!isOpen ? true : undefined}
+      >
+        <div className="flex items-center justify-between gap-2.5">
+          <div className="flex items-center gap-3">
+            <ChineseSealStamp />
+            <div className="min-w-0">
+              <div className="font-sans text-[16px] font-bold tracking-tight text-fg whitespace-nowrap">
+                Học tiếng Trung
+              </div>
+              <span className="block font-sans text-[11px] font-medium tracking-[0.16em] text-gold-ink">
+                中文学习 · 华语
+              </span>
+            </div>
+          </div>
+          {isOverlay && onClose && (
+            <button
+              ref={closeButtonRef}
+              type="button"
+              onClick={onClose}
+              aria-label="Đóng thanh điều hướng"
+              title="Đóng thanh điều hướng"
+              className={iconButton}
+            >
+              <X size={18} />
+            </button>
+          )}
+        </div>
 
       <nav className="mt-11 flex flex-1 flex-col gap-3.5">
         <NavItem to="/" k="今日" v="Hôm nay" onNavigate={onNavigate} />
@@ -344,6 +381,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <br />
           Học rồi thường xuyên ôn lại.
         </div>
+      </div>
       </div>
     </aside>
   );
