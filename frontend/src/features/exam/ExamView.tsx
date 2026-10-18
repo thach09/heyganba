@@ -136,10 +136,8 @@ export const ExamView: React.FC = () => {
       return;
     }
 
-    const timer = setTimeout(() => {
-      void loadProgress();
-    }, 0);
-    return () => clearTimeout(timer);
+    // oxlint-disable-next-line react/set-state-in-effect
+    void loadProgress();
   }, [userId, loadProgress, cancel]);
 
   const restoreAttempt = useCallback(async () => {
@@ -189,11 +187,9 @@ export const ExamView: React.FC = () => {
   }, [checkpoint, userId, run, checkpointAttempt]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      void restoreAttempt();
-    }, 0);
+    // oxlint-disable-next-line react/set-state-in-effect
+    void restoreAttempt();
     return () => {
-      clearTimeout(timer);
       cancel('examApi.resume');
     };
   }, [restoreAttempt, cancel]);

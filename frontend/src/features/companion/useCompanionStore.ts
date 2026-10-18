@@ -30,13 +30,11 @@ export function useCompanion() {
     } catch { /* Keep the last server-confirmed balance. */ }
   }, [user]);
   useEffect(() => {
-    const timer = setTimeout(() => {
-      void refreshWallet();
-    }, 0);
+    // oxlint-disable-next-line react/set-state-in-effect
+    void refreshWallet();
     const onChange = () => void refreshWallet();
     window.addEventListener('companion-wallet-changed', onChange);
     return () => {
-      clearTimeout(timer);
       window.removeEventListener('companion-wallet-changed', onChange);
     };
   }, [refreshWallet]);

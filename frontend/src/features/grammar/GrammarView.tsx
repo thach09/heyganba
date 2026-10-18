@@ -146,10 +146,8 @@ export const GrammarView: React.FC = () => {
       return;
     }
 
-    const timer = setTimeout(() => {
-      void loadRules();
-    }, 0);
-    return () => clearTimeout(timer);
+    // oxlint-disable-next-line react/set-state-in-effect
+    void loadRules();
   }, [userId, lesson, cancel, loadRules]);
 
   const loadExercises = useCallback(
@@ -158,13 +156,11 @@ export const GrammarView: React.FC = () => {
         return;
       }
 
-      queueMicrotask(() => {
-        setExerciseState('loading');
-        setExerciseError(null);
-        setResult(null);
-        setSelectedOption(null);
-        setIndex(0);
-      });
+      setExerciseState('loading');
+      setExerciseError(null);
+      setResult(null);
+      setSelectedOption(null);
+      setIndex(0);
 
       const params = new URLSearchParams();
       if (rule) {
@@ -192,10 +188,8 @@ export const GrammarView: React.FC = () => {
 
   useEffect(() => {
     if (mode === 'PRACTICE' && userId) {
-      const timer = setTimeout(() => {
-        void loadExercises(selectedRule, mistakeOnly);
-      }, 0);
-      return () => clearTimeout(timer);
+      // oxlint-disable-next-line react/set-state-in-effect
+      void loadExercises(selectedRule, mistakeOnly);
     }
   }, [mode, selectedRule, mistakeOnly, userId, loadExercises]);
 

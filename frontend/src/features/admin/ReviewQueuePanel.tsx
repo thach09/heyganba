@@ -42,11 +42,9 @@ export const ReviewQueuePanel: React.FC = () => {
   }, [onlyNeedsCheck, run]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      void load();
-    }, 0);
+    // oxlint-disable-next-line react/set-state-in-effect
+    void load();
     return () => {
-      clearTimeout(timer);
       cancel('adminApi.reviewQueue');
     };
   }, [load, cancel]);

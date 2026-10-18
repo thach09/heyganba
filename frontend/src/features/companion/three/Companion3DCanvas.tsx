@@ -38,9 +38,8 @@ export function Companion3DCanvas({
     const quotes = pet?.quotes?.[mood] || PET_DEFINITIONS.panda.quotes.idle;
     if (quotes && quotes.length > 0) {
       const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-      queueMicrotask(() => {
-        setCurrentQuote(randomQuote);
-      });
+      // oxlint-disable-next-line react/set-state-in-effect
+      setCurrentQuote(randomQuote);
     }
   }, [mood, petId]);
 

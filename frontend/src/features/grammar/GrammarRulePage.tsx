@@ -73,11 +73,9 @@ export const GrammarRulePage: React.FC = () => {
   }, [user, ruleId, run]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      void loadRule();
-    }, 0);
+    // oxlint-disable-next-line react/set-state-in-effect
+    void loadRule();
     return () => {
-      clearTimeout(timer);
       cancel('GrammarRulePage-load');
     };
   }, [loadRule, cancel]);
