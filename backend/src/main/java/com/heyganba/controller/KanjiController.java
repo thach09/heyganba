@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.Duration;
 import java.util.List;
 
+@org.springframework.validation.annotation.Validated
 @RestController
 @RequiredArgsConstructor
 public class KanjiController {
@@ -31,21 +32,26 @@ public class KanjiController {
     private final KanjiService kanjiService;
     private final RateLimiterService rateLimiterService;
 
-    @GetMapping("/kanji")
+    @GetMapping({"/kanji", "/hanzi"})
     public ResponseEntity<ApiResponse<List<KanjiResponse>>> getKanji(
             @AuthenticationPrincipal UserPrincipal currentUser,
-            @RequestParam(required = false) String lesson,
+            @RequestParam(required = false) @jakarta.validation.constraints.Size(max=200) String lesson,
             @RequestParam(required = false) Long radical,
-            @RequestParam(required = false) String search
+            @RequestParam(required = false) @jakarta.validation.constraints.Size(max=200) String search,
+            @RequestParam(required = false) @jakarta.validation.constraints.Min(1) @jakarta.validation.constraints.Max(6) Integer hsk
     ) {
         List<KanjiResponse> kanji = kanjiService.getKanji(currentUser.getId(), lesson, radical, search);
+        if (hsk != null) {
+            if (hsk < 1 || hsk > 6) throw new com.heyganba.common.exception.BadRequestException("HSK level must be between 1 and 6");
+            kanji = kanji.stream().filter(item -> item.hskLevel() == hsk).toList();
+        }
         return ResponseEntity.ok(ApiResponse.success(kanji));
     }
 
-    @GetMapping("/kanji/{id}")
+    @GetMapping({"/kanji/{id}", "/hanzi/{id}"})
     public ResponseEntity<ApiResponse<KanjiResponse>> getKanjiById(
             @AuthenticationPrincipal UserPrincipal currentUser,
-            @PathVariable Long id
+            @PathVariable @jakarta.validation.constraints.Positive Long id
     ) {
         return ResponseEntity.ok(ApiResponse.success(kanjiService.getKanjiById(currentUser.getId(), id)));
     }
@@ -57,10 +63,10 @@ public class KanjiController {
         return ResponseEntity.ok(ApiResponse.success(kanjiService.getRadicals(id)));
     }
 
-    @PostMapping("/kanji/{id}/progress")
+    @PostMapping({"/kanji/{id}/progress", "/hanzi/{id}/progress"})
     public ResponseEntity<ApiResponse<KanjiProgressResponse>> recordPractice(
             @AuthenticationPrincipal UserPrincipal currentUser,
-            @PathVariable Long id
+            @PathVariable @jakarta.validation.constraints.Positive Long id
     ) {
         String rateLimitKey = "kanji-progress:" + currentUser.getId();
 

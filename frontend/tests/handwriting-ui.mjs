@@ -16,7 +16,7 @@ try {
     await page.waitForSelector('canvas');
     await page.$eval('canvas',c=>c.scrollIntoView({block:'center'}));
     const paths=await page.evaluate(async()=>{
-      const {skeletonize}=await import('/src/features/kana/handwritingScore.ts');
+      const {skeletonize}=await import('/src/lib/handwritingScore.ts');
       await document.fonts.load("400 200px 'Noto Serif JP'",'あ');
       const c=document.createElement('canvas');c.width=c.height=256;
       const ctx=c.getContext('2d',{willReadFrequently:true});ctx.textAlign='center';ctx.textBaseline='middle';ctx.font="400 189px 'Noto Serif JP', serif";ctx.fillText('あ',128,256*.52);

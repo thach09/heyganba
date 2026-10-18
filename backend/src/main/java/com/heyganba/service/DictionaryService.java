@@ -15,6 +15,8 @@ import java.util.regex.Pattern;
 
 @Service @RequiredArgsConstructor
 public class DictionaryService {
+    @org.springframework.beans.factory.annotation.Value("${app.dictionary.legacy-catalog-enabled:false}")
+    private boolean legacyCatalogEnabled;
     private final VocabularyRepository vocabularyRepository;
     private final KanjiRepository kanjiRepository;
     private final DictionaryEntryRepository dictionaryEntryRepository;
@@ -25,12 +27,13 @@ public class DictionaryService {
             .thenComparingInt(candidate -> candidate.word().word().codePointCount(0, candidate.word().word().length()))
             .thenComparing(candidate -> candidate.word().word()).thenComparing(candidate -> candidate.word().reading());
 
-    public record Lookup(Word vocabulary, List<com.heyganba.dto.kanji.KanjiResponse> kanjis) {}
+    public record Lookup(Word vocabulary, List<com.heyganba.dto.kanji.KanjiResponse> hanzis) {}
 
     @Transactional(readOnly = true)
     public Lookup lookup(Long id) {
         Word word;
         if (id < 0 && id != Long.MIN_VALUE) {
+            if (!legacyCatalogEnabled) throw new com.heyganba.common.exception.ResourceNotFoundException("Không tìm thấy mục từ.");
             DictionaryEntry d = dictionaryEntryRepository.findById(-id).orElseThrow(() -> new com.heyganba.common.exception.ResourceNotFoundException("Dictionary", "id", id));
             if (!Boolean.TRUE.equals(d.getActive())) throw new com.heyganba.common.exception.ResourceNotFoundException("Dictionary", "id", id);
             word = dictionaryWord(d);
@@ -66,9 +69,9 @@ public class DictionaryService {
         int courseStart = Math.min(page * PAGE_SIZE, matchedCourse.size());
         List<RankedWord> coursePage = matchedCourse.subList(courseStart, Math.min(courseStart + PAGE_SIZE, matchedCourse.size()));
         String catalogPattern = toneSensitive ? DictionaryText.pattern(vietnameseQuery) : DictionaryText.pattern(normalized);
-        var catalog = dictionaryEntryRepository.search(catalogPattern, DictionaryText.pattern(vietnameseSearch),
+        org.springframework.data.domain.Page<DictionaryEntry> catalog = legacyCatalogEnabled ? dictionaryEntryRepository.search(catalogPattern, DictionaryText.pattern(vietnameseSearch),
                 DictionaryText.pattern(vietnameseQuery), DictionaryText.prefix(normalized), normalized, vietnameseSearch,
-                PageRequest.of(page, PAGE_SIZE));
+                PageRequest.of(page, PAGE_SIZE)) : org.springframework.data.domain.Page.empty();
         List<RankedWord> candidates = new ArrayList<>(coursePage);
         catalog.forEach(d -> candidates.add(new RankedWord(dictionaryWord(d), Math.min(
                 relevance(d.getWord(), d.getReading(), d.getMeaning(), d.getVietnameseMeaning(), null,
@@ -90,8 +93,8 @@ public class DictionaryService {
     }
 
     private Word dictionaryWord(DictionaryEntry d) {
-        return new Word(-d.getId(), d.getWord(), d.getReading(), d.getMeaning(), d.getVietnameseMeaning(), null,
-                null, null, null, "JMdict / EDRDG", "en");
+        return new Word(-d.getId(), d.getWord(), d.getReading(), d.getMeaning(), d.getVietnameseMeaning(), d.getVietnameseStatus(), null,
+                null, null, null, "JMdict / EDRDG", "en", null, null);
     }
 
     private static int relevance(String word, String reading, String english, String vietnamese, String sinoVietnamese,
@@ -163,7 +166,7 @@ public class DictionaryService {
         if (id == Long.MIN_VALUE) throw new BadRequestException("ID từ điển không hợp lệ");
         // Source row lock prevents duplicate materialization across accounts and backend instances.
         DictionaryEntry d = dictionaryEntryRepository.findLockedById(-id).orElseThrow(() -> new BadRequestException("Không tìm thấy từ điển"));
-        if (!Boolean.TRUE.equals(d.getActive())) throw new BadRequestException("Mục từ đã ngừng phát hành trong JMdict");
+        if (!legacyCatalogEnabled || !Boolean.TRUE.equals(d.getActive())) throw new BadRequestException("Mục từ không được phát hành trong giáo trình hiện tại.");
         return vocabularyRepository.findByDictionaryEntryId(-id).orElseGet(() -> {
             return vocabularyRepository.save(Vocabulary.builder().word(d.getWord()).reading(d.getReading()).meaning(d.getMeaning())
                     .dictionaryEntryId(d.getId()).reviewStatus(com.heyganba.model.enums.ReviewStatus.APPROVED)

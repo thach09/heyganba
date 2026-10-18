@@ -45,6 +45,9 @@ public class ReadingPassage {
     @Column(name = "review_status", nullable = false, length = 20)
     private ReviewStatus reviewStatus = ReviewStatus.PENDING_REVIEW;
 
+    @Column(name = "hsk_level")
+    private Integer hskLevel;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;

@@ -79,8 +79,11 @@ public class ExamService {
     private static final String TYPE_READING = "READING";
 
     private final MockExamRepository mockExamRepository;
+    private final com.heyganba.repository.MockExamPresetRepository mockExamPresetRepository;
     private final ExamResultRepository examResultRepository;
     private final GrammarExerciseRepository grammarExerciseRepository;
+    @org.springframework.beans.factory.annotation.Value("${app.legacy-phonetics-enabled:false}")
+    private boolean legacyPhoneticsEnabled;
     private final KanaRepository kanaRepository;
     private final VocabularyRepository vocabularyRepository;
     private final ReadingPassageRepository readingPassageRepository;
@@ -127,7 +130,15 @@ public class ExamService {
         int totalQuestions = clamp(request.totalQuestions(), MIN_QUESTIONS, MAX_QUESTIONS, DEFAULT_QUESTIONS);
         int durationMinutes = clamp(request.durationMinutes(), MIN_DURATION_MINUTES, MAX_DURATION_MINUTES, DEFAULT_DURATION_MINUTES);
 
-        List<Question> questions = buildQuestions(totalQuestions);
+        Integer level = request.hskLevel();
+        if (level == null && !legacyPhoneticsEnabled) level = 1;
+        if (level != null) {
+            var preset = mockExamPresetRepository.findByHskLevelAndReviewStatus(level, ReviewStatus.APPROVED)
+                    .filter(p -> !Boolean.TRUE.equals(p.getNeedsHumanCheck()))
+                    .orElseThrow(() -> new BadRequestException("Chưa có cấu hình bài luyện đã duyệt cho cấp độ này."));
+            if (request.durationMinutes() == null) durationMinutes = preset.getDurationMinutes();
+        }
+        List<Question> questions = level == null ? buildQuestions(totalQuestions) : buildHskQuestions(totalQuestions, level);
         if (questions.isEmpty()) {
             throw new BadRequestException("Chưa có nội dung trong hệ thống để sinh đề thi thử.");
         }
@@ -135,6 +146,7 @@ public class ExamService {
         Instant now = Instant.now();
         MockExam exam = mockExamRepository.save(MockExam.builder()
                 .user(user)
+                .hskLevel(level)
                 .totalQuestions(questions.size())
                 .durationMinutes(durationMinutes)
                 .status(STATUS_IN_PROGRESS)
@@ -150,6 +162,7 @@ public class ExamService {
     // -----------------------------------------------------------------
     @Transactional
     public ExamSubmitResponse submit(Long userId, Long examId, ExamSubmitRequest request) {
+        userRepository.findLockedById(userId).orElseThrow(() -> new ResourceNotFoundException("Người dùng", "id", userId));
         MockExam exam = mockExamRepository.findByIdAndUserId(examId, userId)
                 .orElseThrow(() -> new ResourceNotFoundException("MockExam", "id", examId));
 
@@ -184,6 +197,16 @@ public class ExamService {
 
         Instant now = Instant.now();
         double scorePercent = round1(questions.isEmpty() ? 0 : correctCount * 100.0 / questions.size());
+        if (exam.getHskLevel() != null) {
+            // Each section contributes exactly 100 points, regardless of question count.
+            double sectionTotal = 0;
+            for (String section : exam.getHskLevel() <= 2 ? List.of("LISTENING", "READING") : List.of("LISTENING", "READING", "GRAMMAR")) {
+                long count = details.stream().filter(d -> section.equals(d.type())).count();
+                long correct = details.stream().filter(d -> section.equals(d.type()) && d.correct()).count();
+                sectionTotal += count == 0 ? 0 : correct * 100.0 / count;
+            }
+            scorePercent = round1(sectionTotal * 100 / maximumScore(exam));
+        }
         int durationSeconds = (int) Math.max(0, Math.min(
                 Duration.between(exam.getStartedAt(), now).getSeconds(),
                 exam.getDurationMinutes() * 60L));
@@ -218,7 +241,8 @@ public class ExamService {
                         result.getScorePercent(),
                         result.getExam().getDurationMinutes(),
                         result.getDurationSeconds(),
-                        result.getCreatedAt()))
+                        result.getCreatedAt(), result.getExam().getHskLevel(), maximumScore(result.getExam()),
+                        passingScore(result.getExam()), scaledScore(result.getExam(), result)))
                 .toList();
     }
 
@@ -258,7 +282,7 @@ public class ExamService {
                 result.getScorePercent(),
                 result.getDurationSeconds(),
                 currentStreak,
-                details
+                details, exam.getHskLevel(), maximumScore(exam), passingScore(exam), scaledScore(exam, result)
         );
     }
 
@@ -271,6 +295,63 @@ public class ExamService {
     // -----------------------------------------------------------------
     // Sinh câu hỏi từ nội dung đã có (reading / grammar / kana / vocabulary)
     // -----------------------------------------------------------------
+    private static int maximumScore(MockExam exam) {
+        return exam.getHskLevel() != null && exam.getHskLevel() >= 3 ? 300 : 200;
+    }
+
+    private static int passingScore(MockExam exam) { return maximumScore(exam) * 3 / 5; }
+
+    private double scaledScore(MockExam exam, ExamResult result) {
+        if (exam.getHskLevel() == null) return round1(result.getScorePercent() * maximumScore(exam) / 100);
+        List<ExamSubmitResponse.QuestionResult> details = readJson(result.getDetailsJson(), new TypeReference<List<ExamSubmitResponse.QuestionResult>>() {});
+        double score = 0;
+        for (String section : exam.getHskLevel() <= 2 ? List.of("LISTENING", "READING") : List.of("LISTENING", "READING", "GRAMMAR")) {
+            long count = details.stream().filter(d -> section.equals(d.type())).count();
+            long correct = details.stream().filter(d -> section.equals(d.type()) && d.correct()).count();
+            score += count == 0 ? 0 : correct * 100.0 / count;
+        }
+        return round1(score);
+    }
+
+    private List<Question> buildHskQuestions(int total, int level) {
+        // Explicit APPROVED checks also apply to administrators taking a student exam.
+        List<Vocabulary> words = new ArrayList<>(vocabularyRepository.findCourseWords().stream()
+                .filter(v -> v.getReviewStatus() == ReviewStatus.APPROVED && Integer.valueOf(level).equals(v.getHskLevel())).toList());
+        List<GrammarExercise> grammar = new ArrayList<>(grammarExerciseRepository.findAll().stream()
+                .filter(e -> !"SENTENCE_ORDER".equals(e.getExerciseType()) && e.getReviewStatus() == ReviewStatus.APPROVED && e.getGrammarRule() != null
+                        && e.getGrammarRule().getReviewStatus() == ReviewStatus.APPROVED
+                        && Integer.valueOf(level).equals(e.getGrammarRule().getHskLevel())).toList());
+        Collections.shuffle(words, random);
+        Collections.shuffle(grammar, random);
+        int sections = level <= 2 ? 2 : 3;
+        int listening = total / sections;
+        int writing = level <= 2 ? 0 : total / sections;
+        int reading = total - listening - writing;
+        List<Question> passages = buildReadingQuestions(reading, level);
+        int wordQuestions = listening + reading - passages.size();
+        List<String> meanings = words.stream().map(Vocabulary::getMeaningVi).filter(v -> v != null && !v.isBlank()).distinct().toList();
+        if (words.size() < wordQuestions || meanings.size() < 4 || grammar.size() < writing) {
+            throw new BadRequestException("Chưa đủ câu hỏi đã duyệt cho HSK " + level + ". Hãy chọn ít câu hơn.");
+        }
+        List<Question> questions = new ArrayList<>();
+        for (int i = 0; i < wordQuestions; i++) {
+            Vocabulary word = words.get(i);
+            boolean audio = i < listening;
+            questions.add(new Question(questions.size(), audio ? "LISTENING" : "READING",
+                    audio ? "Nghe và chọn nghĩa đúng." : "Chọn nghĩa của từ: " + word.getWord(),
+                    buildOptions(word.getMeaningVi(), meanings), word.getMeaningVi(),
+                    word.getWord() + " · " + word.getPinyin() + " · " + word.getMeaningVi(), audio ? word.getWord() : null));
+        }
+        for (Question passage : passages) questions.add(new Question(questions.size(), passage.type(), passage.questionText(),
+                passage.options(), passage.correctAnswer(), passage.explanation(), null));
+        for (int i = 0; i < writing; i++) {
+            GrammarExercise exercise = grammar.get(i);
+            questions.add(new Question(questions.size(), "GRAMMAR", exercise.getQuestionText(),
+                    shuffleCopy(parseOptions(exercise.getOptionsJson())), exercise.getCorrectAnswer(), exercise.getExplanation(), null));
+        }
+        return questions;
+    }
+
     private List<Question> buildQuestions(int totalQuestions) {
         int readingTarget = (int) Math.round(totalQuestions * 0.15);
         int grammarTarget = Math.max(1, (int) Math.round(totalQuestions * 0.35));
@@ -302,13 +383,18 @@ public class ExamService {
     }
 
     private List<Question> buildReadingQuestions(int limit) {
+        return buildReadingQuestions(limit, null);
+    }
+
+    private List<Question> buildReadingQuestions(int limit, Integer level) {
         if (limit <= 0) {
             return List.of();
         }
 
         // CHỈ lấy bài đọc hiểu đã APPROVED theo đúng yêu cầu
         List<ReadingPassage> pool = new ArrayList<>(
-                readingPassageRepository.findByReviewStatus(ReviewStatus.APPROVED));
+                readingPassageRepository.findByReviewStatus(ReviewStatus.APPROVED).stream()
+                        .filter(p -> level == null || level.equals(p.getHskLevel())).toList());
         if (pool.isEmpty()) {
             return List.of();
         }
@@ -363,6 +449,7 @@ public class ExamService {
 
         List<GrammarExercise> pool = new ArrayList<>(
                 ContentAccess.visibleOnly(grammarExerciseRepository.findAll(), GrammarExercise::getReviewStatus));
+        pool.removeIf(e -> "SENTENCE_ORDER".equals(e.getExerciseType()));
         Collections.shuffle(pool, random);
 
         List<Question> questions = new ArrayList<>();
@@ -472,7 +559,7 @@ public class ExamService {
                 exam.getStartedAt(),
                 exam.getStartedAt().plus(Duration.ofMinutes(exam.getDurationMinutes())),
                 exam.getStatus(),
-                questionResponses
+                questionResponses, exam.getHskLevel(), maximumScore(exam), passingScore(exam)
         );
     }
 

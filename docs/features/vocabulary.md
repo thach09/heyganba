@@ -1,36 +1,17 @@
-# Phiên ôn từ vựng & Tra cứu từ điển
+# Từ vựng và SRS
 
-> Trạng thái: Đã triển khai đầy đủ — bao gồm phiên Flashcard/SRS, Tra cứu từ điển tiếng Nhật và Sổ tay từ vựng cá nhân (Issue #11).
+Cập nhật M6 và audit 17/10/2026. Bộ lọc Nhập môn + HSK 1–6 lấy cấp từ URL, giữ tham số khác và hỗ trợ back/refresh. Số bài/từ phản ánh dữ liệu hiện có; xem [nguồn và số lượng](../m6-curriculum-sources.md).
 
-## Hành vi hiện tại
+## Luồng học
 
-### 1. Phiên Flashcard / SRS
-- Phiên ôn lấy từ đến hạn và từ mới qua `GET /api/v1/flashcard/due-today`.
-- Câu hỏi trắc nghiệm hỏi nghĩa tiếng Việt hoặc cách đọc; từ thuần Kana luôn hỏi nghĩa.
-- Nếu phiên không đủ đáp án nhiễu phù hợp, giao diện chuyển sang tự đánh giá.
-- Trả lời đúng gửi `GOOD`, sai gửi `FORGOT` qua `POST /api/v1/flashcard/review`; phần kết quả hiển thị từ, cách đọc, nghĩa và một ví dụ.
-- Thống kê phiên lấy từ `GET /api/v1/flashcard/stats`.
-- Giáo trình có 116 từ, được kiểm chứng và duyệt qua migration. Phát âm bằng cách đọc kana qua TTS dùng chung. Mục JMdict lưu vào sổ không đi vào pool SRS hoặc ngân hàng thi của giáo trình.
+Chọn bài theo cấp/chủ đề, xem từ và câu ví dụ song ngữ, lật thẻ để hiện Pinyin/Hán Việt/nghĩa. Cả hai mặt thẻ nằm trong bố cục grid có chiều cao theo nội dung để câu dài không đè phần điều khiển. Lưu vào sổ từ qua một thao tác và có phản hồi kết quả.
 
-### 2. Tra cứu Từ điển (`/dictionary` - Issue #11)
-- Endpoint: `GET /api/v1/dictionary/search?q=...&page=0` (alias `query`) tìm kanji, hiragana, katakana, romaji, nghĩa Việt của giáo trình và nghĩa Anh của JMdict. Catalog có 218.867 mục trong snapshot 06/10/2026, 40 kết quả/trang, `hasMore` cho tải tiếp, kết quả chính xác được ưu tiên. Ký tự `%`/`_` được tìm như văn bản.
-- `GET /api/v1/dictionary/lookup/{id}` trả từ và kanji thành phần đã duyệt. ID âm là mục JMdict, ID dương là từ giáo trình. Nghĩa Anh được ghi rõ, không giả làm bản dịch Việt. Mục ngoài giáo trình không có Hán Việt hoặc ví dụ tự bịa.
-- Nguồn [JMdict / EDRDG](https://www.edrdg.org/jmdict/j_jmdict.html), dữ liệu [CC BY-SA 4.0](https://www.edrdg.org/edrdg/licence.html). Snapshot có hash và repeatable Flyway refresh; workflow hằng tháng chuẩn bị bản cập nhật để review. Phát âm dùng TTS theo `reading`.
-- Tra cứu theo bộ thủ Kanji: `GET /api/v1/dictionary/kanji-radicals`.
+Gõ Pinyin dùng `checkPinyinAnswer`, chấp nhận dấu thanh hoặc số, gồm ü/v (hǎo/hao3, lǜ/lv4). Bài gõ là luyện tập phát âm qua chữ, không đánh giá giọng nói.
 
-### 3. Sổ tay từ vựng cá nhân (Personal Vocab Notebooks - Issue #11)
-- Người học có thể tạo các sổ tay từ vựng riêng để phân loại từ: `GET /api/v1/vocab/notebooks`, `POST /api/v1/vocab/notebooks`.
-- Thêm từ từ màn Từ điển: `POST /api/v1/vocab/notebooks/{id}/items`. `/notebooks` là alias cùng chức năng. Luồng sổ đầu tiên cho phép tạo sổ rồi tiếp tục lưu từ.
-- Xoá từ: `DELETE /api/v1/vocab/notebooks/{id}/items/{vocabularyId}` (ID từ vựng đã lưu, không phải ID item).
-- Có 7 nhóm mẫu từ giáo trình đã duyệt; nhận bản sao qua `/notebooks/clone-sample/{id}`.
-- Luyện nghĩa/cách đọc, phím 1–4/Enter. `POST /notebooks/{id}/practice-result` nhận `sessionId` UUID và đáp án từng từ (`vocabularyId`, `kind`, `answer`), chấm ở server, không nhận số câu đúng do client khai báo. Retry cùng session không cộng EXP hai lần.
-- Từng từ cá nhân có số lần luyện, số lần đúng và thời điểm gần nhất. Phiên sổ từ không đổi lịch SRS. Cần ít nhất hai đáp án phân biệt để luyện trắc nghiệm; mỗi phiên tối đa 200 từ.
+Hàng đợi SRS là luồng riêng, chọn Quên / Nhớ mang máng / Nhớ rõ, lịch ôn SM-2 do server lưu theo người dùng. Mutation có attemptId để retry mạng không cộng lượt hai lần. Pending không hiện cho người học thường; admin có thể xem bản nháp.
 
-## Luồng liên quan
+Dashboard đếm từ riêng theo cấp, ôn nhớ ít nhất một lần. Không gọi đây là mức thông thạo được chứng nhận. Mỗi 10 lượt SRS tích luỹ cộng EXP theo cấu hình; nhiệm vụ 10 lượt trong ngày có phần thưởng riêng, phải nhận ở Dashboard.
 
-- UI: Trạm Flashcard (`/vocabulary`), Trạm Từ điển (`/dictionary`), Modal Thêm vào sổ tay cá nhân.
-- API:
-  - Flashcard: `/api/v1/flashcard/due-today`, `/api/v1/flashcard/review`, `/api/v1/flashcard/stats`
-  - Từ điển: `/api/v1/dictionary/search`, `/api/v1/dictionary/lookup/{id}`, `/api/v1/dictionary/kanji-radicals`
-  - Sổ tay cá nhân: `/api/v1/vocab/notebooks`
+## Kiểm chứng
 
+`curriculum-m6.test.tsx` kiểm tra sáu cấp/URL, `flashcard-m22.test.tsx` và các test phiên học kiểm tra luồng bài/SRS. Backend kiểm tra chủ sở hữu, bản nháp, SM-2 và idempotency. Rehearsal PostgreSQL kiểm tra dữ liệu, seed chạy lại và sequence.

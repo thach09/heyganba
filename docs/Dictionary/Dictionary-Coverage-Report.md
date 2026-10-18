@@ -1,5 +1,7 @@
 # HeyGanba Dictionary Coverage Report
 
+This is the historical PR #31 ranking-fix report. Current post-sync result-density measurements and release readiness are in [Vietnamese-Coverage-Expansion-Report.md](Vietnamese-Coverage-Expansion-Report.md).
+
 **Search readiness: SEARCH COVERAGE PASS. Content approval: PENDING_REVIEW.**
 
 Measured: 2026-10-10T12:00:28.623Z. The source tree includes normal merge 074594d2d172671bb491ad88e319f2f9a7aff6ca (released main → develop) and the focused Dictionary fixes in PR #31. No rebasing, history rewrite, frontend change, QA test change, main merge or production deploy was performed by this fix task.

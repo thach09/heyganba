@@ -10,6 +10,10 @@ public record ExamHistoryResponse(
         double scorePercent,
         int durationMinutes,
         Integer durationSeconds,
-        Instant submittedAt
+        Instant submittedAt,
+        Integer hskLevel,
+        int maximumScore,
+        int passingScore,
+        double scaledScore
 ) {
 }

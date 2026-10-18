@@ -13,20 +13,29 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AdminKanjiRequest {
-    @NotBlank(message = "Chữ Kanji là bắt buộc")
+    @NotBlank(message = "Chữ Hán là bắt buộc")
+    @jakarta.validation.constraints.Size(max=10)
     private String character;
 
     @NotNull(message = "Số nét là bắt buộc")
     @Min(value = 1, message = "Số nét phải tối thiểu là 1")
     private Integer strokeCount;
 
-    private String onyomi;
-    private String kunyomi;
+    @jakarta.validation.constraints.Size(max=50)
+    @jakarta.validation.constraints.Size(max=100)
+    private String pinyin;
+    @jakarta.validation.constraints.Size(max=10)
+    @jakarta.validation.constraints.Size(max=10)
+    private String traditional;
+    @jakarta.validation.constraints.Size(max=100)
     private String sinoVietnamese;
 
     @NotBlank(message = "Ý nghĩa là bắt buộc")
+    @jakarta.validation.constraints.Size(max=10000)
     private String meaning;
 
+    @jakarta.validation.constraints.Size(max=2000)
     private String mnemonic;
+    @jakarta.validation.constraints.Size(max=50)
     private String lessonSlug;
 }

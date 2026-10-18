@@ -29,7 +29,7 @@ public class LearningPreferenceService {
     @Transactional
     public Preferences update(Long learner, LearningPreferenceRequest request) {
         // Serialize first creation and updates using the existing per-account lock.
-        users.findLockedById(learner).orElseThrow(() -> new ResourceNotFoundException("Account not found"));
+        users.findLockedById(learner).orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy tài khoản"));
         Time time = request.reminderTime() == null ? null : Time.valueOf(LocalTime.parse(request.reminderTime()));
         int changed = jdbc.update("UPDATE user_learning_preferences SET daily_study_minutes=?,reminder_opt_in=?,reminder_time=?,updated_at=CURRENT_TIMESTAMP WHERE user_id=?",
                 request.dailyStudyMinutes(), request.reminderOptIn(), time, learner);

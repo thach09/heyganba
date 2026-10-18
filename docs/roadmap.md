@@ -1,46 +1,29 @@
-# Roadmap tính năng
+# Roadmap tính năng — Nền tảng Học tiếng Trung
 
-> Roadmap sản phẩm theo các ý đã được nêu/chốt. Mỗi liên kết ghi hành vi đang có trong app. Phần chưa triển khai được đánh dấu riêng; Advanced là định hướng tương lai, chưa phải cam kết về thời điểm.
+> Định hướng lộ trình sản phẩm nền tảng học tiếng Trung chuẩn HSK cho người học Việt Nam.
 
-## MVP — Đã triển khai
+## 1. Nền tảng Đã hoàn thành (Core Stations)
 
-- [x] **Xác thực và tài khoản** — [chi tiết](features/authentication.md)
-- [x] **Trang tổng quan** — [chi tiết](features/dashboard.md)
-- [x] **Tiến độ học tập** (heatmap, streak, EXP và bảng xếp hạng) — [chi tiết](features/progress.md)
-- [x] **Kana** (tra cứu, luyện gõ, luyện viết tay) — [chi tiết](features/kana.md)
-- [x] **Phiên ôn từ vựng/SRS và từ điển/sổ từ** — [chi tiết](features/vocabulary.md).
-- [x] **Kanji** (tra cứu, bộ thủ, luyện viết tay) — [chi tiết](features/kanji.md)
-- [x] **Ngữ pháp** (tra cứu, trang chi tiết, luyện trắc nghiệm) — [chi tiết](features/grammar.md)
-- [x] **Thi thử** (đề sinh tự động theo công thức hiện có, chấm server, lịch sử) — [chi tiết](features/exam.md)
-- [x] **Quản trị cơ bản** (trạng thái hệ thống và danh sách người dùng, chỉ ADMIN) — [chi tiết](features/admin.md)
+- [x] **Trạm Pinyin (Bính âm & 4 Thanh điệu)**: Bảng mẫu âm, sóng cao độ trực quan, âm thanh mẫu và bài tập phân biệt thanh điệu.
+- [x] **Trạm Hanzi (Chữ Hán & Bút thuận)**: Bảng chữ Hán HSK 1–6, lưới Mễ Tự Cách (米字格), hướng dẫn từng nét với HanziWriter.
+- [x] **Trạm Từ vựng & Flashcards HSK**: Thẻ lật 3D (Âm Hán Việt, Giản thể, Phồn thể, Ví dụ), ôn tập SRS và tính điểm EXP.
+- [x] **Tra cứu & Sổ tay Từ điển**: Tìm kiếm đa chiều (Chữ Hán, Pinyin, Âm Hán Việt, Nghĩa), lưu từ vựng vào sổ tay học tập.
+- [x] **Hạ tầng Backend**: PostgreSQL schema chuẩn HSK (`V1`–`V3`), Hibernate validation 100%, bảo mật JWT và API Exp/CharacterMastery.
+- [x] **Giao diện Văn Phòng Tứ Bảo (Modern Guochao)**: Tông màu Giấy Tuyên & Nghiên Mực, con dấu chu sa đỏ `<RedSealStamp />`, thẻ `<OrientalCard>` viền họa tiết truyền thống.
 
-## MVP — Bổ sung đã triển khai ngày 06/10/2026
+## 2. Hệ thống Linh Thú Đồng Hành (Companion Pets) — [NEW]
 
-- [x] **Từ điển + Kho học tập**: 218.867 mục JMdict cùng từ giáo trình, tìm kana/kanji/romaji/nghĩa, phân trang, lưu vào sổ cá nhân.
-- [x] **Nhóm mẫu cơ bản**: migration tạo 7 nhóm từ giáo trình đã duyệt; nhận bản sao rồi luyện nghĩa/âm đọc.
-- [x] **Chỉ số luyện tập theo từ**: số lượt, số đúng và lần luyện gần nhất; chấm ở server, retry không cộng lặp, không đổi SRS.
-- [x] **Đổi mật khẩu người dùng (Phase 5 Polish)**: `PUT /api/v1/auth/password` + UI, JTI hiện tại vào `revoked_tokens`, account token version vô hiệu toàn bộ token cũ.
-- [x] **Nét viết đúng ≥80%**: áp dụng chung Kana/Kanji, từ chối nét thiếu và vẽ bừa; chưa chấm thứ tự nét.
+- [x] **4 Linh thú văn hóa Á Đông**:
+  - `panda` (Đoàn Đoàn - 团团)
+  - `red_panda` (Đào Đào - 淘淘)
+  - `golden_monkey` (Tiểu Ngộ Không - 小悟空)
+  - `imperial_cat` (Ngự Miêu - 御猫)
+- [x] **5 Trạng thái cảm xúc tương tác**: `idle`, `studying`, `happy`, `sad`, `eating` với bong bóng thoại song ngữ Trung-Việt.
+- [x] **Vòng lặp chăm sóc & gắn kết**: Thưởng Măng Trúc 🎋 sau mỗi bài học, tương tác cho ăn và nâng cấp độ thân mật.
+- [x] **Study Companion Dock**: Đồng hành mini theo dõi và khích lệ người học trực tiếp trong các trạm Pinyin, Hanzi, Từ vựng.
 
-Bằng chứng, giới hạn và kiểm chứng nguồn: [audit 06/10/2026](Internal/audit-2026-10-06.md).
+## 3. Lộ trình Mở rộng Tiếp theo
 
-Phạm vi này được theo dõi ở [issue #11](https://github.com/thach09/heyganba/issues/11). Câu hỏi cloze/ngữ cảnh chưa thuộc MVP.
-
-## Advanced Features
-
-- **Market bộ học tập**: giáo viên tạo bộ; học viên tìm và nhận bộ vào Kho. Định hướng chi tiết ở issue #11.
-- **Đề thi thử do người dùng tạo (Backlog sau MVP)**: tự định nghĩa phạm vi đề, lưu và sử dụng lại; theo dõi ở [issue #12](https://github.com/thach09/heyganba/issues/12) — giữ nguyên ở backlog sau MVP, không triển khai đợt này.
-- **Học qua câu chuyện**: tạo môi trường học có câu chuyện và cốt truyện, khiến người học có hứng thú quay lại.
-- **AI conversation partner**: một đối tác trò chuyện như người bạn để người học luyện tiếng Nhật.
-
-## Chốt gần đây (27/09/2026)
-
-- **Mascot — CHÍNH THỨC, không còn là "tạm"**: chuỗi emoji tiến hoá theo streak (🥚 → 🐣 → 🐤 → 🐥 → 🦅 → 🐉) là giải pháp
-  lâu dài; **không làm thêm mascot nào khác**. Logo cổng Torii là biểu tượng thương hiệu chính thức. Mỗi bậc emoji có
-  `alt` mô tả cho screen reader (`frontend/src/components/MascotBadge.tsx`).
-- **Redis — HOÃN CÓ ĐIỀU KIỆN** (đã chuyển ra khỏi backlog đang làm): đợt này **không** setup Redis và **không** đổi
-  `APP_SRS_CACHE` (giữ `memory`).
-  - Điều kiện xem xét lại: khi **load test** (xem `docs/Internal/deployment-plan.md` → "Trước khi public rộng") chứng minh
-    **Postgres là bottleneck thật** (p95 vượt mục tiêu, HikariCP hết connection, hoặc số instance > 1 làm rate-limit/
-    `SrsDueCache` in-memory mất tác dụng) — **không** bật trước thời điểm đó.
-  - Implementation đã có sẵn (`RedisSrsDueCache`, key `srs:due:{userId}`) nên khi cần chỉ phải set env, không phải viết code.
+- **HSK Đề thi thử (Mock Exams)**: Sinh đề thi thử chuẩn HSK 1–4, bấm giờ làm bài, tự động chấm điểm và phân tích lỗi sai.
+- **Luyện ngữ điệu bằng AI**: Nhận diện âm thanh giọng đọc của người học và so sánh độ khớp với người bản xứ.
+- **Sàn chia sẻ sổ từ cộng đồng**: Người dùng có thể chia sẻ và tải về các bộ flashcard từ vựng theo chuyên đề.

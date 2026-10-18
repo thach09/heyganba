@@ -45,7 +45,7 @@ public class AuthService {
         }
 
         Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
-                .orElseThrow(() -> new BadRequestException("Default USER role not found in database"));
+                .orElseThrow(() -> new BadRequestException("Chưa thiết lập được tài khoản. Vui lòng liên hệ quản trị viên."));
 
         User user = User.builder()
                 .email(request.getEmail().toLowerCase().trim())
@@ -92,7 +92,7 @@ public class AuthService {
 
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
         User user = userRepository.findById(userPrincipal.getId())
-                .orElseThrow(() -> new BadRequestException("User not found"));
+                .orElseThrow(() -> new BadRequestException("Không tìm thấy tài khoản"));
 
         if (Boolean.TRUE.equals(user.getIsTwoFactorEnabled())) {
             if (request.getTwoFactorCode() == null || request.getTwoFactorCode().isBlank()) {
@@ -130,7 +130,7 @@ public class AuthService {
     @Transactional
     public TwoFactorSetupResponse setupTwoFactor(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new BadRequestException("User not found"));
+                .orElseThrow(() -> new BadRequestException("Không tìm thấy tài khoản"));
 
         String secret = user.getTwoFactorSecret();
         if (secret == null || secret.isBlank() || !Boolean.TRUE.equals(user.getIsTwoFactorEnabled())) {
@@ -150,7 +150,7 @@ public class AuthService {
     @Transactional
     public void enableTwoFactor(Long userId, String code) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new BadRequestException("User not found"));
+                .orElseThrow(() -> new BadRequestException("Không tìm thấy tài khoản"));
 
         if (user.getTwoFactorSecret() == null) {
             throw new BadRequestException("Vui lòng khởi tạo mã 2FA trước khi kích hoạt");
@@ -168,7 +168,7 @@ public class AuthService {
     @Transactional
     public void disableTwoFactor(Long userId, String code) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new BadRequestException("User not found"));
+                .orElseThrow(() -> new BadRequestException("Không tìm thấy tài khoản"));
 
         if (!Boolean.TRUE.equals(user.getIsTwoFactorEnabled())) {
             return;
@@ -197,7 +197,7 @@ public class AuthService {
     @Transactional
     public void resetTwoFactor(Long userId, String password) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new BadRequestException("User not found"));
+                .orElseThrow(() -> new BadRequestException("Không tìm thấy tài khoản"));
 
         if (password == null || password.isBlank() || !passwordEncoder.matches(password, user.getPasswordHash())) {
             throw new BadRequestException("Mật khẩu không chính xác");
@@ -211,7 +211,7 @@ public class AuthService {
     @Transactional(readOnly = true)
     public TwoFactorSetupResponse getTwoFactorStatus(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new BadRequestException("User not found"));
+                .orElseThrow(() -> new BadRequestException("Không tìm thấy tài khoản"));
         boolean enabled = Boolean.TRUE.equals(user.getIsTwoFactorEnabled());
         // Chỉ tiết lộ trạng thái bật/tắt, KHÔNG BAO GIỜ trả về secret qua status endpoint
         return TwoFactorSetupResponse.builder()
@@ -225,12 +225,12 @@ public class AuthService {
     public AuthResponse refreshToken(RefreshTokenRequest request) {
         String token = request.getRefreshToken();
         if (!tokenProvider.validateToken(token) || !tokenProvider.isRefreshToken(token)) {
-            throw new BadRequestException("Invalid or expired refresh token");
+            throw new BadRequestException("Phiên đăng nhập hết hạn hoặc không hợp lệ.");
         }
 
         String username = tokenProvider.getUsernameFromJwt(token);
         UserPrincipal initial = (UserPrincipal) userDetailsService.loadUserByUsername(username);
-        User user = userRepository.findLockedById(initial.getId()).orElseThrow(() -> new BadRequestException("Account not found"));
+        User user = userRepository.findLockedById(initial.getId()).orElseThrow(() -> new BadRequestException("Không tìm thấy tài khoản"));
         UserPrincipal userPrincipal = UserPrincipal.create(user);
         // Serialize rotation per account before checking revocation, including concurrent refresh requests.
         String jti = tokenProvider.getJtiFromJwt(token);

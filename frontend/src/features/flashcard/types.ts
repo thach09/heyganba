@@ -1,18 +1,62 @@
+export type SrsRating = 'FORGOT' | 'HARD' | 'GOOD' | 'EASY';
+
+export interface VocabularyLesson {
+  id: number;
+  slug: string;
+  title: string;
+  description: string;
+  curriculumLevel: string;
+  orderIndex: number;
+  wordCount: number;
+}
+
+export interface VocabularyWord {
+  id: number;
+  word: string;
+  traditional?: string | null;
+  pinyin?: string | null;
+  pinyinNormalized?: string | null;
+  hanViet?: string | null;
+  partOfSpeech?: string | null;
+  meaningVi?: string | null;
+  hskLevel?: number | null;
+  lessonNumber?: number | null;
+  exampleZh?: string | null;
+  examplePinyin?: string | null;
+  exampleVi?: string | null;
+  audioUrl?: string | null;
+  reviewStatus: string;
+  lessonSlug?: string | null;
+  lessonTitle?: string | null;
+}
+
 export interface FlashcardDueItem {
   vocabularyId: number;
   word: string;
-  reading: string;
-  meaning: string;
-  sinoVietnamese: string | null;
-  exampleSentence: string | null;
-  exampleReading: string | null;
-  exampleMeaning: string | null;
-  lessonSlug: string | null;
-  isNew: boolean;
-  intervalDays: number;
-  repetitions: number;
-  easeFactor: number;
-  dueDate: string | null;
+  traditional?: string | null;
+  pinyin?: string | null;
+  pinyinNormalized?: string | null;
+  hanViet?: string | null;
+  partOfSpeech?: string | null;
+  meaningVi?: string | null;
+  hskLevel?: number;
+  lessonNumber?: number;
+  exampleZh?: string | null;
+  examplePinyin?: string | null;
+  exampleVi?: string | null;
+  reading?: string;
+  meaning?: string;
+  sinoVietnamese?: string | null;
+  exampleSentence?: string | null;
+  exampleReading?: string | null;
+  exampleMeaning?: string | null;
+  lessonSlug?: string | null;
+  isNew?: boolean;
+  intervalDays?: number;
+  repetitions?: number;
+  easeFactor?: number;
+  dueDate?: string | null;
+  masteryScore?: number;
 }
 
 export interface FlashcardStats {

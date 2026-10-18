@@ -10,7 +10,7 @@ try {
   const page = await browser.newPage();
   await page.goto(process.env.AUDIT_WEB_URL || 'http://127.0.0.1:5174/kana', { waitUntil: 'networkidle0' });
   const results = await page.evaluate(async () => {
-    const { skeletonize, gradeHandwriting } = await import('/src/features/kana/handwritingScore.ts');
+    const { skeletonize, gradeHandwriting } = await import('/src/lib/handwritingScore.ts');
     const results = [];
     for (const char of ['あ','い','す','が','シ','ツ','きゃ','学校','日','本','語','食']) {
       const fonts = await document.fonts.load("400 200px 'Noto Serif JP'", char);

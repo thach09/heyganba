@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@org.springframework.validation.annotation.Validated
 @RestController
 @RequestMapping({"/notebooks", "/vocab/notebooks"})
 @RequiredArgsConstructor
@@ -62,6 +63,14 @@ public class VocabNotebookController {
     ) {
         VocabNotebookResponse updated = notebookService.addWordToNotebook(currentUser.getId(), id, request);
         return ResponseEntity.ok(ApiResponse.success(updated, "Đã thêm từ vựng vào sổ tay"));
+    }
+
+    public record NoteRequest(@jakarta.validation.constraints.Size(max=2000) @com.heyganba.common.validation.PlainText String customNote) {}
+
+    @PutMapping("/{id}/items/{vocabularyId}")
+    public ApiResponse<VocabNotebookResponse> updateNote(@AuthenticationPrincipal UserPrincipal currentUser,
+            @PathVariable Long id, @PathVariable Long vocabularyId, @Valid @RequestBody NoteRequest request) {
+        return ApiResponse.success(notebookService.updateNote(currentUser.getId(), id, vocabularyId, request.customNote()));
     }
 
     @DeleteMapping("/{id}/items/{vocabularyId}")

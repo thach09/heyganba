@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ChevronLeft, X } from 'lucide-react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import type { AuthResponse } from '../lib/api/types';
+import { ThemeToggle } from './ThemeToggle';
 
 interface SidebarProps {
   /** Mobile: close the drawer after choosing a nav item; desktop keeps it open. */
@@ -22,22 +23,18 @@ interface SidebarProps {
 const itemBase =
   'relative flex w-full items-baseline gap-2.5 border-0 bg-transparent p-0 text-left font-sans text-sm text-fg cursor-pointer focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-[3px] focus-visible:outline-fg-38';
 
-const ToriiMark = () => (
-  <svg
-    width="26"
-    height="24"
-    viewBox="0 0 26 24"
-    aria-hidden="true"
-    className="shrink-0 fill-none stroke-fg-60"
-    strokeWidth={1.1}
-    strokeLinecap="round"
-  >
-    <path d="M2 5 H24 M4 9 H22 M6.5 9 V21 M19.5 9 V21 M13 9 V14" />
-  </svg>
+/** Chinese Imperial Seal Stamp (朱砂玉印 - khắc chữ 漢) as the platform brand icon */
+const ChineseSealStamp = () => (
+  <div className="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-[3px] border border-gold/70 bg-cinnabar/20 ">
+    <div className="absolute inset-[2px] rounded-[2px] border border-cinnabar/70" />
+    <span className="relative z-10 font-serif text-[15px] font-black leading-none text-cinnabar-ink">
+      漢
+    </span>
+  </div>
 );
 
 const ActiveTick = () => (
-  <span aria-hidden="true" className="absolute -left-4 top-1 bottom-1 w-0.5 bg-rank" />
+  <span aria-hidden="true" className="absolute -left-4 top-1 bottom-1 w-0.5 bg-gold " />
 );
 
 const iconButton =
@@ -120,8 +117,31 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const isAdmin = user?.role === 'ROLE_ADMIN';
   const location = useLocation();
   const [charGroupOpen, setCharGroupOpen] = useState(false);
-  const charGroupActive = location.pathname.startsWith('/kana') || location.pathname.startsWith('/kanji');
+  const charGroupActive = location.pathname.startsWith('/hanzi') || location.pathname.startsWith('/pinyin');
   const charGroupRef = useRef<HTMLDivElement | null>(null);
+  const asideRef = useRef<HTMLElement | null>(null);
+  const desktopToggleRef = useRef<HTMLButtonElement | null>(null);
+  const closeButtonRef = useRef<HTMLButtonElement | null>(null);
+
+  // When desktop sidebar closes, if focus was inside the collapsible content, move focus to the toggle button
+  useEffect(() => {
+    if (!isOverlay && !isOpen) {
+      if (
+        asideRef.current &&
+        asideRef.current.contains(document.activeElement) &&
+        document.activeElement !== desktopToggleRef.current
+      ) {
+        desktopToggleRef.current?.focus();
+      }
+    }
+  }, [isOpen, isOverlay]);
+
+  // When mobile drawer opens, focus the close button for instant keyboard accessibility
+  useEffect(() => {
+    if (isOverlay && isOpen) {
+      closeButtonRef.current?.focus();
+    }
+  }, [isOverlay, isOpen]);
 
   /**
    * The flyout can be opened by click/tap and would otherwise stay stuck:
@@ -141,6 +161,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     };
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
+        event.stopPropagation();
         setCharGroupOpen(false);
       }
     };
@@ -157,45 +178,62 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <aside
-      className={`fixed inset-y-0 left-0 z-20 flex w-[216px] flex-col overflow-visible overscroll-contain bg-bg pb-8 pl-8 pr-4 pt-10 transition-transform duration-150 max-[900px]:overflow-y-auto max-[900px]:z-[100] max-[900px]:w-[min(280px,82vw)] max-[900px]:p-6 ${
+      ref={asideRef}
+      className={`fixed inset-y-0 left-0 z-20 flex w-[216px] flex-col overflow-visible overscroll-contain bg-card/95 border-r border-rule backdrop-blur-md pb-8 pl-8 pr-4 pt-10 transition-transform duration-150 max-[900px]:overflow-y-auto max-[900px]:z-[100] max-[900px]:w-[min(280px,82vw)] max-[900px]:p-6 ${
         isOpen ? 'translate-x-0' : '-translate-x-full'
       }`}
       aria-label="Thanh điều hướng chính"
-      inert={isOverlay && !isOpen}
+      inert={isOverlay && !isOpen ? true : undefined}
     >
-      <div className="flex items-center justify-between gap-2.5">
-        <div className="flex items-center gap-2.5">
-          <ToriiMark />
-          <div>
-            <div className="text-[15px] font-semibold tracking-[0.01em] text-fg">HeyGanba</div>
-            <span className="block text-[10px] uppercase tracking-[0.22em] text-fg-38">日本語</span>
-          </div>
-        </div>
-        {isOverlay && onClose && (
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Đóng thanh điều hướng"
-            title="Đóng thanh điều hướng"
-            className={iconButton}
-          >
-            <X size={18} />
-          </button>
-        )}
-      </div>
-
       {/* Edge tab attached to the sidebar: open shows ‹ on the right edge, closed slides to the screen edge and flips to › */}
       {!isOverlay && onToggleSidebar && (
         <button
+          ref={desktopToggleRef}
           type="button"
-          onClick={onToggleSidebar}
+          onClick={() => {
+            onToggleSidebar();
+            requestAnimationFrame(() => {
+              desktopToggleRef.current?.focus();
+            });
+          }}
           aria-label={isOpen ? 'Thu gọn thanh điều hướng' : 'Mở thanh điều hướng'}
           title={isOpen ? 'Thu gọn thanh điều hướng' : 'Mở thanh điều hướng'}
-          className="absolute -right-5 top-12 z-40 inline-flex h-10 w-5 cursor-pointer items-center justify-center border border-l-0 border-rule bg-card text-fg-38 transition-colors hover:border-rule-strong hover:text-fg"
+          className="absolute -right-5 top-12 z-40 inline-flex h-10 w-5 cursor-pointer items-center justify-center border border-l-0 border-rule bg-card text-fg-38 transition-colors hover:border-rule-strong hover:text-fg focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-[3px] focus-visible:outline-fg-38"
         >
           <ChevronLeft size={14} className={isOpen ? '' : 'rotate-180'} />
         </button>
       )}
+
+      {/* Collapsible sidebar content: made inert when collapsed on desktop or closed on mobile */}
+      <div
+        className="flex flex-1 flex-col min-h-0"
+        inert={!isOpen ? true : undefined}
+      >
+        <div className="flex items-center justify-between gap-2.5">
+          <div className="flex items-center gap-3">
+            <ChineseSealStamp />
+            <div className="min-w-0">
+              <div className="font-sans text-[16px] font-bold tracking-tight text-fg whitespace-nowrap">
+                Học tiếng Trung
+              </div>
+              <span className="block font-sans text-[11px] font-medium tracking-[0.16em] text-gold-ink">
+                中文学习 · 华语
+              </span>
+            </div>
+          </div>
+          {isOverlay && onClose && (
+            <button
+              ref={closeButtonRef}
+              type="button"
+              onClick={onClose}
+              aria-label="Đóng thanh điều hướng"
+              title="Đóng thanh điều hướng"
+              className={iconButton}
+            >
+              <X size={18} />
+            </button>
+          )}
+        </div>
 
       <nav className="mt-11 flex flex-1 flex-col gap-3.5">
         <NavItem to="/" k="今日" v="Hôm nay" onNavigate={onNavigate} />
@@ -230,17 +268,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
           />
           <div
             role="menu"
-            className={`absolute left-full top-[-10px] z-40 ml-3.5 min-w-[180px] bg-card py-2.5 transition-opacity max-[900px]:static max-[900px]:z-auto max-[900px]:ml-0 max-[900px]:mt-2 max-[900px]:min-w-0 max-[900px]:bg-transparent max-[900px]:pl-4 ${
+            className={`absolute left-full top-[-10px] z-40 ml-3.5 min-w-[188px] bg-card py-2.5 transition-opacity max-[900px]:static max-[900px]:z-auto max-[900px]:ml-0 max-[900px]:mt-2 max-[900px]:min-w-0 max-[900px]:bg-transparent max-[900px]:pl-4 ${
               charGroupOpen ? 'visible opacity-100 max-[900px]:block' : 'invisible opacity-0 max-[900px]:hidden'
             }`}
           >
             <span aria-hidden="true" className="absolute -left-3.5 top-0 bottom-0 w-3.5 max-[900px]:hidden" />
             <Link
-              to="/kana?script=hiragana"
+              to="/pinyin"
               role="menuitem"
               onClick={(event) => {
-                // Pointer click: drop focus so group-focus-within stops keeping the flyout open.
-                // Keyboard activation (detail === 0) keeps focus for further tabbing.
                 if (event.detail > 0) {
                   event.currentTarget.blur();
                 }
@@ -249,11 +285,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
               }}
               className="flex w-full cursor-pointer items-baseline gap-2.5 border-0 bg-transparent px-4 py-2 text-left font-sans text-fg hover:bg-tint"
             >
-              <span className="font-serif text-sm">ひらがな</span>
-              <span className="text-[10.5px] text-fg-38">Hiragana</span>
+              <span className="font-serif text-sm">拼音</span>
+              <span className="text-[10.5px] text-fg-38">Pinyin & Phát âm</span>
             </Link>
             <Link
-              to="/kana?script=katakana"
+              to="/hanzi"
               role="menuitem"
               onClick={(event) => {
                 if (event.detail > 0) {
@@ -264,31 +300,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
               }}
               className="flex w-full cursor-pointer items-baseline gap-2.5 border-0 bg-transparent px-4 py-2 text-left font-sans text-fg hover:bg-tint"
             >
-              <span className="font-serif text-sm">カタカナ</span>
-              <span className="text-[10.5px] text-fg-38">Katakana</span>
-            </Link>
-            <Link
-              to="/kanji"
-              role="menuitem"
-              onClick={(event) => {
-                if (event.detail > 0) {
-                  event.currentTarget.blur();
-                }
-                closeFlyout();
-                onNavigate?.();
-              }}
-              className="flex w-full cursor-pointer items-baseline gap-2.5 border-0 bg-transparent px-4 py-2 text-left font-sans text-fg hover:bg-tint"
-            >
-              <span className="font-serif text-sm">漢字</span>
-              <span className="text-[10.5px] text-fg-38">Kanji</span>
+              <span className="font-serif text-sm">汉字</span>
+              <span className="text-[10.5px] text-fg-38">Chữ Hán (Tập viết)</span>
             </Link>
           </div>
         </div>
 
-        <NavItem to="/vocabulary" k="単語" v="Từ vựng" onNavigate={onNavigate} />
-        <NavItem to="/dictionary" k="辞書" v="Tra cứu & Sổ từ" onNavigate={onNavigate} />
-        <NavItem to="/grammar" k="文法" v="Ngữ pháp" onNavigate={onNavigate} />
-        <NavItem to="/exam" k="試験" v="Thi thử" onNavigate={onNavigate} />
+        <NavItem to="/vocabulary" k="词汇" v="Từ vựng" onNavigate={onNavigate} />
+        <NavItem to="/dictionary" k="字典" v="Tra cứu & Sổ từ" onNavigate={onNavigate} />
+        <NavItem to="/grammar" k="语法" v="Ngữ pháp" onNavigate={onNavigate} />
+        <NavItem to="/exam" k="测试" v="Luyện tập" onNavigate={onNavigate} />
 
         {isAdmin && (
           <NavItem
@@ -305,45 +326,62 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {user ? (
           <>
             <div className="min-w-0">
-              <div className="truncate text-xs text-fg-60" title={user.fullName}>
-                {user.fullName}
+              <div className="truncate text-xs font-medium text-fg-60" title={user.fullName}>
+                {user.fullName?.toLowerCase().includes('heyganba') ? 'Administrator' : user.fullName}
               </div>
-              <div className="text-[10.5px] text-fg-38">
-                {user.role === 'ROLE_ADMIN' ? 'Quản trị viên' : 'Học viên'}
-              </div>
+              {user.fullName?.toLowerCase().includes('heyganba') ? null : (
+                <div className="text-[10.5px] text-fg-38">
+                  {user.role === 'ROLE_ADMIN' ? 'Administrator' : 'Học viên'}
+                </div>
+              )}
             </div>
             <div className="flex items-baseline gap-1.5 text-[11px] text-fg-38">
-              <span className="font-serif">連続</span>
+              <span className="font-serif">连续</span>
               <b className="font-serif text-sm font-semibold text-fg-60">{streakCount}</b>
               <span>ngày</span>
             </div>
-            {onLogout && (
+            <div className="flex items-center justify-between gap-2">
+              {onLogout && (
+                <button
+                  type="button"
+                  onClick={onLogout}
+                  className="cursor-pointer self-start border border-rule-strong bg-transparent px-3 py-1.5 text-[10.5px] font-semibold uppercase tracking-[0.12em] text-fg transition-colors hover:bg-fg hover:text-bg"
+                >
+                  Đăng xuất
+                </button>
+              )}
+              <ThemeToggle />
+            </div>
+            {onChangePassword && (
               <button
                 type="button"
-                onClick={onLogout}
-                className="cursor-pointer self-start border border-rule-strong bg-transparent px-3 py-1.5 text-[10.5px] font-semibold uppercase tracking-[0.12em] text-fg transition-colors hover:bg-fg hover:text-bg"
+                onClick={onChangePassword}
+                className="min-h-9 cursor-pointer self-start bg-transparent text-[12.5px] text-fg-60 hover:text-fg"
               >
-                Đăng xuất
+                Đổi mật khẩu
               </button>
             )}
-            {onChangePassword && <button type="button" onClick={onChangePassword} className="min-h-11 cursor-pointer self-start bg-transparent text-[12.5px] text-fg-60 hover:text-fg">Đổi mật khẩu</button>}
           </>
         ) : (
-          onOpenAuthModal && (
-            <button
-              type="button"
-              onClick={onOpenAuthModal}
-              className="cursor-pointer self-start border border-fg bg-fg px-3.5 py-1.5 text-[10.5px] font-semibold uppercase tracking-[0.12em] text-bg transition-opacity hover:opacity-85"
-            >
-              Đăng nhập
-            </button>
-          )
+          <div className="flex items-center justify-between gap-2">
+            {onOpenAuthModal && (
+              <button
+                type="button"
+                onClick={onOpenAuthModal}
+                className="cursor-pointer self-start border border-fg bg-fg px-3.5 py-1.5 text-[10.5px] font-semibold uppercase tracking-[0.12em] text-bg transition-opacity hover:opacity-85"
+              >
+                Đăng nhập
+              </button>
+            )}
+            <ThemeToggle />
+          </div>
         )}
         <div className="text-[11px] leading-[1.8] text-fg-38">
-          <span className="font-serif text-xs">練習は嘘をつかない</span>
+          <span className="font-serif text-xs">学而时习之</span>
           <br />
-          Luyện tập không nói dối.
+          Học rồi thường xuyên ôn lại.
         </div>
+      </div>
       </div>
     </aside>
   );

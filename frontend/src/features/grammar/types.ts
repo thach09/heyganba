@@ -11,8 +11,10 @@ export interface GrammarRuleDto {
   lessonSlug: string | null;
   lessonTitle: string | null;
   exerciseCount: number;
-  /** PENDING_REVIEW khi nội dung còn là bản nháp chờ duyệt tiếng Nhật. */
+  /** PENDING_REVIEW khi nội dung còn là bản nháp chờ duyệt học thuật. */
   reviewStatus: string | null;
+  examplesJson?: string | null;
+  hskLevel?: number | null;
 }
 
 export interface GrammarExerciseDto {
@@ -21,6 +23,8 @@ export interface GrammarExerciseDto {
   ruleTitle: string;
   questionText: string;
   options: string[];
+  exerciseType?: 'MULTIPLE_CHOICE' | 'SENTENCE_ORDER';
+  hskLevel?: number | null;
   isCommonMistake: boolean;
   mistakeCategory: string | null;
   reviewStatus: string | null;

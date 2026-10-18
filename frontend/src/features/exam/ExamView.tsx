@@ -6,24 +6,25 @@ import type { HeatmapDay } from '../progress/types';
 import type { ExamQuestion, ExamDto, ExamResultDto, ExamHistoryDto, StreakDto, LeaderboardDto } from './types';
 import { useAuth } from '../../app/useAuth';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Play, Users, Volume2 } from 'lucide-react';
+import { Play, Users, Volume2, BookOpen } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import confetti from 'canvas-confetti';
 import { FeedbackAlert } from '../../components/FeedbackAlert';
 import type { FeedbackType } from '../../components/FeedbackAlert';
 import { SubmitButton } from '../../components/SubmitButton';
 import { MascotBadge } from '../../components/MascotBadge';
+import { RedSealStamp } from '../../components/RedSealStamp';
 import { updateClassCode } from '../account/api';
 import type { AuthResponse } from '../../lib/api/types';
-import { isJapaneseSpeechSupported, speakJapanese } from '../../services/japaneseSpeech';
+import { isChineseSpeechSupported, speakChinese } from '../../services/chineseSpeech';
 import { Modal } from '../../components/Modal';
 import { learningKeyboardBlocked } from '../../lib/learningKeyboard';
 
 type Phase = 'IDLE' | 'TAKING' | 'RESULT';
 
 const QUESTION_COUNT_OPTIONS = [10, 20, 30];
-const DURATION_OPTIONS = [10, 20, 30];
+const DURATION_OPTIONS = [15, 20, 35];
 const HEATMAP_DAYS = 91;
-/** Activity opacity levels shared with the dashboard heatmap (DESIGN.md). */
 const HEAT_OPACITY = [0.06, 0.22, 0.44, 0.66, 0.9];
 
 const labelClass = 'text-[10.5px] font-semibold uppercase tracking-[0.18em] text-fg-38';
@@ -35,10 +36,9 @@ const tdNumClass = `${tdClass} text-right tabular-nums`;
 
 const chipClass = (active: boolean) =>
   `cursor-pointer border px-3 py-1.5 text-[11.5px] transition-colors ${
-    active ? 'border-fg bg-fg text-bg' : 'border-rule-strong bg-transparent text-fg-60 hover:border-fg hover:text-fg'
+    active ? 'border-fg bg-fg text-bg font-semibold' : 'border-rule-strong bg-transparent text-fg-60 hover:border-fg hover:text-fg'
   }`;
 
-/** Rank 1 uses solid ink, ranks 2–3 use an ink outline, and remaining ranks are muted. */
 const RankBadge: React.FC<{ rank: number }> = ({ rank }) => {
   const tone = rank === 1 ? 'bg-fg text-bg' : rank <= 3 ? 'border border-fg text-fg' : 'text-fg-38';
   return (
@@ -48,11 +48,27 @@ const RankBadge: React.FC<{ rank: number }> = ({ rank }) => {
   );
 };
 
+const formatClock = (seconds: number) => {
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+};
+
+const heatLevel = (count: number) => {
+  if (count <= 0) return 0;
+  if (count < 3) return 1;
+  if (count < 8) return 2;
+  if (count < 15) return 3;
+  return 4;
+};
+
 export const ExamView: React.FC = () => {
   const { user, requireLogin: onRequireLogin, updateProfile } = useAuth();
   const userId = user?.userId;
+  const navigate = useNavigate();
   const { run, cancel } = useRequestScope(user?.userId);
   const [phase, setPhase] = useState<Phase>('IDLE');
+  const [hskLevel, setHskLevel] = useState(1);
   const [totalQuestions, setTotalQuestions] = useState(20);
   const [durationMinutes, setDurationMinutes] = useState(20);
   const [exam, setExam] = useState<ExamDto | null>(null);
@@ -75,7 +91,6 @@ export const ExamView: React.FC = () => {
   const [helpOpen, setHelpOpen] = useState(false);
   const helpHeading = useRef<HTMLHeadingElement>(null);
   const [feedback, setFeedback] = useState<{ type: FeedbackType; title: string; message: string } | null>(null);
-  // Class leaderboard: load the class code from the profile and allow editing here.
   const [classCodeInput, setClassCodeInput] = useState(user?.classCode ?? '');
   const [classFilterActive, setClassFilterActive] = useState(false);
   const [classSaving, setClassSaving] = useState(false);
@@ -92,66 +107,75 @@ export const ExamView: React.FC = () => {
 
     const activeClassCode = classFilterActive && classCodeInput.trim() ? classCodeInput.trim() : null;
 
-    const loaded = await run('ExamView-load', signal => Promise.all([
-      examApi.history({ signal }),
-      progressApi.streak({ signal }),
-      progressApi.heatmap(HEATMAP_DAYS, { signal }),
-      examApi.leaderboard(activeClassCode, { signal }),
-    ]));
-    if (!loaded) return;
-    const [historyRes, streakRes, heatmapRes, leaderboardRes] = loaded;
+    const loaded = await run('ExamView-load', (signal) =>
+      Promise.all([
+        examApi.history({ signal }),
+        progressApi.streak({ signal }),
+        progressApi.heatmap(HEATMAP_DAYS, { signal }),
+        examApi.leaderboard(activeClassCode, { signal }),
+      ])
+    );
 
-    if (historyRes.success && historyRes.data) {
-      setHistory(historyRes.data);
-    }
-    if (streakRes.success && streakRes.data) {
-      setStreak(streakRes.data);
-    }
-    if (heatmapRes.success && heatmapRes.data) {
-      setHeatmap(heatmapRes.data);
-    }
-    if (leaderboardRes.success && leaderboardRes.data) {
-      setLeaderboard(leaderboardRes.data);
-    }
-    if (!historyRes.success) {
-      setError(historyRes.message || 'Không tải được dữ liệu tiến độ.');
-    }
+    if (!loaded) return;
+    const [h, s, m, l] = loaded;
+    if (h.success && h.data) setHistory(h.data);
+    if (s.success && s.data) setStreak(s.data);
+    if (m.success && m.data) setHeatmap(m.data);
+    if (l.success && l.data) setLeaderboard(l.data);
   }, [userId, classFilterActive, classCodeInput, run]);
 
   useEffect(() => {
-    void loadProgress();
-    return () => cancel('ExamView-load');
-  }, [loadProgress, cancel]);
-
-  const restoreAttempt = useCallback(async () => {
-    if (!checkpoint || !userId) return;
-    setResumeState('loading');
-    setResumeError(null);
-    const res = await run('examApi.resume', signal => examApi.get(checkpoint.examId, { signal }));
-    if (!res) return;
-    if (!res.success || !res.data) {
-      setResumeError(res.message || 'Không khôi phục được bài thi. Vui lòng thử lại.');
-      if (res.error?.status === 404) {
-        clearActiveAttempt(userId);
-        setResumeState('none');
-      } else setResumeState('failed');
+    if (!userId) {
+      cancel('ExamView-load');
+      queueMicrotask(() => {
+        setHistory([]);
+        setStreak(null);
+        setHeatmap([]);
+        setLeaderboard(null);
+      });
       return;
     }
-    if (res.data.status !== 'IN_PROGRESS') {
-      const graded = await run('examApi.resume', signal => examApi.result(checkpoint.examId, { signal }));
-      if (!graded) return;
-      if (!graded.success || !graded.data) {
-        setResumeError(graded.message || 'Không tải được kết quả bài thi. Vui lòng thử lại.');
-        setResumeState('failed');
-        return;
-      }
+
+    // oxlint-disable-next-line react/set-state-in-effect
+    void loadProgress();
+  }, [userId, loadProgress, cancel]);
+
+  const restoreAttempt = useCallback(async () => {
+    if (!checkpoint || !userId) {
+      setResumeState('none');
+      return;
+    }
+
+    setResumeState('loading');
+    setResumeError(null);
+
+    const res = await run('examApi.resume', (signal) =>
+      examApi.get(checkpoint.examId, { signal })
+    );
+
+    if (!res) return;
+
+    if (!res.success || !res.data) {
+      setResumeState('failed');
+      setResumeError(res.message || 'Không khôi phục được bài thi.');
+      return;
+    }
+
+    if (res.data.status === 'SUBMITTED') {
       clearActiveAttempt(userId);
-      setResult(graded.data);
+      const scored = await run('examApi.result', (signal) =>
+        examApi.result(checkpoint.examId, { signal })
+      );
+      if (scored && scored.success && scored.data) {
+        setResult(scored.data);
+      }
       setPhase('RESULT');
     } else {
-      const validAnswers = Object.fromEntries(res.data.questions
-        .filter(question => question.options.includes(checkpoint.answers[question.index]))
-        .map(question => [question.index, checkpoint.answers[question.index]]));
+      const validAnswers = Object.fromEntries(
+        res.data.questions
+          .filter((question) => question.options.includes(checkpoint.answers[question.index]))
+          .map((question) => [question.index, checkpoint.answers[question.index]])
+      );
       setExam(res.data);
       setAnswers(validAnswers);
       setActiveIndex(Math.max(0, Math.min(checkpoint.activeIndex, res.data.questions.length - 1)));
@@ -163,19 +187,23 @@ export const ExamView: React.FC = () => {
   }, [checkpoint, userId, run, checkpointAttempt]);
 
   useEffect(() => {
+    // oxlint-disable-next-line react/set-state-in-effect
     void restoreAttempt();
-    return () => cancel('examApi.resume');
+    return () => {
+      cancel('examApi.resume');
+    };
   }, [restoreAttempt, cancel]);
 
   useEffect(() => {
-    // Closing the tab discards sessionStorage; the learner must explicitly confirm leaving.
     if (phase !== 'TAKING') return;
-    const warn = (event: BeforeUnloadEvent) => { event.preventDefault(); event.returnValue = ''; };
+    const warn = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+      event.returnValue = '';
+    };
     window.addEventListener('beforeunload', warn);
     return () => window.removeEventListener('beforeunload', warn);
   }, [phase]);
 
-  /** Save the free-text class code (empty clears it), then filter the leaderboard by that class. */
   const saveOwnClassCode = async () => {
     if (!user) {
       return;
@@ -184,7 +212,9 @@ export const ExamView: React.FC = () => {
     setClassSaving(true);
     setClassMessage(null);
 
-    const profile = await run('class-code', signal => updateClassCode(classCodeInput.trim(), signal));
+    const profile = await run('class-code', (signal) =>
+      updateClassCode(classCodeInput.trim(), signal)
+    );
 
     setClassSaving(false);
 
@@ -201,14 +231,14 @@ export const ExamView: React.FC = () => {
     void loadProgress();
   };
 
-  /** Play the question through browser TTS — a placeholder until recorded exam audio exists. */
+  /** Play question audio via browser Mandarin TTS */
   const playQuestionAudio = (question: ExamQuestion, event: React.MouseEvent) => {
     event.stopPropagation();
-    const text = question.audioText ?? question.questionText;
-    if (isJapaneseSpeechSupported()) {
-      speakJapanese(text);
+    const text = question.audioText ?? (question as unknown as { audioPrompt?: string }).audioPrompt ?? question.questionText;
+    if (isChineseSpeechSupported()) {
+      speakChinese(text);
     } else {
-      setClassMessage('Trình duyệt không hỗ trợ đọc tiếng Nhật (Web Speech API).');
+      setClassMessage('Trình duyệt không hỗ trợ đọc Quan thoại tiếng Trung (Web Speech API).');
     }
   };
 
@@ -217,10 +247,13 @@ export const ExamView: React.FC = () => {
     setBusy(true);
     setError(null);
 
-    const res = await run('examApi.generate', signal => examApi.generate({ signal,
-      method: 'POST',
-      body: JSON.stringify({ totalQuestions, durationMinutes }),
-    }));
+    const res = await run('examApi.generate', (signal) =>
+      examApi.generate({
+        signal,
+        method: 'POST',
+        body: JSON.stringify({ totalQuestions, durationMinutes, hskLevel }),
+      })
+    );
     if (!res) return;
 
     setBusy(false);
@@ -254,10 +287,13 @@ export const ExamView: React.FC = () => {
       })),
     };
 
-    const res = await run('examApi.submit', signal => examApi.submit(exam.examId, { signal,
-      method: 'POST',
-      body: JSON.stringify(payload),
-    }));
+    const res = await run('examApi.submit', (signal) =>
+      examApi.submit(exam.examId, {
+        signal,
+        method: 'POST',
+        body: JSON.stringify(payload),
+      })
+    );
     submissionInFlight.current = false;
     if (!res) return;
 
@@ -275,7 +311,7 @@ export const ExamView: React.FC = () => {
     setResult(res.data);
     if (userId) clearActiveAttempt(userId);
     setPhase('RESULT');
-    if (res.data.scorePercent >= 80) {
+    if (res.data.scorePercent >= 60) {
       confetti({ particleCount: 70, spread: 80, origin: { y: 0.8 } });
     }
     void loadProgress();
@@ -295,7 +331,6 @@ export const ExamView: React.FC = () => {
       const secondsLeft = Math.max(0, Math.floor((new Date(exam.expiresAt).getTime() - Date.now()) / 1000));
       setRemainingSeconds(secondsLeft);
 
-      // Auto-submit at zero; the server still scores the exam and does not trust client results.
       if (secondsLeft === 0 && !deadlineAttempted.current) {
         deadlineAttempted.current = true;
         void submitRef.current();
@@ -319,52 +354,33 @@ export const ExamView: React.FC = () => {
       if (['1', '2', '3', '4'].includes(event.key)) {
         const option = question.options[Number(event.key) - 1];
         if (option) {
-          setAnswers((previous) => ({ ...previous, [question.index]: option }));
+          setAnswers((prev) => ({ ...prev, [question.index]: option }));
           checkpointAttempt(exam, { ...answers, [question.index]: option }, activeIndex);
         }
         return;
       }
 
-      if (event.key === 'Enter') {
-        setActiveIndex((previous) => Math.min(previous + 1, exam.questions.length - 1));
-        checkpointAttempt(exam, answers, Math.min(activeIndex + 1, exam.questions.length - 1));
+      if (event.key === 'ArrowRight' && activeIndex < exam.questions.length - 1) {
+        checkpointAttempt(exam, answers, activeIndex + 1);
+        setActiveIndex((i) => i + 1);
+        return;
+      }
+      if (event.key === 'ArrowLeft' && activeIndex > 0) {
+        checkpointAttempt(exam, answers, activeIndex - 1);
+        setActiveIndex((i) => i - 1);
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [phase, exam, answers, activeIndex, busy, helpOpen, checkpointAttempt]);
-
-  const formatClock = (seconds: number): string => {
-    const minutes = Math.floor(seconds / 60);
-    const rest = seconds % 60;
-    return `${String(minutes).padStart(2, '0')}:${String(rest).padStart(2, '0')}`;
-  };
-
-  const heatLevel = (itemCount: number): number => {
-    if (itemCount <= 0) {
-      return 0;
-    }
-    if (itemCount <= 5) {
-      return 1;
-    }
-    if (itemCount <= 15) {
-      return 2;
-    }
-    if (itemCount <= 30) {
-      return 3;
-    }
-    return 4;
-  };
-
-  const currentUserId = user?.userId;
+  }, [phase, exam, activeIndex, busy, helpOpen, answers, checkpointAttempt]);
 
   if (!user) {
     return (
       <div className="mx-auto flex w-full max-w-[560px] flex-col items-center pt-16 text-center">
-        <span className="font-serif text-[34px] font-light leading-none text-fg">試験</span>
+        <span className="font-serif text-[38px] font-bold leading-none text-fg">模拟考</span>
         <p className="mt-5 text-[13px] leading-[1.9] text-fg-60">
-          Đăng nhập để vào phòng thi thử. Điểm thi, streak và thứ hạng được lưu theo tài khoản.
+          Đăng nhập để luyện thi HSK 1–6, chấm điểm tự động và xếp hạng theo lớp. Đề được tạo từ nội dung đã duyệt theo cấp độ.
         </p>
         <div className="mt-7">
           <SubmitButton onClick={onRequireLogin}>Đăng nhập / Đăng ký</SubmitButton>
@@ -373,87 +389,131 @@ export const ExamView: React.FC = () => {
     );
   }
 
+  const currentUserId = user?.userId;
+
+  // Scaled HSK score on official 200-point scale
+  const maximumScore = result?.maximumScore ?? exam?.maximumScore ?? (hskLevel <= 2 ? 200 : 300);
+  const passingScore = result?.passingScore ?? maximumScore * 0.6;
+  const scaledHskScore = result?.scaledScore ?? (result ? Math.round(result.scorePercent * maximumScore / 100) : 0);
+  const isHskPassed = scaledHskScore >= passingScore;
+
   return (
     <div className="mx-auto flex w-full max-w-[1100px] flex-col">
-      {/* Station header */}
-      <div className="flex items-center justify-between gap-6">
-        <div className={labelClass}>
-          Exam <span className="ml-2 font-serif text-[12.5px] font-normal normal-case tracking-[0.06em]">試験</span>
+      {/* Station Header */}
+      <div className="flex min-w-0 flex-wrap items-center justify-between gap-6">
+        <div>
+          <div className="flex min-w-0 flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-wider text-cinnabar-ink">
+            <span className="inline-block h-2 w-2 rounded-full bg-cinnabar" />
+            Trạm 5 · 模拟考试 · Phòng Thi Thử HSK · [Hoạt động thật]
+          </div>
+          <h1 className="mt-1 font-serif text-3xl font-bold tracking-tight text-fg">
+            Thi Thử HSK &amp; Đánh Giá Năng Lực
+          </h1>
+          <p className="mt-1.5 max-w-2xl text-xs leading-relaxed text-fg-60">
+            Luyện theo cấp độ HSK 1–6: thang 200 điểm cho HSK 1–2, thang 300 điểm cho HSK 3–6. Đây là bài luyện nội bộ, không cấp chứng chỉ HSK.
+          </p>
         </div>
         <button
           type="button"
           onClick={() => setHelpOpen(true)}
           aria-label="Hướng dẫn phòng thi thử"
           title="Hướng dẫn phòng thi thử"
-          className="inline-flex h-6 w-6 cursor-pointer items-center justify-center border border-rule bg-transparent font-sans text-[11px] font-semibold text-fg-38 transition-colors hover:border-rule-strong hover:text-fg"
+          className="inline-flex h-7 w-7 cursor-pointer items-center justify-center border border-rule bg-transparent font-sans text-[11px] font-semibold text-fg-38 transition-colors hover:border-rule-strong hover:text-fg"
         >
           !
         </button>
       </div>
 
-      <p className="mt-6 text-[11.5px] leading-[1.9] text-fg-38">
-        Streak hiện tại <span className="text-fg-60">{streak?.currentStreak ?? 0}</span> ngày · dài nhất{' '}
-        <span className="text-fg-60">{streak?.longestStreak ?? 0}</span> · đã học{' '}
-        <span className="text-fg-60">{streak?.activeDays ?? 0}</span> ngày · hôm nay{' '}
-        <span className="text-fg-60">{streak?.todaySrsReviews ?? 0}</span>/
-        {streak?.minSrsReviewsForStreak ?? 10} lượt ôn SRS
+      <p className="mt-6 text-[11.5px] text-fg-38">
+        Hôm nay: <span className="text-fg-60">{streak?.todaySrsReviews ?? 0}</span> hoạt động
         {streak?.todayQualified ? ' · đã tính streak' : ' · chưa đủ ngưỡng'} ·{' '}
         <span className="text-fg-60">{history.length}</span> lượt thi
       </p>
 
       {error && <p className="mt-4 text-[12.5px] text-red">{error}</p>}
       {resumeState === 'loading' && <p role="status" className="mt-4 text-[12.5px] text-fg-60">Đang khôi phục bài thi...</p>}
-      {resumeError && <div role="alert" className="mt-4 text-[12.5px] text-red">
-        <p>{resumeError}</p>
-        {resumeState === 'failed' && <SubmitButton variant="secondary" onClick={restoreAttempt}>Thử khôi phục lại</SubmitButton>}
-      </div>}
-      {phase === 'TAKING' && storageWarning && <p role="alert" className="mt-4 text-[12.5px] text-red">
-        Trình duyệt không lưu được bài thi để khôi phục. Hãy nộp bài trước khi tải lại hoặc đóng trang.
-      </p>}
+      {resumeError && (
+        <div role="alert" className="mt-4 text-[12.5px] text-red">
+          <p>{resumeError}</p>
+          {resumeState === 'failed' && (
+            <SubmitButton variant="secondary" onClick={restoreAttempt}>
+              Thử khôi phục lại
+            </SubmitButton>
+          )}
+        </div>
+      )}
+      {phase === 'TAKING' && storageWarning && (
+        <p role="alert" className="mt-4 text-[12.5px] text-red">
+          Trình duyệt không lưu được bài thi để khôi phục. Hãy nộp bài trước khi tải lại hoặc đóng trang.
+        </p>
+      )}
 
       {phase === 'IDLE' && resumeState === 'none' && (
         <>
-          {/* Setup đề */}
-          <div className="mt-8 bg-card px-6 py-7">
-            <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
-              <div className="flex flex-wrap items-center gap-2">
-                <span className={labelClass}>Số câu</span>
-                {QUESTION_COUNT_OPTIONS.map((option) => (
-                  <button
-                    key={option}
-                    type="button"
-                    className={chipClass(totalQuestions === option)}
-                    onClick={() => setTotalQuestions(option)}
-                  >
-                    {option} câu
-                  </button>
-                ))}
+          {/* Exam Setup Card */}
+          <div className="mt-8 min-w-0 bg-card p-6">
+            <div className="flex flex-col gap-5">
+              <div className="flex flex-wrap items-center justify-between gap-4 border-b border-rule pb-4">
+                <div>
+                  <h3 className="font-serif text-lg font-bold text-fg">
+                    Bài luyện thi HSK {hskLevel}
+                  </h3>
+                  <p className="text-xs text-fg-60 mt-0.5">
+                    Thang điểm HSK: <b>{hskLevel <= 2 ? 200 : 300} điểm</b> · Ngưỡng đạt chuẩn: <b>{hskLevel <= 2 ? 120 : 180} / {hskLevel <= 2 ? 200 : 300} điểm (≥ 60%)</b>
+                  </p>
+                </div>
+                <div className="flex min-w-0 flex-wrap items-center gap-2">
+                  <span className="rounded bg-cinnabar/10 border border-cinnabar/30 px-2.5 py-1 text-xs font-semibold text-cinnabar-ink">
+                    HSK {hskLevel} · Bài luyện nội bộ
+                  </span>
+                </div>
               </div>
 
-              <div className="flex flex-wrap items-center gap-2">
-                <span className={labelClass}>Thời gian</span>
-                {DURATION_OPTIONS.map((option) => (
-                  <button
-                    key={option}
-                    type="button"
-                    className={chipClass(durationMinutes === option)}
-                    onClick={() => setDurationMinutes(option)}
-                  >
-                    {option} phút
-                  </button>
-                ))}
+              <div className="flex flex-wrap gap-2" aria-label="Cấp độ đề thi">
+                {[1, 2, 3, 4, 5, 6].map(level => <button key={level} type="button" aria-pressed={hskLevel === level}
+                  className={chipClass(hskLevel === level)} onClick={() => setHskLevel(level)}>HSK {level}</button>)}
               </div>
+              <p className="text-[12.5px] leading-relaxed text-fg-60">{hskLevel <= 2 ? 'Nghe 100 + Đọc 100' : 'Nghe 100 + Đọc 100 + Ngữ pháp 100'}. Phần nghe dùng TTS, phần ngữ pháp thay cho viết tự luận trong bài luyện này.</p>
+              <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className={labelClass}>Số lượng câu hỏi</span>
+                  {QUESTION_COUNT_OPTIONS.map((option) => (
+                    <button
+                      key={option}
+                      type="button"
+                      className={chipClass(totalQuestions === option)}
+                      onClick={() => setTotalQuestions(option)}
+                    >
+                      {option} câu
+                    </button>
+                  ))}
+                </div>
 
-              <div className="ml-auto">
-                <SubmitButton onClick={startExam} loading={busy}>
-                  <Play size={14} />
-                  <span>Bắt đầu thi thử</span>
-                </SubmitButton>
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className={labelClass}>Thời gian làm bài</span>
+                  {DURATION_OPTIONS.map((option) => (
+                    <button
+                      key={option}
+                      type="button"
+                      className={chipClass(durationMinutes === option)}
+                      onClick={() => setDurationMinutes(option)}
+                    >
+                      {option} phút
+                    </button>
+                  ))}
+                </div>
+
+                <div className="ml-auto">
+                  <SubmitButton onClick={startExam} loading={busy}>
+                    <Play size={14} />
+                    <span>Bắt đầu thi thử</span>
+                  </SubmitButton>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Mascot + heatmap */}
+          {/* Mascot & Heatmap */}
           <div className="mt-10 grid gap-10 min-[1101px]:grid-cols-2">
             <section>
               <h3 className={sectionTitleClass}>Mascot &amp; điều kiện tính streak</h3>
@@ -461,8 +521,7 @@ export const ExamView: React.FC = () => {
                 <MascotBadge longestStreak={streak?.longestStreak ?? 0} currentStreak={streak?.currentStreak ?? 0} />
               </div>
               <p className="mt-3 text-[11.5px] leading-[1.8] text-fg-38">
-                Một ngày được tính streak khi: ôn ≥ {streak?.minSrsReviewsForStreak ?? 10} lượt SRS, hoặc hoàn thành 1
-                lượt thi thử, hoặc làm ≥ 10 câu bài tập ngữ pháp. Ôn 1 từ đơn lẻ không tính.
+                Một ngày được tính streak khi: hoàn thành 1 lượt thi thử HSK, ôn ≥ {streak?.minSrsReviewsForStreak ?? 10} lượt SRS, hoặc làm bài tập ngữ pháp.
               </p>
             </section>
 
@@ -484,12 +543,12 @@ export const ExamView: React.FC = () => {
                   <span key={opacity} className="h-[10px] w-[10px] bg-fg" style={{ opacity }} />
                 ))}
                 <span>Nhiều</span>
-                <span className="ml-2">Múi giờ tính streak: {streak?.zone ?? 'UTC'}</span>
+                <span className="ml-2">Múi giờ tính streak: {streak?.zone ?? 'Asia/Ho_Chi_Minh'}</span>
               </div>
             </section>
           </div>
 
-          {/* Bảng xếp hạng */}
+          {/* Leaderboard */}
           <section className="mt-10 border-t border-rule pt-6">
             <div className="flex flex-wrap items-baseline justify-between gap-3">
               <h3 className={sectionTitleClass}>Bảng xếp hạng ({leaderboard?.scope ?? 'ALL'})</h3>
@@ -504,7 +563,7 @@ export const ExamView: React.FC = () => {
                     <th className={thClass}>Học viên</th>
                     <th className={thNumClass}>Từ đã thuộc</th>
                     <th className={thNumClass}>Streak</th>
-                    <th className={thNumClass}>Điểm thi</th>
+                    <th className={thNumClass}>Điểm thi cao nhất</th>
                     <th className={thNumClass}>Điểm xếp hạng</th>
                   </tr>
                 </thead>
@@ -540,7 +599,7 @@ export const ExamView: React.FC = () => {
                 <input
                   type="text"
                   maxLength={50}
-                  placeholder="Mã lớp của bạn (VD: JPD113-A)"
+                  placeholder="Mã lớp của bạn (VD: HSK1-K1)"
                   value={classCodeInput}
                   onChange={(event) => setClassCodeInput(event.target.value)}
                   aria-label="Mã lớp của bạn"
@@ -559,38 +618,45 @@ export const ExamView: React.FC = () => {
               </SubmitButton>
             </div>
             <p className="mt-3 text-[11.5px] leading-[1.8] text-fg-38">
-              Mã lớp là text tự do, dùng để xếp hạng theo lớp. {classMessage ?? ''}
+              Mã lớp dùng để lọc bảng xếp hạng theo nhóm học tập. {classMessage ?? ''}
             </p>
           </section>
 
-          {/* Lịch sử thi */}
+          {/* Exam History */}
           <section className="mt-10 border-t border-rule pt-6">
             <h3 className={sectionTitleClass}>Lịch sử thi thử</h3>
             <div className="mt-4 overflow-x-auto">
               <table className="w-full border-collapse text-[12.5px]">
                 <thead>
                   <tr>
-                    <th className={thClass}>Đề</th>
-                    <th className={thNumClass}>Đúng</th>
-                    <th className={thNumClass}>Điểm</th>
+                    <th className={thClass}>Đề thi</th>
+                    <th className={thNumClass}>Số câu đúng</th>
+                    <th className={thNumClass}>Điểm HSK quy đổi</th>
                     <th className={thNumClass}>Thời gian làm</th>
                     <th className={thClass}>Nộp lúc</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {history.map((item) => (
-                    <tr key={item.examId}>
-                      <td className={tdClass}>#{item.examId}</td>
-                      <td className={tdNumClass}>
-                        {item.correctCount}/{item.totalCount}
-                      </td>
-                      <td className={tdNumClass}>{item.scorePercent}%</td>
-                      <td className={tdNumClass}>
-                        {item.durationSeconds != null ? formatClock(item.durationSeconds) : '—'}
-                      </td>
-                      <td className={tdClass}>{new Date(item.submittedAt).toLocaleString('vi-VN')}</td>
-                    </tr>
-                  ))}
+                  {history.map((item) => {
+                    const scaled = item.scaledScore ?? Math.round((item.scorePercent / 100) * (item.maximumScore ?? 200));
+                    return (
+                      <tr key={item.examId}>
+                        <td className={tdClass}>Đề #{item.examId}</td>
+                        <td className={tdNumClass}>
+                          {item.correctCount}/{item.totalCount}
+                        </td>
+                        <td className={tdNumClass}>
+                          <span className={scaled >= (item.passingScore ?? 120) ? 'text-jade-ink font-semibold' : 'text-fg-60'}>
+                            {scaled}/{item.maximumScore ?? 200} ({item.scorePercent}%)
+                          </span>
+                        </td>
+                        <td className={tdNumClass}>
+                          {item.durationSeconds != null ? formatClock(item.durationSeconds) : '—'}
+                        </td>
+                        <td className={tdClass}>{new Date(item.submittedAt).toLocaleString('vi-VN')}</td>
+                      </tr>
+                    );
+                  })}
                   {history.length === 0 && (
                     <tr>
                       <td colSpan={5} className="py-8 text-center text-[12.5px] text-fg-38">
@@ -605,15 +671,19 @@ export const ExamView: React.FC = () => {
         </>
       )}
 
+      {/* Taking Exam Phase */}
       {phase === 'TAKING' && exam && (
         <>
-          <div className="sticky top-0 z-10 mt-8 flex flex-wrap items-center gap-x-5 gap-y-2 border-b border-rule bg-bg py-3">
+          <div className="sticky top-0 z-10 mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 rounded-lg border border-rule bg-card/95 px-4 py-3 backdrop-blur ">
             <span className="text-[12.5px] text-fg-60">
-              Câu <b className="font-serif text-sm font-semibold text-fg">{activeIndex + 1}</b>/
-              {exam.questions.length}
+              Câu <b className="font-serif text-sm font-semibold text-fg">{activeIndex + 1}</b>/{exam.questions.length}
             </span>
-            <span className="font-serif text-[15px] tabular-nums text-fg">⏱ {formatClock(remainingSeconds)}</span>
-            <span className="text-[11px] text-fg-38">Phần nghe dùng TTS trình duyệt (tạm thời)</span>
+            <span className="font-serif text-[15px] font-bold tabular-nums text-cinnabar-ink">
+              ⏱ {formatClock(remainingSeconds)}
+            </span>
+            <span className="text-[11px] text-fg-38 hidden sm:inline">
+              Phần nghe phát bằng TTS Quan thoại chuẩn
+            </span>
             <div className="ml-auto">
               <SubmitButton onClick={submitExam} loading={busy}>
                 Nộp bài
@@ -621,38 +691,83 @@ export const ExamView: React.FC = () => {
             </div>
           </div>
 
-          <div className="mt-6 flex flex-col gap-3">
+          {/* Question Palette Navigation */}
+          <div className="mt-4 flex flex-wrap items-center gap-1.5 p-3 rounded-lg border border-rule/60 bg-surface/40">
+            <span className="text-[11px] font-semibold text-fg-60 mr-2">Bảng câu hỏi:</span>
+            {exam.questions.map((q, idx) => {
+              const isAnswered = Boolean(answers[q.index]);
+              const isCurrent = idx === activeIndex;
+              return (
+                <button
+                  key={q.index}
+                  type="button"
+                  onClick={() => {
+                    setActiveIndex(idx);
+                    checkpointAttempt(exam, answers, idx);
+                  }}
+                  className={`h-7 w-7 rounded text-[11px] font-semibold transition-all cursor-pointer ${
+                    isCurrent
+                      ? 'bg-cinnabar text-on-accent ring-2 ring-cinnabar/40'
+                      : isAnswered
+                        ? 'border border-jade bg-jade/20 text-jade-ink'
+                        : 'border border-rule bg-card text-fg-60 hover:border-fg-60'
+                  }`}
+                >
+                  {idx + 1}
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="mt-4 flex flex-col gap-3">
             {exam.questions.map((question, index) => {
               const selected = answers[question.index];
               const active = index === activeIndex;
+              const isListening = question.type === 'LISTENING' || question.type === 'KANA' || question.type === 'VOCABULARY';
+
               return (
                 <div
                   key={question.index}
                   data-exam-question={index}
-                  onClick={() => { setActiveIndex(index); checkpointAttempt(exam, answers, index); }}
-                  className={`cursor-pointer border px-5 py-5 transition-colors ${
-                    active ? 'border-fg bg-card' : 'border-rule hover:border-rule-strong'
+                  onClick={() => {
+                    setActiveIndex(index);
+                    checkpointAttempt(exam, answers, index);
+                  }}
+                  className={`cursor-pointer rounded-xl border p-5 transition-all ${
+                    active ? 'border-fg bg-card' : 'border-rule hover:border-rule-strong bg-card/60'
                   }`}
                 >
-                  <div className="flex flex-wrap items-center gap-3">
-                    <span className="text-[11px] text-fg-38">Câu {index + 1}</span>
-                    <span className="text-[11px] text-fg-38">{question.type}</span>
-                    {/* Nghe câu hỏi: TTS trình duyệt — placeholder chờ audio thu thật. */}
-                    <button
-                      type="button"
-                      onClick={(event) => playQuestionAudio(question, event)}
-                      title="Nghe câu hỏi bằng giọng đọc trình duyệt (tạm thời)"
-                      className="flex cursor-pointer items-center gap-1.5 border border-rule bg-transparent px-2 py-1 text-[11px] text-fg-60 transition-colors hover:border-rule-strong hover:text-fg"
-                    >
-                      <Volume2 size={12} />
-                      <span>Nghe</span>
-                    </button>
-                    {selected && <span className="border border-rule px-2 py-0.5 text-[10.5px] text-fg-60">Đã chọn</span>}
+                  <div className="flex flex-wrap items-center justify-between gap-3 border-b border-rule/50 pb-2.5">
+                    <div className="flex min-w-0 flex-wrap items-center gap-3">
+                      <span className="text-[11.5px] font-bold text-fg">Câu {index + 1}</span>
+                      <span className="rounded bg-tint px-2 py-0.5 text-[10.5px] font-medium text-fg-60">
+                        {isListening ? 'Phần 1: Nghe hiểu (听力)' : question.type === 'GRAMMAR' && maximumScore === 300 ? 'Phần 3: Ngữ pháp (语法)' : 'Phần 2: Đọc hiểu & Ngữ pháp (阅读)'}
+                      </span>
+                    </div>
+
+                    <div className="flex min-w-0 flex-wrap items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={(event) => playQuestionAudio(question, event)}
+                        title="Nghe câu hỏi bằng giọng Quan thoại"
+                        className="flex cursor-pointer items-center gap-1.5 rounded border border-cinnabar/40 bg-cinnabar/10 px-2.5 py-1 text-[11px] font-semibold text-cinnabar-ink hover:bg-cinnabar/20 transition-colors"
+                      >
+                        <Volume2 size={13} />
+                        <span>Phát âm Quan thoại</span>
+                      </button>
+                      {selected && (
+                        <span className="rounded bg-jade/10 border border-jade/30 px-2 py-0.5 text-[10.5px] font-medium text-jade-ink">
+                          Đã chọn
+                        </span>
+                      )}
+                    </div>
                   </div>
 
-                  <p className="mt-4 font-serif text-[20px] leading-[1.7] text-fg">{question.questionText}</p>
+                  <p className="mt-4 font-serif text-[20px] font-bold leading-[1.6] text-fg whitespace-pre-line">
+                    {question.questionText}
+                  </p>
 
-                  <div className="mt-4 flex flex-col gap-2">
+                  <div className="mt-5 flex flex-col gap-2">
                     {question.options.map((option, optionIndex) => (
                       <button
                         key={option}
@@ -663,13 +778,13 @@ export const ExamView: React.FC = () => {
                           setAnswers((previous) => ({ ...previous, [question.index]: option }));
                           checkpointAttempt(exam, { ...answers, [question.index]: option }, activeIndex);
                         }}
-                        className={`flex cursor-pointer items-center gap-3 border px-4 py-2.5 text-left transition-colors ${
+                        className={`flex cursor-pointer items-center gap-3 rounded-lg border px-4 py-2.5 text-left transition-all ${
                           selected === option
-                            ? 'border-fg text-fg'
-                            : 'border-rule-strong text-fg-60 hover:border-fg hover:text-fg'
+                            ? 'border-cinnabar bg-cinnabar/10 text-cinnabar-ink font-semibold '
+                            : 'border-rule bg-surface text-fg-80 hover:border-fg-60'
                         }`}
                       >
-                        <kbd className="shrink-0 border border-current px-1.5 text-[10px] font-semibold leading-4 opacity-70">
+                        <kbd className="shrink-0 rounded border border-current px-1.5 text-[10px] font-semibold leading-4 opacity-70">
                           {optionIndex + 1}
                         </kbd>
                         <span className="font-serif text-[15px]">{option}</span>
@@ -683,39 +798,105 @@ export const ExamView: React.FC = () => {
         </>
       )}
 
+      {/* Result Phase */}
       {phase === 'RESULT' && result && (
-        <div className="mt-8 bg-card px-6 py-7">
-          <h3 className={sectionTitleClass}>
-            Kết quả:{' '}
-            <span className="font-serif text-[15px] text-fg">
-              {result.correctCount}/{result.totalCount} câu · {result.scorePercent}%
-            </span>{' '}
-            · streak {result.currentStreak} ngày
-          </h3>
-
-          <div className="mt-5 flex flex-col gap-3">
-            {result.details.map((detail) => (
-              <div
-                key={detail.index}
-                className={`border-l-2 py-2 pl-4 ${detail.correct ? 'border-l-fg' : 'border-l-red'}`}
-              >
-                <div className="flex flex-wrap items-center gap-3 text-[11.5px]">
-                  <span className="text-fg-38">Câu {detail.index + 1}</span>
-                  <span className={detail.correct ? 'text-fg' : 'text-red'}>{detail.correct ? 'Đúng' : 'Sai'}</span>
-                  {!detail.correct && (
-                    <span className="text-fg-38">
-                      Bạn chọn: <span className="font-serif text-fg-60">{detail.submittedAnswer || '—'}</span> · Đáp án:{' '}
-                      <span className="font-serif text-fg-60">{detail.correctAnswer}</span>
-                    </span>
-                  )}
-                </div>
-                <p className="mt-2 font-serif text-[15px] leading-[1.7] text-fg">{detail.questionText}</p>
-                {detail.explanation && <p className="mt-1 text-[12px] leading-[1.8] text-fg-60">{detail.explanation}</p>}
+        <div className="mt-8 rounded-xl border border-rule bg-card p-8 ">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6 border-b border-rule pb-6">
+            <div>
+              <div className="flex min-w-0 flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-wider text-cinnabar-ink">
+                Báo cáo Kết quả Kỳ thi HSK Chuẩn
               </div>
-            ))}
+              <h3 className="mt-2 font-serif text-3xl font-bold text-fg">
+                Kết quả: <span className="text-gold-ink">{scaledHskScore} / {maximumScore}</span> điểm
+              </h3>
+              <p className="mt-1 text-sm text-fg-60">
+                Đúng {result.correctCount}/{result.totalCount} câu ({result.scorePercent}%) · Chuỗi streak {result.currentStreak} ngày 🔥
+              </p>
+              <div className="mt-2">
+                <span className={`text-sm font-bold ${isHskPassed ? 'text-jade-ink' : 'text-cinnabar-ink'}`}>
+                  {isHskPassed ? `「合格」 Đạt chuẩn bài luyện (≥ ${passingScore} điểm)` : `「未过」 Cần ôn luyện thêm (< ${passingScore} điểm)`}
+                </span>
+              </div>
+            </div>
+
+            {/* Red Seal Stamp */}
+            <div className="shrink-0">
+              <RedSealStamp
+                text={isHskPassed ? '合格' : '未过'}
+                subText={isHskPassed ? 'ĐẠT' : 'CHƯA ĐẠT'}
+                size={76}
+                animated
+              />
+            </div>
           </div>
 
-          <div className="mt-8 flex flex-wrap gap-2.5">
+          <div className="mt-6 flex flex-col gap-3.5">
+            <h4 className="text-sm font-bold text-fg uppercase tracking-wider">
+              Phân tích chi tiết từng câu hỏi &amp; Chẩn đoán kiến thức:
+            </h4>
+
+            {result.details.map((detail, idx) => {
+              const qIndex = detail.index ?? (detail as unknown as { questionIndex?: number }).questionIndex ?? idx;
+              const isCorrect = detail.correct ?? (detail as unknown as { isCorrect?: boolean }).isCorrect ?? false;
+              const userChoice = detail.submittedAnswer ?? (detail as unknown as { userAnswer?: string }).userAnswer ?? '';
+              return (
+              <div
+                key={qIndex}
+                className={`rounded-lg border p-4 transition-all ${
+                  isCorrect
+                    ? 'border-jade/30 bg-jade/5'
+                    : 'border-cinnabar/30 bg-cinnabar/5'
+                }`}
+              >
+                <div className="flex flex-wrap items-center justify-between gap-3 text-[11.5px]">
+                  <div className="flex min-w-0 flex-wrap items-center gap-2">
+                    <span className="font-semibold text-fg">Câu {qIndex + 1}</span>
+                    <span
+                      className={`rounded px-2 py-0.5 font-bold ${
+                        isCorrect ? 'bg-jade/20 text-jade-ink' : 'bg-cinnabar/20 text-cinnabar-ink'
+                      }`}
+                    >
+                      {isCorrect ? '✓ Đúng' : '✗ Sai'}
+                    </span>
+                  </div>
+
+                  {!isCorrect && (
+                    <button
+                      type="button"
+                      onClick={() => navigate('/grammar')}
+                      className="inline-flex items-center gap-1 text-[11px] font-semibold text-cinnabar-ink hover:underline cursor-pointer"
+                    >
+                      <BookOpen size={12} /> Ôn tại Trạm Ngữ pháp →
+                    </button>
+                  )}
+                </div>
+
+                <p className="mt-2.5 font-serif text-[17px] font-semibold text-fg leading-relaxed">
+                  {detail.questionText}
+                </p>
+
+                <div className="mt-2 text-xs text-fg-60">
+                  {!isCorrect && (
+                    <span className="mr-3">
+                      Bạn chọn: <span className="font-serif font-bold text-cinnabar-ink">{userChoice || '—'}</span>
+                    </span>
+                  )}
+                  <span>
+                    Đáp án đúng: <span className="font-serif font-bold text-jade-ink">{detail.correctAnswer}</span>
+                  </span>
+                </div>
+
+                {detail.explanation && (
+                  <p className="mt-2 rounded bg-surface/80 p-2.5 text-[11.5px] leading-relaxed text-fg-80 border border-rule/50">
+                    💡 <b>Giải thích</b>: {detail.explanation}
+                  </p>
+                )}
+              </div>
+              );
+            })}
+          </div>
+
+          <div className="mt-8 flex flex-wrap gap-3 pt-4 border-t border-rule">
             <SubmitButton variant="secondary" onClick={() => setPhase('IDLE')}>
               Về trang thi thử
             </SubmitButton>
@@ -726,14 +907,22 @@ export const ExamView: React.FC = () => {
         </div>
       )}
 
-      {/* Help panel */}
+      {/* Help Modal */}
       {helpOpen && (
-        <Modal title="Hướng dẫn phòng thi thử" onClose={() => setHelpOpen(false)} maxWidthClass="max-w-[420px]" initialFocus={helpHeading} containFocus>
-          <h3 ref={helpHeading} tabIndex={-1} className="text-[15px] font-semibold focus:outline-none">Hướng dẫn phòng thi thử</h3>
-          <p className="mt-4 text-[13px] leading-[1.9] text-fg-60">
-            Chọn số câu và thời gian rồi bắt đầu. Đề sinh từ ngân hàng ngữ pháp, kana và từ vựng đã duyệt, chấm điểm
-            hoàn toàn ở server — client không thấy đáp án trước khi nộp. Chọn đáp án bằng phím 1–4, Enter để sang câu
-            tiếp theo; hết giờ thì bài tự nộp.
+        <Modal
+          title="Hướng dẫn phòng thi thử"
+          onClose={() => setHelpOpen(false)}
+          maxWidthClass="max-w-[460px]"
+          initialFocus={helpHeading}
+          containFocus
+        >
+          <h3 ref={helpHeading} tabIndex={-1} className="text-[15px] font-bold focus:outline-none">
+            Hướng dẫn thi thử HSK Chuẩn
+          </h3>
+          <p className="mt-3 text-[13px] leading-[1.8] text-fg-60">
+            Chọn số câu hỏi và thời gian để bắt đầu làm bài. Đề thi được sinh ngẫu nhiên từ ngân hàng câu hỏi ngữ pháp, pinyin và chữ Hán HSK đã kiểm duyệt. Chấm điểm tại máy chủ: HSK 1–2 đạt 120/200, HSK 3–6 đạt 180/300. Bài luyện ngữ pháp thay cho viết tự luận, không tương đương đề HSK chính thức.
+            <br /><br />
+            Phím tắt: bấm phím 1–4 để chọn nhanh đáp án, mũi tên trái/phải để chuyển câu. Khi hết giờ, bài làm sẽ tự động được nộp.
           </p>
         </Modal>
       )}

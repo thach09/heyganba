@@ -1,6 +1,6 @@
 import { useRequestScope } from '../../lib/hooks/useRequestScope';
 import { adminApi } from './api';
-import type { AdminStatusData, AuditLogItem, TwoFactorStatusResponse, VocabularyAdminItem, KanjiAdminItem, ExerciseAdminItem } from './types';
+import type { AdminStatusData, AuditLogItem, TwoFactorStatusResponse, VocabularyAdminItem, HanziAdminItem, ExerciseAdminItem } from './types';
 import React, { useEffect, useState } from 'react';
 import {
   ShieldAlert,
@@ -25,7 +25,7 @@ const tdClass = 'border-b border-rule py-2.5 text-fg-60 text-[12.5px]';
 
 export const AdminView: React.FC = () => {
   const { run, isActive } = useRequestScope();
-  const [activeTab, setActiveTab] = useState<'OVERVIEW' | '2FA' | 'VOCAB' | 'KANJI' | 'EXERCISES' | 'REVIEW'>('OVERVIEW');
+  const [activeTab, setActiveTab] = useState<'OVERVIEW' | '2FA' | 'VOCAB' | 'HANZI' | 'EXERCISES' | 'REVIEW'>('OVERVIEW');
 
   // Overview state
   const [statusData, setStatusData] = useState<AdminStatusData | null>(null);
@@ -57,16 +57,16 @@ export const AdminView: React.FC = () => {
     exampleMeaning: '',
   });
 
-  // Kanji CRUD state
-  const [kanjiList, setKanjiList] = useState<KanjiAdminItem[]>([]);
-  const [kanjiSearch, setKanjiSearch] = useState('');
-  const [kanjiModalOpen, setKanjiModalOpen] = useState(false);
-  const [editingKanjiId, setEditingKanjiId] = useState<number | null>(null);
-  const [kanjiForm, setKanjiForm] = useState({
+  // Hanzi CRUD state
+  const [hanziList, setHanziList] = useState<HanziAdminItem[]>([]);
+  const [hanziSearch, setHanziSearch] = useState('');
+  const [hanziModalOpen, setHanziModalOpen] = useState(false);
+  const [editingHanziId, setEditingHanziId] = useState<number | null>(null);
+  const [hanziForm, setHanziForm] = useState({
     character: '',
     strokeCount: 4,
-    onyomi: '',
-    kunyomi: '',
+    pinyin: '',
+    traditional: '',
     sinoVietnamese: '',
     meaning: '',
     mnemonic: '',
@@ -231,41 +231,41 @@ export const AdminView: React.FC = () => {
     }
   };
 
-  // Kanji handlers
-  const fetchKanji = async () => {
-    const res = await run('adminApi.kanji', signal => adminApi.kanji(kanjiSearch, { signal }));
+  // Hanzi handlers
+  const fetchHanzi = async () => {
+    const res = await run('adminApi.hanzi', signal => adminApi.hanzi(hanziSearch, { signal }));
     if (!res) return;
-    if (res.success && res.data) setKanjiList(res.data);
+    if (res.success && res.data) setHanziList(res.data);
   };
 
-  const handleSaveKanji = async (e: React.FormEvent) => {
+  const handleSaveHanzi = async (e: React.FormEvent) => {
     e.preventDefault();
-    const method = editingKanjiId ? 'PUT' : 'POST';
+    const method = editingHanziId ? 'PUT' : 'POST';
 
-    const res = await run('adminApi.saveContent', signal => adminApi.saveContent('kanji', editingKanjiId, { signal,
+    const res = await run('adminApi.saveContent', signal => adminApi.saveContent('hanzi', editingHanziId, { signal,
       method,
-      body: JSON.stringify(kanjiForm),
+      body: JSON.stringify(hanziForm),
     }));
     if (!res) return;
 
     if (res.success) {
-      showToast(editingKanjiId ? 'Cập nhật Kanji thành công' : 'Thêm Kanji mới thành công');
-      setKanjiModalOpen(false);
-      setEditingKanjiId(null);
-      fetchKanji();
+      showToast(editingHanziId ? 'Cập nhật Hanzi thành công' : 'Thêm Hanzi mới thành công');
+      setHanziModalOpen(false);
+      setEditingHanziId(null);
+      fetchHanzi();
       fetchAdminData();
     } else {
-      showToast(res.message || 'Lỗi lưu Kanji');
+      showToast(res.message || 'Lỗi lưu Hanzi');
     }
   };
 
-  const handleDeleteKanji = async (id: number) => {
-    if (!confirm('Bạn có chắc chắn muốn xoá Kanji này?')) return;
-    const res = await run('adminApi.deleteContent', signal => adminApi.deleteContent('kanji', id, { signal, method: 'DELETE' }));
+  const handleDeleteHanzi = async (id: number) => {
+    if (!confirm('Bạn có chắc chắn muốn xoá Hanzi này?')) return;
+    const res = await run('adminApi.deleteContent', signal => adminApi.deleteContent('hanzi', id, { signal, method: 'DELETE' }));
     if (!res) return;
     if (res.success) {
-      showToast('Đã xoá Kanji');
-      fetchKanji();
+      showToast('Đã xoá Hanzi');
+      fetchHanzi();
       fetchAdminData();
     }
   };
@@ -321,7 +321,7 @@ export const AdminView: React.FC = () => {
     // eslint-disable-next-line react/set-state-in-effect
     if (activeTab === 'VOCAB') fetchVocabulary();
     // eslint-disable-next-line react/set-state-in-effect
-    if (activeTab === 'KANJI') fetchKanji();
+    if (activeTab === 'HANZI') fetchHanzi();
     // eslint-disable-next-line react/set-state-in-effect
     if (activeTab === 'EXERCISES') fetchExercises();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -333,16 +333,16 @@ export const AdminView: React.FC = () => {
       <div className="flex flex-wrap items-start justify-between gap-5">
         <div>
           <div className={labelClass}>
-            Admin Portal{' '}
-            <span className="ml-2 font-serif text-[12.5px] font-normal normal-case tracking-[0.06em]">管理ポータル</span>
+            Khu vực Quản trị{' '}
+            <span className="ml-2 font-serif text-[12.5px] font-normal normal-case tracking-[0.06em]">管理中心</span>
           </div>
           <h2 className="mt-3 flex items-center gap-2.5 text-[17px] font-semibold text-fg">
             <ShieldAlert size={18} className="text-fg-60" />
-            <span>Khu vực Quản trị Hệ thống HeyGanba</span>
+            <span>Khu vực Quản trị Hệ thống</span>
           </h2>
           <p className="mt-1.5 text-[12px] leading-[1.8] text-fg-38">
             Quản trị người dùng, audit log, cài đặt xác thực hai yếu tố (2FA) và CRUD trực tiếp ngân hàng câu hỏi, từ
-            vựng, Kanji qua giao diện.
+            vựng, Hanzi qua giao diện.
           </p>
         </div>
 
@@ -399,13 +399,13 @@ export const AdminView: React.FC = () => {
         </button>
         <button
           type="button"
-          onClick={() => setActiveTab('KANJI')}
+          onClick={() => setActiveTab('HANZI')}
           className={`flex items-center gap-1.5 cursor-pointer border-b-2 px-4 py-2 text-[12.5px] font-medium transition-colors ${
-            activeTab === 'KANJI' ? 'border-fg font-semibold text-fg' : 'border-transparent text-fg-60 hover:text-fg'
+            activeTab === 'HANZI' ? 'border-fg font-semibold text-fg' : 'border-transparent text-fg-60 hover:text-fg'
           }`}
         >
           <Languages size={13} />
-          <span>Quản lý Kanji</span>
+          <span>Quản lý Hanzi</span>
         </button>
         <button
           type="button"
@@ -417,7 +417,7 @@ export const AdminView: React.FC = () => {
           }`}
         >
           <ShieldAlert size={13} />
-          <span>Cần kiểm</span>
+          <span>Thẩm định Học thuật (Cần kiểm)</span>
         </button>
         <button
           type="button"
@@ -441,12 +441,12 @@ export const AdminView: React.FC = () => {
         <div className="mt-6 flex flex-col gap-10">
           <div className="grid gap-3 min-[900px]:grid-cols-3">
             <div className="bg-card px-5 py-4">
-              <div className={labelClass}>Trạng thái Backend API</div>
+              <div className={labelClass}>Phiên quản trị</div>
               <div className="mt-2 flex items-center gap-2 font-serif text-[18px] text-fg">
                 <CheckCircle2 size={16} className="text-fg-60" />
-                <span>Active (/api/v1)</span>
+                <span>Đã xác thực</span>
               </div>
-              <div className="mt-2 text-[11.5px] text-fg-38">Spring Boot 3.4.3 • Java 21 LTS</div>
+              <div className="mt-2 text-[11.5px] text-fg-38">Quản lý nội dung và tài khoản</div>
             </div>
 
             <div className="bg-card px-5 py-4">
@@ -468,7 +468,7 @@ export const AdminView: React.FC = () => {
           <div>
             <h3 className="text-[13px] font-semibold text-fg">Danh sách người dùng</h3>
             <div className="mt-4 overflow-x-auto">
-              <table className="w-full border-collapse text-[12.5px]">
+              <table className="w-full min-w-[680px] border-collapse text-[12.5px]">
                 <thead>
                   <tr>
                     <th className={thClass}>ID</th>
@@ -516,7 +516,7 @@ export const AdminView: React.FC = () => {
               <h3 className="text-[13px] font-semibold text-fg">Nhật ký Audit Log (50 hoạt động gần nhất)</h3>
             </div>
             <div className="mt-4 overflow-x-auto">
-              <table className="w-full border-collapse text-[12.5px]">
+              <table className="w-full min-w-[680px] border-collapse text-[12.5px]">
                 <thead>
                   <tr>
                     <th className={thClass}>Thời gian</th>
@@ -533,7 +533,7 @@ export const AdminView: React.FC = () => {
                         {new Date(log.createdAt).toLocaleString('vi-VN')}
                       </td>
                       <td className={`${tdClass} font-medium text-fg`}>{log.adminEmail || 'Hệ thống'}</td>
-                      <td className={`${tdClass} font-mono text-[11.5px]`}>{log.tableName}</td>
+                      <td className={`${tdClass} font-sans text-[11.5px]`}>{log.tableName}</td>
                       <td className={`${tdClass} tabular-nums`}>#{log.recordId ?? '—'}</td>
                       <td className={tdClass}>
                         <span
@@ -606,7 +606,7 @@ export const AdminView: React.FC = () => {
                       <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-fg-38">
                         Mã Secret Key (Nhập vào Authenticator)
                       </div>
-                      <div className="mt-1 font-mono text-[16px] font-bold text-fg select-all">{twoFactorSecret}</div>
+                      <div className="mt-1 font-sans text-[16px] font-bold text-fg select-all">{twoFactorSecret}</div>
                       {twoFactorUrl && (
                         <div className="mt-2 text-[11px] text-fg-38 break-all">
                           URL: <code>{twoFactorUrl}</code>
@@ -623,7 +623,7 @@ export const AdminView: React.FC = () => {
                           value={twoFactorCode}
                           onChange={(e) => setTwoFactorCode(e.target.value.replace(/\D/g, ''))}
                           placeholder="VD: 123456"
-                          className="w-[200px] border border-rule bg-bg px-4 py-2 font-mono text-[16px] tracking-widest text-fg focus:border-fg focus:outline-none text-center"
+                          className="w-[200px] border border-rule bg-bg px-4 py-2 font-sans text-[16px] tracking-widest text-fg focus:border-fg focus:outline-none text-center"
                           required
                         />
                         <SubmitButton type="submit" loading={isSubmitting2FA} variant="primary">
@@ -646,7 +646,7 @@ export const AdminView: React.FC = () => {
                     value={twoFactorCode}
                     onChange={(e) => setTwoFactorCode(e.target.value.replace(/\D/g, ''))}
                     placeholder="Mã 6 chữ số"
-                    className="w-[180px] border border-rule bg-bg px-4 py-2 font-mono text-[15px] text-fg focus:border-fg focus:outline-none text-center"
+                    className="w-[180px] border border-rule bg-bg px-4 py-2 font-sans text-[15px] text-fg focus:border-fg focus:outline-none text-center"
                     required
                   />
                   <SubmitButton type="submit" loading={isSubmitting2FA} variant="secondary">
@@ -704,7 +704,7 @@ export const AdminView: React.FC = () => {
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full border-collapse text-[12.5px]">
+            <table className="w-full min-w-[680px] border-collapse text-[12.5px]">
               <thead>
                 <tr>
                   <th className={thClass}>ID</th>
@@ -777,22 +777,22 @@ export const AdminView: React.FC = () => {
         </div>
       )}
 
-      {/* TAB: KANJI CRUD */}
-      {activeTab === 'KANJI' && (
+      {/* TAB: HANZI CRUD */}
+      {activeTab === 'HANZI' && (
         <div className="mt-6 flex flex-col gap-6">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                fetchKanji();
+                fetchHanzi();
               }}
               className="flex gap-2"
             >
               <input
                 type="text"
-                value={kanjiSearch}
-                onChange={(e) => setKanjiSearch(e.target.value)}
-                placeholder="Tìm chữ Kanji, âm On/Kun, nghĩa..."
+                value={hanziSearch}
+                onChange={(e) => setHanziSearch(e.target.value)}
+                placeholder="Tìm chữ Hanzi, Pinyin / Hán Việt, nghĩa..."
                 className="w-[280px] border border-rule bg-card px-3 py-1.5 text-[12.5px] text-fg focus:border-fg focus:outline-none"
               />
               <SubmitButton type="submit" variant="secondary">
@@ -802,27 +802,27 @@ export const AdminView: React.FC = () => {
 
             <SubmitButton
               onClick={() => {
-                setEditingKanjiId(null);
-                setKanjiForm({
+                setEditingHanziId(null);
+                setHanziForm({
                   character: '',
                   strokeCount: 4,
-                  onyomi: '',
-                  kunyomi: '',
+                  pinyin: '',
+                  traditional: '',
                   sinoVietnamese: '',
                   meaning: '',
                   mnemonic: '',
                 });
-                setKanjiModalOpen(true);
+                setHanziModalOpen(true);
               }}
               variant="primary"
             >
               <Plus size={14} />
-              <span>Thêm Kanji mới</span>
+              <span>Thêm Hanzi mới</span>
             </SubmitButton>
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full border-collapse text-[12.5px]">
+            <table className="w-full min-w-[680px] border-collapse text-[12.5px]">
               <thead>
                 <tr>
                   <th className={thClass}>ID</th>
@@ -835,14 +835,14 @@ export const AdminView: React.FC = () => {
                 </tr>
               </thead>
               <tbody>
-                {kanjiList.map((k) => (
+                {hanziList.map((k) => (
                   <tr key={k.id}>
                     <td className={`${tdClass} tabular-nums`}>#{k.id}</td>
                     <td className={`${tdClass} font-serif font-bold text-fg text-[18px]`}>{k.character}</td>
                     <td className={`${tdClass} tabular-nums`}>{k.strokeCount}</td>
                     <td className={`${tdClass} text-[11.5px] text-fg-60`}>
-                      {k.onyomi && <div>On: {k.onyomi}</div>}
-                      {k.kunyomi && <div>Kun: {k.kunyomi}</div>}
+                      {k.pinyin && <div>Pinyin: {k.pinyin}</div>}
+                      {k.traditional && <div>Phồn thể: {k.traditional}</div>}
                     </td>
                     <td className={`${tdClass} font-semibold text-fg`}>{k.sinoVietnamese || '—'}</td>
                     <td className={`${tdClass} text-fg`}>{k.meaning}</td>
@@ -851,17 +851,17 @@ export const AdminView: React.FC = () => {
                         <button
                           type="button"
                           onClick={() => {
-                            setEditingKanjiId(k.id);
-                            setKanjiForm({
+                            setEditingHanziId(k.id);
+                            setHanziForm({
                               character: k.character,
                               strokeCount: k.strokeCount,
-                              onyomi: k.onyomi || '',
-                              kunyomi: k.kunyomi || '',
+                              pinyin: k.pinyin || '',
+                              traditional: k.traditional || '',
                               sinoVietnamese: k.sinoVietnamese || '',
                               meaning: k.meaning,
                               mnemonic: k.mnemonic || '',
                             });
-                            setKanjiModalOpen(true);
+                            setHanziModalOpen(true);
                           }}
                           className="cursor-pointer text-fg-60 hover:text-fg"
                           title="Sửa"
@@ -870,7 +870,7 @@ export const AdminView: React.FC = () => {
                         </button>
                         <button
                           type="button"
-                          onClick={() => handleDeleteKanji(k.id)}
+                          onClick={() => handleDeleteHanzi(k.id)}
                           className="cursor-pointer text-fg-38 hover:text-red"
                           title="Xoá"
                         >
@@ -1001,13 +1001,13 @@ export const AdminView: React.FC = () => {
       {/* VOCAB MODAL */}
       {vocabModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-scrim p-4">
-          <div className="w-full max-w-[500px] border border-rule bg-card p-6 shadow-xl animate-toast-in">
+          <div className="w-full max-w-[500px] border border-rule bg-card p-6  animate-toast-in">
             <h3 className="font-serif text-[17px] font-semibold text-fg">
               {editingVocabId ? 'Chỉnh sửa từ vựng' : 'Thêm từ vựng mới'}
             </h3>
             <form onSubmit={handleSaveVocab} className="mt-4 flex flex-col gap-3">
               <div>
-                <label className={labelClass}>Từ vựng (Kanji / Kana)</label>
+                <label className={labelClass}>Từ vựng (chữ Hán)</label>
                 <input
                   type="text"
                   required
@@ -1018,7 +1018,7 @@ export const AdminView: React.FC = () => {
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className={labelClass}>Cách đọc (Furigana)</label>
+                  <label className={labelClass}>Phiên âm Pinyin</label>
                   <input
                     type="text"
                     required
@@ -1048,7 +1048,7 @@ export const AdminView: React.FC = () => {
                 />
               </div>
               <div>
-                <label className={labelClass}>Câu ví dụ tiếng Nhật (tuỳ chọn)</label>
+                <label className={labelClass}>Câu ví dụ tiếng Trung (tuỳ chọn)</label>
                 <input
                   type="text"
                   value={vocabForm.exampleSentence}
@@ -1073,23 +1073,23 @@ export const AdminView: React.FC = () => {
         </div>
       )}
 
-      {/* KANJI MODAL */}
-      {kanjiModalOpen && (
+      {/* HANZI MODAL */}
+      {hanziModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-scrim p-4">
-          <div className="w-full max-w-[500px] border border-rule bg-card p-6 shadow-xl animate-toast-in">
+          <div className="w-full max-w-[500px] border border-rule bg-card p-6  animate-toast-in">
             <h3 className="font-serif text-[17px] font-semibold text-fg">
-              {editingKanjiId ? 'Chỉnh sửa Kanji' : 'Thêm Kanji mới'}
+              {editingHanziId ? 'Chỉnh sửa chữ Hán (Hanzi)' : 'Thêm chữ Hán (Hanzi) mới'}
             </h3>
-            <form onSubmit={handleSaveKanji} className="mt-4 flex flex-col gap-3">
+            <form onSubmit={handleSaveHanzi} className="mt-4 flex flex-col gap-3">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className={labelClass}>Chữ Kanji</label>
+                  <label className={labelClass}>Chữ Hán</label>
                   <input
                     type="text"
                     required
                     maxLength={2}
-                    value={kanjiForm.character}
-                    onChange={(e) => setKanjiForm({ ...kanjiForm, character: e.target.value })}
+                    value={hanziForm.character}
+                    onChange={(e) => setHanziForm({ ...hanziForm, character: e.target.value })}
                     className="mt-1 w-full border border-rule bg-bg px-3 py-2 font-serif text-[16px] text-fg focus:border-fg focus:outline-none"
                   />
                 </div>
@@ -1099,28 +1099,28 @@ export const AdminView: React.FC = () => {
                     type="number"
                     required
                     min={1}
-                    value={kanjiForm.strokeCount}
-                    onChange={(e) => setKanjiForm({ ...kanjiForm, strokeCount: Number(e.target.value) })}
+                    value={hanziForm.strokeCount}
+                    onChange={(e) => setHanziForm({ ...hanziForm, strokeCount: Number(e.target.value) })}
                     className="mt-1 w-full border border-rule bg-bg px-3 py-2 text-[13px] text-fg focus:border-fg focus:outline-none"
                   />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className={labelClass}>Âm On (Katakana)</label>
+                  <label className={labelClass}>Phiên âm Pinyin</label>
                   <input
                     type="text"
-                    value={kanjiForm.onyomi}
-                    onChange={(e) => setKanjiForm({ ...kanjiForm, onyomi: e.target.value })}
+                    value={hanziForm.pinyin}
+                    onChange={(e) => setHanziForm({ ...hanziForm, pinyin: e.target.value })}
                     className="mt-1 w-full border border-rule bg-bg px-3 py-2 text-[13px] text-fg focus:border-fg focus:outline-none"
                   />
                 </div>
                 <div>
-                  <label className={labelClass}>Âm Kun (Hiragana)</label>
+                  <label className={labelClass}>Chữ phồn thể</label>
                   <input
                     type="text"
-                    value={kanjiForm.kunyomi}
-                    onChange={(e) => setKanjiForm({ ...kanjiForm, kunyomi: e.target.value })}
+                    value={hanziForm.traditional}
+                    onChange={(e) => setHanziForm({ ...hanziForm, traditional: e.target.value })}
                     className="mt-1 w-full border border-rule bg-bg px-3 py-2 text-[13px] text-fg focus:border-fg focus:outline-none"
                   />
                 </div>
@@ -1130,8 +1130,8 @@ export const AdminView: React.FC = () => {
                   <label className={labelClass}>Âm Hán Việt</label>
                   <input
                     type="text"
-                    value={kanjiForm.sinoVietnamese}
-                    onChange={(e) => setKanjiForm({ ...kanjiForm, sinoVietnamese: e.target.value })}
+                    value={hanziForm.sinoVietnamese}
+                    onChange={(e) => setHanziForm({ ...hanziForm, sinoVietnamese: e.target.value })}
                     className="mt-1 w-full border border-rule bg-bg px-3 py-2 text-[13px] text-fg focus:border-fg focus:outline-none"
                   />
                 </div>
@@ -1140,31 +1140,31 @@ export const AdminView: React.FC = () => {
                   <input
                     type="text"
                     required
-                    value={kanjiForm.meaning}
-                    onChange={(e) => setKanjiForm({ ...kanjiForm, meaning: e.target.value })}
+                    value={hanziForm.meaning}
+                    onChange={(e) => setHanziForm({ ...hanziForm, meaning: e.target.value })}
                     className="mt-1 w-full border border-rule bg-bg px-3 py-2 text-[13px] text-fg focus:border-fg focus:outline-none"
                   />
                 </div>
               </div>
               <div>
-                <label className={labelClass}>Mẹo nhớ (Mnemonic)</label>
+                <label className={labelClass}>Chiết tự & Mẹo nhớ</label>
                 <textarea
                   rows={2}
-                  value={kanjiForm.mnemonic}
-                  onChange={(e) => setKanjiForm({ ...kanjiForm, mnemonic: e.target.value })}
+                  value={hanziForm.mnemonic}
+                  onChange={(e) => setHanziForm({ ...hanziForm, mnemonic: e.target.value })}
                   className="mt-1 w-full border border-rule bg-bg px-3 py-2 text-[13px] text-fg focus:border-fg focus:outline-none"
                 />
               </div>
               <div className="mt-3 flex justify-end gap-2">
                 <button
                   type="button"
-                  onClick={() => setKanjiModalOpen(false)}
+                  onClick={() => setHanziModalOpen(false)}
                   className="cursor-pointer border border-rule px-4 py-2 text-[12px] text-fg-60 hover:text-fg"
                 >
                   Huỷ
                 </button>
                 <SubmitButton type="submit" variant="primary">
-                  Lưu Kanji
+                  Lưu chữ Hán
                 </SubmitButton>
               </div>
             </form>
@@ -1175,7 +1175,7 @@ export const AdminView: React.FC = () => {
       {/* EXERCISE MODAL */}
       {exerciseModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-scrim p-4">
-          <div className="w-full max-w-[500px] border border-rule bg-card p-6 shadow-xl animate-toast-in">
+          <div className="w-full max-w-[500px] border border-rule bg-card p-6  animate-toast-in">
             <h3 className="font-serif text-[17px] font-semibold text-fg">
               {editingExerciseId ? 'Chỉnh sửa câu hỏi bài tập' : 'Thêm câu hỏi mới'}
             </h3>
@@ -1187,7 +1187,7 @@ export const AdminView: React.FC = () => {
                   required
                   value={exerciseForm.questionText}
                   onChange={(e) => setExerciseForm({ ...exerciseForm, questionText: e.target.value })}
-                  placeholder="VD: わたし __ たなか です。"
+                  placeholder="VD: 我 __ 学生。"
                   className="mt-1 w-full border border-rule bg-bg px-3 py-2 font-serif text-[14px] text-fg focus:border-fg focus:outline-none"
                 />
               </div>
@@ -1198,8 +1198,8 @@ export const AdminView: React.FC = () => {
                   required
                   value={exerciseForm.optionsJson}
                   onChange={(e) => setExerciseForm({ ...exerciseForm, optionsJson: e.target.value })}
-                  placeholder='["は","が","を","に"]'
-                  className="mt-1 w-full border border-rule bg-bg px-3 py-2 font-mono text-[12.5px] text-fg focus:border-fg focus:outline-none"
+                  placeholder='["是","在","有","和"]'
+                  className="mt-1 w-full border border-rule bg-bg px-3 py-2 font-sans text-[12.5px] text-fg focus:border-fg focus:outline-none"
                 />
               </div>
               <div>

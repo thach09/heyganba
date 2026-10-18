@@ -3,7 +3,8 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 const benchmark = JSON.parse(readFileSync('docs/Dictionary/coverage-benchmark.draft.json', 'utf8'));
-const baselineBytes = readFileSync('docs/Dictionary/coverage-baseline.json');
+const baselinePath = 'docs/Dictionary/vietnamese-coverage-baseline.json';
+const baselineBytes = readFileSync(baselinePath);
 const baseline = JSON.parse(baselineBytes);
 if (benchmark.length !== 500 || baseline.concepts !== 500) throw new Error('Full pre-change baseline required');
 const reviewed = new Map(readFileSync('backend/src/main/resources/dictionary/curated-ja-vi.tsv', 'utf8').split(/\r?\n/)
@@ -50,7 +51,8 @@ for (const c of benchmark) {
     else o.reason=token(normalize(c.englishSense),normalize(o.query)) ? 'WRONG_ENTRY_RANKING' : 'MISSING_ALIAS';
   }
   const note = caution[c.en] ?? (c.category==='family' ? caution.family : null);
-  pilot.push({ ...c, quality: note ? 'C' : 'A', reviewNote: note ?? c.reviewNote,
+  const confidence = note ? 'C' : 'A';
+  pilot.push({ ...c, confidence, quality: confidence, reviewNote: note ?? c.reviewNote,
     vietnameseMeaning: meaning, vietnameseAliases: viAliases, englishAliases,
     commonRank: source ? Number(source[6]) : 1000,
     source: 'Bundled JMdict / EDRDG (CC-BY-SA-4.0); Vietnamese independently authored, not claimed externally verified.',
@@ -60,9 +62,9 @@ const result = { notice: 'DRAFT — chờ duyệt. PENDING_REVIEW. Never automat
   baselineSha256: createHash('sha256').update(baselineBytes).digest('hex'), snapshot: JSON.parse(readFileSync('backend/src/main/resources/dictionary/snapshot.json')),
   license: 'CC-BY-SA-4.0', concepts: pilot };
 writeFileSync('backend/src/main/resources/db/migration-staging/dictionary-coverage-pilot.json', JSON.stringify(result,null,2)+'\n');
-writeFileSync('docs/Dictionary/coverage-baseline.json', JSON.stringify(baseline,null,2)+'\n');
+writeFileSync(baselinePath, JSON.stringify(baseline,null,2)+'\n');
 // Hash includes the final diagnostic annotation.
-result.baselineSha256=createHash('sha256').update(readFileSync('docs/Dictionary/coverage-baseline.json')).digest('hex');
+result.baselineSha256=createHash('sha256').update(readFileSync(baselinePath)).digest('hex');
 writeFileSync('backend/src/main/resources/db/migration-staging/dictionary-coverage-pilot.json', JSON.stringify(result,null,2)+'\n');
 console.log(JSON.stringify({concepts:pilot.length, newVietnameseGlosses:pilot.filter(c=>!reviewed.has(c.jmdictId)).length,
   vietnameseAliases:pilot.reduce((n,c)=>n+c.vietnameseAliases.length,0), englishAliases:pilot.reduce((n,c)=>n+c.englishAliases.length,0),

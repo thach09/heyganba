@@ -1,1 +1,0 @@
-ALTER TABLE dictionary_entries ADD COLUMN active BOOLEAN NOT NULL DEFAULT TRUE;

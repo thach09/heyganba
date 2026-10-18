@@ -1,46 +1,57 @@
-# Design — HeyGanba
+# Design — Học tiếng Trung
 
-Hệ thị giác "mực trên giấy", đảo tối. Chữ Nhật là nhân vật chính, chữ Việt là sàn đọc.
+Hệ thị giác "mực trên giấy", đảo tối. Chữ Hán là nhân vật chính, chữ Việt là sàn đọc, Pinyin là chúu thích.
 
 ---
 
 ## 1. Nền tảng
 
-### Màu
+### Màu và theme (cập nhật theo yêu cầu audit 17/10/2026)
 
-| Token | Giá trị | Dùng cho |
+Hai giao diện: `宣纸 · Sáng (Giấy Tuyên)` và `砚台 · Tối (Nghiên Mực)`.
+Màu nguồn ở `src/theme.css`, Tailwind chỉ dùng alias token trong `@theme inline`.
+
+| Vai trò | Sáng | Tối |
 |---|---|---|
-| `--bg` | `#151614` | nền mực toàn app |
-| `--fg` | `#ECECE6` | chữ giấy |
-| `--fg-60` / `--fg-38` | `rgba(236,236,230,.60)` / `rgba(236,236,230,.34)` | chữ phụ / chữ mờ |
-| `--rule` / `--rule-strong` | `rgba(236,236,230,.14)` / `rgba(236,236,230,.30)` | đường dữ liệu / đường biên |
-| `--card` | `#1B1C19` | bề mặt phụ (flyout, thẻ học) |
-| `--rank` | `#7FA98B` | cấp độ, thanh EXP, trạng thái "đang đứng" |
-| `--red` | `#D96A5C` | chữa bài (tensaku) |
+| Nền | `#F7F3E8` | `#121211` |
+| Thẻ | `#FFFDF9` | `#1C1B19` |
+| Mực chính | `#1C1917` | `#F5F2EB` |
+| Chữ phụ | `#57534E` | `#A8A29E` |
+| Đường kẻ | `#DFD7C4` | `#2E2C28` |
+| Chu sa | `#C83E31` | `#E04F42` |
+| Ngọc | `#2E7D6B` | `#38A18C` |
+| Vàng nhấn | `#B45309` | `#E7B66A` |
 
-Luật: **đúng hai màu có việc** — xanh đai và đỏ chữa bài. Mọi thứ còn lại là mực, phân biệt bằng *độ đậm* (opacity của `--fg`). Tracker mật độ đọc bằng mực, không bằng màu.
+Nhãn, nút, input, bảng và modal đều theo theme. Không dùng nền hoặc chữ có mã màu cố định trong component. Màu hình minh họa linh thú được giữ riêng. Chữ phụ dùng mực đủ tương phản, chỉ họa tiết trang trí được dùng opacity thấp. Không tạo màu xanh hoặc xám ngoài token.
 
-Cấm: gradient, glow, bóng đổ, kính mờ, xám riêng ngoài thang mực.
+Theme được lưu trong localStorage và đồng bộ giữa tab. Lần đầu theo cài đặt hệ điều hành. Nút theme ở sidebar và header mobile, có tên truy cập và focus bàn phím.
+
+Họa tiết: góc hồi văn `回纹` nằm trong phần đệm, chữ `学而时习之` / `温故知新` là trang trí ẩn khỏi screen reader. Đèn lồng Khổng Minh trôi trong bầu trời đêm phía trên trang, không nhận thao tác. Không đặt chữ, dấu triện hoặc họa tiết lên nội dung khác.
+
+Ngoại lệ thiết kế đã được maintainer chấp thuận:
+- **Điều khiển theme**: Nút gạt sáng/tối dạng pill nhỏ gọn (`role="switch"`, `aria-checked`, kích thước rãnh `44×24px`, con trượt tròn `18×18px` có viền `border-rule-strong` tương phản rõ ràng ở cả hai theme, chuyển động trượt `translate-x-[2px]` sang `translate-x-[22px]`, tôn trọng `prefers-reduced-motion`).
+- **Lồng đèn Khổng Minh**: 4 lồng đèn Khổng Minh cổ điển trôi bồng bềnh ở bầu trời trên cùng (`OrientalDecorBackground`, nguồn commit `26c94abd1ae88369970c808ec82713251d540319`) kèm hiệu ứng đung đưa `animate-lantern-sway` và ánh lửa ấm `animate-lantern-glow`. Khi cuộn trang quá 20px, cụm lồng đèn tự động mờ dần (`opacity-0`) để không che chắn nội dung học tập và chữ đọc, và hiện lại khi cuộn về đầu trang.
 
 ### Chữ
 
-- **JP — `Noto Serif JP`** (300/400/600): tiêu đề, nav, nội dung học
+- **ZH — `Noto Serif SC`** (300/400/600): tiêu đề, nav, nội dung học (chữ Hán lớn)
+- **Pinyin — `Noto Sans SC`** (400/500): âm đọc, ghi chú Pinyin
 - **VI — `Be Vietnam Pro`** (400/500/600): nhãn, ghi chú, nút
 
 Thang chữ dùng thật:
 
 | Cỡ | Vai |
 |---|---|
-| 76px serif 300 | chữ học lớn (kana, từ) |
+| 76px serif 300 | chữ học lớn (Hán, từ) |
 | 30px sans 600 | tiêu đề màn |
 | 22–24px serif 600 | con số trạng thái (cấp, EXP) |
-| 21px serif 300 | câu ví dụ tiếng Nhật |
-| 16–18px | nav JP, nghĩa từ |
+| 18–21px sans 400 | Pinyin có dấu thanh |
+| 16–18px | nav Hán, nghĩa từ |
 | 13.5–14.5px | body |
 | 12.5px | chữ phụ |
 | 10.5–11px caps, tracking .14–.18em | nhãn nhỏ |
 
-Không dùng font mảnh ở cỡ nhỏ — body tối thiểu 12.5px; nét mảnh chỉ thuộc về thứ lớn (kana, con số, đường kẻ).
+Không dùng font mảnh ở cỡ nhỏ — body tối thiểu 12.5px; nét mảnh chỉ thuộc về thứ lớn (chữ Hán lớn, con số, đường kẻ).
 
 ### Hình khối & khoảng cách
 
@@ -60,7 +71,9 @@ Không dùng font mảnh ở cỡ nhỏ — body tối thiểu 12.5px; nét mả
 
 ## 3. Thành phần
 
-**Sidebar** — 5 mục: `今日 · 文字 · 単語 · 文法 · 試験`. Nhóm `文字 · Chữ viết` mở dropdown `ひらがな / カタカナ / 漢字` bằng hover (chuột — qua pointer events, không dựa vào `@media (hover:hover)`), tap (mobile) hoặc click; đóng bằng rời chuột, click ngoài, Esc hoặc blur. Flyout: nền `--card`, rộng tối thiểu `188px`, mục cách `9px 18px`, hover tint `rgba(236,236,230,.05)`. Mục đang xem: vạch xanh `2px` bên trái mục cha + chữ JP đậm + nhãn VI màu `--rank`.
+**Sidebar** — Các trạm học: `今日 · Hôm nay` (`/`), `文字 · Chữ viết` (flyout gồm `拼音 · Pinyin & Phát âm` `/pinyin` và `汉字 · Chữ Hán (Tập viết)` `/hanzi`), `词汇 · Từ vựng` (`/vocabulary`), `字典 · Tra cứu & Sổ từ` (`/dictionary`), `语法 · Ngữ pháp` (`/grammar`), `测试 · Luyện tập` (`/exam`), và `管理 · Quản trị` (`/admin`, chỉ cho admin). Flyout mở bằng hover (chuột), tap (mobile) hoặc click; đóng bằng rời chuột, click ngoài, Esc hoặc blur.
+- Điều hướng bàn phím: Khi sidebar desktop thu gọn, vùng nội dung bên trong được đánh dấu `inert` để không nhận focus Tab ngoài màn hình, trong khi nút gạt mép (`‹ / ›`) vẫn nhận focus bàn phím và giữ focus liên tục khi đóng mở.
+- Trên mobile drawer: focus tự động vào nút đóng khi mở, đóng được bằng Esc/nút X/backdrop và trả focus về nút mở menu trên mobile header; nội dung trang chính (`main`) được gắn `inert` trong thời gian drawer mở.
 
 **Tracker** — heatmap mật độ mực 24 tuần × 7 ngày. Ô vuông (`aspect-ratio:1`), gap `3px`, tự giãn kín cột. Mật độ = opacity mực: `0.06 / 0.22 / 0.44 / 0.66 / 0.9`. Nhãn thứ `9px` ở hàng T2/T4/T6; legend ô `8px` "ít → nhiều".
 
@@ -70,7 +83,7 @@ Không dùng font mảnh ở cỡ nhỏ — body tối thiểu 12.5px; nét mả
 
 **Thông thạo từng chữ** — không hiện thanh trên lưới bảng chữ; chi tiết (âm đọc, thông thạo…) hiện khi chọn một chữ. Trên lưới, mức thông thạo thể hiện bằng **nền ô**: không có dữ liệu = không nền → "Từ mới" = xám nhạt → đậm dần theo mức. Trong danh sách từ, dùng gạch mảnh `2px` màu mực (không dùng xanh — xanh vẫn chỉ thuộc cấp tài khoản).
 
-**Phiên ôn từ vựng — trắc nghiệm** — thẻ nền `--card`; từ hiển thị serif `clamp(44px,9vw,68px)`. Câu hỏi ngẫu nhiên *nghĩa tiếng Việt* hoặc *cách đọc (kana)*; từ thuần kana luôn hỏi nghĩa. 4 đáp án xếp dọc (phím 1–4, nhiễu lấy từ các từ trong phiên). Sau khi chọn, kết quả hiện trong **popup**: kết quả → danh tính của từ (furigana → từ → nghĩa) → khối `Ví dụ` có nhãn → nút `Tiếp theo (Space)`; đáp án sai chọn viền đỏ (`--red`). Đúng → SRS `GOOD`; sai → `FORGOT` (ôn lại phiên sau). Nút `!` cạnh số tiến độ mở panel hướng dẫn.
+**Phiên ôn từ vựng — trắc nghiệm** — thẻ nền `--card`; từ hiển thị serif `clamp(44px,9vw,68px)`. Câu hỏi ngẫu nhiên *nghĩa tiếng Việt* hoặc *cách đọc (Pinyin)*. 4 đáp án xếp dọc (phím 1–4, nhiễu lấy từ các từ trong phiên). Sau khi chọn, kết quả hiện trong **popup**: kết quả → danh tính của từ (Pinyin → chữ Hán → nghĩa) → khối `Ví dụ` có nhãn → nút `Tiếp theo (Space)`; đáp án sai chọn viền đỏ (`--red`). Đúng → SRS `GOOD`; sai → `FORGOT` (ôn lại phiên sau). Nút `!` cạnh số tiến độ mở panel hướng dẫn.
 
 **Nút & focus** — viền `1px`, radius 0; hover đảo mực/giấy. Focus bàn phím: viền mảnh `1px --fg-38`, offset `3px`.
 
@@ -82,13 +95,16 @@ Không dùng font mảnh ở cỡ nhỏ — body tối thiểu 12.5px; nét mả
 
 **Nội dung dài** — đoạn dài trong panel/popup cắt bằng `line-clamp-6` + nút chữ `Xem thêm` / `Thu gọn`; nút **chỉ hiện khi thật sự bị cắt** (so `scrollHeight > clientHeight`), đổi điểm ngữ pháp thì tự thu gọn. Khi nào tách màn đọc riêng: rule có `explanation + notes > ~400 ký tự` hoặc có 例文.
 
-**Trạm Kanji** — header `Kanji 漢字` + nút `(!)`; hai tab `Tra cứu` / `Luyện viết`. **Tra cứu**: hàng chip lọc bài (`Tất cả bài` + `Bài 1…7`, chip đặc mực khi chọn); hàng lọc: input search có icon (cao `40px`, viền `--rule-strong`, focus viền mực) + nút `Tìm` + `Xoá lọc` + `select` bộ thủ (cùng kiểu viền, không radius); dòng thống kê `fg-38` (*đang hiển thị · đã luyện · bộ thủ*); lưới thẻ kanji `repeat(auto-fill, 94px)`: chữ serif `30px` · Hán Việt `fg-60` · nghĩa `fg-38` · `Đã luyện N×` — **thẻ nhiều dòng chọn bằng viền mực + nền `--card`** (không tô nền mực như ô một ký tự, vì làm khó đọc chữ nhỏ); panel chi tiết `320px` sticky giống bảng chữ: chữ `54px` + Hán Việt + *nét · bài* + số lần luyện, nhãn `ONYOMI / KUNYOMI / NGHĨA / MNEMONIC / BỘ THỦ` (**mnemonic = khối nền `tint`** `rgba(236,236,230,.06)` để nổi hơn phần còn lại của panel, không dùng vạch kẻ; bộ thủ là chip viền `--rule`), nút `Luyện viết chữ này` chuyển sang tab `Luyện viết` với chữ đang chọn. **Luyện viết**: cột trái `300px` = nhãn `Chọn bài` + chip bài, rồi nhãn `Tìm chữ` + input search có icon (Enter hoặc nút `Tìm` để lọc, `Xoá lọc` khi đang lọc, kèm số chữ khớp — **dùng chung state lọc với tab `Tra cứu`**) + lưới chọn chữ (`64px`, chữ 22px + Hán Việt, chữ đang luyện nền `--card`), cột phải = chữ đang luyện (serif `34px` + Hán Việt · nghĩa + số lần luyện) + canvas `maxSize 420` + `Lưu tiến độ luyện`, **rồi khối mnemonic nền `tint` ở dưới khung viết**; mobile xếp picker trên, canvas dưới.
+**Trạm Hanzi (Chữ Hán)** (`/hanzi`) — header `Hanzi 汉字` + nút `(!)`; hai tab `Tra cứu` / `Luyện viết`. **Tra cứu**: hàng chip lọc cấp độ HSK 1 đến HSK 6; input search có icon tìm kiếm theo chữ Hán, Pinyin hoặc nghĩa Hán Việt + `select` bộ thủ (cùng kiểu viền, không radius); dòng thống kê `fg-38` (*đang hiển thị · đã luyện · bộ thủ*); lưới thẻ chữ Hán `repeat(auto-fill, 94px)`: chữ serif `30px` · Hán Việt `fg-60` · nghĩa `fg-38` · `Đã luyện N×` — **thẻ nhiều dòng chọn bằng viền mực + nền `--card`** (không tô nền mực như ô một ký tự, vì làm khó đọc chữ nhỏ); panel chi tiết `320px` sticky: chữ `54px` + Pinyin + Hán Việt + *nét · cấp HSK* + số lần luyện, nhãn `PINYIN / HÁN VIỆT / NGHĨA / GHI NHỚ / BỘ THỦ` (**mnemonic = khối nền `tint`** `rgba(236,236,230,.06)` để nổi hơn phần còn lại của panel, không dùng vạch kẻ; bộ thủ là chip viền `--rule`), nút `Luyện viết chữ này` chuyển sang tab `Luyện viết` với chữ đang chọn. **Luyện viết**: cột trái `300px` = chọn cấp HSK và tìm chữ + lưới chọn chữ (`64px`, chữ 22px + Hán Việt, chữ đang luyện nền `--card`), cột phải = chữ đang luyện (serif `34px` + Pinyin · Hán Việt · nghĩa + số lần luyện) + canvas `maxSize 420` có khung lưới mễ tự / điền tự + `Lưu tiến độ luyện`, **rồi khối mnemonic nền `tint` ở dưới khung viết**; mobile xếp picker trên, canvas dưới.
 
-**Luyện gõ kana** — mở tab là màn **setup**: chọn ký tự theo **nhóm → hàng → từng chữ**, dàn thẳng trên nền tab (không khung): nhãn nhóm viết hoa, mỗi hàng là nhãn trái `96px` + các ô chữ `42px` (serif 19px), bấm nhãn nhóm/hàng để chọn hoặc bỏ cả cụm, bấm ô để chọn lẻ — mặc định chọn sẵn nhóm Cơ bản. Thanh dưới **sticky** (`bottom-0`, nền giấy): trái là *số ký tự · ký tự hay gõ sai sẽ lặp nhiều hơn*, phải là nút `Bắt đầu` — dính trong màn khi cuộn. Phiên gõ kiểu typekana.com: **khung dãy** viền `1px --rule`, rộng tối đa `880px`, một hàng ngang không xuống hàng — **thanh trượt**: chữ **đang gõ ghim giữa khung**, dãy trượt ngang (`translateX`, transition `300ms`) khi sang chữ kế; chữ serif `clamp(32px,7.5vw,50px)`. Gõ romaji tự do bằng bàn phím, **Enter mới chấm** (Backspace xoá lùi; máy cảm ứng chạm vào dãy để mở bàn phím); **ô nhập** dưới khung nền `--card` `240×44px` hiện romaji đang gõ + **caret nhấp nháy** (`animate-caret` 1.1s steps), dưới cùng là dòng gợi ý. Chữ hiện tại có **gạch chân mực** `2px`, chữ đã gõ mờ `fg-38`, chữ chưa tới `fg-60`. Enter khớp đáp án → chữ done; sai → chữ **hoá đỏ**, hiện **cách đọc đúng ngay trên chữ đó**, lượt đi tiếp ngay (không chặn), và một bản sao **được nhét lại cuối dãy** (không animation), tối đa **10 + 5 chữ** mỗi dãy. Không có nút nghe lại / đặt lại / đếm đúng-sai; chỉ có `Kết thúc` góc phải về màn setup. Cơ chế typekana: **Leitner 5 hộp** — ký tự hay gõ sai lặp nhiều hơn (hộp 1 nặng gấp 16 lần hộp 5), đúng lên hộp, sai về hộp 1; lưu trong `localStorage` (`heyganba_kana_typing`).
+**Trạm Pinyin (Phát âm & Bảng âm)** (`/pinyin`) — header `Pinyin 拼音` + nút `(!)`; hệ thống bảng Thanh mẫu (Shengmu), Vận mẫu (Yunmu) và 4 Thanh điệu (Tones). Chế độ nghe audio phát âm mẫu chuẩn, luyện phản xạ nhận diện âm tiết và phân biệt cặp âm dễ nhầm lẫn (zh/ch/sh, z/c/s, j/q/x). Giao diện tối giản với các thẻ âm đọc, thanh trượt phát âm và nút kiểm tra tức thì.
 
 **Trạm Ngữ pháp** — header `Grammar 文法` + nút `(!)`; hai tab `Tra cứu` / `Luyện tập`. **Tra cứu**: chip lọc bài + **search chạy ngay khi gõ, bỏ dấu tiếng Việt** (tìm trên `title + structure + explanation + notes`; gõ "phu dinh" ra "phủ định"), kèm số `x/y điểm ngữ pháp`; hàng rule = **cấu trúc serif `16px`** làm dòng chính + snippet `explanation` (`96` ký tự, `fg-60`) + `#số · bài` (`fg-38`), số câu bên phải; hàng đang chọn nền `tint`; panel chi tiết `320px` sticky: cấu trúc serif `22px` + meta + giải thích (clamp `6` dòng + `Xem thêm`) + **khối `Lưu ý` nền `tint`** (chỗ hiện `notes`) + nút `Luyện tập phần này`; trên màn nhỏ panel này là popup. **Luyện tập**: chip phạm vi (`Tất cả điểm ngữ pháp` / `Chỉ nhóm bẫy`) + nhãn `Đang luyện: <cấu trúc>` kèm `Bỏ chọn`; dòng trạng thái `Đúng x/y câu · câu i/n · phạm vi`; câu hỏi serif `22px`; đáp án là hàng `kbd 1–4` + chữ serif — **đúng = viền mực, chọn sai = viền + chữ đỏ, các đáp án còn lại mờ `fg-38` sau khi chấm**; khối kết quả nền `tint` (`Chính xác` / `Giải thích`, kèm đáp án đúng khi sai); nút `Câu tiếp theo (Enter)`. Không có toast "chưa đúng" — thông tin đã nằm inline.
 
-**Route (React Router)** — app dùng URL thật: `/` dashboard · `/kana` · `/vocabulary` · `/kanji` · `/grammar` · `/grammar/:ruleId` · `/exam` · `/admin` · `*` → về `/`. Mục nav ở sidebar là **link** (`NavLink`), không phải nút state; màn nào cũng F5 được và back/forward chạy đúng. Ở Vercel có `rewrites` về `index.html` để deep link không 404.
+**Route (React Router)** — app dùng URL thật theo cấu trúc hiện tại:
+- **Tuyến chính**: `/` (Bản đồ tiến độ & Tổng quan HSK), `/pinyin` (Pinyin & Bảng phát âm), `/vocabulary` (Thẻ ghi nhớ từ vựng SRS), `/dictionary` (Tra cứu & Sổ từ vựng cá nhân), `/hanzi` (Chữ Hán & Luyện viết chữ), `/grammar` (Ngữ pháp HSK), `/grammar/:ruleId` (Chi tiết điểm ngữ pháp & bài tập chuyên sâu), `/exam` (Thi thử HSK 1–6 có bấm giờ & chấm điểm server), `/admin` (Khu vực quản trị nội dung & học viên, yêu cầu quyền `ROLE_ADMIN`).
+- **Tuyến chuyển hướng kế thừa (legacy redirects)**: `/flashcards` và `/flashcard` chuyển về `/vocabulary`, `/kana` chuyển về `/pinyin`, các route không hợp lệ `*` chuyển về `/`.
+Mục nav ở sidebar là **link** (`NavLink`), không phải nút state; màn nào cũng F5 được và back/forward chạy đúng. Ở Vercel có `rewrites` về `index.html` để deep link không 404.
 
 **Trang chi tiết điểm ngữ pháp** (`/grammar/:ruleId`) — mặt đọc rộng `720px` trong vùng nội dung, sidebar vẫn đứng: link `← Danh sách ngữ pháp`, tiêu đề = cấu trúc (serif `32px`), meta `#số · bài · N câu`, rồi giải thích cỡ đọc (`14px/2`), khối `Lưu ý` nền `tint`, cuối là `Luyện tập phần này` → về `/grammar?practice=<id>` (query được xoá sau khi áp). Cuối trang có khối **`Ngữ pháp khác`**: lưới card ngang (desktop `auto-fill minmax(220px)`, mobile 2 cột), card = cấu trúc serif `15px` + `#số · bài · N câu`, viền `--rule` hover viền mực + nền `tint`; gợi ý ưu tiên **cùng bài**, thiếu thì lấp các điểm liền kề, tối đa 6, kèm link `Xem tất cả →`; bấm card thì sang trang đó và **cuộn lên đầu**. Đây là chỗ để nhét 例文 sau này mà không phải sửa layout.
 
@@ -107,12 +123,16 @@ Không dùng font mảnh ở cỡ nhỏ — body tối thiểu 12.5px; nét mả
   - Mỗi 10 lượt ôn flashcard SRS tích luỹ: **+50 EXP** (`app.exp.srs-session`), không cộng 50 EXP cho một thẻ đơn lẻ.
   - Hoàn thành 1 đề thi thử: **100 EXP × hệ số điểm** (`app.exp.exam-base * (score / total)`)
   - Cấu hình qua `ExpConfig`, không hardcode để dễ dàng tinh chỉnh chỉ số vận hành.
-- **Màu cấp độ:** Áp dụng **1 màu chủ đạo duy nhất (`#7FA98B` — rank green)** xuyên suốt cho toàn bộ các cấp độ. Không đổi màu lung tung giữa các cấp, chỉ thay đổi sắc độ (lightness / tone) đậm dần theo rank từ sơ cấp đến bậc thầy.
+- **Màu cấp độ:** Áp dụng **1 màu chủ đạo duy nhất (`--jade`, thích ứng sáng/tối)** xuyên suốt cho toàn bộ các cấp độ. Không đổi màu lung tung giữa các cấp, chỉ thay đổi sắc độ (lightness / tone) đậm dần theo rank từ sơ cấp đến bậc thầy.
 
-- Khối gợi nhớ / nhiệm vụ kế tiếp: đã gỡ khỏi dashboard; để dành cho phiên học/từng trạm.
+- Dashboard có nhiệm vụ theo dữ liệu thật, EXP 30/25/50 và măng 2/2/3, nhận một lần/ngày theo giờ Việt Nam.
 
 ## 5. Làm việc với hệ này
 
 - Đọc `PRODUCT.md` (sự thật sản phẩm) trước khi sửa UI
 - Style màn mới bằng **Tailwind v4** với token trong `@theme` (`src/index.css`): `text-fg-60`, `border-rule`, `font-serif`… — palette/radius/shadow mặc định đã bị xoá khỏi theme, không thể dùng
 - Sau khi sửa UI: chạy detector `.opencode/skills/impeccable/scripts/impeccable detect <đường dẫn>` (từ `frontend/`)
+
+## Chữ trên màu nhấn và tương phản (audit 17/10/2026)
+
+Màu nền/viền nhấn giữ palette đã chốt. Chữ nhỏ dùng `cinnabar-ink`, `jade-ink`, `gold-ink`: sáng lần lượt #B33127 / #246B5B / #984400; tối #F06D60 / #49B39D / #E7B66A. Tránh giảm opacity của chữ mang nội dung. `on-accent` là mực #121211 ở theme tối, giấy #FFFDF9 ở theme sáng, để chữ trên nút đỏ/ngọc/vàng đạt tương phản tối thiểu 4.5:1. Không dùng màu trắng cố định trên đỏ sáng trong theme tối.

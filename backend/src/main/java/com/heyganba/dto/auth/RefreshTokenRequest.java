@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class RefreshTokenRequest {
 
-    @NotBlank(message = "Refresh token is required")
+    @jakarta.validation.constraints.Size(max=4096)
+    @jakarta.validation.constraints.Size(max=4096)
     private String refreshToken;
 }

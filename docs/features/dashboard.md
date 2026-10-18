@@ -1,16 +1,5 @@
-# Trang tổng quan
+# Bảng tổng quan
 
-> Trạng thái: Đã triển khai. Tài liệu này ghi hành vi hiện tại trong code.
+Heatmap 24 tuần và biểu đồ 30 ngày từ study_activities, tuần tính từ thứ Hai theo ngày học Việt Nam. Sáu nhóm cấp đếm từ riêng đã ôn nhớ và ngữ pháp đã làm đúng. Nhiệm vụ 10 SRS / 3 lượt viết đúng / 5 câu ngữ pháp đúng hoặc một đề đã nộp được server kiểm tra, nhận một lần/ngày. Ví măng theo tài khoản, không đọc số dư từ localStorage.
 
-## Hành vi hiện tại
-
-- Hiển thị heatmap hoạt động trong 24 tuần (168 ngày), số hoạt động tuần gần nhất, số câu đúng và số từ đã thuộc.
-- Hiển thị hai biểu đồ 30 ngày: lượt học và câu trả lời đúng.
-- Hiển thị cấp tài khoản và EXP.
-- Sidebar hiển thị streak hiện tại.
-
-## Nguồn dữ liệu và giới hạn
-
-- Heatmap lấy từ `GET /api/v1/streak/heatmap?days=168`; thống kê flashcard từ `/api/v1/flashcard/stats`; streak từ `/api/v1/streak`.
-- EXP lấy từ `GET /api/v1/exp` (alias `/users/me/exp`), tính ở backend từ hoạt động học thật, 1.000 EXP mỗi cấp. Có EXP cho đáp án đúng trong sổ từ.
-- Heatmap hiện gồm flashcard reviews, bài thi đã nộp và câu trả lời ngữ pháp. Lượt luyện Kana/Kanji chưa được tính vào heatmap này.
+Phạm vi chuẩn: [PRODUCT.md](../../PRODUCT.md), [audit](../QA/production-audit-2026-10-17.md).

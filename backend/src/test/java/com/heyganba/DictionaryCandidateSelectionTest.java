@@ -1,6 +1,7 @@
 package com.heyganba;
 
 import com.heyganba.model.entity.DictionaryEntry;
+import com.heyganba.model.enums.VietnameseMeaningStatus;
 import com.heyganba.repository.DictionaryEntryRepository;
 import com.heyganba.service.DictionarySearchText;
 import com.heyganba.service.DictionaryService;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@org.springframework.test.context.TestPropertySource(properties="app.dictionary.legacy-catalog-enabled=true")
 class DictionaryCandidateSelectionTest extends ContentApiTestBase {
     @Autowired DictionaryEntryRepository dictionary;
     @Autowired DictionaryService search;
@@ -22,13 +24,13 @@ class DictionaryCandidateSelectionTest extends ContentApiTestBase {
                 long id = 9000000L + i; ids.add(id);
                 String meaning = "commuter fixture spacecraft model " + i;
                 dictionary.save(DictionaryEntry.builder().id(id).word("複合" + i).reading("ふくごう" + i)
-                        .meaning(meaning).searchText(DictionarySearchText.catalog("ふくごう " + meaning, meaning))
+                        .meaning(meaning).vietnameseStatus(VietnameseMeaningStatus.NONE).searchText(DictionarySearchText.catalog("ふくごう " + meaning, meaning))
                         .commonRank(1).build());
             }
             long exactId = 9000100L; ids.add(exactId);
             String meaning = "fixture spacecraft (fictional; esp. spacecraft), fixture starship / to explore fixtures (space)";
             dictionary.save(DictionaryEntry.builder().id(exactId).word("検証船").reading("けんしょうせん")
-                    .meaning(meaning).searchText(DictionarySearchText.catalog("うちゅうせん uchuusen " + meaning, meaning))
+                    .meaning(meaning).vietnameseStatus(VietnameseMeaningStatus.NONE).searchText(DictionarySearchText.catalog("うちゅうせん uchuusen " + meaning, meaning))
                     .commonRank(1000).build());
             for (String query : List.of("fixture spacecraft", "fixture starship", "explore fixtures", "to explore fixtures")) {
                 var results = search.search(query).vocabularies();

@@ -127,4 +127,27 @@ class AdminContentServiceTest {
         assertThat(existing.getReviewStatus()).isEqualTo(com.heyganba.model.enums.ReviewStatus.ARCHIVED);
         verify(auditLogService).logAction(eq(admin), eq("grammar_exercises"), eq(20L), eq("ARCHIVE"), eq("テスト問題"), eq("ARCHIVED"));
     }
+
+    @Test
+    @DisplayName("Admin duyệt tất cả các mục PENDING_REVIEW và ghi nhận audit log")
+    void approveAllPending_updatesAllAndLogsAction() {
+        Vocabulary vocabulary = Vocabulary.builder().reviewStatus(com.heyganba.model.enums.ReviewStatus.PENDING_REVIEW).build();
+        Kanji hanzi = Kanji.builder().reviewStatus(com.heyganba.model.enums.ReviewStatus.PENDING_REVIEW).build();
+        GrammarExercise exercise = GrammarExercise.builder().reviewStatus(com.heyganba.model.enums.ReviewStatus.PENDING_REVIEW).build();
+        com.heyganba.model.entity.GrammarRule rule = com.heyganba.model.entity.GrammarRule.builder().reviewStatus(com.heyganba.model.enums.ReviewStatus.PENDING_REVIEW).build();
+        com.heyganba.model.entity.Kana kana = com.heyganba.model.entity.Kana.builder().reviewStatus(com.heyganba.model.enums.ReviewStatus.PENDING_REVIEW).build();
+        when(vocabularyRepository.findAll()).thenReturn(java.util.List.of(vocabulary));
+        when(kanjiRepository.findAll()).thenReturn(java.util.List.of(hanzi));
+        when(grammarExerciseRepository.findAll()).thenReturn(java.util.List.of(exercise));
+        when(grammarRuleRepository.findAll()).thenReturn(java.util.List.of(rule));
+        when(kanaRepository.findAll()).thenReturn(java.util.List.of(kana));
+        int total = adminContentService.approveAllPending(admin);
+        assertThat(total).isEqualTo(5);
+        assertThat(vocabulary.getReviewStatus()).isEqualTo(com.heyganba.model.enums.ReviewStatus.APPROVED);
+        assertThat(hanzi.getReviewStatus()).isEqualTo(com.heyganba.model.enums.ReviewStatus.APPROVED);
+        assertThat(exercise.getReviewStatus()).isEqualTo(com.heyganba.model.enums.ReviewStatus.APPROVED);
+        assertThat(rule.getReviewStatus()).isEqualTo(com.heyganba.model.enums.ReviewStatus.APPROVED);
+        assertThat(kana.getReviewStatus()).isEqualTo(com.heyganba.model.enums.ReviewStatus.APPROVED);
+        verify(auditLogService).logAction(eq(admin), eq("curriculum"), isNull(), eq("APPROVE_ALL"), eq("PENDING_REVIEW"), eq("APPROVED (5 mục)"));
+    }
 }

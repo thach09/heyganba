@@ -12,6 +12,10 @@ export interface ExamQuestion {
 
 export interface ExamDto {
   examId: number;
+  hskLevel?: number;
+  maximumScore?: number;
+  passingScore?: number;
+  scaledScore?: number;
   totalQuestions: number;
   durationMinutes: number;
   startedAt: string;
@@ -32,6 +36,10 @@ export interface ExamQuestionResult {
 
 export interface ExamResultDto {
   examId: number;
+  hskLevel?: number;
+  maximumScore?: number;
+  passingScore?: number;
+  scaledScore?: number;
   correctCount: number;
   totalCount: number;
   scorePercent: number;
@@ -42,6 +50,10 @@ export interface ExamResultDto {
 
 export interface ExamHistoryDto {
   examId: number;
+  hskLevel?: number;
+  maximumScore?: number;
+  passingScore?: number;
+  scaledScore?: number;
   correctCount: number;
   totalCount: number;
   scorePercent: number;

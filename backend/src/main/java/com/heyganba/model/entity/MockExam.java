@@ -43,6 +43,9 @@ public class MockExam {
     @Column(name = "submitted_at")
     private Instant submittedAt;
 
+    @Column(name = "hsk_level")
+    private Integer hskLevel;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;

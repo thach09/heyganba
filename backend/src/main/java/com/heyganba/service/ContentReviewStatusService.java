@@ -21,7 +21,7 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Tổng hợp trạng thái duyệt nội dung để hệ thống tự cảnh báo nội dung "chờ duyệt tiếng Nhật".
+ * Tổng hợp trạng thái duyệt nội dung để hệ thống tự cảnh báo nội dung "chờ duyệt tiếng Trung".
  *
  * Không có logic ghi: chỉ đếm theo `review_status` (mặc định PENDING_REVIEW từ migration V13) và liệt kê
  * các migration nằm trong `db/migration-staging` (những file KHÔNG chạy ở production).
@@ -34,16 +34,19 @@ public class ContentReviewStatusService {
     private static final String STAGING_MIGRATION_PATTERN = "classpath:db/migration-staging/*.sql";
 
     private static final String NOTE = "Nội dung seed là BẢN NHÁP do người soạn tự viết, CHƯA được duyệt bởi người "
-            + "biết tiếng Nhật. Migration trong db/migration-staging chỉ chạy ở local/staging — production chỉ nhận "
+            + "biết tiếng Trung. Migration trong db/migration-staging chỉ chạy ở local/staging — production chỉ nhận "
             + "migration trong db/migration sau khi nội dung được duyệt (promote = chuyển file sang db/migration). "
             + "Số `needsHumanCheck` là các item AI tự soạn nhưng CHƯA đối chiếu được nguồn (hoặc có thể có hơn 1 đáp "
             + "án đúng theo ngữ cảnh) — xem tab \"Cần kiểm\" trong admin panel (GET /admin/review-queue).";
 
+    @org.springframework.beans.factory.annotation.Value("${app.legacy-phonetics-enabled:false}")
+    private boolean legacyPhoneticsEnabled;
     private final KanaRepository kanaRepository;
     private final VocabularyRepository vocabularyRepository;
     private final KanjiRepository kanjiRepository;
     private final GrammarRuleRepository grammarRuleRepository;
     private final GrammarExerciseRepository grammarExerciseRepository;
+    private final com.heyganba.repository.MockExamPresetRepository mockExamPresetRepository;
 
     @Transactional(readOnly = true)
     public ContentReviewStatusResponse getStatus() {
@@ -53,7 +56,7 @@ public class ContentReviewStatusService {
                 statusOf("VOCABULARY", vocabularyRepository.count(),
                         vocabularyRepository.countByReviewStatus(ReviewStatus.PENDING_REVIEW),
                         vocabularyRepository.countByNeedsHumanCheckTrue()),
-                statusOf("KANJI", kanjiRepository.count(),
+                statusOf("HANZI", kanjiRepository.count(),
                         kanjiRepository.countByReviewStatus(ReviewStatus.PENDING_REVIEW),
                         kanjiRepository.countByNeedsHumanCheckTrue()),
                 // grammar_rules không có cột needs_human_check (nội dung luật do người soạn theo tài liệu gốc)
@@ -61,9 +64,13 @@ public class ContentReviewStatusService {
                         grammarRuleRepository.countByReviewStatus(ReviewStatus.PENDING_REVIEW), 0L),
                 statusOf("GRAMMAR_EXERCISE", grammarExerciseRepository.count(),
                         grammarExerciseRepository.countByReviewStatus(ReviewStatus.PENDING_REVIEW),
-                        grammarExerciseRepository.countByNeedsHumanCheckTrue())
+                        grammarExerciseRepository.countByNeedsHumanCheckTrue()),
+                statusOf("MOCK_EXAM_PRESET", mockExamPresetRepository.count(),
+                        mockExamPresetRepository.countByReviewStatus(ReviewStatus.PENDING_REVIEW),
+                        mockExamPresetRepository.countByNeedsHumanCheckTrue())
         );
 
+        if (!legacyPhoneticsEnabled) types = types.stream().filter(type -> !"KANA".equals(type.contentType())).toList();
         long totalPending = types.stream().mapToLong(ContentTypeReviewStatus::pendingReview).sum();
         long totalNeedsCheck = types.stream().mapToLong(ContentTypeReviewStatus::needsHumanCheck).sum();
 

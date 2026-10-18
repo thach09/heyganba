@@ -38,6 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@org.springframework.test.context.TestPropertySource(properties="app.legacy-phonetics-enabled=true")
 class KanaApiTest extends com.heyganba.support.ContentApiTestBase {
 
     @Autowired

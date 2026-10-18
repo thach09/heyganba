@@ -27,20 +27,60 @@ public class Vocabulary {
     @JoinColumn(name = "dictionary_entry_id", insertable = false, updatable = false)
     private DictionaryEntry dictionaryEntry;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 50)
     private String word;
 
-    @Column(nullable = false, length = 100)
+    @Column(length = 50)
+    private String traditional;
+
+    @Column(length = 100)
+    private String pinyin;
+
+    @Column(name = "pinyin_normalized", length = 100)
+    private String pinyinNormalized;
+
+    @Column(name = "han_viet", length = 100)
+    private String hanViet;
+
+    @Column(name = "part_of_speech", length = 30)
+    private String partOfSpeech;
+
+    @Column(name = "meaning_vi", columnDefinition = "TEXT")
+    private String meaningVi;
+
+    @Builder.Default
+    @Column(name = "hsk_level")
+    private Integer hskLevel = 1;
+
+    @Builder.Default
+    @Column(name = "lesson_number")
+    private Integer lessonNumber = 1;
+
+    @Column(name = "example_zh", columnDefinition = "TEXT")
+    private String exampleZh;
+
+    @Column(name = "example_pinyin", columnDefinition = "TEXT")
+    private String examplePinyin;
+
+    @Column(name = "example_vi", columnDefinition = "TEXT")
+    private String exampleVi;
+
+    @Column(name = "audio_url", length = 500)
+    private String audioUrl;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "lesson_id")
+    private Lesson lesson;
+
+    /** Legacy compatibility columns / getters */
+    @Column(length = 100)
     private String reading;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT")
     private String meaning;
 
     @Column(name = "sino_vietnamese", length = 100)
     private String sinoVietnamese;
-
-    @Column(name = "audio_url", length = 500)
-    private String audioUrl;
 
     @Column(name = "example_sentence", columnDefinition = "TEXT")
     private String exampleSentence;
@@ -51,25 +91,40 @@ public class Vocabulary {
     @Column(name = "example_meaning", columnDefinition = "TEXT")
     private String exampleMeaning;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "lesson_id")
-    private Lesson lesson;
+    public String getReading() {
+        return pinyin != null ? pinyin : reading;
+    }
 
-    /** Trạng thái duyệt nội dung — mặc định chờ duyệt (xem {@link com.heyganba.model.enums.ReviewStatus}). */
+    public String getMeaning() {
+        return meaningVi != null ? meaningVi : meaning;
+    }
+
+    public String getSinoVietnamese() {
+        return hanViet != null ? hanViet : sinoVietnamese;
+    }
+
+    public String getExampleSentence() {
+        return exampleZh != null ? exampleZh : exampleSentence;
+    }
+
+    public String getExampleReading() {
+        return examplePinyin != null ? examplePinyin : exampleReading;
+    }
+
+    public String getExampleMeaning() {
+        return exampleVi != null ? exampleVi : exampleMeaning;
+    }
+
+    /** Trạng thái duyệt nội dung — mặc định chờ duyệt */
     @Builder.Default
     @Enumerated(EnumType.STRING)
-    @Column(name = "review_status", nullable = false, length = 20)
+    @Column(name = "review_status", length = 20)
     private ReviewStatus reviewStatus = ReviewStatus.PENDING_REVIEW;
 
-    /**
-     * TRUE = nội dung do AI soạn nhưng CHƯA đối chiếu được nguồn (cách đọc/nghĩa Hán Việt chưa tra chéo được
-     * từ điển uy tín) — phải để người biết tiếng Nhật kiểm trước.
-     */
     @Builder.Default
-    @Column(name = "needs_human_check", nullable = false)
+    @Column(name = "needs_human_check")
     private Boolean needsHumanCheck = false;
 
-    /** Nguồn đã dùng để đối chiếu (vd: `jisho:八百 = はっぴゃく`) — để truy vết về sau. */
     @Column(name = "source_ref", length = 160)
     private String sourceRef;
 

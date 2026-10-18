@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.Duration;
 import java.util.List;
 
+@org.springframework.validation.annotation.Validated
 @RestController
 @RequestMapping("/exam")
 @RequiredArgsConstructor
@@ -55,7 +56,7 @@ public class ExamController {
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<ExamResponse>> getExam(
             @AuthenticationPrincipal UserPrincipal currentUser,
-            @PathVariable Long id
+            @PathVariable @jakarta.validation.constraints.Positive Long id
     ) {
         return ResponseEntity.ok(ApiResponse.success(examService.getExam(currentUser.getId(), id)));
     }
@@ -63,7 +64,7 @@ public class ExamController {
     @GetMapping("/{id}/result")
     public ResponseEntity<ApiResponse<ExamSubmitResponse>> getResult(
             @AuthenticationPrincipal UserPrincipal currentUser,
-            @PathVariable Long id
+            @PathVariable @jakarta.validation.constraints.Positive Long id
     ) {
         return ResponseEntity.ok(ApiResponse.success(examService.getResult(currentUser.getId(), id)));
     }
@@ -71,7 +72,7 @@ public class ExamController {
     @PostMapping("/{id}/submit")
     public ResponseEntity<ApiResponse<ExamSubmitResponse>> submit(
             @AuthenticationPrincipal UserPrincipal currentUser,
-            @PathVariable Long id,
+            @PathVariable @jakarta.validation.constraints.Positive Long id,
             @Valid @RequestBody ExamSubmitRequest request
     ) {
         String rateLimitKey = "exam-submit:" + currentUser.getId();

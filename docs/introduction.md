@@ -1,26 +1,21 @@
-# Giới thiệu
+# Giới thiệu Nền tảng Học tiếng Trung
 
-> Bản nháp. Nội dung dưới đây chỉ ghi các ý đã được chủ sản phẩm nêu hoặc xác nhận. Những mục chưa có quyết định được để mở, không tự suy diễn từ tài liệu cũ.
+Nền tảng học tiếng Trung toàn diện dành cho người Việt: kết hợp Pinyin, Chữ Hán (Hanzi), Từ vựng HSK, Ngữ pháp ứng dụng và Hệ thống Linh Thú Đồng Hành (Companion Pets).
 
-## Bối cảnh trước khi có web
+## 1. Bối cảnh & Mục tiêu
 
-Nhiều người học phải tự xoay xở để duy trì việc học tiếng Nhật: tự ghi chú để tạo cơ hội tiếp xúc, tự tìm tài liệu và tự nghĩ cách luyện tập. Việc đó tốn thời gian, trong khi tài liệu có thể thiếu hướng dẫn chi tiết về ngữ pháp và cách sử dụng. Vì vậy, học viên đôi khi nhớ được từ hoặc quy tắc nhưng chưa biết dùng khi nào, trong tình huống nào.
+Người Việt học tiếng Trung có lợi thế lớn về Âm Hán Việt và trường từ vựng tương đồng, nhưng thường gặp rào cản ở:
+- **Phát âm & Thanh điệu Pinyin**: Khó phân biệt các thanh điệu (đặc biệt thanh 1 và thanh 4) và các vận mẫu tương tự nhau.
+- **Quy tắc bút thuận & cấu trúc Chữ Hán**: Dễ nản khi viết chữ Hán nếu không có lưới Mễ Tự Cách (米字格) và hướng dẫn chi tiết từng nét.
+- **Ghi nhớ từ vựng & phản xạ**: Cần phương pháp lặp lại ngắt quãng (SRS) kết hợp giải nghĩa Âm Hán Việt chuẩn xác.
 
-## Đối tượng hướng đến
+Nền tảng hướng tới việc cung cấp lộ trình bài bản từ HSK 1 đến HSK 6 với trải nghiệm thẩm mỹ cao cấp (Modern Guochao / Văn Phòng Tứ Bảo), gamification qua linh thú đồng hành và phản hồi tương tác tức thì.
 
-- **Hiện tại:** phần lớn người dùng là người cần tìm kiếm và học tiếng Nhật.
-- **Hướng tương lai:** giáo viên có thể tự tạo các bộ học tập; học viên có thể tìm và nhận các bộ do giáo viên tạo.
+## 2. Các Trạm Học Trọng Tâm (Learning Stations)
 
-## Mục tiêu
-
-Xây dựng một hướng học tiếng Nhật có cấu trúc và dễ tiếp cận, đồng hành được với người mới bắt đầu lẫn người học lâu muốn rèn luyện thêm. Người học không chỉ ghi nhớ từ vựng và ngữ pháp, mà còn hiểu khi nào, trong tình huống nào và cách sử dụng chúng; từ đó dần tự tin dùng tiếng Nhật trong nhiều tình huống. Về lâu dài, hướng học này trở thành lựa chọn hữu ích và phổ biến với người học tiếng Nhật.
-
-## Định hướng phương pháp
-
-Phương pháp học lấy người học và các tình huống gần gũi làm trọng tâm. Việc học không chỉ xoay quanh bài tập và câu chữ; nền tảng hướng tới tạo môi trường để người học được tiếp xúc và thực hành tiếng Nhật trong nhiều tình huống. Đây là môi trường không phán xét: người học có thể sai, học lại và thử lại cho đến khi cảm thấy thoải mái khi sử dụng.
-
-## Định hướng trong tương lai
-
-- Giáo viên có thể tự tạo các bộ học tập; học viên có thể tìm và nhận các bộ do giáo viên tạo, theo hướng tương tự Quizlet.
-- Hướng tới tạo những môi trường học tập gần gũi và hấp dẫn, giúp người dùng có hứng thú quay lại và tiếp tục sử dụng tiếng Nhật.
-- Đây là định hướng tương lai, chưa phải phạm vi làm ngay.
+1. **Trạm Pinyin (Bính âm & Thanh điệu)**: Bảng 21 thanh mẫu, 36 vận mẫu, phát âm chuẩn Audio, sóng cao độ trực quan và quiz thanh điệu.
+2. **Trạm Hanzi (Chữ Hán & Bút thuận)**: Bảng chữ Hán chuẩn HSK, lưới Mễ Tự Cách (米字格), hướng dẫn vẽ từng nét động bằng HanziWriter và chấm điểm nhận diện chữ viết.
+3. **Trạm Flashcard Từ vựng (HSK Vocabulary)**: Thẻ lật 3D tương tác với chữ Giản thể, Phồn thể, Pinyin, Âm Hán Việt, câu ví dụ và thuật toán SRS.
+4. **Tra cứu & Sổ tay Từ điển**: Tra cứu đa phương thức (Chữ Hán, Pinyin, Hán Việt, Nghĩa tiếng Việt) kèm tính năng lưu vào sổ tay cá nhân.
+5. **Ngữ pháp & Bài tập HSK**: Cấu trúc ngữ pháp trọng điểm, giải thích trực quan và trắc nghiệm tương tác có giải thích chi tiết.
+6. **Linh Thú Đồng Hành (Companion Pets)**: 4 linh thú văn hóa Á Đông (Đoàn Đoàn, Đào Đào, Tiểu Ngộ Không, Ngự Miêu) tương tác cảm xúc, tích lũy Măng Trúc 🎋 và nâng cấp độ thân mật khi học.

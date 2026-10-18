@@ -17,7 +17,7 @@ import java.util.function.Function;
  * (kể cả người chưa xác thực) chỉ được nhận nội dung đã duyệt — tuyệt đối không được render nội dung nháp ra
  * ngoài, kể cả kèm banner cảnh báo.
  *
- * Vì sao chặn ở tầng service chứ không chỉ ẩn ở UI: nội dung chờ duyệt là bản nháp CHƯA được giáo viên tiếng Nhật
+ * Vì sao chặn ở tầng service chứ không chỉ ẩn ở UI: nội dung chờ duyệt là bản nháp CHƯA được giáo viên tiếng Trung
  * duyệt, nên không được rời khỏi hệ thống tới bất kỳ client nào. Ẩn ở UI vẫn bị đọc trực tiếp qua API.
  *
  * Cách dùng trong service:

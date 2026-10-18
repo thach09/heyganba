@@ -1,0 +1,14 @@
+{
+  "batch": "D",
+  "rows": 888,
+  "examined": 2638,
+  "senseMismatches": 1738,
+  "translation": "Google Translate ja→vi of the headword, cross-checked against en→vi translation of its complete JMdict sense",
+  "selection": "JMdict frequency nf01–nf48, then ichi1/news1/gai1; one unrestricted sense; pinned ID/headword/reading/full-sense match; excludes curated and pilot IDs; obvious specialized/name/sensitive gloss filters",
+  "jmdictSourceSha256": "4855280c53bfd52c41194af2da37b7190a7b8c170f379d643555820dc9f5d10e",
+  "sourceUrl": "https://www.edrdg.org/pub/Nihongo/JMdict_e.gz",
+  "generatedAt": "2026-10-11T07:51:47.914Z",
+  "rowsBeforeOutOfScopeFilter": 900,
+  "outOfScopeExcluded": 12,
+  "preparedAt": "2026-10-11T08:14:07.819Z"
+}

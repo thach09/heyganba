@@ -1,9 +1,14 @@
-﻿# Local agent helper
+# Local agent helpers & scripts
 powershell.cmd
+**/powershell.cmd
 cleanup.bat
+commit_flow.bat
+commit_flow.ps1
+conversion_plan.md
 
-# Secrets dÃ¹ng cho agent tá»± deploy (KHÃ”NG bao giá» commit)
+# Secrets & Local Env (NEVER commit)
 .local-secrets.env
+.secrets.template.env
 .secrets/
 
 # OS files
@@ -14,6 +19,11 @@ Thumbs.db
 .env
 .env.local
 .env.*.local
+.env.*
+!.env.example
+!**/.env.example
+*.dump
+*.sql.gz
 
 # Node & Frontend
 node_modules/
@@ -56,17 +66,14 @@ logs/
 
 # Docker
 docker-data/
-# Vercel CLI (link project cuc bo)
+
+# Vercel CLI
 .vercel/
 
-# DB dump sao luu truoc khi doi nha cung cap (KHONG commit - chua du lieu user)
+# DB dump backups
 backups/
 
 # impeccable-ignore-start
-# Ephemeral output, runtime state, and per-dev overrides.
-# The **/ prefix covers .impeccable at the repo root or in a nested workspace.
-# Shared artifacts stay tracked: config.json, live/config.json,
-# design.json, surfaces/*.md, critique/*.md.
 **/.impeccable/config.local.json
 **/.impeccable/hook.cache.json
 **/.impeccable/hook.pending.json

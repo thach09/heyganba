@@ -88,7 +88,7 @@ try {
 
   for (const width of [1440, 390]) {
     await page.setViewport({ width, height: width === 390 ? 844 : 1000, deviceScaleFactor: 1 });
-    for (const route of ['/dictionary?q=日本語', '/kana', '/vocabulary', '/kanji', '/grammar', '/exam', '/', '/admin']) {
+    for (const route of ['/dictionary?q=日本語', '/kana', '/vocabulary', '/hanzi', '/grammar', '/exam', '/', '/admin']) {
       await page.goto(`${origin}${route}`, { waitUntil: 'domcontentloaded' });
       await page.waitForFunction(() => document.querySelector('main') && !document.querySelector('main').textContent.includes('Đang tải'));
       await page.waitForNetworkIdle({ idleTime: 300, concurrency: 5, timeout: 10000 });

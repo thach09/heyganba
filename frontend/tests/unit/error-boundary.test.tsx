@@ -6,6 +6,7 @@ import { ErrorBoundary } from '../../src/app/ErrorBoundary';
 vi.mock('@sentry/react', () => ({ captureException: vi.fn() }));
 
 test('component failures are reported with a safe visible recovery path', () => {
+  vi.stubEnv('DEV', false);
   vi.spyOn(console, 'error').mockImplementation(() => {});
   const report = vi.mocked(Sentry.captureException).mockReturnValue('test-event');
   const failure = new Error('private server stack');

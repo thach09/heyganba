@@ -12,5 +12,7 @@ import lombok.NoArgsConstructor;
 public class LogoutRequest {
 
     /** Refresh token cần thu hồi cùng lúc với access token khi đăng xuất. */
+    @jakarta.validation.constraints.Size(max=4096)
+    @jakarta.validation.constraints.Size(max=4096)
     private String refreshToken;
 }

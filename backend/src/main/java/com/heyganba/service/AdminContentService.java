@@ -21,6 +21,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdminContentService {
 
+    @org.springframework.beans.factory.annotation.Value("${app.legacy-phonetics-enabled:false}")
+    private boolean legacyPhoneticsEnabled;
     private final KanaRepository kanaRepository;
     private final VocabularyRepository vocabularyRepository;
     private final KanjiRepository kanjiRepository;
@@ -38,7 +40,7 @@ public class AdminContentService {
      * Hàng đợi cho tab "Cần kiểm" của admin panel (GET /admin/review-queue).
      *
      * Thứ tự: mọi item `needs_human_check = TRUE` lên ĐẦU (đúng yêu cầu quy trình duyệt), sau đó mới tới phần
-     * đã đối chiếu được nguồn — nhờ vậy người biết tiếng Nhật không phải tự lọc thủ công.
+     * đã đối chiếu được nguồn — nhờ vậy người biết tiếng Trung không phải tự lọc thủ công.
      *
      * @param limit          số dòng tối đa (chặn trần {@value #MAX_REVIEW_QUEUE_SIZE})
      * @param onlyNeedsCheck true = chỉ trả các item cần người kiểm
@@ -60,7 +62,7 @@ public class AdminContentService {
         Pageable pageable = PageRequest.of(0, limit);
         List<AdminReviewQueueItem> items = new ArrayList<>();
 
-        for (Kana kana : kanaRepository.findByNeedsHumanCheckOrderByIdAsc(needsCheck, pageable)) {
+        for (Kana kana : legacyPhoneticsEnabled ? kanaRepository.findByNeedsHumanCheckOrderByIdAsc(needsCheck, pageable) : List.<Kana>of()) {
             items.add(new AdminReviewQueueItem("KANA", kana.getId(), kana.getCharacter(),
                     kana.getRomaji() + " · " + kana.getKanaType(), Boolean.TRUE.equals(kana.getNeedsHumanCheck()),
                     kana.getReviewStatus().name(), kana.getSourceRef(), null));
@@ -71,7 +73,7 @@ public class AdminContentService {
                     vocab.getReviewStatus().name(), vocab.getSourceRef(), null));
         }
         for (Kanji kanjiItem : kanjiRepository.findByNeedsHumanCheckOrderByIdAsc(needsCheck, pageable)) {
-            items.add(new AdminReviewQueueItem("KANJI", kanjiItem.getId(), kanjiItem.getCharacter(),
+            items.add(new AdminReviewQueueItem("HANZI", kanjiItem.getId(), kanjiItem.getCharacter(),
                     kanjiItem.getMeaning(), Boolean.TRUE.equals(kanjiItem.getNeedsHumanCheck()),
                     kanjiItem.getReviewStatus().name(), kanjiItem.getSourceRef(), null));
         }
@@ -175,8 +177,8 @@ public class AdminContentService {
         Kanji kanji = Kanji.builder()
                 .character(req.getCharacter().trim())
                 .strokeCount(req.getStrokeCount())
-                .onyomi(req.getOnyomi() != null ? req.getOnyomi().trim() : null)
-                .kunyomi(req.getKunyomi() != null ? req.getKunyomi().trim() : null)
+                .pinyin(req.getPinyin() != null ? req.getPinyin().trim() : null)
+                .traditional(req.getTraditional() != null ? req.getTraditional().trim() : null)
                 .sinoVietnamese(req.getSinoVietnamese() != null ? req.getSinoVietnamese().trim() : null)
                 .meaning(req.getMeaning().trim())
                 .mnemonic(req.getMnemonic() != null ? req.getMnemonic().trim() : null)
@@ -192,7 +194,7 @@ public class AdminContentService {
     @Transactional
     public Kanji updateKanji(User admin, Long id, AdminKanjiRequest req) {
         Kanji kanji = kanjiRepository.findById(id)
-                .orElseThrow(() -> new BadRequestException("Không tìm thấy Kanji ID: " + id));
+                .orElseThrow(() -> new BadRequestException("Không tìm thấy chữ Hán ID: " + id));
 
         String before = kanji.getCharacter() + " (" + kanji.getMeaning() + ")";
 
@@ -203,8 +205,8 @@ public class AdminContentService {
 
         kanji.setCharacter(req.getCharacter().trim());
         kanji.setStrokeCount(req.getStrokeCount());
-        kanji.setOnyomi(req.getOnyomi() != null ? req.getOnyomi().trim() : null);
-        kanji.setKunyomi(req.getKunyomi() != null ? req.getKunyomi().trim() : null);
+        kanji.setPinyin(req.getPinyin() != null ? req.getPinyin().trim() : null);
+        kanji.setTraditional(req.getTraditional() != null ? req.getTraditional().trim() : null);
         kanji.setSinoVietnamese(req.getSinoVietnamese() != null ? req.getSinoVietnamese().trim() : null);
         kanji.setMeaning(req.getMeaning().trim());
         kanji.setMnemonic(req.getMnemonic() != null ? req.getMnemonic().trim() : null);
@@ -218,7 +220,7 @@ public class AdminContentService {
     @Transactional
     public void deleteKanji(User admin, Long id) {
         Kanji kanji = kanjiRepository.findById(id)
-                .orElseThrow(() -> new BadRequestException("Không tìm thấy Kanji ID: " + id));
+                .orElseThrow(() -> new BadRequestException("Không tìm thấy chữ Hán ID: " + id));
         String before = kanji.getCharacter();
         kanji.setReviewStatus(ReviewStatus.ARCHIVED);
         kanjiRepository.save(kanji);
@@ -291,5 +293,157 @@ public class AdminContentService {
         exercise.setReviewStatus(ReviewStatus.ARCHIVED);
         grammarExerciseRepository.save(exercise);
         auditLogService.logAction(admin, "grammar_exercises", id, "ARCHIVE", before, "ARCHIVED");
+    }
+
+    // ================= PHÊ DUYỆT & TỪ CHỐI HÀNG ĐỢI KIỂM =================
+
+    @Transactional
+    public void approveContent(User admin, String contentType, Long id, String note) {
+        String type = contentType.toUpperCase().trim();
+        switch (type) {
+            case "VOCABULARY" -> {
+                Vocabulary vocab = vocabularyRepository.findById(id)
+                        .orElseThrow(() -> new BadRequestException("Không tìm thấy từ vựng ID: " + id));
+                String before = vocab.getReviewStatus().name();
+                vocab.setReviewStatus(ReviewStatus.APPROVED);
+                vocab.setNeedsHumanCheck(false);
+                vocabularyRepository.save(vocab);
+                auditLogService.logAction(admin, "vocabulary", id, "APPROVE", before, "APPROVED" + (note != null && !note.isBlank() ? " | " + note.trim() : ""));
+            }
+            case "KANJI", "HANZI" -> {
+                Kanji kanji = kanjiRepository.findById(id)
+                        .orElseThrow(() -> new BadRequestException("Không tìm thấy chữ Hán ID: " + id));
+                String before = kanji.getReviewStatus().name();
+                kanji.setReviewStatus(ReviewStatus.APPROVED);
+                kanji.setNeedsHumanCheck(false);
+                kanjiRepository.save(kanji);
+                auditLogService.logAction(admin, "hanzi", id, "APPROVE", before, "APPROVED" + (note != null && !note.isBlank() ? " | " + note.trim() : ""));
+            }
+            case "GRAMMAR_EXERCISE", "EXERCISE" -> {
+                GrammarExercise exercise = grammarExerciseRepository.findById(id)
+                        .orElseThrow(() -> new BadRequestException("Không tìm thấy bài tập ID: " + id));
+                String before = exercise.getReviewStatus().name();
+                exercise.setReviewStatus(ReviewStatus.APPROVED);
+                exercise.setNeedsHumanCheck(false);
+                if (note != null && !note.isBlank()) {
+                    exercise.setReviewNote(note.trim());
+                }
+                grammarExerciseRepository.save(exercise);
+                auditLogService.logAction(admin, "grammar_exercises", id, "APPROVE", before, "APPROVED" + (note != null && !note.isBlank() ? " | " + note.trim() : ""));
+            }
+            case "KANA" -> {
+                Kana kana = kanaRepository.findById(id)
+                        .orElseThrow(() -> new BadRequestException("Không tìm thấy mục phát âm ID: " + id));
+                String before = kana.getReviewStatus().name();
+                kana.setReviewStatus(ReviewStatus.APPROVED);
+                kana.setNeedsHumanCheck(false);
+                kanaRepository.save(kana);
+                auditLogService.logAction(admin, "kana", id, "APPROVE", before, "APPROVED" + (note != null && !note.isBlank() ? " | " + note.trim() : ""));
+            }
+            default -> throw new BadRequestException("Loại nội dung không hợp lệ: " + contentType);
+        }
+    }
+
+    @Transactional
+    public void rejectContent(User admin, String contentType, Long id, String note) {
+        String type = contentType.toUpperCase().trim();
+        switch (type) {
+            case "VOCABULARY" -> {
+                Vocabulary vocab = vocabularyRepository.findById(id)
+                        .orElseThrow(() -> new BadRequestException("Không tìm thấy từ vựng ID: " + id));
+                String before = vocab.getReviewStatus().name();
+                vocab.setReviewStatus(ReviewStatus.ARCHIVED);
+                vocab.setNeedsHumanCheck(false);
+                vocabularyRepository.save(vocab);
+                auditLogService.logAction(admin, "vocabulary", id, "REJECT", before, "ARCHIVED" + (note != null && !note.isBlank() ? " | " + note.trim() : ""));
+            }
+            case "KANJI", "HANZI" -> {
+                Kanji kanji = kanjiRepository.findById(id)
+                        .orElseThrow(() -> new BadRequestException("Không tìm thấy chữ Hán ID: " + id));
+                String before = kanji.getReviewStatus().name();
+                kanji.setReviewStatus(ReviewStatus.ARCHIVED);
+                kanji.setNeedsHumanCheck(false);
+                kanjiRepository.save(kanji);
+                auditLogService.logAction(admin, "hanzi", id, "REJECT", before, "ARCHIVED" + (note != null && !note.isBlank() ? " | " + note.trim() : ""));
+            }
+            case "GRAMMAR_EXERCISE", "EXERCISE" -> {
+                GrammarExercise exercise = grammarExerciseRepository.findById(id)
+                        .orElseThrow(() -> new BadRequestException("Không tìm thấy bài tập ID: " + id));
+                String before = exercise.getReviewStatus().name();
+                exercise.setReviewStatus(ReviewStatus.ARCHIVED);
+                exercise.setNeedsHumanCheck(false);
+                if (note != null && !note.isBlank()) {
+                    exercise.setReviewNote(note.trim());
+                }
+                grammarExerciseRepository.save(exercise);
+                auditLogService.logAction(admin, "grammar_exercises", id, "REJECT", before, "ARCHIVED" + (note != null && !note.isBlank() ? " | " + note.trim() : ""));
+            }
+            case "KANA" -> {
+                Kana kana = kanaRepository.findById(id)
+                        .orElseThrow(() -> new BadRequestException("Không tìm thấy mục phát âm ID: " + id));
+                String before = kana.getReviewStatus().name();
+                kana.setReviewStatus(ReviewStatus.ARCHIVED);
+                kana.setNeedsHumanCheck(false);
+                kanaRepository.save(kana);
+                auditLogService.logAction(admin, "kana", id, "REJECT", before, "ARCHIVED" + (note != null && !note.isBlank() ? " | " + note.trim() : ""));
+            }
+            default -> throw new BadRequestException("Loại nội dung không hợp lệ: " + contentType);
+        }
+    }
+
+    @Transactional
+    public int approveAllPending(User admin) {
+        int count = 0;
+        List<Vocabulary> pendingVocab = vocabularyRepository.findAll().stream()
+                .filter(v -> v.getReviewStatus() == ReviewStatus.PENDING_REVIEW || Boolean.TRUE.equals(v.getNeedsHumanCheck()))
+                .toList();
+        for (Vocabulary v : pendingVocab) {
+            v.setReviewStatus(ReviewStatus.APPROVED);
+            v.setNeedsHumanCheck(false);
+            count++;
+        }
+        vocabularyRepository.saveAll(pendingVocab);
+
+        List<Kanji> pendingKanji = kanjiRepository.findAll().stream()
+                .filter(k -> k.getReviewStatus() == ReviewStatus.PENDING_REVIEW || Boolean.TRUE.equals(k.getNeedsHumanCheck()))
+                .toList();
+        for (Kanji k : pendingKanji) {
+            k.setReviewStatus(ReviewStatus.APPROVED);
+            k.setNeedsHumanCheck(false);
+            count++;
+        }
+        kanjiRepository.saveAll(pendingKanji);
+
+        List<GrammarExercise> pendingExercises = grammarExerciseRepository.findAll().stream()
+                .filter(e -> e.getReviewStatus() == ReviewStatus.PENDING_REVIEW || Boolean.TRUE.equals(e.getNeedsHumanCheck()))
+                .toList();
+        for (GrammarExercise e : pendingExercises) {
+            e.setReviewStatus(ReviewStatus.APPROVED);
+            e.setNeedsHumanCheck(false);
+            count++;
+        }
+        grammarExerciseRepository.saveAll(pendingExercises);
+
+        List<GrammarRule> pendingRules = grammarRuleRepository.findAll().stream()
+                .filter(r -> r.getReviewStatus() == ReviewStatus.PENDING_REVIEW)
+                .toList();
+        for (GrammarRule r : pendingRules) {
+            r.setReviewStatus(ReviewStatus.APPROVED);
+            count++;
+        }
+        grammarRuleRepository.saveAll(pendingRules);
+
+        List<Kana> pendingKana = kanaRepository.findAll().stream()
+                .filter(k -> k.getReviewStatus() == ReviewStatus.PENDING_REVIEW || Boolean.TRUE.equals(k.getNeedsHumanCheck()))
+                .toList();
+        for (Kana k : pendingKana) {
+            k.setReviewStatus(ReviewStatus.APPROVED);
+            k.setNeedsHumanCheck(false);
+            count++;
+        }
+        kanaRepository.saveAll(pendingKana);
+
+        auditLogService.logAction(admin, "curriculum", null, "APPROVE_ALL", "PENDING_REVIEW", "APPROVED (" + count + " mục)");
+        return count;
     }
 }

@@ -1,5 +1,6 @@
 package com.heyganba.dto.notebook;
 
+import com.heyganba.model.enums.VietnameseMeaningStatus;
 import lombok.Builder;
 
 @Builder
@@ -10,6 +11,7 @@ public record VocabNotebookItemResponse(
         String reading,
         String meaning,
         String vietnameseMeaning,
+        VietnameseMeaningStatus vietnameseStatus,
         String sinoVietnamese,
         String exampleSentence,
         String exampleReading,

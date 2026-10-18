@@ -1,0 +1,59 @@
+# HeyGanba QA Bug Fix Report — 2026-10-08
+
+Base: `develop` at `8895a5f9cba41b484398dd24f87aa1e400bcd6be` (also current remote develop when fetched).
+Local fix branch: `fix/qa-session-mutations`. Scope: the ten supplied QA bugs, High → Medium → Low.
+
+All ten defects were reproduced on the unchanged base before their fixes. All ten original scenarios now pass on local Chrome against the real PostgreSQL-backed API. **VERIFIED FIXED** below is limited to this tested local configuration; it does not certify production or other browser engines. Original-scenario verification was scripted browser interaction with request/database assertions, not a claim of additional human testing.
+
+| Bug ID | Root cause | Fix summary | Regression coverage added | Original reproduction result | Final status |
+| --- | --- | --- | --- | --- | --- |
+| QA-001 | Learner-private React state outlived the authenticated identity. | Key the authenticated child tree by learner ID so signout/account changes unmount private state and cancel old scoped work. Backend ownership checks remain unchanged. | A → signout → B clears exam/answers; cross-tab switch also clears an active exam. | Password change as A, login B on `/exam`: zero old questions/answers. B still receives 404 for A's exam endpoint. | VERIFIED FIXED |
+| QA-007 | Refresh updated credentials without updating visible identity; other tabs retained their old in-memory session. | Publish same-tab profile/session events, reconcile browser storage changes, discard stale per-tab credentials, and commit identity before retry. Refuse to replay an A request as B. | Storage login/logout reconciliation; refresh principal switch aborts the original mutation; pending old refresh cannot restore A. | Two tabs switch A/B and invalidate A through password change: sidebar and `/users/me` both identify B; cross-tab logout also propagates. | VERIFIED FIXED |
+| QA-003 | Advancing while a review was pending let the next write replace/abort the same request channel. | Keep the displayed card until its review settles successfully; block repeated input and advancement; retain failed cards with an explicit save retry. | Delayed reviews preserve both vocabulary IDs without abort; failed save blocks next and offers retry. | 3-second outbound delay: early Enter/second answer cannot advance; after each save, two reviews reach the server and two SRS rows exist. | VERIFIED FIXED |
+| QA-005 | Every zero-time timer tick started a replacement submit. | Synchronous in-flight guard plus one automatic deadline attempt per mounted attempt; a settled failure allows explicit submit retry. | Six delayed deadline ticks produce one non-aborted request; failed submit remains available for manual retry. | With a 3.5-second outbound delay and accelerated client clock: one submit, DB `SUBMITTED`, result visible. | VERIFIED FIXED |
+| QA-002 | Only React held the active ID and learner answers. | Keep a small learner-keyed, tab-local checkpoint; reload the owned attempt through existing GET/result endpoints, preserve the server deadline, and expose restore errors/retry. | Reload keeps ID, answers and position; failure retains checkpoint; already-submitted attempt loads its result; inaccessible attempt is never displayed. | Reload preserves the actual question, answer, question position and deadline; the restored attempt submits successfully. | VERIFIED FIXED |
+| QA-004 | Global SRS keys ignored forms and other open dialogs. | Shared keyboard guard yields to input, textarea, select, contenteditable and open modals while preserving the SRS result popup's own next shortcut. | Password modal ignores numbers/Enter, including events outside its input; editable targets also ignore study keys. | Typing `123` then Enter in password modal creates zero review requests and zero SRS records. | VERIFIED FIXED |
+| QA-008 | A displayed answer remained resubmittable until its result arrived. | Synchronous pending/graded guard; disable answer and scope controls during checking; unlock a retry only after settled failure. | Repeated keys/clicks issue one request and one score; settled failure allows one retry. | Delay real server responses 1.8 seconds: two key presses produce one check and one Grammar item; UI shows one graded answer. | VERIFIED FIXED |
+| QA-009 | An initially empty exercise array also represented pending/failed loads. | Explicit idle/loading/loaded/error states with retry; empty feedback only follows a successful empty response. | Pending, successful empty, error and retry states remain distinct. | Pending 2.5-second exercise request shows loading, no empty message; actual exercises subsequently load. | VERIFIED FIXED |
+| QA-006 | Custom help overlay lacked native modal isolation/Escape; background key listener remained active. | Use the shared native modal, block background keys/forms, and focus the reading heading after `showModal()`; preserve the help width. | Help keys leave answers/position unchanged; native cancel closes help; normal keys work afterwards; editable controls ignored. | `1 → Enter → Escape`: no answer or question change, focus stays in help until Escape closes it. | VERIFIED FIXED |
+| QA-010 | Activity rows are aggregated by date AND source, but `activeDays` counted rows. | Query `COUNT(DISTINCT activityDate)` for the owned learner. Keep canonical date assignment unchanged. | Real repository/service test: two sources on one date, repeated source, another learner, Vietnam midnight boundary, next date, empty learner. The pre-fix test failed with expected 1 / actual 2. | Grammar + Exam yields two source rows, one distinct date, API `activeDays=1` and UI “đã học 1 ngày”. | VERIFIED FIXED |
+
+## Validation
+
+| Stage | Checks and results |
+| --- | --- |
+| Batch A | Focused regressions; full frontend: 40 Vitest + 8 handwriting tests; lint/build pass. Backend Auth/Exam: 19 tests pass. Four original slow-network/account-switch scenarios pass. Desktop/mobile screenshots reviewed. |
+| Batch B | Focused regressions; full frontend: 51 Vitest + 8 handwriting tests; lint/build pass. Backend Exam/Flashcard: 22 tests and Grammar: 9 tests pass. Four original scenarios pass. Desktop/mobile screenshots reviewed. |
+| Batch C | Full frontend: 55 Vitest + 8 handwriting tests; lint/build pass. Backend StudyActivity/Exam/Streak: 22 focused tests pass. Two original scenarios pass. Native help focus was corrected after a real-browser failure and retested. |
+| Final frontend | `npm test`: 55 Vitest + 8 handwriting tests pass. `npm run lint` and `npm run build` pass. Final help presentation adjustment also passed its 15 focused station tests and lint/build. |
+| Final backend / H2 | `mvn -B clean verify`: 198 tests, zero failures/errors/skips. |
+| Final backend / PostgreSQL 16 | `mvn -B clean verify` on fresh `heyganba_qa_fix_tests_20261008`, PostgreSQL driver/dialect, Flyway enabled, Hibernate `validate`: 198 tests, zero failures/errors/skips. All 36 existing migrations validated/applied, through V37. Browser DB was separate: `heyganba_qa_20261008`. |
+| Final original scenarios | `frontend/tests/qa-regression.mjs`, `QA_BATCH=ALL`: all ten PASS, with real API/DB checks and screenshots at 1440 desktop / 390 mobile. Screenshots were opened and visually inspected. |
+| General browser smoke | External adapted copy passed all 21 UI checks at 1440/390, including routes, notebook learning, password signout/login and handwriting rejection; zero captured page errors or horizontal overflow. Original harness hit its previously documented Dictionary network-idle timeout. The external copy retains functional, error and overflow assertions while tolerating only that idle wait. |
+| Design detector | Existing Impeccable Windows launcher and cached engine invoked for touched stations; exit 0, no output. This is supplemented by build and screenshot review. |
+
+## Active-exam contract
+
+The checkpoint contains only `{examId, answers, activeIndex}`, in `sessionStorage` under `heyganba_exam:<userId>`.
+Reload or returning to `/exam` in the same tab revalidates ownership/status through `GET /exam/{id}` before showing questions. Answers must match options in the returned exam. The server's original `expiresAt` is preserved; an expired restored attempt follows the guarded deadline submit path. A previously completed submission restores its existing server result instead of writing another completion.
+
+Transient restore failure keeps the checkpoint and offers retry, blocking generation of a replacement attempt. A 404 clears the inaccessible checkpoint and explicitly reports the error. Success clears the checkpoint after submission. Another learner uses another key; reauthentication as the same learner in the same tab can resume that learner's owned attempt.
+
+This is tab-local recovery, not cloud/offline persistence. Closing the tab discards its checkpoint. A native `beforeunload` confirmation guards leaving an active exam, including tab closure; a storage-write failure also displays an explicit warning to submit before leaving. No backend abandonment endpoint or new persistence schema was introduced. Old attempts predating this fix have no checkpoint and are not retrospectively recovered.
+
+## Warnings, limits and Tech Lead review
+
+- Lint exits 0 with 10 `react(set-state-in-effect)` warnings: nine existed at baseline; one new warning concerns the asynchronous owned-attempt restore effect. No unrelated warning cleanup was included.
+- The original general browser harness's network-idle timeout remains unchanged. The adapted harness is outside the repository; no functional assertion was removed. A parallel browser run lost Chrome targets and an accumulated QA registration run hit the existing local rate limiter. Final scenario replay ran sequentially after restarting the task-owned local backend, without changing any limiter.
+- PostgreSQL rounds persisted timestamps to microseconds while the generation response may carry nanoseconds. Reload deadline comparison uses epoch milliseconds, matching the actual browser timer; answers, position and attempt ID are also checked independently.
+- Deadline testing accelerated only the client clock; no full real-time 20-minute or production exam was exercised. Mobile coverage is Chrome viewport emulation, not physical iOS/Android.
+- Tech Lead should review the intentional learner-keyed remount/identity reconciliation and the tab-local recovery contract. Save retries after an ambiguous lost response still use existing backend semantics; this sprint adds no durable mutation-idempotency protocol or changes to existing server submit rules.
+- Security/auth controller/service rules, ownership validation, admin RBAC/2FA, 30/minute admin write limit, other rate limits, CORS/CSP, database roles, Flyway migrations, Japanese curriculum, design tokens and future product features were intentionally unchanged. No dependency was added, no production data used, and no production deployment or remote push occurred.
+
+## Evidence and handoff
+
+Evidence is outside the repository at `C:\Users\LENOVO\AppData\Local\Temp\heyganba-fix-20261008`:
+`final/results-ALL.json`, per-ID desktop/mobile full and viewport screenshots, batch logs, H2/PostgreSQL verification logs, and smoke artifacts.
+The committed browser harness requires a local URL, a QA database name and an explicit evidence output directory. Frontend regression files are `qa-batch-a.test.tsx`, `qa-batch-b.test.tsx` and the added API identity tests; backend regression is `StudyActivityDaysTest`.
+
+Changes are committed locally as six focused fix commits plus this report. Task-owned QA backend/Vite processes are stopped after testing; QA evidence/databases are retained. Local verification logs are credential-redacted. The final branch has a clean working tree and no remote push/deployment. Work stops after these ten IDs; no future feature work is included.

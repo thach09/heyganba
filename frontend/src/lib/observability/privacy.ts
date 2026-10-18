@@ -5,7 +5,7 @@ export type TelemetrySpan = Parameters<NonNullable<NonNullable<Parameters<typeof
 export function telemetryRoute(value?: string): string {
   if (!value) return '[redacted]';
   const known = new Set(['api','v1','auth','login','register','refresh','logout','users','me','preferences','class-code',
-    'dashboard','kana','kanji','grammar','flashcard','exam','dictionary','admin','progress','health','product-events',
+    'dashboard','pinyin','hanzi','vocabulary','kana','hanzi','grammar','flashcard','exam','dictionary','admin','progress','health','product-events',
     'learning-started','rules','exercises','check','due-today','review','stats','start','submit','results','notebooks']);
   try {
     const url = new URL(value, 'https://telemetry.invalid');

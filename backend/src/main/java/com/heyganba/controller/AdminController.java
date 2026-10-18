@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+@org.springframework.validation.annotation.Validated
 @RestController
 @RequestMapping("/admin")
 @RequiredArgsConstructor
@@ -79,17 +80,57 @@ public class AdminController {
 
     /**
      * Danh sách cho tab "Cần kiểm" của admin panel: các item `needs_human_check = TRUE` được đưa LÊN ĐẦU,
-     * sau đó mới tới phần đã đối chiếu được nguồn (để người biết tiếng Nhật không phải lọc thủ công).
+     * sau đó mới tới phần đã đối chiếu được nguồn (để người biết tiếng Trung không phải lọc thủ công).
      *
      * @param limit          số dòng tối đa (trần 200)
      * @param onlyNeedsCheck true = chỉ trả các item cần người kiểm
      */
     @GetMapping("/review-queue")
     public ResponseEntity<ApiResponse<List<AdminReviewQueueItem>>> reviewQueue(
-            @RequestParam(required = false, defaultValue = "50") int limit,
+            @RequestParam(required = false, defaultValue = "50") @jakarta.validation.constraints.Min(1) @jakarta.validation.constraints.Max(100) int limit,
             @RequestParam(required = false, defaultValue = "false") boolean onlyNeedsCheck
     ) {
         return ResponseEntity.ok(ApiResponse.success(adminContentService.reviewQueue(limit, onlyNeedsCheck)));
+    }
+
+    public record ReviewNote(@jakarta.validation.constraints.Size(max=1000) @com.heyganba.common.validation.PlainText String note) {}
+
+    @PostMapping("/review-queue/{contentType}/{id}/approve")
+    public ResponseEntity<ApiResponse<Void>> approveReviewItem(
+            @AuthenticationPrincipal UserPrincipal admin,
+            @PathVariable @jakarta.validation.constraints.Pattern(regexp="[A-Za-z_-]{1,40}") String contentType,
+            @PathVariable @jakarta.validation.constraints.Positive Long id,
+            @Valid @RequestBody(required = false) ReviewNote body
+    ) {
+        User user = userRepository.getReferenceById(admin.getId());
+        String note = body != null ? body.note() : null;
+        adminContentService.approveContent(user, contentType, id, note);
+        return ResponseEntity.ok(ApiResponse.success(null, "Đã phê duyệt nội dung"));
+    }
+
+    @PostMapping("/review-queue/{contentType}/{id}/reject")
+    public ResponseEntity<ApiResponse<Void>> rejectReviewItem(
+            @AuthenticationPrincipal UserPrincipal admin,
+            @PathVariable @jakarta.validation.constraints.Pattern(regexp="[A-Za-z_-]{1,40}") String contentType,
+            @PathVariable @jakarta.validation.constraints.Positive Long id,
+            @Valid @RequestBody(required = false) ReviewNote body
+    ) {
+        User user = userRepository.getReferenceById(admin.getId());
+        String note = body != null ? body.note() : null;
+        adminContentService.rejectContent(user, contentType, id, note);
+        return ResponseEntity.ok(ApiResponse.success(null, "Đã từ chối/lưu trữ nội dung"));
+    }
+
+    @PostMapping("/review-queue/approve-all")
+    public ResponseEntity<ApiResponse<Map<String, Object>>> approveAllPending(
+            @AuthenticationPrincipal UserPrincipal admin
+    ) {
+        User user = userRepository.getReferenceById(admin.getId());
+        int approvedCount = adminContentService.approveAllPending(user);
+        return ResponseEntity.ok(ApiResponse.success(
+                Map.of("approvedCount", approvedCount),
+                "Đã tự động phê duyệt toàn bộ " + approvedCount + " mục nội dung giáo trình."
+        ));
     }
 
     // ================= 2FA QUẢN TRỊ VIÊN =================
@@ -146,9 +187,9 @@ public class AdminController {
 
     @GetMapping("/vocabulary")
     public ResponseEntity<ApiResponse<List<Vocabulary>>> listVocabulary(
-            @RequestParam(required = false) String q,
-            @RequestParam(required = false, defaultValue = "0") int page,
-            @RequestParam(required = false, defaultValue = "50") int size
+            @RequestParam(required = false) @jakarta.validation.constraints.Size(max=200) String q,
+            @RequestParam(required = false, defaultValue = "0") @jakarta.validation.constraints.Min(0) @jakarta.validation.constraints.Max(10000) int page,
+            @RequestParam(required = false, defaultValue = "50") @jakarta.validation.constraints.Min(1) @jakarta.validation.constraints.Max(100) int size
     ) {
         return ResponseEntity.ok(ApiResponse.success(adminContentService.listVocabulary(q, page, size)));
     }
@@ -166,7 +207,7 @@ public class AdminController {
     @PutMapping("/vocabulary/{id}")
     public ResponseEntity<ApiResponse<Vocabulary>> updateVocabulary(
             @AuthenticationPrincipal UserPrincipal admin,
-            @PathVariable Long id,
+            @PathVariable @jakarta.validation.constraints.Positive Long id,
             @Valid @RequestBody AdminVocabularyRequest request
     ) {
         User user = userRepository.getReferenceById(admin.getId());
@@ -177,7 +218,7 @@ public class AdminController {
     @DeleteMapping("/vocabulary/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteVocabulary(
             @AuthenticationPrincipal UserPrincipal admin,
-            @PathVariable Long id
+            @PathVariable @jakarta.validation.constraints.Positive Long id
     ) {
         User user = userRepository.getReferenceById(admin.getId());
         adminContentService.deleteVocabulary(user, id);
@@ -186,16 +227,16 @@ public class AdminController {
 
     // ================= CRUD KANJI =================
 
-    @GetMapping("/kanji")
+    @GetMapping({"/hanzi", "/kanji"})
     public ResponseEntity<ApiResponse<List<Kanji>>> listKanji(
-            @RequestParam(required = false) String q,
-            @RequestParam(required = false, defaultValue = "0") int page,
-            @RequestParam(required = false, defaultValue = "50") int size
+            @RequestParam(required = false) @jakarta.validation.constraints.Size(max=200) String q,
+            @RequestParam(required = false, defaultValue = "0") @jakarta.validation.constraints.Min(0) @jakarta.validation.constraints.Max(10000) int page,
+            @RequestParam(required = false, defaultValue = "50") @jakarta.validation.constraints.Min(1) @jakarta.validation.constraints.Max(100) int size
     ) {
         return ResponseEntity.ok(ApiResponse.success(adminContentService.listKanji(q, page, size)));
     }
 
-    @PostMapping("/kanji")
+    @PostMapping({"/hanzi", "/kanji"})
     public ResponseEntity<ApiResponse<Kanji>> createKanji(
             @AuthenticationPrincipal UserPrincipal admin,
             @Valid @RequestBody AdminKanjiRequest request
@@ -205,10 +246,10 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(created, "Thêm Kanji thành công"));
     }
 
-    @PutMapping("/kanji/{id}")
+    @PutMapping({"/hanzi/{id}", "/kanji/{id}"})
     public ResponseEntity<ApiResponse<Kanji>> updateKanji(
             @AuthenticationPrincipal UserPrincipal admin,
-            @PathVariable Long id,
+            @PathVariable @jakarta.validation.constraints.Positive Long id,
             @Valid @RequestBody AdminKanjiRequest request
     ) {
         User user = userRepository.getReferenceById(admin.getId());
@@ -216,10 +257,10 @@ public class AdminController {
         return ResponseEntity.ok(ApiResponse.success(updated, "Cập nhật Kanji thành công"));
     }
 
-    @DeleteMapping("/kanji/{id}")
+    @DeleteMapping({"/hanzi/{id}", "/kanji/{id}"})
     public ResponseEntity<ApiResponse<Void>> deleteKanji(
             @AuthenticationPrincipal UserPrincipal admin,
-            @PathVariable Long id
+            @PathVariable @jakarta.validation.constraints.Positive Long id
     ) {
         User user = userRepository.getReferenceById(admin.getId());
         adminContentService.deleteKanji(user, id);
@@ -230,9 +271,9 @@ public class AdminController {
 
     @GetMapping("/exercises")
     public ResponseEntity<ApiResponse<List<GrammarExercise>>> listExercises(
-            @RequestParam(required = false) String q,
-            @RequestParam(required = false, defaultValue = "0") int page,
-            @RequestParam(required = false, defaultValue = "50") int size
+            @RequestParam(required = false) @jakarta.validation.constraints.Size(max=200) String q,
+            @RequestParam(required = false, defaultValue = "0") @jakarta.validation.constraints.Min(0) @jakarta.validation.constraints.Max(10000) int page,
+            @RequestParam(required = false, defaultValue = "50") @jakarta.validation.constraints.Min(1) @jakarta.validation.constraints.Max(100) int size
     ) {
         return ResponseEntity.ok(ApiResponse.success(adminContentService.listExercises(q, page, size)));
     }
@@ -250,7 +291,7 @@ public class AdminController {
     @PutMapping("/exercises/{id}")
     public ResponseEntity<ApiResponse<GrammarExercise>> updateExercise(
             @AuthenticationPrincipal UserPrincipal admin,
-            @PathVariable Long id,
+            @PathVariable @jakarta.validation.constraints.Positive Long id,
             @Valid @RequestBody AdminExerciseRequest request
     ) {
         User user = userRepository.getReferenceById(admin.getId());
@@ -261,7 +302,7 @@ public class AdminController {
     @DeleteMapping("/exercises/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteExercise(
             @AuthenticationPrincipal UserPrincipal admin,
-            @PathVariable Long id
+            @PathVariable @jakarta.validation.constraints.Positive Long id
     ) {
         User user = userRepository.getReferenceById(admin.getId());
         adminContentService.deleteExercise(user, id);

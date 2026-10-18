@@ -73,8 +73,11 @@ export const GrammarRulePage: React.FC = () => {
   }, [user, ruleId, run]);
 
   useEffect(() => {
+    // oxlint-disable-next-line react/set-state-in-effect
     void loadRule();
-    return () => cancel('GrammarRulePage-load');
+    return () => {
+      cancel('GrammarRulePage-load');
+    };
   }, [loadRule, cancel]);
 
   // Start at the top when navigating to another rule from the related-rules section.

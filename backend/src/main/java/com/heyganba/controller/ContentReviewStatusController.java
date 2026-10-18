@@ -11,11 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Endpoint phục vụ việc kiểm soát chất lượng nội dung: cho biết còn bao nhiêu nội dung CHỜ DUYỆT tiếng Nhật
+ * Endpoint phục vụ việc kiểm soát chất lượng nội dung: cho biết còn bao nhiêu nội dung CHỜ DUYỆT tiếng Trung
  * và file migration nào mới chỉ chạy ở staging.
  *
  * Yêu cầu đăng nhập (không cấp public) — chỉ để nội bộ/CI gọi kiểm tra, xem docs/Internal/deployment-plan.md.
  */
+@org.springframework.validation.annotation.Validated
 @RestController
 @RequestMapping("/content")
 @RequiredArgsConstructor

@@ -4,11 +4,12 @@ import type { VocabularyItem, DictionarySearchResponse, VocabNotebookItem, Vocab
 import { useAuth } from '../../app/useAuth';
 import React, { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Search, Plus, FolderPlus, Trash2, Play, CheckCircle2, BookmarkPlus, Volume2 } from 'lucide-react';
+import { Search, Plus, FolderPlus, Trash2, Play, CheckCircle2, BookmarkPlus, Volume2, VolumeX, Eye, EyeOff, BookOpen } from 'lucide-react';
 import { getSavedUser } from '../../lib/api/session';
 import { SubmitButton } from '../../components/SubmitButton';
 import { Modal } from '../../components/Modal';
-import { speakJapanese } from '../../services/japaneseSpeech';
+import { speakChinese, stopChineseSpeech } from '../../services/chineseSpeech';
+import { ALL_READING_PASSAGES } from './readingData';
 
 const labelClass = 'text-[10.5px] font-semibold uppercase tracking-[0.18em] text-fg-38';
 
@@ -22,7 +23,7 @@ export const DictionaryNotebookView: React.FC = () => {
 const DictionaryNotebookSessionView: React.FC = () => {
   const { user, requireLogin: onRequireLogin } = useAuth();
   const { run, cancel, isActive } = useRequestScope(user?.userId);
-  const [activeTab, setActiveTab] = useState<'DICTIONARY' | 'NOTEBOOKS'>('DICTIONARY');
+  const [activeTab, setActiveTab] = useState<'DICTIONARY' | 'NOTEBOOKS' | 'READING'>('DICTIONARY');
 
   // Dictionary state
   const [searchParams, setSearchParams] = useSearchParams();
@@ -47,6 +48,18 @@ const DictionaryNotebookSessionView: React.FC = () => {
   const [wordToAdd, setWordToAdd] = useState<VocabularyItem | null>(null);
   const [targetNotebookId, setTargetNotebookId] = useState<number | null>(null);
   const [customNote, setCustomNote] = useState('');
+
+  // Notebook word filter
+  const [noteDrafts, setNoteDrafts] = useState<Record<number,string>>({});
+  const [notebookFilter, setNotebookFilter] = useState('');
+
+  // Contextual reading state
+  const [readingLevel, setReadingLevel] = useState<number | 'ALL'>('ALL');
+  const [selectedPassageId, setSelectedPassageId] = useState<number>(1);
+  const [showPinyin, setShowPinyin] = useState(true);
+  const [showTranslation, setShowTranslation] = useState(false);
+  const [readingAnswers, setReadingAnswers] = useState<Record<number, string>>({});
+  const [readingChecked, setReadingChecked] = useState(false);
 
   // Practice state
   const [practiceActive, setPracticeActive] = useState(false);
@@ -98,7 +111,7 @@ const DictionaryNotebookSessionView: React.FC = () => {
     if (!res) return;
       if (sequence !== searchSequence.current) return;
       if (res.success && res.data) {
-        setSearchResult(previous => page > 0 && previous ? { ...res.data, vocabularies: [...previous.vocabularies, ...res.data.vocabularies], kanjis: previous.kanjis } : res.data);
+        setSearchResult(previous => page > 0 && previous ? { ...res.data, vocabularies: [...previous.vocabularies, ...res.data.vocabularies], hanzis: previous.hanzis } : res.data);
       } else {
         showNotice(res.message || 'Không thể tra cứu từ điển vào lúc này.');
       }
@@ -199,6 +212,17 @@ const DictionaryNotebookSessionView: React.FC = () => {
       setSelectedNotebook(res.data);
     }
     else showNotice(res.message || 'Chưa nhận được nhóm mẫu. Vui lòng thử lại.');
+  };
+
+  const saveNote = async (item: VocabNotebookItem) => {
+    if (!selectedNotebook || savingRef.current) return;
+    savingRef.current = true; setSaving(true);
+    try {
+      const res = await run('dictionaryApi.updateNote', signal => dictionaryApi.updateNote(selectedNotebook.id, item.vocabularyId, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ customNote: noteDrafts[item.id] ?? item.customNote ?? '' }), signal }));
+      if (!res) return;
+      if (res.success && res.data) { setSelectedNotebook(res.data); setNotebooks(prev => prev.map(book => book.id === res.data!.id ? res.data! : book)); showNotice('Đã lưu ghi chú.'); }
+      else showNotice(res.message || 'Không lưu được ghi chú.');
+    } finally { if (isActive()) { savingRef.current = false; setSaving(false); } }
   };
 
   const handleAddWordSubmit = async (e: React.FormEvent) => {
@@ -320,12 +344,12 @@ const DictionaryNotebookSessionView: React.FC = () => {
       <div className="flex flex-wrap items-start justify-between gap-5">
         <div>
           <div className={labelClass}>
-            Dictionary & Notebooks{' '}
-            <span className="ml-2 font-serif text-[12.5px] font-normal normal-case tracking-[0.06em]">辞書・単語帳</span>
+            Từ điển & Sổ từ{' '}
+            <span className="ml-2 font-serif text-[12.5px] font-normal normal-case tracking-[0.06em]">词典 · 生词本</span>
           </div>
           <h2 className="mt-3 text-[17px] font-semibold text-fg">Tra cứu Từ điển & Kho từ vựng cá nhân</h2>
           <p className="mt-1.5 text-[12px] leading-[1.8] text-fg-38">
-            Tra cứu từ thông dụng có nghĩa tiếng Việt và tiếng Anh; tìm theo chữ Nhật, kana, romaji hoặc nghĩa.
+            Tra cứu từ vựng tiếng Trung có nghĩa tiếng Việt, âm Hán Việt; tìm theo chữ Hán, Pinyin hoặc nghĩa.
           </p>
         </div>
 
@@ -355,6 +379,15 @@ const DictionaryNotebookSessionView: React.FC = () => {
           >
             Kho từ vựng cá nhân
           </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('READING')}
+            className={`cursor-pointer px-4 py-1.5 text-[12px] font-medium transition-colors ${
+              activeTab === 'READING' ? 'bg-fg text-bg font-semibold' : 'text-fg-60 hover:text-fg'
+            }`}
+          >
+            Đọc hiểu ngữ cảnh HSK
+          </button>
         </div>
       </div>
 
@@ -375,7 +408,7 @@ const DictionaryNotebookSessionView: React.FC = () => {
                 maxLength={100}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="日本語, にほんご, nihongo, nghĩa Việt / Anh…"
+                placeholder="汉字, chữ Hán, Pinyin, nghĩa tiếng Việt…"
                 className="w-full border border-rule bg-card px-4 py-3 pl-10 text-[13.5px] text-fg placeholder:text-fg-38 focus:border-fg-60 focus:outline-none"
               />
               <Search size={16} className="absolute left-3.5 top-3.5 text-fg-38" />
@@ -385,12 +418,7 @@ const DictionaryNotebookSessionView: React.FC = () => {
             </SubmitButton>
           </form>
           <p className="text-[12.5px] leading-[1.8] text-fg-60">
-            Từ phổ biến có cả nghĩa Việt và Anh đã đối chiếu; các mục khác dùng nghĩa tiếng Anh của JMdict.
-            {' '}Nguồn đối chiếu: <a className="underline" href="https://www.edrdg.org/jmdict/j_jmdict.html" target="_blank" rel="noreferrer">JMdict / EDRDG</a>,{' '}
-            <a className="underline" href="https://marugoto.jpf.go.jp/en/teacher/resource/starter_c/" target="_blank" rel="noreferrer">Marugoto A1</a>,{' '}
-            <a className="underline" href="https://vietcafe-learning.com/dictionary/%E5%8C%BB%E8%80%85" target="_blank" rel="noreferrer">VIETCAFE</a>,{' '}
-            <a className="underline" href="https://jdict.net/" target="_blank" rel="noreferrer">Jdict</a>.
-            {' · '}<a className="underline" href="https://www.edrdg.org/edrdg/licence.html" target="_blank" rel="noreferrer">CC BY-SA 4.0</a>.
+            Từ điển HSK & Giáo trình chuẩn: tra cứu chữ Hán, Pinyin, âm Hán Việt và nghĩa tiếng Việt.
           </p>
           {isSearching && <p role="status" className="text-[12.5px] text-fg-60">Đang tra cứu…</p>}
 
@@ -414,20 +442,33 @@ const DictionaryNotebookSessionView: React.FC = () => {
                       <div key={v.id} className="relative flex flex-col justify-between border border-rule bg-card p-4">
                         <div>
                           <div className="flex items-baseline justify-between gap-2">
-                            <span className="font-serif text-[20px] font-semibold text-fg">{v.word}</span>
+                            <div className="flex flex-wrap items-center gap-2">
+                              <span className="font-serif text-[20px] font-semibold text-fg">{v.word}</span>
+                              <span className="rounded bg-seal/10 px-1.5 py-0.5 text-[10.5px] font-semibold text-seal">
+                                HSK {v.hskLevel || 1}
+                              </span>
+                              {v.partOfSpeech && (
+                                <span className="rounded border border-rule bg-bg px-1.5 py-0.5 text-[10px] text-fg-60">
+                                  {v.partOfSpeech}
+                                </span>
+                              )}
+                            </div>
                             <span className="font-serif text-[13px] text-fg-60">{v.reading}</span>
                           </div>
                           {v.sinoVietnamese && (
-                            <div className="mt-0.5 text-[11px] font-medium text-fg-38">{v.sinoVietnamese}</div>
+                            <div className="mt-1 flex items-center gap-1.5 text-[11px] font-medium text-fg-38">
+                              <span className="rounded bg-tint px-1 py-0.5 text-[9.5px] text-fg-60">Hán Việt</span>
+                              <span>{v.sinoVietnamese}</span>
+                            </div>
                           )}
                           <div className="mt-2 space-y-1.5 text-[13.5px]">
                             {v.meaningLanguage === 'en' ? <>
-                              <div><span className="mr-1 text-[10px] font-semibold uppercase tracking-wide text-fg-38">Việt</span><span className="font-medium text-fg">{v.vietnameseMeaning || 'Chưa có nghĩa Việt đã đối chiếu'}</span></div>
+                              <div><span className="mr-1 text-[10px] font-semibold uppercase tracking-wide text-fg-38">{v.vietnameseStatus === 'ASSISTED' ? 'Việt tham khảo' : 'Việt'}</span>{' '}<span className="font-medium text-fg">{v.vietnameseMeaning || 'Chưa có nghĩa Việt đã đối chiếu'}</span></div>
                               <div><span className="mr-1 text-[10px] font-semibold uppercase tracking-wide text-fg-38">Anh</span><span className="text-fg-60">{primaryEnglishMeaning}</span></div>
                               {additionalEnglishMeanings.length > 0 && <details className="ml-8 text-[11.5px] text-fg-60"><summary className="cursor-pointer">Các nghĩa khác ({additionalEnglishMeanings.length})</summary><div className="mt-1 leading-[1.7]">{additionalEnglishMeanings.join(' / ')}</div></details>}
                             </> : <div className="font-medium text-fg">{v.meaning}</div>}
                           </div>
-                          <div className="mt-2 text-[12.5px] text-fg-38">{v.meaningLanguage === 'en' ? 'JMdict / EDRDG · nghĩa Anh' : 'Giáo trình HeyGanba · nghĩa Việt'}</div>
+                          <div className="mt-2 text-[12.5px] text-fg-38">{v.meaningLanguage === 'en' ? 'Từ điển tham khảo · nghĩa Anh' : 'Giáo trình HSK Chuẩn · nghĩa Việt'}</div>
                           {v.exampleSentence && (
                             <div className="mt-3 border-t border-rule/50 pt-2 text-[12px] text-fg-60">
                               <div className="font-serif">{v.exampleSentence}</div>
@@ -438,7 +479,7 @@ const DictionaryNotebookSessionView: React.FC = () => {
                         </div>
 
                         <div className="mt-4 flex justify-between border-t border-rule pt-3">
-                          <button type="button" onClick={() => speakJapanese(v.reading)} aria-label={`Nghe cách đọc ${v.word}`} className="inline-flex min-h-10 cursor-pointer items-center gap-2 text-[11.5px] text-fg-60 hover:text-fg"><Volume2 size={14} />Nghe</button>
+                          <button type="button" onClick={() => speakChinese(v.word)} aria-label={`Nghe phát âm ${v.word}`} className="inline-flex min-h-10 cursor-pointer items-center gap-2 text-[11.5px] text-fg-60 hover:text-fg"><Volume2 size={14} />Nghe phát âm</button>
                           <button
                             type="button"
                             onClick={() => {
@@ -462,16 +503,16 @@ const DictionaryNotebookSessionView: React.FC = () => {
                 </div>
               )}
 
-              {/* Kanji matches */}
-              {searchResult.kanjis.length > 0 && (
+              {/* Hanzi matches */}
+              {searchResult.hanzis.length > 0 && (
                 <div>
                   <h3 className="mb-4 text-[13px] font-semibold uppercase tracking-[0.12em] text-fg-60">
-                    Chữ Hán — Kanji ({searchResult.kanjis.length})
+                    Chữ Hán — Hanzi ({searchResult.hanzis.length})
                   </h3>
                   <div className="grid gap-3 min-[768px]:grid-cols-3">
-                    {searchResult.kanjis.map((k) => (
+                    {searchResult.hanzis.map((k) => (
                       <div key={k.id} className="border border-rule bg-card p-4">
-                        <div className="flex items-center gap-3">
+                        <div className="flex min-w-0 flex-wrap items-center gap-3">
                           <span className="flex h-12 w-12 items-center justify-center border border-rule bg-bg font-serif text-[24px] font-bold text-fg">
                             {k.character}
                           </span>
@@ -481,10 +522,10 @@ const DictionaryNotebookSessionView: React.FC = () => {
                             <div className="text-[10px] text-fg-38">{k.strokeCount} nét</div>
                           </div>
                         </div>
-                        {(k.onyomi || k.kunyomi) && (
+                        {(k.pinyin || k.traditional) && (
                           <div className="mt-3 border-t border-rule/50 pt-2 text-[11px] text-fg-38">
-                            {k.onyomi && <div>On: {k.onyomi}</div>}
-                            {k.kunyomi && <div>Kun: {k.kunyomi}</div>}
+                            {k.pinyin && <div>Pinyin: {k.pinyin}</div>}
+                            {k.traditional && <div>Phồn thể: {k.traditional}</div>}
                           </div>
                         )}
                       </div>
@@ -495,7 +536,7 @@ const DictionaryNotebookSessionView: React.FC = () => {
 
               {searchResult.totalMatches === 0 && (
                 <div className="py-12 text-center text-[13px] text-fg-38">
-                  Không tìm thấy kết quả. Thử dạng từ gốc, cách đọc kana hoặc nghĩa tiếng Anh.
+                  Không tìm thấy kết quả. Thử chữ Hán, phiên âm Pinyin hoặc nghĩa tiếng Việt.
                 </div>
               )}
               {searchResult.hasMore && <SubmitButton loading={isSearching} onClick={() => doSearch(searchResult.query, searchResult.page + 1)} variant="secondary">Xem thêm kết quả</SubmitButton>}
@@ -507,10 +548,10 @@ const DictionaryNotebookSessionView: React.FC = () => {
       {/* TAB 2: NOTEBOOKS */}
       {activeTab === 'NOTEBOOKS' && (
         <div className="mt-8 flex flex-col gap-10">
-          <p className="text-[12.5px] leading-[1.8] text-fg-60">Từ JMdict trong sổ có nghĩa tiếng Anh. Nguồn: <a className="underline" href="https://www.edrdg.org/jmdict/j_jmdict.html" target="_blank" rel="noreferrer">JMdict / EDRDG</a> · <a className="underline" href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noreferrer">CC BY-SA 4.0</a>.</p>
+          <p className="text-[12.5px] leading-[1.8] text-fg-60">Lưu từ tiếng Trung, thêm ghi chú và luyện nhanh ngay trong sổ cá nhân.</p>
           <label className="flex flex-wrap items-center gap-3 text-[12.5px] text-fg-60">Luyện theo
             <select value={practiceKind} onChange={e => setPracticeKind(e.target.value as 'MEANING' | 'READING')} className="min-h-11 border border-rule-strong bg-card px-3 text-fg">
-              <option value="MEANING">Nghĩa của từ</option><option value="READING">Cách đọc kana (từ có kanji)</option>
+              <option value="MEANING">Nghĩa của từ</option><option value="READING">Phiên âm Pinyin (chữ Hán)</option>
             </select>
           </label>
           {/* Sample Decks */}
@@ -626,88 +667,325 @@ const DictionaryNotebookSessionView: React.FC = () => {
           </div>
 
           {/* Selected Notebook Words List */}
-          {selectedNotebook && (
-            <div className="mt-4 border-t border-rule pt-8">
-              <div className="flex flex-wrap items-center justify-between gap-4">
-                <div>
-                  <div className={labelClass}>Chi tiết sổ tay</div>
-                  <h3 className="mt-1 font-serif text-[18px] font-semibold text-fg">{selectedNotebook.title}</h3>
-                  {selectedNotebook.description && (
-                    <p className="text-[12px] text-fg-38">{selectedNotebook.description}</p>
+          {selectedNotebook && (() => {
+            const filteredItems = (selectedNotebook.items || []).filter((item) => {
+              if (!notebookFilter.trim()) return true;
+              const q = notebookFilter.trim().toLowerCase();
+              return (
+                item.word.toLowerCase().includes(q) ||
+                item.reading.toLowerCase().includes(q) ||
+                item.meaning.toLowerCase().includes(q) ||
+                (item.sinoVietnamese && item.sinoVietnamese.toLowerCase().includes(q)) ||
+                (item.customNote && item.customNote.toLowerCase().includes(q))
+              );
+            });
+
+            return (
+              <div className="mt-4 border-t border-rule pt-8">
+                <div className="flex flex-wrap items-center justify-between gap-4">
+                  <div>
+                    <div className={labelClass}>Chi tiết sổ tay</div>
+                    <h3 className="mt-1 font-serif text-[18px] font-semibold text-fg">{selectedNotebook.title}</h3>
+                    {selectedNotebook.description && (
+                      <p className="text-[12px] text-fg-38">{selectedNotebook.description}</p>
+                    )}
+                  </div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <SubmitButton
+                      onClick={() => startPractice({ ...selectedNotebook, items: filteredItems })}
+                      disabled={filteredItems.length === 0}
+                      variant="primary"
+                    >
+                      <Play size={13} />
+                      <span>{notebookFilter.trim() ? `Luyện tập (${filteredItems.length} từ đã lọc)` : 'Luyện tập nhóm từ này'}</span>
+                    </SubmitButton>
+                  </div>
+                </div>
+
+                {/* Notebook search filter input */}
+                <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+                  <div className="relative min-w-[240px] flex-1 max-w-md">
+                    <input
+                      type="text"
+                      aria-label="Lọc từ trong sổ tay"
+                      value={notebookFilter}
+                      onChange={(e) => setNotebookFilter(e.target.value)}
+                      placeholder="Lọc theo chữ Hán, Pinyin, Hán Việt hoặc nghĩa…"
+                      className="w-full border border-rule bg-card px-3 py-2 pl-9 text-[12.5px] text-fg placeholder:text-fg-38 focus:border-fg focus:outline-none"
+                    />
+                    <Search size={14} className="absolute left-3 top-2.5 text-fg-38" />
+                  </div>
+                  {notebookFilter.trim() && (
+                    <span className="text-[12px] text-fg-60">
+                      Hiển thị {filteredItems.length} / {selectedNotebook.items?.length || 0} từ
+                    </span>
                   )}
                 </div>
-                <SubmitButton
-                  onClick={() => startPractice(selectedNotebook)}
-                  disabled={!selectedNotebook.items || selectedNotebook.items.length === 0}
-                  variant="primary"
-                >
-                  <Play size={13} />
-                  <span>Bắt đầu luyện tập nhóm từ này</span>
-                </SubmitButton>
-              </div>
 
-              <div className="mt-6 overflow-x-auto">
-                <table className="w-full border-collapse text-[12.5px]">
-                  <thead>
-                    <tr>
-                      <th className="border-b border-rule pb-2 text-left font-semibold uppercase tracking-[0.14em] text-fg-38">
-                        Từ vựng
-                      </th>
-                      <th className="border-b border-rule pb-2 text-left font-semibold uppercase tracking-[0.14em] text-fg-38">
-                        Cách đọc
-                      </th>
-                      <th className="border-b border-rule pb-2 text-left font-semibold uppercase tracking-[0.14em] text-fg-38">
-                        Hán Việt
-                      </th>
-                      <th className="border-b border-rule pb-2 text-left font-semibold uppercase tracking-[0.14em] text-fg-38">
-                        Ý nghĩa
-                      </th>
-                      <th className="border-b border-rule pb-2 text-left font-semibold uppercase tracking-[0.14em] text-fg-38">
-                        Ghi chú
-                      </th>
-                      <th className="border-b border-rule px-3 pb-2 text-left font-semibold text-fg-38">Đúng / Lượt luyện</th>
-                      <th className="border-b border-rule pb-2 text-right font-semibold uppercase tracking-[0.14em] text-fg-38">
-                        Thao tác
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {selectedNotebook.items?.map((item) => (
-                      <tr key={item.id}>
-                        <td className="border-b border-rule py-3 font-serif text-[15px] font-semibold text-fg">
-                          {item.word}
-                        </td>
-                        <td className="border-b border-rule py-3 font-serif text-fg-60">{item.reading}</td>
-                        <td className="border-b border-rule py-3 text-fg-38">{item.sinoVietnamese || '—'}</td>
-                        <td className="border-b border-rule py-3 text-fg">{item.meaning}{item.vietnameseMeaning ? ` · ${item.vietnameseMeaning}` : ''}</td>
-                        <td className="border-b border-rule py-3 text-fg-38">{item.customNote || '—'}</td>
-                        <td className="border-b border-rule px-3 py-3 text-fg-60">{item.practiceCount ? `${item.correctCount}/${item.practiceCount} đúng` : 'Chưa luyện'}</td>
-                        <td className="border-b border-rule py-3 text-right">
-                          <button
-                            type="button"
-                            onClick={() => handleRemoveWord(selectedNotebook.id, item.vocabularyId)}
-                            className="inline-flex h-10 w-10 cursor-pointer items-center justify-center text-fg-38 hover:text-red"
-                            title="Xoá khỏi sổ"
-                          >
-                            <Trash2 size={13} />
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                    {(!selectedNotebook.items || selectedNotebook.items.length === 0) && (
+                <div className="mt-6 overflow-x-auto">
+                  <table className="w-full border-collapse text-[12.5px]">
+                    <thead>
                       <tr>
-                        <td colSpan={7} className="py-8 text-center text-fg-38">
-                          Sổ tay này chưa có từ vựng. Vào mục "Tra cứu từ điển" để thêm từ vựng vào đây nhé!
-                        </td>
+                        <th className="border-b border-rule pb-2 text-left font-semibold uppercase tracking-[0.14em] text-fg-38">
+                          Từ vựng
+                        </th>
+                        <th className="border-b border-rule pb-2 text-left font-semibold uppercase tracking-[0.14em] text-fg-38">
+                          Cách đọc (Pinyin)
+                        </th>
+                        <th className="border-b border-rule pb-2 text-left font-semibold uppercase tracking-[0.14em] text-fg-38">
+                          Hán Việt
+                        </th>
+                        <th className="border-b border-rule pb-2 text-left font-semibold uppercase tracking-[0.14em] text-fg-38">
+                          Ý nghĩa
+                        </th>
+                        <th className="border-b border-rule pb-2 text-left font-semibold uppercase tracking-[0.14em] text-fg-38">
+                          Ghi chú
+                        </th>
+                        <th className="border-b border-rule px-3 pb-2 text-left font-semibold text-fg-38">Đúng / Lượt luyện</th>
+                        <th className="border-b border-rule pb-2 text-right font-semibold uppercase tracking-[0.14em] text-fg-38">
+                          Thao tác
+                        </th>
                       </tr>
-                    )}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {filteredItems.map((item) => (
+                        <tr key={item.id}>
+                          <td className="border-b border-rule py-3 font-serif text-[15px] font-semibold text-fg">
+                            {item.word}
+                          </td>
+                          <td className="border-b border-rule py-3 font-serif text-fg-60">{item.reading}</td>
+                          <td className="border-b border-rule py-3 text-fg-38">{item.sinoVietnamese || '—'}</td>
+                          <td className="border-b border-rule py-3 text-fg">{item.meaning}{item.vietnameseMeaning ? ` · ${item.vietnameseStatus === 'ASSISTED' ? 'Việt tham khảo: ' : 'Việt: '}${item.vietnameseMeaning}` : ''}</td>
+                          <td className="border-b border-rule py-3 text-fg-60">{selectedNotebook.isPublicSample ? item.customNote || '—' : <div className="min-w-40 space-y-2"><textarea aria-label={`Ghi chú cho ${item.word}`} maxLength={2000} value={noteDrafts[item.id] ?? item.customNote ?? ''} onChange={event => setNoteDrafts(prev => ({ ...prev, [item.id]: event.target.value }))} className="w-full border border-rule bg-card p-2 text-xs text-fg" /><button type="button" disabled={saving} onClick={() => void saveNote(item)} className="text-xs text-jade-ink underline">Lưu ghi chú</button></div>}</td>
+                          <td className="border-b border-rule px-3 py-3 text-fg-60">{item.practiceCount ? `${item.correctCount}/${item.practiceCount} đúng` : 'Chưa luyện'}</td>
+                          <td className="border-b border-rule py-3 text-right">
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveWord(selectedNotebook.id, item.vocabularyId)}
+                              className="inline-flex h-10 w-10 cursor-pointer items-center justify-center text-fg-38 hover:text-red"
+                              title="Xoá khỏi sổ"
+                            >
+                              <Trash2 size={13} />
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                      {filteredItems.length === 0 && (
+                        <tr>
+                          <td colSpan={7} className="py-8 text-center text-fg-38">
+                            {notebookFilter.trim() ? 'Không tìm thấy từ vựng khớp với bộ lọc.' : 'Sổ tay này chưa có từ vựng. Vào mục "Tra cứu từ điển" để thêm từ vựng vào đây nhé!'}
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
               </div>
-            </div>
-          )}
+            );
+          })()}
         </div>
       )}
+
+      {/* TAB 3: CONTEXTUAL READING (ĐỌC HIỂU NGỮ CẢNH HSK) */}
+      {activeTab === 'READING' && (() => {
+        const passages = ALL_READING_PASSAGES.filter(p => readingLevel === 'ALL' || p.hskLevel === readingLevel);
+        const activePassage = passages.find((p) => p.id === selectedPassageId) || passages[0];
+        return (
+          <div className="mt-8 flex flex-col gap-6">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="rounded bg-seal/10 px-2 py-0.5 text-[11px] font-semibold text-seal">HSK 1–6</span>
+                <span className={labelClass}>Đọc hiểu & Hội thoại</span>
+              </div>
+              <h3 className="mt-1 font-serif text-[18px] font-semibold text-fg">Đọc hiểu ngữ cảnh & Hội thoại ngắn</h3>
+              <p className="mt-1 text-[12.5px] text-fg-60">
+                Luyện tập đọc văn bản ngữ cảnh HSK 1–6. Bạn có thể bật/tắt Pinyin để rèn phản xạ nhận biết mặt chữ Hán và nghe giọng chuẩn để đối chiếu ngữ điệu.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap gap-2" aria-label="Cấp độ bài đọc">
+              {(['ALL', 1, 2, 3, 4, 5, 6] as const).map(level => (
+                <button type="button" key={level} aria-pressed={readingLevel === level}
+                  className="border border-rule-strong px-3 py-2 text-[12.5px] leading-relaxed text-fg-60"
+                  onClick={() => { setReadingLevel(level); setReadingAnswers({}); setReadingChecked(false); setShowTranslation(false); }}>
+                  {level === 'ALL' ? 'Tất cả' : `HSK ${level}`} ({ALL_READING_PASSAGES.filter(p => level === 'ALL' || p.hskLevel === level).length})
+                </button>
+              ))}
+            </div>
+            {/* Passage Selector */}
+            <div className="flex flex-wrap gap-2">
+              {passages.map((passage) => {
+                const isSelected = passage.id === activePassage.id;
+                return (
+                  <button
+                    key={passage.id}
+                    type="button"
+                    onClick={() => {
+                      setSelectedPassageId(passage.id);
+                      setReadingAnswers({});
+                      setReadingChecked(false);
+                      setShowTranslation(false);
+                    }}
+                    className={`cursor-pointer px-3.5 py-2 text-[12.5px] font-medium transition-colors ${
+                      isSelected
+                        ? 'border border-seal bg-seal/10 font-semibold text-seal'
+                        : 'border border-rule bg-card text-fg-60 hover:text-fg'
+                    }`}
+                  >
+                    Bài {passage.id}: {passage.title}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Main Reading Card */}
+            <div className="rounded border border-rule bg-card p-6 ">
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-rule pb-4">
+                <div className="flex min-w-0 flex-wrap items-center gap-2.5">
+                  <BookOpen size={18} className="text-seal" />
+                  <h4 className="font-serif text-[17px] font-semibold text-fg">{activePassage.title}</h4>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setShowPinyin((prev) => !prev)}
+                    className="inline-flex cursor-pointer items-center gap-1.5 rounded border border-rule bg-bg px-2.5 py-1 text-[11.5px] font-medium text-fg-60 hover:text-fg"
+                  >
+                    {showPinyin ? <EyeOff size={13} /> : <Eye size={13} />}
+                    <span>{showPinyin ? 'Ẩn Pinyin' : 'Hiện Pinyin'}</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => speakChinese(activePassage.passageText)}
+                    className="inline-flex cursor-pointer items-center gap-1.5 rounded border border-seal/30 bg-seal/10 px-2.5 py-1 text-[11.5px] font-semibold text-seal hover:bg-seal/20"
+                  >
+                    <Volume2 size={13} />
+                    <span>Nghe phát âm</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => stopChineseSpeech()}
+                    className="inline-flex cursor-pointer items-center gap-1.5 rounded border border-rule bg-bg px-2.5 py-1 text-[11.5px] text-fg-38 hover:text-fg"
+                    title="Dừng phát âm"
+                  >
+                    <VolumeX size={13} />
+                  </button>
+                </div>
+              </div>
+
+              {/* Passage text */}
+              <div className="my-6">
+                <p className="font-serif text-[18px] leading-[2.2] tracking-wide text-fg">
+                  {activePassage.passageText}
+                </p>
+                {showPinyin && (
+                  <div className="mt-3 border-t border-rule/50 pt-3 font-sans text-[13.5px] leading-[1.9] text-fg-60">
+                    {activePassage.passagePinyin}
+                  </div>
+                )}
+              </div>
+
+              {/* Vocabulary Notes */}
+              <div className="rounded border-l-4 border-l-seal bg-tint p-4 text-[12.5px] leading-[1.8] text-fg">
+                <div className="font-semibold text-seal mb-1">Từ vựng trọng tâm trong bài:</div>
+                <div className="text-fg-60">{activePassage.vocabularyNotes}</div>
+              </div>
+
+              {/* Translation toggle */}
+              <div className="mt-4 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowTranslation((prev) => !prev)}
+                  className="cursor-pointer text-[12px] font-medium text-seal underline hover:opacity-80"
+                >
+                  {showTranslation ? 'Ẩn bản dịch tiếng Việt' : 'Xem bản dịch tiếng Việt'}
+                </button>
+                {showTranslation && (
+                  <div className="mt-3 rounded border border-rule bg-bg p-3.5 text-[13px] leading-[1.8] text-fg-60">
+                    {activePassage.translationText}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Comprehension Quiz Card */}
+            <div className="rounded border border-rule bg-card p-6 ">
+              <div className="flex items-center justify-between border-b border-rule pb-3">
+                <h4 className="font-serif text-[16px] font-semibold text-fg">Kiểm tra hiểu bài (阅读理解)</h4>
+                <span className="text-[11px] text-fg-38">{activePassage.questions.length} câu hỏi đọc hiểu</span>
+              </div>
+
+              <div className="mt-5 space-y-6">
+                {activePassage.questions.map((q, qIdx) => {
+                  const chosen = readingAnswers[qIdx];
+                  const isCorrect = chosen === q.correctAnswer;
+                  return (
+                    <div key={qIdx} className="border-b border-rule/50 pb-5 last:border-b-0 last:pb-0">
+                      <div className="text-[14px] font-medium text-fg">
+                        <span className="mr-2 font-serif font-bold text-seal">Câu {qIdx + 1}.</span>
+                        <span className="font-serif">{q.question}</span>
+                      </div>
+
+                      <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                        {q.options.map((opt, optIdx) => {
+                          const isOptionChosen = chosen === opt;
+                          let style = 'border-rule bg-bg text-fg hover:border-fg';
+                          if (readingChecked) {
+                            if (opt === q.correctAnswer) {
+                              style = 'border-jade bg-jade/10 text-jade-ink font-semibold';
+                            } else if (isOptionChosen) {
+                              style = 'border-red bg-red/10 text-red';
+                            } else {
+                              style = 'border-rule bg-bg text-fg-38 opacity-50';
+                            }
+                          } else if (isOptionChosen) {
+                            style = 'border-seal bg-seal/10 text-seal font-semibold';
+                          }
+
+                          return (
+                            <button
+                              key={optIdx}
+                              type="button"
+                              onClick={() => {
+                                if (readingChecked) return;
+                                setReadingAnswers((prev) => ({ ...prev, [qIdx]: opt }));
+                              }}
+                              className={`cursor-pointer rounded border p-2.5 text-left text-[13px] transition-all ${style}`}
+                            >
+                              <span className="font-serif">{opt}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+
+                      {readingChecked && (
+                        <div
+                          className={`mt-3 rounded p-2.5 text-[12px] leading-[1.7] ${
+                            isCorrect ? 'border border-jade/30 bg-jade/10 text-jade-ink' : 'border border-red/30 bg-red/10 text-red'
+                          }`}
+                        >
+                          <div className="font-semibold">{isCorrect ? '✓ Chính xác!' : '✗ Chưa đúng'}</div>
+                          <div className="mt-0.5 text-fg-60">{q.explanation}</div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="mt-6 flex justify-end">
+                <SubmitButton
+                  onClick={() => setReadingChecked(true)}
+                  disabled={readingChecked || Object.keys(readingAnswers).length < activePassage.questions.length}
+                  variant="primary"
+                >
+                  Kiểm tra đáp án
+                </SubmitButton>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
 
       {/* CREATE NOTEBOOK MODAL */}
       {showCreateModal && (
@@ -724,7 +1002,7 @@ const DictionaryNotebookSessionView: React.FC = () => {
                   autoFocus
                   value={newTitle}
                   onChange={(e) => setNewTitle(e.target.value)}
-                  placeholder="VD: Từ vựng N5 hay quên, Đi ăn quán..."
+                  placeholder="VD: Từ vựng HSK 1 hay quên, Đi ăn quán..."
                   className="mt-1 w-full border border-rule bg-bg px-3 py-2 text-[13px] text-fg focus:border-fg focus:outline-none"
                 />
               </div>
@@ -761,7 +1039,7 @@ const DictionaryNotebookSessionView: React.FC = () => {
             <h3 className="font-serif text-[17px] font-semibold text-fg">Thêm từ vào Sổ từ vựng</h3>
             <div className="mt-3 border-l-2 border-l-rank bg-tint p-3 text-[13px]">
               <span className="font-serif font-bold text-fg">{wordToAdd.word}</span>{' '}
-              <span className="text-fg-60">({wordToAdd.reading})</span> — {wordToAdd.meaning}{wordToAdd.vietnameseMeaning ? ` · ${wordToAdd.vietnameseMeaning}` : ''}
+              <span className="text-fg-60">({wordToAdd.reading})</span> — {wordToAdd.meaning}{wordToAdd.vietnameseMeaning ? ` · ${wordToAdd.vietnameseStatus === 'ASSISTED' ? 'Việt tham khảo: ' : 'Việt: '}${wordToAdd.vietnameseMeaning}` : ''}
             </div>
 
             <form onSubmit={handleAddWordSubmit} className="mt-4 flex flex-col gap-4">
@@ -835,7 +1113,7 @@ const DictionaryNotebookSessionView: React.FC = () => {
                 <div className="my-8 text-center">
                   <div className="font-serif text-[36px] font-bold text-fg">{currentItem?.word}</div>
                   {currentItem && (questionKind(currentItem) !== 'READING' || isAnswered) && <div className="mt-1 font-serif text-[15px] text-fg-60">{currentItem.reading}</div>}
-                  <p className="mt-3 text-[12.5px] text-fg-60">{currentItem && questionKind(currentItem) === 'READING' ? 'Chọn cách đọc kana' : `Chọn nghĩa ${currentItem?.meaningLanguage === 'en' ? 'tiếng Anh' : 'tiếng Việt'}`}</p>
+                  <p className="mt-3 text-[12.5px] text-fg-60">{currentItem && questionKind(currentItem) === 'READING' ? 'Chọn phiên âm Pinyin' : `Chọn nghĩa ${currentItem?.meaningLanguage === 'en' ? 'tiếng Anh' : 'tiếng Việt'}`}</p>
                   {currentItem?.sinoVietnamese && (
                     <div className="mt-0.5 text-[12px] text-fg-38">{currentItem?.sinoVietnamese}</div>
                   )}

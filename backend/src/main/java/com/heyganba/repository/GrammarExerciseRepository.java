@@ -36,7 +36,7 @@ public interface GrammarExerciseRepository extends JpaRepository<GrammarExercise
     /** Đếm theo trạng thái duyệt nội dung — dùng cho GET /content/review-status. */
     long countByReviewStatus(ReviewStatus reviewStatus);
 
-    /** Đếm câu CẦN người biết tiếng Nhật kiểm (`needs_human_check = true`) — cho tab duyệt của admin. */
+    /** Đếm câu CẦN người biết tiếng Trung kiểm (`needs_human_check = true`) — cho tab duyệt của admin. */
     long countByNeedsHumanCheckTrue();
 
     /** Câu theo cờ cần-người-kiểm, xếp theo id — dùng cho GET /admin/review-queue. */

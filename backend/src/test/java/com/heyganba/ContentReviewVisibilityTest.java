@@ -45,6 +45,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * (404 khi truy cập theo id, không xuất hiện trong danh sách), KHÔNG chỉ ẩn ở UI.
  * Admin vẫn thấy đủ bản nháp để rà soát nội dung.
  */
+@org.springframework.test.context.TestPropertySource(properties="app.legacy-phonetics-enabled=true")
 class ContentReviewVisibilityTest extends com.heyganba.support.ContentApiTestBase {
 
     @Autowired
