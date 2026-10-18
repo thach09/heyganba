@@ -93,6 +93,28 @@ jobs:
         working-directory: ./backend
         run: mvn -B test
 
+      # The full API suite above exercises real writes against PostgreSQL. The
+      # opt-in rehearsal additionally needs two empty databases, isolated from it.
+      - name: Rehearse baseline, full curriculum, and Hibernate validation
+        working-directory: ./backend
+        run: |
+          docker exec ${{ job.services.postgres.id }} createdb -U postgres heyganba_rehearsal_a_ci
+          docker exec ${{ job.services.postgres.id }} createdb -U postgres heyganba_rehearsal_b_ci
+          mvn -B test -Dtest=PostgresSchemaStagingRehearsalTest \
+            -Dpostgres.rehearsal=true \
+            -Dpostgres.rehearsal.urlA=jdbc:postgresql://localhost:5432/heyganba_rehearsal_a_ci \
+            -Dpostgres.rehearsal.urlB=jdbc:postgresql://localhost:5432/heyganba_rehearsal_b_ci \
+            -Dpostgres.rehearsal.user=postgres \
+            -Dpostgres.rehearsal.password=postgres
+
+      - name: Upload PostgreSQL surefire reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-postgres-surefire-reports
+          path: backend/target/surefire-reports/
+          if-no-files-found: ignore
+
   frontend-test:
     name: Frontend Lint & Build
     runs-on: ubuntu-latest
