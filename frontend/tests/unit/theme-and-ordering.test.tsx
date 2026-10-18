@@ -13,13 +13,13 @@ test('theme toggles update both controls and survive initialization', () => {
   expect(document.documentElement.dataset.theme).toBe('light');
   const switches = screen.getAllByRole('switch');
   expect(switches).toHaveLength(2);
-  expect(switches[0]).toHaveAttribute('aria-checked', 'false');
-  expect(switches[1]).toHaveAttribute('aria-checked', 'false');
+  expect(switches[0].getAttribute('aria-checked')).toBe('false');
+  expect(switches[1].getAttribute('aria-checked')).toBe('false');
 
   fireEvent.click(switches[0]);
   expect(document.documentElement.dataset.theme).toBe('dark');
-  expect(switches[0]).toHaveAttribute('aria-checked', 'true');
-  expect(switches[1]).toHaveAttribute('aria-checked', 'true');
+  expect(switches[0].getAttribute('aria-checked')).toBe('true');
+  expect(switches[1].getAttribute('aria-checked')).toBe('true');
   expect(localStorage.getItem('chinese-learning-theme')).toBe('dark');
   expect(initializeTheme()).toBe('dark');
 });
@@ -28,13 +28,13 @@ test('theme reacts to another tab and works without local storage', () => {
   localStorage.setItem('chinese-learning-theme', 'light');
   act(() => window.dispatchEvent(new StorageEvent('storage', { key: 'chinese-learning-theme' })));
   const toggle = screen.getByRole('switch');
-  expect(toggle).toHaveAttribute('aria-checked', 'false');
+  expect(toggle.getAttribute('aria-checked')).toBe('false');
   expect(toggle.getAttribute('aria-label')).toMatch(/sáng|Giấy Tuyên/i);
 
   const blocked = vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => { throw new Error('blocked'); });
   fireEvent.click(toggle);
   expect(document.documentElement.dataset.theme).toBe('dark');
-  expect(toggle).toHaveAttribute('aria-checked', 'true');
+  expect(toggle.getAttribute('aria-checked')).toBe('true');
   blocked.mockRestore();
 });
 test('ceiling lanterns disappear after 20px and return at the top', () => {

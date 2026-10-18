@@ -3,6 +3,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { describe, expect, it, vi } from 'vitest';
 import { Sidebar } from '../../src/components/Sidebar';
 import { AppShell } from '../../src/app/AppShell';
+import { AuthProvider } from '../../src/app/AuthProvider';
 
 describe('Sidebar keyboard navigation and focus accessibility', () => {
   it('keeps the edge toggle button accessible and locks hidden content when desktop sidebar is collapsed', () => {
@@ -54,12 +55,14 @@ describe('Sidebar keyboard navigation and focus accessibility', () => {
 
   it('moves focus to the edge toggle button when desktop sidebar closes with focus inside', () => {
     const onToggleSidebar = vi.fn();
+    const onOpenAuthModal = vi.fn();
     const { rerender } = render(
       <MemoryRouter>
         <Sidebar
           isOpen={true}
           isOverlay={false}
           onToggleSidebar={onToggleSidebar}
+          onOpenAuthModal={onOpenAuthModal}
           user={null}
         />
       </MemoryRouter>
@@ -77,6 +80,7 @@ describe('Sidebar keyboard navigation and focus accessibility', () => {
           isOpen={false}
           isOverlay={false}
           onToggleSidebar={onToggleSidebar}
+          onOpenAuthModal={onOpenAuthModal}
           user={null}
         />
       </MemoryRouter>
@@ -124,7 +128,9 @@ describe('Sidebar keyboard navigation and focus accessibility', () => {
 
     const { container } = render(
       <MemoryRouter>
-        <AppShell />
+        <AuthProvider>
+          <AppShell />
+        </AuthProvider>
       </MemoryRouter>
     );
 
