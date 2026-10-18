@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS hanzi (
     review_status VARCHAR(20) NOT NULL DEFAULT 'APPROVED',
     needs_human_check BOOLEAN NOT NULL DEFAULT FALSE,
     source_ref VARCHAR(160),
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 CREATE INDEX IF NOT EXISTS idx_hanzi_char ON hanzi(character);
 CREATE INDEX IF NOT EXISTS idx_hanzi_hsk ON hanzi(hsk_level);
@@ -104,7 +104,7 @@ CREATE TABLE IF NOT EXISTS vocabulary (
     review_status VARCHAR(20) NOT NULL DEFAULT 'APPROVED',
     needs_human_check BOOLEAN NOT NULL DEFAULT FALSE,
     source_ref VARCHAR(160),
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 CREATE INDEX IF NOT EXISTS idx_vocab_word ON vocabulary(word);
 CREATE INDEX IF NOT EXISTS idx_vocab_pinyin_norm ON vocabulary(pinyin_normalized);
@@ -120,14 +120,14 @@ CREATE TABLE IF NOT EXISTS grammar_rules (
     explanation_vi TEXT DEFAULT '',
     examples_json TEXT NOT NULL DEFAULT '[]',
     exercises_json TEXT DEFAULT '[]',
-    explanation TEXT,
+    explanation TEXT NOT NULL DEFAULT '',
     notes TEXT,
     original_number INT,
     source_ref VARCHAR(50),
     lesson_id BIGINT REFERENCES lessons(id) ON DELETE SET NULL,
     order_index INT NOT NULL DEFAULT 1,
     review_status VARCHAR(20) NOT NULL DEFAULT 'APPROVED',
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 CREATE INDEX IF NOT EXISTS idx_grammar_hsk ON grammar_rules(hsk_level);
 
@@ -146,6 +146,7 @@ CREATE TABLE IF NOT EXISTS grammar_exercises (
     needs_human_check BOOLEAN NOT NULL DEFAULT FALSE,
     source_ref VARCHAR(160),
     review_note VARCHAR(400),
+    exercise_type VARCHAR(24) NOT NULL DEFAULT 'MULTIPLE_CHOICE',
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -159,6 +160,7 @@ CREATE TABLE IF NOT EXISTS reading_passages (
     vocabulary_notes TEXT,
     questions_json TEXT NOT NULL,
     review_status VARCHAR(20) NOT NULL DEFAULT 'APPROVED',
+    hsk_level INT DEFAULT 1,
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -169,8 +171,8 @@ CREATE TABLE IF NOT EXISTS character_mastery (
     user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     target_type VARCHAR(20) NOT NULL, -- 'PINYIN', 'HANZI', 'VOCAB'
     target_key VARCHAR(50) NOT NULL,
-    mastery_score INT DEFAULT 0,
-    practice_count INT DEFAULT 0,
+    mastery_score INT NOT NULL DEFAULT 0,
+    practice_count INT NOT NULL DEFAULT 0,
     updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT uq_user_mastery_target UNIQUE (user_id, target_type, target_key)
 );
@@ -301,7 +303,19 @@ CREATE TABLE IF NOT EXISTS mock_exams (
     questions_json TEXT NOT NULL,
     started_at TIMESTAMPTZ NOT NULL,
     submitted_at TIMESTAMPTZ,
+    hsk_level INT,
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS mock_exam_presets (
+    id BIGSERIAL PRIMARY KEY,
+    hsk_level INT NOT NULL UNIQUE CHECK (hsk_level BETWEEN 1 AND 6),
+    maximum_score INT NOT NULL,
+    passing_score INT NOT NULL,
+    duration_minutes INT NOT NULL,
+    sections_json TEXT NOT NULL,
+    review_status VARCHAR(20) NOT NULL DEFAULT 'APPROVED',
+    needs_human_check BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE IF NOT EXISTS exam_results (
@@ -415,4 +429,21 @@ CREATE TABLE IF NOT EXISTS kana (
     needs_human_check BOOLEAN NOT NULL DEFAULT FALSE,
     source_ref VARCHAR(160),
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 24. Companion wallet and daily quest claims
+CREATE TABLE IF NOT EXISTS companion_wallets (
+    user_id BIGINT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+    bamboo INT NOT NULL CHECK (bamboo >= 0),
+    affection_exp INT NOT NULL CHECK (affection_exp >= 0)
+);
+
+CREATE TABLE IF NOT EXISTS daily_quest_claims (
+    id BIGSERIAL PRIMARY KEY,
+    user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    claim_date DATE NOT NULL,
+    quest_code VARCHAR(20) NOT NULL,
+    reward_exp INT NOT NULL,
+    reward_bamboo INT NOT NULL,
+    CONSTRAINT uq_daily_quest_claim UNIQUE (user_id, claim_date, quest_code)
 );
