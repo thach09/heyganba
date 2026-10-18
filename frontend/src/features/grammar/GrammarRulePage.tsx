@@ -73,8 +73,13 @@ export const GrammarRulePage: React.FC = () => {
   }, [user, ruleId, run]);
 
   useEffect(() => {
-    void loadRule();
-    return () => cancel('GrammarRulePage-load');
+    const timer = setTimeout(() => {
+      void loadRule();
+    }, 0);
+    return () => {
+      clearTimeout(timer);
+      cancel('GrammarRulePage-load');
+    };
   }, [loadRule, cancel]);
 
   // Start at the top when navigating to another rule from the related-rules section.

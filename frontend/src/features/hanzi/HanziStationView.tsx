@@ -309,7 +309,10 @@ const HanziStationSession: React.FC = () => {
   }, [run, hskFilter]);
 
   useEffect(() => {
-    void loadCharacters();
+    const timer = setTimeout(() => {
+      void loadCharacters();
+    }, 0);
+    return () => clearTimeout(timer);
   }, [loadCharacters]);
 
   // Parse example words for currently selected character

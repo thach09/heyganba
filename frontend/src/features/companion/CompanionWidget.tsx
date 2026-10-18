@@ -1,10 +1,33 @@
-import { useState } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import { Heart, RefreshCw, X, Sparkles } from 'lucide-react';
-import { Companion3DCanvas } from './three/Companion3DCanvas';
 import { useCompanion } from './useCompanionStore';
 import { PET_DEFINITIONS, GROWTH_STAGES } from './petData';
 import type { PetId } from './types';
 import { OrientalCard } from '../../components/OrientalCard';
+
+const Companion3DCanvas = lazy(() =>
+  import('./three/Companion3DCanvas').then((m) => ({ default: m.Companion3DCanvas ?? m.default }))
+);
+
+// Lightweight SVG skeleton fallback for 3D canvas (0 CLS layout guarantee)
+export function CompanionSkeletonFallback({ size = 96, className = '' }: { size?: number; className?: string }) {
+  return (
+    <div
+      className={`relative inline-flex items-center justify-center animate-pulse ${className}`}
+      style={{ width: size, height: size }}
+      aria-hidden="true"
+    >
+      <div className="h-4/5 w-4/5 rounded-xl border border-rule/60 bg-tint/40 flex items-center justify-center">
+        <svg viewBox="0 0 48 48" fill="none" className="w-1/2 h-1/2 text-fg-38 opacity-40">
+          <rect x="12" y="14" width="24" height="22" rx="4" stroke="currentColor" strokeWidth="2" />
+          <circle cx="19" cy="22" r="2.5" fill="currentColor" />
+          <circle cx="29" cy="22" r="2.5" fill="currentColor" />
+          <path d="M 21 28 Q 24 31 27 28" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        </svg>
+      </div>
+    </div>
+  );
+}
 
 // Clean SVG icon for food items (Bamboo, Apple, Peach, Fish)
 export function FoodIcon({ type = 'bamboo', className = 'w-4 h-4' }: { type?: string; className?: string }) {
@@ -99,13 +122,15 @@ export function CompanionWidget() {
       >
         {/* Interactive 3D Pet Display */}
         <div className="flex flex-shrink-0 flex-col items-center">
-          <Companion3DCanvas
-            petId={selectedPetId}
-            stage={growthStage}
-            mood={mood}
-            size={180}
-            showSpeechBubble={true}
-          />
+          <Suspense fallback={<CompanionSkeletonFallback size={180} />}>
+            <Companion3DCanvas
+              petId={selectedPetId}
+              stage={growthStage}
+              mood={mood}
+              size={180}
+              showSpeechBubble={true}
+            />
+          </Suspense>
           <span className="mt-1 text-[10px] text-fg-38 tracking-wide">
             ✦ Bấm hoặc kéo xoay 360°
           </span>
@@ -249,14 +274,16 @@ export function CompanionWidget() {
                     }`}
                   >
                     <div className="flex h-16 w-16 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg bg-tint border border-rule">
-                      <Companion3DCanvas
-                        petId={id}
-                        stage="junior"
-                        mood={isSelected ? 'happy' : 'idle'}
-                        size={60}
-                        interactive={false}
-                        showSpeechBubble={false}
-                      />
+                      <Suspense fallback={<CompanionSkeletonFallback size={60} />}>
+                        <Companion3DCanvas
+                          petId={id}
+                          stage="junior"
+                          mood={isSelected ? 'happy' : 'idle'}
+                          size={60}
+                          interactive={false}
+                          showSpeechBubble={false}
+                        />
+                      </Suspense>
                     </div>
                     <div className="min-w-0 flex-1 text-left">
                       <div className="font-serif text-[13px] font-bold text-fg leading-snug">

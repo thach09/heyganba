@@ -10,8 +10,27 @@ export default defineConfig(({ mode }) => ({
   plugins: [react(), tailwindcss()],
   preview: { headers: Object.fromEntries(deploymentHeaders.map(({ key, value }) => [key, value])) },
   build: {
+    chunkSizeWarningLimit: 600,
     sourcemap: false,
-    rolldownOptions: { output: { minify: { compress: { dropConsole: true, dropDebugger: true } } } },
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules/three')) {
+            return 'vendor-three';
+          }
+        },
+      },
+    },
+    rolldownOptions: {
+      output: {
+        minify: { compress: { dropConsole: true, dropDebugger: true } },
+        manualChunks(id) {
+          if (id.includes('node_modules/three')) {
+            return 'vendor-three';
+          }
+        },
+      },
+    },
   },
   server: {
     port: 5173,

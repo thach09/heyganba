@@ -38,7 +38,9 @@ export function Companion3DCanvas({
     const quotes = pet?.quotes?.[mood] || PET_DEFINITIONS.panda.quotes.idle;
     if (quotes && quotes.length > 0) {
       const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-      setCurrentQuote(randomQuote);
+      queueMicrotask(() => {
+        setCurrentQuote(randomQuote);
+      });
     }
   }, [mood, petId]);
 
@@ -245,3 +247,5 @@ export function Companion3DCanvas({
     </div>
   );
 }
+
+export default Companion3DCanvas;

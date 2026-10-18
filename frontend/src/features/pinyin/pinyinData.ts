@@ -139,7 +139,7 @@ export function canonicalizePinyin(raw: string): string {
  */
 export function splitPinyinWordIntoSyllables(raw: string): string[] {
   if (!raw) return [];
-  const s = raw.trim();
+  const s = raw.trim().normalize('NFC');
 
   // 1. Tách trước các dấu phân cách rõ ràng (khoảng trắng, gạch ngang, gạch dưới, nháy đơn)
   const chunks = s.split(/[\s\-_']+/).filter(Boolean);
@@ -156,7 +156,7 @@ export function splitPinyinWordIntoSyllables(raw: string): string[] {
     while (prev !== separated) {
       prev = separated;
       separated = separated.replace(
-        /([aeiouvüAEIOUVÜ\u0300-\u036fāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜ](?:ng|[nr])?)(zh|ch|sh|[bpmfdtnlgkhjqxrzcsyw])([aeiouvüAEIOUVÜ\u0300-\u036fāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜ])/gi,
+        /([aeiouvüAEIOUVÜāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜ](?:ng|[nr])?)(zh|ch|sh|[bpmfdtnlgkhjqxrzcsyw])([aeiouvüAEIOUVÜāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜ])/gi,
         '$1 $2$3'
       );
     }

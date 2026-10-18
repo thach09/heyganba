@@ -1,8 +1,12 @@
+import { lazy, Suspense } from 'react';
 import type { PetMood } from './types';
 import { useCompanion } from './useCompanionStore';
-import { Companion3DCanvas } from './three/Companion3DCanvas';
-import { FoodIcon } from './CompanionWidget';
+import { FoodIcon, CompanionSkeletonFallback } from './CompanionWidget';
 import { PET_DEFINITIONS } from './petData';
+
+const Companion3DCanvas = lazy(() =>
+  import('./three/Companion3DCanvas').then((m) => ({ default: m.Companion3DCanvas ?? m.default }))
+);
 
 interface StudyPetCompanionProps {
   mood?: PetMood;
@@ -30,19 +34,21 @@ export function StudyPetCompanion({
           <FoodIcon type={activePet.foodIcon} className="h-3 w-3" />
           <span>{bambooCount}</span>
         </div>
-        <Companion3DCanvas
-          petId={selectedPetId}
-          stage={growthStage}
-          mood={currentMood}
-          size={42}
-          showSpeechBubble={false}
-          interactive={true}
-          onPetClick={() => {
-            setMood('happy');
-            setTimeout(() => setMood('idle'), 2000);
-            if (onCheer) onCheer();
-          }}
-        />
+        <Suspense fallback={<CompanionSkeletonFallback size={42} />}>
+          <Companion3DCanvas
+            petId={selectedPetId}
+            stage={growthStage}
+            mood={currentMood}
+            size={42}
+            showSpeechBubble={false}
+            interactive={true}
+            onPetClick={() => {
+              setMood('happy');
+              setTimeout(() => setMood('idle'), 2000);
+              if (onCheer) onCheer();
+            }}
+          />
+        </Suspense>
       </div>
     );
   }
@@ -58,19 +64,21 @@ export function StudyPetCompanion({
       </div>
 
       {/* 3D Pet Illustration */}
-      <Companion3DCanvas
-        petId={selectedPetId}
-        stage={growthStage}
-        mood={currentMood}
-        size={96}
-        showSpeechBubble={true}
-        interactive={true}
-        onPetClick={() => {
-          setMood('happy');
-          setTimeout(() => setMood('idle'), 2000);
-          if (onCheer) onCheer();
-        }}
-      />
+      <Suspense fallback={<CompanionSkeletonFallback size={96} />}>
+        <Companion3DCanvas
+          petId={selectedPetId}
+          stage={growthStage}
+          mood={currentMood}
+          size={96}
+          showSpeechBubble={true}
+          interactive={true}
+          onPetClick={() => {
+            setMood('happy');
+            setTimeout(() => setMood('idle'), 2000);
+            if (onCheer) onCheer();
+          }}
+        />
+      </Suspense>
     </div>
   );
 }

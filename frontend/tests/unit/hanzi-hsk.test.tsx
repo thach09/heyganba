@@ -191,7 +191,6 @@ describe('Hanzi & Radicals Station (Trạm Chữ Hán HSK 1)', () => {
     expect(screen.getByText('đẹp, ưa nhìn')).toBeInTheDocument();
 
     // Test Mandarin TTS audio playback on the main character
-    const audioBtns = screen.getAllByRole('button');
     const speakBtn = screen.getByTitle('Nghe phát âm chữ Hán');
     expect(speakBtn).toBeDefined();
     if (speakBtn) {

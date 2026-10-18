@@ -42,8 +42,13 @@ export const ReviewQueuePanel: React.FC = () => {
   }, [onlyNeedsCheck, run]);
 
   useEffect(() => {
-    void load();
-    return () => cancel('adminApi.reviewQueue');
+    const timer = setTimeout(() => {
+      void load();
+    }, 0);
+    return () => {
+      clearTimeout(timer);
+      cancel('adminApi.reviewQueue');
+    };
   }, [load, cancel]);
 
   useEffect(() => {

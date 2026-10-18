@@ -127,14 +127,19 @@ export const ExamView: React.FC = () => {
   useEffect(() => {
     if (!userId) {
       cancel('ExamView-load');
-      setHistory([]);
-      setStreak(null);
-      setHeatmap([]);
-      setLeaderboard(null);
+      queueMicrotask(() => {
+        setHistory([]);
+        setStreak(null);
+        setHeatmap([]);
+        setLeaderboard(null);
+      });
       return;
     }
 
-    void loadProgress();
+    const timer = setTimeout(() => {
+      void loadProgress();
+    }, 0);
+    return () => clearTimeout(timer);
   }, [userId, loadProgress, cancel]);
 
   const restoreAttempt = useCallback(async () => {
@@ -184,8 +189,13 @@ export const ExamView: React.FC = () => {
   }, [checkpoint, userId, run, checkpointAttempt]);
 
   useEffect(() => {
-    void restoreAttempt();
-    return () => cancel('examApi.resume');
+    const timer = setTimeout(() => {
+      void restoreAttempt();
+    }, 0);
+    return () => {
+      clearTimeout(timer);
+      cancel('examApi.resume');
+    };
   }, [restoreAttempt, cancel]);
 
   useEffect(() => {

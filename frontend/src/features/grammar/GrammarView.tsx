@@ -137,14 +137,19 @@ export const GrammarView: React.FC = () => {
     if (!userId) {
       cancel('grammarApi.rules');
       cancel('grammarApi.exercises');
-      setRules([]);
-      setSelectedRule(null);
-      setExercises([]);
-      setExerciseState('idle');
+      queueMicrotask(() => {
+        setRules([]);
+        setSelectedRule(null);
+        setExercises([]);
+        setExerciseState('idle');
+      });
       return;
     }
 
-    void loadRules();
+    const timer = setTimeout(() => {
+      void loadRules();
+    }, 0);
+    return () => clearTimeout(timer);
   }, [userId, lesson, cancel, loadRules]);
 
   const loadExercises = useCallback(
@@ -153,11 +158,13 @@ export const GrammarView: React.FC = () => {
         return;
       }
 
-      setExerciseState('loading');
-      setExerciseError(null);
-      setResult(null);
-      setSelectedOption(null);
-      setIndex(0);
+      queueMicrotask(() => {
+        setExerciseState('loading');
+        setExerciseError(null);
+        setResult(null);
+        setSelectedOption(null);
+        setIndex(0);
+      });
 
       const params = new URLSearchParams();
       if (rule) {
@@ -185,7 +192,10 @@ export const GrammarView: React.FC = () => {
 
   useEffect(() => {
     if (mode === 'PRACTICE' && userId) {
-      void loadExercises(selectedRule, mistakeOnly);
+      const timer = setTimeout(() => {
+        void loadExercises(selectedRule, mistakeOnly);
+      }, 0);
+      return () => clearTimeout(timer);
     }
   }, [mode, selectedRule, mistakeOnly, userId, loadExercises]);
 
@@ -323,9 +333,11 @@ export const GrammarView: React.FC = () => {
     }
     const rule = rules.find((item) => String(item.id) === practiceId);
     if (rule) {
-      setSelectedRule(rule);
-      setMistakeOnly(false);
-      setMode('PRACTICE');
+      queueMicrotask(() => {
+        setSelectedRule(rule);
+        setMistakeOnly(false);
+        setMode('PRACTICE');
+      });
     }
     setSearchParams({}, { replace: true });
   }, [searchParams, rules, setSearchParams]);

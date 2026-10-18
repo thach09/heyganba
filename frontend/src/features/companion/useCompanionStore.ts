@@ -30,10 +30,15 @@ export function useCompanion() {
     } catch { /* Keep the last server-confirmed balance. */ }
   }, [user]);
   useEffect(() => {
-    void refreshWallet();
+    const timer = setTimeout(() => {
+      void refreshWallet();
+    }, 0);
     const onChange = () => void refreshWallet();
     window.addEventListener('companion-wallet-changed', onChange);
-    return () => window.removeEventListener('companion-wallet-changed', onChange);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('companion-wallet-changed', onChange);
+    };
   }, [refreshWallet]);
 
   const [mood, setMood] = useState<PetMood>('idle');

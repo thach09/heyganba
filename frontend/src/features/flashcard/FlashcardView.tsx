@@ -243,20 +243,26 @@ export const FlashcardView: React.FC = () => {
 
   // Initial load on mount
   useEffect(() => {
-    void loadLessons();
-    if (user) {
-      void refreshStats();
-    }
+    const timer = setTimeout(() => {
+      void loadLessons();
+      if (user) {
+        void refreshStats();
+      }
+    }, 0);
+    return () => clearTimeout(timer);
   }, [loadLessons, refreshStats, user]);
 
   // When selected lesson changes, ONLY load its words (SRS is completely untouched!)
   const selectedSlug = selectedLesson?.slug;
   useEffect(() => {
-    if (selectedSlug) {
-      void loadSelectedLessonWords(selectedSlug);
-    } else {
-      setLessonWords([]);
-    }
+    const timer = setTimeout(() => {
+      if (selectedSlug) {
+        void loadSelectedLessonWords(selectedSlug);
+      } else {
+        setLessonWords([]);
+      }
+    }, 0);
+    return () => clearTimeout(timer);
   }, [selectedSlug, loadSelectedLessonWords]);
 
   // When user identity / session changes (login, logout, switch account):
@@ -267,31 +273,36 @@ export const FlashcardView: React.FC = () => {
     cancel('srs-review');
     cancel('load-notebooks');
 
-    setDueItems([]);
-    setStats(null);
-    setSrsIndex(0);
-    setSrsFlipped(false);
-    setSrsSubmitting(false);
-    setSrsError(null);
-    setPendingAttempt(null);
-    setSrsSessionFinished(false);
-    setSrsReviewedCount(0);
-    setLastSrsResult(null);
+    queueMicrotask(() => {
+      setDueItems([]);
+      setStats(null);
+      setSrsIndex(0);
+      setSrsFlipped(false);
+      setSrsSubmitting(false);
+      setSrsError(null);
+      setPendingAttempt(null);
+      setSrsSessionFinished(false);
+      setSrsReviewedCount(0);
+      setLastSrsResult(null);
 
-    setUserNotebooks([]);
-    setSelectedNotebookId('NEW');
-    setWordToSave(null);
-    setNotebookModalOpen(false);
-    setNotebookFeedback(null);
-    setNotebookListError(null);
+      setUserNotebooks([]);
+      setSelectedNotebookId('NEW');
+      setWordToSave(null);
+      setNotebookModalOpen(false);
+      setNotebookFeedback(null);
+      setNotebookListError(null);
+    });
 
-    void loadLessons();
-    if (user) {
-      void refreshStats();
-      if (mainMode === 'SRS') {
-        void loadSrsData();
+    const timer = setTimeout(() => {
+      void loadLessons();
+      if (user) {
+        void refreshStats();
+        if (mainMode === 'SRS') {
+          void loadSrsData();
+        }
       }
-    }
+    }, 0);
+    return () => clearTimeout(timer);
   }, [userId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Switch to SRS Tab
@@ -339,8 +350,10 @@ export const FlashcardView: React.FC = () => {
 
   useEffect(() => {
     if (!displayedLessons.some(lesson => lesson.id === selectedLesson?.id)) {
-      setSelectedLesson(displayedLessons[0] ?? null);
-      setLessonWords([]);
+      queueMicrotask(() => {
+        setSelectedLesson(displayedLessons[0] ?? null);
+        setLessonWords([]);
+      });
     }
   }, [displayedLessons, selectedLesson?.id]);
 

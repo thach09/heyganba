@@ -28,8 +28,14 @@ function LearningInsightsSession({ section }: { section: 'quests' | 'mastery' })
   }, []);
   useEffect(() => {
     if (!user) return;
-    const controller = new AbortController(); void load(controller.signal);
-    return () => controller.abort();
+    const controller = new AbortController();
+    const timer = setTimeout(() => {
+      void load(controller.signal);
+    }, 0);
+    return () => {
+      clearTimeout(timer);
+      controller.abort();
+    };
   }, [user, load]);
   const claim = async (code: string) => {
     setBusy(true);
