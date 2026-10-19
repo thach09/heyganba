@@ -299,13 +299,15 @@ export const FlashcardView: React.FC = () => {
   };
 
   // URL is the source of truth, including back/forward and removing the filter.
-  const rawLevel = (searchParams.get('level') || '').trim().toUpperCase().replace(/\s/g, '');
+  // Supports both canonical ?level=HSK1 (or ?level=1) and fallback ?hsk=1 (or ?hsk=HSK1)
+  const rawLevel = (searchParams.get('level') || searchParams.get('hsk') || '').trim().toUpperCase().replace(/\s/g, '');
   const selectedLevelFilter = /^(HSK)?[1-6]$/.test(rawLevel)
     ? `HSK ${rawLevel.slice(-1)}` : rawLevel === 'INTRO' ? 'Nhập môn' : 'ALL';
   const [catalogSearchQuery, setCatalogSearchQuery] = useState<string>('');
   const availableLevels = ['Nhập môn', ...[1, 2, 3, 4, 5, 6].map(n => `HSK ${n}`)];
   const setSelectedLevelFilter = (level: string) => {
     const params = new URLSearchParams(searchParams);
+    params.delete('hsk');
     if (level === 'ALL') params.delete('level');
     else params.set('level', level === 'Nhập môn' ? 'INTRO' : level.replace(' ', ''));
     setSearchParams(params);
@@ -1140,16 +1142,30 @@ export const FlashcardView: React.FC = () => {
 
                         <div className="flex min-w-0 flex-wrap items-center justify-between gap-2 text-[11px] text-fg-38">
                           <span>Bấm để lật xem phiên âm & ngữ cảnh</span>
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              speakChinese(currentStudyWord.word);
-                            }}
-                            className="inline-flex items-center gap-1 text-fg-60 hover:text-cinnabar-ink"
-                          >
-                            <Volume2 size={13} /> Nghe phát âm
-                          </button>
+                          <div className="flex items-center gap-2">
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                speakChinese(currentStudyWord.word);
+                              }}
+                              className="inline-flex cursor-pointer items-center gap-1 text-fg-60 hover:text-cinnabar-ink transition-colors"
+                              title="Nghe phát âm chuẩn (1.0x)"
+                            >
+                              <Volume2 size={13} /> Nghe
+                            </button>
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                speakChinese(currentStudyWord.word, { slow: true });
+                              }}
+                              className="inline-flex cursor-pointer items-center gap-1 rounded bg-tint px-1.5 py-0.5 text-[10.5px] font-medium text-fg-60 hover:text-cinnabar-ink hover:bg-cinnabar/10 transition-colors"
+                              title="Nghe chậm (0.75x)"
+                            >
+                              <span>🐢</span> 0.75x
+                            </button>
+                          </div>
                         </div>
                       </div>
 
@@ -1164,9 +1180,21 @@ export const FlashcardView: React.FC = () => {
                                 e.stopPropagation();
                                 speakChinese(currentStudyWord.word);
                               }}
-                              className="text-fg-60 hover:text-cinnabar-ink"
+                              className="cursor-pointer text-fg-60 hover:text-cinnabar-ink transition-colors"
+                              title="Nghe phát âm chuẩn (1.0x)"
                             >
                               <Volume2 size={14} />
+                            </button>
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                speakChinese(currentStudyWord.word, { slow: true });
+                              }}
+                              className="cursor-pointer rounded bg-tint px-1.5 py-0.5 text-[10.5px] font-medium text-fg-60 hover:text-cinnabar-ink hover:bg-cinnabar/10 transition-colors"
+                              title="Nghe chậm (0.75x)"
+                            >
+                              <span>🐢</span> 0.75x
                             </button>
                           </div>
                           <span className="rounded border border-cinnabar/30 bg-cinnabar/10 px-2 py-0.5 text-xs font-semibold text-cinnabar-ink uppercase">
@@ -1188,17 +1216,30 @@ export const FlashcardView: React.FC = () => {
                                 <span className="font-serif text-xs font-medium text-fg/90">
                                   {currentStudyWord.exampleZh}
                                 </span>
-                                <button
-                                  type="button"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    speakChinese(currentStudyWord.exampleZh!);
-                                  }}
-                                  title="Nghe câu ví dụ"
-                                  className="text-fg-38 hover:text-cinnabar-ink"
-                                >
-                                  <Volume2 size={13} />
-                                </button>
+                                <div className="flex items-center gap-1.5">
+                                  <button
+                                    type="button"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      speakChinese(currentStudyWord.exampleZh!);
+                                    }}
+                                    title="Nghe câu ví dụ"
+                                    className="cursor-pointer text-fg-38 hover:text-cinnabar-ink transition-colors"
+                                  >
+                                    <Volume2 size={13} />
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      speakChinese(currentStudyWord.exampleZh!, { slow: true });
+                                    }}
+                                    title="Nghe chậm câu ví dụ (0.75x)"
+                                    className="cursor-pointer text-[10px] text-fg-38 hover:text-cinnabar-ink transition-colors"
+                                  >
+                                    🐢
+                                  </button>
+                                </div>
                               </div>
                               <div className="text-[11px] text-gold-ink">{currentStudyWord.examplePinyin}</div>
                               <div className="text-[11px] text-fg-60">{currentStudyWord.exampleVi}</div>
@@ -1500,9 +1541,21 @@ export const FlashcardView: React.FC = () => {
                             e.stopPropagation();
                             speakChinese(currentSrsItem.word);
                           }}
-                          className="text-fg-60 hover:text-cinnabar-ink"
+                          className="cursor-pointer text-fg-60 hover:text-cinnabar-ink transition-colors"
+                          title="Nghe phát âm chuẩn (1.0x)"
                         >
                           <Volume2 size={14} />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            speakChinese(currentSrsItem.word, { slow: true });
+                          }}
+                          className="cursor-pointer rounded bg-tint px-1.5 py-0.5 text-[10.5px] font-medium text-fg-60 hover:text-cinnabar-ink hover:bg-cinnabar/10 transition-colors"
+                          title="Nghe chậm (0.75x)"
+                        >
+                          <span>🐢</span> 0.75x
                         </button>
                       </div>
                       <span className="rounded border border-cinnabar/30 bg-cinnabar/10 px-2 py-0.5 text-xs font-semibold text-cinnabar-ink uppercase">
