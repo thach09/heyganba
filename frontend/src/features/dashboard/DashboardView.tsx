@@ -8,6 +8,8 @@ import type { HeatmapDay } from '../progress/types';
 import type { UserExp } from './types';
 import { useAuth } from '../../app/useAuth';
 import React, { useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Target, ArrowRight, BookOpen, Clock, PenTool } from 'lucide-react';
 import { CompanionWidget } from '../companion/CompanionWidget';
 
 /** Dashboard metrics are derived from authenticated server progress. */
@@ -166,6 +168,23 @@ export const DashboardView: React.FC = () => {
   const [heatmap, setHeatmap] = useState<HeatmapDay[]>([]);
   const [flashStats, setFlashStats] = useState<FlashcardStats | null>(null);
   const [userExp, setUserExp] = useState<UserExp | null>(null);
+  const [targetHsk, setTargetHsk] = useState<number>(() => {
+    try {
+      const saved = localStorage.getItem('heyganba_target_hsk');
+      return saved ? Math.min(6, Math.max(1, Number(saved))) : 1;
+    } catch {
+      return 1;
+    }
+  });
+
+  const handleSelectTargetHsk = (level: number) => {
+    setTargetHsk(level);
+    try {
+      localStorage.setItem('heyganba_target_hsk', String(level));
+    } catch {
+      // ignore storage quota errors
+    }
+  };
 
   useEffect(() => {
     if (!user) {
@@ -247,6 +266,78 @@ export const DashboardView: React.FC = () => {
           </div>
         )}
       </header>
+
+      {/* Target HSK Level Selector & Smart Next-Action Banner */}
+      <section className="mt-6 rounded-2xl border border-rule bg-card p-5 shadow-xs">
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-rule/50 pb-4">
+          <div className="flex items-center gap-2.5">
+            <Target className="h-5 w-5 text-cinnabar-ink" />
+            <div>
+              <div className="text-[10.5px] font-semibold uppercase tracking-wider text-fg-38">
+                Lộ trình Hán ngữ trọng tâm
+              </div>
+              <h2 className="font-serif text-lg font-bold text-fg">
+                Mục tiêu hiện tại: <span className="text-cinnabar-ink">HSK {targetHsk}</span>
+              </h2>
+            </div>
+          </div>
+
+          {/* HSK Level Quick Selector (1..6) */}
+          <div className="flex flex-wrap items-center gap-1.5" role="group" aria-label="Chọn mục tiêu HSK">
+            {[1, 2, 3, 4, 5, 6].map((lvl) => (
+              <button
+                key={lvl}
+                type="button"
+                onClick={() => handleSelectTargetHsk(lvl)}
+                aria-pressed={targetHsk === lvl}
+                className={`cursor-pointer rounded-lg px-3 py-1 text-xs font-semibold transition-all ${
+                  targetHsk === lvl
+                    ? 'bg-cinnabar text-on-accent shadow-sm ring-2 ring-cinnabar/40'
+                    : 'border border-rule bg-tint text-fg-60 hover:border-rule-strong hover:text-fg'
+                }`}
+              >
+                HSK {lvl}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Smart Next-Action CTA (Tiếp tục học ngay) */}
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-4">
+          <div className="max-w-xl">
+            <p className="text-xs text-fg-60 leading-relaxed">
+              Hệ thống đã sẵn sàng lộ trình HSK {targetHsk}. Tiếp tục hoàn thành bài giảng tiếp theo, ôn tập thẻ ghi nhớ SRS hoặc luyện viết chữ Hán để củng cố phản xạ.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2.5">
+            <Link
+              to={`/vocabulary?level=HSK${targetHsk}`}
+              className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-cinnabar bg-cinnabar px-4 py-2 text-xs font-semibold text-on-accent transition-all hover:opacity-90 shadow-sm"
+            >
+              <BookOpen size={14} />
+              <span>Tiếp tục học ngay (Smart Resume)</span>
+              <ArrowRight size={14} />
+            </Link>
+
+            <Link
+              to="/vocabulary"
+              className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl border border-rule bg-card px-3 py-2 text-xs font-medium text-fg-60 hover:text-fg hover:border-rule-strong transition-colors"
+            >
+              <Clock size={13} />
+              <span>Ôn tập đến hạn</span>
+            </Link>
+
+            <Link
+              to="/hanzi"
+              className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl border border-rule bg-card px-3 py-2 text-xs font-medium text-fg-60 hover:text-fg hover:border-rule-strong transition-colors"
+            >
+              <PenTool size={13} />
+              <span>Viết chữ Hán</span>
+            </Link>
+          </div>
+        </div>
+      </section>
 
       {/* Companion Pet & Daily Quests Section */}
       <section className="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
