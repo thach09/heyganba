@@ -1,0 +1,58 @@
+{
+  "generator": "scripts/build-local-fonts.py",
+  "accessed": "2026-10-20",
+  "fonts": [
+    {
+      "family": "NotoSerifSC",
+      "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/notoserifsc/NotoSerifSC%5Bwght%5D.ttf",
+      "sha256": "050080d9255a86808f2945bffac582b31ef32bc36411ce29563b4961670c66f9",
+      "glyphCodepoints": 30928,
+      "uiCodepoints": 239,
+      "fallbackComplete": true,
+      "license": "SIL OFL 1.1",
+      "subsets": 77
+    },
+    {
+      "family": "NotoSansSC",
+      "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/notosanssc/NotoSansSC%5Bwght%5D.ttf",
+      "sha256": "a3041811a78c361b1de50f953c805e0244951c21c5bd412f7232ef0d899af0da",
+      "glyphCodepoints": 30890,
+      "uiCodepoints": 86,
+      "fallbackComplete": true,
+      "license": "SIL OFL 1.1",
+      "subsets": 80
+    },
+    {
+      "family": "Be Vietnam Pro",
+      "weight": 400,
+      "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/bevietnampro/BeVietnamPro-Regular.ttf",
+      "sha256": "cd1ef6e9d7db28ad5cdb88a65ccbe693870e60d340b791f349d248342b4fe4c3",
+      "license": "SIL OFL 1.1",
+      "fallbackComplete": true
+    },
+    {
+      "family": "Be Vietnam Pro",
+      "weight": 500,
+      "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/bevietnampro/BeVietnamPro-Medium.ttf",
+      "sha256": "b60832bfa0fcd015158112c64d7e3fdad3b0c6287d1823f85a3103636e845268",
+      "license": "SIL OFL 1.1",
+      "fallbackComplete": true
+    },
+    {
+      "family": "Be Vietnam Pro",
+      "weight": 600,
+      "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/bevietnampro/BeVietnamPro-SemiBold.ttf",
+      "sha256": "bd8e27eb02720b9d91e59e4f10a90878643219f25ce6a8d9a4f06a8a88d3bb71",
+      "license": "SIL OFL 1.1",
+      "fallbackComplete": true
+    },
+    {
+      "family": "Be Vietnam Pro",
+      "weight": 700,
+      "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/bevietnampro/BeVietnamPro-Bold.ttf",
+      "sha256": "7f738fe5c43c8872807b20e2d30d42163618de8a4daf7f48a939adac32c16847",
+      "license": "SIL OFL 1.1",
+      "fallbackComplete": true
+    }
+  ]
+}
