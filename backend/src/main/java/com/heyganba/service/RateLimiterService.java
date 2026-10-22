@@ -2,7 +2,9 @@ package com.heyganba.service;
 
 import org.springframework.stereotype.Component;
 
+import java.time.Clock;
 import java.time.Duration;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -18,26 +20,40 @@ public class RateLimiterService {
     private static final int MAX_TRACKED_KEYS = 10_000;
 
     private final ConcurrentHashMap<String, Window> windows = new ConcurrentHashMap<>();
+    private final Clock clock;
+    private final int cleanupThreshold;
+
+    public RateLimiterService() {
+        this(Clock.systemUTC(), MAX_TRACKED_KEYS);
+    }
+
+    RateLimiterService(Clock clock, int cleanupThreshold) {
+        this.clock = Objects.requireNonNull(clock);
+        if (cleanupThreshold < 1) throw new IllegalArgumentException("Cleanup threshold must be positive");
+        this.cleanupThreshold = cleanupThreshold;
+    }
 
     /**
      * @return true nếu request được phép; false nếu vượt quá giới hạn trong cửa sổ thời gian.
      */
     public boolean tryConsume(String key, int limit, Duration window) {
-        long now = System.currentTimeMillis();
-
-        if (windows.size() > MAX_TRACKED_KEYS) {
-            purgeExpired(now, window.toMillis());
+        long windowMillis = windowMillis(window);
+        if (windows.size() > cleanupThreshold) {
+            purgeExpired(clock.millis());
         }
 
         Window current = windows.compute(key, (trackingKey, existing) -> {
-            if (existing == null || now - existing.startMillis >= window.toMillis()) {
-                return new Window(now);
+            long now = clock.millis();
+            if (existing == null || existing.expired(now)) {
+                return new Window(now, windowMillis, 1);
             }
-            existing.count++;
-            return existing;
+            // Preserve the duration chosen when this window started. A different caller
+            // must not shorten a live window. Publish an immutable per-call count snapshot.
+            long count = existing.count() == Long.MAX_VALUE ? Long.MAX_VALUE : existing.count() + 1;
+            return new Window(existing.startMillis(), existing.windowMillis(), count);
         });
 
-        return current.count <= limit;
+        return current.count() <= limit;
     }
 
     /**
@@ -48,14 +64,15 @@ public class RateLimiterService {
      * không bị tính là tấn công (tránh tự khoá tài khoản của mình).
      */
     public boolean isBlocked(String key, int limit, Duration window) {
+        windowMillis(window);
         Window current = windows.get(key);
         if (current == null) {
             return false;
         }
-        if (System.currentTimeMillis() - current.startMillis >= window.toMillis()) {
+        if (current.expired(clock.millis())) {
             return false;
         }
-        return current.count >= limit;
+        return current.count() >= limit;
     }
 
     /** Xoá toàn bộ trạng thái — dùng trong test để cô lập từng case. */
@@ -63,16 +80,29 @@ public class RateLimiterService {
         windows.clear();
     }
 
-    private void purgeExpired(long now, long windowMillis) {
-        windows.entrySet().removeIf(entry -> now - entry.getValue().startMillis >= windowMillis);
+    /**
+     * Dọn định kỳ theo thời lượng riêng của từng window, không xóa bộ đếm còn hiệu lực.
+     */
+    @org.springframework.scheduling.annotation.Scheduled(fixedRate = 300_000)
+    public void scheduledPurge() {
+        purgeExpired(clock.millis());
     }
 
-    private static final class Window {
-        private final long startMillis;
-        private int count = 1;
+    private void purgeExpired(long now) {
+        windows.forEach((key, entry) -> {
+            if (entry.expired(now)) windows.remove(key, entry);
+        });
+    }
 
-        private Window(long startMillis) {
-            this.startMillis = startMillis;
+    private static long windowMillis(Duration window) {
+        long millis = window.toMillis();
+        if (millis < 1) throw new IllegalArgumentException("Window must be at least one millisecond");
+        return millis;
+    }
+
+    private record Window(long startMillis, long windowMillis, long count) {
+        private boolean expired(long now) {
+            return now - startMillis >= windowMillis;
         }
     }
 }
