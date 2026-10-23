@@ -140,20 +140,20 @@ describe('v2.1 EdTech UX & Stability Improvements', () => {
       } as any;
 
       try {
-        expect(CHINESE_SPEECH_RATES.SLOW).toBe(0.72);
+        expect(CHINESE_SPEECH_RATES.SLOW).toBe(0.75);
         expect(CHINESE_SPEECH_RATES.NORMAL).toBe(0.95);
 
         // Standard speed
         speakChinese('你好');
-        expect(lastUtterance.rate).toBe(0.92);
+        expect(lastUtterance.rate).toBe(CHINESE_SPEECH_RATES.NORMAL);
 
         // Slow speed via options.slow
         speakChinese('你好', { slow: true });
-        expect(lastUtterance.rate).toBe(0.72);
+        expect(lastUtterance.rate).toBe(CHINESE_SPEECH_RATES.SLOW);
 
         // Slow speed via helper
         speakChineseSlow('再见');
-        expect(lastUtterance.rate).toBe(0.72);
+        expect(lastUtterance.rate).toBe(CHINESE_SPEECH_RATES.SLOW);
         expect(lastUtterance.text).toBe('再见');
       } finally {
         window.speechSynthesis = originalSynthesis;

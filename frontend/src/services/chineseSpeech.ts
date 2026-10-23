@@ -70,9 +70,15 @@ export function isChineseVoiceAvailable(): boolean {
   return getChineseVoice() !== null;
 }
 
+export const CHINESE_SPEECH_RATES = {
+  NORMAL: 0.95,
+  SLOW: 0.75,
+} as const;
+
 export interface SpeakOptions {
   rate?: number;
   pitch?: number;
+  slow?: boolean;
   onEnd?: () => void;
   onError?: (err: unknown) => void;
 }
@@ -99,7 +105,8 @@ export function speakChinese(text: string, options: SpeakOptions = {}): SpeechSt
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.voice = voice;
     utterance.lang = voice.lang || 'zh-CN';
-    utterance.rate = options.rate ?? 0.82; // Tốc độ hơi chậm cho người mới bắt đầu dễ nghe
+    const defaultRate = options.slow ? CHINESE_SPEECH_RATES.SLOW : CHINESE_SPEECH_RATES.NORMAL;
+    utterance.rate = options.rate ?? defaultRate;
     if (options.pitch) {
       utterance.pitch = options.pitch;
     }
@@ -117,6 +124,11 @@ export function speakChinese(text: string, options: SpeakOptions = {}): SpeechSt
     console.warn('SpeechSynthesis error:', err);
     return 'error';
   }
+}
+
+/** Phát âm chậm (0.75x) giúp phân biệt thanh điệu và ngữ âm rõ ràng */
+export function speakChineseSlow(text: string, options: Omit<SpeakOptions, 'slow'> = {}): SpeechStatus {
+  return speakChinese(text, { ...options, slow: true });
 }
 
 export function stopChineseSpeech(): void {
