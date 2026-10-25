@@ -21,6 +21,7 @@ const INTENSITY = [0.06, 0.22, 0.44, 0.66, 0.9];
 
 
 
+
 const formatNumber = (value: number) => value.toLocaleString('vi-VN');
 
 const toLocalDate = (isoDate: unknown): Date => {
@@ -165,13 +166,15 @@ const ActivityChart: React.FC<{ days: HeatmapDay[]; metric: 'itemCount' | 'corre
 
 export const DashboardView: React.FC = () => {
   const { user } = useAuth();
-  const [heatmap, setHeatmap] = useState<HeatmapDay[]>([]);
+  const [heatmap, setHeatmap] = useState<HeatmapDay[] | null>(null);
   const [flashStats, setFlashStats] = useState<FlashcardStats | null>(null);
   const [userExp, setUserExp] = useState<UserExp | null>(null);
+  const [expError, setExpError] = useState(false);
   const [targetHsk, setTargetHsk] = useState<number>(() => {
     try {
       const saved = localStorage.getItem('heyganba_target_hsk');
-      return saved ? Math.min(6, Math.max(1, Number(saved))) : 1;
+      const level = Number(saved);
+      return Number.isInteger(level) && level >= 1 && level <= 6 ? level : 1;
     } catch {
       return 1;
     }
@@ -205,10 +208,10 @@ export const DashboardView: React.FC = () => {
     }).catch(() => { /* Cancellation is silent. */ });
 
     void progressApi.exp({ signal: controller.signal }).then((res) => {
-      if (!controller.signal.aborted && res.success && res.data) {
-        setUserExp(res.data);
-      }
-    }).catch(() => { /* Cancellation is silent. */ });
+      if (controller.signal.aborted) return;
+      if (res.success && res.data) setUserExp(res.data);
+      else setExpError(true);
+    }).catch(() => { if (!controller.signal.aborted) setExpError(true); });
     return () => controller.abort();
   }, [user]);
 
@@ -232,7 +235,11 @@ export const DashboardView: React.FC = () => {
   return (
     <>
       <header className="flex flex-col items-start">
-        {user ? (
+        {user && !userExp ? (
+          <p role={expError ? 'alert' : 'status'} className="text-[13px] text-fg-60">
+            {expError ? 'Chưa tải được EXP. Tải lại trang để thử lại.' : 'Đang tải EXP...'}
+          </p>
+        ) : user ? (
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
             <div className="flex items-baseline gap-1.5 text-[14px] text-fg">
               <span className="text-fg-60 text-[13px]">Cấp</span>
@@ -306,7 +313,7 @@ export const DashboardView: React.FC = () => {
         <div className="mt-4 flex flex-wrap items-center justify-between gap-4">
           <div className="max-w-xl">
             <p className="text-xs text-fg-60 leading-relaxed">
-              Hệ thống đã sẵn sàng lộ trình HSK {targetHsk}. Tiếp tục hoàn thành bài giảng tiếp theo, ôn tập thẻ ghi nhớ SRS hoặc luyện viết chữ Hán để củng cố phản xạ.
+              HSK {targetHsk} là mục tiêu học. Nhóm bài học hiện có là tuyển chọn nội bộ, chưa bao phủ toàn bộ nội dung HSK chính thức.
             </p>
           </div>
 
@@ -316,7 +323,7 @@ export const DashboardView: React.FC = () => {
               className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-cinnabar bg-cinnabar px-4 py-2 text-xs font-semibold text-on-accent transition-all hover:opacity-90 shadow-sm"
             >
               <BookOpen size={14} />
-              <span>Tiếp tục học ngay (Smart Resume)</span>
+              <span>Học nhóm chọn lọc đang có</span>
               <ArrowRight size={14} />
             </Link>
 
@@ -356,13 +363,13 @@ export const DashboardView: React.FC = () => {
       {/* Learning Analytics & Reflection Section */}
       <section className="mt-12 grid grid-cols-2 gap-x-12 gap-y-10 max-[900px]:grid-cols-1 max-[900px]:gap-8">
         <OrientalCard className="p-6">
-          <Tracker days={heatmap} />
+          <Tracker days={heatmap ?? []} />
         </OrientalCard>
 
         <OrientalCard className="p-6">
           <WeekStats
-            items={user ? weekItems : null}
-            correct={user ? weekCorrect : null}
+            items={user && heatmap !== null ? weekItems : null}
+            correct={user && heatmap !== null ? weekCorrect : null}
             learned={user ? (flashStats?.learnedWords ?? null) : null}
           />
         </OrientalCard>
