@@ -615,9 +615,9 @@ export const AdminView: React.FC = () => {
                     </div>
 
                     <form onSubmit={handleEnable2FA} className="flex flex-col gap-3">
-                      <label className={labelClass}>Nhập mã 6 chữ số từ ứng dụng để xác nhận</label>
+                      <label className={labelClass} htmlFor="admin-enable-2fa-code">Nhập mã 6 chữ số từ ứng dụng để xác nhận</label>
                       <div className="flex gap-2">
-                        <input
+                        <input id="admin-enable-2fa-code"
                           type="text"
                           maxLength={6}
                           value={twoFactorCode}
@@ -646,6 +646,7 @@ export const AdminView: React.FC = () => {
                     value={twoFactorCode}
                     onChange={(e) => setTwoFactorCode(e.target.value.replace(/\D/g, ''))}
                     placeholder="Mã 6 chữ số"
+                    aria-label="Mã xác thực để tắt 2FA"
                     className="w-[180px] border border-rule bg-bg px-4 py-2 font-sans text-[15px] text-fg focus:border-fg focus:outline-none text-center"
                     required
                   />
@@ -675,6 +676,7 @@ export const AdminView: React.FC = () => {
                 value={vocabSearch}
                 onChange={(e) => setVocabSearch(e.target.value)}
                 placeholder="Tìm từ vựng, cách đọc, nghĩa..."
+                aria-label="Tìm từ vựng"
                 className="w-[280px] border border-rule bg-card px-3 py-1.5 text-[12.5px] text-fg focus:border-fg focus:outline-none"
               />
               <SubmitButton type="submit" variant="secondary">
@@ -793,6 +795,7 @@ export const AdminView: React.FC = () => {
                 value={hanziSearch}
                 onChange={(e) => setHanziSearch(e.target.value)}
                 placeholder="Tìm chữ Hanzi, Pinyin / Hán Việt, nghĩa..."
+                aria-label="Tìm chữ Hán"
                 className="w-[280px] border border-rule bg-card px-3 py-1.5 text-[12.5px] text-fg focus:border-fg focus:outline-none"
               />
               <SubmitButton type="submit" variant="secondary">
@@ -902,6 +905,7 @@ export const AdminView: React.FC = () => {
                 value={exerciseSearch}
                 onChange={(e) => setExerciseSearch(e.target.value)}
                 placeholder="Tìm câu hỏi, đáp án..."
+                aria-label="Tìm câu hỏi bài tập"
                 className="w-[280px] border border-rule bg-card px-3 py-1.5 text-[12.5px] text-fg focus:border-fg focus:outline-none"
               />
               <SubmitButton type="submit" variant="secondary">
@@ -1007,8 +1011,8 @@ export const AdminView: React.FC = () => {
             </h3>
             <form onSubmit={handleSaveVocab} className="mt-4 flex flex-col gap-3">
               <div>
-                <label className={labelClass}>Từ vựng (chữ Hán)</label>
-                <input
+                <label className={labelClass} htmlFor="admin-content-field-1">Từ vựng (chữ Hán)</label>
+                <input id="admin-content-field-1"
                   type="text"
                   required
                   value={vocabForm.word}
@@ -1018,8 +1022,8 @@ export const AdminView: React.FC = () => {
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className={labelClass}>Phiên âm Pinyin</label>
-                  <input
+                  <label className={labelClass} htmlFor="admin-content-field-2">Phiên âm Pinyin</label>
+                  <input id="admin-content-field-2"
                     type="text"
                     required
                     value={vocabForm.reading}
@@ -1028,8 +1032,8 @@ export const AdminView: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className={labelClass}>Hán Việt (tuỳ chọn)</label>
-                  <input
+                  <label className={labelClass} htmlFor="admin-content-field-3">Hán Việt (tuỳ chọn)</label>
+                  <input id="admin-content-field-3"
                     type="text"
                     value={vocabForm.sinoVietnamese}
                     onChange={(e) => setVocabForm({ ...vocabForm, sinoVietnamese: e.target.value })}
@@ -1038,8 +1042,8 @@ export const AdminView: React.FC = () => {
                 </div>
               </div>
               <div>
-                <label className={labelClass}>Ý nghĩa tiếng Việt</label>
-                <input
+                <label className={labelClass} htmlFor="admin-content-field-4">Ý nghĩa tiếng Việt</label>
+                <input id="admin-content-field-4"
                   type="text"
                   required
                   value={vocabForm.meaning}
@@ -1048,8 +1052,8 @@ export const AdminView: React.FC = () => {
                 />
               </div>
               <div>
-                <label className={labelClass}>Câu ví dụ tiếng Trung (tuỳ chọn)</label>
-                <input
+                <label className={labelClass} htmlFor="admin-content-field-5">Câu ví dụ tiếng Trung (tuỳ chọn)</label>
+                <input id="admin-content-field-5"
                   type="text"
                   value={vocabForm.exampleSentence}
                   onChange={(e) => setVocabForm({ ...vocabForm, exampleSentence: e.target.value })}
@@ -1083,8 +1087,8 @@ export const AdminView: React.FC = () => {
             <form onSubmit={handleSaveHanzi} className="mt-4 flex flex-col gap-3">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className={labelClass}>Chữ Hán</label>
-                  <input
+                  <label className={labelClass} htmlFor="admin-content-field-6">Chữ Hán</label>
+                  <input id="admin-content-field-6"
                     type="text"
                     required
                     maxLength={2}
@@ -1094,8 +1098,8 @@ export const AdminView: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className={labelClass}>Số nét</label>
-                  <input
+                  <label className={labelClass} htmlFor="admin-content-field-7">Số nét</label>
+                  <input id="admin-content-field-7"
                     type="number"
                     required
                     min={1}
@@ -1107,8 +1111,8 @@ export const AdminView: React.FC = () => {
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className={labelClass}>Phiên âm Pinyin</label>
-                  <input
+                  <label className={labelClass} htmlFor="admin-content-field-8">Phiên âm Pinyin</label>
+                  <input id="admin-content-field-8"
                     type="text"
                     value={hanziForm.pinyin}
                     onChange={(e) => setHanziForm({ ...hanziForm, pinyin: e.target.value })}
@@ -1116,8 +1120,8 @@ export const AdminView: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className={labelClass}>Chữ phồn thể</label>
-                  <input
+                  <label className={labelClass} htmlFor="admin-content-field-9">Chữ phồn thể</label>
+                  <input id="admin-content-field-9"
                     type="text"
                     value={hanziForm.traditional}
                     onChange={(e) => setHanziForm({ ...hanziForm, traditional: e.target.value })}
@@ -1127,8 +1131,8 @@ export const AdminView: React.FC = () => {
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className={labelClass}>Âm Hán Việt</label>
-                  <input
+                  <label className={labelClass} htmlFor="admin-content-field-10">Âm Hán Việt</label>
+                  <input id="admin-content-field-10"
                     type="text"
                     value={hanziForm.sinoVietnamese}
                     onChange={(e) => setHanziForm({ ...hanziForm, sinoVietnamese: e.target.value })}
@@ -1136,8 +1140,8 @@ export const AdminView: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className={labelClass}>Ý nghĩa</label>
-                  <input
+                  <label className={labelClass} htmlFor="admin-content-field-11">Ý nghĩa</label>
+                  <input id="admin-content-field-11"
                     type="text"
                     required
                     value={hanziForm.meaning}
@@ -1147,8 +1151,8 @@ export const AdminView: React.FC = () => {
                 </div>
               </div>
               <div>
-                <label className={labelClass}>Chiết tự & Mẹo nhớ</label>
-                <textarea
+                <label className={labelClass} htmlFor="admin-content-field-12">Chiết tự & Mẹo nhớ</label>
+                <textarea id="admin-content-field-12"
                   rows={2}
                   value={hanziForm.mnemonic}
                   onChange={(e) => setHanziForm({ ...hanziForm, mnemonic: e.target.value })}
@@ -1181,8 +1185,8 @@ export const AdminView: React.FC = () => {
             </h3>
             <form onSubmit={handleSaveExercise} className="mt-4 flex flex-col gap-3">
               <div>
-                <label className={labelClass}>Nội dung câu hỏi</label>
-                <input
+                <label className={labelClass} htmlFor="admin-content-field-13">Nội dung câu hỏi</label>
+                <input id="admin-content-field-13"
                   type="text"
                   required
                   value={exerciseForm.questionText}
@@ -1192,8 +1196,8 @@ export const AdminView: React.FC = () => {
                 />
               </div>
               <div>
-                <label className={labelClass}>Danh sách lựa chọn (JSON array)</label>
-                <input
+                <label className={labelClass} htmlFor="admin-content-field-14">Danh sách lựa chọn (JSON array)</label>
+                <input id="admin-content-field-14"
                   type="text"
                   required
                   value={exerciseForm.optionsJson}
@@ -1203,19 +1207,19 @@ export const AdminView: React.FC = () => {
                 />
               </div>
               <div>
-                <label className={labelClass}>Đáp án đúng</label>
-                <input
+                <label className={labelClass} htmlFor="admin-content-field-15">Đáp án đúng</label>
+                <input id="admin-content-field-15"
                   type="text"
                   required
                   value={exerciseForm.correctAnswer}
                   onChange={(e) => setExerciseForm({ ...exerciseForm, correctAnswer: e.target.value })}
-                  placeholder="VD: は"
+                  placeholder="VD: 是"
                   className="mt-1 w-full border border-rule bg-bg px-3 py-2 text-[13px] text-fg focus:border-fg focus:outline-none"
                 />
               </div>
               <div>
-                <label className={labelClass}>Giải thích chi tiết</label>
-                <textarea
+                <label className={labelClass} htmlFor="admin-content-field-16">Giải thích chi tiết</label>
+                <textarea id="admin-content-field-16"
                   rows={2}
                   value={exerciseForm.explanation}
                   onChange={(e) => setExerciseForm({ ...exerciseForm, explanation: e.target.value })}
