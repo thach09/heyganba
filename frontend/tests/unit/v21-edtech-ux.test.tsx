@@ -33,6 +33,10 @@ vi.mock('../../src/features/companion/three/Companion3DCanvas', () => ({
 
 vi.mock('../../src/features/companion/CompanionWidget', () => ({
   CompanionWidget: () => <div data-testid="mock-companion-widget" />,
+  FoodIcon: ({ className }: { type?: string; className?: string }) => <svg aria-hidden="true" className={className} />,
+  CompanionSkeletonFallback: ({ size = 96, className }: { size?: number; className?: string }) => (
+    <div aria-hidden="true" className={className} style={{ width: size, height: size }} />
+  ),
 }));
 
 vi.mock('../../src/features/dashboard/LearningInsights', () => ({
@@ -90,6 +94,7 @@ vi.mock('../../src/features/hanzi/api', () => ({
         {
           id: 1,
           character: '人',
+          reviewStatus: 'APPROVED',
           pinyin: 'rén',
           sinoVietnamese: 'Nhân',
           meaning: 'Người, con người',
@@ -116,10 +121,10 @@ describe('v2.1 EdTech UX & Stability Improvements', () => {
   });
 
   describe('1. Slow-speed TTS (0.75x) in chineseSpeech', () => {
-    test('speaks with rate 0.72 when slow option or speakChineseSlow is used', () => {
+    test('uses the exported slow rate for the slow option and speakChineseSlow', () => {
       let lastUtterance: any = null;
-      const originalSynthesis = window.speechSynthesis;
-      const originalUtterance = window.SpeechSynthesisUtterance;
+      const originalSynthesis = Object.getOwnPropertyDescriptor(window, 'speechSynthesis');
+      const originalUtterance = Object.getOwnPropertyDescriptor(window, 'SpeechSynthesisUtterance');
 
       window.SpeechSynthesisUtterance = class MockUtterance {
         text: string;
@@ -156,8 +161,10 @@ describe('v2.1 EdTech UX & Stability Improvements', () => {
         expect(lastUtterance.rate).toBe(CHINESE_SPEECH_RATES.SLOW);
         expect(lastUtterance.text).toBe('再见');
       } finally {
-        window.speechSynthesis = originalSynthesis;
-        window.SpeechSynthesisUtterance = originalUtterance;
+        if (originalSynthesis) Object.defineProperty(window, 'speechSynthesis', originalSynthesis);
+        else Reflect.deleteProperty(window, 'speechSynthesis');
+        if (originalUtterance) Object.defineProperty(window, 'SpeechSynthesisUtterance', originalUtterance);
+        else Reflect.deleteProperty(window, 'SpeechSynthesisUtterance');
       }
     });
   });
@@ -205,11 +212,11 @@ describe('v2.1 EdTech UX & Stability Improvements', () => {
       );
 
       // Switch to Reading tab
-      const readingTabBtn = screen.getByRole('button', { name: /Đọc hiểu ngữ cảnh/i });
+      const readingTabBtn = screen.getByRole('button', { name: 'Đọc hiểu tiếng Trung' });
       fireEvent.click(readingTabBtn);
 
       // Verify reading passage loaded
-      expect(await screen.findByText(/Ở trường học/i)).toBeInTheDocument();
+      expect(await screen.findByRole('heading', { level: 4, name: 'Ở trường học (在学校)' })).toBeInTheDocument();
 
       // Click on interactive word "学生"
       const wordToken = await screen.findByRole('button', { name: /Tra nhanh từ "学生"/i });
@@ -220,8 +227,8 @@ describe('v2.1 EdTech UX & Stability Improvements', () => {
       // Verify interactive popover card appears
       const popover = await screen.findByTestId('interactive-word-popover');
       expect(popover).toBeInTheDocument();
-      expect(popover).toHaveTextContent('xuésheng');
-      expect(popover).toHaveTextContent('học sinh');
+      expect(popover.textContent).toContain('xuésheng');
+      expect(popover.textContent).toContain('học sinh');
     });
   });
 
@@ -234,8 +241,8 @@ describe('v2.1 EdTech UX & Stability Improvements', () => {
       );
 
       // Default is HSK 1
-      expect(screen.getByText('Mục tiêu hiện tại:')).toBeInTheDocument();
-      expect(screen.getByText('HSK 1')).toBeInTheDocument();
+      expect(screen.getByRole('heading', { level: 2, name: 'Mục tiêu hiện tại: HSK 1' })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'HSK 1', pressed: true })).toBeInTheDocument();
 
       // Click HSK 3 selector button
       const hsk3Btn = screen.getByRole('button', { name: 'HSK 3' });
@@ -243,11 +250,13 @@ describe('v2.1 EdTech UX & Stability Improvements', () => {
 
       // Assert state updated and saved to localStorage
       expect(localStorage.getItem('heyganba_target_hsk')).toBe('3');
-      expect(screen.getByText('HSK 3')).toBeInTheDocument();
+      expect(screen.getByRole('heading', { level: 2, name: 'Mục tiêu hiện tại: HSK 3' })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'HSK 3', pressed: true })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'HSK 1', pressed: false })).toBeInTheDocument();
 
       // Check Smart Resume link points to /vocabulary?level=HSK3
-      const smartResumeLink = screen.getByRole('link', { name: /Tiếp tục học ngay/i });
-      expect(smartResumeLink).toHaveAttribute('href', '/vocabulary?level=HSK3');
+      const smartResumeLink = screen.getByRole('link', { name: 'Học nhóm chọn lọc đang có' });
+      expect(smartResumeLink.getAttribute('href')).toBe('/vocabulary?level=HSK3');
     });
 
     test('FlashcardView auto-filters curriculum when navigated with canonical ?level=HSK3', async () => {
@@ -304,10 +313,12 @@ describe('v2.1 EdTech UX & Stability Improvements', () => {
         );
 
         // Verify fallback reference card is displayed
-        const fallbackCard = await screen.findByTestId('calligraphy-reference-card');
-        expect(fallbackCard).toBeInTheDocument();
-        expect(fallbackCard).toHaveTextContent('Thẻ đối chiếu thư pháp chuẩn');
-        expect(screen.getByText('Dữ liệu nét vẽ động đang được bổ sung')).toBeInTheDocument();
+        await waitFor(() => {
+          const fallbackCard = screen.getByTestId('calligraphy-reference-card');
+          expect(fallbackCard).toBeInTheDocument();
+          expect(fallbackCard.textContent).toContain('Thẻ đối chiếu thư pháp chuẩn');
+          expect(screen.getByText('Dữ liệu nét vẽ động đang được bổ sung')).toBeInTheDocument();
+        });
       } finally {
         global.fetch = originalFetch;
       }
