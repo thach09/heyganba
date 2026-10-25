@@ -1,0 +1,2060 @@
+{
+  "asOf": "2026-10-26",
+  "baselineHead": "a5120912d54ed54b668b17e4ddefef0c7104acf3",
+  "codeHead": "fdcc4c28eadd61be8df7350fadce04e9023e8dd1",
+  "remoteBeforePush": "645160671ccefc0db4453f3d3d30bc69ea61655d",
+  "branch": "feat/v2.1-ux-and-stability",
+  "baselineStatusCounts": {
+    " M": 66,
+    " D": 21,
+    "??": 118
+  },
+  "remainingStatusCounts": {
+    " M": 49,
+    " D": 21,
+    "??": 114
+  },
+  "newCodeCommits": [
+    {
+      "hash": "c74fd94bdd9fd884085cb092d5cee6d102c1c70e",
+      "subject": "fix(api): bound request and refresh deadlines without losing cancellation",
+      "files": [
+        "frontend/src/lib/api/client.ts",
+        "frontend/tests/unit/api.test.ts"
+      ]
+    },
+    {
+      "hash": "84f49f8dd4f936b36f5d4e5feb6214d8a65e52ee",
+      "subject": "fix(dictionary): resolve reading notes through published vocabulary identities",
+      "files": [
+        "frontend/src/features/dictionary/DictionaryNotebookView.tsx",
+        "frontend/tests/unit/reading-notebook.test.tsx"
+      ]
+    },
+    {
+      "hash": "5155f0e5600bb042110fcedba71e2ebf1f576773",
+      "subject": "fix(flashcard): recover lesson practice and distinguish retryable loading failures",
+      "files": [
+        "frontend/src/features/flashcard/FlashcardView.tsx",
+        "frontend/src/features/flashcard/lessonPracticeSession.ts",
+        "frontend/tests/unit/flashcard-lifecycle.test.tsx",
+        "frontend/tests/unit/flashcard-m22.test.tsx",
+        "frontend/tests/unit/lesson-quiz-recovery.test.tsx"
+      ]
+    },
+    {
+      "hash": "4e8135e74145ba8a04a4cb4c1e5bd153ec328ff8",
+      "subject": "fix(grammar): clear retry feedback and clarify selected practice groups",
+      "files": [
+        "frontend/src/features/grammar/GrammarView.tsx",
+        "frontend/tests/unit/grammar-hsk.test.tsx",
+        "frontend/tests/unit/qa-batch-b.test.tsx"
+      ]
+    },
+    {
+      "hash": "dc67347438bc661d235531893e4bfcba4d29c03d",
+      "subject": "fix(hanzi): require server content and cancel detached writing callbacks",
+      "files": [
+        "frontend/src/features/hanzi/HanziStationView.tsx",
+        "frontend/src/lib/hanziWriter.ts",
+        "frontend/tests/unit/hanzi-hsk.test.tsx"
+      ]
+    },
+    {
+      "hash": "32cb6d68322d11e177fc35a59ac953ba6819ca18",
+      "subject": "fix(curriculum): clarify selected content without publishing unverified coverage",
+      "files": [
+        "frontend/src/features/dashboard/DashboardView.tsx",
+        "frontend/src/features/dashboard/HskRoadmap.tsx",
+        "frontend/src/features/dashboard/LearningInsights.tsx",
+        "frontend/src/features/pinyin/PinyinStationView.tsx",
+        "frontend/tests/unit/dashboard-target.test.tsx"
+      ]
+    },
+    {
+      "hash": "6677856f5ed038ad913723007f5fd5975350ad5e",
+      "subject": "fix(companion): keep learning usable when WebGL is unavailable",
+      "files": [
+        "frontend/src/features/companion/three/Companion3DCanvas.tsx",
+        "frontend/tests/unit/companion-webgl.test.tsx"
+      ]
+    },
+    {
+      "hash": "eaf053b1cd28ea1db1e3d8de4db6f1c67430dd5a",
+      "subject": "fix(ui): keep the decorative lantern above learning headings",
+      "files": [
+        "frontend/src/components/OrientalDecorBackground.tsx"
+      ]
+    },
+    {
+      "hash": "80b214215ec21a78106a6cfb79edbfa37e998127",
+      "subject": "fix(admin): associate content form controls with accessible labels",
+      "files": [
+        "frontend/src/features/admin/AdminView.tsx"
+      ]
+    },
+    {
+      "hash": "5af44d60473520dd0f0f86047849669f5ac90ac3",
+      "subject": "test(frontend): align semantic queries and fixtures with current learning views",
+      "files": [
+        "frontend/tests/unit/curriculum-m6.test.tsx",
+        "frontend/tests/unit/v21-edtech-ux.test.tsx"
+      ]
+    },
+    {
+      "hash": "fdcc4c28eadd61be8df7350fadce04e9023e8dd1",
+      "subject": "build(frontend): patch vulnerable Vite and browser test dependencies",
+      "files": [
+        "frontend/package-lock.json"
+      ]
+    }
+  ],
+  "heldFiles": [
+    {
+      "status": " M",
+      "path": ".github/workflows/ci.yml",
+      "group": "INFRASTRUCTURE",
+      "reason": "Self-host/CI/CSP changes depend on release packaging and provider configuration; production rehearsal not available.",
+      "sha256": "ee017844c05d6b43d3e3dfb4349d6eb043318b3013796116692f1d161572cb90"
+    },
+    {
+      "status": " M",
+      "path": "PRODUCT.md",
+      "group": "DOCUMENTATION",
+      "reason": "Historical readiness/product/operating claims depend on held source, policy and migrations; do not publish them as current verified release status.",
+      "sha256": "29c2f94bcbd525c9f2880dd3c662e511a669fc0e38023c4b161c92744a8142cd"
+    },
+    {
+      "status": " M",
+      "path": "backend/pom.xml",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": "7528daaea6c732c42710487ecd283646cb3b9d04f1986172c57000df346e66ab"
+    },
+    {
+      "status": " M",
+      "path": "backend/src/main/java/com/heyganba/controller/AdminController.java",
+      "group": "BACKEND_PUBLICATION_GRAPH",
+      "reason": "Entity/DTO/services/tests depend on held provenance and schema changes. Committed backend test compilation fails without this graph; passing dirty H2 is not independent validation.",
+      "sha256": "6ce70f7386739de6bc69d1cda55027ff2906839d4bc25792c61fa47d974413b7"
+    },
+    {
+      "status": " M",
+      "path": "backend/src/main/java/com/heyganba/dto/dictionary/DictionarySearchResponse.java",
+      "group": "BACKEND_PUBLICATION_GRAPH",
+      "reason": "Entity/DTO/services/tests depend on held provenance and schema changes. Committed backend test compilation fails without this graph; passing dirty H2 is not independent validation.",
+      "sha256": "bf031e20d64b13187c48f2597bbe918c45a42c7f90aef1c59cdd32a997d2011a"
+    },
+    {
+      "status": " M",
+      "path": "backend/src/main/java/com/heyganba/dto/flashcard/FlashcardDueResponse.java",
+      "group": "BACKEND_PUBLICATION_GRAPH",
+      "reason": "Entity/DTO/services/tests depend on held provenance and schema changes. Committed backend test compilation fails without this graph; passing dirty H2 is not independent validation.",
+      "sha256": "4d3180f3c4f301fddd41588fa838f5fd73f578e9c3b429d7566082a5d0ea8c3b"
+    },
+    {
+      "status": " M",
+      "path": "backend/src/main/java/com/heyganba/dto/kanji/KanjiResponse.java",
+      "group": "BACKEND_PUBLICATION_GRAPH",
+      "reason": "Entity/DTO/services/tests depend on held provenance and schema changes. Committed backend test compilation fails without this graph; passing dirty H2 is not independent validation.",
+      "sha256": "a7ce6b30e8aeb224d942b8ad6a7eb2e9d42bffe67570e55ac9286e10f9243c08"
+    },
+    {
+      "status": " M",
+      "path": "backend/src/main/java/com/heyganba/dto/vocabulary/VocabularyWordResponse.java",
+      "group": "BACKEND_PUBLICATION_GRAPH",
+      "reason": "Entity/DTO/services/tests depend on held provenance and schema changes. Committed backend test compilation fails without this graph; passing dirty H2 is not independent validation.",
+      "sha256": "0a1dcd5d5f0a65eba7ffe09746924135feb2a4033d1da7dc40a02dbbefd9c4e6"
+    },
+    {
+      "status": " M",
+      "path": "backend/src/main/java/com/heyganba/model/entity/Vocabulary.java",
+      "group": "BACKEND_PUBLICATION_GRAPH",
+      "reason": "Entity/DTO/services/tests depend on held provenance and schema changes. Committed backend test compilation fails without this graph; passing dirty H2 is not independent validation.",
+      "sha256": "8a45bceefbc421e2779c9cd31f3515f25fdd2b7614215db547c5f1f379b0369a"
+    },
+    {
+      "status": " M",
+      "path": "backend/src/main/java/com/heyganba/repository/VocabularyRepository.java",
+      "group": "BACKEND_PUBLICATION_GRAPH",
+      "reason": "Entity/DTO/services/tests depend on held provenance and schema changes. Committed backend test compilation fails without this graph; passing dirty H2 is not independent validation.",
+      "sha256": "7ec06aa5178ebf80c4501a5aebec9d7192a3ffa06f6cbdf62d2033605c1dc686"
+    },
+    {
+      "status": " M",
+      "path": "backend/src/main/java/com/heyganba/service/AdminContentService.java",
+      "group": "BACKEND_PUBLICATION_GRAPH",
+      "reason": "Entity/DTO/services/tests depend on held provenance and schema changes. Committed backend test compilation fails without this graph; passing dirty H2 is not independent validation.",
+      "sha256": "c778ab7b57d304f80851239eebb322b9c67a926325f6c3e40ab3babababd8d20"
+    },
+    {
+      "status": " D",
+      "path": "backend/src/main/java/com/heyganba/service/AssistedDictionaryCuration.java",
+      "group": "LEGACY_JAPANESE",
+      "reason": "Must move resources/profile/consumers together; historical profile currently has an error and one skip. Keep existing bytes untouched.",
+      "sha256": null
+    },
+    {
+      "status": " D",
+      "path": "backend/src/main/java/com/heyganba/service/DictionaryCuration.java",
+      "group": "LEGACY_JAPANESE",
+      "reason": "Must move resources/profile/consumers together; historical profile currently has an error and one skip. Keep existing bytes untouched.",
+      "sha256": null
+    },
+    {
+      "status": " M",
+      "path": "backend/src/main/java/com/heyganba/service/DictionaryService.java",
+      "group": "BACKEND_PUBLICATION_GRAPH",
+      "reason": "Entity/DTO/services/tests depend on held provenance and schema changes. Committed backend test compilation fails without this graph; passing dirty H2 is not independent validation.",
+      "sha256": "e2fdc0c07da70a8e6e8cf725ba479bfc006636d9c4b1eda330a5e2f804ee6e1f"
+    },
+    {
+      "status": " M",
+      "path": "backend/src/main/java/com/heyganba/service/ExamService.java",
+      "group": "BACKEND_PUBLICATION_GRAPH",
+      "reason": "Entity/DTO/services/tests depend on held provenance and schema changes. Committed backend test compilation fails without this graph; passing dirty H2 is not independent validation.",
+      "sha256": "158d7fbf3edac59cddeae237874bac2d2da8597c91ec4613a1ef2c6806249fec"
+    },
+    {
+      "status": " M",
+      "path": "backend/src/main/java/com/heyganba/service/FlashcardService.java",
+      "group": "BACKEND_PUBLICATION_GRAPH",
+      "reason": "Entity/DTO/services/tests depend on held provenance and schema changes. Committed backend test compilation fails without this graph; passing dirty H2 is not independent validation.",
+      "sha256": "62bf378233cf697fde24435cc9ee4cd3da297c3440c40fe501ecddcb5aefc280"
+    },
+    {
+      "status": " M",
+      "path": "backend/src/main/java/com/heyganba/service/KanjiService.java",
+      "group": "BACKEND_PUBLICATION_GRAPH",
+      "reason": "Entity/DTO/services/tests depend on held provenance and schema changes. Committed backend test compilation fails without this graph; passing dirty H2 is not independent validation.",
+      "sha256": "054cb5a6f2e9ebae70e166df8aeb25b3c15d20933452b8e9d33010ecad6035a4"
+    },
+    {
+      "status": " M",
+      "path": "backend/src/main/java/com/heyganba/service/VocabNotebookService.java",
+      "group": "BACKEND_PUBLICATION_GRAPH",
+      "reason": "Entity/DTO/services/tests depend on held provenance and schema changes. Committed backend test compilation fails without this graph; passing dirty H2 is not independent validation.",
+      "sha256": "572d7dadcbe2d360f619c6e2164f6886db75abba455939c491ea85f82f4ce6f2"
+    },
+    {
+      "status": " M",
+      "path": "backend/src/main/resources/application-prod.yml",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": "e6f04294082aec8eeb2630c71341e0e0587cb8975a5697f0878307dcc9fe6d43"
+    },
+    {
+      "status": " M",
+      "path": "backend/src/main/resources/application.yml",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": "d1418d8d3bdf01ca5c8579a9072a199d2c60c17c31cb1eb226cc9957440d1bd4"
+    },
+    {
+      "status": " D",
+      "path": "backend/src/main/resources/db/migration-staging/dictionary-coverage-pilot.json",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": null
+    },
+    {
+      "status": " D",
+      "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-a.tsv",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": null
+    },
+    {
+      "status": " D",
+      "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-b.metadata.json",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": null
+    },
+    {
+      "status": " D",
+      "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-b.tsv",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": null
+    },
+    {
+      "status": " D",
+      "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-c.metadata.json",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": null
+    },
+    {
+      "status": " D",
+      "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-c.tsv",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": null
+    },
+    {
+      "status": " D",
+      "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-d.metadata.json",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": null
+    },
+    {
+      "status": " D",
+      "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-d.tsv",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": null
+    },
+    {
+      "status": " D",
+      "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-e.metadata.json",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": null
+    },
+    {
+      "status": " D",
+      "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-e.tsv",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": null
+    },
+    {
+      "status": " D",
+      "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-f.metadata.json",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": null
+    },
+    {
+      "status": " D",
+      "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-f.tsv",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": null
+    },
+    {
+      "status": " D",
+      "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-exclusions.tsv",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": null
+    },
+    {
+      "status": " D",
+      "path": "backend/src/main/resources/dictionary/README.md",
+      "group": "BACKEND_PUBLICATION_GRAPH",
+      "reason": "Entity/DTO/services/tests depend on held provenance and schema changes. Committed backend test compilation fails without this graph; passing dirty H2 is not independent validation.",
+      "sha256": null
+    },
+    {
+      "status": " D",
+      "path": "backend/src/main/resources/dictionary/assisted-ja-vi.tsv",
+      "group": "BACKEND_PUBLICATION_GRAPH",
+      "reason": "Entity/DTO/services/tests depend on held provenance and schema changes. Committed backend test compilation fails without this graph; passing dirty H2 is not independent validation.",
+      "sha256": null
+    },
+    {
+      "status": " D",
+      "path": "backend/src/main/resources/dictionary/curated-ja-vi.tsv",
+      "group": "BACKEND_PUBLICATION_GRAPH",
+      "reason": "Entity/DTO/services/tests depend on held provenance and schema changes. Committed backend test compilation fails without this graph; passing dirty H2 is not independent validation.",
+      "sha256": null
+    },
+    {
+      "status": " D",
+      "path": "backend/src/main/resources/dictionary/jmdict.tsv.gz",
+      "group": "BACKEND_PUBLICATION_GRAPH",
+      "reason": "Entity/DTO/services/tests depend on held provenance and schema changes. Committed backend test compilation fails without this graph; passing dirty H2 is not independent validation.",
+      "sha256": null
+    },
+    {
+      "status": " D",
+      "path": "backend/src/main/resources/dictionary/snapshot.json",
+      "group": "BACKEND_PUBLICATION_GRAPH",
+      "reason": "Entity/DTO/services/tests depend on held provenance and schema changes. Committed backend test compilation fails without this graph; passing dirty H2 is not independent validation.",
+      "sha256": null
+    },
+    {
+      "status": " M",
+      "path": "backend/src/test/java/com/heyganba/AdminContentServiceTest.java",
+      "group": "BACKEND_PUBLICATION_GRAPH",
+      "reason": "Entity/DTO/services/tests depend on held provenance and schema changes. Committed backend test compilation fails without this graph; passing dirty H2 is not independent validation.",
+      "sha256": "f7d4b66137a6b56526df146c338989be9d03442a65d7e56266d849c0080cdd9a"
+    },
+    {
+      "status": " M",
+      "path": "backend/src/test/java/com/heyganba/AssistedDictionaryCurationIntegrityTest.java",
+      "group": "LEGACY_JAPANESE",
+      "reason": "Must move resources/profile/consumers together; historical profile currently has an error and one skip. Keep existing bytes untouched.",
+      "sha256": "6ec4e136a3599c34c34eab921c1cb02ae5d26f04034d146127c662dde971a6c8"
+    },
+    {
+      "status": " M",
+      "path": "backend/src/test/java/com/heyganba/DictionaryCandidateSelectionTest.java",
+      "group": "LEGACY_JAPANESE",
+      "reason": "Must move resources/profile/consumers together; historical profile currently has an error and one skip. Keep existing bytes untouched.",
+      "sha256": "ccdf07860c34eebce1cdc81e22b059d813d0a0d836b390bceb6dd4a778b7b858"
+    },
+    {
+      "status": " M",
+      "path": "backend/src/test/java/com/heyganba/DictionaryCoverageSearchTest.java",
+      "group": "LEGACY_JAPANESE",
+      "reason": "Must move resources/profile/consumers together; historical profile currently has an error and one skip. Keep existing bytes untouched.",
+      "sha256": "d9dd24ab0bb6e0bc0160b77256cdb6f56e139abfd9bff16f3e39fa690afa3b5f"
+    },
+    {
+      "status": " M",
+      "path": "backend/src/test/java/com/heyganba/DictionaryCurationIntegrityTest.java",
+      "group": "LEGACY_JAPANESE",
+      "reason": "Must move resources/profile/consumers together; historical profile currently has an error and one skip. Keep existing bytes untouched.",
+      "sha256": "e588ca45759a2c4d00088333be8ca77fefc15d7eada55ebd763e2bb91a6008e0"
+    },
+    {
+      "status": " M",
+      "path": "backend/src/test/java/com/heyganba/DictionaryNotebookApiTest.java",
+      "group": "BACKEND_PUBLICATION_GRAPH",
+      "reason": "Entity/DTO/services/tests depend on held provenance and schema changes. Committed backend test compilation fails without this graph; passing dirty H2 is not independent validation.",
+      "sha256": "84dd83ed75a1375b318b50cf0446554b934dc5c1e48060d921f28079d5567376"
+    },
+    {
+      "status": " M",
+      "path": "backend/src/test/java/com/heyganba/DictionaryPilotPostgresRehearsalTest.java",
+      "group": "LEGACY_JAPANESE",
+      "reason": "Must move resources/profile/consumers together; historical profile currently has an error and one skip. Keep existing bytes untouched.",
+      "sha256": "27583f22ec6b1ea8ff9cd773493283ab8a415f080309c8d11f5c56819149e996"
+    },
+    {
+      "status": " M",
+      "path": "backend/src/test/java/com/heyganba/FlashcardApiTest.java",
+      "group": "BACKEND_PUBLICATION_GRAPH",
+      "reason": "Entity/DTO/services/tests depend on held provenance and schema changes. Committed backend test compilation fails without this graph; passing dirty H2 is not independent validation.",
+      "sha256": "c2ffe5f2bd97f5bc72c8527604d7a94803e72503391d68b80c098679a70d822c"
+    },
+    {
+      "status": " M",
+      "path": "backend/src/test/java/com/heyganba/FlywayLocationsConfigTest.java",
+      "group": "BACKEND_PUBLICATION_GRAPH",
+      "reason": "Entity/DTO/services/tests depend on held provenance and schema changes. Committed backend test compilation fails without this graph; passing dirty H2 is not independent validation.",
+      "sha256": "4080823637aba786022373213b1ef84ce95cb86a74183e685932a9fc623ec91f"
+    },
+    {
+      "status": " M",
+      "path": "backend/src/test/java/com/heyganba/JwtTokenProviderTest.java",
+      "group": "BACKEND_PUBLICATION_GRAPH",
+      "reason": "Entity/DTO/services/tests depend on held provenance and schema changes. Committed backend test compilation fails without this graph; passing dirty H2 is not independent validation.",
+      "sha256": "aa822c060234025aacd0a98b2b4769dde3841050c52c60610beae772ca856c4d"
+    },
+    {
+      "status": " M",
+      "path": "backend/src/test/java/com/heyganba/PostgresSchemaStagingRehearsalTest.java",
+      "group": "BACKEND_PUBLICATION_GRAPH",
+      "reason": "Entity/DTO/services/tests depend on held provenance and schema changes. Committed backend test compilation fails without this graph; passing dirty H2 is not independent validation.",
+      "sha256": "2055694e167515abfdabde14c563f2c57e8d767591eb47f3193b2a46b337a5b9"
+    },
+    {
+      "status": " M",
+      "path": "backend/src/test/java/com/heyganba/support/ContentApiTestBase.java",
+      "group": "BACKEND_PUBLICATION_GRAPH",
+      "reason": "Entity/DTO/services/tests depend on held provenance and schema changes. Committed backend test compilation fails without this graph; passing dirty H2 is not independent validation.",
+      "sha256": "b8e3678e8b44284795b61dadfc2b5b81f590af38635dbe2fb8ecc6b114ee49b0"
+    },
+    {
+      "status": " M",
+      "path": "backend/src/test/resources/application-test.yml",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": "e7e80ede53d68c61fad61143f8e6f54566237295b18dd6eba16b68df35d6e797"
+    },
+    {
+      "status": " M",
+      "path": "docs/Dictionary/coverage-after-rehearsal.json",
+      "group": "DATA_EVIDENCE_LICENSE",
+      "reason": "Source observations/counts/archives are coupled to unreleased content. Reading a publisher page and recording excerpts is not evidence of a distribution license.",
+      "sha256": "507642dbc3c197d17a2e923b12373679b824866c88ef9235ec2d0b965a5edd13"
+    },
+    {
+      "status": " M",
+      "path": "docs/Dictionary/coverage-baseline.json",
+      "group": "DATA_EVIDENCE_LICENSE",
+      "reason": "Source observations/counts/archives are coupled to unreleased content. Reading a publisher page and recording excerpts is not evidence of a distribution license.",
+      "sha256": "75d116b8b3a0eb80a8266f302fe1c24d9ee2517af2c83730ea6bd7a8e5b4e7a5"
+    },
+    {
+      "status": " M",
+      "path": "docs/Dictionary/vietnamese-coverage-baseline.json",
+      "group": "DATA_EVIDENCE_LICENSE",
+      "reason": "Source observations/counts/archives are coupled to unreleased content. Reading a publisher page and recording excerpts is not evidence of a distribution license.",
+      "sha256": "c2fdd899b0b82be1ed94cea166103037cf066b5edc9d171d3a4b8a8d73b12565"
+    },
+    {
+      "status": " M",
+      "path": "docs/Dictionary/vietnamese-coverage-candidate.json",
+      "group": "DATA_EVIDENCE_LICENSE",
+      "reason": "Source observations/counts/archives are coupled to unreleased content. Reading a publisher page and recording excerpts is not evidence of a distribution license.",
+      "sha256": "b3a6ffdebbfb926203af352e49674f2b0bbeb2eccecb50db3b4f1f5dcbe15249"
+    },
+    {
+      "status": " M",
+      "path": "docs/Internal/AGENTS.md",
+      "group": "DOCUMENTATION",
+      "reason": "Historical readiness/product/operating claims depend on held source, policy and migrations; do not publish them as current verified release status.",
+      "sha256": "6138f415c50da5a20eef968e17c350e2ca90cd0e5bf716c72967844f24625724"
+    },
+    {
+      "status": " M",
+      "path": "docs/curriculum-roadmap-m1-m3.md",
+      "group": "DOCUMENTATION",
+      "reason": "Historical readiness/product/operating claims depend on held source, policy and migrations; do not publish them as current verified release status.",
+      "sha256": "2f4f8a0c5d84a55f655d58f5d6e160179f7b3534238b61c61b6512e11df945cf"
+    },
+    {
+      "status": " M",
+      "path": "docs/roadmap.md",
+      "group": "DOCUMENTATION",
+      "reason": "Historical readiness/product/operating claims depend on held source, policy and migrations; do not publish them as current verified release status.",
+      "sha256": "8b450d74282267a7592c16eaf9e72d9d2d1e22231757c68c4df39171d5f1e4b4"
+    },
+    {
+      "status": " M",
+      "path": "frontend/.env.example",
+      "group": "INFRASTRUCTURE",
+      "reason": "Self-host/CI/CSP changes depend on release packaging and provider configuration; production rehearsal not available.",
+      "sha256": "a08caa5d81df49a3e76c52d9b5498f49cf6109a6f1b8e1dfacfb6b93971a9699"
+    },
+    {
+      "status": " M",
+      "path": "frontend/index.html",
+      "group": "PERFORMANCE",
+      "reason": "Load-order/font/deferred-canvas changes need comparable cold-cache measurements; no performance win established in this run.",
+      "sha256": "f047d00813970a0dd5edc92d11eb594d44ad3d8ea8c438e3f4aa89f7700aecdd"
+    },
+    {
+      "status": " M",
+      "path": "frontend/src/app/routes.tsx",
+      "group": "PERFORMANCE",
+      "reason": "Load-order/font/deferred-canvas changes need comparable cold-cache measurements; no performance win established in this run.",
+      "sha256": "91b77e8ab9733cf096430b875df5a76770f247e970934d430bae0b4ac335a6fb"
+    },
+    {
+      "status": " M",
+      "path": "frontend/src/features/admin/AdminView.tsx",
+      "group": "ADMIN_DTO_DEPENDENCY",
+      "reason": "Remaining exercise grammarRuleId behavior requires the held backend DTO contract; accessibility-only hunks were committed.",
+      "sha256": "e00a8cfda7af65295515ff6546813f19547b4b529c62d560cc7a06a3a99ac15d"
+    },
+    {
+      "status": " M",
+      "path": "frontend/src/features/admin/ReviewQueuePanel.tsx",
+      "group": "PROVENANCE_GATE",
+      "reason": "Depends on held publication API and unresolved trusted evidence integration.",
+      "sha256": "9929ee897caacc6aaf07fb239a5d3f99c819d2f5ec42b948863c16bd85bf7ddd"
+    },
+    {
+      "status": " M",
+      "path": "frontend/src/features/admin/types.ts",
+      "group": "ADMIN_DTO_DEPENDENCY",
+      "reason": "Remaining exercise grammarRuleId behavior requires the held backend DTO contract; accessibility-only hunks were committed.",
+      "sha256": "9b8980e1e0127fdc9d5762269f17c98f37f4bf6491cad49be44092fc36da5d33"
+    },
+    {
+      "status": " M",
+      "path": "frontend/src/features/companion/CompanionWidget.tsx",
+      "group": "PERFORMANCE",
+      "reason": "Load-order/font/deferred-canvas changes need comparable cold-cache measurements; no performance win established in this run.",
+      "sha256": "f1e16af0b8b5dd22d12f2c9a5da5d80143cd623fd7aea7a246b64d3b7b5c64c6"
+    },
+    {
+      "status": " M",
+      "path": "frontend/src/features/dashboard/DashboardView.tsx",
+      "group": "CORPUS_COVERAGE",
+      "reason": "Numeric CTI coverage belongs to the held corpus/release manifest; neutral selected-content labels were committed separately.",
+      "sha256": "2959cbe22392128c8146eae2eb41b36dfa735f51a299ece962154ecf17d70a4a"
+    },
+    {
+      "status": " M",
+      "path": "frontend/src/features/dashboard/HskRoadmap.tsx",
+      "group": "CORPUS_COVERAGE",
+      "reason": "Numeric CTI coverage belongs to the held corpus/release manifest; neutral selected-content labels were committed separately.",
+      "sha256": "306b196cb0dcda80647bf6d0bee806b14692c6d0433ca95e0b6b495f234d08c6"
+    },
+    {
+      "status": " M",
+      "path": "frontend/vercel.json",
+      "group": "INFRASTRUCTURE",
+      "reason": "Self-host/CI/CSP changes depend on release packaging and provider configuration; production rehearsal not available.",
+      "sha256": "9d7991be4a5ce2f3783ec9327089b3e42c1b3cf0eabbd5916364ddfcdbf99c2e"
+    },
+    {
+      "status": " D",
+      "path": "render.yaml",
+      "group": "INFRASTRUCTURE",
+      "reason": "Self-host/CI/CSP changes depend on release packaging and provider configuration; production rehearsal not available.",
+      "sha256": null
+    },
+    {
+      "status": " M",
+      "path": "scripts/verify-postgres-m21.ps1",
+      "group": "RELEASE_TOOLING",
+      "reason": "Generators/audits/rehearsal scripts depend on held manifests and SQL; do not publish a tool that suggests an unvalidated release.",
+      "sha256": "838d004e13c4a5378740ece836294f300a953b400bead97fdb580dca5e3148b4"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/legacy-japanese/README.md",
+      "group": "LEGACY_JAPANESE",
+      "reason": "Must move resources/profile/consumers together; historical profile currently has an error and one skip. Keep existing bytes untouched.",
+      "sha256": "6928e5d1f4d86edb06a58a3ea3056806b16da8fc92799951bc90452032c3efd9"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/legacy-japanese/resources/db/migration-staging/dictionary-coverage-pilot.json",
+      "group": "LEGACY_JAPANESE",
+      "reason": "Must move resources/profile/consumers together; historical profile currently has an error and one skip. Keep existing bytes untouched.",
+      "sha256": "d7590f14cabd3ec582c9e9a6bce73651b518b67e0289e6e5c558cb58ab8689bd"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-a.tsv",
+      "group": "LEGACY_JAPANESE",
+      "reason": "Must move resources/profile/consumers together; historical profile currently has an error and one skip. Keep existing bytes untouched.",
+      "sha256": "0afc4e72ef6b0fa25d9d112b2cc4f61a3d2eb62514d5d84b9b5fb89ce22038b0"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-b.metadata.json",
+      "group": "LEGACY_JAPANESE",
+      "reason": "Must move resources/profile/consumers together; historical profile currently has an error and one skip. Keep existing bytes untouched.",
+      "sha256": "658500ab9c1bd29c9e9fca0ad418da1e41419aa10144b64b0fced91176d9a46c"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-b.tsv",
+      "group": "LEGACY_JAPANESE",
+      "reason": "Must move resources/profile/consumers together; historical profile currently has an error and one skip. Keep existing bytes untouched.",
+      "sha256": "8929dde150215dd3b97e0dcc28f6a68e880024aceb7daf085f50e8a49f947024"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-c.metadata.json",
+      "group": "LEGACY_JAPANESE",
+      "reason": "Must move resources/profile/consumers together; historical profile currently has an error and one skip. Keep existing bytes untouched.",
+      "sha256": "db6f97e10d4111c1ae928c3b6f51e9806967eed8f9d0a6c3f3701dc9e23d8484"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-c.tsv",
+      "group": "LEGACY_JAPANESE",
+      "reason": "Must move resources/profile/consumers together; historical profile currently has an error and one skip. Keep existing bytes untouched.",
+      "sha256": "fcbefe1b193fcbaa242951f3d8dfec5e578e5f352317b94b18a354b12ba8d4c7"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-d.metadata.json",
+      "group": "LEGACY_JAPANESE",
+      "reason": "Must move resources/profile/consumers together; historical profile currently has an error and one skip. Keep existing bytes untouched.",
+      "sha256": "3593c0be6c2dadfbb867388efdc784be2d47ffaac9c156b52f4f2c42f09b4390"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-d.tsv",
+      "group": "LEGACY_JAPANESE",
+      "reason": "Must move resources/profile/consumers together; historical profile currently has an error and one skip. Keep existing bytes untouched.",
+      "sha256": "8c35f56152d0d3d1c7e85e654739022016e547a27a0565db8e4db489ce093c84"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-e.metadata.json",
+      "group": "LEGACY_JAPANESE",
+      "reason": "Must move resources/profile/consumers together; historical profile currently has an error and one skip. Keep existing bytes untouched.",
+      "sha256": "d2e79cf294718ebcd4b3989a7e467e884f65267e9efc610c6a7113f77ec51a2f"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-e.tsv",
+      "group": "LEGACY_JAPANESE",
+      "reason": "Must move resources/profile/consumers together; historical profile currently has an error and one skip. Keep existing bytes untouched.",
+      "sha256": "91938bb9b567655fddf734e81cd53221fd8132d1f7ec7fc91a5f48bb3c0cb150"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-f.metadata.json",
+      "group": "LEGACY_JAPANESE",
+      "reason": "Must move resources/profile/consumers together; historical profile currently has an error and one skip. Keep existing bytes untouched.",
+      "sha256": "a9028acb4b0d7e94b5520cc5956b81996a7330230bed8348621d0e5d54ae31da"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-f.tsv",
+      "group": "LEGACY_JAPANESE",
+      "reason": "Must move resources/profile/consumers together; historical profile currently has an error and one skip. Keep existing bytes untouched.",
+      "sha256": "db052d0c347a536103e28134318dc728a9a50fd4357f580b9eda13d3f26c76b9"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-exclusions.tsv",
+      "group": "LEGACY_JAPANESE",
+      "reason": "Must move resources/profile/consumers together; historical profile currently has an error and one skip. Keep existing bytes untouched.",
+      "sha256": "c58a6dc0a3737553e71f162f803fd2cd0dee60c7c0bd199f2738a62226f18051"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/legacy-japanese/resources/dictionary/README.md",
+      "group": "LEGACY_JAPANESE",
+      "reason": "Must move resources/profile/consumers together; historical profile currently has an error and one skip. Keep existing bytes untouched.",
+      "sha256": "6e0a7b5bd47568663941065b56eab260ac1b6cc2c177d88d44ba2420fa3e6bb8"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/legacy-japanese/resources/dictionary/assisted-ja-vi.tsv",
+      "group": "LEGACY_JAPANESE",
+      "reason": "Must move resources/profile/consumers together; historical profile currently has an error and one skip. Keep existing bytes untouched.",
+      "sha256": "c78db41c230fa7b7bd288c8e46152870f3512ef35c940584f9172c341428aaf1"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/legacy-japanese/resources/dictionary/curated-ja-vi.tsv",
+      "group": "LEGACY_JAPANESE",
+      "reason": "Must move resources/profile/consumers together; historical profile currently has an error and one skip. Keep existing bytes untouched.",
+      "sha256": "3b42c6d5d315f3117d91071ba3a24d94e6cbb65d735bb2e6587f13869756a6d1"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/legacy-japanese/resources/dictionary/jmdict.tsv.gz",
+      "group": "LEGACY_JAPANESE",
+      "reason": "Must move resources/profile/consumers together; historical profile currently has an error and one skip. Keep existing bytes untouched.",
+      "sha256": "57d0941a4c314aa7621a2da041ada77e1b5b1bfe9611cd792512ec78c2979a29"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/legacy-japanese/resources/dictionary/snapshot.json",
+      "group": "LEGACY_JAPANESE",
+      "reason": "Must move resources/profile/consumers together; historical profile currently has an error and one skip. Keep existing bytes untouched.",
+      "sha256": "7c47bf31f0d7b3800b79bc00f4457955f392e5e87708e16e823df411b9d07005"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/main/java/com/heyganba/controller/AdminVocabularyProvenanceController.java",
+      "group": "BACKEND_PUBLICATION_GRAPH",
+      "reason": "Entity/DTO/services/tests depend on held provenance and schema changes. Committed backend test compilation fails without this graph; passing dirty H2 is not independent validation.",
+      "sha256": "4a614f620bdf222ca0b753ef8170db7c3f4c7db6049e384ff6f5ae7c69b67e35"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/main/java/com/heyganba/dto/admin/AdminContentResponses.java",
+      "group": "BACKEND_PUBLICATION_GRAPH",
+      "reason": "Entity/DTO/services/tests depend on held provenance and schema changes. Committed backend test compilation fails without this graph; passing dirty H2 is not independent validation.",
+      "sha256": "d6e651fd138c2b1af12c3a9a730fcc75e1666dd356d519955f083b9b2353e226"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/main/java/com/heyganba/service/VocabularyProvenanceService.java",
+      "group": "BACKEND_PUBLICATION_GRAPH",
+      "reason": "Entity/DTO/services/tests depend on held provenance and schema changes. Committed backend test compilation fails without this graph; passing dirty H2 is not independent validation.",
+      "sha256": "68ca990b341fa5c3aa102cc78082d3068d5566793c8699e8baded6adaec64c13"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/main/resources/db/migration-release/V10__learning_insights_and_sentence_order.sql",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": "34cfdc068fbef17d2e4e0c39dd4eb95fe3361dfef74c9f7ba377bde3c0da6d75"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/main/resources/db/migration-release/V11__align_optional_content_nullability.sql",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": "3e410b683ac9343808a3da6c82fb43747338d9fbf86f9863ab678228e5097b5a"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/main/resources/db/migration-release/V12__performance_indexes_and_constraints.sql",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": "86fb6c0cb6d17e659f77ef924f23b7cce27a271e4c56dba7bb97e2f5522c3c6a"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/main/resources/db/migration-release/V13__vocabulary_provenance_review_gate.sql",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": "dc71942e25cfd1d87c4ece6c84e1b680aa8f73686162449db03ff2b4978449e2"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/main/resources/db/migration-release/V14__web_cross_check_evidence_policy.sql",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": "295be98f707a77455989ba5b4cc58bf3e3d242537af5d630ad985aa9b043a864"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/main/resources/db/migration-release/V15__publish_web_cross_checked_vocabulary_batch.sql",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": "e7cbc36ef5b688f815f05bd7baefb4b3116c07171304e937afafd0946be642fb"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/main/resources/db/migration-release/V16__publish_hsk1_web_cross_checked_batch_01.sql",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": "34cd1a03a3b218bbe9cb15252a7477a1a35fd5bd8cfbe41b33b2958dc9f24019"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/main/resources/db/migration-release/V17__clear_unverified_vocabulary_optional_fields.sql",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": "4306313fd55a647577be6072b50d88e5068182187613d1b3bfb96a2abbdec1c6"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/main/resources/db/migration-release/V18__publish_hsk1_web_cross_checked_batch_02.sql",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": "e70aa9730050d07838065b1c985f6aa12c29e302476707d418f236a9627c6d75"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/main/resources/db/migration-release/V19__publish_hsk1_web_cross_checked_batch_03.sql",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": "98e5b472f1956118725f05071ff64614176204a0aee466500ed13f3fb5fbf6e6"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/main/resources/db/migration-release/V20__publish_hsk1_web_cross_checked_batch_04.sql",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": "a6a05739cc305f0be50e15fcc6693a760df8dfe5f2041e619cedd79ae616013d"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/main/resources/db/migration-release/V21__resolve_verified_pending_vocabulary.sql",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": "d4cc8de6a8e9c55f790213c58d04e72029d57aee8091188a2c6e22a3de1b1a31"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/main/resources/db/migration-release/V22__repair_hsk1_batch_text_encoding.sql",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": "3f4fceacbbbf2506693958cd26c82196b001dbb76b29db19cbb6b0f1e8aa4388"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/main/resources/db/migration-release/V23__publish_hsk2_web_cross_checked_batch_01.sql",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": "fd051643fa47971d0850c27575d48c68cb8c4056fd5a300a9e50d92077297edc"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/main/resources/db/migration-release/V4__sample_lesson_greetings.sql",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": "0235740d198468b2c48c4b68fcd21c317bb2a65fb2493c9af44234a1fa2641ed"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/main/resources/db/migration-release/V5__hsk1_thematic_curriculum_expansion.sql",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": "9c7baed778e2fb42707492bd6b8888b22395268ee88ff10cd2de8d9f53182eba"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/main/resources/db/migration-release/V6__hsk1_standard_course_grammar_and_exams.sql",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": "0b8e19d9f80e80b9a38925a40a1acc5b31b54654ec3e804f059d05c3d4c93ddb"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/main/resources/db/migration-release/V7__hsk1_complete_150_vocab_and_hanzi_radicals.sql",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": "fb659ed744855688fef79d82cd361e601da4170705039a3e37731fda59c81690"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/main/resources/db/migration-release/V8__hsk2_standard_course_and_approve_all_curriculum.sql",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": "cf3bcd83287dd62b01cde92d937ca927371d4c9bef795d6746f2fd2b11ae3752"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/main/resources/db/migration-release/V9__hsk1_to_hsk6_complete_curriculum_and_grammar.sql",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": "d9925bf56e11ba34f85d8eb41cf95ad46dc47f0ab465d68ece7819fc6804afdb"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/main/resources/db/migration-staging/V12__performance_indexes_and_constraints.sql",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": "86fb6c0cb6d17e659f77ef924f23b7cce27a271e4c56dba7bb97e2f5522c3c6a"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/main/resources/db/migration-staging/V13__vocabulary_provenance_review_gate.sql",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": "dc71942e25cfd1d87c4ece6c84e1b680aa8f73686162449db03ff2b4978449e2"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/main/resources/db/migration-staging/V14__web_cross_check_evidence_policy.sql",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": "295be98f707a77455989ba5b4cc58bf3e3d242537af5d630ad985aa9b043a864"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/main/resources/db/migration-staging/V15__publish_web_cross_checked_vocabulary_batch.sql",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": "e7cbc36ef5b688f815f05bd7baefb4b3116c07171304e937afafd0946be642fb"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/main/resources/db/migration-staging/V16__publish_hsk1_web_cross_checked_batch_01.sql",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": "34cd1a03a3b218bbe9cb15252a7477a1a35fd5bd8cfbe41b33b2958dc9f24019"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/main/resources/db/migration-staging/V17__clear_unverified_vocabulary_optional_fields.sql",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": "4306313fd55a647577be6072b50d88e5068182187613d1b3bfb96a2abbdec1c6"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/main/resources/db/migration-staging/V18__publish_hsk1_web_cross_checked_batch_02.sql",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": "e70aa9730050d07838065b1c985f6aa12c29e302476707d418f236a9627c6d75"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/main/resources/db/migration-staging/V19__publish_hsk1_web_cross_checked_batch_03.sql",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": "98e5b472f1956118725f05071ff64614176204a0aee466500ed13f3fb5fbf6e6"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/main/resources/db/migration-staging/V20__publish_hsk1_web_cross_checked_batch_04.sql",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": "a6a05739cc305f0be50e15fcc6693a760df8dfe5f2041e619cedd79ae616013d"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/main/resources/db/migration-staging/V21__resolve_verified_pending_vocabulary.sql",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": "d4cc8de6a8e9c55f790213c58d04e72029d57aee8091188a2c6e22a3de1b1a31"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/main/resources/db/migration-staging/V22__repair_hsk1_batch_text_encoding.sql",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": "3f4fceacbbbf2506693958cd26c82196b001dbb76b29db19cbb6b0f1e8aa4388"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/main/resources/db/migration-staging/V23__publish_hsk2_web_cross_checked_batch_01.sql",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": "fd051643fa47971d0850c27575d48c68cb8c4056fd5a300a9e50d92077297edc"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/main/resources/db/release-migrations-manifest.json",
+      "group": "MIGRATION_PACKAGING",
+      "reason": "V12-V23/release copies/profiles form one release graph. V21 licensing/evidence and real PostgreSQL fresh/upgrade checks remain blocked.",
+      "sha256": "32d1513730e8f25a257dae6f3b7d7443af5d49ee9d427a3af04dc7aea879d1d1"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/test/java/com/heyganba/AdminDraftPublicationTest.java",
+      "group": "BACKEND_PUBLICATION_GRAPH",
+      "reason": "Entity/DTO/services/tests depend on held provenance and schema changes. Committed backend test compilation fails without this graph; passing dirty H2 is not independent validation.",
+      "sha256": "7e3711a14e896374ec469d27171450a8dfb859002e990e2217244a2a135f4732"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/test/java/com/heyganba/ChineseDictionaryBoundaryTest.java",
+      "group": "BACKEND_PUBLICATION_GRAPH",
+      "reason": "Entity/DTO/services/tests depend on held provenance and schema changes. Committed backend test compilation fails without this graph; passing dirty H2 is not independent validation.",
+      "sha256": "8a1b162710627a1870471dc9d5e192589522b32b08890e869c5e532c794785cd"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/test/java/com/heyganba/HanziVocabularyWithdrawalTest.java",
+      "group": "BACKEND_PUBLICATION_GRAPH",
+      "reason": "Entity/DTO/services/tests depend on held provenance and schema changes. Committed backend test compilation fails without this graph; passing dirty H2 is not independent validation.",
+      "sha256": "ddf5d56c0c3d12f7c28bb1735e9cbe93a7c392ccf88063192085d356813aa251"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/test/java/com/heyganba/VocabularyWebEvidenceTest.java",
+      "group": "BACKEND_PUBLICATION_GRAPH",
+      "reason": "Entity/DTO/services/tests depend on held provenance and schema changes. Committed backend test compilation fails without this graph; passing dirty H2 is not independent validation.",
+      "sha256": "7c5bec5688c5ff0e17ae091b554718a1cdfd9c4a71211bf1d5f8e4f41d88ba40"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/test/java/com/heyganba/service/AssistedDictionaryCuration.java",
+      "group": "LEGACY_JAPANESE",
+      "reason": "Must move resources/profile/consumers together; historical profile currently has an error and one skip. Keep existing bytes untouched.",
+      "sha256": "6440063cedfcaf39cd1739206f804302fdc8811c191f6cba1b2be9d2b9201b5a"
+    },
+    {
+      "status": "??",
+      "path": "backend/src/test/java/com/heyganba/service/DictionaryCuration.java",
+      "group": "LEGACY_JAPANESE",
+      "reason": "Must move resources/profile/consumers together; historical profile currently has an error and one skip. Keep existing bytes untouched.",
+      "sha256": "0f93d6a33c8e2e2580bafbac8639e09d7ab09b7d5d8207cdd516414f0e8d02e9"
+    },
+    {
+      "status": "??",
+      "path": "docs/Content/approved-vocabulary-source-audit-v23.json",
+      "group": "DATA_EVIDENCE_LICENSE",
+      "reason": "Source observations/counts/archives are coupled to unreleased content. Reading a publisher page and recording excerpts is not evidence of a distribution license.",
+      "sha256": "e2bdd289314c11568f8b7ae70c453a816c74e1cc0bbd2e4bf48e425093969fe5"
+    },
+    {
+      "status": "??",
+      "path": "docs/Content/collins-entry-observations-2026-10-20.json",
+      "group": "DATA_EVIDENCE_LICENSE",
+      "reason": "Source observations/counts/archives are coupled to unreleased content. Reading a publisher page and recording excerpts is not evidence of a distribution license.",
+      "sha256": "9e3ffb68761de95ccaa6ca58563798e37e3ba2659b525121bf2c65e3b18b4319"
+    },
+    {
+      "status": "??",
+      "path": "docs/Content/curriculum-coverage-checkpoint-2026-10-20-v23.json",
+      "group": "DATA_EVIDENCE_LICENSE",
+      "reason": "Source observations/counts/archives are coupled to unreleased content. Reading a publisher page and recording excerpts is not evidence of a distribution license.",
+      "sha256": "7327e2dc6b4e9905f07da6a515d2b907c7ba8373077db1f4a0bb1f2212b36bf8"
+    },
+    {
+      "status": "??",
+      "path": "docs/Content/curriculum-coverage-checkpoint-2026-10-20.json",
+      "group": "DATA_EVIDENCE_LICENSE",
+      "reason": "Source observations/counts/archives are coupled to unreleased content. Reading a publisher page and recording excerpts is not evidence of a distribution license.",
+      "sha256": "afeeafe7ecd6823994e3ac6af3edf1b22a4f50717627a764b85dab7613c4408f"
+    },
+    {
+      "status": "??",
+      "path": "docs/Content/hsk1-content-correction-2026-10-20.json",
+      "group": "DATA_EVIDENCE_LICENSE",
+      "reason": "Source observations/counts/archives are coupled to unreleased content. Reading a publisher page and recording excerpts is not evidence of a distribution license.",
+      "sha256": "0a27a00c94058807f9c0a13418775aad63f75e4baf49c73b545393e7e5f69bf9"
+    },
+    {
+      "status": "??",
+      "path": "docs/Content/hsk1-web-cross-check-batch-02-2026-10-20.json",
+      "group": "DATA_EVIDENCE_LICENSE",
+      "reason": "Source observations/counts/archives are coupled to unreleased content. Reading a publisher page and recording excerpts is not evidence of a distribution license.",
+      "sha256": "1c7baa4600b3a7c1271d6f8bae29d2a2048a27c358f0daab379f4faba026f6d8"
+    },
+    {
+      "status": "??",
+      "path": "docs/Content/hsk1-web-cross-check-batch-03-2026-10-20.json",
+      "group": "DATA_EVIDENCE_LICENSE",
+      "reason": "Source observations/counts/archives are coupled to unreleased content. Reading a publisher page and recording excerpts is not evidence of a distribution license.",
+      "sha256": "45e1a96a25a67c5b4483980ca6d2d4241e098f3807bb3073e7c638d74bd85e52"
+    },
+    {
+      "status": "??",
+      "path": "docs/Content/hsk1-web-cross-check-batch-04-2026-10-20.json",
+      "group": "DATA_EVIDENCE_LICENSE",
+      "reason": "Source observations/counts/archives are coupled to unreleased content. Reading a publisher page and recording excerpts is not evidence of a distribution license.",
+      "sha256": "650b8764f0b5cabb60288188fc3b60e3eda9d43d2fd14131361e917152363df2"
+    },
+    {
+      "status": "??",
+      "path": "docs/Content/hsk1-web-cross-check-batch-2026-10-20.json",
+      "group": "DATA_EVIDENCE_LICENSE",
+      "reason": "Source observations/counts/archives are coupled to unreleased content. Reading a publisher page and recording excerpts is not evidence of a distribution license.",
+      "sha256": "640c42251fa123aa399ec84f8cae3d29a67b2ef4a8f0c9c7cbd961a7e19a0456"
+    },
+    {
+      "status": "??",
+      "path": "docs/Content/hsk2-web-cross-check-batch-01-2026-10-20.json",
+      "group": "DATA_EVIDENCE_LICENSE",
+      "reason": "Source observations/counts/archives are coupled to unreleased content. Reading a publisher page and recording excerpts is not evidence of a distribution license.",
+      "sha256": "7b9d130b126ecde834bbe5180d54c3abff2174d838639b3323b983ec317965bc"
+    },
+    {
+      "status": "??",
+      "path": "docs/Content/optional-fields-clearance-2026-10-20.json",
+      "group": "DATA_EVIDENCE_LICENSE",
+      "reason": "Source observations/counts/archives are coupled to unreleased content. Reading a publisher page and recording excerpts is not evidence of a distribution license.",
+      "sha256": "bcae140430d8d93089ea8b99a2766b35d8dda525eeda968d74a640c9109fbfe0"
+    },
+    {
+      "status": "??",
+      "path": "docs/Content/pending-resolution-status-2026-10-20.json",
+      "group": "DATA_EVIDENCE_LICENSE",
+      "reason": "Source observations/counts/archives are coupled to unreleased content. Reading a publisher page and recording excerpts is not evidence of a distribution license.",
+      "sha256": "a9a5f26bdd12b377559a9291ba9c975e9d44eb03666a92053b99b9ac21d3c863"
+    },
+    {
+      "status": "??",
+      "path": "docs/Content/unmatched-official-ids-2026-10-20-v23.json",
+      "group": "DATA_EVIDENCE_LICENSE",
+      "reason": "Source observations/counts/archives are coupled to unreleased content. Reading a publisher page and recording excerpts is not evidence of a distribution license.",
+      "sha256": "314763a278439789522ac3effbf80c8822b52ee65561d7e299e479092076373f"
+    },
+    {
+      "status": "??",
+      "path": "docs/Content/unmatched-official-ids-2026-10-20.json",
+      "group": "DATA_EVIDENCE_LICENSE",
+      "reason": "Source observations/counts/archives are coupled to unreleased content. Reading a publisher page and recording excerpts is not evidence of a distribution license.",
+      "sha256": "2d90014331a96c76d6f59d7652ec8bdaf67d8d0b45e3ff5cf1c5528519812e79"
+    },
+    {
+      "status": "??",
+      "path": "docs/Content/vocabulary-evidence-queue-2026-10-20.json",
+      "group": "DATA_EVIDENCE_LICENSE",
+      "reason": "Source observations/counts/archives are coupled to unreleased content. Reading a publisher page and recording excerpts is not evidence of a distribution license.",
+      "sha256": "cca063652bc073193f1b559a1acf43014b6896899c2b78beff95f18bb1af804a"
+    },
+    {
+      "status": "??",
+      "path": "docs/Content/web-cross-check-batch-2026-10-20.json",
+      "group": "DATA_EVIDENCE_LICENSE",
+      "reason": "Source observations/counts/archives are coupled to unreleased content. Reading a publisher page and recording excerpts is not evidence of a distribution license.",
+      "sha256": "c10a855e666ed8280643d871a426b796e0a9782fb2f7e6f6d7bd5ee51d3f7a31"
+    },
+    {
+      "status": "??",
+      "path": "docs/Content/web-cross-check-policy.md",
+      "group": "DATA_EVIDENCE_LICENSE",
+      "reason": "Source observations/counts/archives are coupled to unreleased content. Reading a publisher page and recording excerpts is not evidence of a distribution license.",
+      "sha256": "e0f2700039d972530c07dbeade48fdc2e5a9b39651c8cb7c922cce69640328bc"
+    },
+    {
+      "status": "??",
+      "path": "docs/Content/web-cross-check-resolution-batch-2026-10-20.json",
+      "group": "DATA_EVIDENCE_LICENSE",
+      "reason": "Source observations/counts/archives are coupled to unreleased content. Reading a publisher page and recording excerpts is not evidence of a distribution license.",
+      "sha256": "f5221b6897975586422eb6b24dbbe4c82e15044d0a165becf08b2f0ac1ce0106"
+    },
+    {
+      "status": "??",
+      "path": "docs/QA/ci-migration-check-f6c9ea7-2026-10-18.md",
+      "group": "DOCUMENTATION",
+      "reason": "Historical readiness/product/operating claims depend on held source, policy and migrations; do not publish them as current verified release status.",
+      "sha256": "4af5b09854e0e4fb22feeaf11dcec4cba75b489beb08962211cd8f441318878e"
+    },
+    {
+      "status": "??",
+      "path": "docs/QA/hsk3-comparison-2026-10-19.json",
+      "group": "DOCUMENTATION",
+      "reason": "Historical readiness/product/operating claims depend on held source, policy and migrations; do not publish them as current verified release status.",
+      "sha256": "5927f94b30cb9b906b73120fbd9a4f79a360afbd175c135eb47c36cf54328958"
+    },
+    {
+      "status": "??",
+      "path": "docs/QA/legacy-path-audit-2026-10-20.json",
+      "group": "DOCUMENTATION",
+      "reason": "Historical readiness/product/operating claims depend on held source, policy and migrations; do not publish them as current verified release status.",
+      "sha256": "b39a4da15ce42099569a26d5c7f45b845e11bd9873cae601cacf035458750713"
+    },
+    {
+      "status": "??",
+      "path": "docs/QA/master-baseline-2026-10-19.json",
+      "group": "DOCUMENTATION",
+      "reason": "Historical readiness/product/operating claims depend on held source, policy and migrations; do not publish them as current verified release status.",
+      "sha256": "7e67c088205cb20aa614ea597fcb939481d64b52bb9fb5c44d56f31fcc8988b6"
+    },
+    {
+      "status": "??",
+      "path": "docs/QA/master-readiness-2026-10-19.md",
+      "group": "DOCUMENTATION",
+      "reason": "Historical readiness/product/operating claims depend on held source, policy and migrations; do not publish them as current verified release status.",
+      "sha256": "1bb187e23b1781599dace46cb32bf01ecde95b69d49a9bcd89bf9d77b3c07cb8"
+    },
+    {
+      "status": "??",
+      "path": "docs/QA/master-readiness-2026-10-20.md",
+      "group": "DOCUMENTATION",
+      "reason": "Historical readiness/product/operating claims depend on held source, policy and migrations; do not publish them as current verified release status.",
+      "sha256": "7a3bd472aae49ca89a3c574b6f57ceb7213752aa40644ce05c12e4181a5f9145"
+    },
+    {
+      "status": "??",
+      "path": "docs/QA/master-worktree-final-2026-10-19.json",
+      "group": "DOCUMENTATION",
+      "reason": "Historical readiness/product/operating claims depend on held source, policy and migrations; do not publish them as current verified release status.",
+      "sha256": "4c7a89de1098e24d0c860b6d9b0970f11490bfff5d99f0c5d50bcbaf5c03196b"
+    },
+    {
+      "status": "??",
+      "path": "docs/QA/master-worktree-final-2026-10-20.json",
+      "group": "DOCUMENTATION",
+      "reason": "Historical readiness/product/operating claims depend on held source, policy and migrations; do not publish them as current verified release status.",
+      "sha256": "93082b17403799a3e486da5ef42ef45201631ea8ba8bda34221cf5b107e8a2ee"
+    },
+    {
+      "status": "??",
+      "path": "docs/QA/readiness-v23-2026-10-20.md",
+      "group": "DOCUMENTATION",
+      "reason": "Historical readiness/product/operating claims depend on held source, policy and migrations; do not publish them as current verified release status.",
+      "sha256": "adba7b4299ae8c52d09f167a0f770dcc449a881e04a2fa896b242160deb5d985"
+    },
+    {
+      "status": "??",
+      "path": "docs/QA/selfhost-baseline-2026-10-19.json",
+      "group": "DOCUMENTATION",
+      "reason": "Historical readiness/product/operating claims depend on held source, policy and migrations; do not publish them as current verified release status.",
+      "sha256": "978fabb8766e8b6f3db24ca712e6610ac409a132c40bd2264f8afb966f91ae3f"
+    },
+    {
+      "status": "??",
+      "path": "docs/QA/selfhost-readiness-2026-10-19.md",
+      "group": "DOCUMENTATION",
+      "reason": "Historical readiness/product/operating claims depend on held source, policy and migrations; do not publish them as current verified release status.",
+      "sha256": "09c1737e7d65affceae1e63228b13f3c9abc35044f50b9f9053105bb3e8346c1"
+    },
+    {
+      "status": "??",
+      "path": "docs/QA/spring-advisory-exception-2026-10-20.md",
+      "group": "DOCUMENTATION",
+      "reason": "Historical readiness/product/operating claims depend on held source, policy and migrations; do not publish them as current verified release status.",
+      "sha256": "bf0cfe3fc214ffd6cba6cfdd4616ed4224fce288b69d875b274f8f3a0192de8b"
+    },
+    {
+      "status": "??",
+      "path": "docs/QA/v23-verification-2026-10-20.json",
+      "group": "DOCUMENTATION",
+      "reason": "Historical readiness/product/operating claims depend on held source, policy and migrations; do not publish them as current verified release status.",
+      "sha256": "584dadc67ebe0321e3d96cd6f4a493efe25989b5e4e4bd2d92fff3d53d2f74b0"
+    },
+    {
+      "status": "??",
+      "path": "docs/QA/vocabulary-audit-2026-10-19.json",
+      "group": "DOCUMENTATION",
+      "reason": "Historical readiness/product/operating claims depend on held source, policy and migrations; do not publish them as current verified release status.",
+      "sha256": "9b992445a9cc4c0d04758034b8506ac8153d807bd9af327dc308e67af270ca6f"
+    },
+    {
+      "status": "??",
+      "path": "docs/QA/worktree-delta-v23-2026-10-20.json",
+      "group": "DOCUMENTATION",
+      "reason": "Historical readiness/product/operating claims depend on held source, policy and migrations; do not publish them as current verified release status.",
+      "sha256": "8acebd1c7b6df19c2d9dc0cf133c5c4746ef38895759f7ce22c116ff59cdffce"
+    },
+    {
+      "status": "??",
+      "path": "docs/QA/worktree-status-v23-2026-10-20.txt",
+      "group": "DOCUMENTATION",
+      "reason": "Historical readiness/product/operating claims depend on held source, policy and migrations; do not publish them as current verified release status.",
+      "sha256": "983e6a058be4f2af7613778575a70a07f5a89ee55e98a88eb61de6ce73ae1593"
+    },
+    {
+      "status": "??",
+      "path": "docs/archive/pre-selfhost/render.yaml",
+      "group": "DATA_EVIDENCE_LICENSE",
+      "reason": "Source observations/counts/archives are coupled to unreleased content. Reading a publisher page and recording excerpts is not evidence of a distribution license.",
+      "sha256": "28a6f568db339a8c8b9a2985c53d9fdbf381f7abf1acb50edbbc21eef1afe46d"
+    },
+    {
+      "status": "??",
+      "path": "docs/self-host-runbook.md",
+      "group": "INFRASTRUCTURE",
+      "reason": "Self-host/CI/CSP changes depend on release packaging and provider configuration; production rehearsal not available.",
+      "sha256": "17e8153d506045ed9dda8dea57293b50309a022e2b9b4df807a9faf4be166cff"
+    },
+    {
+      "status": "??",
+      "path": "frontend/src/features/admin/VocabularyProvenanceEditor.tsx",
+      "group": "PROVENANCE_GATE",
+      "reason": "Depends on held publication API and unresolved trusted evidence integration.",
+      "sha256": "db02929b970e25a3d7a01fdd5c7583f4fb074f2bd2d13517f476cf81db89750b"
+    },
+    {
+      "status": "??",
+      "path": "frontend/tests/unit/vocabulary-provenance.test.tsx",
+      "group": "PROVENANCE_GATE",
+      "reason": "Depends on held publication API and unresolved trusted evidence integration.",
+      "sha256": "cd25bbb8fb81a151401045b0511d90b829e49ecfa1efde6fd86f68591d50a517"
+    },
+    {
+      "status": "??",
+      "path": "scripts/audit-approved-vocabulary-evidence.py",
+      "group": "RELEASE_TOOLING",
+      "reason": "Generators/audits/rehearsal scripts depend on held manifests and SQL; do not publish a tool that suggests an unvalidated release.",
+      "sha256": "a5906837930f941e776556fcf4bc7b10a7044b2457b1ed245e73654e7489476c"
+    },
+    {
+      "status": "??",
+      "path": "scripts/audit-chinese-vocabulary.mjs",
+      "group": "RELEASE_TOOLING",
+      "reason": "Generators/audits/rehearsal scripts depend on held manifests and SQL; do not publish a tool that suggests an unvalidated release.",
+      "sha256": "5839520576460cac57d739a706f0634d279948e7310b1910888908a0d1ede01e"
+    },
+    {
+      "status": "??",
+      "path": "scripts/audit-production-artifact.py",
+      "group": "RELEASE_TOOLING",
+      "reason": "Generators/audits/rehearsal scripts depend on held manifests and SQL; do not publish a tool that suggests an unvalidated release.",
+      "sha256": "e576d961395d77d9b998877a8a7e560e0a63008d9ef911184e3eecb7744f4873"
+    },
+    {
+      "status": "??",
+      "path": "scripts/audit-published-corpus.py",
+      "group": "RELEASE_TOOLING",
+      "reason": "Generators/audits/rehearsal scripts depend on held manifests and SQL; do not publish a tool that suggests an unvalidated release.",
+      "sha256": "00a814290117208dff15a5effaca09a2daf8895d7c06c1cd3f5e2cf23d6e2076"
+    },
+    {
+      "status": "??",
+      "path": "scripts/audit-vocabulary-evidence.py",
+      "group": "RELEASE_TOOLING",
+      "reason": "Generators/audits/rehearsal scripts depend on held manifests and SQL; do not publish a tool that suggests an unvalidated release.",
+      "sha256": "af7cf38f40aa8c29edab0fecb65822edba74cd493d01db7ee461e5d479986469"
+    },
+    {
+      "status": "??",
+      "path": "scripts/compare-hsk-syllabus.py",
+      "group": "SYLLABUS_AUDIT",
+      "reason": "Parser/test need separate coverage-policy review: compare currently counts every same-reading candidate, including ambiguous IDs. No bulk import or corpus approval performed.",
+      "sha256": "a240d36f7288a798b08f393c002d564a107e9a447fcf892d050e9611b8ca8a93"
+    },
+    {
+      "status": "??",
+      "path": "scripts/extract_hanzi.mjs",
+      "group": "OBSOLETE_PLACEHOLDER",
+      "reason": "File contains only a completion comment, not an executable verifier; preserve untracked maintainer work.",
+      "sha256": "a5e3f1992de283527dc8fd60cc51e2de4111db91a62a8da1671f06cd8ad3dcd3"
+    },
+    {
+      "status": "??",
+      "path": "scripts/extract_hanzi.py",
+      "group": "OBSOLETE_PLACEHOLDER",
+      "reason": "File contains only a completion comment, not an executable verifier; preserve untracked maintainer work.",
+      "sha256": "8fb28febad07c26699c0ad9a58b5c197cf80b15688c9eebfdd68e2961c8c5fab"
+    },
+    {
+      "status": "??",
+      "path": "scripts/generate-hsk1-content-correction-migration.py",
+      "group": "RELEASE_TOOLING",
+      "reason": "Generators/audits/rehearsal scripts depend on held manifests and SQL; do not publish a tool that suggests an unvalidated release.",
+      "sha256": "21e4b14b6120cbcc8098b2ba6a2523b2d8822caf281001971d097820e74f8b22"
+    },
+    {
+      "status": "??",
+      "path": "scripts/generate-hsk1-web-supplement-migration.py",
+      "group": "RELEASE_TOOLING",
+      "reason": "Generators/audits/rehearsal scripts depend on held manifests and SQL; do not publish a tool that suggests an unvalidated release.",
+      "sha256": "7e665f37d0df15399624ea9588726ebfe6feceb6fd2d01a641e1c4adfba62801"
+    },
+    {
+      "status": "??",
+      "path": "scripts/generate-hsk2-web-supplement-migration.py",
+      "group": "RELEASE_TOOLING",
+      "reason": "Generators/audits/rehearsal scripts depend on held manifests and SQL; do not publish a tool that suggests an unvalidated release.",
+      "sha256": "624e5037cfef11320d8e029675cbe5265a42b4921c4339dc5e3a78ae2034d317"
+    },
+    {
+      "status": "??",
+      "path": "scripts/generate-optional-field-clearance-migration.py",
+      "group": "RELEASE_TOOLING",
+      "reason": "Generators/audits/rehearsal scripts depend on held manifests and SQL; do not publish a tool that suggests an unvalidated release.",
+      "sha256": "1ec246bdb4b429ad2cd7dfabd93d50c92048d3b6e1a9d85f0f7eb7586c17d964"
+    },
+    {
+      "status": "??",
+      "path": "scripts/generate-pending-resolution-migration.py",
+      "group": "RELEASE_TOOLING",
+      "reason": "Generators/audits/rehearsal scripts depend on held manifests and SQL; do not publish a tool that suggests an unvalidated release.",
+      "sha256": "b391a223ebf36a28b14382192ddaee99847256fb78239845a85ee503bced280a"
+    },
+    {
+      "status": "??",
+      "path": "scripts/generate-reviewed-vocabulary-migration.py",
+      "group": "RELEASE_TOOLING",
+      "reason": "Generators/audits/rehearsal scripts depend on held manifests and SQL; do not publish a tool that suggests an unvalidated release.",
+      "sha256": "580e3be14daf53c34d15e0bb4e552974bd7f78be0c1f6e0e0bbb1882c3f74fb6"
+    },
+    {
+      "status": "??",
+      "path": "scripts/test_compare_hsk_syllabus.py",
+      "group": "SYLLABUS_AUDIT",
+      "reason": "Parser/test need separate coverage-policy review: compare currently counts every same-reading candidate, including ambiguous IDs. No bulk import or corpus approval performed.",
+      "sha256": "4f9ff7d3607b829a3eaa33c04ae5b16dd4723244a3bd9e9df05e118ac26aeaf6"
+    }
+  ],
+  "byteChangesDuringTask": [
+    {
+      "path": "frontend/package-lock.json",
+      "before": "cffb5f6f29e876a5f59f56de652f4f409bcfdb98932eefbf2559be218ecc4b30",
+      "after": "2f7cc4b65f630f5ef5194b688f73f5758bef706ab2955dc657bad4f2fe7d8a91"
+    },
+    {
+      "path": "frontend/src/features/dictionary/DictionaryNotebookView.tsx",
+      "before": "873ad098661617e26248fb250e344bec03282c0892ac4a910b89865c8cbaaa3b",
+      "after": "65a22ba4d36a25a4360da47f5d284603fd861535756a300e77d2ff3978e5f9ba"
+    },
+    {
+      "path": "frontend/src/features/flashcard/FlashcardView.tsx",
+      "before": "61767de43506a4205063ffe005b77f8fb514b5ef7bc04d7ea3b9e461c67072fc",
+      "after": "b1788291f0810fb529868a9abf2eb760b156031d8e6d321b73c8c343a0199a87"
+    },
+    {
+      "path": "frontend/src/features/grammar/GrammarView.tsx",
+      "before": "0875dd247277ee1498d649b97e7105f5804ca9d43afe51ec9979d5ad66e3b0ed",
+      "after": "438c58ba76ce7f21a3808a15c4a7b9d70911e4b406edbf7379a0b51f75cda0e5"
+    },
+    {
+      "path": "frontend/src/features/hanzi/HanziStationView.tsx",
+      "before": "3696d3485a05aa79fd2f0f4ea6afc869deecb878a792b94263a7c1308511692c",
+      "after": "5775b23f27c94eb707caeb4eba15234b3f85510985301dbb47b8fd5c311bb670"
+    },
+    {
+      "path": "frontend/src/lib/api/client.ts",
+      "before": "38d868fcf515410b5fed026b1c557efedfc6d231ed5f16810ae2f984d888de1b",
+      "after": "6bbccad7c08bd5ee4c05b2feeab7552fb818dc275e14d876bfa90317e35f633b"
+    },
+    {
+      "path": "frontend/tests/unit/api.test.ts",
+      "before": "9ec820c7e1a02ba24f4e46ce43432e9cea785565aabe899d5d0b8a26ec263780",
+      "after": "5cadd4dda0b9651149cb1e6c1d3d4740f01ac9f592949be0e0eec5078ab6e64c"
+    },
+    {
+      "path": "frontend/tests/unit/flashcard-lifecycle.test.tsx",
+      "before": "893c688994ff12d671ced8511536259aa109f4dcd336b89112dc45da9c73559a",
+      "after": "f51808110719022d2d0f0dfe8587ee45ca856ae924fc4b2f13f43163b00c67eb"
+    },
+    {
+      "path": "frontend/tests/unit/hanzi-hsk.test.tsx",
+      "before": "522abb94e496e9334ea58e44323d6c80c0cccd3c572ae417e553875d44a75620",
+      "after": "2e89cd1d0d6189189027c950fcdc3a852d2e9e61e3d1ecd86c93f880aad3f00f"
+    },
+    {
+      "path": "frontend/tests/unit/v21-edtech-ux.test.tsx",
+      "before": "ad2e648178502874f09ce90cc9986a70ac5e96ce6d6d7bb3a78295d5b207556c",
+      "after": "b1aba4fc5396efb4abf34b0112ce8372eaaa1ed8cdf59928e743f13c579922a7"
+    }
+  ],
+  "baselineFileLoss": [],
+  "originalGeneratedArtifactChanges": [],
+  "validation": {
+    "frontend": {
+      "vitest": {
+        "total": 266,
+        "passed": 266,
+        "failed": 0,
+        "skipped": 0
+      },
+      "node": {
+        "total": 8,
+        "passed": 8,
+        "failed": 0,
+        "skipped": 0
+      },
+      "lintExit": 0,
+      "buildExit": 0,
+      "npmCiIgnoreScriptsExit": 0,
+      "npmAuditExit": 0,
+      "browser": "12 route/viewport checks with API fixtures, plus 2 reconnect checks; no real server writes; not a native-keyboard or browser-zoom audit"
+    },
+    "committedBackend": {
+      "compileExit": 0,
+      "verifyExit": 1,
+      "reason": "Committed digest compatibility tests reference uncommitted VocabularyProvenanceService and Vocabulary entity additions; no Surefire suite executed"
+    },
+    "dirtyBackendSnapshot": {
+      "verifyExit": 0,
+      "tests": 491,
+      "passed": 488,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 3,
+      "postgres": "Not run: Docker Linux engine unavailable"
+    },
+    "legacyProfile": {
+      "counts": {
+        "tests": 24,
+        "failures": 0,
+        "errors": 1,
+        "skipped": 1
+      },
+      "failed": [
+        "com.heyganba.AssistedDictionaryCurationIntegrityTest.runtimeResourceContainsOnlyTheValidatedAssistedRows"
+      ]
+    },
+    "legacyReasons": {
+      "skips": [
+        {
+          "name": "com.heyganba.DictionaryPilotPostgresRehearsalTest.rehearseFullAssistedReleaseThroughFlywayWithoutCurriculumMutation",
+          "message": "System property [dictionary.pilot.rehearsal] does not exist",
+          "type": null
+        }
+      ],
+      "errors": [
+        {
+          "name": "com.heyganba.AssistedDictionaryCurationIntegrityTest.runtimeResourceContainsOnlyTheValidatedAssistedRows",
+          "message": "Assisted Vietnamese enrichment is empty",
+          "type": "java.io.IOException"
+        }
+      ]
+    },
+    "runtimeDependencyAudit": {
+      "exit": 0,
+      "coordinates": 104,
+      "existingExceptions": 2,
+      "reviewBy": "2026-10-27"
+    },
+    "jarAudit": {
+      "sha256": "2da590137eb7f418d33144b31967eafe891e63ae38d5efa9c82b724c46007637",
+      "sqlMigrationResources": [
+        "BOOT-INF/classes/db/migration-release/V10__learning_insights_and_sentence_order.sql",
+        "BOOT-INF/classes/db/migration-release/V11__align_optional_content_nullability.sql",
+        "BOOT-INF/classes/db/migration-release/V12__performance_indexes_and_constraints.sql",
+        "BOOT-INF/classes/db/migration-release/V13__vocabulary_provenance_review_gate.sql",
+        "BOOT-INF/classes/db/migration-release/V14__web_cross_check_evidence_policy.sql",
+        "BOOT-INF/classes/db/migration-release/V15__publish_web_cross_checked_vocabulary_batch.sql",
+        "BOOT-INF/classes/db/migration-release/V16__publish_hsk1_web_cross_checked_batch_01.sql",
+        "BOOT-INF/classes/db/migration-release/V17__clear_unverified_vocabulary_optional_fields.sql",
+        "BOOT-INF/classes/db/migration-release/V18__publish_hsk1_web_cross_checked_batch_02.sql",
+        "BOOT-INF/classes/db/migration-release/V19__publish_hsk1_web_cross_checked_batch_03.sql",
+        "BOOT-INF/classes/db/migration-release/V20__publish_hsk1_web_cross_checked_batch_04.sql",
+        "BOOT-INF/classes/db/migration-release/V21__resolve_verified_pending_vocabulary.sql",
+        "BOOT-INF/classes/db/migration-release/V22__repair_hsk1_batch_text_encoding.sql",
+        "BOOT-INF/classes/db/migration-release/V23__publish_hsk2_web_cross_checked_batch_01.sql",
+        "BOOT-INF/classes/db/migration-release/V4__sample_lesson_greetings.sql",
+        "BOOT-INF/classes/db/migration-release/V5__hsk1_thematic_curriculum_expansion.sql",
+        "BOOT-INF/classes/db/migration-release/V6__hsk1_standard_course_grammar_and_exams.sql",
+        "BOOT-INF/classes/db/migration-release/V7__hsk1_complete_150_vocab_and_hanzi_radicals.sql",
+        "BOOT-INF/classes/db/migration-release/V8__hsk2_standard_course_and_approve_all_curriculum.sql",
+        "BOOT-INF/classes/db/migration-release/V9__hsk1_to_hsk6_complete_curriculum_and_grammar.sql",
+        "BOOT-INF/classes/db/migration/V1__init_chinese_schema.sql",
+        "BOOT-INF/classes/db/migration/V2__seed_chinese_hsk1_data.sql",
+        "BOOT-INF/classes/db/migration/V3__disable_public_seed_admin_credential.sql"
+      ],
+      "migrationCount": 23,
+      "packagedMigrationSha256": {
+        "db/migration/V1__init_chinese_schema.sql": "50625fd3193b585f3367fb701046d8bc1de5ff4bb1aca4acbbd9cea439e00d50",
+        "db/migration/V2__seed_chinese_hsk1_data.sql": "84715d7e9521c2072756be043790acab8d01fb7b37f9054ff3b04b66b6fe04b7",
+        "db/migration/V3__disable_public_seed_admin_credential.sql": "5d67c0f1655db69741804651e7762bc022729aff9282a8af437156af97d86f9d",
+        "db/migration-release/V4__sample_lesson_greetings.sql": "0235740d198468b2c48c4b68fcd21c317bb2a65fb2493c9af44234a1fa2641ed",
+        "db/migration-release/V5__hsk1_thematic_curriculum_expansion.sql": "9c7baed778e2fb42707492bd6b8888b22395268ee88ff10cd2de8d9f53182eba",
+        "db/migration-release/V6__hsk1_standard_course_grammar_and_exams.sql": "0b8e19d9f80e80b9a38925a40a1acc5b31b54654ec3e804f059d05c3d4c93ddb",
+        "db/migration-release/V7__hsk1_complete_150_vocab_and_hanzi_radicals.sql": "fb659ed744855688fef79d82cd361e601da4170705039a3e37731fda59c81690",
+        "db/migration-release/V8__hsk2_standard_course_and_approve_all_curriculum.sql": "cf3bcd83287dd62b01cde92d937ca927371d4c9bef795d6746f2fd2b11ae3752",
+        "db/migration-release/V9__hsk1_to_hsk6_complete_curriculum_and_grammar.sql": "d9925bf56e11ba34f85d8eb41cf95ad46dc47f0ab465d68ece7819fc6804afdb",
+        "db/migration-release/V10__learning_insights_and_sentence_order.sql": "34cfdc068fbef17d2e4e0c39dd4eb95fe3361dfef74c9f7ba377bde3c0da6d75",
+        "db/migration-release/V11__align_optional_content_nullability.sql": "3e410b683ac9343808a3da6c82fb43747338d9fbf86f9863ab678228e5097b5a",
+        "db/migration-release/V12__performance_indexes_and_constraints.sql": "86fb6c0cb6d17e659f77ef924f23b7cce27a271e4c56dba7bb97e2f5522c3c6a",
+        "db/migration-release/V13__vocabulary_provenance_review_gate.sql": "dc71942e25cfd1d87c4ece6c84e1b680aa8f73686162449db03ff2b4978449e2",
+        "db/migration-release/V14__web_cross_check_evidence_policy.sql": "295be98f707a77455989ba5b4cc58bf3e3d242537af5d630ad985aa9b043a864",
+        "db/migration-release/V15__publish_web_cross_checked_vocabulary_batch.sql": "e7cbc36ef5b688f815f05bd7baefb4b3116c07171304e937afafd0946be642fb",
+        "db/migration-release/V16__publish_hsk1_web_cross_checked_batch_01.sql": "34cd1a03a3b218bbe9cb15252a7477a1a35fd5bd8cfbe41b33b2958dc9f24019",
+        "db/migration-release/V17__clear_unverified_vocabulary_optional_fields.sql": "4306313fd55a647577be6072b50d88e5068182187613d1b3bfb96a2abbdec1c6",
+        "db/migration-release/V18__publish_hsk1_web_cross_checked_batch_02.sql": "e70aa9730050d07838065b1c985f6aa12c29e302476707d418f236a9627c6d75",
+        "db/migration-release/V19__publish_hsk1_web_cross_checked_batch_03.sql": "98e5b472f1956118725f05071ff64614176204a0aee466500ed13f3fb5fbf6e6",
+        "db/migration-release/V20__publish_hsk1_web_cross_checked_batch_04.sql": "a6a05739cc305f0be50e15fcc6693a760df8dfe5f2041e619cedd79ae616013d",
+        "db/migration-release/V21__resolve_verified_pending_vocabulary.sql": "d4cc8de6a8e9c55f790213c58d04e72029d57aee8091188a2c6e22a3de1b1a31",
+        "db/migration-release/V22__repair_hsk1_batch_text_encoding.sql": "3f4fceacbbbf2506693958cd26c82196b001dbb76b29db19cbb6b0f1e8aa4388",
+        "db/migration-release/V23__publish_hsk2_web_cross_checked_batch_01.sql": "fd051643fa47971d0850c27575d48c68cb8c4056fd5a300a9e50d92077297edc"
+      },
+      "packagedManifestMatchesSource": true,
+      "callbackSha256": "cfb855bc26e63781d1908872d4fabe9786f29c320e1a753bf8d27a9695be7042",
+      "stagingResources": 0,
+      "japaneseResources": 0,
+      "qaFixtureResources": 0,
+      "qaAccountMarkerResources": 0,
+      "resourceInventory": [
+        "BOOT-INF/classes/application-dev.yml",
+        "BOOT-INF/classes/application-prod.yml",
+        "BOOT-INF/classes/application-staging.yml",
+        "BOOT-INF/classes/application.yml",
+        "BOOT-INF/classes/db/migration-release/V10__learning_insights_and_sentence_order.sql",
+        "BOOT-INF/classes/db/migration-release/V11__align_optional_content_nullability.sql",
+        "BOOT-INF/classes/db/migration-release/V12__performance_indexes_and_constraints.sql",
+        "BOOT-INF/classes/db/migration-release/V13__vocabulary_provenance_review_gate.sql",
+        "BOOT-INF/classes/db/migration-release/V14__web_cross_check_evidence_policy.sql",
+        "BOOT-INF/classes/db/migration-release/V15__publish_web_cross_checked_vocabulary_batch.sql",
+        "BOOT-INF/classes/db/migration-release/V16__publish_hsk1_web_cross_checked_batch_01.sql",
+        "BOOT-INF/classes/db/migration-release/V17__clear_unverified_vocabulary_optional_fields.sql",
+        "BOOT-INF/classes/db/migration-release/V18__publish_hsk1_web_cross_checked_batch_02.sql",
+        "BOOT-INF/classes/db/migration-release/V19__publish_hsk1_web_cross_checked_batch_03.sql",
+        "BOOT-INF/classes/db/migration-release/V20__publish_hsk1_web_cross_checked_batch_04.sql",
+        "BOOT-INF/classes/db/migration-release/V21__resolve_verified_pending_vocabulary.sql",
+        "BOOT-INF/classes/db/migration-release/V22__repair_hsk1_batch_text_encoding.sql",
+        "BOOT-INF/classes/db/migration-release/V23__publish_hsk2_web_cross_checked_batch_01.sql",
+        "BOOT-INF/classes/db/migration-release/V4__sample_lesson_greetings.sql",
+        "BOOT-INF/classes/db/migration-release/V5__hsk1_thematic_curriculum_expansion.sql",
+        "BOOT-INF/classes/db/migration-release/V6__hsk1_standard_course_grammar_and_exams.sql",
+        "BOOT-INF/classes/db/migration-release/V7__hsk1_complete_150_vocab_and_hanzi_radicals.sql",
+        "BOOT-INF/classes/db/migration-release/V8__hsk2_standard_course_and_approve_all_curriculum.sql",
+        "BOOT-INF/classes/db/migration-release/V9__hsk1_to_hsk6_complete_curriculum_and_grammar.sql",
+        "BOOT-INF/classes/db/migration/V1__init_chinese_schema.sql",
+        "BOOT-INF/classes/db/migration/V2__seed_chinese_hsk1_data.sql",
+        "BOOT-INF/classes/db/migration/V3__disable_public_seed_admin_credential.sql",
+        "BOOT-INF/classes/db/migration/beforeEachMigrate.sql",
+        "BOOT-INF/classes/db/release-migrations-manifest.json"
+      ],
+      "classResourceCount": 392
+    }
+  },
+  "legacyDeletionReview": [
+    {
+      "old": "backend/src/main/java/com/heyganba/service/AssistedDictionaryCuration.java",
+      "gitBlobSha256": "16452ba7a2be34952a836c2d3be0ee05cac76666ab62b9715b6012a819fadf81",
+      "replacements": [
+        {
+          "path": "backend/src/test/java/com/heyganba/service/AssistedDictionaryCuration.java",
+          "byteIdenticalToGitBlob": false,
+          "sha256": "6440063cedfcaf39cd1739206f804302fdc8811c191f6cba1b2be9d2b9201b5a",
+          "equalAfterCrLfToLf": true
+        }
+      ]
+    },
+    {
+      "old": "backend/src/main/java/com/heyganba/service/DictionaryCuration.java",
+      "gitBlobSha256": "f32bb3673744e87663d19f44ef4c217382b1bb1b8e282c10c7ed037a3ff0afe2",
+      "replacements": [
+        {
+          "path": "backend/src/test/java/com/heyganba/service/DictionaryCuration.java",
+          "byteIdenticalToGitBlob": false,
+          "sha256": "0f93d6a33c8e2e2580bafbac8639e09d7ab09b7d5d8207cdd516414f0e8d02e9",
+          "equalAfterCrLfToLf": true
+        }
+      ]
+    },
+    {
+      "old": "backend/src/main/resources/db/migration-staging/dictionary-coverage-pilot.json",
+      "gitBlobSha256": "436499cecd7920967b4ddfbeffc554647a7ca2276584a7c3d3390a6744ee1d97",
+      "replacements": [
+        {
+          "path": "backend/src/legacy-japanese/resources/db/migration-staging/dictionary-coverage-pilot.json",
+          "byteIdenticalToGitBlob": false,
+          "sha256": "d7590f14cabd3ec582c9e9a6bce73651b518b67e0289e6e5c558cb58ab8689bd",
+          "equalAfterCrLfToLf": true
+        }
+      ]
+    },
+    {
+      "old": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-a.tsv",
+      "gitBlobSha256": "6721c0f4252ffd0b10b3f6df730dc1252422b634650ab046ed421fe02c4001db",
+      "replacements": [
+        {
+          "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-a.tsv",
+          "byteIdenticalToGitBlob": false,
+          "sha256": "0afc4e72ef6b0fa25d9d112b2cc4f61a3d2eb62514d5d84b9b5fb89ce22038b0",
+          "equalAfterCrLfToLf": true
+        }
+      ]
+    },
+    {
+      "old": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-b.metadata.json",
+      "gitBlobSha256": "e288b168e04d610a6b093cd9851ae0bf2fcbb09c3dc9b58f33c7b0584eb58be3",
+      "replacements": [
+        {
+          "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-b.metadata.json",
+          "byteIdenticalToGitBlob": false,
+          "sha256": "658500ab9c1bd29c9e9fca0ad418da1e41419aa10144b64b0fced91176d9a46c",
+          "equalAfterCrLfToLf": true
+        }
+      ]
+    },
+    {
+      "old": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-b.tsv",
+      "gitBlobSha256": "6fa940a0cd02c86ca4f94968a068f52b239e31dd5fb637d139cbe98c3681e780",
+      "replacements": [
+        {
+          "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-b.tsv",
+          "byteIdenticalToGitBlob": false,
+          "sha256": "8929dde150215dd3b97e0dcc28f6a68e880024aceb7daf085f50e8a49f947024",
+          "equalAfterCrLfToLf": true
+        }
+      ]
+    },
+    {
+      "old": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-c.metadata.json",
+      "gitBlobSha256": "219510fafcf97b6e799772a7473ac67bb97efc887631e5ee74f8a5a4305dbae4",
+      "replacements": [
+        {
+          "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-c.metadata.json",
+          "byteIdenticalToGitBlob": false,
+          "sha256": "db6f97e10d4111c1ae928c3b6f51e9806967eed8f9d0a6c3f3701dc9e23d8484",
+          "equalAfterCrLfToLf": true
+        }
+      ]
+    },
+    {
+      "old": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-c.tsv",
+      "gitBlobSha256": "f2f77bb369104eb4865ad90877f5a2353f74c17c8aa148b7018126befbc928c7",
+      "replacements": [
+        {
+          "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-c.tsv",
+          "byteIdenticalToGitBlob": false,
+          "sha256": "fcbefe1b193fcbaa242951f3d8dfec5e578e5f352317b94b18a354b12ba8d4c7",
+          "equalAfterCrLfToLf": true
+        }
+      ]
+    },
+    {
+      "old": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-d.metadata.json",
+      "gitBlobSha256": "12c531961370fcea8d980a10430492c94bc96b5944c2e225dd148689e4f2fec3",
+      "replacements": [
+        {
+          "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-d.metadata.json",
+          "byteIdenticalToGitBlob": false,
+          "sha256": "3593c0be6c2dadfbb867388efdc784be2d47ffaac9c156b52f4f2c42f09b4390",
+          "equalAfterCrLfToLf": true
+        }
+      ]
+    },
+    {
+      "old": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-d.tsv",
+      "gitBlobSha256": "037ca9eacf3ec6bbc1e00215a5998b25caa310c8a90f8ca7b4d5327557678443",
+      "replacements": [
+        {
+          "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-d.tsv",
+          "byteIdenticalToGitBlob": false,
+          "sha256": "8c35f56152d0d3d1c7e85e654739022016e547a27a0565db8e4db489ce093c84",
+          "equalAfterCrLfToLf": true
+        }
+      ]
+    },
+    {
+      "old": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-e.metadata.json",
+      "gitBlobSha256": "55457986f7fcdb2fe3b36b26c9626f88c5944070c3410209d7670dde7d820365",
+      "replacements": [
+        {
+          "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-e.metadata.json",
+          "byteIdenticalToGitBlob": false,
+          "sha256": "d2e79cf294718ebcd4b3989a7e467e884f65267e9efc610c6a7113f77ec51a2f",
+          "equalAfterCrLfToLf": true
+        }
+      ]
+    },
+    {
+      "old": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-e.tsv",
+      "gitBlobSha256": "4df122c9137e51aa20dab855a91cf34ab224bf4bd7d3feb74b737088ce849124",
+      "replacements": [
+        {
+          "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-e.tsv",
+          "byteIdenticalToGitBlob": false,
+          "sha256": "91938bb9b567655fddf734e81cd53221fd8132d1f7ec7fc91a5f48bb3c0cb150",
+          "equalAfterCrLfToLf": true
+        }
+      ]
+    },
+    {
+      "old": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-f.metadata.json",
+      "gitBlobSha256": "cc0e657c3038688a2f2ea2f8e69e917fb1e500be43e9317ff17c27fb7d05119c",
+      "replacements": [
+        {
+          "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-f.metadata.json",
+          "byteIdenticalToGitBlob": false,
+          "sha256": "a9028acb4b0d7e94b5520cc5956b81996a7330230bed8348621d0e5d54ae31da",
+          "equalAfterCrLfToLf": true
+        }
+      ]
+    },
+    {
+      "old": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-f.tsv",
+      "gitBlobSha256": "3efd992c3b91eb2941cc998a451cac7ac234a36c85b1b9741940425fdd738475",
+      "replacements": [
+        {
+          "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-f.tsv",
+          "byteIdenticalToGitBlob": false,
+          "sha256": "db052d0c347a536103e28134318dc728a9a50fd4357f580b9eda13d3f26c76b9",
+          "equalAfterCrLfToLf": true
+        }
+      ]
+    },
+    {
+      "old": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-exclusions.tsv",
+      "gitBlobSha256": "7c63d85081c5dfb5d58008e22b8535c4b6b9703c6cfa4d42f1761c46431f3c67",
+      "replacements": [
+        {
+          "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-exclusions.tsv",
+          "byteIdenticalToGitBlob": false,
+          "sha256": "c58a6dc0a3737553e71f162f803fd2cd0dee60c7c0bd199f2738a62226f18051",
+          "equalAfterCrLfToLf": true
+        }
+      ]
+    },
+    {
+      "old": "backend/src/main/resources/dictionary/README.md",
+      "gitBlobSha256": "464e8e21172ef1e7677a00739db665b357dfc55d371f8dd3b7a2ae3036fb8254",
+      "replacements": [
+        {
+          "path": "backend/src/legacy-japanese/README.md",
+          "byteIdenticalToGitBlob": false,
+          "sha256": "6928e5d1f4d86edb06a58a3ea3056806b16da8fc92799951bc90452032c3efd9",
+          "equalAfterCrLfToLf": false
+        },
+        {
+          "path": "backend/src/legacy-japanese/resources/dictionary/README.md",
+          "byteIdenticalToGitBlob": false,
+          "sha256": "6e0a7b5bd47568663941065b56eab260ac1b6cc2c177d88d44ba2420fa3e6bb8",
+          "equalAfterCrLfToLf": true
+        }
+      ]
+    },
+    {
+      "old": "backend/src/main/resources/dictionary/assisted-ja-vi.tsv",
+      "gitBlobSha256": "ea730e2e3a25dd99d1685471ffb2282bab20552be9b39db0304e2988ddc9e19f",
+      "replacements": [
+        {
+          "path": "backend/src/legacy-japanese/resources/dictionary/assisted-ja-vi.tsv",
+          "byteIdenticalToGitBlob": false,
+          "sha256": "c78db41c230fa7b7bd288c8e46152870f3512ef35c940584f9172c341428aaf1",
+          "equalAfterCrLfToLf": false
+        }
+      ]
+    },
+    {
+      "old": "backend/src/main/resources/dictionary/curated-ja-vi.tsv",
+      "gitBlobSha256": "9b972e5f8c8692a160127adae34a58dee1092c1c216e7fd1af37e787896720bf",
+      "replacements": [
+        {
+          "path": "backend/src/legacy-japanese/resources/dictionary/curated-ja-vi.tsv",
+          "byteIdenticalToGitBlob": false,
+          "sha256": "3b42c6d5d315f3117d91071ba3a24d94e6cbb65d735bb2e6587f13869756a6d1",
+          "equalAfterCrLfToLf": true
+        }
+      ]
+    },
+    {
+      "old": "backend/src/main/resources/dictionary/jmdict.tsv.gz",
+      "gitBlobSha256": "57d0941a4c314aa7621a2da041ada77e1b5b1bfe9611cd792512ec78c2979a29",
+      "replacements": [
+        {
+          "path": "backend/src/legacy-japanese/resources/dictionary/jmdict.tsv.gz",
+          "byteIdenticalToGitBlob": true,
+          "sha256": "57d0941a4c314aa7621a2da041ada77e1b5b1bfe9611cd792512ec78c2979a29",
+          "equalAfterCrLfToLf": true
+        }
+      ]
+    },
+    {
+      "old": "backend/src/main/resources/dictionary/snapshot.json",
+      "gitBlobSha256": "34a56ff651962f44cbf38c5210d4e33f6a2e111770d8cc6d2d1851f4eeede747",
+      "replacements": [
+        {
+          "path": "backend/src/legacy-japanese/resources/dictionary/snapshot.json",
+          "byteIdenticalToGitBlob": false,
+          "sha256": "7c47bf31f0d7b3800b79bc00f4457955f392e5e87708e16e823df411b9d07005",
+          "equalAfterCrLfToLf": true
+        }
+      ]
+    },
+    {
+      "old": "render.yaml",
+      "gitBlobSha256": "6f7fb2912881157fae604a644809cfdb59fddfa0b66e8d40ea804eb65df34ad2",
+      "replacements": []
+    }
+  ],
+  "dependencyDelta": {
+    "changed": [
+      {
+        "package": "node_modules/@oxc-project/types",
+        "old": "0.151.0",
+        "new": "0.155.0",
+        "dev": true
+      },
+      {
+        "package": "node_modules/@puppeteer/browsers",
+        "old": "3.2.3",
+        "new": "3.2.6",
+        "dev": true
+      },
+      {
+        "package": "node_modules/@rolldown/binding-android-arm-eabi",
+        "old": "1.2.11",
+        "new": "1.2.15",
+        "dev": true
+      },
+      {
+        "package": "node_modules/@rolldown/binding-android-arm64",
+        "old": "1.2.11",
+        "new": "1.2.15",
+        "dev": true
+      },
+      {
+        "package": "node_modules/@rolldown/binding-darwin-arm64",
+        "old": "1.2.11",
+        "new": "1.2.15",
+        "dev": true
+      },
+      {
+        "package": "node_modules/@rolldown/binding-darwin-x64",
+        "old": "1.2.11",
+        "new": "1.2.15",
+        "dev": true
+      },
+      {
+        "package": "node_modules/@rolldown/binding-freebsd-x64",
+        "old": "1.2.11",
+        "new": "1.2.15",
+        "dev": true
+      },
+      {
+        "package": "node_modules/@rolldown/binding-linux-arm-gnueabihf",
+        "old": "1.2.11",
+        "new": "1.2.15",
+        "dev": true
+      },
+      {
+        "package": "node_modules/@rolldown/binding-linux-arm64-gnu",
+        "old": "1.2.11",
+        "new": "1.2.15",
+        "dev": true
+      },
+      {
+        "package": "node_modules/@rolldown/binding-linux-arm64-musl",
+        "old": "1.2.11",
+        "new": "1.2.15",
+        "dev": true
+      },
+      {
+        "package": "node_modules/@rolldown/binding-linux-ppc64-gnu",
+        "old": "1.2.11",
+        "new": "1.2.15",
+        "dev": true
+      },
+      {
+        "package": "node_modules/@rolldown/binding-linux-s390x-gnu",
+        "old": "1.2.11",
+        "new": "1.2.15",
+        "dev": true
+      },
+      {
+        "package": "node_modules/@rolldown/binding-linux-x64-gnu",
+        "old": "1.2.11",
+        "new": "1.2.15",
+        "dev": true
+      },
+      {
+        "package": "node_modules/@rolldown/binding-linux-x64-musl",
+        "old": "1.2.11",
+        "new": "1.2.15",
+        "dev": true
+      },
+      {
+        "package": "node_modules/@rolldown/binding-openharmony-arm64",
+        "old": "1.2.11",
+        "new": "1.2.15",
+        "dev": true
+      },
+      {
+        "package": "node_modules/@rolldown/binding-win32-arm64-msvc",
+        "old": "1.2.11",
+        "new": "1.2.15",
+        "dev": true
+      },
+      {
+        "package": "node_modules/@rolldown/binding-win32-x64-msvc",
+        "old": "1.2.11",
+        "new": "1.2.15",
+        "dev": true
+      },
+      {
+        "package": "node_modules/chromium-bidi",
+        "old": "17.0.2",
+        "new": "157.0.8090-0",
+        "dev": true
+      },
+      {
+        "package": "node_modules/devtools-protocol",
+        "old": "0.0.1687809",
+        "new": "0.0.1704951",
+        "dev": true
+      },
+      {
+        "package": "node_modules/modern-tar",
+        "old": "0.8.5",
+        "new": "0.8.6",
+        "dev": true
+      },
+      {
+        "package": "node_modules/nanoid",
+        "old": "3.3.19",
+        "new": "3.3.20",
+        "dev": true
+      },
+      {
+        "package": "node_modules/postcss",
+        "old": "8.5.28",
+        "new": "8.5.31",
+        "dev": true
+      },
+      {
+        "package": "node_modules/puppeteer-core",
+        "old": "25.12.0",
+        "new": "25.16.0",
+        "dev": true
+      },
+      {
+        "package": "node_modules/rolldown",
+        "old": "1.2.11",
+        "new": "1.2.15",
+        "dev": true
+      },
+      {
+        "package": "node_modules/typed-query-selector",
+        "old": "2.12.2",
+        "new": "2.12.3",
+        "dev": true
+      },
+      {
+        "package": "node_modules/undici",
+        "old": "8.11.2",
+        "new": "8.12.3",
+        "dev": true
+      },
+      {
+        "package": "node_modules/vite",
+        "old": "8.3.1",
+        "new": "8.3.5",
+        "dev": true
+      },
+      {
+        "package": "node_modules/webdriver-bidi-protocol",
+        "old": "0.4.3",
+        "new": "1.0.1",
+        "dev": true
+      },
+      {
+        "package": "node_modules/zod",
+        "old": "3.25.76",
+        "new": "4.6.7",
+        "dev": true
+      }
+    ],
+    "removed": []
+  },
+  "providerConfig": {
+    "providerConfigVerified": false
+  },
+  "prReadiness": "DRAFT_ONLY_BACKEND_GATE_BLOCKED",
+  "production": "NO_GO",
+  "push": {
+    "performed": false,
+    "reason": "Phase 7 requires assurance against unapproved automatic production deployment. Live Vercel production branch could not be verified: no available CLI/environment credential and connected browser inventory empty. Historical Preview and main-only repository triggers are supporting evidence, not live provider configuration.",
+    "remoteFeatureHeadVerified": "645160671ccefc0db4453f3d3d30bc69ea61655d",
+    "fastForwardPossible": true,
+    "connectedBrowsers": 0
+  }
+}
