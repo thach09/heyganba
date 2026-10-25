@@ -1,11 +1,13 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Volume2, Play, RefreshCw, PenTool, CheckCircle, Search, Sparkles } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import confetti from 'canvas-confetti';
 import { useAuth } from '../../app/useAuth';
 import { useRequestScope } from '../../lib/hooks/useRequestScope';
 import { hanziApi } from './api';
 import type { HanziDto, ExampleWordItem } from './types';
-import { speakChinese } from '../../services/chineseSpeech';
+import { speakChinese, stopChineseSpeech } from '../../services/chineseSpeech';
+import { loadHanziWriter } from '../../lib/hanziWriter';
 import { RedSealStamp } from '../../components/RedSealStamp';
 import { useTheme } from '../../app/useTheme';
 import { FloatingExpReward } from '../../components/FloatingExpReward';
@@ -31,228 +33,8 @@ const FOUNDATIONAL_RADICALS = [
   { radical: '火', name: '火 Hỏa' },
 ];
 
-// Fallback seed characters with decomposition & example words JSON
-const FALLBACK_HANZI: HanziDto[] = [
-  {
-    id: 1,
-    character: '人',
-    pinyin: 'rén',
-    sinoVietnamese: 'Nhân',
-    meaning: 'Người, con người',
-    radical: '人',
-    strokeCount: 2,
-    hskLevel: 1,
-    decomposition: 'Độc thể (Hình dáng người đứng nghiêng)',
-    exampleWordsJson: '[{"word":"中国人","pinyin":"Zhōngguó rén","vi":"người Trung Quốc"},{"word":"男人","pinyin":"nánrén","vi":"đàn ông"}]',
-    practiceCount: 0,
-    reviewStatus: 'APPROVED',
-  },
-  {
-    id: 2,
-    character: '口',
-    pinyin: 'kǒu',
-    sinoVietnamese: 'Khẩu',
-    meaning: 'Miệng, mồm, nhân khẩu',
-    radical: '口',
-    strokeCount: 3,
-    hskLevel: 1,
-    decomposition: 'Độc thể (Hình chiếc miệng mở ra)',
-    exampleWordsJson: '[{"word":"人口","pinyin":"rénkǒu","vi":"dân số"},{"word":"吃","pinyin":"chī","vi":"ăn"}]',
-    practiceCount: 0,
-    reviewStatus: 'APPROVED',
-  },
-  {
-    id: 9,
-    character: '好',
-    pinyin: 'hǎo',
-    sinoVietnamese: 'Hảo',
-    meaning: 'Tốt, đẹp, hay, khỏe',
-    radical: '女',
-    strokeCount: 6,
-    hskLevel: 1,
-    decomposition: '女 (Nữ) + 子 (Tử)',
-    exampleWordsJson: '[{"word":"你好","pinyin":"nǐ hǎo","vi":"xin chào"},{"word":"好看","pinyin":"hǎokàn","vi":"đẹp, ưa nhìn"}]',
-    practiceCount: 0,
-    reviewStatus: 'APPROVED',
-  },
-  {
-    id: 17,
-    character: '你',
-    pinyin: 'nǐ',
-    sinoVietnamese: 'Nhĩ',
-    meaning: 'Bạn, anh, chị (ngôi thứ hai)',
-    radical: '亻',
-    strokeCount: 7,
-    hskLevel: 1,
-    decomposition: '亻 (Nhân đứng) + 尔 (Nhĩ)',
-    exampleWordsJson: '[{"word":"你好","pinyin":"nǐ hǎo","vi":"xin chào"},{"word":"你们","pinyin":"nǐmen","vi":"các bạn"}]',
-    practiceCount: 0,
-    reviewStatus: 'PENDING_REVIEW',
-    needsHumanCheck: true,
-  },
-  {
-    id: 18,
-    character: '他',
-    pinyin: 'tā',
-    sinoVietnamese: 'Tha',
-    meaning: 'Anh ấy, ông ấy, cậu ấy',
-    radical: '亻',
-    strokeCount: 5,
-    hskLevel: 1,
-    decomposition: '亻 (Nhân đứng) + 也 (Dã)',
-    exampleWordsJson: '[{"word":"他们","pinyin":"tāmen","vi":"họ, bọn họ"}]',
-    practiceCount: 0,
-    reviewStatus: 'PENDING_REVIEW',
-    needsHumanCheck: true,
-  },
-  {
-    id: 19,
-    character: '她',
-    pinyin: 'tā',
-    sinoVietnamese: 'Tha',
-    meaning: 'Cô ấy, bà ấy, chị ấy',
-    radical: '女',
-    strokeCount: 6,
-    hskLevel: 1,
-    decomposition: '女 (Nữ) + 也 (Dã)',
-    exampleWordsJson: '[{"word":"她们","pinyin":"tāmen","vi":"các cô ấy"}]',
-    practiceCount: 0,
-    reviewStatus: 'PENDING_REVIEW',
-    needsHumanCheck: true,
-  },
-  {
-    id: 20,
-    character: '吃',
-    pinyin: 'chī',
-    sinoVietnamese: 'Cật',
-    meaning: 'Ăn uống, dùng bữa',
-    radical: '口',
-    strokeCount: 6,
-    hskLevel: 1,
-    decomposition: '口 (Khẩu) + 乞 (Khất)',
-    exampleWordsJson: '[{"word":"吃饭","pinyin":"chīfàn","vi":"ăn cơm"},{"word":"好吃","pinyin":"hǎochī","vi":"ngon miệng"}]',
-    practiceCount: 0,
-    reviewStatus: 'PENDING_REVIEW',
-    needsHumanCheck: true,
-  },
-  {
-    id: 21,
-    character: '喝',
-    pinyin: 'hē',
-    sinoVietnamese: 'Hát',
-    meaning: 'Uống',
-    radical: '口',
-    strokeCount: 12,
-    hskLevel: 1,
-    decomposition: '口 (Khẩu) + 曷 (Hạt)',
-    exampleWordsJson: '[{"word":"喝茶","pinyin":"hē chá","vi":"uống trà"},{"word":"喝水","pinyin":"hē shuǐ","vi":"uống nước"}]',
-    practiceCount: 0,
-    reviewStatus: 'PENDING_REVIEW',
-    needsHumanCheck: true,
-  },
-  {
-    id: 14,
-    character: '语',
-    pinyin: 'yǔ',
-    sinoVietnamese: 'Ngữ',
-    meaning: 'Ngôn ngữ, lời nói',
-    radical: '讠',
-    strokeCount: 9,
-    hskLevel: 1,
-    decomposition: '讠 (Ngôn) + 吾 (Ngô)',
-    exampleWordsJson: '[{"word":"汉语","pinyin":"hànyǔ","vi":"tiếng Hán"},{"word":"英语","pinyin":"yīngyǔ","vi":"tiếng Anh"}]',
-    practiceCount: 0,
-    reviewStatus: 'APPROVED',
-  },
-  {
-    id: 22,
-    character: '话',
-    pinyin: 'huà',
-    sinoVietnamese: 'Thoại',
-    meaning: 'Lời nói, câu chuyện',
-    radical: '讠',
-    strokeCount: 8,
-    hskLevel: 1,
-    decomposition: '讠 (Ngôn) + 舌 (Thiệt)',
-    exampleWordsJson: '[{"word":"说话","pinyin":"shuōhuà","vi":"nói chuyện"},{"word":"打电话","pinyin":"dǎ diànhuà","vi":"gọi điện thoại"}]',
-    practiceCount: 0,
-    reviewStatus: 'PENDING_REVIEW',
-    needsHumanCheck: true,
-  },
-  {
-    id: 23,
-    character: '打',
-    pinyin: 'dǎ',
-    sinoVietnamese: 'Đả',
-    meaning: 'Đánh, gọi điện thoại',
-    radical: '扌',
-    strokeCount: 5,
-    hskLevel: 1,
-    decomposition: '扌 (Thủ) + 丁 (Đinh)',
-    exampleWordsJson: '[{"word":"打电话","pinyin":"dǎ diànhuà","vi":"gọi điện thoại"}]',
-    practiceCount: 0,
-    reviewStatus: 'PENDING_REVIEW',
-    needsHumanCheck: true,
-  },
-  {
-    id: 24,
-    character: '想',
-    pinyin: 'xiǎng',
-    sinoVietnamese: 'Tưởng',
-    meaning: 'Muốn, nghĩ, nhớ',
-    radical: '心',
-    strokeCount: 13,
-    hskLevel: 1,
-    decomposition: '相 (Tương) + 心 (Tâm)',
-    exampleWordsJson: '[{"word":"想要","pinyin":"xiǎngyào","vi":"muốn có"}]',
-    practiceCount: 0,
-    reviewStatus: 'PENDING_REVIEW',
-    needsHumanCheck: true,
-  },
-  {
-    id: 25,
-    character: '家',
-    pinyin: 'jiā',
-    sinoVietnamese: 'Gia',
-    meaning: 'Nhà, gia đình',
-    radical: '宀',
-    strokeCount: 10,
-    hskLevel: 1,
-    decomposition: '宀 (Miên) + 豕 (Thỉ)',
-    exampleWordsJson: '[{"word":"大家","pinyin":"dàjiā","vi":"mọi người"},{"word":"回家","pinyin":"huíjiā","vi":"về nhà"}]',
-    practiceCount: 0,
-    reviewStatus: 'PENDING_REVIEW',
-    needsHumanCheck: true,
-  },
-  {
-    id: 10,
-    character: '学',
-    pinyin: 'xué',
-    sinoVietnamese: 'Học',
-    meaning: 'Học tập, bắt chước',
-    radical: '子',
-    strokeCount: 8,
-    hskLevel: 1,
-    decomposition: '冖 (Mịch) + 子 (Tử)',
-    exampleWordsJson: '[{"word":"学习","pinyin":"xuéxí","vi":"học tập"},{"word":"学生","pinyin":"xuésheng","vi":"học sinh"}]',
-    practiceCount: 0,
-    reviewStatus: 'APPROVED',
-  },
-  {
-    id: 13,
-    character: '国',
-    pinyin: 'guó',
-    sinoVietnamese: 'Quốc',
-    meaning: 'Đất nước, quốc gia',
-    radical: '囗',
-    strokeCount: 8,
-    hskLevel: 1,
-    decomposition: '囗 (Vi) + 玉 (Ngọc)',
-    exampleWordsJson: '[{"word":"中国","pinyin":"Zhōngguó","vi":"Trung Quốc"},{"word":"外国","pinyin":"wàiguó","vi":"nước ngoài"}]',
-    practiceCount: 0,
-    reviewStatus: 'APPROVED',
-  },
-];
+// No academic fallback dataset: API failure must not reveal draft/sample content.
+const EMPTY_CHARACTER: HanziDto = { id: 0, character: '', strokeCount: 0, practiceCount: 0 };
 
 type PracticeMode = 'ANIMATE' | 'QUIZ';
 
@@ -262,11 +44,11 @@ export const HanziStationView: React.FC = () => {
 };
 const HanziStationSession: React.FC = () => {
   const { theme } = useTheme();
-  const { user } = useAuth();
-  const { run } = useRequestScope(user?.userId);
+  const { user, requireLogin } = useAuth();
+  const { run, cancel } = useRequestScope(user?.userId);
 
-  const [characters, setCharacters] = useState<HanziDto[]>(FALLBACK_HANZI);
-  const [selectedChar, setSelectedChar] = useState<HanziDto>(FALLBACK_HANZI[0]);
+  const [characters, setCharacters] = useState<HanziDto[]>([]);
+  const [selectedChar, setSelectedChar] = useState<HanziDto>(EMPTY_CHARACTER);
   const [searchQuery, setSearchQuery] = useState('');
   const [hskFilter, setHskFilter] = useState<number | 'ALL'>(1);
   const [selectedRadical, setSelectedRadical] = useState<string>('ALL');
@@ -274,28 +56,49 @@ const HanziStationSession: React.FC = () => {
   const [isQuizCompleted, setIsQuizCompleted] = useState(false);
   const [earnedExp, setEarnedExp] = useState(0);
   const [practiceNotice, setPracticeNotice] = useState('');
+  const [audioNotice, setAudioNotice] = useState('');
+  useEffect(() => stopChineseSpeech, [selectedChar.character]);
   const [showExpReward, setShowExpReward] = useState(false);
   const [masteryScores, setMasteryScores] = useState<Record<string, number>>({});
+  const [strokeDataError, setStrokeDataError] = useState(false);
+  const [writerReady, setWriterReady] = useState(() => Boolean((window as any).HanziWriter));
+  useEffect(() => {
+    if (!user) return;
+    let cancelled = false;
+    void loadHanziWriter().then(() => { if (!cancelled) setWriterReady(true); })
+      .catch(() => { if (!cancelled) setStrokeDataError(true); });
+    return () => { cancelled = true; };
+  }, [user]);
+  const [loadState, setLoadState] = useState<'loading' | 'loaded' | 'error'>('loading');
   const { triggerReaction, rewardBamboo } = useCompanion();
 
   const writerRef = useRef<any>(null);
+  const quizCompletion = useRef<(() => void) | null>(null);
   const writerContainerRef = useRef<HTMLDivElement | null>(null);
 
   // Load Hanzi from backend API
   const loadCharacters = useCallback(async () => {
+    if (!user) return;
+    setLoadState('loading');
     const params = new URLSearchParams();
     if (hskFilter !== 'ALL') params.append('hsk', String(hskFilter));
     const res = await run('hanziApi.list', (signal) =>
       hanziApi.list(params.toString(), { signal })
     );
-    if (res && res.success && res.data && res.data.length > 0) {
-      setCharacters(res.data);
-      setSelectedChar(res.data[0]);
-    }
+    if (!res) return;
+    if (res.success && Array.isArray(res.data)) {
+      const visible = user.role === 'ROLE_ADMIN' ? res.data : res.data.filter(item => item.reviewStatus === 'APPROVED');
+      setCharacters(visible);
+      setSelectedChar(visible[0] ?? EMPTY_CHARACTER);
+      setStrokeDataError(false);
+      setIsQuizCompleted(false);
+      setLoadState('loaded');
+    } else { setCharacters([]); setLoadState('error'); return; }
 
     // Load user character mastery
     try {
-      const masteryRes = await progressApi.mastery('HANZI');
+      const masteryRes = await run('hanzi.mastery', signal => progressApi.mastery('HANZI', { signal }));
+      if (!masteryRes) return;
       if (masteryRes.success && Array.isArray(masteryRes.data)) {
         const scoreMap: Record<string, number> = {};
         for (const item of masteryRes.data) {
@@ -306,7 +109,7 @@ const HanziStationSession: React.FC = () => {
     } catch {
       // offline fallback
     }
-  }, [run, hskFilter]);
+  }, [run, hskFilter, user]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -345,24 +148,35 @@ const HanziStationSession: React.FC = () => {
   useEffect(() => {
     if (!writerContainerRef.current) return;
     writerContainerRef.current.innerHTML = '';
-    setIsQuizCompleted(false);
 
     const HanziWriter = (window as any).HanziWriter;
-    if (!HanziWriter) {
-      console.warn('HanziWriter not loaded yet');
-      return;
-    }
+    if (!writerReady || !HanziWriter || !selectedChar.character) return;
+    let active = true;
+    const controller = new AbortController();
+    let writer: any;
+    const onComplete = () => { if (active) void completePractice(); };
+    quizCompletion.current = onComplete;
 
     try {
-      const writer = HanziWriter.create(writerContainerRef.current, selectedChar.character, {
+      writer = HanziWriter.create(writerContainerRef.current, selectedChar.character, {
         width: 260,
         height: 260,
         padding: 24,
-        charDataLoader: (char: string) => fetch(`/hanzi-data/${encodeURIComponent(char)}.json`).then(response => {
-          if (!response.ok) throw new Error('Missing handwriting asset');
-          return response.json();
-        }),
-        onLoadCharDataError: () => setPracticeNotice('Chưa tải được dữ liệu nét viết. Vui lòng thử lại.'),
+        charDataLoader: (char: string) =>
+          fetch(`/hanzi-data/${encodeURIComponent(char)}.json`, { signal: controller.signal }).then((response) => {
+            if (!response.ok) {
+              throw new Error('Missing handwriting asset');
+            }
+            return response.json();
+          }).catch((err) => {
+            if (active) setStrokeDataError(true);
+            throw err;
+          }),
+        onLoadCharDataError: () => {
+          if (!active) return;
+          setStrokeDataError(true);
+          setPracticeNotice('Chưa có dữ liệu nét viết động. Đang hiển thị thẻ đối chiếu thư pháp.');
+        },
         showOutline: true,
         strokeAnimationSpeed: 1.2,
         delayBetweenStrokes: 180,
@@ -380,16 +194,32 @@ const HanziStationSession: React.FC = () => {
         writer.animateCharacter();
       } else {
         writer.quiz({
-          onComplete: () => void completePractice(),
+          onComplete,
         });
       }
-    } catch (err) {
-      console.error('Failed to instantiate HanziWriter:', err);
+    } catch {
+      // oxlint-disable-next-line react/set-state-in-effect -- reflect synchronous failure of an external imperative writer; this state is not an effect dependency.
+      setStrokeDataError(true);
     }
-  }, [selectedChar, mode, completePractice, theme]);
+    return () => {
+      active = false;
+      controller.abort();
+      cancel('hanzi.practice');
+      writer?.cancelQuiz?.();
+      writer?.pauseAnimation?.();
+      if (writerRef.current === writer) writerRef.current = null;
+      if (quizCompletion.current === onComplete) quizCompletion.current = null;
+    };
+  }, [selectedChar, mode, completePractice, theme, loadState, writerReady, cancel]);
 
   const handlePlayAudio = (textToSpeak?: string) => {
-    speakChinese(textToSpeak || selectedChar.character);
+    setAudioNotice('');
+    const status = speakChinese(textToSpeak || selectedChar.character, {
+      onError: () => setAudioNotice('Chưa phát được âm thanh. Bấm nghe để thử lại.'),
+    });
+    if (status === 'no-voice') setAudioNotice('Thiết bị chưa có giọng Quan thoại. Hãy cài giọng tiếng Trung rồi thử lại.');
+    else if (status === 'unsupported') setAudioNotice('Trình duyệt chưa hỗ trợ đọc tiếng Trung. Hãy thử trình duyệt khác.');
+    else if (status === 'error') setAudioNotice('Chưa phát được âm thanh. Bấm nghe để thử lại.');
   };
 
   const handleAnimateAgain = () => {
@@ -398,12 +228,12 @@ const HanziStationSession: React.FC = () => {
     } else if (writerRef.current && mode === 'QUIZ') {
       setIsQuizCompleted(false);
       writerRef.current.quiz({
-        onComplete: () => void completePractice(),
+        onComplete: quizCompletion.current ?? (() => {}),
       });
     }
   };
 
-  // Filtered Hanzi list by HSK level, Radical, and Search query
+  // The level field is a legacy internal grouping, not an official CTI classification.
   const filteredCharacters = characters.filter((c) => {
     if (hskFilter !== 'ALL' && c.hskLevel && c.hskLevel !== hskFilter) return false;
     if (selectedRadical !== 'ALL') {
@@ -425,6 +255,18 @@ const HanziStationSession: React.FC = () => {
   });
 
   const currentScore = masteryScores[selectedChar.character] ?? 0;
+
+  if (!user) return <div className="mx-auto max-w-[520px] pt-16 text-center text-fg">
+    <h2 className="font-serif text-[24px]">Chữ Hán & Luyện viết</h2>
+    <p className="mt-4 text-[13px] leading-relaxed text-fg-60">Đăng nhập để học nội dung chữ Hán đã duyệt và lưu tiến độ.</p>
+    <button type="button" onClick={requireLogin} className="mt-5 border border-rule-strong px-4 py-2 text-[12.5px]">Đăng nhập / Đăng ký</button>
+  </div>;
+  if (loadState === 'loading') return <p role="status" className="py-8 text-[13px] text-fg-60">Đang tải chữ Hán...</p>;
+  if (loadState === 'error') return <div role="alert" className="py-8 text-[13px] text-fg">
+    <p>Chưa tải được chữ Hán. Không hiển thị dữ liệu mẫu thay cho nội dung đã duyệt.</p>
+    <button type="button" onClick={() => void loadCharacters()} className="mt-4 border border-rule-strong px-4 py-2">Thử lại</button>
+  </div>;
+  if (!characters.length) return <p role="status" className="py-8 text-[13px] text-fg-60">Chưa có chữ Hán đã duyệt ở cấp này.</p>;
 
   return (
     <div className="mx-auto flex w-full max-w-[1100px] flex-col gap-6">
@@ -456,7 +298,7 @@ const HanziStationSession: React.FC = () => {
       <div className="flex flex-col gap-3 rounded border border-rule bg-card p-3 ">
         {/* HSK Level Filter */}
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-[11px] font-semibold uppercase tracking-wider text-fg-38">Cấp độ HSK:</span>
+          <span className="text-[11px] font-semibold uppercase tracking-wider text-fg-38">Nhóm chữ:</span>
           {(['ALL', 1, 2, 3, 4, 5, 6] as const).map((lvl) => (
             <button
               key={lvl}
@@ -468,7 +310,7 @@ const HanziStationSession: React.FC = () => {
                   : 'border border-rule bg-bg text-fg-60 hover:text-fg'
               }`}
             >
-              {lvl === 'ALL' ? 'Tất cả cấp độ' : `HSK ${lvl}`}
+              {lvl === 'ALL' ? 'Tất cả nhóm' : `Nhóm ${lvl}`}
             </button>
           ))}
         </div>
@@ -519,7 +361,7 @@ const HanziStationSession: React.FC = () => {
                 <button
                   key={c.id || c.character}
                   type="button"
-                  onClick={() => setSelectedChar(c)}
+                  onClick={() => { setSelectedChar(c); setStrokeDataError(false); setIsQuizCompleted(false); }}
                   className={`group relative flex flex-col items-center justify-center rounded border p-2.5 text-center transition-all cursor-pointer ${
                     isSelected
                       ? 'border-cinnabar bg-cinnabar/10 '
@@ -539,9 +381,9 @@ const HanziStationSession: React.FC = () => {
                   <span className="mt-0.5 font-sans text-[11px] text-cinnabar-ink">
                     {c.pinyin}
                   </span>
-                  <span className="text-[10px] text-fg-38 truncate max-w-full">
+                  {(c.sinoVietnamese || c.hanViet) && <span className="text-[10px] text-fg-38 truncate max-w-full">
                     {c.sinoVietnamese || c.hanViet}
-                  </span>
+                  </span>}
 
                   {/* Tiny Mastery indicator */}
                   {score >= 80 && (
@@ -553,7 +395,7 @@ const HanziStationSession: React.FC = () => {
           </div>
 
           <div className="text-[11px] text-fg-38 text-center">
-            Hiển thị {filteredCharacters.length} chữ Hán {hskFilter !== 'ALL' ? `HSK ${hskFilter}` : ''}
+            Hiển thị {filteredCharacters.length} chữ Hán {hskFilter !== 'ALL' ? `nhóm ${hskFilter}` : ''}
             {selectedRadical !== 'ALL' ? ` · Bộ ${selectedRadical}` : ''}
           </div>
         </div>
@@ -566,7 +408,7 @@ const HanziStationSession: React.FC = () => {
               <div className="flex items-center gap-2">
                 <button
                   type="button"
-                  onClick={() => setMode('ANIMATE')}
+                  onClick={() => { setMode('ANIMATE'); setStrokeDataError(false); setIsQuizCompleted(false); }}
                   className={`cursor-pointer flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold transition-all ${
                     mode === 'ANIMATE'
                       ? 'border border-cinnabar bg-cinnabar text-on-accent '
@@ -578,7 +420,7 @@ const HanziStationSession: React.FC = () => {
 
                 <button
                   type="button"
-                  onClick={() => setMode('QUIZ')}
+                  onClick={() => { setMode('QUIZ'); setStrokeDataError(false); setIsQuizCompleted(false); }}
                   className={`cursor-pointer flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold transition-all ${
                     mode === 'QUIZ'
                       ? 'border border-cinnabar bg-cinnabar text-on-accent '
@@ -617,8 +459,26 @@ const HanziStationSession: React.FC = () => {
                 <rect x="8" y="8" width="264" height="264" fill="none" stroke="var(--paper-red)" strokeWidth="0.8" opacity="0.4" />
               </svg>
 
-              {/* HanziWriter target SVG canvas */}
-              <div ref={writerContainerRef} className="relative z-10 flex h-[260px] w-[260px] items-center justify-center cursor-crosshair" />
+              {/* Graceful Fallback: High-resolution Calligraphy Reference Card */}
+              {strokeDataError ? (
+                <div
+                  data-testid="calligraphy-reference-card"
+                  className="relative z-10 flex h-[260px] w-[260px] flex-col items-center justify-center p-3 text-center"
+                >
+                  <span className="font-serif text-[108px] font-bold leading-none text-fg select-none">
+                    {selectedChar.character}
+                  </span>
+                  <div className="mt-2 flex items-center gap-2 text-xs">
+                    <span className="font-sans font-bold text-cinnabar-ink">{selectedChar.pinyin}</span>
+                    <span className="text-fg-38">·</span>
+                    <span className="font-semibold text-fg-60">{selectedChar.strokeCount} nét</span>
+                  </div>
+                  <span className="mt-1 text-[10.5px] text-fg-38">Thẻ đối chiếu thư pháp chuẩn</span>
+                </div>
+              ) : (
+                /* HanziWriter target SVG canvas */
+                <div ref={writerContainerRef} className="relative z-10 flex h-[260px] w-[260px] items-center justify-center cursor-crosshair" />
+              )}
 
               {/* Red Seal Stamp upon Quiz Completion */}
               {isQuizCompleted && (
@@ -630,7 +490,14 @@ const HanziStationSession: React.FC = () => {
 
             {/* Quiz Instructions / Action feedback */}
             <div className="mt-4 text-center">
-              {mode === 'ANIMATE' ? (
+              {strokeDataError ? (
+                <div className="flex flex-col items-center gap-1 text-xs text-fg-60">
+                  <span className="font-semibold text-gold-ink">Dữ liệu nét vẽ động đang được bổ sung</span>
+                  <p className="text-[11.5px] text-fg-60">
+                    Luyện viết dựa trên chữ thư pháp chuẩn phía trên theo chiết tự: {selectedChar.decomposition || `${selectedChar.radical} (${selectedChar.strokeCount} nét)`}
+                  </p>
+                </div>
+              ) : mode === 'ANIMATE' ? (
                 <p className="text-xs text-fg-60">
                   Quan sát thứ tự các nét: Từ trên xuống dưới, từ trái qua phải, từ ngoài vào trong.
                 </p>
@@ -648,6 +515,7 @@ const HanziStationSession: React.FC = () => {
 
           {/* Character Linguistic Details Card (OrientalCard) */}
           <div className="flex flex-col gap-4 rounded border border-rule bg-card p-5 ">
+            {audioNotice && <p role="status" className="text-sm text-fg-80">{audioNotice}</p>}
             <div className="flex items-start justify-between border-b border-rule pb-4">
               <div>
                 <div className="flex items-center gap-3">
@@ -674,13 +542,12 @@ const HanziStationSession: React.FC = () => {
                         </span>
                       )}
                     </div>
-                    {/* Prominent Âm Hán Việt Badge */}
-                    <div className="mt-1 flex items-center gap-1.5">
+                    {(selectedChar.sinoVietnamese || selectedChar.hanViet) && <div className="mt-1 flex items-center gap-1.5">
                       <span className="text-[10px] uppercase tracking-wider text-fg-38">Âm Hán Việt:</span>
                       <span className="rounded bg-cinnabar/15 px-2 py-0.5 text-xs font-bold text-cinnabar-ink">
-                        {selectedChar.sinoVietnamese || selectedChar.hanViet || 'Chưa cập nhật'}
+                        {selectedChar.sinoVietnamese || selectedChar.hanViet}
                       </span>
-                    </div>
+                    </div>}
                   </div>
                 </div>
               </div>
@@ -733,7 +600,7 @@ const HanziStationSession: React.FC = () => {
               <div className="border-t border-rule/60 pt-4">
                 <div className="flex items-center justify-between mb-2.5">
                   <span className="text-xs font-semibold uppercase tracking-wider text-fg-38">
-                    Từ ghép HSK ứng dụng ({parsedExampleWords.length})
+                    Từ ghép trong học liệu ({parsedExampleWords.length})
                   </span>
                   <span className="text-[11px] text-fg-38">Bấm loa để nghe phát âm</span>
                 </div>
@@ -745,20 +612,36 @@ const HanziStationSession: React.FC = () => {
                     >
                       <div className="flex flex-col">
                         <div className="flex items-baseline gap-2">
-                          <span className="font-serif text-base font-semibold text-fg">{ex.word}</span>
+                          <Link
+                            to={`/dictionary?q=${encodeURIComponent(ex.word)}`}
+                            className="font-serif text-base font-semibold text-fg hover:text-cinnabar-ink hover:underline transition-colors"
+                            title={`Tra từ "${ex.word}" trong Sổ từ vựng`}
+                          >
+                            {ex.word}
+                          </Link>
                           <span className="font-sans text-xs text-cinnabar-ink">{ex.pinyin}</span>
                         </div>
                         <span className="text-[11.5px] text-fg-60">{ex.vi}</span>
                       </div>
-                      <button
-                        type="button"
-                        onClick={() => handlePlayAudio(ex.word)}
-                        aria-label={`Nghe phát âm ${ex.word}`}
-                        className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border border-rule text-fg-60 hover:border-cinnabar hover:text-cinnabar-ink hover:bg-cinnabar/10 transition-colors"
-                        title={`Nghe phát âm ${ex.word}`}
-                      >
-                        <Volume2 size={13} />
-                      </button>
+                      <div className="flex items-center gap-1">
+                        <Link
+                          to={`/dictionary?q=${encodeURIComponent(ex.word)}`}
+                          aria-label={`Tra từ "${ex.word}"`}
+                          className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border border-rule text-fg-38 hover:border-cinnabar hover:text-cinnabar-ink hover:bg-cinnabar/10 transition-colors"
+                          title={`Tra từ "${ex.word}" trong từ điển`}
+                        >
+                          <Search size={12} />
+                        </Link>
+                        <button
+                          type="button"
+                          onClick={() => handlePlayAudio(ex.word)}
+                          aria-label={`Nghe phát âm ${ex.word}`}
+                          className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border border-rule text-fg-60 hover:border-cinnabar hover:text-cinnabar-ink hover:bg-cinnabar/10 transition-colors"
+                          title={`Nghe phát âm ${ex.word}`}
+                        >
+                          <Volume2 size={13} />
+                        </button>
+                      </div>
                     </div>
                   ))}
                 </div>
