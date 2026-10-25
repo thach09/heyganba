@@ -74,7 +74,7 @@ export function OrientalDecorBackground() {
 
         {/* Lantern 2 - Upper center-right, mid distance */}
         <div
-          className="absolute right-[28%] top-20 animate-lantern-sway opacity-60"
+          className="absolute right-[28%] top-4 animate-lantern-sway opacity-60"
           style={{ animationDuration: '9s', animationDelay: '-2s' }}
         >
           <div className="relative w-8 h-11">
