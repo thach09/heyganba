@@ -16,7 +16,7 @@ import { speakChinese } from '../../services/chineseSpeech';
 import type { GrammarCheckResult, GrammarExerciseDto, GrammarRuleDto } from './types';
 import { learningKeyboardBlocked } from '../../lib/learningKeyboard';
 
-const HSK_LEVEL_OPTIONS = [{ level: 'ALL', label: 'Tất cả' }, ...[1, 2, 3, 4, 5, 6].map(n => ({ level: `HSK ${n}`, label: `HSK ${n}` }))];
+const HSK_LEVEL_OPTIONS = [{ level: 'ALL', label: 'Tất cả' }, ...[1, 2, 3, 4, 5, 6].map(n => ({ level: `HSK ${n}`, label: `Nhóm ${n}` }))];
 
 const LESSON_OPTIONS = [
   { slug: 'intro-greetings', label: 'Bài 1: Chào hỏi' },
@@ -244,6 +244,7 @@ export const GrammarView: React.FC = () => {
       const { attemptId, exerciseId, userAnswer } = answerAttempt.current;
       setSelectedOption(userAnswer);
       setChecking(true);
+      setFeedback(null);
       checkState.current = 'pending';
 
       const res = await run('grammarApi.check', (signal) =>
@@ -341,7 +342,7 @@ export const GrammarView: React.FC = () => {
       <div className="mx-auto flex w-full max-w-[560px] flex-col items-center pt-16 text-center">
         <span className="font-serif text-[38px] font-bold leading-none text-fg">语法</span>
         <p className="mt-5 text-[13px] leading-[1.9] text-fg-60">
-          Đăng nhập để tra cứu hệ thống ngữ pháp HSK chuẩn và luyện bài tập phản xạ. Điểm số và kinh nghiệm được lưu trữ thực tế theo tài khoản.
+          Đăng nhập để tra cứu ngữ pháp tiếng Trung và luyện bài tập phản xạ. Các nhóm hiện có là tuyển chọn nội bộ, không xác nhận độ phủ CTI HSK 3.0.
         </p>
         <div className="mt-7">
           <SubmitButton onClick={onRequireLogin}>Đăng nhập / Đăng ký</SubmitButton>
@@ -364,7 +365,7 @@ export const GrammarView: React.FC = () => {
       <div>
         <div className="flex items-center justify-between text-[11px] text-fg-38 mb-1">
           <span className="font-semibold text-cinnabar-ink uppercase tracking-wider">
-            {selectedRule.lessonTitle || 'Giáo trình chuẩn HSK'}
+            {selectedRule.lessonTitle || 'Ngữ pháp tiếng Trung'}
           </span>
           <span className="font-sans text-fg-60">#{selectedRule.number}</span>
         </div>
@@ -423,14 +424,24 @@ export const GrammarView: React.FC = () => {
               <div key={idx} className="rounded border border-rule/60 bg-surface/60 p-2.5 text-left">
                 <div className="flex items-center justify-between gap-2">
                   <span className="font-serif text-[15px] font-semibold text-fg">{ex.zh}</span>
-                  <button
-                    type="button"
-                    onClick={() => speakChinese(ex.zh)}
-                    title="Nghe phát âm chuẩn Quan thoại"
-                    className="cursor-pointer text-fg-38 hover:text-cinnabar-ink transition-colors p-1"
-                  >
-                    <Volume2 size={13} />
-                  </button>
+                  <div className="flex items-center gap-1">
+                    <button
+                      type="button"
+                      onClick={() => speakChinese(ex.zh)}
+                      title="Nghe phát âm chuẩn Quan thoại (0.95x)"
+                      className="cursor-pointer text-fg-38 hover:text-cinnabar-ink transition-colors p-1"
+                    >
+                      <Volume2 size={13} />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => speakChinese(ex.zh, { slow: true })}
+                      title="Nghe chậm (0.75x)"
+                      className="cursor-pointer rounded bg-tint px-1.5 py-0.5 text-[10px] font-medium text-fg-60 hover:text-cinnabar-ink hover:bg-cinnabar/10 transition-colors"
+                    >
+                      <span>🐢</span>
+                    </button>
+                  </div>
                 </div>
                 {showPinyin && ex.pinyin && (
                   <div className="text-[11px] font-sans text-gold-ink mt-0.5">{ex.pinyin}</div>
@@ -478,13 +489,13 @@ export const GrammarView: React.FC = () => {
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-cinnabar-ink">
             <span className="inline-block h-2 w-2 rounded-full bg-cinnabar" />
-            Trạm 4 · 语法与句型 · Trạm Ngữ pháp HSK
+            Trạm 4 · 语法与句型 · Ngữ pháp tiếng Trung
           </div>
           <h1 className="mt-1 font-serif text-3xl font-bold tracking-tight text-fg">
-            Ngữ pháp HSK &amp; Luyện phản xạ
+            Ngữ pháp &amp; Luyện phản xạ
           </h1>
           <p className="mt-1.5 max-w-2xl text-xs leading-relaxed text-fg-60">
-            Học các cấu trúc ngữ pháp tiếng Trung theo phạm vi HSK 1–6 qua phương pháp so sánh đối chiếu Việt - Trung, lưu ý lỗi người Việt thường mắc và bài tập phản xạ tương tác.
+            Học các cấu trúc ngữ pháp hiện có theo nhóm cấp nội bộ 1–6 qua phương pháp đối chiếu Việt - Trung. Đây là tuyển chọn đang bổ sung, chưa bao phủ toàn bộ nội dung chính thức của từng cấp.
           </p>
         </div>
         <button
@@ -520,7 +531,7 @@ export const GrammarView: React.FC = () => {
           {/* Level & Lesson filter */}
           <div className="mt-6 flex flex-col gap-3">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-[11px] font-semibold text-fg-60 mr-1">Cấp độ HSK:</span>
+              <span className="text-[11px] font-semibold text-fg-60 mr-1">Nhóm nội dung:</span>
               {HSK_LEVEL_OPTIONS.map((opt) => (
                 <button
                   key={opt.level}
@@ -648,7 +659,7 @@ export const GrammarView: React.FC = () => {
 
             {/* Rule detail (Desktop) */}
             <aside data-grammar-detail className="sticky top-10 hidden min-[1101px]:block">
-              <OrientalCard tag={selectedRule ? `HSK ${selectedRule.hskLevel || 1}` : undefined} tagVariant="cinnabar">
+              <OrientalCard tag={selectedRule ? `Nhóm ${selectedRule.hskLevel || 1}` : undefined} tagVariant="cinnabar">
                 {detailBody}
               </OrientalCard>
             </aside>
@@ -668,7 +679,7 @@ export const GrammarView: React.FC = () => {
                 onClick={(event) => event.stopPropagation()}
               >
                 <div className="flex items-start justify-between gap-4 border-b border-rule pb-3">
-                  <span className={labelClass}>Chi tiết Ngữ pháp HSK</span>
+                  <span className={labelClass}>Chi tiết ngữ pháp</span>
                   <button
                     type="button"
                     onClick={() => setDetailOpen(false)}
@@ -865,7 +876,7 @@ export const GrammarView: React.FC = () => {
             onClick={(event) => event.stopPropagation()}
           >
             <div className="flex items-start justify-between gap-4 border-b border-rule pb-3">
-              <h3 className="text-[15px] font-bold">Hướng dẫn Trạm Ngữ pháp HSK</h3>
+              <h3 className="text-[15px] font-bold">Hướng dẫn ngữ pháp</h3>
               <button
                 type="button"
                 onClick={() => setHelpOpen(false)}
@@ -877,7 +888,7 @@ export const GrammarView: React.FC = () => {
               </button>
             </div>
             <p className="mt-4 text-[13px] leading-[1.9] text-fg-60">
-              Tab <strong>Tra cứu</strong>: lọc theo cấp độ HSK, chủ đề bài học hoặc tìm kiếm theo cấu trúc / ý nghĩa / lưu ý (gõ không dấu vẫn tìm được), bấm một điểm ngữ pháp để xem cấu trúc cốt lõi, ví dụ song ngữ kèm phát âm Quan thoại và phân tích lỗi người Việt thường mắc.
+              Tab <strong>Tra cứu</strong>: lọc theo nhóm nội dung, chủ đề bài học hoặc tìm kiếm theo cấu trúc / ý nghĩa / lưu ý (gõ không dấu vẫn tìm được), bấm một điểm ngữ pháp để xem cấu trúc cốt lõi, ví dụ song ngữ kèm phát âm Quan thoại và phân tích lỗi người Việt thường mắc. Các nhóm là tuyển chọn nội bộ, không phải cấp CTI HSK 3.0.
               <br /><br />
               Tab <strong>Luyện tập</strong>: chọn đáp án bằng phím 1–4 hoặc click chuột, nhấn Enter để sang câu kế tiếp. Mỗi câu trả lời đúng được cộng EXP. Hoàn thành nhiệm vụ hằng ngày để nhận măng trúc trên bảng tổng quan.
             </p>

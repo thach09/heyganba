@@ -142,7 +142,7 @@ describe('HSK Grammar Lab (GrammarView)', () => {
     expect(screen.getByText('Trợ từ kết cấu 得 biểu thị mức độ')).toBeTruthy();
 
     // Click HSK 1 filter chip
-    const hsk1Filter = screen.getByRole('button', { name: /^HSK 1 \(/ });
+    const hsk1Filter = screen.getByRole('button', { name: /^Nhóm 1 \(/ });
     fireEvent.click(hsk1Filter);
 
     // HSK 1 rules remain, HSK 2 rule is filtered out

@@ -115,6 +115,7 @@ test('QA-008: settled failure unlocks one retry', async () => {
   mount(<GrammarView />); fireEvent.click(screen.getByRole('button', { name: 'Luyện tập' })); await screen.findByText('Practice question');
   fireEvent.keyDown(window, { key: '1' }); await screen.findByText('Offline');
   fireEvent.keyDown(window, { key: '1' }); await screen.findByText('Giải thích'); expect(api.check).toHaveBeenCalledTimes(2);
+  expect(screen.queryByText('Offline')).toBeNull();
 });
 
 test('QA-008: lost-response retry retains the answer and ID; a new question gets a new ID', async () => {
@@ -123,7 +124,7 @@ test('QA-008: lost-response retry retains the answer and ID; a new question gets
     .mockResolvedValueOnce(success({ correct: true, correctAnswer: 'Option A', submittedAnswer: 'Option A' }))
     .mockResolvedValueOnce(success({ correct: true, correctAnswer: 'Option B', submittedAnswer: 'Option B' }));
   mount(<GrammarView />); fireEvent.click(screen.getByRole('button', { name: 'Luyện tập' })); await screen.findByText('Retry question 66');
-  fireEvent.keyDown(window, { key: '1' }); await screen.findByText('Lost response');
+  fireEvent.click(await screen.findByRole('button', { name: /1\s*Option A/ })); await screen.findByText('Lost response');
   const first = JSON.parse(api.check.mock.calls[0][1].body);
   expect(first.attemptId).toMatch(/^[0-9a-f-]{36}$/); expect(first.userAnswer).toBe('Option A');
   expect((screen.getByRole('button', { name: /1\s*Option A/ }) as HTMLButtonElement).disabled).toBe(true);
@@ -132,7 +133,7 @@ test('QA-008: lost-response retry retains the answer and ID; a new question gets
   expect(JSON.parse(api.check.mock.calls[1][1].body)).toEqual(first);
   expect(screen.getByText(/Đúng/, { selector: 'p' }).textContent).toContain('1/1 câu');
   fireEvent.keyDown(window, { key: 'Enter' }); await screen.findByText('Retry question 67');
-  fireEvent.keyDown(window, { key: '2' }); await screen.findByText('Chính xác');
+  fireEvent.click(await screen.findByRole('button', { name: /2\s*Option B/ })); await screen.findByText('Chính xác');
   const next = JSON.parse(api.check.mock.calls[2][1].body);
   expect(api.check.mock.calls[2][0]).toBe(67); expect(next.attemptId).not.toBe(first.attemptId); expect(next.userAnswer).toBe('Option B');
   expect(screen.getByText(/Đúng/, { selector: 'p' }).textContent).toContain('2/2 câu');
