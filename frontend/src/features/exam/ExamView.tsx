@@ -232,13 +232,17 @@ export const ExamView: React.FC = () => {
   };
 
   /** Play question audio via browser Mandarin TTS */
-  const playQuestionAudio = (question: ExamQuestion, event: React.MouseEvent) => {
+  const playQuestionAudio = (question: ExamQuestion, event: React.MouseEvent, slow = false) => {
     event.stopPropagation();
     const text = question.audioText ?? (question as unknown as { audioPrompt?: string }).audioPrompt ?? question.questionText;
     if (isChineseSpeechSupported()) {
-      speakChinese(text);
+      speakChinese(text, { slow });
     } else {
-      setClassMessage('Trình duyệt không hỗ trợ đọc Quan thoại tiếng Trung (Web Speech API).');
+      setFeedback({
+        type: 'error',
+        title: 'Chưa phát được âm thanh',
+        message: 'Trình duyệt chưa hỗ trợ đọc tiếng Trung. Hãy thử trình duyệt khác.',
+      });
     }
   };
 
@@ -745,15 +749,24 @@ export const ExamView: React.FC = () => {
                       </span>
                     </div>
 
-                    <div className="flex min-w-0 flex-wrap items-center gap-2">
+                    <div className="flex min-w-0 flex-wrap items-center gap-1.5">
                       <button
                         type="button"
-                        onClick={(event) => playQuestionAudio(question, event)}
-                        title="Nghe câu hỏi bằng giọng Quan thoại"
+                        onClick={(event) => playQuestionAudio(question, event, false)}
+                        title="Nghe câu hỏi bằng giọng Quan thoại chuẩn (0.95x)"
                         className="flex cursor-pointer items-center gap-1.5 rounded border border-cinnabar/40 bg-cinnabar/10 px-2.5 py-1 text-[11px] font-semibold text-cinnabar-ink hover:bg-cinnabar/20 transition-colors"
                       >
                         <Volume2 size={13} />
                         <span>Phát âm Quan thoại</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(event) => playQuestionAudio(question, event, true)}
+                        title="Nghe chậm (0.75x)"
+                        className="flex cursor-pointer items-center gap-1 rounded border border-rule bg-card px-2 py-1 text-[11px] font-medium text-fg-60 hover:text-fg hover:border-rule-strong transition-colors"
+                      >
+                        <span>🐢</span>
+                        <span>0.75x</span>
                       </button>
                       {selected && (
                         <span className="rounded bg-jade/10 border border-jade/30 px-2 py-0.5 text-[10.5px] font-medium text-jade-ink">
