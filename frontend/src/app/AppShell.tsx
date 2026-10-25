@@ -7,6 +7,8 @@ import { progressApi } from '../features/progress/api';
 import { isRequestCancelled } from '../lib/api/client';
 import { OrientalDecorBackground } from '../components/OrientalDecorBackground';
 import { ThemeToggle } from '../components/ThemeToggle';
+import { useLocation } from 'react-router-dom';
+import { stopChineseSpeech } from '../services/chineseSpeech';
 
 /** The breakpoint must match the `@media (max-width: 900px)` query in index.css. */
 const MOBILE_BREAKPOINT_QUERY = '(max-width: 900px)';
@@ -42,6 +44,9 @@ function useIsMobileLayout(): boolean {
 
 export function AppShell() {
   const { user, requireLogin, logout, changePassword } = useAuth();
+  const { pathname, search } = useLocation();
+  // Queries select learning content too; hash/state-only navigation keeps the current speech.
+  useEffect(() => stopChineseSpeech, [pathname, search, user?.userId]);
   const isMobileLayout = useIsMobileLayout();
   /**
    * Manual user preference for the menu: `null` = not chosen yet -> follow the breakpoint default
