@@ -26,6 +26,7 @@ export function Companion3DCanvas({
   className = '',
 }: Companion3DCanvasProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [webGlUnavailable, setWebGlUnavailable] = useState(false);
   const [currentQuote, setCurrentQuote] = useState<PetQuote>(() => {
     const pet = PET_DEFINITIONS[petId] || PET_DEFINITIONS.panda;
     const quotes = pet?.quotes?.[mood] || PET_DEFINITIONS.panda.quotes.idle;
@@ -61,7 +62,13 @@ export function Companion3DCanvas({
     camera.position.set(0, 1.25, 4.2);
     camera.lookAt(0, 0.9, 0);
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    let renderer: THREE.WebGLRenderer;
+    try { renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true }); }
+    catch {
+      // oxlint-disable-next-line react/set-state-in-effect -- an external renderer can synchronously reject unavailable WebGL.
+      setWebGlUnavailable(true);
+      return;
+    }
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.shadowMap.enabled = true;
@@ -233,6 +240,7 @@ export function Companion3DCanvas({
       )}
 
       {/* Three.js Canvas Container */}
+      {webGlUnavailable && <p role="status" className="text-center text-[12.5px] text-fg-60" style={{ width: size }}>Thiết bị chưa hỗ trợ 3D. Bạn vẫn có thể tiếp tục học và chăm sóc linh vật.</p>}
       <div
         ref={containerRef}
         role={interactive ? 'button' : undefined}
