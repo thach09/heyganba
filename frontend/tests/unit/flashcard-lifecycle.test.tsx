@@ -50,8 +50,8 @@ vi.mock('../../src/features/flashcard/api', () => ({
   },
   notebookApi: {
     list: (opts?: any) => fixture.notebookList(opts),
-    create: (payload: any) => fixture.notebookCreate(payload),
-    addWord: (id: number, payload: any) => fixture.notebookAddWord(id, payload),
+    create: (payload: any, opts?: RequestInit) => fixture.notebookCreate(payload, opts),
+    addWord: (id: number, payload: any, opts?: RequestInit) => fixture.notebookAddWord(id, payload, opts),
   },
 }));
 
@@ -98,6 +98,16 @@ beforeEach(() => {
     success: true,
     data: { notebookId: 101, vocabularyId: 10 },
   });
+});
+
+test('catalog failure offers retry without claiming that the curriculum is empty or awaiting a teacher', async () => {
+  fixture.lessons.mockResolvedValueOnce({ success: false, message: 'Mất kết nối thử nghiệm' });
+  render(<MemoryRouter><FlashcardView /></MemoryRouter>);
+  await screen.findByRole('alert');
+  expect(screen.queryByText('Chưa có bài học đã xuất bản')).toBeNull();
+  fireEvent.click(screen.getByRole('button', { name: 'Thử lại' }));
+  await screen.findByRole('heading', { name: 'Chào hỏi', level: 2 });
+  expect(fixture.lessons).toHaveBeenCalledTimes(2);
 });
 
 test('M2.1.1: Notebook modal never injects fake mock notebook 99 and handles empty list gracefully', async () => {
@@ -166,7 +176,22 @@ test('M2.1.1: If notebook create succeeds but addWord fails, newly created noteb
 
   await waitFor(() => expect(fixture.notebookAddWord).toHaveBeenCalledTimes(2));
   expect(fixture.notebookCreate).toHaveBeenCalledTimes(1); // STILL 1, no duplicate notebook created!
-  expect(fixture.notebookAddWord).toHaveBeenLastCalledWith(101, { vocabularyId: 10 });
+  expect(fixture.notebookAddWord).toHaveBeenLastCalledWith(101, { vocabularyId: 10 }, { signal: expect.any(AbortSignal) });
+});
+
+test('leaving while notebook creation is pending cannot continue adding a word under another session', async () => {
+  let finish!: (value: unknown) => void;
+  fixture.notebookCreate.mockImplementationOnce(() => new Promise(resolve => { finish = resolve; }));
+  const view = render(<MemoryRouter><FlashcardView /></MemoryRouter>);
+  await screen.findByRole('heading', { name: 'Chào hỏi', level: 2 });
+  fireEvent.click((await screen.findAllByRole('button', { name: /Lưu sổ từ/ }))[0]);
+  await screen.findByPlaceholderText(/Nhập tên sổ mới/);
+  fireEvent.click(screen.getByRole('button', { name: 'Xác nhận lưu' }));
+  await waitFor(() => expect(fixture.notebookCreate).toHaveBeenCalledTimes(1));
+  view.unmount();
+  finish({ success: true, data: { id: 101, title: 'QA only' } });
+  await new Promise(resolve => setTimeout(resolve, 0));
+  expect(fixture.notebookAddWord).not.toHaveBeenCalled();
 });
 
 test('M2.1.1: SRS rating submission failure locks payload and prevents changing rating while pending', async () => {
@@ -237,6 +262,17 @@ test('M2.1.1: Switching lessons does not reset or reload the active SRS session'
 
   // fixture.due should STILL have been called only once!
   expect(fixture.due).toHaveBeenCalledTimes(1);
+});
+
+test('a failed SRS queue is recoverable and never reports session completion', async () => {
+  fixture.due.mockResolvedValueOnce({ success: false, message: 'Không tải được thẻ thử nghiệm' });
+  render(<MemoryRouter><FlashcardView /></MemoryRouter>);
+  await screen.findByRole('heading', { name: 'Chào hỏi', level: 2 });
+  fireEvent.click(screen.getByRole('button', { name: /Ôn đến hạn/ }));
+  await screen.findByRole('alert');
+  expect(screen.queryByText('Xong phiên ôn tập hôm nay!')).toBeNull();
+  fireEvent.click(screen.getByRole('button', { name: 'Thử lại' }));
+  await screen.findByText('Thẻ 1 / 2');
 });
 
 test('M2.1.1: Unauthenticated guests viewing SRS mode see a login prompt without making authenticated calls', async () => {
