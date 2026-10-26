@@ -17,6 +17,14 @@ import java.util.regex.Pattern;
 public class DictionaryService {
     @org.springframework.beans.factory.annotation.Value("${app.dictionary.legacy-catalog-enabled:false}")
     private boolean legacyCatalogEnabled;
+    @org.springframework.beans.factory.annotation.Autowired
+    private org.springframework.core.env.Environment environment;
+
+    @jakarta.annotation.PostConstruct
+    void requireExplicitLegacyProfile() {
+        if (legacyCatalogEnabled && !environment.acceptsProfiles(org.springframework.core.env.Profiles.of("legacy-japanese")))
+            throw new IllegalStateException("Japanese catalog requires the isolated legacy-japanese profile");
+    }
     private final VocabularyRepository vocabularyRepository;
     private final VocabularyPublicationAuthority publication;
     private final KanjiRepository kanjiRepository;

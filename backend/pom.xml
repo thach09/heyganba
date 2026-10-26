@@ -24,6 +24,8 @@
         <jackson-bom.version>2.21.7</jackson-bom.version>
         <postgresql.version>42.7.12</postgresql.version>
         <log4j2.version>2.25.5</log4j2.version>
+        <test.excludedGroups>legacy-japanese</test.excludedGroups>
+        <legacy.audit.resources>${project.build.directory}/external-legacy-audit-required</legacy.audit.resources>
     </properties>
 
     <dependencies>
@@ -128,6 +130,10 @@
         <directory>${build.output.root}</directory>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId><artifactId>maven-surefire-plugin</artifactId>
+                <configuration><excludedGroups>${test.excludedGroups}</excludedGroups></configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
@@ -153,4 +159,28 @@
             </plugin>
         </plugins>
     </build>
+    <profiles>
+        <profile>
+            <id>legacy-japanese-audit</id>
+            <properties><test.excludedGroups></test.excludedGroups></properties>
+            <build>
+                <testResources>
+                    <testResource><directory>src/test/resources</directory></testResource>
+                    <testResource><directory>${legacy.audit.resources}</directory></testResource>
+                </testResources>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <groups>legacy-japanese</groups>
+                            <systemPropertyVariables>
+                                <legacy.dictionary.assisted-release>true</legacy.dictionary.assisted-release>
+                            </systemPropertyVariables>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
