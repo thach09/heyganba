@@ -31,6 +31,12 @@ public record KanjiResponse(
         Boolean needsHumanCheck
 ) {
     public static KanjiResponse from(Kanji kanji, int practiceCount) {
+        // Raw embedded compound JSON is historical draft data. Only the service
+        // may supply compounds resolved against currently published vocabulary.
+        return from(kanji, practiceCount, "[]");
+    }
+
+    public static KanjiResponse from(Kanji kanji, int practiceCount, String publishedCompounds) {
         List<RadicalResponse> radicals = kanji.getRadicals() != null
                 ? kanji.getRadicals().stream()
                         .sorted(Comparator.comparingInt(radical -> radical.getStrokeCount()))
@@ -49,7 +55,7 @@ public record KanjiResponse(
                 kanji.getHskLevel() != null ? kanji.getHskLevel() : 1,
                 kanji.getMeaningVi(),
                 kanji.getDecomposition(),
-                kanji.getExampleWordsJson(),
+                publishedCompounds,
                 kanji.getSinoVietnamese(),
                 kanji.getMeaning(),
                 kanji.getMnemonic(),

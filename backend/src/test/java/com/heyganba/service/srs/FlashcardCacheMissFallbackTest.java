@@ -20,6 +20,8 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 class FlashcardCacheMissFallbackTest {
+    private final com.heyganba.support.PublicationCatalogFixture catalog = new com.heyganba.support.PublicationCatalogFixture();
+    private final VocabularyPublicationAuthority publication = new VocabularyPublicationAuthority(mock(AuditLogRepository.class), catalog.path().toString());
     private final SrsReviewRepository reviews = mock(SrsReviewRepository.class);
     private final VocabularyRepository vocabulary = mock(VocabularyRepository.class);
     private final AtomicReference<Instant> now = new AtomicReference<>(Instant.parse("2026-10-21T16:00:00Z"));
@@ -35,14 +37,16 @@ class FlashcardCacheMissFallbackTest {
     private FlashcardService service(SrsDueCache cache) {
         SecurityContextHolder.clearContext();
         when(vocabulary.findNewForUser(anyLong(), any())).thenReturn(List.of());
-        return new FlashcardService(mock(ApplicationEventPublisher.class), reviews, vocabulary,
+        return new FlashcardService(mock(ApplicationEventPublisher.class), reviews, vocabulary, publication,
                 mock(StreakRepository.class), mock(UserRepository.class), cache, mock(StreakService.class),
                 mock(StudyActivityService.class), mock(LearningMutationReceiptService.class));
     }
 
-    private static SrsReview review(long vocabularyId) {
-        return SrsReview.builder().vocabulary(Vocabulary.builder().id(vocabularyId).word("synthetic")
-                        .pinyin("synthetic").meaningVi("synthetic").reviewStatus(ReviewStatus.APPROVED).build())
+    private SrsReview review(long vocabularyId) {
+        Vocabulary word = Vocabulary.builder().id(vocabularyId).word("synthetic")
+                        .pinyin("synthetic").meaningVi("synthetic").partOfSpeech("TEST_ONLY").reviewStatus(ReviewStatus.APPROVED).build();
+        catalog.register(word, 0);
+        return SrsReview.builder().vocabulary(word)
                 .repetitions(3).intervalDays(7).easeFactor(2.5).dueDate(Instant.parse("2026-10-20T00:00:00Z")).build();
     }
 
@@ -84,4 +88,16 @@ class FlashcardCacheMissFallbackTest {
         verify(reviews, times(1)).findDueReviewsForUser(eq(2L), any());
         verify(reviews, never()).save(any(SrsReview.class));
     }
+    @Test void withheldFirstPageDoesNotHideEligibleLaterWords() {
+        InMemorySrsDueCache cache = cache(); FlashcardService service = service(cache);
+        SrsReview published = review(43);
+        Vocabulary withheld = Vocabulary.builder().id(42L).word("untrusted").reviewStatus(ReviewStatus.APPROVED).build();
+        when(vocabulary.findNewForUser(eq(2L), any())).thenAnswer(invocation ->
+                ((org.springframework.data.domain.Pageable) invocation.getArgument(1)).getPageNumber() == 0
+                        ? List.of(withheld) : List.of(published.getVocabulary()));
+        when(reviews.findDueReviewsForUser(eq(2L), any())).thenReturn(List.of());
+        assertThat(service.getDueToday(2L, 1)).extracting(card -> card.vocabularyId()).containsExactly(43L);
+        verify(vocabulary, times(2)).findNewForUser(eq(2L), any());
+    }
+
 }

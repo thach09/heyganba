@@ -25,6 +25,7 @@ public class VocabNotebookService {
     private final VocabNotebookRepository notebookRepository;
     private final VocabNotebookItemRepository itemRepository;
     private final VocabularyRepository vocabularyRepository;
+    private final VocabularyPublicationAuthority publication;
     private final UserRepository userRepository;
     private final StudyActivityService studyActivityService;
     private final ExpService expService;
@@ -88,7 +89,7 @@ public class VocabNotebookService {
 
         List<VocabNotebookItem> itemsToSave = new ArrayList<>();
         for (VocabNotebookItem item : sample.getItems()) {
-            if (!com.heyganba.common.security.ContentAccess.isVisible(item.getVocabulary().getReviewStatus())) continue;
+            if (!publication.canRead(item.getVocabulary())) continue;
             itemsToSave.add(VocabNotebookItem.builder()
                     .notebook(savedNotebook)
                     .vocabulary(item.getVocabulary())
@@ -188,7 +189,7 @@ public class VocabNotebookService {
             var item = items.get(answer.vocabularyId());
             if (item == null || !seen.add(answer.vocabularyId())) throw new BadRequestException("Từ luyện tập không thuộc sổ hoặc bị lặp");
             var word = item.getVocabulary();
-            com.heyganba.common.security.ContentAccess.requireVisible(word.getReviewStatus(), "Vocabulary", word.getId());
+            publication.requireVisible(word);
             String expected = answer.kind() == NotebookPracticeResultRequest.Kind.READING ? word.getReading() : word.getMeaning();
             boolean right = java.text.Normalizer.normalize(answer.answer().trim(), java.text.Normalizer.Form.NFKC)
                     .equals(java.text.Normalizer.normalize(expected.trim(), java.text.Normalizer.Form.NFKC));
@@ -234,7 +235,7 @@ public class VocabNotebookService {
 
     private VocabNotebookResponse toResponse(VocabNotebook n) {
         List<VocabNotebookItemResponse> itemDtos = n.getItems() != null ? n.getItems().stream()
-                .filter(i -> com.heyganba.common.security.ContentAccess.isVisible(i.getVocabulary().getReviewStatus()))
+                .filter(i -> publication.canRead(i.getVocabulary()))
                 .map(i -> {
                     Vocabulary v = i.getVocabulary();
                     return VocabNotebookItemResponse.builder()

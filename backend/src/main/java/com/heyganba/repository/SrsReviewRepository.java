@@ -13,6 +13,9 @@ import java.util.Optional;
 @Repository
 public interface SrsReviewRepository extends JpaRepository<SrsReview, Long> {
 
+    @Query("SELECT r FROM SrsReview r JOIN FETCH r.vocabulary WHERE r.user.id = :userId")
+    List<SrsReview> findAllForUser(@Param("userId") Long userId);
+
     Optional<SrsReview> findByUserIdAndVocabularyId(Long userId, Long vocabularyId);
 
     @Query("SELECT r FROM SrsReview r JOIN FETCH r.vocabulary WHERE r.user.id = :userId AND r.dueDate <= :now ORDER BY r.dueDate ASC")
