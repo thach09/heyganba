@@ -12,6 +12,10 @@ import java.util.List;
 
 @Repository
 public interface VocabularyRepository extends JpaRepository<Vocabulary, Long> {
+    @org.springframework.data.jpa.repository.Lock(jakarta.persistence.LockModeType.PESSIMISTIC_WRITE)
+    @Query("SELECT v FROM Vocabulary v WHERE v.id = :id")
+    java.util.Optional<Vocabulary> findByIdForUpdate(@Param("id") Long id);
+
     java.util.Optional<Vocabulary> findByDictionaryEntryId(Long dictionaryEntryId);
 
     @Query("SELECT v FROM Vocabulary v LEFT JOIN FETCH v.lesson WHERE v.dictionaryEntryId IS NULL ORDER BY v.id")

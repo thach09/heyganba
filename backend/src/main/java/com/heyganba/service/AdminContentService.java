@@ -25,6 +25,7 @@ public class AdminContentService {
     private boolean legacyPhoneticsEnabled;
     private final KanaRepository kanaRepository;
     private final VocabularyRepository vocabularyRepository;
+    private final VocabularyPublicationAuthority publication;
     private final KanjiRepository kanjiRepository;
     private final GrammarExerciseRepository grammarExerciseRepository;
     private final GrammarRuleRepository grammarRuleRepository;
@@ -106,13 +107,20 @@ public class AdminContentService {
         Vocabulary vocab = Vocabulary.builder()
                 .word(req.getWord().trim())
                 .reading(req.getReading().trim())
+                .pinyin(req.getReading().trim())
                 .meaning(req.getMeaning().trim())
+                .meaningVi(req.getMeaning().trim())
                 .sinoVietnamese(req.getSinoVietnamese() != null ? req.getSinoVietnamese().trim() : null)
+                .hanViet(req.getSinoVietnamese() != null ? req.getSinoVietnamese().trim() : null)
                 .exampleSentence(req.getExampleSentence() != null ? req.getExampleSentence().trim() : null)
+                .exampleZh(req.getExampleSentence() != null ? req.getExampleSentence().trim() : null)
                 .exampleReading(req.getExampleReading() != null ? req.getExampleReading().trim() : null)
+                .examplePinyin(req.getExampleReading() != null ? req.getExampleReading().trim() : null)
                 .exampleMeaning(req.getExampleMeaning() != null ? req.getExampleMeaning().trim() : null)
+                .exampleVi(req.getExampleMeaning() != null ? req.getExampleMeaning().trim() : null)
                 .lesson(lesson)
-                .reviewStatus(ReviewStatus.APPROVED) // Admin tạo trực tiếp -> APPROVED
+                .reviewStatus(ReviewStatus.PENDING_REVIEW)
+                .needsHumanCheck(true)
                 .build();
 
         Vocabulary saved = vocabularyRepository.save(vocab);
@@ -122,7 +130,7 @@ public class AdminContentService {
 
     @Transactional
     public Vocabulary updateVocabulary(User admin, Long id, AdminVocabularyRequest req) {
-        Vocabulary vocab = vocabularyRepository.findById(id)
+        Vocabulary vocab = vocabularyRepository.findByIdForUpdate(id)
                 .orElseThrow(() -> new BadRequestException("Không tìm thấy từ vựng ID: " + id));
 
         String before = vocab.getWord() + " (" + vocab.getReading() + ")";
@@ -133,12 +141,21 @@ public class AdminContentService {
         }
 
         vocab.setWord(req.getWord().trim());
+        if (!java.util.Objects.equals(vocab.getReading(), req.getReading().trim())) vocab.setPinyinNormalized(null);
         vocab.setReading(req.getReading().trim());
+        vocab.setPinyin(req.getReading().trim());
         vocab.setMeaning(req.getMeaning().trim());
+        vocab.setMeaningVi(req.getMeaning().trim());
         vocab.setSinoVietnamese(req.getSinoVietnamese() != null ? req.getSinoVietnamese().trim() : null);
+        vocab.setHanViet(req.getSinoVietnamese() != null ? req.getSinoVietnamese().trim() : null);
         vocab.setExampleSentence(req.getExampleSentence() != null ? req.getExampleSentence().trim() : null);
+        vocab.setExampleZh(req.getExampleSentence() != null ? req.getExampleSentence().trim() : null);
         vocab.setExampleReading(req.getExampleReading() != null ? req.getExampleReading().trim() : null);
+        vocab.setExamplePinyin(req.getExampleReading() != null ? req.getExampleReading().trim() : null);
         vocab.setExampleMeaning(req.getExampleMeaning() != null ? req.getExampleMeaning().trim() : null);
+        vocab.setExampleVi(req.getExampleMeaning() != null ? req.getExampleMeaning().trim() : null);
+        vocab.setReviewStatus(ReviewStatus.PENDING_REVIEW);
+        vocab.setNeedsHumanCheck(true);
 
         Vocabulary saved = vocabularyRepository.save(vocab);
         String after = saved.getWord() + " (" + saved.getReading() + ")";
@@ -148,7 +165,7 @@ public class AdminContentService {
 
     @Transactional
     public void deleteVocabulary(User admin, Long id) {
-        Vocabulary vocab = vocabularyRepository.findById(id)
+        Vocabulary vocab = vocabularyRepository.findByIdForUpdate(id)
                 .orElseThrow(() -> new BadRequestException("Không tìm thấy từ vựng ID: " + id));
         String before = vocab.getWord();
         vocab.setReviewStatus(ReviewStatus.ARCHIVED);
@@ -302,13 +319,15 @@ public class AdminContentService {
         String type = contentType.toUpperCase().trim();
         switch (type) {
             case "VOCABULARY" -> {
-                Vocabulary vocab = vocabularyRepository.findById(id)
+                Vocabulary vocab = vocabularyRepository.findByIdForUpdate(id)
                         .orElseThrow(() -> new BadRequestException("Không tìm thấy từ vựng ID: " + id));
+                var proof = publication.requireEligible(vocab);
+                if (vocab.getReviewStatus() == ReviewStatus.APPROVED) return;
                 String before = vocab.getReviewStatus().name();
                 vocab.setReviewStatus(ReviewStatus.APPROVED);
                 vocab.setNeedsHumanCheck(false);
                 vocabularyRepository.save(vocab);
-                auditLogService.logAction(admin, "vocabulary", id, "APPROVE", before, "APPROVED" + (note != null && !note.isBlank() ? " | " + note.trim() : ""));
+                auditLogService.logAction(admin, "vocabulary", id, "APPROVE", before, "APPROVED | " + proof.verificationId() + (note != null && !note.isBlank() ? " | " + note.trim() : ""));
             }
             case "KANJI", "HANZI" -> {
                 Kanji kanji = kanjiRepository.findById(id)
@@ -349,7 +368,7 @@ public class AdminContentService {
         String type = contentType.toUpperCase().trim();
         switch (type) {
             case "VOCABULARY" -> {
-                Vocabulary vocab = vocabularyRepository.findById(id)
+                Vocabulary vocab = vocabularyRepository.findByIdForUpdate(id)
                         .orElseThrow(() -> new BadRequestException("Không tìm thấy từ vựng ID: " + id));
                 String before = vocab.getReviewStatus().name();
                 vocab.setReviewStatus(ReviewStatus.ARCHIVED);
@@ -394,15 +413,15 @@ public class AdminContentService {
     @Transactional
     public int approveAllPending(User admin) {
         int count = 0;
-        List<Vocabulary> pendingVocab = vocabularyRepository.findAll().stream()
-                .filter(v -> v.getReviewStatus() == ReviewStatus.PENDING_REVIEW || Boolean.TRUE.equals(v.getNeedsHumanCheck()))
-                .toList();
-        for (Vocabulary v : pendingVocab) {
-            v.setReviewStatus(ReviewStatus.APPROVED);
-            v.setNeedsHumanCheck(false);
-            count++;
+        // Lock in ID order and recheck proof inside the same transaction as approval.
+        for (Long id : vocabularyRepository.findAll().stream().map(Vocabulary::getId).sorted().toList()) {
+            Vocabulary v = vocabularyRepository.findByIdForUpdate(id).orElseThrow();
+            if ((v.getReviewStatus() == ReviewStatus.PENDING_REVIEW || Boolean.TRUE.equals(v.getNeedsHumanCheck()))
+                    && publication.proof(v).isPresent()) {
+                approveContent(admin, "VOCABULARY", id, null);
+                count++;
+            }
         }
-        vocabularyRepository.saveAll(pendingVocab);
 
         List<Kanji> pendingKanji = kanjiRepository.findAll().stream()
                 .filter(k -> k.getReviewStatus() == ReviewStatus.PENDING_REVIEW || Boolean.TRUE.equals(k.getNeedsHumanCheck()))

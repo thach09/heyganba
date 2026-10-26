@@ -14,6 +14,8 @@ import java.util.*;
 @Service @RequiredArgsConstructor
 public class LearningInsightsService {
     private final JdbcTemplate jdbc;
+    private final VocabularyRepository vocabularyRepository;
+    private final VocabularyPublicationAuthority publication;
     private final UserRepository users;
     private final DailyQuestClaimRepository claims;
     private final CompanionWalletRepository wallets;
@@ -25,8 +27,15 @@ public class LearningInsightsService {
     @Transactional
     public Insights insights(Long userId) {
         User user = locked(userId);
-        Map<Integer,Long> totals=byLevel("SELECT hsk_level,COUNT(DISTINCT word) FROM vocabulary WHERE review_status='APPROVED' GROUP BY hsk_level");
-        Map<Integer,Long> learned=byLevel("SELECT v.hsk_level,COUNT(DISTINCT v.word) FROM vocabulary v JOIN srs_reviews s ON s.vocabulary_id=v.id WHERE s.user_id=? AND s.repetitions>0 AND v.review_status='APPROVED' GROUP BY v.hsk_level",userId);
+        var published = vocabularyRepository.findCourseWords().stream()
+                .filter(v -> v.getReviewStatus() == com.heyganba.model.enums.ReviewStatus.APPROVED && publication.proof(v).isPresent()).toList();
+        var learnedIds = new HashSet<>(jdbc.queryForList("SELECT vocabulary_id FROM srs_reviews WHERE user_id=? AND repetitions>0", Long.class, userId));
+        Map<Integer,Long> totals = new HashMap<>(), learned = new HashMap<>();
+        for (int level = 1; level <= 6; level++) {
+            final int currentLevel = level;
+            totals.put(level, published.stream().filter(v -> Objects.equals(v.getHskLevel(), currentLevel)).map(Vocabulary::getWord).distinct().count());
+            learned.put(level, published.stream().filter(v -> Objects.equals(v.getHskLevel(), currentLevel) && learnedIds.contains(v.getId())).map(Vocabulary::getWord).distinct().count());
+        }
         Map<Integer,Long> rules=byLevel("SELECT hsk_level,COUNT(*) FROM grammar_rules WHERE review_status='APPROVED' GROUP BY hsk_level");
         Map<Integer,Long> practiced=byLevel("SELECT g.hsk_level,COUNT(DISTINCT g.id) FROM grammar_rules g JOIN grammar_exercises e ON e.grammar_rule_id=g.id JOIN learning_attempts a ON a.content_ref=CONCAT('grammar-exercise:',CAST(e.id AS VARCHAR)) WHERE a.user_id=? AND a.result='CORRECT' AND g.review_status='APPROVED' GROUP BY g.hsk_level",userId);
         List<Level> levels = new ArrayList<>();
