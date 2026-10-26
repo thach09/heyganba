@@ -86,6 +86,7 @@ public class ExamService {
     private boolean legacyPhoneticsEnabled;
     private final KanaRepository kanaRepository;
     private final VocabularyRepository vocabularyRepository;
+    private final VocabularyPublicationAuthority publication;
     private final ReadingPassageRepository readingPassageRepository;
     private final UserRepository userRepository;
     private final StreakRepository streakRepository;
@@ -118,8 +119,41 @@ public class ExamService {
             List<String> options,
             String correctAnswer,
             String explanation,
-            String audioText
+            String audioText,
+            List<PublicationBinding> publications
     ) {
+        public Question(int index, String type, String questionText, List<String> options,
+                        String correctAnswer, String explanation, String audioText) {
+            this(index, type, questionText, options, correctAnswer, explanation, audioText, List.of());
+        }
+    }
+    public record PublicationBinding(Long vocabularyId, String contentDigest, String verificationId) {}
+
+    private Question bindVocabulary(Question question, List<Vocabulary> pool) {
+        var bindings = pool.stream().filter(v -> question.options().contains(v.getMeaning()))
+                .map(v -> { var proof = publication.requireEligible(v);
+                    return new PublicationBinding(v.getId(), proof.contentDigest(), proof.verificationId()); }).toList();
+        return new Question(question.index(), question.type(), question.questionText(), question.options(),
+                question.correctAnswer(), question.explanation(), question.audioText(), bindings);
+    }
+
+    private void requireCurrentPublications(MockExam exam, List<Question> questions) {
+        for (Question question : questions) {
+            boolean mayContainVocabulary = TYPE_VOCABULARY.equals(question.type()) || "LISTENING".equals(question.type())
+                    || (exam.getHskLevel() != null && "READING".equals(question.type()));
+            // Legacy snapshots have no trustworthy origin manifest. Do not return historical lexical data.
+            if (question.publications() == null && mayContainVocabulary) throw withdrawnExam();
+            if (question.publications() == null) continue;
+            for (PublicationBinding binding : question.publications()) {
+                Vocabulary word = vocabularyRepository.findById(binding.vocabularyId()).orElseThrow(this::withdrawnExam);
+                var proof = word.getReviewStatus() == ReviewStatus.APPROVED ? publication.proof(word) : Optional.<VocabularyPublicationAuthority.Proof>empty();
+                if (proof.isEmpty() || !proof.get().contentDigest().equals(binding.contentDigest())
+                        || !proof.get().verificationId().equals(binding.verificationId())) throw withdrawnExam();
+            }
+        }
+    }
+    private BadRequestException withdrawnExam() {
+        return new BadRequestException("Bài luyện có nội dung đã được thu hồi. Hãy tạo bài luyện mới.");
     }
 
     @Transactional
@@ -174,6 +208,7 @@ public class ExamService {
 
         List<Question> questions = readJson(exam.getQuestionsJson(), new TypeReference<List<Question>>() {
         });
+        requireCurrentPublications(exam, questions);
 
         Map<Integer, String> submitted = new HashMap<>();
         for (ExamSubmitRequest.Answer answer : request.answers()) {
@@ -262,6 +297,7 @@ public class ExamService {
                 .orElseThrow(() -> new ResourceNotFoundException("MockExam", "id", examId));
         List<Question> questions = readJson(exam.getQuestionsJson(), new TypeReference<List<Question>>() {
         });
+        requireCurrentPublications(exam, questions);
 
         return toExamResponse(exam, questions);
     }
@@ -271,6 +307,7 @@ public class ExamService {
     }
 
     private ExamSubmitResponse toSubmitResponse(MockExam exam, ExamResult result, int currentStreak) {
+        requireCurrentPublications(exam, readJson(exam.getQuestionsJson(), new TypeReference<List<Question>>() {}));
         List<ExamSubmitResponse.QuestionResult> details = readJson(
                 result.getDetailsJson(), new TypeReference<List<ExamSubmitResponse.QuestionResult>>() {
                 });
@@ -316,7 +353,7 @@ public class ExamService {
     private List<Question> buildHskQuestions(int total, int level) {
         // Explicit APPROVED checks also apply to administrators taking a student exam.
         List<Vocabulary> words = new ArrayList<>(vocabularyRepository.findCourseWords().stream()
-                .filter(v -> v.getReviewStatus() == ReviewStatus.APPROVED && Integer.valueOf(level).equals(v.getHskLevel())).toList());
+                .filter(v -> v.getReviewStatus() == ReviewStatus.APPROVED && publication.proof(v).isPresent() && Integer.valueOf(level).equals(v.getHskLevel())).toList());
         List<GrammarExercise> grammar = new ArrayList<>(grammarExerciseRepository.findAll().stream()
                 .filter(e -> !"SENTENCE_ORDER".equals(e.getExerciseType()) && e.getReviewStatus() == ReviewStatus.APPROVED && e.getGrammarRule() != null
                         && e.getGrammarRule().getReviewStatus() == ReviewStatus.APPROVED
@@ -337,10 +374,10 @@ public class ExamService {
         for (int i = 0; i < wordQuestions; i++) {
             Vocabulary word = words.get(i);
             boolean audio = i < listening;
-            questions.add(new Question(questions.size(), audio ? "LISTENING" : "READING",
+            questions.add(bindVocabulary(new Question(questions.size(), audio ? "LISTENING" : "READING",
                     audio ? "Nghe và chọn nghĩa đúng." : "Chọn nghĩa của từ: " + word.getWord(),
                     buildOptions(word.getMeaningVi(), meanings), word.getMeaningVi(),
-                    word.getWord() + " · " + word.getPinyin() + " · " + word.getMeaningVi(), audio ? word.getWord() : null));
+                    word.getWord() + " · " + word.getPinyin() + " · " + word.getMeaningVi(), audio ? word.getWord() : null), words));
         }
         for (Question passage : passages) questions.add(new Question(questions.size(), passage.type(), passage.questionText(),
                 passage.options(), passage.correctAnswer(), passage.explanation(), null));
@@ -377,7 +414,7 @@ public class ExamService {
         for (int index = 0; index < collected.size(); index += 1) {
             Question question = collected.get(index);
             questions.add(new Question(index, question.type(), question.questionText(), question.options(),
-                    question.correctAnswer(), question.explanation(), question.audioText()));
+                    question.correctAnswer(), question.explanation(), question.audioText(), question.publications()));
         }
         return questions;
     }
@@ -501,7 +538,7 @@ public class ExamService {
         }
 
         List<Vocabulary> pool = new ArrayList<>(
-                ContentAccess.visibleOnly(vocabularyRepository.findCourseWords(), Vocabulary::getReviewStatus));
+                vocabularyRepository.findCourseWords().stream().filter(v -> v.getReviewStatus() == ReviewStatus.APPROVED && publication.proof(v).isPresent()).toList());
         Collections.shuffle(pool, random);
 
         List<String> meaningPool = pool.stream().map(Vocabulary::getMeaning).distinct().toList();
@@ -515,9 +552,9 @@ public class ExamService {
             if (options.size() < 2) {
                 continue;
             }
-            String explanation = vocabulary.getReading() + " — " + vocabulary.getSinoVietnamese();
-            questions.add(new Question(0, TYPE_VOCABULARY, vocabulary.getWord(), options, vocabulary.getMeaning(),
-                    explanation, vocabulary.getReading()));
+            String explanation = vocabulary.getReading() + " — " + vocabulary.getMeaning();
+            questions.add(bindVocabulary(new Question(0, TYPE_VOCABULARY, vocabulary.getWord(), options, vocabulary.getMeaning(),
+                    explanation, vocabulary.getReading()), pool));
         }
         return questions;
     }

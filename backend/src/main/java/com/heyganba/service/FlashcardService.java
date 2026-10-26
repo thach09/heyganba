@@ -44,6 +44,7 @@ public class FlashcardService {
 
     private final SrsReviewRepository srsReviewRepository;
     private final VocabularyRepository vocabularyRepository;
+    private final VocabularyPublicationAuthority publication;
     private final StreakRepository streakRepository;
     private final UserRepository userRepository;
     private final SrsDueCache srsDueCache;
@@ -61,7 +62,17 @@ public class FlashcardService {
         if (cacheable) {
             Optional<List<FlashcardDueResponse>> cached = srsDueCache.get(userId);
             if (cached.isPresent()) {
-                return cached.get();
+                if (cached.get().isEmpty()) return cached.get();
+                // Cached DTOs are not authorization. Rebuild their academic fields from current rows.
+                var current = vocabularyRepository.findAllById(cached.get().stream()
+                        .map(FlashcardDueResponse::vocabularyId).toList()).stream()
+                        .filter(publication::canRead).collect(java.util.stream.Collectors.toMap(Vocabulary::getId, v -> v));
+                var reviews = srsReviewRepository.findDueReviewsForUser(userId, Instant.now()).stream()
+                        .collect(java.util.stream.Collectors.toMap(v -> v.getVocabulary().getId(), v -> v));
+                return cached.get().stream().filter(card -> current.containsKey(card.vocabularyId()))
+                        .map(card -> card.isNew() ? FlashcardDueResponse.fromNewVocabulary(current.get(card.vocabularyId()))
+                                : reviews.containsKey(card.vocabularyId()) ? FlashcardDueResponse.fromReview(reviews.get(card.vocabularyId())) : null)
+                        .filter(java.util.Objects::nonNull).toList();
             }
         }
 
@@ -81,7 +92,7 @@ public class FlashcardService {
                 .orElseThrow(() -> new ResourceNotFoundException("Vocabulary", "id", request.vocabularyId()));
 
         // Không cho ôn (đọc/chấm) từ vựng còn chờ duyệt khi không phải admin.
-        ContentAccess.requireVisible(vocabulary.getReviewStatus(), "Vocabulary", request.vocabularyId());
+        publication.requireVisible(vocabulary);
         if (vocabulary.getDictionaryEntryId() != null) {
             throw new com.heyganba.common.exception.BadRequestException("Từ trong sổ cá nhân được luyện riêng, không thuộc lịch SRS giáo trình");
         }
@@ -144,13 +155,14 @@ public class FlashcardService {
 
     @Transactional(readOnly = true)
     public FlashcardStatsResponse stats(Long userId) {
-        long learnedWords = srsReviewRepository.countByUserIdAndRepetitionsGreaterThan(userId, 0);
-        long dueToday = srsReviewRepository.countByUserIdAndDueDateLessThanEqual(userId, Instant.now());
-        long reviewedWords = srsReviewRepository.countByUserId(userId);
-        // Tổng số từ "có thể học" cũng phải theo quy tắc hiển thị: user thường chỉ thấy từ đã duyệt.
-        long visibleTotalWords = vocabularyRepository.findCourseWords().stream()
-                .filter(v -> ContentAccess.isVisible(v.getReviewStatus())).count();
-        long availableNewWords = Math.max(0, visibleTotalWords - reviewedWords);
+        var publishedIds = vocabularyRepository.findCourseWords().stream().filter(publication::canRead)
+                .map(Vocabulary::getId).collect(java.util.stream.Collectors.toSet());
+        var visibleReviews = srsReviewRepository.findAllForUser(userId).stream()
+                .filter(review -> publishedIds.contains(review.getVocabulary().getId())).toList();
+        long learnedWords = visibleReviews.stream().filter(review -> review.getRepetitions() > 0).count();
+        Instant now = Instant.now();
+        long dueToday = visibleReviews.stream().filter(review -> !review.getDueDate().isAfter(now)).count();
+        long availableNewWords = Math.max(0, publishedIds.size() - visibleReviews.size());
 
         Streak streak = streakRepository.findByUserId(userId).orElse(null);
         int currentStreak = streakService.calculateEffectiveCurrentStreak(streak, streakService.today(Instant.now()));
@@ -170,18 +182,24 @@ public class FlashcardService {
         List<FlashcardDueResponse> items = new ArrayList<>();
         dueReviews.stream()
                 // Từ vựng còn chờ duyệt không được đưa vào phiên ôn của user thường (xem ContentAccess).
-                .filter(review -> ContentAccess.isVisible(review.getVocabulary().getReviewStatus()))
+                .filter(review -> publication.canRead(review.getVocabulary()))
                 .limit(MAX_DUE_PER_SESSION)
                 .map(FlashcardDueResponse::fromReview)
                 .forEach(items::add);
 
         if (newLimit > 0) {
-            ContentAccess.visibleOnly(
-                            vocabularyRepository.findNewForUser(userId, PageRequest.of(0, newLimit)),
-                            Vocabulary::getReviewStatus)
-                    .stream()
-                    .map(FlashcardDueResponse::fromNewVocabulary)
-                    .forEach(items::add);
+            // A page full of withheld rows must not hide a later eligible word.
+            int accepted = 0;
+            for (int page = 0; accepted < newLimit; page++) {
+                List<Vocabulary> batch = vocabularyRepository.findNewForUser(userId, PageRequest.of(page, newLimit));
+                for (Vocabulary word : batch) {
+                    if (publication.canRead(word)) {
+                        items.add(FlashcardDueResponse.fromNewVocabulary(word));
+                        if (++accepted == newLimit) break;
+                    }
+                }
+                if (batch.size() < newLimit) break;
+            }
         }
 
         return items;

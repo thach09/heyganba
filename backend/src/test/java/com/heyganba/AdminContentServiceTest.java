@@ -39,6 +39,7 @@ class AdminContentServiceTest {
     @Mock
     private AuditLogService auditLogService;
 
+    @Mock private com.heyganba.service.VocabularyPublicationAuthority publication;
     private AdminContentService adminContentService;
     private User admin;
 
@@ -47,6 +48,7 @@ class AdminContentServiceTest {
         adminContentService = new AdminContentService(
                 kanaRepository,
                 vocabularyRepository,
+                publication,
                 kanjiRepository,
                 grammarExerciseRepository,
                 grammarRuleRepository,
@@ -131,12 +133,16 @@ class AdminContentServiceTest {
     @Test
     @DisplayName("Admin duyệt tất cả các mục PENDING_REVIEW và ghi nhận audit log")
     void approveAllPending_updatesAllAndLogsAction() {
-        Vocabulary vocabulary = Vocabulary.builder().reviewStatus(com.heyganba.model.enums.ReviewStatus.PENDING_REVIEW).build();
+        Vocabulary vocabulary = Vocabulary.builder().id(44L).reviewStatus(com.heyganba.model.enums.ReviewStatus.PENDING_REVIEW).build();
         Kanji hanzi = Kanji.builder().reviewStatus(com.heyganba.model.enums.ReviewStatus.PENDING_REVIEW).build();
         GrammarExercise exercise = GrammarExercise.builder().reviewStatus(com.heyganba.model.enums.ReviewStatus.PENDING_REVIEW).build();
         com.heyganba.model.entity.GrammarRule rule = com.heyganba.model.entity.GrammarRule.builder().reviewStatus(com.heyganba.model.enums.ReviewStatus.PENDING_REVIEW).build();
         com.heyganba.model.entity.Kana kana = com.heyganba.model.entity.Kana.builder().reviewStatus(com.heyganba.model.enums.ReviewStatus.PENDING_REVIEW).build();
         when(vocabularyRepository.findAll()).thenReturn(java.util.List.of(vocabulary));
+        when(vocabularyRepository.findByIdForUpdate(44L)).thenReturn(Optional.of(vocabulary));
+        var proof = new com.heyganba.service.VocabularyPublicationAuthority.Proof("synthetic", "synthetic");
+        when(publication.proof(vocabulary)).thenReturn(Optional.of(proof));
+        when(publication.requireEligible(vocabulary)).thenReturn(proof);
         when(kanjiRepository.findAll()).thenReturn(java.util.List.of(hanzi));
         when(grammarExerciseRepository.findAll()).thenReturn(java.util.List.of(exercise));
         when(grammarRuleRepository.findAll()).thenReturn(java.util.List.of(rule));

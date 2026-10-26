@@ -21,6 +21,7 @@ public class VocabularyService {
 
     private final LessonRepository lessonRepository;
     private final VocabularyRepository vocabularyRepository;
+    private final VocabularyPublicationAuthority publication;
 
     @Transactional(readOnly = true)
     public List<VocabularyLessonResponse> getLessons() {
@@ -31,7 +32,7 @@ public class VocabularyService {
         for (Lesson lesson : lessons) {
             List<Vocabulary> words = vocabularyRepository.findByLessonId(lesson.getId());
             int wordCount = (int) words.stream()
-                    .filter(w -> ContentAccess.isVisible(w.getReviewStatus()))
+                    .filter(w -> publication.canRead(w))
                     .count();
 
             // Lọc trạng thái duyệt trước khi trả: user thường chỉ thấy bài có từ đã duyệt.
@@ -57,7 +58,7 @@ public class VocabularyService {
                 .orElseThrow(() -> new ResourceNotFoundException("Lesson", "slug", slug));
 
         List<Vocabulary> words = vocabularyRepository.findByLessonId(lesson.getId());
-        List<Vocabulary> visible = ContentAccess.visibleOnly(words, Vocabulary::getReviewStatus);
+        List<Vocabulary> visible = words.stream().filter(publication::canRead).toList();
 
         return visible.stream()
                 .map(VocabularyWordResponse::from)
@@ -69,7 +70,7 @@ public class VocabularyService {
         Vocabulary vocab = vocabularyRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Vocabulary", "id", id));
 
-        ContentAccess.requireVisible(vocab.getReviewStatus(), "Vocabulary", id);
+        publication.requireVisible(vocab);
         return VocabularyWordResponse.from(vocab);
     }
 }

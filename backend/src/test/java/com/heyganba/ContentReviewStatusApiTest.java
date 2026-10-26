@@ -110,7 +110,7 @@ class ContentReviewStatusApiTest extends ContentApiTestBase {
                 .andExpect(jsonPath("$.data.allApproved", is(false)))
                 .andExpect(jsonPath("$.data.totalPendingReview", greaterThan(0)))
                 .andExpect(jsonPath("$.data.stagingOnlyMigrations", notNullValue()))
-                .andExpect(jsonPath("$.data.note", containsString("CHƯA được duyệt")))
+                .andExpect(jsonPath("$.data.note", containsString("bằng chứng được xác thực và quyền sử dụng phù hợp")))
                 .andReturn();
 
         JsonNode data = objectMapper.readTree(result.getResponse().getContentAsString()).get("data");
@@ -144,4 +144,17 @@ class ContentReviewStatusApiTest extends ContentApiTestBase {
                 .andExpect(jsonPath("$.success", is(false)))
                 .andExpect(jsonPath("$.error", is("FORBIDDEN")));
     }
+    @Test void approvedFlagWithoutProofIsReportedAsUnreadyEvenToAnAdministrator() throws Exception {
+        vocabularyRepository.save(com.heyganba.model.entity.Vocabulary.builder().word("fixture-unverified")
+                .reading("fixture").meaning("fixture").reviewStatus(com.heyganba.model.enums.ReviewStatus.APPROVED).build());
+        vocabularyRepository.save(com.heyganba.model.entity.Vocabulary.builder().word("fixture-archived")
+                .reading("fixture").meaning("fixture").reviewStatus(com.heyganba.model.enums.ReviewStatus.ARCHIVED).build());
+        String token = adminAccessToken("unverified-status@fixture.test");
+        String body = mockMvc.perform(get("/content/review-status").header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.data.allApproved", is(false)))
+                .andReturn().getResponse().getContentAsString();
+        JsonNode words = typeOf(objectMapper.readTree(body).path("data").path("types"), "VOCABULARY");
+        assertEquals(1, words.path("total").asInt()); assertEquals(1, words.path("pendingReview").asInt()); assertEquals(0, words.path("approved").asInt());
+    }
+
 }

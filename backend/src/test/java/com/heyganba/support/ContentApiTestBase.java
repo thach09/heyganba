@@ -47,6 +47,12 @@ import org.springframework.test.context.ActiveProfiles;
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 public abstract class ContentApiTestBase {
+    protected static final PublicationCatalogFixture publicationCatalog = new PublicationCatalogFixture();
+    @org.springframework.test.context.DynamicPropertySource
+    static void publicationProperties(org.springframework.test.context.DynamicPropertyRegistry properties) {
+        properties.add("app.vocabulary.publication.catalog", () -> publicationCatalog.path().toString());
+    }
+
     @Autowired
     protected com.heyganba.repository.MockExamPresetRepository mockExamPresetRepository;
 
@@ -131,6 +137,7 @@ public abstract class ContentApiTestBase {
 
     @BeforeEach
     void cleanContentTables() {
+        publicationCatalog.reset();
         rateLimiterService.reset();
         characterMasteryRepository.deleteAll();
         questClaimRepository.deleteAll();
@@ -184,7 +191,15 @@ public abstract class ContentApiTestBase {
 
     protected Vocabulary persistApprovedVocabulary(Vocabulary vocabulary) {
         vocabulary.setReviewStatus(ReviewStatus.APPROVED);
-        return vocabularyRepository.save(vocabulary);
+        // Synthetic positive fixtures exercise the real signature/rights gate, never a production bypass.
+        if (vocabulary.getPartOfSpeech() == null || vocabulary.getPartOfSpeech().isBlank()) vocabulary.setPartOfSpeech("TEST_ONLY");
+        if (vocabulary.getExampleSentence() != null && !vocabulary.getExampleSentence().isBlank()) {
+            if (vocabulary.getExampleReading() == null || vocabulary.getExampleReading().isBlank()) vocabulary.setExampleReading("TEST_ONLY_PINYIN");
+            if (vocabulary.getExampleMeaning() == null || vocabulary.getExampleMeaning().isBlank()) vocabulary.setExampleMeaning("TEST_ONLY_MEANING");
+        }
+        Vocabulary saved = vocabularyRepository.save(vocabulary);
+        publicationCatalog.register(saved, auditLogRepository.vocabularyEligibilityRevision(saved.getId()));
+        return saved;
     }
 
     protected GrammarRule persistApprovedRule(GrammarRule rule) {
