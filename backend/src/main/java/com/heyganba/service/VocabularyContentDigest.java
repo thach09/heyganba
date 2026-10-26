@@ -11,7 +11,7 @@ import java.util.HexFormat;
 
 /**
  * Standalone academic-content codec; deliberately not wired into publication or persistence.
- * This does not replace {@link VocabularyProvenanceService#digest} (the historical V1 codec).
+ * This does not replace {@link VocabularyLegacyDigest#digest} (the historical V1 codec).
  *
  * <p>V2 fields, in order: word, traditional, reading, meaning, partOfSpeech, hanViet,
  * exampleZh, examplePinyin, exampleVi. Callers supply effective academic values, including
