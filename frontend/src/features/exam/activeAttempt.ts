@@ -1,10 +1,11 @@
+import { maySaveRecovery, observeRecovery, recoveryGeneration, recoveryIsCurrent } from '../../lib/learningRecovery';
 /** Untrusted recovery input; ExamView must revalidate the attempt with the server before use. */
 export interface ActiveAttempt {
   examId: number;
   answers: Record<number, string>;
   activeIndex: number;
 }
-type StoredActiveAttempt = ActiveAttempt & { savedAt: number; revision?: string; parentRevision?: string | null };
+type StoredActiveAttempt = ActiveAttempt & { savedAt: number; revision?: string; parentRevision?: string | null; recoveryGeneration?: string | null };
 // Per-tab observation, not an assertion about the age of the answers in a later save.
 const observedLocal = new Map<number, string | null>();
 
@@ -50,6 +51,7 @@ function stored(kind: 'sessionStorage' | 'localStorage', storageKey: string) {
 
 export function readActiveAttempt(userId?: number): ActiveAttempt | null {
   if (!Number.isSafeInteger(userId) || !userId || userId < 0) return null;
+  observeRecovery(userId);
   const storageKey = key(userId);
   const now = Date.now();
   const session = stored('sessionStorage', storageKey);
@@ -64,13 +66,14 @@ export function readActiveAttempt(userId?: number): ActiveAttempt | null {
   const sessionBasedOnLocal = sessionAttempt?.revision && localAttempt?.revision &&
     sessionAttempt.parentRevision === localAttempt.revision;
   const selected = sessionBasedOnLocal ? sessionAttempt : localAttempt ?? sessionAttempt;
-  if (!selected) return null;
+  if (!selected || !recoveryIsCurrent(userId, selected.recoveryGeneration)) return null;
   const { examId, answers, activeIndex } = selected;
   return { examId, answers, activeIndex };
 }
 
 export function saveActiveAttempt(userId: number, value: ActiveAttempt): boolean {
   if (!Number.isSafeInteger(userId) || userId <= 0 || !value || typeof value !== 'object') return false;
+  if (!maySaveRecovery(userId)) return false;
   let serialized: string;
   const storageKey = key(userId);
   const local = stored('localStorage', storageKey);
@@ -81,7 +84,7 @@ export function saveActiveAttempt(userId: number, value: ActiveAttempt): boolean
       (!observedLocal.has(userId) || observedLocal.get(userId) !== local.raw)) return false;
   try {
     const checkpoint = { examId: value.examId, answers: value.answers, activeIndex: value.activeIndex,
-      savedAt: Date.now(), revision: crypto.randomUUID(),
+      savedAt: Date.now(), revision: crypto.randomUUID(), recoveryGeneration: recoveryGeneration(userId),
       parentRevision: parseCheckpoint(local.raw, Date.now())?.revision ?? null };
     if (!isValidAttempt(checkpoint, checkpoint.savedAt)) return false;
     serialized = JSON.stringify(checkpoint);

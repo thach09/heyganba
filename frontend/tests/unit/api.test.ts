@@ -191,6 +191,30 @@ test('logout waits for rotation and revokes the latest token', async () => {
   expect(new Headers(call[1].headers).get('Authorization')).toBe('Bearer new-access');
   expect(api.getAccessToken()).toBeNull();
 });
+
+test('a delayed logout response cannot sign out a different account', async () => {
+  const gate = deferred<Response>();
+  vi.stubGlobal('fetch', vi.fn().mockImplementation(() => gate.promise));
+  const api = await loadApi();
+  const pending = api.logoutApi();
+  api.saveTokens('account-b-access', 'account-b-refresh');
+  api.saveUser({ ...tokens, userId: 2 });
+  gate.resolve(success(null));
+  expect(await pending).toBe(false);
+  expect(api.getAccessToken()).toBe('account-b-access');
+  expect(api.getSavedUser()?.userId).toBe(2);
+});
+
+test('a delayed logout response cannot clear a newer login for the same account', async () => {
+  const gate = deferred<Response>();
+  vi.stubGlobal('fetch', vi.fn().mockImplementation(() => gate.promise));
+  const api = await loadApi();
+  const pending = api.logoutApi();
+  api.saveTokens('newer-session', 'newer-refresh');
+  gate.resolve(success(null));
+  expect(await pending).toBe(false);
+  expect(api.getAccessToken()).toBe('newer-session');
+});
 test('login rejection does not trigger refresh', async () => {
   const fetcher = vi.fn().mockResolvedValue(json({}, 401));
   vi.stubGlobal('fetch', fetcher);

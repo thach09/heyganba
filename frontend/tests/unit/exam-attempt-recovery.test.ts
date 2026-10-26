@@ -37,7 +37,7 @@ afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); });
 test('save writes only recovery fields and conflict metadata to both stores', () => {
   expect(saveActiveAttempt(7, attempt())).toBe(true);
   expect(readActiveAttempt(7)).toEqual(attempt());
-  expect(Object.keys(JSON.parse(local.values.get(key(7))!)).sort()).toEqual(['activeIndex', 'answers', 'examId', 'parentRevision', 'revision', 'savedAt']);
+  expect(Object.keys(JSON.parse(local.values.get(key(7))!)).sort()).toEqual(['activeIndex', 'answers', 'examId', 'parentRevision', 'recoveryGeneration', 'revision', 'savedAt']);
 });
 
 test('reopening a tab restores its fresh localStorage checkpoint without sessionStorage', () => {
