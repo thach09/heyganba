@@ -184,6 +184,7 @@ class PostgresSchemaStagingRehearsalTest {
         Flyway flyway = Flyway.configure()
                 .dataSource(urlB, user, pass)
                 .locations("classpath:db/migration", "classpath:db/migration-staging")
+                .target("11")
                 .cleanDisabled(true)
                 .load();
 
@@ -517,6 +518,7 @@ class PostgresSchemaStagingRehearsalTest {
         Flyway.configure()
                 .dataSource(urlB, user, pass)
                 .locations("classpath:db/migration", "classpath:db/migration-staging")
+                .target("11")
                 .cleanDisabled(true)
                 .load()
                 .migrate();

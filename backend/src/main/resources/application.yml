@@ -52,13 +52,12 @@ spring:
 
   flyway:
     enabled: true
-    baseline-on-migrate: true
+    baseline-on-migrate: false
     url: ${SPRING_FLYWAY_URL:${spring.datasource.url}}
     user: ${SPRING_FLYWAY_USER:${spring.datasource.username}}
     password: ${SPRING_FLYWAY_PASSWORD:${spring.datasource.password}}
-    # Hai thư mục hiện đều được nạp ở production và staging. `migration-staging` là tên thư mục lịch sử;
     # không phải trạng thái duyệt nội dung. Kiểm tra từng migration và nguồn trước khi phát hành.
-    locations: ${SPRING_FLYWAY_LOCATIONS:classpath:db/migration,classpath:db/migration-staging}
+    locations: classpath:db/migration,classpath:db/migration-release
 
   # Redis (Phase 2/5): chỉ được dùng khi app.srs.cache=redis. mặc định memory nên Redis không bắt buộc.
   data:

@@ -6,9 +6,7 @@ spring:
     show-sql: false
 
   flyway:
-    # Production nạp cả migration nền và migration-staging hiện có, gồm giáo trình HSK 1–6
-    # được thêm ở V9 cùng tính năng học tập V10. Kiểm tra nội dung và nguồn trước mỗi lần phát hành.
-    locations: ${SPRING_FLYWAY_LOCATIONS:classpath:db/migration,classpath:db/migration-staging}
+    locations: classpath:db/migration,classpath:db/migration-release
 
 management:
   endpoint:

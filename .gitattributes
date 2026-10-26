@@ -1,0 +1,8 @@
+
+# Immutable historical Flyway copies: preserve checksum-significant original whitespace.
+# Source/copy hashes, artifact allowlist and real PostgreSQL checksums remain enforced.
+backend/src/main/resources/db/migration-release/V4__sample_lesson_greetings.sql -whitespace
+backend/src/main/resources/db/migration-release/V5__hsk1_thematic_curriculum_expansion.sql -whitespace
+backend/src/main/resources/db/migration-release/V6__hsk1_standard_course_grammar_and_exams.sql -whitespace
+backend/src/main/resources/db/migration-release/V7__hsk1_complete_150_vocab_and_hanzi_radicals.sql -whitespace
+backend/src/main/resources/db/migration-release/V8__hsk2_standard_course_and_approve_all_curriculum.sql -whitespace

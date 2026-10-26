@@ -128,6 +128,52 @@
 
     <build>
         <directory>${build.output.root}</directory>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>application.yml</include>
+                    <include>application-prod.yml</include>
+                    <include>application-dev.yml</include>
+                    <include>application-staging.yml</include>
+                    <include>db/release-migrations-manifest.json</include>
+                    <include>db/migration/beforeEachMigrate.sql</include>
+                    <include>db/migration/V1__init_chinese_schema.sql</include>
+                    <include>db/migration/V2__seed_chinese_hsk1_data.sql</include>
+                    <include>db/migration/V3__disable_public_seed_admin_credential.sql</include>
+                    <include>db/migration-release/V4__sample_lesson_greetings.sql</include>
+                    <include>db/migration-release/V5__hsk1_thematic_curriculum_expansion.sql</include>
+                    <include>db/migration-release/V6__hsk1_standard_course_grammar_and_exams.sql</include>
+                    <include>db/migration-release/V7__hsk1_complete_150_vocab_and_hanzi_radicals.sql</include>
+                    <include>db/migration-release/V8__hsk2_standard_course_and_approve_all_curriculum.sql</include>
+                    <include>db/migration-release/V9__hsk1_to_hsk6_complete_curriculum_and_grammar.sql</include>
+                    <include>db/migration-release/V10__learning_insights_and_sentence_order.sql</include>
+                    <include>db/migration-release/V11__align_optional_content_nullability.sql</include>
+                    <include>db/migration-release/V12__performance_indexes_and_constraints.sql</include>
+                    <include>db/migration-release/V13__vocabulary_provenance_review_gate.sql</include>
+                    <include>db/migration-release/V14__web_cross_check_evidence_policy.sql</include>
+                </includes>
+            </resource>
+        </resources>
+        <testResources>
+            <testResource><directory>src/test/resources</directory></testResource>
+            <testResource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>db/migration-staging/V4__sample_lesson_greetings.sql</include>
+                    <include>db/migration-staging/V5__hsk1_thematic_curriculum_expansion.sql</include>
+                    <include>db/migration-staging/V6__hsk1_standard_course_grammar_and_exams.sql</include>
+                    <include>db/migration-staging/V7__hsk1_complete_150_vocab_and_hanzi_radicals.sql</include>
+                    <include>db/migration-staging/V8__hsk2_standard_course_and_approve_all_curriculum.sql</include>
+                    <include>db/migration-staging/V9__hsk1_to_hsk6_complete_curriculum_and_grammar.sql</include>
+                    <include>db/migration-staging/V10__learning_insights_and_sentence_order.sql</include>
+                    <include>db/migration-staging/V11__align_optional_content_nullability.sql</include>
+                    <include>db/migration-staging/V12__performance_indexes_and_constraints.sql</include>
+                    <include>db/migration-staging/V13__vocabulary_provenance_review_gate.sql</include>
+                    <include>db/migration-staging/V14__web_cross_check_evidence_policy.sql</include>
+                </includes>
+            </testResource>
+        </testResources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId><artifactId>maven-surefire-plugin</artifactId>
