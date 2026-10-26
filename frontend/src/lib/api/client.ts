@@ -150,12 +150,18 @@ export async function apiBlob(endpoint: string, options: RequestInit = {}): Prom
   } finally { deadline.dispose(); }
 }
 export async function logoutApi(): Promise<boolean> {
-  if (refreshInFlight) await refreshInFlight;
+  const owner = getSavedUser()?.userId;
+  const beforeRotation = getSessionEpoch();
+  if (refreshInFlight) {
+    const rotated = await refreshInFlight;
+    if (!rotated || getSessionEpoch() !== beforeRotation + 1 || getSavedUser()?.userId !== owner) return false;
+  }
+  const epoch = getSessionEpoch();
   const token = getAccessToken();
   const refreshToken = getRefreshToken();
   if (!COOKIE_AUTH && !token && !refreshToken) return true;
   const response = await apiRequest<void>('/auth/logout', {
     method: 'POST', body: JSON.stringify({ refreshToken: refreshToken || undefined }),
   });
-  return response.success;
+  return response.success && getSessionEpoch() === epoch && getSavedUser()?.userId === owner;
 }
