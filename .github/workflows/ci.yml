@@ -35,6 +35,9 @@ jobs:
         working-directory: ./backend
         run: mvn -B clean verify
 
+      - name: Test offline vocabulary research pipeline
+        run: python3 -m unittest scripts.vocabulary_pipeline.test_engine -v
+
       - name: Verify controlled production artifact
         run: python3 scripts/audit-production-artifact.py --jar backend/target/heyganba-backend-0.0.1-SNAPSHOT.jar --test-rejections
 

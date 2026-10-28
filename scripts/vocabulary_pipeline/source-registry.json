@@ -1,0 +1,56 @@
+{
+  "version": "JIAYOU_SOURCE_REGISTRY_V1",
+  "reviewedOn": "2026-10-28",
+  "sources": [
+    {
+      "id": "cc-cedict", "canonicalUrl": "https://www.mdbg.net/chinese/dictionary?page=cc-cedict",
+      "publisher": "MDBG / CC-CEDICT contributors", "authors": "Contributors; historic CEDICT by Paul Andrew Denisowski",
+      "datasetUrl": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+      "adapter": "cedict-v1", "compression": "gzip", "family": "cedict", "lineageFamilies": ["cedict"], "independenceStatus": "ESTABLISHED",
+      "licenseId": "CC-BY-SA-4.0", "licenseEvidenceUrl": "https://www.mdbg.net/chinese/dictionary?page=cc-cedict",
+      "licenseStatus": "CONDITIONALLY_REUSABLE", "accessStatus": "PUBLIC_EXPORT",
+      "attribution": "CC-CEDICT contributors, published by MDBG; https://www.mdbg.net/chinese/dictionary?page=cc-cedict",
+      "obligations": ["Retain creator and source notices", "Link CC BY-SA 4.0", "Identify modifications", "License adaptations under CC BY-SA 4.0", "No additional restrictions"],
+      "scope": ["word", "traditional", "reading", "English definitions", "explicit POS only"],
+      "restrictions": "Download the offered export only. No automated dictionary search scraping.",
+      "minimumRequestIntervalSeconds": 2, "maxAgeDays": 30, "trustStatus": "REGISTERED_NOT_A_PUBLICATION_GRANT"
+    },
+    {
+      "id": "cvdict", "canonicalUrl": "https://github.com/ph0ngp/CVDICT",
+      "publisher": "Unverified (upstream unavailable)", "authors": "Unverified",
+      "datasetUrl": "https://raw.githubusercontent.com/ph0ngp/CVDICT/main/CVDICT.u8", "adapter": "cvdict-v1",
+      "family": "cvdict-unresolved", "lineageFamilies": ["cedict", "cvdict-unresolved"], "independenceStatus": "UNRESOLVED",
+      "licenseId": "UNVERIFIED", "licenseEvidenceUrl": "https://github.com/ph0ngp/CVDICT",
+      "licenseStatus": "UNRESOLVED", "accessStatus": "UNAVAILABLE_404",
+      "attribution": "Not available", "obligations": [], "scope": [],
+      "restrictions": "Do not assume the user-suggested license or independent origin; API and raw URL returned 404 on 2026-10-28.",
+      "indexedUpstreamClaim": "Search index of upstream README declares CC BY-SA 4.0 and translation from CC-CEDICT; live API, main/master raw and README retrieval returned 404. This indexed claim is not a retrieved dataset or an independent second source.",
+      "minimumRequestIntervalSeconds": 2, "maxAgeDays": 7, "trustStatus": "NEEDS_RESEARCH"
+    },
+    {
+      "id": "en-wiktionary", "canonicalUrl": "https://en.wiktionary.org/",
+      "publisher": "Wikimedia / Wiktionary contributors", "authors": "Per-page history at pinned revision",
+      "datasetUrl": "https://en.wiktionary.org/w/api.php?action=parse&page=", "adapter": "wiktionary-mandarin-v1",
+      "family": "wiktionary", "lineageFamilies": ["wiktionary"], "independenceStatus": "UNRESOLVED_PER_ENTRY",
+      "licenseId": "CC-BY-SA-4.0", "licenseEvidenceUrl": "https://en.wiktionary.org/wiki/Wiktionary:Copyrights",
+      "licenseStatus": "CONDITIONALLY_REUSABLE", "accessStatus": "PUBLIC_EXPORT",
+      "attribution": "Wiktionary contributors; retain page URL, revision ID and history link for each extraction",
+      "obligations": ["Retain page and history attribution", "Link CC BY-SA 4.0", "Identify modifications", "ShareAlike for adaptations", "Exclude externally quoted or separately licensed text"],
+      "scope": ["Mandarin explicit pronunciation", "plain English lexical definitions", "explicit POS"],
+      "restrictions": "No quotations/audio. Conservative parser rejects complex templates and ambiguous etymologies. CC-CEDICT references collapse independence; other Wiktionary locales are the same family.",
+      "minimumRequestIntervalSeconds": 5, "maxAgeDays": 30, "trustStatus": "REGISTERED_ENTRY_LINEAGE_REQUIRES_CHECK"
+    },
+    {
+      "id": "tatoeba", "canonicalUrl": "https://tatoeba.org/",
+      "publisher": "Tatoeba contributors", "authors": "Sentence-level author required",
+      "datasetUrl": "https://tatoeba.org/en/downloads", "adapter": "unsupported",
+      "family": "tatoeba", "lineageFamilies": ["tatoeba"], "independenceStatus": "UNRESOLVED_PER_ENTRY",
+      "licenseId": "SENTENCE_SPECIFIC", "licenseEvidenceUrl": "https://en.wiki.tatoeba.org/articles/show/using-the-tatoeba-corpus",
+      "licenseStatus": "UNRESOLVED", "accessStatus": "NOT_ENABLED",
+      "attribution": "Sentence ID, author, license and link must be retained",
+      "obligations": ["Check each sentence and translation license", "Retain author attribution", "Audio requires separate permission"],
+      "scope": [], "restrictions": "No sentence import before author and license are bound; no audio import.",
+      "minimumRequestIntervalSeconds": 2, "maxAgeDays": 30, "trustStatus": "NEEDS_ADAPTER_AND_SENTENCE_RIGHTS"
+    }
+  ]
+}
