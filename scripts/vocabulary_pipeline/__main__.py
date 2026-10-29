@@ -9,7 +9,7 @@ import time
 import urllib.parse
 from datetime import datetime, timezone, timedelta
 
-from .engine import Store, Ledger, canonical, strict_json, fetch, verify, postgres_staging_sql, soft_redirect_target, duplicate_audit
+from .engine import Store, Ledger, canonical, strict_json, fetch, verify, postgres_staging_sql, soft_redirect_target, duplicate_audit, RULESET
 from .ingestion import pending_import_sql
 from .assessors import CommandAssessor, from_environment
 
@@ -116,6 +116,7 @@ def main():
     run.add_argument("--output", required=True)
     run.add_argument("--assessor-command", help="Operator-controlled JSON argv array, no shell")
     run.add_argument("--pending-import-output", help="Optional private NEW Flyway candidate; only fresh AUTO_VERIFIED results, never auto-apply")
+    run.add_argument("--pending-corrections-output", help="Private guarded orthography/POS patch; changed fields must be VERIFIED, whole record stays pending")
     args = parser.parse_args()
     root = pathlib.Path(args.private_dir).resolve()
     repo = pathlib.Path(__file__).resolve().parents[2]
@@ -188,12 +189,13 @@ def main():
     finally:
         ledger.db.close()
     counts = dict(collections.Counter(result["decision"] for _, result in rows))
-    manifest = {"version": "JIAYOU_RESEARCH_MANIFEST_V1", "ruleset": "JIAYOU_LEXICAL_V1",
+    manifest = {"version": "JIAYOU_RESEARCH_MANIFEST_V1", "ruleset": RULESET,
                 "createdAt": now.isoformat(), "records": [result for _, result in rows],
                 "counts": counts, "ledgerWrites": writes, "applicationVocabularyWrites": 0,
                 "publicationReceiptsIssued": 0, "durationSeconds": round(time.monotonic() - start, 4)}
-    manifest.update(recordTimings=timings, aiAssessorConfigured=bool(command) and not command.is_mock,
-                    assessorMode="DISABLED" if command is None else "MOCK_PROTOCOL_ONLY" if command.is_mock else "CONFIGURED_EXTERNAL_ASSESSOR",
+    manifest.update(recordTimings=timings, aiAssessorConfigured=bool(command) and not command.is_mock and getattr(command, "available", True),
+                    assessorMode="DISABLED" if command is None else "MOCK_PROTOCOL_ONLY" if command.is_mock else "CONFIGURED_EXTERNAL_ASSESSOR" if getattr(command, "available", True) else "PROVIDER_UNAVAILABLE",
+                    providerHttpAttempts=getattr(command, "calls", 0),
                     monetaryCost=None)
     manifest["duplicates"] = duplicate_audit(candidates)
     pathlib.Path(args.output).write_bytes(canonical(manifest) + b"\n")
@@ -206,6 +208,25 @@ def main():
         if eligible:
             with planned.open("x", encoding="utf8") as stream:
                 stream.write(pending_import_sql(eligible, store))
+    if args.pending_corrections_output:
+        planned = pathlib.Path(args.pending_corrections_output).resolve()
+        if not planned.is_relative_to(root):
+            parser.error("Correction proposal must stay inside the private evidence directory")
+        scripts, proposals = [], []
+        for candidate, result in rows:
+            if not isinstance(candidate, dict) or not candidate.get("expectedContent"):
+                continue
+            try:
+                script = pending_import_sql([(candidate, result)], store, allow_field_corrections=True)
+                scripts.append(script)
+                proposals.append({"candidateId": candidate["candidateId"], "status": "VERIFIED_FIELDS_ONLY_PENDING", "recordDecision": result["decision"]})
+            except ValueError:
+                proposals.append({"candidateId": candidate["candidateId"], "status": "BLOCKED_FIELD_OR_SENSE_EVIDENCE", "recordDecision": result["decision"]})
+        if scripts:
+            with planned.open("x", encoding="utf8") as stream:
+                stream.write("\n".join(scripts))
+        manifest["correctionProposals"] = proposals
+        pathlib.Path(args.output).write_bytes(canonical(manifest) + b"\n")
     print(json.dumps({key: manifest[key] for key in ("counts", "ledgerWrites", "applicationVocabularyWrites", "publicationReceiptsIssued", "durationSeconds")}))
 
 

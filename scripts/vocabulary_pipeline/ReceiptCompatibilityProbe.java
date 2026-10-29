@@ -49,7 +49,7 @@ class ReceiptCompatibilityProbe {
         var trust = new Trust(Map.of(new KeyIdentity("test", "key"), new TrustedKey(key.getPublic(), Instant.EPOCH, now.plusSeconds(60), true)), Set.of(), Set.of(), now);
         var expected = new ExpectedBinding("fixture:vocabulary:1", 0, VocabularyContentDigest.VERSION, actualDigest,
             Set.of(Field.WORD, Field.TRADITIONAL, Field.READING, Field.MEANING, Field.PART_OF_SPEECH));
-        var policy = new Policy("WEB_CROSS_CHECKED", "JIAYOU_LEXICAL_V1", "JIAYOU_LEXICAL_V1",
+        var policy = new Policy("WEB_CROSS_CHECKED", "JIAYOU_LEXICAL_V1_1", "JIAYOU_LEXICAL_V1_1",
             Map.of("a", new SourceRegistration("cedict", SourceKind.LEXICAL, Set.of(Field.values()), Set.of()),
                    "b", new SourceRegistration("wiktionary", SourceKind.LEXICAL, Set.of(Field.values()), Set.of())), false, false);
         var verifier = new VocabularyEvidenceReceiptVerifier();

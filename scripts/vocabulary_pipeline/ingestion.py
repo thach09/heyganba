@@ -17,7 +17,7 @@ def literal(value):
     return "'" + value.replace("'", "''") + "'"
 
 
-def pending_import_sql(rows, store):
+def pending_import_sql(rows, store, *, allow_field_corrections=False):
     """Fully verified lexical candidates only. Unchanged import is a no-op.
 
     Stable sense bindings, transactional advisory lock and exact effective-field
@@ -32,7 +32,15 @@ def pending_import_sql(rows, store):
     seen = set()
     for candidate, result in rows:
         content = candidate["content"]
-        if (result.get("decision") != "AUTO_VERIFIED" or result.get("contentDigest") != digest(content)
+        before_content = candidate.get("expectedContent", {})
+        changed_fields = [f for f in FIELDS if content.get(f) != before_content.get(f)]
+        partial = (allow_field_corrections and candidate.get("vocabularyId") is not None
+                   and result.get("decision") == "NEEDS_RESEARCH" and bool(changed_fields)
+                   and set(changed_fields) <= {"traditional", "partOfSpeech"}
+                   and ("partOfSpeech" not in changed_fields or result.get("semanticAssessment", {}).get("verdict") == "EQUIVALENT")
+                   and all(result.get("fields", {}).get(f, {}).get("result") == "VERIFIED"
+                           and result["fields"][f].get("evidence") for f in changed_fields))
+        if ((result.get("decision") != "AUTO_VERIFIED" and not partial) or result.get("contentDigest") != digest(content)
                 or result.get("identity") != identity(content, candidate["senseId"]) or result.get("identity") in seen):
             raise ValueError("Only distinct, current AUTO_VERIFIED candidates may be planned")
         vocabulary_id = candidate.get("vocabularyId")
@@ -47,7 +55,7 @@ def pending_import_sql(rows, store):
         for source in result["sources"]:
             store.get(source["snapshotSha256"])
             store.get(source["extractionSha256"])
-        if any(content.get(f) is not None for f in FIELDS[5:]):
+        if not partial and any(content.get(f) is not None for f in FIELDS[5:]):
             raise ValueError("Optional-field import capability is not implemented; keep optional data absent")
         values = {f: literal(content.get(f)) for f in FIELDS}
         key, fingerprint, bundle = (literal(result[f]) for f in ("identity", "contentDigest", "evidenceBundleSha256"))
@@ -55,7 +63,8 @@ def pending_import_sql(rows, store):
         # Ingesting a second homograph is deliberately refused rather than merging learner identities.
         lock_key = literal("jiayou-research:" + content["word"])
         metadata_json = canonical({"ruleset": RULESET, "bundleSha256": result["evidenceBundleSha256"],
-                                      "status": "LINGUISTICALLY_VERIFIED_NOT_PUBLISHED",
+                                      "status": "VERIFIED_FIELDS_ONLY_PENDING" if partial else "LINGUISTICALLY_VERIFIED_NOT_PUBLISHED",
+                                      "recordDecision": result["decision"], "changedFields": changed_fields if partial else list(FIELDS),
                                       "attribution": [{k: s[k] for k in ("sourceId", "license", "attribution", "obligations", "sourceUrl", "sourceVersion", "revisionUrls", "relatedSources")} for s in result["sources"]]})
         metadata = "convert_from(decode('" + metadata_json.hex() + "','hex'),'UTF8')"
         checks = " AND ".join(column + " IS NOT DISTINCT FROM " + values[field]
@@ -75,7 +84,9 @@ def pending_import_sql(rows, store):
             before_checks = " AND ".join(column + " IS NOT DISTINCT FROM " + before[f] for column, f in zip(columns, FIELDS))
             assignments = ",".join(column + "=" + values[f] for column, f in [
                 ("word", "word"), ("traditional", "traditional"), ("pinyin", "reading"), ("reading", "reading"),
-                ("meaning_vi", "meaning"), ("meaning", "meaning"), ("part_of_speech", "partOfSpeech")])
+                ("meaning_vi", "meaning"), ("meaning", "meaning"), ("part_of_speech", "partOfSpeech")]
+                                   if not partial or f in changed_fields)
+            clear_optional = ("" if partial else ",pinyin_normalized=NULL,han_viet=NULL,sino_vietnamese=NULL,example_zh=NULL,example_sentence=NULL,example_pinyin=NULL,example_reading=NULL,example_vi=NULL,example_meaning=NULL,meaning_source_ref=NULL,han_viet_source_ref=NULL,example_source_ref=NULL")
             action = f"""
     PERFORM id FROM vocabulary WHERE id={vocabulary_id} FOR UPDATE;
     IF EXISTS(SELECT 1 FROM vocabulary WHERE id={vocabulary_id} AND review_status IN ('ARCHIVED','REJECTED')) THEN
@@ -88,7 +99,7 @@ def pending_import_sql(rows, store):
     IF EXISTS(SELECT 1 FROM vocabulary WHERE word={values['word']} AND id<>{vocabulary_id}) THEN
       RAISE EXCEPTION 'Correction collides with existing word identity';
     END IF;
-    UPDATE vocabulary SET {assignments},pinyin_normalized=NULL,han_viet=NULL,sino_vietnamese=NULL,example_zh=NULL,example_sentence=NULL,example_pinyin=NULL,example_reading=NULL,example_vi=NULL,example_meaning=NULL,review_status='PENDING_REVIEW',verification_method='WEB_CROSS_CHECKED',verification_policy_version={literal(RULESET)},verification_evidence_json={metadata},source_ref='jiayou-research:'||{key},source_version={source_version},lexical_source_ref=NULL,meaning_source_ref=NULL,han_viet_source_ref=NULL,example_source_ref=NULL,han_viet_verified=false,example_verified=false,provenance_content_sha256=NULL,reviewed_at=NULL,reviewed_by=NULL WHERE id={vocabulary_id};
+    UPDATE vocabulary SET {assignments}{clear_optional},review_status='PENDING_REVIEW',verification_method='WEB_CROSS_CHECKED',verification_policy_version={literal(RULESET)},verification_evidence_json={metadata},source_ref='jiayou-research:'||{key},source_version={source_version},lexical_source_ref=NULL,han_viet_verified=false,example_verified=false,provenance_content_sha256=NULL,reviewed_at=NULL,reviewed_by=NULL WHERE id={vocabulary_id};
     INSERT INTO audit_logs(table_name,record_id,action,before_value,after_value) VALUES('vocabulary',{vocabulary_id},'UPDATE',{literal(candidate['expectedDigest'])},{fingerprint});
     UPDATE vocabulary_research_bindings SET sense_identity={key},content_digest={fingerprint},evidence_bundle_sha256={bundle} WHERE vocabulary_id={vocabulary_id};
     IF NOT FOUND THEN
@@ -111,7 +122,14 @@ BEGIN
   PERFORM pg_advisory_xact_lock(hashtextextended({lock_key},0));
   SELECT vocabulary_id,content_digest INTO bound_id,bound_digest FROM vocabulary_research_bindings WHERE sense_identity={key} FOR UPDATE;
   {"" if vocabulary_id is None else "IF bound_id IS NOT NULL AND bound_id<>" + str(vocabulary_id) + " THEN RAISE EXCEPTION 'Identity belongs to another vocabulary'; END IF;"}
+  IF bound_id IS NOT NULL THEN
+    PERFORM id FROM vocabulary WHERE id=bound_id FOR UPDATE;
+  END IF;
   IF bound_id IS NOT NULL AND bound_digest={fingerprint} AND EXISTS(SELECT 1 FROM vocabulary WHERE id=bound_id AND {checks}) THEN
+    IF EXISTS(SELECT 1 FROM vocabulary WHERE id=bound_id AND review_status IN ('ARCHIVED','REJECTED')) OR
+       NOT EXISTS(SELECT 1 FROM audit_logs WHERE id=(SELECT max(id) FROM audit_logs WHERE table_name='vocabulary' AND record_id=bound_id AND action IN ('CREATE','UPDATE','ARCHIVE','REJECT','PROVENANCE','PROVENANCE_UPDATE','PUBLISH_REVOKE')) AND action IN ('CREATE','UPDATE') AND after_value=bound_digest) THEN
+      RAISE EXCEPTION 'Bound research was superseded or withdrawn; verify again before planning';
+    END IF;
     NULL;
   ELSE
     {"IF bound_id IS NOT NULL THEN RAISE EXCEPTION 'Stale research import: explicit correction plan required'; END IF;" if vocabulary_id is None else "IF bound_id IS NOT NULL AND bound_id<>" + str(vocabulary_id) + " THEN RAISE EXCEPTION 'Identity belongs to another vocabulary'; END IF;"}

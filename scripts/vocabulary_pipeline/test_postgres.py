@@ -19,6 +19,46 @@ from . import test_engine as fixtures
 
 @unittest.skipUnless(os.environ.get("JIAYOU_LOCAL_POSTGRES_CONFIG"), "Requires explicitly configured isolated PostgreSQL Docker audit")
 class PostgreSQLIngestionTest(unittest.TestCase):
+    def test_verified_field_only_correction_preserves_optional_and_guards_revision(self):
+        cfg = e.strict_json(pathlib.Path(os.environ["JIAYOU_LOCAL_POSTGRES_CONFIG"]).read_bytes())
+        self.assertTrue(cfg["name"].startswith("jiayou-vocabulary-pg-"))
+        container = json.loads(subprocess.check_output(["docker", "inspect", cfg["name"]]))[0]
+        self.assertEqual("vocabulary-20261028", container["Config"]["Labels"].get("jiayou.audit"))
+        database = "jiayou_ingestion_" + uuid.uuid4().hex[:12]
+        def sql(text, db=database, fail=False):
+            result = subprocess.run(["docker", "exec", "-i", cfg["name"], "psql", "-X", "-U", cfg["user"], "-d", db, "-v", "ON_ERROR_STOP=1", "-tA"],
+                                    input=text.encode("utf8"), capture_output=True)
+            if fail:
+                self.assertNotEqual(0, result.returncode)
+            else:
+                self.assertEqual(0, result.returncode, result.stderr.decode("utf8"))
+            return result.stdout.decode("utf8").strip()
+        sql("CREATE DATABASE " + database + " TEMPLATE jiayou_fixture;", db=cfg["database"])
+        fixture = fixtures.PipelineTest()
+        fixture.setUp()
+        self.addCleanup(fixture.doCleanups)
+        old = fixtures.candidate(traditional="测试", hanViet="draft only", exampleZh="未核实")
+        sql("UPDATE vocabulary SET word='测试',traditional='测试',pinyin='cè shì',reading='cè shì',meaning_vi='thử nghiệm',meaning='thử nghiệm',part_of_speech='noun',han_viet='draft only',sino_vietnamese='draft only',example_zh='未核实',example_sentence='未核实',example_pinyin=NULL,example_reading=NULL,example_vi=NULL,example_meaning=NULL WHERE id=173;")
+        corrected = copy.deepcopy(old)
+        corrected["content"]["traditional"] = "測試"
+        corrected.update(vocabularyId=173, eligibilityRevision=0, expectedContent=old["content"], expectedDigest=e.digest(old["content"]))
+        result = fixture.check(corrected)
+        self.assertEqual("NEEDS_RESEARCH", result["decision"])
+        plan = pending_import_sql([(corrected, result)], fixture.store, allow_field_corrections=True)
+        optional_query = "SELECT row_to_json(t) FROM (SELECT han_viet,sino_vietnamese,example_zh,example_sentence,example_pinyin,example_reading,example_vi,example_meaning,lesson_id FROM vocabulary WHERE id=173) t;"
+        before = sql(optional_query)
+        sql("BEGIN;\n" + plan + "\nCOMMIT;")
+        self.assertEqual(before, sql(optional_query))
+        self.assertEqual("測試|PENDING_REVIEW|f|f", sql("SELECT traditional,review_status,han_viet_verified,example_verified FROM vocabulary WHERE id=173;"))
+        revision = sql("SELECT max(id) FROM audit_logs WHERE table_name='vocabulary' AND record_id=173;")
+        sql("BEGIN;\n" + plan + "\nCOMMIT;")
+        self.assertEqual(revision, sql("SELECT max(id) FROM audit_logs WHERE table_name='vocabulary' AND record_id=173;"))
+        sql("INSERT INTO audit_logs(table_name,record_id,action) VALUES('vocabulary',173,'PUBLISH_REVOKE');")
+        sql("BEGIN;\n" + plan + "\nCOMMIT;", fail=True)
+        sql("UPDATE vocabulary SET review_status='ARCHIVED' WHERE id=173;")
+        sql("BEGIN;\n" + plan + "\nCOMMIT;", fail=True)
+        self.assertEqual(before, sql(optional_query))
+
     def test_transactional_import_correction_and_learner_identity(self):
         cfg = e.strict_json(pathlib.Path(os.environ["JIAYOU_LOCAL_POSTGRES_CONFIG"]).read_bytes())
         self.assertTrue(cfg["name"].startswith("jiayou-vocabulary-pg-"))
@@ -82,6 +122,17 @@ class PostgreSQLIngestionTest(unittest.TestCase):
         self.assertEqual(learning_before, sql(learning_query))
         self.assertEqual("PENDING_REVIEW", sql(f"SELECT review_status FROM vocabulary WHERE id={vocabulary_id};").strip())
         self.assertEqual(baseline + 1, int(sql("SELECT count(*) FROM vocabulary;")))
+        # Reject stale no-op after provenance changes, but a new verified correction
+        # with the actual before-content/revision must not be permanently locked out.
+        sql(f"INSERT INTO audit_logs(table_name,record_id,action) VALUES('vocabulary',{vocabulary_id},'PROVENANCE_UPDATE');")
+        sql("BEGIN;\n" + correction + "\nCOMMIT;", fail=True)
+        fresh = fixtures.candidate(meaning="bài kiểm tra mới")
+        fresh.update(vocabularyId=vocabulary_id, expectedContent=corrected["content"], expectedDigest=e.digest(corrected["content"]),
+                     eligibilityRevision=int(sql(f"SELECT max(id) FROM audit_logs WHERE table_name='vocabulary' AND record_id={vocabulary_id};")))
+        fresh_plan = pending_import_sql([(fresh, fixture.automatically_verified(fresh))], fixture.store)
+        sql("BEGIN;\n" + fresh_plan + "\nCOMMIT;")
+        self.assertEqual("bài kiểm tra mới", sql(f"SELECT meaning_vi FROM vocabulary WHERE id={vocabulary_id};").strip())
+        self.assertEqual(learning_before, sql(learning_query))
         sql(f"UPDATE vocabulary SET review_status='ARCHIVED' WHERE id={vocabulary_id}; INSERT INTO audit_logs(table_name,record_id,action) VALUES('vocabulary',{vocabulary_id},'ARCHIVE');")
         archived_revision = int(sql(f"SELECT max(id) FROM audit_logs WHERE table_name='vocabulary' AND record_id={vocabulary_id};"))
         retry = copy.deepcopy(corrected)

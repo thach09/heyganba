@@ -1,4 +1,6 @@
-# Vocabulary verification policy — JIAYOU_LEXICAL_V1
+# Vocabulary verification policy — JIAYOU_LEXICAL_V1_1
+
+V1.1 giữ nguyên ngưỡng linguistic verification và receipt/content-digest contract của V1. Thay đổi là parser Mandarin có scope pronunciation rõ hơn, diagnostics theo nguồn, adapter HTTP assessor và correction pending giới hạn theo field; không nới quyền AUTO_VERIFIED/publication.
 
 Không bắt buộc người duyệt từng từ. Không chấp nhận URL, domain, confidence, flag APPROVED hoặc JSON tự khai làm bằng chứng xuất bản.
 
@@ -31,7 +33,13 @@ Request chứa source text dưới dạng dữ liệu không tin cậy, yêu c�
 
 [assessors.py](../../scripts/vocabulary_pipeline/assessors.py) định nghĩa protocol `run(bytes) -> bytes`, command adapter không qua shell và registry factory cho provider mới.
 
-Mặc định `JIAYOU_ASSESSOR_PROVIDER=disabled`. Có thể cấu hình `command` với `JIAYOU_ASSESSOR_COMMAND` là JSON argv cho wrapper Gemini/OpenAI/provider khác do operator quản lý. Wrapper nhận JSON trên stdin và trả JSON trên stdout. API key nằm trong môi trường/secret manager của wrapper, không nằm trong argv, Git, SQL, JAR hay frontend. Đây là điểm tích hợp; **chưa có Gemini/OpenAI network adapter hoặc credential thật được thiết lập**.
+Mặc định `JIAYOU_ASSESSOR_PROVIDER=disabled`. `command` với `JIAYOU_ASSESSOR_COMMAND` là JSON argv cho wrapper do operator quản lý. Wrapper nhận JSON trên stdin và trả JSON trên stdout.
+
+Adapter REST stdlib hỗ trợ `JIAYOU_ASSESSOR_PROVIDER=openai` hoặc `gemini`, với `OPENAI_API_KEY` hoặc `GEMINI_API_KEY`, `JIAYOU_ASSESSOR_MODEL` và `JIAYOU_ASSESSOR_AUTHOR_MODEL` bắt buộc. Không có default model hoặc key được tạo sẵn. Không dùng credential Codex/ChatGPT thay API key. Thiếu cấu hình trả NEEDS_RESEARCH có reason, không dừng toàn batch. Key chỉ nằm trong header gửi endpoint chính thức qua HTTPS; không theo redirect, không ghi key vào argv/Git/evidence. OpenAI dùng Responses API với `store=false`; các nghĩa được gửi vẫn chịu chính sách provider do operator lựa chọn.
+
+Structured output gồm các checks meaning/vietnamese/reading/partOfSpeech/classifiers/context/sourceDisagreements. CONFLICT luôn thắng verdict tương đương; UNKNOWN giữ nghiên cứu lại. Model/version/response ID lấy từ metadata API, request binding và evidence hashes phải hợp lệ. Tên author model do operator khai báo là điều kiện vận hành, không phải bằng chứng độc lập được chứng thực; cùng model hoặc alias bị từ chối. Không đếm model thành source family. Timeout tối đa 60 giây/lần, tối đa 3 attempts, response tối đa 1 MiB; chỉ retry lỗi mạng/429/5xx hữu hạn và tôn trọng cooldown dài bằng cách dừng. Xem [OpenAI structured outputs](https://developers.openai.com/api/docs/guides/structured-outputs?api-mode=responses), [Gemini structured output](https://ai.google.dev/gemini-api/docs/generate-content/structured-output).
+
+Chưa có credentials/model độc lập thật trong môi trường phiên 2026-10-28. Kiểm thử HTTP mock chứng minh protocol, không chứng minh tính đúng ngữ nghĩa hoặc kết nối provider thật.
 
 Response gồm `requestSha256`, `verdict` (`EQUIVALENT`/`CONFLICT`/`UNCERTAIN`), `vietnameseNatural`, `provider`, `modelVersion`, `rationale`, `supportingExtractions` (tối đa 8 hash hợp lệ). Lỗi process/timeout/JSON hoặc binding trả về nghiên cứu lại.
 
@@ -52,6 +60,8 @@ Ledger SQLite private dùng transaction và optimistic concurrency cho cả cont
 - Attribution/license obligations đi theo metadata; optional import hiện chỉ hỗ trợ các trường optional vắng mặt. Optional còn draft cần batch xử lý riêng, không tự loại bỏ để ký receipt.
 
 Candidate này cần rehearsal và một release được kiểm soát sau đó; chưa thay schema/manifest V14 đang phát hành. Mọi migration lịch sử V1–V23 được giữ nguyên.
+
+`--pending-corrections-output` là opt-in riêng: chỉ bản ghi có ID/before-content/digest/revision và decision NEEDS_RESEARCH, chỉ thay traditional/POS đã có kết quả VERIFIED theo ngưỡng field hiện có. Không đổi word/reading/meaning, không nhận CONFLICT/LICENSE_BLOCKED, không tạo từ mới hoặc cấp AUTO_VERIFIED. Giữ nguyên optional draft bytes và quan hệ học viên, hạ pending/verified flags và vô hiệu hóa digest publication cũ. POS vẫn cần hai family độc lập và semantic verdict EQUIVALENT cho đúng sense; traditional theo policy hiện có cần bằng chứng nguồn trực tiếp. Đây là sửa draft theo field, không phải phát hành một record đã duyệt. Rerun cả import/correction kiểm tra audit thu hồi mới hơn trước khi nhận no-op.
 
 `receipt_payload()` xuất đúng unsigned V1 contract cho vocabulary đã có ID. Sau ingestion phải đọc lại effective fields và revision từ DB, xác minh lại rồi mới dùng issuer được operator cho phép. Thiếu catalog/rights/key trust thì publication vẫn chặn. Pipeline không tạo key/rights grant, không đăng ký issuer và không ký receipt production.
 

@@ -41,6 +41,19 @@
       "minimumRequestIntervalSeconds": 5, "maxAgeDays": 30, "trustStatus": "REGISTERED_ENTRY_LINEAGE_REQUIRES_CHECK"
     },
     {
+      "id": "vi-wiktionary", "canonicalUrl": "https://vi.wiktionary.org/",
+      "publisher": "Wikimedia / Vietnamese Wiktionary contributors", "authors": "Per-page history at pinned revision",
+      "datasetUrl": "https://vi.wiktionary.org/w/api.php?action=parse&page=", "adapter": "vi-wiktionary-mandarin-v1",
+      "family": "wiktionary", "lineageFamilies": ["wiktionary"], "independenceStatus": "UNRESOLVED_PER_ENTRY",
+      "licenseId": "CC-BY-SA-4.0", "licenseEvidenceUrl": "https://vi.wiktionary.org/w/api.php?action=query&meta=siteinfo&siprop=rightsinfo&format=json",
+      "licenseStatus": "CONDITIONALLY_REUSABLE", "accessStatus": "PUBLIC_EXPORT",
+      "attribution": "Vietnamese Wiktionary contributors; preserve original page, revision and history links",
+      "obligations": ["Retain page/history attribution", "Link CC BY-SA 4.0", "Identify modifications", "ShareAlike for adaptations", "Exclude external quotations and Hán-Nôm-only senses"],
+      "scope": ["Explicit Mandarin section only", "Vietnamese lexical definitions", "explicit POS", "Pinyin"],
+      "restrictions": "Same family as English Wiktionary; never independent corroboration of another Wikimedia extraction. No inferred modern Mandarin meanings from Hán-Việt characters.",
+      "minimumRequestIntervalSeconds": 5, "maxAgeDays": 30, "trustStatus": "REGISTERED_ENTRY_LINEAGE_REQUIRES_CHECK"
+    },
+    {
       "id": "tatoeba", "canonicalUrl": "https://tatoeba.org/",
       "publisher": "Tatoeba contributors", "authors": "Sentence-level author required",
       "datasetUrl": "https://tatoeba.org/en/downloads", "adapter": "unsupported",
