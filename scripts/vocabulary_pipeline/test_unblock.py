@@ -67,6 +67,17 @@ class AssessorContractTest(unittest.TestCase):
         self.assertFalse(adapter.available)
         self.assertEqual(0, adapter.calls)
 
+    def test_provider_duplicate_and_nonfinite_json_fail_closed(self):
+        for raw in (b'{"model":"a","model":"b"}',b'{"x":NaN}',b'{"checks":{"meaning":"PASS","meaning":"CONFLICT"}}'):
+            with self.subTest(raw=raw),self.assertRaises(a.AssessorUnavailable):
+                a.strict_provider_json(raw)
+
+    def test_oversized_request_never_calls_provider(self):
+        adapter=self.adapter()
+        with self.assertRaisesRegex(a.AssessorUnavailable,"REQUEST_TOO_LARGE"):
+            adapter.run(b"x"*1_048_577)
+        self.assertEqual(0,adapter.calls)
+
     def test_invalid_refs_binding_types_and_schema_fail_closed(self):
         for update in ({"supportingExtractions": ["invented"]}, {"requestSha256": "stale"},
                        {"vietnameseNatural": "true"}, {"verdict": "APPROVED"}, {"rationale": ""}, {"extra": True}):

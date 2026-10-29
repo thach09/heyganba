@@ -26,7 +26,7 @@ from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
 from .assessors import CommandAssessor
 
-RULESET = "JIAYOU_LEXICAL_V1_1"
+RULESET = "JIAYOU_LEXICAL_V1_2"
 FIELDS = ("word", "traditional", "reading", "meaning", "partOfSpeech", "hanViet",
           "exampleZh", "examplePinyin", "exampleVi")
 CORE = ("word", "reading", "meaning", "partOfSpeech")
@@ -631,7 +631,7 @@ def verify(candidate, sources, store, assessor=None, now=None):
             for row in selected:
                 extraction = {"adapter": lock["adapter"], "snapshotSha256": lock["sha256"], "entry": row}
                 matches.append({"sourceId": source["id"], "family": source["family"],
-                                "dependencies": sorted(set(source["lineageFamilies"] + row["inheritedFamilies"])),
+                                "dependencies": sorted(set([source["family"]] + source["lineageFamilies"] + row["inheritedFamilies"])),
                                 "independenceEligible": source.get("independenceStatus") == "ESTABLISHED",
                                 "license": source["licenseId"], "attribution": source["attribution"],
                                 "obligations": source["obligations"], "sourceUrl": lock["url"],
@@ -661,6 +661,9 @@ def verify(candidate, sources, store, assessor=None, now=None):
     # Family independence uses lineage intersection, not distinct domains or registry labels.
     def independent(indices):
         return any(matches[a]["independenceEligible"] and matches[b]["independenceEligible"]
+                   and matches[a]["family"] != matches[b]["family"]
+                   and matches[a]["sourceId"] != matches[b]["sourceId"]
+                   and matches[a]["snapshotSha256"] != matches[b]["snapshotSha256"]
                    and not set(matches[a]["dependencies"]) & set(matches[b]["dependencies"])
                    for a in indices for b in indices if a != b)
     for field in CORE:
@@ -708,23 +711,36 @@ def verify(candidate, sources, store, assessor=None, now=None):
         traditional = {m["traditional"] for m in entries if m.get("traditional")}
         if content.get("traditional") and traditional and content["traditional"] not in traditional:
             reasons.append("TRADITIONAL_CONFLICT")
+    core_conflict = any(r in ("MEANING_OR_SENSE_CONFLICT", "UNRESOLVED_POS_SENSE_AMBIGUITY") for r in reasons)
+    if "TRADITIONAL_CONFLICT" in reasons:
+        out["fields"]["traditional"]["result"] = "CONFLICT"
     mandatory_ok = all(out["fields"][f]["result"] == "VERIFIED" for f in CORE)
     present_ok = all(f["result"] in ("VERIFIED", "NOT_PRESENT") for f in out["fields"].values())
     if candidate.get("rightsStatus") == "RESTRICTED" or candidate.get("restrictedContent") is True:
         reasons.append("CANDIDATE_EXPRESSION_RIGHTS_RESTRICTED")
         decision = "LICENSE_BLOCKED"
-    elif license_blocked and not (mandatory_ok and present_ok):
+    elif license_blocked and not mandatory_ok:
         decision = "LICENSE_BLOCKED"
     elif any("CONFLICT" in r or "AMBIGUITY" in r for r in reasons):
         decision = "CONFLICT"
     elif mandatory_ok and present_ok:
         decision = "AUTO_VERIFIED"
+    elif mandatory_ok:
+        decision = "CORE_VERIFIED"
     else:
         decision = "NEEDS_RESEARCH"
         reasons.extend("UNVERIFIED_FIELD:" + f for f, value in out["fields"].items() if value["result"] == "NOT_VERIFIED")
     out.update(decision=decision, sources=matches, syllabusClaims=[],
                sourceDiagnostics=diagnostics,
                curriculumStatus="NOT_VERIFIED_OFFICIAL_MAPPING", meaningOrigin=candidate.get("meaningOrigin", "UNRESOLVED"))
+    blocked = decision in ("LICENSE_BLOCKED", "REJECTED")
+    supplemental = {f: dict(out["fields"][f]) for f in FIELDS if f not in CORE}
+    present_supplemental = [v for v in supplemental.values() if v["result"] != "NOT_PRESENT"]
+    out.update(coreVerification="CORE_CONFLICT" if core_conflict else "CORE_VERIFIED" if mandatory_ok and not blocked else "CORE_NEEDS_RESEARCH",
+               supplementalVerification="SUPPLEMENTAL_NOT_PRESENT" if not present_supplemental else
+               "SUPPLEMENTAL_VERIFIED" if all(v["result"] == "VERIFIED" for v in present_supplemental) and not blocked else "SUPPLEMENTAL_NEEDS_RESEARCH",
+               supplementalFields=supplemental,
+               fullVerification="FULLY_VERIFIED" if decision == "AUTO_VERIFIED" else "NOT_FULLY_VERIFIED")
     # These have no corresponding approved schema fields/receipt capabilities yet.
     # Preserve extracted facts for further research, never silently mark N/A or verified.
     out["supplementalAudit"] = {
@@ -857,7 +873,9 @@ def receipt_payload(candidate, result, *, instance, revision, issuer, key_id, ru
     token = re.compile(r"[A-Za-z0-9][A-Za-z0-9._:-]{0,159}")
     if any(not isinstance(x, str) or not token.fullmatch(x) for x in (instance, issuer, key_id, run_id)):
         raise ValueError("Invalid issuer or installation metadata")
-    if (result.get("decision") != "AUTO_VERIFIED" or result.get("contentDigest") != digest(candidate["content"])
+    eligible = result.get("decision") == "AUTO_VERIFIED" or (result.get("decision") == "CORE_VERIFIED"
+                 and result.get("verificationScope") == "CORE_ONLY_PROJECTION")
+    if (not eligible or result.get("contentDigest") != digest(candidate["content"])
             or not isinstance(candidate.get("vocabularyId"), int) or isinstance(candidate["vocabularyId"], bool)
             or candidate["vocabularyId"] <= 0 or type(revision) is not int or revision < 0 or type(issued_at) is not int or issued_at < 0):
         raise ValueError("Only a verified current persisted vocabulary can get a receipt proposal")

@@ -12,6 +12,7 @@ from datetime import datetime, timezone, timedelta
 from .engine import Store, Ledger, canonical, strict_json, fetch, verify, postgres_staging_sql, soft_redirect_target, duplicate_audit, RULESET
 from .ingestion import pending_import_sql
 from .assessors import CommandAssessor, from_environment
+from .projection import core_projection
 
 
 def registry(path):
@@ -115,7 +116,8 @@ def main():
     run.add_argument("--locks", required=True, help="JSON array of immutable acquisition records")
     run.add_argument("--output", required=True)
     run.add_argument("--assessor-command", help="Operator-controlled JSON argv array, no shell")
-    run.add_argument("--pending-import-output", help="Optional private NEW Flyway candidate; only fresh AUTO_VERIFIED results, never auto-apply")
+    run.add_argument("--pending-import-output", help="Private NEW Flyway candidate for verified records/explicit core projections; never auto-apply")
+    run.add_argument("--core-projections-output", help="Explicit private core-only proposals; retain original drafts and require guarded pending import")
     run.add_argument("--pending-corrections-output", help="Private guarded orthography/POS patch; changed fields must be VERIFIED, whole record stays pending")
     args = parser.parse_args()
     root = pathlib.Path(args.private_dir).resolve()
@@ -198,13 +200,29 @@ def main():
                     providerHttpAttempts=getattr(command, "calls", 0),
                     monetaryCost=None)
     manifest["duplicates"] = duplicate_audit(candidates)
+    manifest["verificationCounts"] = {name: dict(collections.Counter(result.get(name, "NOT_EVALUATED") for _, result in rows))
+                                      for name in ("coreVerification", "supplementalVerification", "fullVerification")}
+    manifest["fieldVerificationCounts"] = {field: dict(collections.Counter(result.get("fields", {}).get(field, {}).get("result", "NOT_EVALUATED") for _, result in rows))
+                                           for field in ("word", "traditional", "reading", "meaning", "partOfSpeech", "hanViet", "exampleZh", "examplePinyin", "exampleVi")}
+    projections = []
+    if args.core_projections_output:
+        planned = pathlib.Path(args.core_projections_output).resolve()
+        if not planned.is_relative_to(root):
+            parser.error("Core proposals must stay inside the private evidence directory")
+        for candidate, result in rows:
+            if result.get("coreVerification") == "CORE_VERIFIED" and result["decision"] != "AUTO_VERIFIED":
+                projections.append(core_projection(candidate, result, store))
+        if projections:
+            with planned.open("x", encoding="utf8") as stream:
+                stream.write(canonical([{"candidate": c, "verification": r} for c, r in projections]).decode("utf8"))
+    manifest["coreProjectionProposals"] = len(projections)
     pathlib.Path(args.output).write_bytes(canonical(manifest) + b"\n")
     (root / "postgres-staging.sql").write_text(postgres_staging_sql(rows), encoding="utf8")
     if args.pending_import_output:
         planned = pathlib.Path(args.pending_import_output).resolve()
         if not planned.is_relative_to(root):
             parser.error("Import proposal must stay inside the private evidence directory")
-        eligible = [(candidate, result) for candidate, result in rows if result["decision"] == "AUTO_VERIFIED"]
+        eligible = [(candidate, result) for candidate, result in rows if result["decision"] == "AUTO_VERIFIED"] + projections
         if eligible:
             with planned.open("x", encoding="utf8") as stream:
                 stream.write(pending_import_sql(eligible, store))

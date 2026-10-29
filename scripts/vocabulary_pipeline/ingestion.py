@@ -7,18 +7,23 @@ records require explicit before content/digest/revision; homographs are never me
 import hashlib
 
 from .engine import FIELDS, RULESET, canonical, digest, identity
+from .projection import retained_projection_record
 
 
 def literal(value):
     if value is None:
         return "NULL"
-    if not isinstance(value, str) or "\0" in value or ";" in value:
+    if not isinstance(value, str) or "\0" in value:
         raise ValueError("Unsupported SQL value; do not rewrite content to pass export")
+    if ";" in value:
+        # Keep exact draft bytes without putting a statement delimiter inside a
+        # quoted migration value. Never remove punctuation to satisfy SQL export.
+        return "convert_from(decode('" + value.encode("utf8").hex() + "','hex'),'UTF8')"
     return "'" + value.replace("'", "''") + "'"
 
 
 def pending_import_sql(rows, store, *, allow_field_corrections=False):
-    """Fully verified lexical candidates only. Unchanged import is a no-op.
+    """Verified whole candidates or explicitly retained core projections, always pending.
 
     Stable sense bindings, transactional advisory lock and exact effective-field
     comparisons prevent duplicate/stale imports. Source objects are checked before
@@ -40,7 +45,10 @@ def pending_import_sql(rows, store, *, allow_field_corrections=False):
                    and ("partOfSpeech" not in changed_fields or result.get("semanticAssessment", {}).get("verdict") == "EQUIVALENT")
                    and all(result.get("fields", {}).get(f, {}).get("result") == "VERIFIED"
                            and result["fields"][f].get("evidence") for f in changed_fields))
-        if ((result.get("decision") != "AUTO_VERIFIED" and not partial) or result.get("contentDigest") != digest(content)
+        projection = candidate.get("publicationProjection") is not None
+        retained = retained_projection_record(candidate, result, store) if projection else None
+        projected_core = (projection and result.get("decision") == "CORE_VERIFIED")
+        if ((result.get("decision") != "AUTO_VERIFIED" and not partial and not projected_core) or result.get("contentDigest") != digest(content)
                 or result.get("identity") != identity(content, candidate["senseId"]) or result.get("identity") in seen):
             raise ValueError("Only distinct, current AUTO_VERIFIED candidates may be planned")
         vocabulary_id = candidate.get("vocabularyId")
@@ -65,6 +73,7 @@ def pending_import_sql(rows, store, *, allow_field_corrections=False):
         metadata_json = canonical({"ruleset": RULESET, "bundleSha256": result["evidenceBundleSha256"],
                                       "status": "VERIFIED_FIELDS_ONLY_PENDING" if partial else "LINGUISTICALLY_VERIFIED_NOT_PUBLISHED",
                                       "recordDecision": result["decision"], "changedFields": changed_fields if partial else list(FIELDS),
+                                      "publicationProjection": candidate.get("publicationProjection"),
                                       "attribution": [{k: s[k] for k in ("sourceId", "license", "attribution", "obligations", "sourceUrl", "sourceVersion", "revisionUrls", "relatedSources")} for s in result["sources"]]})
         metadata = "convert_from(decode('" + metadata_json.hex() + "','hex'),'UTF8')"
         checks = " AND ".join(column + " IS NOT DISTINCT FROM " + values[field]
@@ -87,6 +96,11 @@ def pending_import_sql(rows, store, *, allow_field_corrections=False):
                 ("meaning_vi", "meaning"), ("meaning", "meaning"), ("part_of_speech", "partOfSpeech")]
                                    if not partial or f in changed_fields)
             clear_optional = ("" if partial else ",pinyin_normalized=NULL,han_viet=NULL,sino_vietnamese=NULL,example_zh=NULL,example_sentence=NULL,example_pinyin=NULL,example_reading=NULL,example_vi=NULL,example_meaning=NULL,meaning_source_ref=NULL,han_viet_source_ref=NULL,example_source_ref=NULL")
+            academic_columns = ("word", "traditional", "pinyin", "reading", "meaning_vi", "meaning", "part_of_speech",
+                                "han_viet", "sino_vietnamese", "example_zh", "example_sentence", "example_pinyin",
+                                "example_reading", "example_vi", "example_meaning", "pinyin_normalized")
+            capture = ("SELECT jsonb_build_object(" + ",".join(literal(column) + "," + column for column in academic_columns)
+                       + f") INTO retained_academic FROM vocabulary WHERE id={vocabulary_id};") if projection else ""
             action = f"""
     PERFORM id FROM vocabulary WHERE id={vocabulary_id} FOR UPDATE;
     IF EXISTS(SELECT 1 FROM vocabulary WHERE id={vocabulary_id} AND review_status IN ('ARCHIVED','REJECTED')) THEN
@@ -99,6 +113,7 @@ def pending_import_sql(rows, store, *, allow_field_corrections=False):
     IF EXISTS(SELECT 1 FROM vocabulary WHERE word={values['word']} AND id<>{vocabulary_id}) THEN
       RAISE EXCEPTION 'Correction collides with existing word identity';
     END IF;
+    {capture}
     UPDATE vocabulary SET {assignments}{clear_optional},review_status='PENDING_REVIEW',verification_method='WEB_CROSS_CHECKED',verification_policy_version={literal(RULESET)},verification_evidence_json={metadata},source_ref='jiayou-research:'||{key},source_version={source_version},lexical_source_ref=NULL,han_viet_verified=false,example_verified=false,provenance_content_sha256=NULL,reviewed_at=NULL,reviewed_by=NULL WHERE id={vocabulary_id};
     INSERT INTO audit_logs(table_name,record_id,action,before_value,after_value) VALUES('vocabulary',{vocabulary_id},'UPDATE',{literal(candidate['expectedDigest'])},{fingerprint});
     UPDATE vocabulary_research_bindings SET sense_identity={key},content_digest={fingerprint},evidence_bundle_sha256={bundle} WHERE vocabulary_id={vocabulary_id};
@@ -116,8 +131,24 @@ def pending_import_sql(rows, store, *, allow_field_corrections=False):
     INSERT INTO audit_logs(table_name,record_id,action,after_value) VALUES('vocabulary',new_id,'CREATE',{fingerprint});
     INSERT INTO vocabulary_research_bindings VALUES({key},new_id,{fingerprint},{bundle});
 """
+        quarantine_insert = quarantine_check = ""
+        if projection:
+            output.append("CREATE TABLE IF NOT EXISTS vocabulary_research_quarantine (vocabulary_id BIGINT NOT NULL REFERENCES vocabulary(id),source_digest VARCHAR(64) NOT NULL,source_record_sha256 VARCHAR(64) NOT NULL,projected_digest VARCHAR(64) NOT NULL,retained_record JSONB NOT NULL,retained_academic JSONB NOT NULL,retained_academic_sha256 VARCHAR(64) NOT NULL,PRIMARY KEY(vocabulary_id,source_digest));")
+            info = candidate["publicationProjection"]
+            origin_digest, origin_hash = literal(info["sourceContentDigest"]), literal(info["retainedRecordSha256"])
+            retained_json = "convert_from(decode('" + retained.hex() + "','hex'),'UTF8')::jsonb"
+            row_id = str(vocabulary_id) if vocabulary_id is not None else "new_id"
+            academic = "COALESCE(retained_academic,'{}'::jsonb)"
+            academic_hash = "encode(sha256(convert_to(" + academic + "::text,'UTF8')),'hex')"
+            quarantine_insert = f"INSERT INTO vocabulary_research_quarantine VALUES({row_id},{origin_digest},{origin_hash},{fingerprint},{retained_json},{academic},{academic_hash}) ON CONFLICT DO NOTHING;"
+            def check_quarantine(id_sql):
+                return f"IF NOT EXISTS(SELECT 1 FROM vocabulary_research_quarantine q WHERE vocabulary_id={id_sql} AND source_digest={origin_digest} AND source_record_sha256={origin_hash} AND projected_digest={fingerprint} AND retained_record={retained_json} AND encode(sha256(convert_to(q.retained_academic::text,'UTF8')),'hex')=retained_academic_sha256) THEN RAISE EXCEPTION 'Missing or modified supplemental quarantine'; END IF;"
+            quarantine_check = check_quarantine("bound_id")
+            # Retention and academic mutation commit/rollback together. JSON bytes are
+            # hex encoded, so a draft containing SQL punctuation is never executable.
+            action += "\n" + quarantine_insert + "\n" + check_quarantine(row_id)
         body = f"""
-DECLARE bound_id BIGINT; bound_digest TEXT; new_id BIGINT;
+DECLARE bound_id BIGINT; bound_digest TEXT; new_id BIGINT; retained_academic JSONB;
 BEGIN
   PERFORM pg_advisory_xact_lock(hashtextextended({lock_key},0));
   SELECT vocabulary_id,content_digest INTO bound_id,bound_digest FROM vocabulary_research_bindings WHERE sense_identity={key} FOR UPDATE;
@@ -126,6 +157,7 @@ BEGIN
     PERFORM id FROM vocabulary WHERE id=bound_id FOR UPDATE;
   END IF;
   IF bound_id IS NOT NULL AND bound_digest={fingerprint} AND EXISTS(SELECT 1 FROM vocabulary WHERE id=bound_id AND {checks}) THEN
+    {quarantine_check}
     IF EXISTS(SELECT 1 FROM vocabulary WHERE id=bound_id AND review_status IN ('ARCHIVED','REJECTED')) OR
        NOT EXISTS(SELECT 1 FROM audit_logs WHERE id=(SELECT max(id) FROM audit_logs WHERE table_name='vocabulary' AND record_id=bound_id AND action IN ('CREATE','UPDATE','ARCHIVE','REJECT','PROVENANCE','PROVENANCE_UPDATE','PUBLISH_REVOKE')) AND action IN ('CREATE','UPDATE') AND after_value=bound_digest) THEN
       RAISE EXCEPTION 'Bound research was superseded or withdrawn; verify again before planning';

@@ -38,3 +38,16 @@ Registry, acquisition lock và bản trích đều là đầu vào nghiên cứu
 - [CWN license cũ](https://lope.linguistics.ntu.edu.tw/cwn2/licence/) chỉ xuất hiện qua chỉ mục với giới hạn academic/no reproduction; URL trực tiếp hiện 404. Không suy một rights grant mới từ trang không đọc được hoặc từ paper nói “open-source”. CWN và COW là hai dự án khác nhau.
 
 Hash/HTTP status và thời điểm acquisition nằm trong manifest phiên unblock, raw metadata/license ở evidence private. Đánh giá quyền source này tách khỏi source-rights catalog/issuer của production.
+
+## Rà soát độc lập bổ sung — 2026-10-29
+
+Không bật thêm source family từ các phát hiện sau khi chưa có đủ quyền, lineage và dữ liệu đúng field/sense:
+
+| Nguồn được điều tra | Kết quả và quyết định |
+|---|---|
+| [Bộ từ điển MOE Đài Loan](https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/dict_concised_download.html) | Primary page qua web retrieval nêu BY-ND 3.0 Taiwan; [Moedict](https://www.moedict.tw/about.html) xác nhận dùng dữ liệu MOE, không phải một family thứ hai. Có chữ/cách đọc/nghĩa Trung, không phải nguồn bản dịch Việt. Không giả quyền dịch/adapt định nghĩa từ ND hoặc coi mọi mục đều có POS đúng sense. Python HTTPS trực tiếp tới trang MOE không đọc được trong môi trường này, không có corpus snapshot/hash để verify. Chưa đưa vào evidence của candidate. |
+| [TBCL/COCT NAER](https://coct.naer.edu.tw/page.jsp?ID=41) | Có bảng từ/chữ tải công khai, nhưng [báo cáo kỹ thuật của NAER](https://coct.naer.edu.tw/file/files/%E6%8A%80%E8%A1%93%E5%A0%B1%E5%91%8A%EF%BC%9A%E3%80%8A%E8%AA%AA%E6%83%85%E8%A9%B1%E5%A2%83-%E8%8F%AF%E8%AA%9E%E6%96%87%E8%A9%9E%E8%AA%9E%E6%83%85%E5%A2%83%E5%88%86%E9%A1%9E%E3%80%8B.pdf) nói rõ bảng TBCL không phân biệt mọi sense/POS cùng từ. Không dùng cấp/chữ như bằng chứng POS/nghĩa Việt, không trộn TBCL với HSK. Trang tài liệu ghi all rights reserved; chưa xác định grant reuse cụ thể cho application. Web retrieval đọc được metadata, Python HTTPS trực tiếp thất bại; không nhập bảng như nguồn lexical đã xác minh. |
+| [CwnGraph](https://github.com/lopentu/CwnGraph) | README/license live tải được; code GPLv3 và hướng dẫn tải image dữ liệu riêng. License code không tự cấp quyền cho dataset bên ngoài, không giải quyết xung đột với terms CWN cũ không đọc được. Chưa pin data image/license/entry lineage, nên không chạy auto-download hoặc tính thành nguồn POS độc lập hợp lệ. |
+| [Từ điển học tập NAER](https://dlearnm.naer.edu.tw/) | Có nội dung và POS tiềm năng; chưa có quyền redistribution/adaptation được xác nhận. Không scrape định nghĩa hoặc đưa vào registry được phép xuất bản. |
+
+Phân biệt đường truy cập: web retrieval có thể đọc metadata dù Python HTTPS không lấy được bytes. Không tắt TLS validation, không gán hash giả cho nguồn thất bại và không ghi các phát hiện metadata này là bằng chứng lexical của một từ. Những raw metadata tải được có SHA-256 trong manifest phiên core verification; chúng không chứng minh source-rights clearance.

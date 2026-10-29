@@ -23,6 +23,18 @@ Each referenced evidence bundle, source snapshot and extraction must exist at `o
 
 The fixture builder under test sources documents the precise JSON shape using only ephemeral keys and synthetic source objects. It is not an operator signing tool and is excluded from the executable JAR. No real corpus has been signed or licensed by these tests.
 
+## Explicit core-subset proposals
+
+The research pipeline may report CORE_VERIFIED while supplemental drafts remain unresolved. This research outcome alone grants no runtime visibility. Authority and receipt V1 still require WORD/READING/MEANING/PART_OF_SPEECH, two registered independent lexical families for each, and a digest over all nine actual stored fields. Present traditional must also be verified.
+
+The V1.2 research projector can prepare a separate pending core-only candidate, with unverified traditional and all retained Hán Việt/example enrichment absent from its academic columns. Original candidate/result bytes remain in an immutable evidence object and a generated operator-owned `vocabulary_research_quarantine` row. The pending update and retention commit together with before-content/revision guards. Quarantine has no learner Entity/API, and no production migration or release allowlist is automatically changed. Keep it and raw objects outside public-serving paths, with access restricted to the verification/release operator.
+
+The quarantine also captures the existing physical academic columns, including hidden/different legacy aliases, before synchronizing them; it retains a separate SHA-256 for that DB snapshot. Effective getter values alone are insufficient to preserve every draft. Raw snapshots never participate in learner projection or authorize a field.
+
+This is an explicit data projection, not an authorization mask. The operator must read back the projected row and new revision before creating an unsigned proposal for the existing V1 receipt contract. Capabilities remain false; withheld fields are actually null/NOT_PRESENT. An original receipt cannot bind the projected row, a projected receipt cannot bind a row retaining draft fields, and reintroducing a draft changes the full digest and denies access. No optional field is silently discarded or described as verified. FULLY_VERIFIED is separate from CORE_VERIFIED and from permission to publish.
+
+No runtime authority or digest implementation is relaxed by this path. New policy-version receipts require an explicit compatible trusted catalog and actual source rights. Existing catalog policy versions are not upgraded automatically. Synthetic Java/PG bridge tests demonstrate representation compatibility, not real corpus clearance or a genuine assessor result.
+
 ## Withdrawal and read boundaries
 
 Every HTTP request observes one catalog snapshot. The next request reloads the catalog and sees key, receipt and rights revocations; there is no cross-request TTL. An already running request may complete against its prior snapshot. Use an atomic operator-side catalog replacement to avoid transient partial JSON; partial/malformed reads deny access.

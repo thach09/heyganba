@@ -6,10 +6,26 @@ import unittest
 
 from . import engine as e
 from . import test_engine as fixtures
+from .projection import core_projection
 
 
 @unittest.skipUnless(os.environ.get("JIAYOU_JAVA_CLASSPATH"), "Requires isolated compiled backend and Jackson libraries")
 class JavaReceiptCompatibilityTest(unittest.TestCase):
+    def test_core_projection_matches_existing_java_contract_without_optional_leak(self):
+        fixture = fixtures.PipelineTest()
+        fixture.setUp()
+        self.addCleanup(fixture.doCleanups)
+        original = fixtures.candidate(hanViet="UNVERIFIED", exampleZh="未核实")
+        original["vocabularyId"] = 1
+        c,result = core_projection(original,fixture.automatically_verified(original),fixture.store)
+        payload = e.receipt_payload(c,result,instance="fixture",revision=0,issuer="test",key_id="key",run_id="test-run",issued_at=1)
+        path = fixture.root / "synthetic-core-payload.json"
+        path.write_bytes(e.canonical(payload))
+        source = pathlib.Path(__file__).with_name("ReceiptCompatibilityProbe.java")
+        process = subprocess.run(["java","--class-path",os.environ["JIAYOU_JAVA_CLASSPATH"],str(source),str(path)],capture_output=True,timeout=60)
+        self.assertEqual(0,process.returncode,process.stderr.decode("utf8"))
+        self.assertIn(b"5/5 receipt compatibility checks passed",process.stdout)
+
     def test_python_receipt_and_digest_match_java_verifier(self):
         fixture = fixtures.PipelineTest()
         fixture.setUp()

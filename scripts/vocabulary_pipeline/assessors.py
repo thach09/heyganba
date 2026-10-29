@@ -86,6 +86,19 @@ class _NoRedirect(urllib.request.HTTPRedirectHandler):
         return None
 
 
+def strict_provider_json(raw):
+    def pairs(items):
+        result = {}
+        for key, value in items:
+            if key in result:
+                raise AssessorUnavailable("PROVIDER_DUPLICATE_JSON_KEY")
+            result[key] = value
+        return result
+    def invalid_constant(value):
+        raise AssessorUnavailable("PROVIDER_NONFINITE_JSON")
+    return json.loads(raw, object_pairs_hook=pairs, parse_constant=invalid_constant)
+
+
 class HttpAssessor:
     """Official provider REST adapters. Transport identity comes from API metadata, not model prose."""
     is_mock = False
@@ -106,7 +119,9 @@ class HttpAssessor:
     def run(self, request):
         self.last_response = None
         calls_before = self.calls
-        value = json.loads(request)
+        if len(request) > 1_048_576:
+            raise AssessorUnavailable("ASSESSMENT_REQUEST_TOO_LARGE")
+        value = strict_provider_json(request)
         if self.provider == "openai":
             url = "https://api.openai.com/v1/responses"
             body = {"model": self.model, "store": False, "instructions": SYSTEM_INSTRUCTION,
@@ -146,7 +161,7 @@ class HttpAssessor:
                     raise AssessorUnavailable("PROVIDER_UNAVAILABLE") from None
                 self.sleeper(2 ** (attempt + 1))
         self.last_response = raw
-        result = json.loads(raw)
+        result = strict_provider_json(raw)
         if not isinstance(result, dict):
             raise AssessorUnavailable("PROVIDER_SCHEMA_MISMATCH")
         if self.provider == "openai":
@@ -163,7 +178,7 @@ class HttpAssessor:
             actual_model, response_id, usage = result.get("modelVersion"), result.get("responseId"), result.get("usageMetadata")
         if not isinstance(actual_model, str) or not actual_model.removeprefix("models/").startswith(self.model) or not response_id:
             raise AssessorUnavailable("PROVIDER_MODEL_METADATA_MISMATCH")
-        assessment = json.loads("".join(chunks))
+        assessment = strict_provider_json("".join(chunks))
         if not isinstance(assessment, dict) or set(assessment) != set(OUTPUT_SCHEMA["required"]):
             raise AssessorUnavailable("PROVIDER_SCHEMA_MISMATCH")
         if (assessment["verdict"] not in ("EQUIVALENT", "CONFLICT", "UNCERTAIN")

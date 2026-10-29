@@ -1,7 +1,9 @@
-"""Opt-in integration: JIAYOU_LOCAL_POSTGRES_CONFIG must name an owned Docker audit.
+"""Opt-in integration: JIAYOU_LOCAL_POSTGRES_CONFIG must name an owned audit.
 
 Only a freshly created jiayou_ingestion_<uuid> database is written. No production
 connection strings, reset, clean, migration edits or drop database operations.
+An owned labeled Docker container or a private marked native PostgreSQL 16 cluster
+is required; native endpoints must prove their private data_directory before writes.
 """
 import copy
 import concurrent.futures
@@ -15,25 +17,82 @@ import uuid
 from . import engine as e
 from .ingestion import pending_import_sql
 from . import test_engine as fixtures
+from .projection import core_projection
+
+
+def isolated_database(test):
+    """Owned Docker audit or private native cluster; never accept an arbitrary DB URL."""
+    cfg = e.strict_json(pathlib.Path(os.environ["JIAYOU_LOCAL_POSTGRES_CONFIG"]).read_bytes())
+    database = "jiayou_ingestion_" + uuid.uuid4().hex[:12]
+    env = os.environ.copy()
+    if cfg.get("transport") == "native":
+        root, data, binaries = (pathlib.Path(cfg[k]).resolve() for k in ("root", "dataDir", "binDir"))
+        test.assertTrue(root.name.startswith("jiayou-core-verification-"))
+        test.assertTrue(data.is_relative_to(root) and binaries.is_relative_to(root))
+        test.assertEqual("127.0.0.1", cfg["host"])
+        marker = e.strict_json((data / "jiayou-audit.json").read_bytes())
+        test.assertEqual("core-verification-20261029", marker["auditId"])
+        test.assertEqual(cfg["port"], marker["port"])
+        prefix = [str(binaries / "psql.exe"), "-h", cfg["host"], "-p", str(cfg["port"]), "-U", cfg["user"]]
+        env["PGPASSWORD"] = cfg["password"]
+    else:
+        test.assertTrue(cfg["name"].startswith("jiayou-vocabulary-pg-"))
+        container = json.loads(subprocess.check_output(["docker", "inspect", cfg["name"]]))[0]
+        test.assertEqual("vocabulary-20261028", container["Config"]["Labels"].get("jiayou.audit"))
+        prefix = ["docker", "exec", "-i", cfg["name"], "psql", "-U", cfg["user"]]
+    def sql(text, db=database, fail=False):
+        test.assertTrue(db in (cfg["database"], "jiayou_fixture") or db.startswith("jiayou_ingestion_"))
+        result = subprocess.run([*prefix, "-X", "-d", db, "-v", "ON_ERROR_STOP=1", "-tA"],
+                                input=text.encode("utf8"), capture_output=True, env=env)
+        if fail:
+            test.assertNotEqual(0, result.returncode)
+        else:
+            test.assertEqual(0, result.returncode, result.stderr.decode("utf8"))
+        return result.stdout.decode("utf8").strip()
+    if cfg.get("transport") == "native":
+        test.assertEqual(data, pathlib.Path(sql("SHOW data_directory;", cfg["database"])).resolve())
+        test.assertEqual("16", sql("SHOW server_version_num;", cfg["database"])[:2])
+    sql("CREATE DATABASE " + database + " TEMPLATE jiayou_fixture;", db=cfg["database"])
+    return cfg, database, sql
 
 
 @unittest.skipUnless(os.environ.get("JIAYOU_LOCAL_POSTGRES_CONFIG"), "Requires explicitly configured isolated PostgreSQL Docker audit")
 class PostgreSQLIngestionTest(unittest.TestCase):
+    def test_core_projection_retains_drafts_atomically_and_never_publishes_them(self):
+        cfg, database, sql = isolated_database(self)
+        fixture = fixtures.PipelineTest()
+        fixture.setUp()
+        self.addCleanup(fixture.doCleanups)
+        original = fixtures.candidate(hanViet="DRAFT; giữ nguyên", exampleZh="未核实")
+        original.update(vocabularyId=173, eligibilityRevision=0)
+        sql("UPDATE vocabulary SET word='测试',traditional='測試',pinyin='cè shì',reading='cè shì',meaning_vi='thử nghiệm',meaning='thử nghiệm',part_of_speech='noun',han_viet=convert_from(decode('" + original["content"]["hanViet"].encode('utf8').hex() + "','hex'),'UTF8'),sino_vietnamese=NULL,example_zh='未核实',example_sentence=NULL,example_pinyin=NULL,example_reading=NULL,example_vi=NULL,example_meaning=NULL WHERE id=173;")
+        sql("UPDATE vocabulary SET sino_vietnamese='LEGACY HIDDEN DRAFT',example_sentence='OLD HIDDEN EXAMPLE',reading='HIDDEN LEGACY READING',meaning='HIDDEN LEGACY MEANING' WHERE id=173;")
+        c, result = core_projection(original, fixture.automatically_verified(original), fixture.store)
+        plan = pending_import_sql([(c,result)],fixture.store)
+        sql("BEGIN;\n"+plan+"\nSELECT 1/0;\nCOMMIT;",fail=True)
+        self.assertEqual("t",sql("SELECT han_viet IS NOT NULL AND example_zh IS NOT NULL FROM vocabulary WHERE id=173;"))
+        self.assertEqual("t",sql("SELECT to_regclass('vocabulary_research_quarantine') IS NULL;"))
+        sql("BEGIN;\n"+plan+"\nCOMMIT;")
+        actual = sql("SELECT han_viet IS NULL AND sino_vietnamese IS NULL AND example_zh IS NULL AND example_sentence IS NULL AND example_pinyin IS NULL AND example_reading IS NULL AND example_vi IS NULL AND example_meaning IS NULL AND review_status='PENDING_REVIEW' AND NOT han_viet_verified AND NOT example_verified AND provenance_content_sha256 IS NULL FROM vocabulary WHERE id=173;")
+        self.assertEqual("t",actual)
+        retained = json.loads(sql("SELECT retained_record FROM vocabulary_research_quarantine WHERE vocabulary_id=173;"))
+        self.assertEqual(original,retained["candidate"])
+        academic = json.loads(sql("SELECT retained_academic FROM vocabulary_research_quarantine WHERE vocabulary_id=173;"))
+        self.assertEqual("LEGACY HIDDEN DRAFT",academic["sino_vietnamese"])
+        self.assertEqual("OLD HIDDEN EXAMPLE",academic["example_sentence"])
+        self.assertEqual("HIDDEN LEGACY READING",academic["reading"])
+        self.assertEqual("HIDDEN LEGACY MEANING",academic["meaning"])
+        self.assertEqual(original["content"]["hanViet"],academic["han_viet"])
+        revision = sql("SELECT max(id) FROM audit_logs WHERE table_name='vocabulary' AND record_id=173;")
+        sql("BEGIN;\n"+plan+"\nCOMMIT;")
+        self.assertEqual("1",sql("SELECT count(*) FROM vocabulary_research_quarantine;"))
+        self.assertEqual(revision,sql("SELECT max(id) FROM audit_logs WHERE table_name='vocabulary' AND record_id=173;"))
+        sql("UPDATE vocabulary_research_quarantine SET retained_academic='{}'::jsonb;")
+        sql("BEGIN;\n"+plan+"\nCOMMIT;",fail=True)
+        self.assertEqual("t",sql("SELECT review_status='PENDING_REVIEW' FROM vocabulary WHERE id=173;"))
+
     def test_verified_field_only_correction_preserves_optional_and_guards_revision(self):
-        cfg = e.strict_json(pathlib.Path(os.environ["JIAYOU_LOCAL_POSTGRES_CONFIG"]).read_bytes())
-        self.assertTrue(cfg["name"].startswith("jiayou-vocabulary-pg-"))
-        container = json.loads(subprocess.check_output(["docker", "inspect", cfg["name"]]))[0]
-        self.assertEqual("vocabulary-20261028", container["Config"]["Labels"].get("jiayou.audit"))
-        database = "jiayou_ingestion_" + uuid.uuid4().hex[:12]
-        def sql(text, db=database, fail=False):
-            result = subprocess.run(["docker", "exec", "-i", cfg["name"], "psql", "-X", "-U", cfg["user"], "-d", db, "-v", "ON_ERROR_STOP=1", "-tA"],
-                                    input=text.encode("utf8"), capture_output=True)
-            if fail:
-                self.assertNotEqual(0, result.returncode)
-            else:
-                self.assertEqual(0, result.returncode, result.stderr.decode("utf8"))
-            return result.stdout.decode("utf8").strip()
-        sql("CREATE DATABASE " + database + " TEMPLATE jiayou_fixture;", db=cfg["database"])
+        cfg, database, sql = isolated_database(self)
         fixture = fixtures.PipelineTest()
         fixture.setUp()
         self.addCleanup(fixture.doCleanups)
@@ -60,22 +119,7 @@ class PostgreSQLIngestionTest(unittest.TestCase):
         self.assertEqual(before, sql(optional_query))
 
     def test_transactional_import_correction_and_learner_identity(self):
-        cfg = e.strict_json(pathlib.Path(os.environ["JIAYOU_LOCAL_POSTGRES_CONFIG"]).read_bytes())
-        self.assertTrue(cfg["name"].startswith("jiayou-vocabulary-pg-"))
-        container = json.loads(subprocess.check_output(["docker", "inspect", cfg["name"]]))[0]
-        self.assertEqual("vocabulary-20261028", container["Config"]["Labels"].get("jiayou.audit"))
-        database = "jiayou_ingestion_" + uuid.uuid4().hex[:12]
-
-        def sql(text, db=database, fail=False):
-            result = subprocess.run(["docker", "exec", "-i", cfg["name"], "psql", "-X", "-U", cfg["user"], "-d", db, "-v", "ON_ERROR_STOP=1", "-tA"],
-                                    input=text.encode("utf8"), capture_output=True)
-            if fail:
-                self.assertNotEqual(0, result.returncode)
-            else:
-                self.assertEqual(0, result.returncode, result.stderr.decode("utf8"))
-            return result.stdout.decode("utf8")
-
-        sql("CREATE DATABASE " + database + " TEMPLATE jiayou_fixture;", db=cfg["database"])
+        cfg, database, sql = isolated_database(self)
         fixture = fixtures.PipelineTest()
         fixture.setUp()
         self.addCleanup(fixture.doCleanups)
