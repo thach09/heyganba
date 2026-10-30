@@ -24,6 +24,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Test production migration preflight
+        run: python3 -m unittest discover -s backend/tools/tests -p "test_production_migration_preflight.py" -v
+
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
@@ -173,9 +176,29 @@ jobs:
   # - Chưa cấu hình secret → job tự skip kèm ::warning:: (CI vẫn xanh).
   # Frontend production do Vercel Git Integration tự deploy khi push `main` (production branch = main).
   # ============================================================
+  # Repository variables must be verified against the actual Render deployment
+  # and its effective Flyway locations before a release. Missing metadata fails
+  # closed; this source check never connects to the production database.
+  backend-production-preflight:
+    name: Backend Production Migration Preflight
+    needs: [backend-test, backend-migration-check, frontend-test]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout full migration history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify deployed production migration history
+        env:
+          PRODUCTION_BACKEND_DEPLOYED_SHA: ${{ vars.PRODUCTION_BACKEND_DEPLOYED_SHA }}
+          PRODUCTION_FLYWAY_LOCATIONS: ${{ vars.PRODUCTION_FLYWAY_LOCATIONS }}
+        run: python3 backend/tools/production_migration_preflight.py --candidate-sha "$GITHUB_SHA"
+
   deploy-backend-production:
     name: Deploy Backend → Render (production)
-    needs: [backend-test, backend-migration-check, frontend-test]
+    needs: [backend-test, backend-migration-check, frontend-test, backend-production-preflight]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment: production
