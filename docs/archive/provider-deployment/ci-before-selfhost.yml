@@ -1,0 +1,220 @@
+name: HeyGanba CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main", "develop" ]
+  pull_request:
+    branches: [ "main", "develop" ]
+  workflow_dispatch:
+
+# Huỷ run cũ khi có push mới trên cùng branch → tiết kiệm phút CI.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  JAVA_VERSION: "21"
+  NODE_VERSION: "24"
+
+jobs:
+  backend-test:
+    name: Backend Build & Test (H2)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Test production migration preflight
+        run: python3 -m unittest discover -s backend/tools/tests -p "test_production_migration_preflight.py" -v
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build and test with Maven
+        working-directory: ./backend
+        run: mvn -B clean verify
+
+      - name: Audit runtime dependencies
+        working-directory: ./backend
+        run: |
+          mvn -B dependency:list -DincludeScope=runtime -DoutputFile=target/runtime-dependencies.txt
+          python3 tools/audit-runtime-dependencies.py target/runtime-dependencies.txt
+
+      - name: Upload surefire reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-surefire-reports
+          path: backend/target/surefire-reports/
+          if-no-files-found: ignore
+
+  backend-migration-check:
+    name: Backend Migration Check (PostgreSQL + Flyway)
+    runs-on: ubuntu-latest
+    needs: [backend-test]
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: heyganba_migrationcheck
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d heyganba_migrationcheck"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      # Chạy thẳng trên PostgreSQL thật: xác nhận Flyway migration apply được và entity khớp schema.
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/heyganba_migrationcheck
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
+      SPRING_FLYWAY_ENABLED: "true"
+      SPRING_FLYWAY_LOCATIONS: "classpath:db/migration,classpath:db/migration-staging"
+      SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE: "5"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Apply Flyway migrations on PostgreSQL and verify schema
+        working-directory: ./backend
+        run: mvn -B test
+
+      # The full API suite above exercises real writes against PostgreSQL. The
+      # opt-in rehearsal additionally needs two empty databases, isolated from it.
+      - name: Rehearse baseline, full curriculum, and Hibernate validation
+        working-directory: ./backend
+        run: |
+          docker exec ${{ job.services.postgres.id }} createdb -U postgres heyganba_rehearsal_a_ci
+          docker exec ${{ job.services.postgres.id }} createdb -U postgres heyganba_rehearsal_b_ci
+          mvn -B test -Dtest=PostgresSchemaStagingRehearsalTest \
+            -Dpostgres.rehearsal=true \
+            -Dpostgres.rehearsal.urlA=jdbc:postgresql://localhost:5432/heyganba_rehearsal_a_ci \
+            -Dpostgres.rehearsal.urlB=jdbc:postgresql://localhost:5432/heyganba_rehearsal_b_ci \
+            -Dpostgres.rehearsal.user=postgres \
+            -Dpostgres.rehearsal.password=postgres
+
+      - name: Upload PostgreSQL surefire reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-postgres-surefire-reports
+          path: backend/target/surefire-reports/
+          if-no-files-found: ignore
+
+  frontend-test:
+    name: Frontend Lint & Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: './frontend/package-lock.json'
+
+      - name: Install dependencies
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: Lint Frontend
+        working-directory: ./frontend
+        run: npm run lint
+
+      - name: Build Frontend
+        working-directory: ./frontend
+        run: npm run build
+
+      - name: Test frontend behavior (Node + Vitest)
+        working-directory: ./frontend
+        run: npm test
+
+      - name: Audit frontend dependencies
+        working-directory: ./frontend
+        run: npm audit --audit-level=moderate
+
+      - name: Upload build output
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: frontend/dist/
+          if-no-files-found: error
+
+  # ============================================================
+  # Deploy — Staging: KHÔNG cần job trong CI (tránh deploy trùng 2 lần).
+  # - Backend staging: Render Web Service `heyganba-backend-staging` (branch develop, autoDeploy=yes)
+  #   → requires a connected Render Git integration; verify provider HEAD after merge.
+  # - Frontend staging: Vercel Git Integration tự tạo preview cho branch `develop`
+  #   → https://heyganba-git-develop-thach09.vercel.app (dùng VITE_API_BASE_URL = API staging).
+  # CI validates this branch; a green run alone does not prove a staging deploy.
+  # ============================================================
+
+  # ============================================================
+  # Deploy — Production (BACKEND): job deploy DUY NHẤT còn lại trong CI.
+  # - Render service production đang để `autoDeploy: no` → push `main` KHÔNG tự deploy backend.
+  # - Cần: GitHub Environment `production` + Required reviewers, và secret
+  #   `RENDER_PROD_DEPLOY_HOOK_URL` (tạo Deploy Hook ở Render dashboard).
+  # - Chưa cấu hình secret → job tự skip kèm ::warning:: (CI vẫn xanh).
+  # Frontend production do Vercel Git Integration tự deploy khi push `main` (production branch = main).
+  # ============================================================
+  # Repository variables must be verified against the actual Render deployment
+  # and its effective Flyway locations before a release. Missing metadata fails
+  # closed; this source check never connects to the production database.
+  backend-production-preflight:
+    name: Backend Production Migration Preflight
+    needs: [backend-test, backend-migration-check, frontend-test]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout full migration history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify deployed production migration history
+        env:
+          PRODUCTION_BACKEND_DEPLOYED_SHA: ${{ vars.PRODUCTION_BACKEND_DEPLOYED_SHA }}
+          PRODUCTION_FLYWAY_LOCATIONS: ${{ vars.PRODUCTION_FLYWAY_LOCATIONS }}
+        run: python3 backend/tools/production_migration_preflight.py --candidate-sha "$GITHUB_SHA"
+
+  deploy-backend-production:
+    name: Deploy Backend → Render (production)
+    needs: [backend-test, backend-migration-check, frontend-test, backend-production-preflight]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Trigger Render deploy hook
+        env:
+          DEPLOY_HOOK: ${{ secrets.RENDER_PROD_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$DEPLOY_HOOK" ]; then
+            echo "::warning::Chưa cấu hình RENDER_PROD_DEPLOY_HOOK_URL — bỏ qua deploy backend production."
+            exit 0
+          fi
+          curl -fsS -X POST "$DEPLOY_HOOK"
+          echo "Đã trigger deploy backend production trên Render."
+
+  # Frontend production: KHÔNG cần job CI — Vercel Git Integration tự deploy khi push `main`
+  # (production branch = main). Job deploy bằng Vercel CLI đã được xoá để tránh deploy trùng
+  # và để không phải cấp VERCEL_TOKEN cho GitHub Actions.
+

@@ -25,9 +25,9 @@ spring:
       max-file-size: 2MB
       max-request-size: 2MB
   application:
-    name: heyganba-backend
+    name: jiayou-backend
   profiles:
-    active: ${SPRING_PROFILES_ACTIVE:prod}
+    active: ${SPRING_PROFILES_ACTIVE:jiayou-prod}
 
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:heyganba}}

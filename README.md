@@ -1,30 +1,50 @@
-# Học tiếng Trung
+# Jiayou
 
-Nền tảng học tiếng Trung cho người Việt: React 19 + Vite 8 + Tailwind 4, Spring Boot 3 và PostgreSQL 16. Tên thương hiệu mới đang chờ quyết định.
+Chinese learning for Vietnamese learners, built with React19/Vite and Spring Boot.
+Ganbarou is separate and remains at heyganba.site; this repository must never replace
+its running services, database or Docker deployment.
 
-## Tính năng
+## Start here
 
-- Pinyin: 21 thanh mẫu + y/w, 36 vận mẫu, thanh điệu, biến điệu, lộ trình sáu chặng và quiz nghe.
-- Từ vựng HSK 1–6, thẻ lật, gõ Pinyin và SRS SM-2.
-- Chữ Hán, bộ thủ, chiết tự, bút thuận và luyện viết trên ô 米字格.
-- Ngữ pháp: cấu trúc, ví dụ, lỗi thường gặp, trắc nghiệm và sắp xếp câu.
-- Từ điển, sổ từ riêng, ghi chú có thể sửa, luyện nhanh và đọc ngữ cảnh.
-- Thi thử nội bộ, lịch sử và chấm điểm máy chủ theo cấp; không cấp chứng chỉ.
-- Tiến độ theo tài khoản, heatmap, EXP, nhiệm vụ và măng trúc lưu ở máy chủ.
-- Giao diện giấy Tuyên sáng / nghiên mực tối, responsive desktop và mobile.
+- [Developer handover](docs/HANDOVER.md): builds, validation and operator prerequisites.
+- [Independent bootstrap](docs/Operations/jiayou-independent-bootstrap.md).
+- [Shared-host checklist](docs/Operations/jiayou-shared-host-discovery.md).
+- [Design rules](frontend/DESIGN.md) and [product scope](PRODUCT.md).
+- [Compatibility identifiers](docs/Operations/legacy-identifiers.md).
 
-Phạm vi và số lượng nội dung: [PRODUCT.md](PRODUCT.md), [nguồn giáo trình](docs/m6-curriculum-sources.md). Có dữ liệu ở sáu cấp, chưa phải toàn bộ từ vựng HSK nâng cao.
+## Build and test
 
-## Chạy cục bộ
+Use Node24, JDK21, Maven3.9 and disposable PostgreSQL16 for database rehearsals.
 
-1. Cài Java 21, Maven, Node phù hợp lockfile và PostgreSQL 16. Đọc [quy trình bảo mật/vận hành](docs/security-and-ops.md) trước khi triển khai.
-2. Sao chép `.env.example` sang cấu hình riêng bị gitignore; điền secret và mật khẩu qua môi trường tiến trình. Spring không tự tải file `.env` ở root. Profile mặc định là `prod`; chỉ bật `SPRING_PROFILES_ACTIVE=dev` khi phát triển localhost.
-3. Chuẩn bị DB, role migration và role ứng dụng. `docker compose` yêu cầu các biến mật khẩu; không dùng tài khoản owner cho tiến trình ứng dụng production.
-4. Trong `backend/`: `mvn spring-boot:run`. Flyway chạy V1–V10 khi nạp cả hai locations đã cấu hình. Không sửa migration đã áp dụng.
-5. Trong `frontend/`: `npm ci`, `npm run dev`. Proxy mặc định đến localhost:8080; có thể đặt `DEV_API_TARGET`. `VITE_API_BASE_URL` là URL public, không phải secret.
+```text
+cd frontend
+npm ci
+npm audit --audit-level=moderate
+npm run lint
+npm run build
+npm test
+cd ../backend
+mvn -B clean verify
+```
 
-## Kiểm chứng
+CI validates H2, PostgreSQL/Flyway, frontend tests/audit and the independent bootstrap.
+CI does not deploy. The legacy source-history preflight is an explicit read-only check,
+not permission to initialize a new database.
 
-Backend: `mvn clean test`. Frontend: `npm run lint`, `npm run test:unit`, `npm run build`. Kiểm chứng PostgreSQL thật: `powershell -File scripts/verify-postgres-m21.ps1 -Port 15440`. Script tạo container và DB rehearsal riêng, không xoá DB đang dùng. UI thực: `node tests/audit-layout.mjs` từ `frontend/` khi đã chạy backend rehearsal và Vite, cấu hình `M6_WEB_URL`, `M6_API_URL` nếu đổi cổng.
+## Production intent
 
-[Luật thị giác](frontend/DESIGN.md) · [Báo cáo audit](docs/QA/production-audit-2026-10-17.md) · [Từ vựng](docs/features/vocabulary.md) · [Ngữ pháp và thi thử](docs/features/grammar-and-exam.md)
+Anh H?ng will deploy an independent Jiayou stack on the existing Arch Linux laptop
+that also hosts Ganbarou. Jiayou's hostname is not selected. docker-compose.yml is a
+fail-closed review template: no host/public ports, separate external storage and secrets,
+measured resource budgets and validation-only backend startup. It creates no public route
+or initial schema. Do not run it on the host without a separately approved deployment.
+
+The default backend profile is jiayou-prod. Missing identity/authorization fails before
+initialization. Legacy prod/staging profiles and historical SQL remain for compatibility,
+not Jiayou production. The new corpus is empty/pending: no accounts or public admin are
+seeded, and APPROVED publication requires a separate reviewed release. No learner data
+is migrated from Ganbarou.
+
+Historical provider examples and research are evidence, not current release instructions.
+Provider deployment sources are retained under docs/archive/provider-deployment/.
+Private environments, caches and preservation manifests are outside the source checkout.

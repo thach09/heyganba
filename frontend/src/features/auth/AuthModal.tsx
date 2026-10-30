@@ -73,10 +73,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   };
 
   return (
-    <Modal compact title={isRegister ? 'Tạo tài khoản HeyGanba' : 'Đăng nhập vào HeyGanba'} onClose={onClose}>
+    <Modal compact title={isRegister ? 'Tạo tài khoản Jiayou' : 'Đăng nhập vào Jiayou'} onClose={onClose}>
         <div className="flex items-start justify-between gap-4">
           <h2 className="text-[16px] font-semibold text-fg">
-            {isRegister ? 'Tạo tài khoản HeyGanba' : 'Đăng nhập vào HeyGanba'}
+            {isRegister ? 'Tạo tài khoản Jiayou' : 'Đăng nhập vào Jiayou'}
           </h2>
         </div>
 

@@ -21,5 +21,5 @@ Nội dung tiếng Trung:
 
 Rate limit admin: giữ nguyên 30/phút/admin; nhập nội dung số lượng lớn bắt buộc qua Flyway migration, không qua Admin UI.
 
-Chưa chốt: tên thương hiệu mới — dùng "Học tiếng Trung" làm nhãn trung tính.
+Owner đã chọn tên Jiayou cho repository và ứng dụng; Ganbarou là sản phẩm riêng, không thay thế.
 Chưa chốt: migration `language_code` để tách dữ liệu JP/ZH — chờ xác nhận founder.

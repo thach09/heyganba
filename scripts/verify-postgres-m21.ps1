@@ -34,7 +34,7 @@ $StartedContainer = $false
 $CreatedContainerName = $null
 
 Write-Host "=================================================================" -ForegroundColor Cyan
-Write-Host "  HeyGanba - M6 PostgreSQL Schema A & B Verification Script    " -ForegroundColor Cyan
+Write-Host "  Jiayou - M6 PostgreSQL Schema A & B Verification Script    " -ForegroundColor Cyan
 Write-Host "=================================================================" -ForegroundColor Cyan
 
 # Ham xac minh ket qua test thuc su qua file XML cua Surefire
