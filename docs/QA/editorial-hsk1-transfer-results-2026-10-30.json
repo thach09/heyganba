@@ -1,0 +1,826 @@
+{
+  "baselineHead": "7f6e7fbe89a4cfb57ca369b10df0acd09a90f658",
+  "branch": "feat/v2.1-ux-and-stability",
+  "decision": "No scope expansion/adoption or learner route activation. Continue source-grounded offline draft authoring; new set has no independent Vietnamese/example adjudication.",
+  "counts": {
+    "newUsableDrafts": 10,
+    "existingSeedDraftsPreserved": 2,
+    "newVocabularyRecords": 0,
+    "editorialValidated": 0,
+    "coreVerified": 0,
+    "published": 0,
+    "databaseWrites": 0,
+    "trustedProductionReceipts": 0,
+    "realExternalAssessorCalls": 0
+  },
+  "split": {
+    "newWordCases": 36,
+    "newPositiveIds": [
+      38,
+      135,
+      227,
+      27,
+      35,
+      121,
+      29,
+      120,
+      136,
+      23
+    ],
+    "oldAmbiguousControlsExcludedFromNewCaseCount": 5,
+    "separateFromFrozenImplementation": true,
+    "blindHeldOut": false,
+    "independentlyAdjudicated": false,
+    "labelProvenance": "External lexical facts plus same-Agent provisional semantic/example labels",
+    "datasetAndCodeUnchangedAfterNewRun": true
+  },
+  "original26": {
+    "exitCode": 0,
+    "result": {
+      "policy": "JIAYOU_EDITORIAL_SIMPLE_NOUN_V0_1_PROPOSED",
+      "policyAdopted": false,
+      "authoringState": "EDITORIAL_DRAFT",
+      "factsSha256": "ce34c1d7e6c1680dc755092b187c58082c223c26ecd15ebc8df781bba7aa67b1",
+      "benchmarkSha256": "71d5f769650d4761197355b74fff942761562507d365f921ddeac705fe057f0a",
+      "cases": 26,
+      "proposedPolicyPass": 2,
+      "abstained": 24,
+      "oracleMismatches": 0,
+      "independentAdjudications": 0,
+      "heldOutCases": 0,
+      "coreVerified": 0,
+      "published": 0,
+      "stateTransitions": 0,
+      "databaseWrites": 0,
+      "limitation": "Author-designed development replay; no general semantic/naturalness validation or independent false-approval estimate.",
+      "results": [
+        {
+          "id": "positive-water",
+          "kind": "positive",
+          "expected": "PASS_PROPOSED_B",
+          "actual": "PASS_PROPOSED_B",
+          "reason": "CLOSED_FRAME_AND_TEMPLATE_CHECKS_ONLY",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "positive-school",
+          "kind": "positive",
+          "expected": "PASS_PROPOSED_B",
+          "actual": "PASS_PROPOSED_B",
+          "reason": "CLOSED_FRAME_AND_TEMPLATE_CHECKS_ONLY",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "wrong-water-tone",
+          "kind": "adversarial",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "FRAME_OR_FIELD_MISMATCH:reading",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "wrong-water-concept-country",
+          "kind": "adversarial",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "FRAME_OR_FIELD_MISMATCH:conceptId",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "wrong-water-concept-five-elements",
+          "kind": "adversarial",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "FRAME_OR_FIELD_MISMATCH:conceptId",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "wrong-water-sense-generic-liquid",
+          "kind": "adversarial",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "FRAME_OR_FIELD_MISMATCH:conceptId",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "wrong-water-pos-adjective",
+          "kind": "adversarial",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "FRAME_OR_FIELD_MISMATCH:partOfSpeech",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "wrong-vietnamese-concept",
+          "kind": "adversarial",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "FRAME_OR_FIELD_MISMATCH:vietnameseTerm",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "unsupported-potability-claim",
+          "kind": "adversarial",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "UNMODELLED_EDITORIAL_SURFACE:vietnameseDefinition",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "wrong-example-meaning",
+          "kind": "adversarial",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "UNMODELLED_EDITORIAL_SURFACE:exampleVi",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "wrong-example-pinyin",
+          "kind": "adversarial",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "UNMODELLED_EDITORIAL_SURFACE:examplePinyin",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "wrong-chinese-sentence",
+          "kind": "adversarial",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "UNMODELLED_EDITORIAL_SURFACE:exampleZh",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "unauthorized-optional-field",
+          "kind": "adversarial",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "CERTIFICATION_PUBLICATION_OR_ENRICHMENT_SPOOF",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "spoof-core-state",
+          "kind": "adversarial",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "CERTIFICATION_PUBLICATION_OR_ENRICHMENT_SPOOF",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "spoof-published-state",
+          "kind": "adversarial",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "CERTIFICATION_PUBLICATION_OR_ENRICHMENT_SPOOF",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "invented-approval-flag",
+          "kind": "adversarial",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "UNSUPPORTED_SCHEMA_OR_SELF_ASSERTED_AUTHORITY",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "wrong-school-reading",
+          "kind": "adversarial",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "FRAME_OR_FIELD_MISMATCH:reading",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "school-hospital-sense",
+          "kind": "adversarial",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "FRAME_OR_FIELD_MISMATCH:conceptId",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "school-of-thought-prose",
+          "kind": "adversarial",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "UNMODELLED_EDITORIAL_SURFACE:vietnameseDefinition",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "scope-204",
+          "kind": "scope-abstention-not-wrong-chinese",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "scope-251",
+          "kind": "scope-abstention-not-wrong-chinese",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "scope-425",
+          "kind": "scope-abstention-not-wrong-chinese",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "scope-49",
+          "kind": "scope-abstention-not-wrong-chinese",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "scope-6",
+          "kind": "scope-abstention-not-wrong-chinese",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "valid-free-example-not-covered",
+          "kind": "valid-but-outside-template",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "UNMODELLED_EDITORIAL_SURFACE:exampleZh",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "valid-vietnamese-paraphrase-not-covered",
+          "kind": "valid-but-outside-template",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "UNMODELLED_EDITORIAL_SURFACE:exampleVi",
+          "agreesWithDevelopmentOracle": true
+        }
+      ]
+    }
+  },
+  "new36": {
+    "exitCode": 1,
+    "gate": "NOT_PASSED",
+    "result": {
+      "policy": "JIAYOU_EDITORIAL_SIMPLE_NOUN_V0_1_PROPOSED",
+      "policyAdopted": false,
+      "authoringState": "EDITORIAL_DRAFT",
+      "factsSha256": "ce34c1d7e6c1680dc755092b187c58082c223c26ecd15ebc8df781bba7aa67b1",
+      "benchmarkSha256": "9b4b5a56c762fb6f025d5fcf3550b5026b7771b71d79bfc765d0c766d3d90691",
+      "cases": 36,
+      "proposedPolicyPass": 0,
+      "abstained": 36,
+      "oracleMismatches": 10,
+      "independentAdjudications": 0,
+      "heldOutCases": 0,
+      "coreVerified": 0,
+      "published": 0,
+      "stateTransitions": 0,
+      "databaseWrites": 0,
+      "limitation": "Author-designed development replay; no general semantic/naturalness validation or independent false-approval estimate.",
+      "results": [
+        {
+          "id": "new-positive-38",
+          "kind": "positive",
+          "expected": "PASS_PROPOSED_B",
+          "actual": "ABSTAIN",
+          "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+          "agreesWithDevelopmentOracle": false
+        },
+        {
+          "id": "new-positive-135",
+          "kind": "positive",
+          "expected": "PASS_PROPOSED_B",
+          "actual": "ABSTAIN",
+          "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+          "agreesWithDevelopmentOracle": false
+        },
+        {
+          "id": "new-positive-227",
+          "kind": "positive",
+          "expected": "PASS_PROPOSED_B",
+          "actual": "ABSTAIN",
+          "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+          "agreesWithDevelopmentOracle": false
+        },
+        {
+          "id": "new-positive-27",
+          "kind": "positive",
+          "expected": "PASS_PROPOSED_B",
+          "actual": "ABSTAIN",
+          "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+          "agreesWithDevelopmentOracle": false
+        },
+        {
+          "id": "new-positive-35",
+          "kind": "positive",
+          "expected": "PASS_PROPOSED_B",
+          "actual": "ABSTAIN",
+          "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+          "agreesWithDevelopmentOracle": false
+        },
+        {
+          "id": "new-positive-121",
+          "kind": "positive",
+          "expected": "PASS_PROPOSED_B",
+          "actual": "ABSTAIN",
+          "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+          "agreesWithDevelopmentOracle": false
+        },
+        {
+          "id": "new-positive-29",
+          "kind": "positive",
+          "expected": "PASS_PROPOSED_B",
+          "actual": "ABSTAIN",
+          "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+          "agreesWithDevelopmentOracle": false
+        },
+        {
+          "id": "new-positive-120",
+          "kind": "positive",
+          "expected": "PASS_PROPOSED_B",
+          "actual": "ABSTAIN",
+          "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+          "agreesWithDevelopmentOracle": false
+        },
+        {
+          "id": "new-positive-136",
+          "kind": "positive",
+          "expected": "PASS_PROPOSED_B",
+          "actual": "ABSTAIN",
+          "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+          "agreesWithDevelopmentOracle": false
+        },
+        {
+          "id": "new-positive-23",
+          "kind": "positive",
+          "expected": "PASS_PROPOSED_B",
+          "actual": "ABSTAIN",
+          "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+          "agreesWithDevelopmentOracle": false
+        },
+        {
+          "id": "wrong-pinyin-0",
+          "kind": "incorrect-pinyin",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "wrong-pinyin-1",
+          "kind": "incorrect-pinyin",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "wrong-pinyin-2",
+          "kind": "incorrect-pinyin",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "wrong-pinyin-3",
+          "kind": "incorrect-pinyin",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "wrong-pinyin-4",
+          "kind": "incorrect-pinyin",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "wrong-vietnamese-0",
+          "kind": "incorrect-vietnamese",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "wrong-vietnamese-1",
+          "kind": "incorrect-vietnamese",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "wrong-vietnamese-2",
+          "kind": "incorrect-vietnamese",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "wrong-vietnamese-3",
+          "kind": "incorrect-vietnamese",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "wrong-concept-0",
+          "kind": "wrong-concept-link",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "wrong-concept-1",
+          "kind": "wrong-concept-link",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "wrong-concept-2",
+          "kind": "wrong-concept-link",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "wrong-example-0",
+          "kind": "incorrect-example",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "wrong-example-1",
+          "kind": "incorrect-example",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "wrong-example-2",
+          "kind": "incorrect-example",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "wrong-example-3",
+          "kind": "incorrect-example",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "incompatible-rights-0",
+          "kind": "licensing-failure",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "incompatible-rights-1",
+          "kind": "licensing-failure",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "incompatible-rights-2",
+          "kind": "licensing-failure",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "sense-trap-0",
+          "kind": "polyphonic-homograph-sense-trap",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "sense-trap-1",
+          "kind": "polyphonic-homograph-sense-trap",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "sense-trap-2",
+          "kind": "polyphonic-homograph-sense-trap",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "sense-trap-3",
+          "kind": "polyphonic-homograph-sense-trap",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "sense-trap-4",
+          "kind": "polyphonic-homograph-sense-trap",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "missing-evidence-0",
+          "kind": "missing-evidence-correct-abstention",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+          "agreesWithDevelopmentOracle": true
+        },
+        {
+          "id": "missing-evidence-1",
+          "kind": "missing-evidence-correct-abstention",
+          "expected": "ABSTAIN",
+          "actual": "ABSTAIN",
+          "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+          "agreesWithDevelopmentOracle": true
+        }
+      ]
+    },
+    "metrics": {
+      "correctAcceptanceVsProvisionalReference": 0,
+      "falseAcceptanceVsProvisionalReference": 0,
+      "correctAbstentionVsProvisionalReference": 26,
+      "falseAbstentionVsProspectiveDraftReference": 10,
+      "independentGroundTruthMetrics": null,
+      "independentAdjudications": 0,
+      "acceptedCount": 0,
+      "precision": "UNDEFINED_NO_ACCEPTS",
+      "reasonCounts": {
+        "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR": 36
+      },
+      "byKind": {
+        "positive": {
+          "cases": 10,
+          "accepted": 0,
+          "abstained": 10
+        },
+        "incorrect-pinyin": {
+          "cases": 5,
+          "accepted": 0,
+          "abstained": 5
+        },
+        "incorrect-vietnamese": {
+          "cases": 4,
+          "accepted": 0,
+          "abstained": 4
+        },
+        "wrong-concept-link": {
+          "cases": 3,
+          "accepted": 0,
+          "abstained": 3
+        },
+        "incorrect-example": {
+          "cases": 4,
+          "accepted": 0,
+          "abstained": 4
+        },
+        "licensing-failure": {
+          "cases": 3,
+          "accepted": 0,
+          "abstained": 3
+        },
+        "polyphonic-homograph-sense-trap": {
+          "cases": 5,
+          "accepted": 0,
+          "abstained": 5
+        },
+        "missing-evidence-correct-abstention": {
+          "cases": 2,
+          "accepted": 0,
+          "abstained": 2
+        }
+      },
+      "interpretation": "Frozen V0.1 correctly refuses out-of-contract IDs. Ten false abstentions are relative to prospective authoring acceptability labels, not V0.1 regressions or independently measured language quality. All faults are masked by scope guard; no demonstrated sense/tone/translation/license discrimination."
+    }
+  },
+  "referenceOracleChecks": {
+    "incorrectToneReferenceCasesConfirmedAgainstExternalCedict": 5,
+    "wrongConceptBindingsDifferentFromExternalSelectedSynset": 3,
+    "vietnameseAndFullExampleExpectedOutcomes": "Same-Agent provisional annotations, not independent adjudication",
+    "licensingExpectedOutcomes": "Explicit hypothetical use/grant incompatibility scenarios; not actual changed publisher grants",
+    "newPositiveIdsDisjointFromFrozenSeeds": true,
+    "datasetModifiedAfterEvaluation": false
+  },
+  "draftFactChecks": {
+    "checkedDrafts": 10,
+    "sourceWordFormsPinyinMatches": 10,
+    "cowNounReadingMatches": 10,
+    "pinnedHsk1Matches": 10,
+    "controlledExampleConstructionMatches": 10,
+    "independentSemanticNaturalnessChecks": 0,
+    "noValidationGranted": true,
+    "observations": [
+      {
+        "id": 38,
+        "word": "书",
+        "cedictFormsReadingMatch": true,
+        "cowNounReadingObservationMatches": true,
+        "officialPinnedWordReadingMatch": true,
+        "templateAndPinyinConstructionMatch": true,
+        "independentVietnameseOrExampleAdjudication": false,
+        "editorialValidated": false
+      },
+      {
+        "id": 135,
+        "word": "猫",
+        "cedictFormsReadingMatch": true,
+        "cowNounReadingObservationMatches": true,
+        "officialPinnedWordReadingMatch": true,
+        "templateAndPinyinConstructionMatch": true,
+        "independentVietnameseOrExampleAdjudication": false,
+        "editorialValidated": false
+      },
+      {
+        "id": 227,
+        "word": "狗",
+        "cedictFormsReadingMatch": true,
+        "cowNounReadingObservationMatches": true,
+        "officialPinnedWordReadingMatch": true,
+        "templateAndPinyinConstructionMatch": true,
+        "independentVietnameseOrExampleAdjudication": false,
+        "editorialValidated": false
+      },
+      {
+        "id": 27,
+        "word": "茶",
+        "cedictFormsReadingMatch": true,
+        "cowNounReadingObservationMatches": true,
+        "officialPinnedWordReadingMatch": true,
+        "templateAndPinyinConstructionMatch": true,
+        "independentVietnameseOrExampleAdjudication": false,
+        "editorialValidated": false
+      },
+      {
+        "id": 35,
+        "word": "苹果",
+        "cedictFormsReadingMatch": true,
+        "cowNounReadingObservationMatches": true,
+        "officialPinnedWordReadingMatch": true,
+        "templateAndPinyinConstructionMatch": true,
+        "independentVietnameseOrExampleAdjudication": false,
+        "editorialValidated": false
+      },
+      {
+        "id": 121,
+        "word": "杯子",
+        "cedictFormsReadingMatch": true,
+        "cowNounReadingObservationMatches": true,
+        "officialPinnedWordReadingMatch": true,
+        "templateAndPinyinConstructionMatch": true,
+        "independentVietnameseOrExampleAdjudication": false,
+        "editorialValidated": false
+      },
+      {
+        "id": 29,
+        "word": "米饭",
+        "cedictFormsReadingMatch": true,
+        "cowNounReadingObservationMatches": true,
+        "officialPinnedWordReadingMatch": true,
+        "templateAndPinyinConstructionMatch": true,
+        "independentVietnameseOrExampleAdjudication": false,
+        "editorialValidated": false
+      },
+      {
+        "id": 120,
+        "word": "电脑",
+        "cedictFormsReadingMatch": true,
+        "cowNounReadingObservationMatches": true,
+        "officialPinnedWordReadingMatch": true,
+        "templateAndPinyinConstructionMatch": true,
+        "independentVietnameseOrExampleAdjudication": false,
+        "editorialValidated": false
+      },
+      {
+        "id": 136,
+        "word": "衣服",
+        "cedictFormsReadingMatch": true,
+        "cowNounReadingObservationMatches": true,
+        "officialPinnedWordReadingMatch": true,
+        "templateAndPinyinConstructionMatch": true,
+        "independentVietnameseOrExampleAdjudication": false,
+        "editorialValidated": false
+      },
+      {
+        "id": 23,
+        "word": "爸爸",
+        "cedictFormsReadingMatch": true,
+        "cowNounReadingObservationMatches": true,
+        "officialPinnedWordReadingMatch": true,
+        "templateAndPinyinConstructionMatch": true,
+        "independentVietnameseOrExampleAdjudication": false,
+        "editorialValidated": false
+      }
+    ]
+  },
+  "securityRegression": {
+    "exitCode": 0,
+    "tests": 87,
+    "passed": 87,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "portabilityFinding": {
+    "committedLfFactsSha256": "77b043d6dc0524d22e9c63405f73f25721625a0a39a04c8f15021bb7e213cc2a",
+    "pinnedHistoricalCrlfFactsSha256": "ce34c1d7e6c1680dc755092b187c58082c223c26ecd15ebc8df781bba7aa67b1",
+    "lfPreflight": "REJECTED_BEFORE_CASE_EVALUATION",
+    "restoration": "In a private copy only: normalize CRLF to LF then LF to CRLF; assert exact original pinned hash. No relaxed hash or evaluator change."
+  },
+  "notRun": {
+    "java": "No backend source or build changes",
+    "postgres": "No DB/migration changes or DB connections",
+    "frontendLintBuild": "No frontend or runtime changes"
+  },
+  "policyAndAuthorityChanged": false,
+  "learnerRouteImplemented": false,
+  "baselineHashFiles": 1025,
+  "unchangedBaselineHashFiles": 1025,
+  "existingFileHashDelta": [],
+  "changedFiles": [
+    "docs/QA/editorial-v01-freeze-2026-10-30.json",
+    "docs/Content/hsk1-editorial-drafts-10-2026-10-30.json",
+    "docs/QA/editorial-untuned-transfer-set-2026-10-30.json",
+    "docs/Content/editorial-learner-route-proposal-v0.1.md",
+    "docs/QA/editorial-hsk1-transfer-2026-10-30.md",
+    "docs/QA/editorial-hsk1-transfer-results-2026-10-30.json"
+  ],
+  "fileHashesExceptSelf": {
+    "docs/QA/editorial-v01-freeze-2026-10-30.json": {
+      "worktreeSha256": "d88cb9b7473e8dd30c3fe7ba093ac2b928b754cf1f7188d7d9038968cbace335",
+      "lfSerializationSha256": "49afa5434d9875419a4d9d636918a4e9fc8ad1cac4ba69ea0aeaa2a797392805"
+    },
+    "docs/Content/hsk1-editorial-drafts-10-2026-10-30.json": {
+      "worktreeSha256": "2cec5c383718ea55a66f1aa64bd791093995aac7ade14b686c9f060aec6e3bfb",
+      "lfSerializationSha256": "11203ce1ed769fa9829b4483deeb78444189e08fa6b1ae1b0591ee994077c5b6"
+    },
+    "docs/QA/editorial-untuned-transfer-set-2026-10-30.json": {
+      "worktreeSha256": "9b4b5a56c762fb6f025d5fcf3550b5026b7771b71d79bfc765d0c766d3d90691",
+      "lfSerializationSha256": "4793d32c8e4c7476ffc1f37f014c52e18fe2d64d7e8558b67dc5c4bf8f18b784"
+    },
+    "docs/Content/editorial-learner-route-proposal-v0.1.md": {
+      "worktreeSha256": "95fbfbabfa089de384f3b0a4baa1932b98120cc511167605ee1a7b0638318814",
+      "lfSerializationSha256": "95fbfbabfa089de384f3b0a4baa1932b98120cc511167605ee1a7b0638318814"
+    },
+    "docs/QA/editorial-hsk1-transfer-2026-10-30.md": {
+      "worktreeSha256": "aa718470cebe9830e4df875c8250687f72dcec9693f55ced24a186fd0d787d45",
+      "lfSerializationSha256": "aa718470cebe9830e4df875c8250687f72dcec9693f55ced24a186fd0d787d45"
+    }
+  },
+  "freezeBeforeRun": {
+    "caseHash": "9b4b5a56c762fb6f025d5fcf3550b5026b7771b71d79bfc765d0c766d3d90691",
+    "draftHash": "2cec5c383718ea55a66f1aa64bd791093995aac7ade14b686c9f060aec6e3bfb",
+    "evaluatorHash": "ea4ce55a9972b631f8ea8812b571148e23da5709d71b85d49aa9c567272b1a91"
+  },
+  "privateEvidenceRoot": "C:\\Users\\LENOVO\\AppData\\Local\\Temp\\jiayou-hsk1-transfer-6w9tg9tq",
+  "privateScripts": {
+    "prepare-transfer.py": "cada542b1c35276e901c280deff894dc5dc945c122ef54285e46ee02ac1a84b0",
+    "run-transfer.py": "2eae04336c6bd540f4d2e826d7b9206ebb680d2660732ecd59dc62400a249037",
+    "check-draft-facts.py": "65be69746048c6fb089acccd866df61d52fbbb7ddbd842287fe62712a0a680ae"
+  },
+  "gitDiffCheckExitCode": 0,
+  "localCommitLookup": "git log -1 --format=%H -- docs/QA/editorial-hsk1-transfer-2026-10-30.md",
+  "maintainerStatusPreserved": true,
+  "originalGitStatusEntries": 121,
+  "baselineIndexEmpty": true,
+  "applicationDatabaseWrites": 0
+}
