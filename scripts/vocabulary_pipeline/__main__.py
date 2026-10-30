@@ -118,6 +118,7 @@ def main():
     run.add_argument("--assessor-command", help="Operator-controlled JSON argv array, no shell")
     run.add_argument("--pending-import-output", help="Private NEW Flyway candidate for verified records/explicit core projections; never auto-apply")
     run.add_argument("--core-projections-output", help="Explicit private core-only proposals; retain original drafts and require guarded pending import")
+    run.add_argument("--pending-research-output", help="Opt-in private SQL for new source-supported editorial drafts; never verification/publication")
     run.add_argument("--pending-corrections-output", help="Private guarded orthography/POS patch; changed fields must be VERIFIED, whole record stays pending")
     args = parser.parse_args()
     root = pathlib.Path(args.private_dir).resolve()
@@ -226,6 +227,14 @@ def main():
         if eligible:
             with planned.open("x", encoding="utf8") as stream:
                 stream.write(pending_import_sql(eligible, store))
+    if args.pending_research_output:
+        planned = pathlib.Path(args.pending_research_output).resolve()
+        if not planned.is_relative_to(root):
+            parser.error("Pending research proposal must stay inside the private evidence directory")
+        draft_rows = [(c, r) for c, r in rows if c.get("draftOnly") and c.get("vocabularyId") is None and r["decision"] == "NEEDS_RESEARCH"]
+        if draft_rows:
+            with planned.open("x", encoding="utf8") as stream:
+                stream.write(pending_import_sql(draft_rows, store, allow_research_drafts=True))
     if args.pending_corrections_output:
         planned = pathlib.Path(args.pending_corrections_output).resolve()
         if not planned.is_relative_to(root):

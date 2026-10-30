@@ -7,7 +7,7 @@ records require explicit before content/digest/revision; homographs are never me
 import hashlib
 
 from .engine import FIELDS, RULESET, canonical, digest, identity
-from .projection import retained_projection_record
+from .projection import bound_record, retained_projection_record
 
 
 def literal(value):
@@ -22,15 +22,15 @@ def literal(value):
     return "'" + value.replace("'", "''") + "'"
 
 
-def pending_import_sql(rows, store, *, allow_field_corrections=False):
-    """Verified whole candidates or explicitly retained core projections, always pending.
+def pending_import_sql(rows, store, *, allow_field_corrections=False, allow_research_drafts=False):
+    """Verified records, retained core projections, or opt-in source-supported drafts.
 
     Stable sense bindings, transactional advisory lock and exact effective-field
     comparisons prevent duplicate/stale imports. Source objects are checked before
     planning. The generated script is NOT added to the controlled release allowlist.
     """
     if not rows or len(rows) > 100:
-        raise ValueError("Import batch must contain 1..100 verified records")
+        raise ValueError("Import batch must contain 1..100 eligible pending records")
     output = ["-- GENERATED RESEARCH CANDIDATE: lexical verification is not publication authorization.",
               "-- Requires V14 schema; run through a separately controlled NEW Flyway release.",
               "CREATE TABLE IF NOT EXISTS vocabulary_research_bindings (sense_identity VARCHAR(64) PRIMARY KEY, vocabulary_id BIGINT NOT NULL UNIQUE REFERENCES vocabulary(id), content_digest VARCHAR(64) NOT NULL, evidence_bundle_sha256 VARCHAR(64) NOT NULL);",]
@@ -48,9 +48,26 @@ def pending_import_sql(rows, store, *, allow_field_corrections=False):
         projection = candidate.get("publicationProjection") is not None
         retained = retained_projection_record(candidate, result, store) if projection else None
         projected_core = (projection and result.get("decision") == "CORE_VERIFIED")
-        if ((result.get("decision") != "AUTO_VERIFIED" and not partial and not projected_core) or result.get("contentDigest") != digest(content)
+        research = False
+        if allow_research_drafts and candidate.get("vocabularyId") is None and result.get("decision") == "NEEDS_RESEARCH":
+            bound_record(candidate, result, store)
+            selected = candidate.get("draftSenseEvidence", {})
+            # A pending draft is not semantic approval: require a real reusable,
+            # exact lexical sense for word/reading before admitting a new DB row.
+            for index, source in enumerate(result["sources"]):
+                if (all(source.get(k) == selected.get(k) for k in ("sourceId", "snapshotSha256", "entryId", "senseId"))
+                        and source.get("lexicalRole") == "DEFINITION" and source.get("obligations")
+                        and source.get("independenceEligible") is True
+                        and hashlib.sha256(source["definition"].encode("utf8")).hexdigest() == selected.get("definitionSha256")
+                        and index in result["fields"]["word"]["evidence"] and index in result["fields"]["reading"]["evidence"]):
+                    research = (candidate.get("draftOnly") is True and candidate.get("contentLicense") == source["license"]
+                                and candidate.get("meaningOrigin", "").startswith("AI_ASSISTED_VIETNAMESE_EDITORIAL")
+                                and not candidate.get("restrictedContent") and candidate.get("rightsStatus") != "RESTRICTED")
+            if not research:
+                raise ValueError("Pending additions need exact source-supported draft sense and explicit editorial/license origin")
+        if ((result.get("decision") != "AUTO_VERIFIED" and not partial and not projected_core and not research) or result.get("contentDigest") != digest(content)
                 or result.get("identity") != identity(content, candidate["senseId"]) or result.get("identity") in seen):
-            raise ValueError("Only distinct, current AUTO_VERIFIED candidates may be planned")
+            raise ValueError("Only distinct, current candidates eligible for the selected import mode may be planned")
         vocabulary_id = candidate.get("vocabularyId")
         if vocabulary_id is not None:
             if (type(vocabulary_id) is not int or vocabulary_id <= 0 or type(candidate.get("eligibilityRevision")) is not int
@@ -71,8 +88,11 @@ def pending_import_sql(rows, store, *, allow_field_corrections=False):
         # Ingesting a second homograph is deliberately refused rather than merging learner identities.
         lock_key = literal("jiayou-research:" + content["word"])
         metadata_json = canonical({"ruleset": RULESET, "bundleSha256": result["evidenceBundleSha256"],
-                                      "status": "VERIFIED_FIELDS_ONLY_PENDING" if partial else "LINGUISTICALLY_VERIFIED_NOT_PUBLISHED",
+                                      "status": "SOURCE_SUPPORTED_DRAFT_NOT_VERIFIED" if research else "VERIFIED_FIELDS_ONLY_PENDING" if partial else "LINGUISTICALLY_VERIFIED_NOT_PUBLISHED",
                                       "recordDecision": result["decision"], "changedFields": changed_fields if partial else list(FIELDS),
+                                      "fieldResults": result["fields"], "meaningOrigin": candidate.get("meaningOrigin"),
+                                      "draftSenseEvidence": candidate.get("draftSenseEvidence") if research else None,
+                                      "curriculumResearch": candidate.get("curriculumResearch") if research else None,
                                       "publicationProjection": candidate.get("publicationProjection"),
                                       "attribution": [{k: s[k] for k in ("sourceId", "license", "attribution", "obligations", "sourceUrl", "sourceVersion", "revisionUrls", "relatedSources")} for s in result["sources"]]})
         metadata = "convert_from(decode('" + metadata_json.hex() + "','hex'),'UTF8')"

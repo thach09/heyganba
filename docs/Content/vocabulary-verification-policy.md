@@ -1,5 +1,33 @@
 # Vocabulary verification policy — JIAYOU_LEXICAL_V1_2
 
+## Source-supported pending admission — 2026-10-30
+
+`verify --pending-research-output <private-sql>` permits a **new research draft**
+to enter an isolated database without claiming semantic approval. This does not
+change the V1.2 verification thresholds or production publication authority.
+The record must remain NEEDS_RESEARCH, declare `draftOnly=true`, a matching
+`contentLicense` and `AI_ASSISTED_VIETNAMESE_EDITORIAL...` origin, and bind an exact
+reusable lexical definition via source/snapshot/entry/sense/definition SHA-256.
+That extraction must support both the word and reading. An invented URL, a
+restricted source, mismatched sense or mutated evidence bundle is insufficient.
+
+This opt-in does not admit existing-row edits, CONFLICT/LICENSE_BLOCKED records,
+optional examples or Hán Việt. It inserts only PENDING_REVIEW with field-level
+failure reasons, null lesson/official HSK mapping and publication digest, and false
+verified capabilities. Research-only official IDs/version may be retained as
+metadata, never as authorization. Draft Vietnamese glosses are editorial
+adaptations of cited definitions, **not translations supplied by the source or
+independent AI assessments**. Retain attribution and share-alike obligations.
+
+SQL is generated only under the private evidence root and is not added to the
+release manifest. A guarded transaction/Flyway rehearsal must prove no duplicate,
+no stale overwrite, no accidental approval and unchanged learner relationships.
+Re-read actual DB fields/revisions and reverify before any later publication
+proposal. No API key or routine human approval is required for research; no
+self-assessment or missing key is converted into an independent semantic PASS.
+The strict default import, core projection/quarantine and signed receipt contracts
+remain unchanged. See the [actual local batch report](../QA/vocabulary-content-expansion-2026-10-30.md).
+
 V1.2 tách kết quả core/supplemental và hỗ trợ bản chiếu core có quarantine. Ngưỡng bằng chứng core, VOCAB_CONTENT_V2, receipt V1 và authority runtime được giữ nguyên. Thay đổi policy version phải được operator cấu hình tường minh trong catalog trước khi nhận receipt mới; không nâng cấp trust tự động.
 
 Không bắt buộc người duyệt từng từ. Không chấp nhận URL, domain, confidence, flag APPROVED hoặc JSON tự khai làm bằng chứng xuất bản.

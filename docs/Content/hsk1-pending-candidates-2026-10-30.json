@@ -1,0 +1,839 @@
+{
+  "schemaVersion": "JIAYOU_SOURCE_SUPPORTED_PENDING_BATCH_V1",
+  "reviewStatus": "PENDING_REVIEW",
+  "verifiedCoreRecords": 0,
+  "fullyVerifiedRecords": 0,
+  "productionAuthorization": false,
+  "license": "CC-BY-SA-4.0",
+  "attribution": "Chinese lexical facts adapted from CC-CEDICT contributors, distributed by MDBG; Vietnamese glosses editorially composed by the JIAYOU research agent, not source-supplied Vietnamese translations. Changes: sense selection and Vietnamese draft gloss/POS; no independent semantic assessment.",
+  "sourceUrl": "https://www.mdbg.net/chinese/dictionary?page=cc-cedict",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "officialIdUse": "Pinned CTI word/reading research only; no public level/lesson assignment or redistribution license asserted for the full syllabus.",
+  "candidates": [
+    {
+      "candidateId": "hsk1-gap-5",
+      "content": {
+        "examplePinyin": null,
+        "exampleVi": null,
+        "exampleZh": null,
+        "hanViet": null,
+        "meaning": "Ban ngày",
+        "partOfSpeech": "Danh từ",
+        "reading": "báitiān",
+        "traditional": "白天",
+        "word": "白天"
+      },
+      "contentLicense": "CC-BY-SA-4.0",
+      "curriculumResearch": {
+        "officialId": 5,
+        "pdfPage": 80,
+        "primaryLevel": 1,
+        "sourceSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941",
+        "status": "WORD_READING_MATCH_ONLY_NOT_PUBLICATION_AUTHORITY",
+        "version": "CTI_2025_11_EFFECTIVE_2026_07_PINNED_NOT_ASSERTED_LATEST"
+      },
+      "draftOnly": true,
+      "draftSenseEvidence": {
+        "definitionSha256": "49df1e5699a297cb2411878fd2df9841c4fb64124c536ea4b3a8a17c6b7e202b",
+        "entryId": "line-76614",
+        "senseId": "sense-0",
+        "snapshotSha256": "714c3e7ea6086956f163eb9387d627859e5c00c0e51725197b7a0c670cc2641a",
+        "sourceId": "cc-cedict"
+      },
+      "meaningOrigin": "AI_ASSISTED_VIETNAMESE_EDITORIAL_FROM_CITED_DEFINITION_NOT_INDEPENDENT_ASSESSMENT",
+      "senseId": "cedict-line-76614-sense-0"
+    },
+    {
+      "candidateId": "hsk1-gap-7",
+      "content": {
+        "examplePinyin": null,
+        "exampleVi": null,
+        "exampleZh": null,
+        "hanViet": null,
+        "meaning": "Một nửa, một phần hai",
+        "partOfSpeech": "Số từ",
+        "reading": "bàn",
+        "traditional": "半",
+        "word": "半"
+      },
+      "contentLicense": "CC-BY-SA-4.0",
+      "curriculumResearch": {
+        "officialId": 7,
+        "pdfPage": 80,
+        "primaryLevel": 1,
+        "sourceSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941",
+        "status": "WORD_READING_MATCH_ONLY_NOT_PUBLICATION_AUTHORITY",
+        "version": "CTI_2025_11_EFFECTIVE_2026_07_PINNED_NOT_ASSERTED_LATEST"
+      },
+      "draftOnly": true,
+      "draftSenseEvidence": {
+        "definitionSha256": "a11ae06469c63740d7b0ecf802f282a0d46e94f31a654dfcd3c0dc6dc277f904",
+        "entryId": "line-16824",
+        "senseId": "sense-0",
+        "snapshotSha256": "714c3e7ea6086956f163eb9387d627859e5c00c0e51725197b7a0c670cc2641a",
+        "sourceId": "cc-cedict"
+      },
+      "meaningOrigin": "AI_ASSISTED_VIETNAMESE_EDITORIAL_FROM_CITED_DEFINITION_NOT_INDEPENDENT_ASSESSMENT",
+      "senseId": "cedict-line-16824-sense-0"
+    },
+    {
+      "candidateId": "hsk1-gap-12",
+      "content": {
+        "examplePinyin": null,
+        "exampleVi": null,
+        "exampleZh": null,
+        "hanViet": null,
+        "meaning": "Bệnh, tình trạng đau ốm",
+        "partOfSpeech": "Danh từ",
+        "reading": "bìng",
+        "traditional": "病",
+        "word": "病"
+      },
+      "contentLicense": "CC-BY-SA-4.0",
+      "curriculumResearch": {
+        "officialId": 12,
+        "pdfPage": 80,
+        "primaryLevel": 1,
+        "sourceSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941",
+        "status": "WORD_READING_MATCH_ONLY_NOT_PUBLICATION_AUTHORITY",
+        "version": "CTI_2025_11_EFFECTIVE_2026_07_PINNED_NOT_ASSERTED_LATEST"
+      },
+      "draftOnly": true,
+      "draftSenseEvidence": {
+        "definitionSha256": "6f4f1b1c9d25ee4a551eb957522074210c6ec3b7aef42445c18c6c4a05f542ce",
+        "entryId": "line-75819",
+        "senseId": "sense-0",
+        "snapshotSha256": "714c3e7ea6086956f163eb9387d627859e5c00c0e51725197b7a0c670cc2641a",
+        "sourceId": "cc-cedict"
+      },
+      "meaningOrigin": "AI_ASSISTED_VIETNAMESE_EDITORIAL_FROM_CITED_DEFINITION_NOT_INDEPENDENT_ASSESSMENT",
+      "senseId": "cedict-line-75819-sense-0"
+    },
+    {
+      "candidateId": "hsk1-gap-18",
+      "content": {
+        "examplePinyin": null,
+        "exampleVi": null,
+        "exampleZh": null,
+        "hanViet": null,
+        "meaning": "Hát",
+        "partOfSpeech": "Động từ",
+        "reading": "chàng",
+        "traditional": "唱",
+        "word": "唱"
+      },
+      "contentLicense": "CC-BY-SA-4.0",
+      "curriculumResearch": {
+        "officialId": 18,
+        "pdfPage": 80,
+        "primaryLevel": 1,
+        "sourceSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941",
+        "status": "WORD_READING_MATCH_ONLY_NOT_PUBLICATION_AUTHORITY",
+        "version": "CTI_2025_11_EFFECTIVE_2026_07_PINNED_NOT_ASSERTED_LATEST"
+      },
+      "draftOnly": true,
+      "draftSenseEvidence": {
+        "definitionSha256": "7b5697854fec8064acc371f5cb7b112ffc345d3b135262dd33103422d2891dcd",
+        "entryId": "line-22094",
+        "senseId": "sense-0",
+        "snapshotSha256": "714c3e7ea6086956f163eb9387d627859e5c00c0e51725197b7a0c670cc2641a",
+        "sourceId": "cc-cedict"
+      },
+      "meaningOrigin": "AI_ASSISTED_VIETNAMESE_EDITORIAL_FROM_CITED_DEFINITION_NOT_INDEPENDENT_ASSESSMENT",
+      "senseId": "cedict-line-22094-sense-0"
+    },
+    {
+      "candidateId": "hsk1-gap-19",
+      "content": {
+        "examplePinyin": null,
+        "exampleVi": null,
+        "exampleZh": null,
+        "hanViet": null,
+        "meaning": "Siêu thị",
+        "partOfSpeech": "Danh từ",
+        "reading": "chāoshì",
+        "traditional": "超市",
+        "word": "超市"
+      },
+      "contentLicense": "CC-BY-SA-4.0",
+      "curriculumResearch": {
+        "officialId": 19,
+        "pdfPage": 80,
+        "primaryLevel": 1,
+        "sourceSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941",
+        "status": "WORD_READING_MATCH_ONLY_NOT_PUBLICATION_AUTHORITY",
+        "version": "CTI_2025_11_EFFECTIVE_2026_07_PINNED_NOT_ASSERTED_LATEST"
+      },
+      "draftOnly": true,
+      "draftSenseEvidence": {
+        "definitionSha256": "cd8f530795d8b48f4a61672b48cc7fde2b0f717abe4354bb594a93d57b9d01ee",
+        "entryId": "line-104726",
+        "senseId": "sense-0",
+        "snapshotSha256": "714c3e7ea6086956f163eb9387d627859e5c00c0e51725197b7a0c670cc2641a",
+        "sourceId": "cc-cedict"
+      },
+      "meaningOrigin": "AI_ASSISTED_VIETNAMESE_EDITORIAL_FROM_CITED_DEFINITION_NOT_INDEPENDENT_ASSESSMENT",
+      "senseId": "cedict-line-104726-sense-0"
+    },
+    {
+      "candidateId": "hsk1-gap-27",
+      "content": {
+        "examplePinyin": null,
+        "exampleVi": null,
+        "exampleZh": null,
+        "hanViet": null,
+        "meaning": "Trường đại học",
+        "partOfSpeech": "Danh từ",
+        "reading": "dàxué",
+        "traditional": "大學",
+        "word": "大学"
+      },
+      "contentLicense": "CC-BY-SA-4.0",
+      "curriculumResearch": {
+        "officialId": 27,
+        "pdfPage": 80,
+        "primaryLevel": 1,
+        "sourceSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941",
+        "status": "WORD_READING_MATCH_ONLY_NOT_PUBLICATION_AUTHORITY",
+        "version": "CTI_2025_11_EFFECTIVE_2026_07_PINNED_NOT_ASSERTED_LATEST"
+      },
+      "draftOnly": true,
+      "draftSenseEvidence": {
+        "definitionSha256": "e35c132cbb04f5c568d30139833c915b95cb8bafd3dc86fe3a74472aef74763c",
+        "entryId": "line-27922",
+        "senseId": "sense-0",
+        "snapshotSha256": "714c3e7ea6086956f163eb9387d627859e5c00c0e51725197b7a0c670cc2641a",
+        "sourceId": "cc-cedict"
+      },
+      "meaningOrigin": "AI_ASSISTED_VIETNAMESE_EDITORIAL_FROM_CITED_DEFINITION_NOT_INDEPENDENT_ASSESSMENT",
+      "senseId": "cedict-line-27922-sense-0"
+    },
+    {
+      "candidateId": "hsk1-gap-35",
+      "content": {
+        "examplePinyin": null,
+        "exampleVi": null,
+        "exampleZh": null,
+        "hanViet": null,
+        "meaning": "Điện thoại",
+        "partOfSpeech": "Danh từ",
+        "reading": "diànhuà",
+        "traditional": "電話",
+        "word": "电话"
+      },
+      "contentLicense": "CC-BY-SA-4.0",
+      "curriculumResearch": {
+        "officialId": 35,
+        "pdfPage": 80,
+        "primaryLevel": 1,
+        "sourceSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941",
+        "status": "WORD_READING_MATCH_ONLY_NOT_PUBLICATION_AUTHORITY",
+        "version": "CTI_2025_11_EFFECTIVE_2026_07_PINNED_NOT_ASSERTED_LATEST"
+      },
+      "draftOnly": true,
+      "draftSenseEvidence": {
+        "definitionSha256": "7339725159893c57c3f93fcf76ca715cae37512df0232819b63a35e08cb82aa1",
+        "entryId": "line-117317",
+        "senseId": "sense-0",
+        "snapshotSha256": "714c3e7ea6086956f163eb9387d627859e5c00c0e51725197b7a0c670cc2641a",
+        "sourceId": "cc-cedict"
+      },
+      "meaningOrigin": "AI_ASSISTED_VIETNAMESE_EDITORIAL_FROM_CITED_DEFINITION_NOT_INDEPENDENT_ASSESSMENT",
+      "senseId": "cedict-line-117317-sense-0"
+    },
+    {
+      "candidateId": "hsk1-gap-74",
+      "content": {
+        "examplePinyin": null,
+        "exampleVi": null,
+        "exampleZh": null,
+        "hanViet": null,
+        "meaning": "Hay, dễ nghe",
+        "partOfSpeech": "Tính từ",
+        "reading": "hǎotīng",
+        "traditional": "好聽",
+        "word": "好听"
+      },
+      "contentLicense": "CC-BY-SA-4.0",
+      "curriculumResearch": {
+        "officialId": 74,
+        "pdfPage": 81,
+        "primaryLevel": 1,
+        "sourceSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941",
+        "status": "WORD_READING_MATCH_ONLY_NOT_PUBLICATION_AUTHORITY",
+        "version": "CTI_2025_11_EFFECTIVE_2026_07_PINNED_NOT_ASSERTED_LATEST"
+      },
+      "draftOnly": true,
+      "draftSenseEvidence": {
+        "definitionSha256": "d2683130a8edd861ed8a64dae634bc4218706520e4bab4db129f9e20aec1efaf",
+        "entryId": "line-30193",
+        "senseId": "sense-0",
+        "snapshotSha256": "714c3e7ea6086956f163eb9387d627859e5c00c0e51725197b7a0c670cc2641a",
+        "sourceId": "cc-cedict"
+      },
+      "meaningOrigin": "AI_ASSISTED_VIETNAMESE_EDITORIAL_FROM_CITED_DEFINITION_NOT_INDEPENDENT_ASSESSMENT",
+      "senseId": "cedict-line-30193-sense-0"
+    },
+    {
+      "candidateId": "hsk1-gap-121",
+      "content": {
+        "examplePinyin": null,
+        "exampleVi": null,
+        "exampleZh": null,
+        "hanViet": null,
+        "meaning": "Không sao, không có vấn đề gì",
+        "partOfSpeech": "Động từ",
+        "reading": "méishì",
+        "traditional": "沒事",
+        "word": "没事"
+      },
+      "contentLicense": "CC-BY-SA-4.0",
+      "curriculumResearch": {
+        "officialId": 121,
+        "pdfPage": 83,
+        "primaryLevel": 1,
+        "sourceSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941",
+        "status": "WORD_READING_MATCH_ONLY_NOT_PUBLICATION_AUTHORITY",
+        "version": "CTI_2025_11_EFFECTIVE_2026_07_PINNED_NOT_ASSERTED_LATEST"
+      },
+      "draftOnly": true,
+      "draftSenseEvidence": {
+        "definitionSha256": "cc84809ed777b9fc62fc34a39838ccc90c4b5703b03b0e1c0d7ad4ad945bc2b3",
+        "entryId": "line-63270",
+        "senseId": "sense-1",
+        "snapshotSha256": "714c3e7ea6086956f163eb9387d627859e5c00c0e51725197b7a0c670cc2641a",
+        "sourceId": "cc-cedict"
+      },
+      "meaningOrigin": "AI_ASSISTED_VIETNAMESE_EDITORIAL_FROM_CITED_DEFINITION_NOT_INDEPENDENT_ASSESSMENT",
+      "senseId": "cedict-line-63270-sense-1"
+    },
+    {
+      "candidateId": "hsk1-gap-132",
+      "content": {
+        "examplePinyin": null,
+        "exampleVi": null,
+        "exampleZh": null,
+        "hanViet": null,
+        "meaning": "Cái nào, người nào",
+        "partOfSpeech": "Đại từ",
+        "reading": "nǎge",
+        "traditional": "哪個",
+        "word": "哪个"
+      },
+      "contentLicense": "CC-BY-SA-4.0",
+      "curriculumResearch": {
+        "officialId": 132,
+        "pdfPage": 83,
+        "primaryLevel": 1,
+        "sourceSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941",
+        "status": "WORD_READING_MATCH_ONLY_NOT_PUBLICATION_AUTHORITY",
+        "version": "CTI_2025_11_EFFECTIVE_2026_07_PINNED_NOT_ASSERTED_LATEST"
+      },
+      "draftOnly": true,
+      "draftSenseEvidence": {
+        "definitionSha256": "77bc06c55d29ee3cfa295b4592e4b2a85a16bb06a8974726b7bfa3d4ca36d5ae",
+        "entryId": "line-21831",
+        "senseId": "sense-0",
+        "snapshotSha256": "714c3e7ea6086956f163eb9387d627859e5c00c0e51725197b7a0c670cc2641a",
+        "sourceId": "cc-cedict"
+      },
+      "meaningOrigin": "AI_ASSISTED_VIETNAMESE_EDITORIAL_FROM_CITED_DEFINITION_NOT_INDEPENDENT_ASSESSMENT",
+      "senseId": "cedict-line-21831-sense-0"
+    },
+    {
+      "candidateId": "hsk1-gap-135",
+      "content": {
+        "examplePinyin": null,
+        "exampleVi": null,
+        "exampleZh": null,
+        "hanViet": null,
+        "meaning": "Những cái nào, những ai",
+        "partOfSpeech": "Đại từ",
+        "reading": "nǎxiē",
+        "traditional": "哪些",
+        "word": "哪些"
+      },
+      "contentLicense": "CC-BY-SA-4.0",
+      "curriculumResearch": {
+        "officialId": 135,
+        "pdfPage": 83,
+        "primaryLevel": 1,
+        "sourceSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941",
+        "status": "WORD_READING_MATCH_ONLY_NOT_PUBLICATION_AUTHORITY",
+        "version": "CTI_2025_11_EFFECTIVE_2026_07_PINNED_NOT_ASSERTED_LATEST"
+      },
+      "draftOnly": true,
+      "draftSenseEvidence": {
+        "definitionSha256": "a6cc756af1d76ae99689e1380cac0c186e7a1f0c7346a52f4c47fc1758ff701b",
+        "entryId": "line-21830",
+        "senseId": "sense-0",
+        "snapshotSha256": "714c3e7ea6086956f163eb9387d627859e5c00c0e51725197b7a0c670cc2641a",
+        "sourceId": "cc-cedict"
+      },
+      "meaningOrigin": "AI_ASSISTED_VIETNAMESE_EDITORIAL_FROM_CITED_DEFINITION_NOT_INDEPENDENT_ASSESSMENT",
+      "senseId": "cedict-line-21830-sense-0"
+    },
+    {
+      "candidateId": "hsk1-gap-138",
+      "content": {
+        "examplePinyin": null,
+        "exampleVi": null,
+        "exampleZh": null,
+        "hanViet": null,
+        "meaning": "Cái đó, người đó",
+        "partOfSpeech": "Đại từ",
+        "reading": "nàge",
+        "traditional": "那個",
+        "word": "那个"
+      },
+      "contentLicense": "CC-BY-SA-4.0",
+      "curriculumResearch": {
+        "officialId": 138,
+        "pdfPage": 83,
+        "primaryLevel": 1,
+        "sourceSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941",
+        "status": "WORD_READING_MATCH_ONLY_NOT_PUBLICATION_AUTHORITY",
+        "version": "CTI_2025_11_EFFECTIVE_2026_07_PINNED_NOT_ASSERTED_LATEST"
+      },
+      "draftOnly": true,
+      "draftSenseEvidence": {
+        "definitionSha256": "68973a140301acd4c124d1ecb21df77ec43a7666bd9d2437670e78de563f38f6",
+        "entryId": "line-109707",
+        "senseId": "sense-0",
+        "snapshotSha256": "714c3e7ea6086956f163eb9387d627859e5c00c0e51725197b7a0c670cc2641a",
+        "sourceId": "cc-cedict"
+      },
+      "meaningOrigin": "AI_ASSISTED_VIETNAMESE_EDITORIAL_FROM_CITED_DEFINITION_NOT_INDEPENDENT_ASSESSMENT",
+      "senseId": "cedict-line-109707-sense-0"
+    },
+    {
+      "candidateId": "hsk1-gap-140",
+      "content": {
+        "examplePinyin": null,
+        "exampleVi": null,
+        "exampleZh": null,
+        "hanViet": null,
+        "meaning": "Ở đó, chỗ đó",
+        "partOfSpeech": "Đại từ",
+        "reading": "nàr",
+        "traditional": "那兒",
+        "word": "那儿"
+      },
+      "contentLicense": "CC-BY-SA-4.0",
+      "curriculumResearch": {
+        "officialId": 140,
+        "pdfPage": 83,
+        "primaryLevel": 1,
+        "sourceSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941",
+        "status": "WORD_READING_MATCH_ONLY_NOT_PUBLICATION_AUTHORITY",
+        "version": "CTI_2025_11_EFFECTIVE_2026_07_PINNED_NOT_ASSERTED_LATEST"
+      },
+      "draftOnly": true,
+      "draftSenseEvidence": {
+        "definitionSha256": "e244f187f696561d5fd7e00f618e7ba641dc52e3c137380f6fa23a854b773aac",
+        "entryId": "line-109710",
+        "senseId": "sense-0",
+        "snapshotSha256": "714c3e7ea6086956f163eb9387d627859e5c00c0e51725197b7a0c670cc2641a",
+        "sourceId": "cc-cedict"
+      },
+      "meaningOrigin": "AI_ASSISTED_VIETNAMESE_EDITORIAL_FROM_CITED_DEFINITION_NOT_INDEPENDENT_ASSESSMENT",
+      "senseId": "cedict-line-109710-sense-0"
+    },
+    {
+      "candidateId": "hsk1-gap-143",
+      "content": {
+        "examplePinyin": null,
+        "exampleVi": null,
+        "exampleZh": null,
+        "hanViet": null,
+        "meaning": "Bạn trai",
+        "partOfSpeech": "Danh từ",
+        "reading": "nánpéngyou",
+        "traditional": "男朋友",
+        "word": "男朋友"
+      },
+      "contentLicense": "CC-BY-SA-4.0",
+      "curriculumResearch": {
+        "officialId": 143,
+        "pdfPage": 83,
+        "primaryLevel": 1,
+        "sourceSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941",
+        "status": "WORD_READING_MATCH_ONLY_NOT_PUBLICATION_AUTHORITY",
+        "version": "CTI_2025_11_EFFECTIVE_2026_07_PINNED_NOT_ASSERTED_LATEST"
+      },
+      "draftOnly": true,
+      "draftSenseEvidence": {
+        "definitionSha256": "fa31ab947a903102a5c9ee3775b5059bbff94fd2dfbbc8d18305ca1c4014ea1e",
+        "entryId": "line-75093",
+        "senseId": "sense-0",
+        "snapshotSha256": "714c3e7ea6086956f163eb9387d627859e5c00c0e51725197b7a0c670cc2641a",
+        "sourceId": "cc-cedict"
+      },
+      "meaningOrigin": "AI_ASSISTED_VIETNAMESE_EDITORIAL_FROM_CITED_DEFINITION_NOT_INDEPENDENT_ASSESSMENT",
+      "senseId": "cedict-line-75093-sense-0"
+    },
+    {
+      "candidateId": "hsk1-gap-154",
+      "content": {
+        "examplePinyin": null,
+        "exampleVi": null,
+        "exampleZh": null,
+        "hanViet": null,
+        "meaning": "Bạn gái",
+        "partOfSpeech": "Danh từ",
+        "reading": "nǚpéngyou",
+        "traditional": "女朋友",
+        "word": "女朋友"
+      },
+      "contentLicense": "CC-BY-SA-4.0",
+      "curriculumResearch": {
+        "officialId": 154,
+        "pdfPage": 83,
+        "primaryLevel": 1,
+        "sourceSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941",
+        "status": "WORD_READING_MATCH_ONLY_NOT_PUBLICATION_AUTHORITY",
+        "version": "CTI_2025_11_EFFECTIVE_2026_07_PINNED_NOT_ASSERTED_LATEST"
+      },
+      "draftOnly": true,
+      "draftSenseEvidence": {
+        "definitionSha256": "ea92a6127bf34763b8fb83c9a0c1acc1c05885b049074a7ad2fa2d4bdfa3685d",
+        "entryId": "line-29945",
+        "senseId": "sense-0",
+        "snapshotSha256": "714c3e7ea6086956f163eb9387d627859e5c00c0e51725197b7a0c670cc2641a",
+        "sourceId": "cc-cedict"
+      },
+      "meaningOrigin": "AI_ASSISTED_VIETNAMESE_EDITORIAL_FROM_CITED_DEFINITION_NOT_INDEPENDENT_ASSESSMENT",
+      "senseId": "cedict-line-29945-sense-0"
+    },
+    {
+      "candidateId": "hsk1-gap-213",
+      "content": {
+        "examplePinyin": null,
+        "exampleVi": null,
+        "exampleZh": null,
+        "hanViet": null,
+        "meaning": "Bên ngoài",
+        "partOfSpeech": "Danh từ",
+        "reading": "wàibian",
+        "traditional": "外邊",
+        "word": "外边"
+      },
+      "contentLicense": "CC-BY-SA-4.0",
+      "curriculumResearch": {
+        "officialId": 213,
+        "pdfPage": 85,
+        "primaryLevel": 1,
+        "sourceSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941",
+        "status": "WORD_READING_MATCH_ONLY_NOT_PUBLICATION_AUTHORITY",
+        "version": "CTI_2025_11_EFFECTIVE_2026_07_PINNED_NOT_ASSERTED_LATEST"
+      },
+      "draftOnly": true,
+      "draftSenseEvidence": {
+        "definitionSha256": "31207a2065f46a5b948fce6fe5c13e85abaf5631e2f894b47dcd4fce14f6c57b",
+        "entryId": "line-27281",
+        "senseId": "sense-0",
+        "snapshotSha256": "714c3e7ea6086956f163eb9387d627859e5c00c0e51725197b7a0c670cc2641a",
+        "sourceId": "cc-cedict"
+      },
+      "meaningOrigin": "AI_ASSISTED_VIETNAMESE_EDITORIAL_FROM_CITED_DEFINITION_NOT_INDEPENDENT_ASSESSMENT",
+      "senseId": "cedict-line-27281-sense-0"
+    },
+    {
+      "candidateId": "hsk1-gap-224",
+      "content": {
+        "examplePinyin": null,
+        "exampleVi": null,
+        "exampleZh": null,
+        "hanViet": null,
+        "meaning": "Bữa trưa",
+        "partOfSpeech": "Danh từ",
+        "reading": "wǔfàn",
+        "traditional": "午飯",
+        "word": "午饭"
+      },
+      "contentLicense": "CC-BY-SA-4.0",
+      "curriculumResearch": {
+        "officialId": 224,
+        "pdfPage": 85,
+        "primaryLevel": 1,
+        "sourceSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941",
+        "status": "WORD_READING_MATCH_ONLY_NOT_PUBLICATION_AUTHORITY",
+        "version": "CTI_2025_11_EFFECTIVE_2026_07_PINNED_NOT_ASSERTED_LATEST"
+      },
+      "draftOnly": true,
+      "draftSenseEvidence": {
+        "definitionSha256": "f3bb79e48a7a8af1d028f6acb7fa34b0c7f75da596fc205907d2a708fe28ebef",
+        "entryId": "line-16818",
+        "senseId": "sense-0",
+        "snapshotSha256": "714c3e7ea6086956f163eb9387d627859e5c00c0e51725197b7a0c670cc2641a",
+        "sourceId": "cc-cedict"
+      },
+      "meaningOrigin": "AI_ASSISTED_VIETNAMESE_EDITORIAL_FROM_CITED_DEFINITION_NOT_INDEPENDENT_ASSESSMENT",
+      "senseId": "cedict-line-16818-sense-0"
+    },
+    {
+      "candidateId": "hsk1-gap-244",
+      "content": {
+        "examplePinyin": null,
+        "exampleVi": null,
+        "exampleZh": null,
+        "hanViet": null,
+        "meaning": "Chủ nhật",
+        "partOfSpeech": "Danh từ",
+        "reading": "xīngqīrì",
+        "traditional": "星期日",
+        "word": "星期日"
+      },
+      "contentLicense": "CC-BY-SA-4.0",
+      "curriculumResearch": {
+        "officialId": 244,
+        "pdfPage": 86,
+        "primaryLevel": 1,
+        "sourceSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941",
+        "status": "WORD_READING_MATCH_ONLY_NOT_PUBLICATION_AUTHORITY",
+        "version": "CTI_2025_11_EFFECTIVE_2026_07_PINNED_NOT_ASSERTED_LATEST"
+      },
+      "draftOnly": true,
+      "draftSenseEvidence": {
+        "definitionSha256": "873fef760e5d001ba0a843bf1846713fd92538699f323ef00d51f97a2ad2756c",
+        "entryId": "line-53261",
+        "senseId": "sense-0",
+        "snapshotSha256": "714c3e7ea6086956f163eb9387d627859e5c00c0e51725197b7a0c670cc2641a",
+        "sourceId": "cc-cedict"
+      },
+      "meaningOrigin": "AI_ASSISTED_VIETNAMESE_EDITORIAL_FROM_CITED_DEFINITION_NOT_INDEPENDENT_ASSESSMENT",
+      "senseId": "cedict-line-53261-sense-0"
+    },
+    {
+      "candidateId": "hsk1-gap-245",
+      "content": {
+        "examplePinyin": null,
+        "exampleVi": null,
+        "exampleZh": null,
+        "hanViet": null,
+        "meaning": "Chủ nhật",
+        "partOfSpeech": "Danh từ",
+        "reading": "xīngqītiān",
+        "traditional": "星期天",
+        "word": "星期天"
+      },
+      "contentLicense": "CC-BY-SA-4.0",
+      "curriculumResearch": {
+        "officialId": 245,
+        "pdfPage": 86,
+        "primaryLevel": 1,
+        "sourceSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941",
+        "status": "WORD_READING_MATCH_ONLY_NOT_PUBLICATION_AUTHORITY",
+        "version": "CTI_2025_11_EFFECTIVE_2026_07_PINNED_NOT_ASSERTED_LATEST"
+      },
+      "draftOnly": true,
+      "draftSenseEvidence": {
+        "definitionSha256": "873fef760e5d001ba0a843bf1846713fd92538699f323ef00d51f97a2ad2756c",
+        "entryId": "line-53259",
+        "senseId": "sense-0",
+        "snapshotSha256": "714c3e7ea6086956f163eb9387d627859e5c00c0e51725197b7a0c670cc2641a",
+        "sourceId": "cc-cedict"
+      },
+      "meaningOrigin": "AI_ASSISTED_VIETNAMESE_EDITORIAL_FROM_CITED_DEFINITION_NOT_INDEPENDENT_ASSESSMENT",
+      "senseId": "cedict-line-53259-sense-0"
+    },
+    {
+      "candidateId": "hsk1-gap-264",
+      "content": {
+        "examplePinyin": null,
+        "exampleVi": null,
+        "exampleZh": null,
+        "hanViet": null,
+        "meaning": "Một số người hoặc thứ được nói đến",
+        "partOfSpeech": "Đại từ",
+        "reading": "yǒude",
+        "traditional": "有的",
+        "word": "有的"
+      },
+      "contentLicense": "CC-BY-SA-4.0",
+      "curriculumResearch": {
+        "officialId": 264,
+        "pdfPage": 86,
+        "primaryLevel": 1,
+        "sourceSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941",
+        "status": "WORD_READING_MATCH_ONLY_NOT_PUBLICATION_AUTHORITY",
+        "version": "CTI_2025_11_EFFECTIVE_2026_07_PINNED_NOT_ASSERTED_LATEST"
+      },
+      "draftOnly": true,
+      "draftSenseEvidence": {
+        "definitionSha256": "5857bb0266bfafd04d691fe1766511e52b8cb7cb8fe4a102ab30668386f5b494",
+        "entryId": "line-55172",
+        "senseId": "sense-0",
+        "snapshotSha256": "714c3e7ea6086956f163eb9387d627859e5c00c0e51725197b7a0c670cc2641a",
+        "sourceId": "cc-cedict"
+      },
+      "meaningOrigin": "AI_ASSISTED_VIETNAMESE_EDITORIAL_FROM_CITED_DEFINITION_NOT_INDEPENDENT_ASSESSMENT",
+      "senseId": "cedict-line-55172-sense-0"
+    },
+    {
+      "candidateId": "hsk1-gap-266",
+      "content": {
+        "examplePinyin": null,
+        "exampleVi": null,
+        "exampleZh": null,
+        "hanViet": null,
+        "meaning": "Một số",
+        "partOfSpeech": "Đại từ",
+        "reading": "yǒuxiē",
+        "traditional": "有些",
+        "word": "有些"
+      },
+      "contentLicense": "CC-BY-SA-4.0",
+      "curriculumResearch": {
+        "officialId": 266,
+        "pdfPage": 86,
+        "primaryLevel": 1,
+        "sourceSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941",
+        "status": "WORD_READING_MATCH_ONLY_NOT_PUBLICATION_AUTHORITY",
+        "version": "CTI_2025_11_EFFECTIVE_2026_07_PINNED_NOT_ASSERTED_LATEST"
+      },
+      "draftOnly": true,
+      "draftSenseEvidence": {
+        "definitionSha256": "a6b46dd0d1ae5e86cbc8f37e75ceeb6760230c1ca4ffbcb0c97b96dd7d9c464b",
+        "entryId": "line-54955",
+        "senseId": "sense-0",
+        "snapshotSha256": "714c3e7ea6086956f163eb9387d627859e5c00c0e51725197b7a0c670cc2641a",
+        "sourceId": "cc-cedict"
+      },
+      "meaningOrigin": "AI_ASSISTED_VIETNAMESE_EDITORIAL_FROM_CITED_DEFINITION_NOT_INDEPENDENT_ASSESSMENT",
+      "senseId": "cedict-line-54955-sense-0"
+    },
+    {
+      "candidateId": "hsk1-gap-280",
+      "content": {
+        "examplePinyin": null,
+        "exampleVi": null,
+        "exampleZh": null,
+        "hanViet": null,
+        "meaning": "Bên này, phía này",
+        "partOfSpeech": "Đại từ",
+        "reading": "zhèbiān",
+        "traditional": "這邊",
+        "word": "这边"
+      },
+      "contentLicense": "CC-BY-SA-4.0",
+      "curriculumResearch": {
+        "officialId": 280,
+        "pdfPage": 86,
+        "primaryLevel": 1,
+        "sourceSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941",
+        "status": "WORD_READING_MATCH_ONLY_NOT_PUBLICATION_AUTHORITY",
+        "version": "CTI_2025_11_EFFECTIVE_2026_07_PINNED_NOT_ASSERTED_LATEST"
+      },
+      "draftOnly": true,
+      "draftSenseEvidence": {
+        "definitionSha256": "250f7469e319d315b5e1d8651c6e14fa0be833fc3d1ba1c8fe853275bd2bc501",
+        "entryId": "line-107840",
+        "senseId": "sense-0",
+        "snapshotSha256": "714c3e7ea6086956f163eb9387d627859e5c00c0e51725197b7a0c670cc2641a",
+        "sourceId": "cc-cedict"
+      },
+      "meaningOrigin": "AI_ASSISTED_VIETNAMESE_EDITORIAL_FROM_CITED_DEFINITION_NOT_INDEPENDENT_ASSESSMENT",
+      "senseId": "cedict-line-107840-sense-0"
+    },
+    {
+      "candidateId": "hsk1-gap-290",
+      "content": {
+        "examplePinyin": null,
+        "exampleVi": null,
+        "exampleZh": null,
+        "hanViet": null,
+        "meaning": "Tiếng Trung",
+        "partOfSpeech": "Danh từ",
+        "reading": "Zhōngwén",
+        "traditional": "中文",
+        "word": "中文"
+      },
+      "contentLicense": "CC-BY-SA-4.0",
+      "curriculumResearch": {
+        "officialId": 290,
+        "pdfPage": 87,
+        "primaryLevel": 1,
+        "sourceSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941",
+        "status": "WORD_READING_MATCH_ONLY_NOT_PUBLICATION_AUTHORITY",
+        "version": "CTI_2025_11_EFFECTIVE_2026_07_PINNED_NOT_ASSERTED_LATEST"
+      },
+      "draftOnly": true,
+      "draftSenseEvidence": {
+        "definitionSha256": "076dd94865fc9b613266a60928a26f638c61abffe81c419e3e6ec2cb9ccca8d7",
+        "entryId": "line-3580",
+        "senseId": "sense-0",
+        "snapshotSha256": "714c3e7ea6086956f163eb9387d627859e5c00c0e51725197b7a0c670cc2641a",
+        "sourceId": "cc-cedict"
+      },
+      "meaningOrigin": "AI_ASSISTED_VIETNAMESE_EDITORIAL_FROM_CITED_DEFINITION_NOT_INDEPENDENT_ASSESSMENT",
+      "senseId": "cedict-line-3580-sense-0"
+    },
+    {
+      "candidateId": "hsk1-gap-292",
+      "content": {
+        "examplePinyin": null,
+        "exampleVi": null,
+        "exampleZh": null,
+        "hanViet": null,
+        "meaning": "Trường trung học",
+        "partOfSpeech": "Danh từ",
+        "reading": "zhōngxué",
+        "traditional": "中學",
+        "word": "中学"
+      },
+      "contentLicense": "CC-BY-SA-4.0",
+      "curriculumResearch": {
+        "officialId": 292,
+        "pdfPage": 87,
+        "primaryLevel": 1,
+        "sourceSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941",
+        "status": "WORD_READING_MATCH_ONLY_NOT_PUBLICATION_AUTHORITY",
+        "version": "CTI_2025_11_EFFECTIVE_2026_07_PINNED_NOT_ASSERTED_LATEST"
+      },
+      "draftOnly": true,
+      "draftSenseEvidence": {
+        "definitionSha256": "35c91ab8219262004c87db28680d0d70602fbbb7d2e65fd4bac566d59427552a",
+        "entryId": "line-3512",
+        "senseId": "sense-0",
+        "snapshotSha256": "714c3e7ea6086956f163eb9387d627859e5c00c0e51725197b7a0c670cc2641a",
+        "sourceId": "cc-cedict"
+      },
+      "meaningOrigin": "AI_ASSISTED_VIETNAMESE_EDITORIAL_FROM_CITED_DEFINITION_NOT_INDEPENDENT_ASSESSMENT",
+      "senseId": "cedict-line-3512-sense-0"
+    },
+    {
+      "candidateId": "hsk1-gap-293",
+      "content": {
+        "examplePinyin": null,
+        "exampleVi": null,
+        "exampleZh": null,
+        "hanViet": null,
+        "meaning": "Học sinh trung học",
+        "partOfSpeech": "Danh từ",
+        "reading": "zhōngxuéshēng",
+        "traditional": "中學生",
+        "word": "中学生"
+      },
+      "contentLicense": "CC-BY-SA-4.0",
+      "curriculumResearch": {
+        "officialId": 293,
+        "pdfPage": 87,
+        "primaryLevel": 1,
+        "sourceSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941",
+        "status": "WORD_READING_MATCH_ONLY_NOT_PUBLICATION_AUTHORITY",
+        "version": "CTI_2025_11_EFFECTIVE_2026_07_PINNED_NOT_ASSERTED_LATEST"
+      },
+      "draftOnly": true,
+      "draftSenseEvidence": {
+        "definitionSha256": "006576c09ddafb1d330c251af032cad696812ac4d8dbd726d1537941a6f3f97b",
+        "entryId": "line-3513",
+        "senseId": "sense-0",
+        "snapshotSha256": "714c3e7ea6086956f163eb9387d627859e5c00c0e51725197b7a0c670cc2641a",
+        "sourceId": "cc-cedict"
+      },
+      "meaningOrigin": "AI_ASSISTED_VIETNAMESE_EDITORIAL_FROM_CITED_DEFINITION_NOT_INDEPENDENT_ASSESSMENT",
+      "senseId": "cedict-line-3513-sense-0"
+    }
+  ]
+}

@@ -1,5 +1,27 @@
 # Automated vocabulary source registry
 
+## Research follow-up — 2026-10-30
+
+- [CC-CEDICT primary download/terms](https://www.mdbg.net/chinese/dictionary?page=cc-cedict):
+  CC BY-SA 4.0, attribution and share-alike required. The pending HSK1 batch uses
+  the pinned 2026-10-28 export, not a claim to the latest export; exact snapshot,
+  entry, sense and definition hashes accompany each draft.
+- [CFDICT publisher](https://chine.in/cfdict.php) explicitly identifies CC-CEDICT
+  ancestry and CC BY-SA 3.0. It cannot supply a second independent lexical family
+  for this audit. No mirror count, French-to-Vietnamese self-translation or license
+  inference from accessibility is accepted as corroboration.
+- [Wiktionary terms](https://en.wiktionary.org/wiki/Wiktionary:Copyrights) distinguish
+  original text from third-party quotations. Newly fetched revision pages are
+  research evidence, not an automatic per-entry independence grant. Existing
+  unresolved lineage and simplified-entry redirects remain unresolved unless the
+  actual underlying entry has been inspected. HTTP 429 stops the bounded batch;
+  inaccessible pages never become VERIFIED.
+- The pinned CTI PDF was re-downloaded with the same SHA-256 as the prior audit.
+  It supports word/reading/official-ID research only. Do not infer Vietnamese
+  semantics, redistribution rights or current publication authority from it.
+
+No new production source registration or rights grant is created by this note.
+
 Ngày rà soát: 2026-10-28. Cấu hình máy đọc: [source-registry.json](../../scripts/vocabulary_pipeline/source-registry.json).
 
 Registry khai báo adapter, phạm vi nguồn, họ dữ liệu, giấy phép, nghĩa vụ ghi công, hạn dùng snapshot và giới hạn truy cập. Acquisition lock ghi URL thực tế, thời điểm tải, version/revision và SHA-256 của bytes đã tải. Hai phần phải được đọc cùng nhau; URL hoặc trạng thái trong registry không phải bằng chứng cho một mục từ.

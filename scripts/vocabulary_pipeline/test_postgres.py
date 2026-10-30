@@ -18,6 +18,7 @@ from . import engine as e
 from .ingestion import pending_import_sql
 from . import test_engine as fixtures
 from .projection import core_projection
+from . import test_pending_research as draft_fixtures
 
 
 def isolated_database(test):
@@ -58,6 +59,29 @@ def isolated_database(test):
 
 @unittest.skipUnless(os.environ.get("JIAYOU_LOCAL_POSTGRES_CONFIG"), "Requires explicitly configured isolated PostgreSQL Docker audit")
 class PostgreSQLIngestionTest(unittest.TestCase):
+    def test_source_supported_pending_addition_is_idempotent_and_never_verified(self):
+        cfg,database,sql=isolated_database(self)
+        fixture=draft_fixtures.PendingResearchTest();fixture.setUp();self.addCleanup(fixture.doCleanups)
+        c,r=fixture.c,fixture.result
+        plan=pending_import_sql([(c,r)],fixture.fixture.store,allow_research_drafts=True)
+        before=sql("SELECT json_agg(v ORDER BY id) FROM vocabulary v;")
+        sql("BEGIN;\n"+plan+"\nSELECT 1/0;\nCOMMIT;",fail=True)
+        self.assertEqual(before,sql("SELECT json_agg(v ORDER BY id) FROM vocabulary v;"))
+        sql("BEGIN;\n"+plan+"\nCOMMIT;")
+        added=int(sql("SELECT vocabulary_id FROM vocabulary_research_bindings;"))
+        self.assertEqual(before,sql(f"SELECT json_agg(v ORDER BY id) FROM vocabulary v WHERE id<>{added};"))
+        self.assertEqual('t',sql(f"SELECT review_status='PENDING_REVIEW' AND hsk_level IS NULL AND lesson_id IS NULL AND NOT han_viet_verified AND NOT example_verified AND provenance_content_sha256 IS NULL AND verification_evidence_json::jsonb->>'status'='SOURCE_SUPPORTED_DRAFT_NOT_VERIFIED' FROM vocabulary WHERE id={added};"))
+        revision=sql(f"SELECT max(id) FROM audit_logs WHERE table_name='vocabulary' AND record_id={added};")
+        sql("BEGIN;\n"+plan+"\nCOMMIT;")
+        self.assertEqual(revision,sql(f"SELECT max(id) FROM audit_logs WHERE table_name='vocabulary' AND record_id={added};"))
+        self.assertEqual('561',sql("SELECT count(*) FROM vocabulary;"))
+        other=copy.deepcopy(c);other['candidateId']='another-sense';other['senseId']='another-sense'
+        other_result=fixture.fixture.check(other)
+        collision=pending_import_sql([(other,other_result)],fixture.fixture.store,allow_research_drafts=True)
+        sql("BEGIN;\n"+collision+"\nCOMMIT;",fail=True)
+        sql(f"UPDATE vocabulary SET review_status='ARCHIVED' WHERE id={added}; INSERT INTO audit_logs(table_name,record_id,action) VALUES('vocabulary',{added},'PUBLISH_REVOKE');")
+        sql("BEGIN;\n"+plan+"\nCOMMIT;",fail=True)
+
     def test_core_projection_retains_drafts_atomically_and_never_publishes_them(self):
         cfg, database, sql = isolated_database(self)
         fixture = fixtures.PipelineTest()

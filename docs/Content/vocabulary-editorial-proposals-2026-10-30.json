@@ -1,0 +1,41 @@
+{
+  "productionAuthorization": false,
+  "proposals": [
+    {
+      "vocabularyId": 49,
+      "word": "几",
+      "reading": "jǐ",
+      "currentMeaning": "Mấy, bao nhiêu (< 10)",
+      "proposedMeaning": "Mấy, bao nhiêu (thường dùng khi hỏi số lượng nhỏ)",
+      "status": "NEEDS_RESEARCH_EDITORIAL_PROPOSAL_NOT_VERIFIED",
+      "applied": false,
+      "reason": "Remove an unsupported absolute <10 restriction; exact usage still needs independent semantic review.",
+      "supportingDefinition": {
+        "sourceId": "cc-cedict",
+        "entryId": "line-38221",
+        "senseId": "sense-0",
+        "snapshotSha256": "714c3e7ea6086956f163eb9387d627859e5c00c0e51725197b7a0c670cc2641a",
+        "extractionSha256": "fedb3bfb92413584bcb0a960a9f1786e5b30b0cd79ff87aff2fb8f344b6c2092"
+      },
+      "definitionSha256": "eaadbf4d251dfed314c9599d611ca3f98ea294e4ef75166d0016353f1686c36a"
+    },
+    {
+      "vocabularyId": 204,
+      "word": "得",
+      "reading": "de",
+      "currentMeaning": "Được (bổ ngữ trình độ)",
+      "proposedMeaning": "Trợ từ nối động từ hoặc tính từ với bổ ngữ",
+      "status": "NEEDS_RESEARCH_EDITORIAL_PROPOSAL_NOT_VERIFIED",
+      "applied": false,
+      "reason": "Avoid presenting structural de as a literal Vietnamese verb; independent wording/POS evidence still missing.",
+      "supportingDefinition": {
+        "sourceId": "cc-cedict",
+        "entryId": "line-40271",
+        "senseId": "sense-0",
+        "snapshotSha256": "714c3e7ea6086956f163eb9387d627859e5c00c0e51725197b7a0c670cc2641a",
+        "extractionSha256": "f05f1d784390d4694c832c95d60c3408d4210a7f7b0b09e1f85903546c3621b2"
+      },
+      "definitionSha256": "853070f175204793e4bc5fd39dba93d1907a050e88e72ead603a457a73713899"
+    }
+  ]
+}

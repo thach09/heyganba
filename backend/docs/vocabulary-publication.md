@@ -37,6 +37,24 @@ No runtime authority or digest implementation is relaxed by this path. New polic
 
 ## Withdrawal and read boundaries
 
+### Source-supported pending research additions
+
+The research CLI's `--pending-research-output` is an explicit, separate admission
+mode for **new** rows only. A reusable, immutable DEFINITION extraction must match
+the proposed word, reading and selected sense hash. The candidate must declare its
+editorial Vietnamese origin and matching content license; missing semantic/POS
+verification remains visible in field results. This is not CORE_VERIFIED and does
+not relax the receipt verifier, trusted catalog, rights registry or digest contract.
+
+The generated candidate SQL stays outside release resources and always writes
+PENDING_REVIEW, no lesson/official HSK assignment, false optional capabilities and
+no publication digest. It cannot overwrite an existing row, merge homographs,
+import unverified examples or issue a receipt. Transaction locking, exact binding,
+withdrawal checks and no-op reruns remain required. Full source-supported drafts
+are retained, not passed through the publication core projection. An external AI
+key is not required to research or store pending content; independent evidence is
+still required to call it verified. The 2026-10-30 local rehearsal is not a release.
+
 Every HTTP request observes one catalog snapshot. The next request reloads the catalog and sees key, receipt and rights revocations; there is no cross-request TTL. An already running request may complete against its prior snapshot. Use an atomic operator-side catalog replacement to avoid transient partial JSON; partial/malformed reads deny access.
 
 Vocabulary lessons, dictionary, notebook, SRS, Hanzi compounds and dashboard word counts check current proofs. A warmed SRS cache is not authorization: academic data is rebuilt from current database rows. Withheld rows on an early page cannot starve later eligible SRS words. Historical embedded Hanzi definitions are replaced with the authorized vocabulary projection.
