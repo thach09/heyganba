@@ -1,0 +1,42 @@
+# Opt-in independent lineage. Required values deliberately have no legacy fallback.
+spring:
+  application:
+    name: jiayou-backend
+  datasource:
+    url: ${JIAYOU_DATABASE_URL:}
+    username: ${JIAYOU_DATABASE_USER:}
+    password: ${JIAYOU_DATABASE_PASSWORD:}
+    hikari:
+      minimum-idle: 0
+      pool-name: JiayouHikariPool
+  sql:
+    init:
+      mode: never
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+    url: ${JIAYOU_DATABASE_URL:}
+    user: ${JIAYOU_DATABASE_USER:}
+    password: ${JIAYOU_DATABASE_PASSWORD:}
+    locations: classpath:db/jiayou-production
+    default-schema: public
+    schemas: public
+    table: jiayou_schema_history
+    create-schemas: false
+    baseline-on-migrate: false
+    clean-disabled: true
+    validate-on-migrate: true
+    out-of-order: false
+    placeholders:
+      jiayouTargetId: ${JIAYOU_TARGET_ID:}
+app:
+  jwt:
+    secret: ${JIAYOU_JWT_SECRET:}
+  cors:
+    allowed-origins: ${JIAYOU_CORS_ALLOWED_ORIGINS:}
+management:
+  endpoint:
+    health:
+      show-details: never
