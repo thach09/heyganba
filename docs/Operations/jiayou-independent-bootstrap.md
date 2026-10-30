@@ -4,9 +4,11 @@ This is an opt-in schema bootstrap, not a deployment, legacy upgrade, user-data
 transfer or content release. Ganbarou's hostname, database, migrations, credentials
 and provider settings must remain unchanged. The authoritative recovery context is
 the 30 October 2026 recovery report and independent-production architecture proposal,
-as amended by the owner's later hosting decision: **Jiayou will be self-hosted on a
-dedicated laptop after domain acquisition. Vercel and Render are not its intended
-production hosts.** The following plan supersedes earlier provider-project proposals.
+as amended by the owner's latest hosting decision: **Jiayou will share the existing
+Arch Linux laptop that already hosts Ganbarou. Ganbarou remains at heyganba.site;
+Jiayou's separate hostname is not selected. Tailscale is already connected for private
+administration. Vercel and Render are not intended Jiayou production hosts.** This
+supersedes the earlier dedicated/new-host assumptions and provider-project proposals.
 
 ## Source inventory and deliberate derivation
 
@@ -158,24 +160,27 @@ No legacy user/account/progress/SRS/notebook/exam/reward transfer is included.
 The bootstrap profile is provider independent. A regression test accepts a private
 Compose DNS service name with an explicit database/port/role/target, without a public
 IP or hosting API. No Compose deployment file, network, volume, tunnel or production
-credential is created by this change. Host operating system, CPU/RAM/storage capacity,
-Docker runtime availability, network/CGNAT conditions and the domain remain undecided.
+credential is created by this change. Arch Linux and existing Ganbarou/Tailscale are
+confirmed; actual resource capacity, installed runtime/routing, datasource location,
+network/CGNAT conditions and Jiayou's hostname remain undiscovered. This is not an empty
+server. See the read-only checklist in `jiayou-shared-host-discovery.md` before proposing
+host modifications; **no laptop connection or discovery is authorized in this task**.
 
 Proposed service boundaries:
 
 | Service | Responsibility and isolation |
 | --- | --- |
-| PostgreSQL | Private database network, dedicated Jiayou database/roles and external persistent volume; **no published host database port**; no Ganbarou database or shared data directory |
+| PostgreSQL | Independent Jiayou instance if capacity permits, private database network, dedicated roles and external persistent volume; **no published host database port**; no Ganbarou database, provider project or shared data directory |
 | Spring Boot | Immutable backend image, explicit jiayou-prod inputs, private DB connection and internal HTTP listener; reachable only through the reverse proxy |
 | Static frontend | Immutable compiled assets in a static web service; no browser-side secrets; explicit API target, preferably same-origin `/api/v1` behind the proxy |
-| HTTPS reverse proxy | Owner-selected hostname, TLS/renewal, static frontend and API routing; preserve `/api/v1`, Secure/HttpOnly cookies and authenticated-response cache exclusions |
-| Optional cloudflared | Only after network/domain review and authorization; outbound Tunnel to the proxy instead of requiring a public IP/inbound router mapping; tunnel token external and service-scoped |
+| HTTPS ingress | Discover the existing proxy/tunnel first; later authorized additive hostname routing through that ingress if compatible. Do not start a competing listener on existing ports or replace Ganbarou's routing |
+| Optional cloudflared | Evaluate only after discovering current routing/tunnel ownership and network conditions; no assumption that a new tunnel is needed. Any later Jiayou token/configuration is separately scoped |
 | Backup job | Scoped backup credential, external output location and encrypted off-laptop retention; never writes backups only into the database's own volume |
 
 Keep host-specific paths and volume identities outside the image/repository. Persist
 PostgreSQL data, proxy certificates/state and any selected file/blob storage separately
-from containers; define ownership/permissions and disk-capacity monitoring after the OS
-is known. Database-backed audio stays in DB backups unless a separately reviewed local
+from containers; define Arch host paths/ownership/permissions only after discovering
+existing mounts, users and storage capacity. Database-backed audio stays in DB backups unless a separately reviewed local
 file/object backend is selected; do not assume existing Cloudflare R2 configuration.
 Keep logs bounded/rotated and exclude secrets from images, frontend builds and logs.
 
@@ -209,7 +214,8 @@ startup, not continuous recovery; an unhealthy status alone does not restart a c
 
 Plan `unless-stopped` restart policies for long-running DB/backend/static/proxy/tunnel
 services and `no` for the explicitly invoked initialization step; initialization must
-not loop on failure. Verify Docker/runtime autostart on the selected OS separately.
+not loop on failure. Discover existing Arch systemd/runtime ownership before planning
+autostart; do not replace or restart Ganbarou's units or the container daemon.
 Include graceful backend termination and
 adequate database stop time. Set measured per-service CPU/memory/PID limits, JVM heap
 headroom and PostgreSQL connection/memory budgets only after laptop capacity is known.
@@ -234,6 +240,77 @@ sanitize forwarded headers at the proxy, narrowly configure trusted proxy CIDRs,
 validate scheme/client-IP handling, cookies, CORS and auth/admin rate limits. No wildcard
 trust of arbitrary forwarded headers and no caching of authenticated/progress/admin
 responses. No actual hostname, public IP, router rule, DNS record or Tunnel is assumed.
+
+## Shared Arch host architecture and release sequence
+
+Keep Ganbarou's application, ingress listeners, services, datasource, networks, secrets,
+volumes, deployment units and backups intact. The future Jiayou stack should be a
+separate Compose project **if compatible with the discovered runtime**, not another
+service appended to Ganbarou's project. If Ganbarou uses native systemd/Nginx/Caddy,
+retain that ownership; Docker installation, daemon changes or containerizing Ganbarou
+are not implied. Incompatible or unknown runtime arrangements block provisioning.
+
+Use an operator-selected unique project identity, project-scoped service names (avoid
+global container_name), dedicated service accounts/secret files, private DB network,
+separate frontend/backend network, external Jiayou volumes/paths and a distinct DB
+instance/roles/history. Do not join Ganbarou's DB network or reuse its env file, data
+volume or remote datasource. Check Docker/Tailscale/LAN routes before selecting network
+subnets; do not hardcode subnets or select a free-looking host port without inventory.
+Same container ports in separate private networks need not become host port conflicts.
+
+Conditional ingress choices, **after** discovery and separate authorization:
+- Existing container proxy: a scoped Jiayou ingress attachment or dedicated adapter
+  that exposes only the frontend/API path, not PostgreSQL or management endpoints;
+  assess lateral access before sharing any network with Ganbarou.
+- Existing host proxy/systemd listener: route the new hostname to a Jiayou-only upstream,
+  using a verified unused loopback binding if needed. Do not publish backend/admin/DB
+  listeners on all host interfaces. No port number is selected here.
+- Existing Tunnel: identify its current routes, ownership and proxy chain before
+  proposing an additive Jiayou route. Tailscale is an administrative path, not a public
+  ingress mechanism; do not enable Funnel, subnet routing, exit-node behavior or alter
+  Tailscale ACLs/routes as a side effect.
+- No compatible ingress: stop for a separate design/authorization instead of replacing
+  Ganbarou's service. No existing 80/443 owner, public IP or router mapping is assumed.
+
+Public proxy routes must explicitly exclude actuator/internal management endpoints;
+internal health checks do not justify public management exposure. Use separate hostname
+cookies and independent JWT keys; avoid parent-domain cookie scope. Explicit CORS and
+forwarded-header trust must match the discovered ingress chain. Preserve Ganbarou's TLS,
+cache, redirects, authentication and rate-limit behavior throughout any later change.
+
+Resource admission gate: measure Ganbarou's representative peak CPU, memory/working set,
+DB connections, disk space/inodes/I/O, log growth and backup spikes; reserve those needs
+plus OS/runtime/ingress/Tailscale and recovery headroom first. Admit Jiayou only if its
+bounded JVM/nonheap, PostgreSQL, proxy/static, backup and build loads fit concurrently.
+Choose CPU/memory/PID/connection/log/volume budgets from evidence, not invented laptop
+specifications. Avoid on-host builds and overlapping backups when they could starve
+Ganbarou. Test Jiayou limits in isolation; abort admission if Ganbarou latency, error,
+swap, OOM, disk or thermal thresholds degrade. Do not change Ganbarou limits to make it fit.
+
+Separate Compose projects isolate lifecycle/configuration, not the physical failure
+domain: power, sleep, disk, network, OS/kernel/runtime updates, daemon failure, thermal
+throttling and OOM can affect both apps. A shared privileged container daemon is not a
+strong adversarial security boundary. Use scoped operating accounts where compatible,
+off-host encrypted backups, separate retention/credentials/restore targets and an
+owner-approved maintenance/recovery policy. Host reboots and Arch package/daemon updates
+require a shared maintenance decision, never an automatic Jiayou rollout action.
+
+Later execution sequence:
+1. Obtain explicit read-only host discovery authorization and complete the separate
+   checklist; identify actual Ganbarou datasource and ingress before choosing changes.
+2. Review resource admission and a Jiayou-only target/secret/storage/backup manifest.
+   Select/acquire Jiayou's hostname separately; preserve heyganba.site unchanged.
+3. In a separately authorized change, isolate/disable existing Vercel main auto-deploy
+   before any merge. Keep existing Render/provider resources unchanged unless separately
+   authorized; they are not presumed to be Ganbarou's active laptop datasource.
+4. Authorize only isolated Jiayou provisioning/rehearsal after compatibility is proved;
+   no broad compose down, daemon restart, firewall flush or Ganbarou deployment action.
+5. Complete backup/restore, empty-target bootstrap, validate restart and internal
+   frontend/API tests; keep initialization acknowledgement out of automatic restarts.
+6. Review an additive ingress diff and Ganbarou baseline checks, then seek explicit
+   activation approval. Rollback removes only Jiayou's route/services; it never deletes
+   persistent volumes or changes Ganbarou's data. Shared ingress reload is itself a
+   production action requiring separate approval and a demonstrated rollback plan.
 
 Official references for the future implementation:
 - [Compose startup ordering](https://docs.docker.com/compose/how-tos/startup-order/)
