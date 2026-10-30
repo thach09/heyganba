@@ -1,0 +1,167 @@
+{
+  "baselineHead": "b12dcc4d12a060e2d6b1d6167c0e899ab7bd5af2",
+  "branch": "feat/v2.1-ux-and-stability",
+  "counts": {
+    "wholeQueueBefore": {
+      "total": 610,
+      "coreVerified": 0,
+      "fullyVerified": 0,
+      "needsResearch": 608,
+      "conflict": 2
+    },
+    "wholeQueueAfter": {
+      "total": 610,
+      "coreVerified": 0,
+      "fullyVerified": 0,
+      "needsResearch": 608,
+      "conflict": 2
+    },
+    "sampleBefore": {
+      "total": 30,
+      "needsResearch": 29,
+      "conflict": 1,
+      "coreVerified": 0
+    },
+    "sampleAfter": {
+      "total": 30,
+      "currentPolicyCorePass": 0,
+      "currentPolicyFullPass": 0,
+      "posOnlyRelaxationHypotheticalPass": 0
+    },
+    "sourceObservations": {
+      "cowWordCoverage": 30,
+      "cowReadingMatches": 26,
+      "cowIndependentReadings": 0,
+      "wdExactWords": 24,
+      "wdPinyinMatches": 20,
+      "wdWordsWithSenses": 18,
+      "wdMatchedLexemes": 89,
+      "wikidataVietnameseGlosses": 0
+    },
+    "newVocabularyRows": 0,
+    "appliedCorrections": 0,
+    "realExternalAssessorCalls": 0,
+    "receiptsIssued": 0,
+    "databaseWrites": 0
+  },
+  "sampleFieldResultsBefore": {
+    "word": {
+      "NOT_VERIFIED": 30
+    },
+    "reading": {
+      "NOT_VERIFIED": 30
+    },
+    "meaning": {
+      "NOT_VERIFIED": 30
+    },
+    "partOfSpeech": {
+      "NOT_VERIFIED": 30
+    },
+    "traditional": {
+      "VERIFIED": 30
+    }
+  },
+  "afterAssessment": "No state promotion. New-source observations are not engine VERIFIED results. Whole610 statuses retained rather than rerun through an unimplemented adapter.",
+  "tests": {
+    "offlineSecurityRegression": {
+      "total": 87,
+      "passed": 87,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "exitCode": 0,
+      "source": "isolated git-tracked b12dcc4 pipeline"
+    },
+    "evidenceReplay": {
+      "passed": 15,
+      "failures": 0,
+      "checks": [
+        "exactly_30_existing_ids_no_new_candidates",
+        "no_auto_approval_from_source_presence",
+        "pos_only_counterfactual_still_zero",
+        "japanese_and_related_words_excluded",
+        "huan_return_not_replaced_by_hai",
+        "ji_question_not_replaced_by_ji1",
+        "de_particle_not_verb_de2",
+        "le_particle_not_liao3",
+        "noun_header_stub_cannot_authorize_greeting",
+        "rescued_wristwatch_not_independent_by_llm_confidence",
+        "no_vietnamese_lexeme_gloss_substitution",
+        "concept_label_not_two_definitions",
+        "cow_pinyin_all_same_cedict_family",
+        "vendor_package_sha_and_notice_match",
+        "bound_snapshots_available_and_unchanged"
+      ],
+      "scope": "Evidence replay/invariants, not an implemented alternate publication policy or independent semantic validation."
+    },
+    "java": "NOT_RUN_NO_APPLICATION_CODE_CHANGE",
+    "postgres": "NOT_RUN_NO_DATABASE_OPENED",
+    "frontend": "NOT_RUN_NO_APPLICATION_CODE_CHANGE",
+    "lintAndBuild": "NOT_RUN_NO_APPLICATION_CODE_CHANGE"
+  },
+  "baselineFilesHashed": 1014,
+  "unchangedBaselineFiles": 1013,
+  "baselineHashDelta": [
+    {
+      "file": "docs/Content/automated-source-registry.md",
+      "beforeSha256": "fac38426887103c7cf3efe0506745b28a30b210e23833fbb72d78ff2ab7f1aa4",
+      "afterSha256": "b1e22c53c53194ec1e46d7dfe5c6a0f13e5ea3f1d1a7517205f1d1f6fa3dd4ff"
+    }
+  ],
+  "changedFiles": [
+    "docs/Content/automated-source-registry.md",
+    "docs/Content/vocabulary-real-evidence-matrix-2026-10-30.json",
+    "docs/Content/source-notices/cow-1.1-LICENSE.txt",
+    "docs/QA/vocabulary-real-evidence-recovery-2026-10-30.md",
+    "docs/QA/vocabulary-real-evidence-recovery-2026-10-30.json"
+  ],
+  "fileSha256ExceptSelf": {
+    "docs/Content/automated-source-registry.md": "b1e22c53c53194ec1e46d7dfe5c6a0f13e5ea3f1d1a7517205f1d1f6fa3dd4ff",
+    "docs/Content/vocabulary-real-evidence-matrix-2026-10-30.json": "b421487dffe5ea75bd8e5dfcad4582351f37569fcc7977c52878382da62ebdf1",
+    "docs/Content/source-notices/cow-1.1-LICENSE.txt": "bfc30274172b231fa312739cca9988a3aa1c2690223b04197ad35adc63194153",
+    "docs/QA/vocabulary-real-evidence-recovery-2026-10-30.md": "9ec46e4b28af96e4f8b370add0e46fc2387d4e3520690ad623ea20883475885a"
+  },
+  "privateEvidenceRoot": "C:\\Users\\LENOVO\\AppData\\Local\\Temp\\jiayou-evidence-recovery-ira3bw0w",
+  "privateScriptHashes": {
+    "assemble-matrix.py": "88ed5bc414cc7501e6e8db7564e181f5be31c3f6600cff87da891a649a9060e2",
+    "validate-matrix.py": "01b24555bdb18bb0fc497e09dc47b07961fac6d587fdd87495c64ed98cd808e3",
+    "acquire-wikidata.py": "7b331d17159a04f73b8661fb6db8020bae8c6cdf11f9875f018b6a0643223d4c",
+    "query-indexed.py": "ef9ad7bbfe6db33fb8976626626345e7859f639f08ef326cea6a57852418a67b",
+    "api-search.py": "903c03e6185532e997b5f7cbea223f005197a3107a7af14340fd6315b32e2edf",
+    "api-resume.py": "cd3a7effe94221f89b4406a59010e868a502ef077c2998852206949a16475c08",
+    "get-entities.py": "ecaf78b361073193949ecc9aac8dc6d784bac270706777be47123247ea2833ee",
+    "bounded-followup.py": "a60eef0dcab07eb7de3a8cb27f208ff390e0f056be55b39c4bac84621726cf3c",
+    "get-referenced-items.py": "fa5c13477657aec6fc1355e1960c52a4d422195bc2972a898f80e5372ac724e8",
+    "acquire-cow.py": "e5d3b12eae41f7b9e119de157c5b99c0e6338c0f35ce82fdc56c35aab8bef549",
+    "acquire-provenance.py": "63a3a200e142b3b3fb458ac426e71513adf0746755b63b93509caddef5140e5f"
+  },
+  "apiAcquisitionResults": {
+    "200": 38,
+    "ERROR": 1
+  },
+  "queryServiceFailures": [
+    {
+      "status": "TIMEOUT",
+      "querySha256": "e0e98ca5d38435af5174df74f6b7fa12ce4c39ca1d450ee4e2db58af2338b30a",
+      "responseSha256": null
+    },
+    {
+      "status": "HTTP_429_ACTIVE_OUTAGE",
+      "querySha256": "4d2aba5303b401e3d6a73400e41f5ba3c6f536c13441023e9ed9bfc4c38480df",
+      "responseSha256": null
+    }
+  ],
+  "publicationPolicyChanged": false,
+  "sourceAdapterAdded": false,
+  "databaseWrites": 0,
+  "productionWrites": 0,
+  "newVocabularyRows": 0,
+  "receiptsIssued": 0,
+  "localCommitLookup": "git log -1 --format=%H -- docs/QA/vocabulary-real-evidence-recovery-2026-10-30.md",
+  "gitDiffCheckExitCode": 0,
+  "originalStatusEntries": 120,
+  "maintainerStatusPreserved": true,
+  "baselineIndexEmpty": true,
+  "finalIndexExpected": "EMPTY_AFTER_LOCAL_COMMIT",
+  "noticeFormatting": "Complete legal text preserved; trailing spaces removed only on four blank lines in distributed notice. Original bytes retained in objects and matrix cowCompleteLicense."
+}

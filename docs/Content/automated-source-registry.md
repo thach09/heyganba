@@ -1,5 +1,49 @@
 # Automated vocabulary source registry
 
+## Real evidence recovery — 2026-10-30 (30-word audit)
+
+See the [field-level evidence matrix](vocabulary-real-evidence-matrix-2026-10-30.json)
+and [eligibility report](../QA/vocabulary-real-evidence-recovery-2026-10-30.md).
+No source is enabled for automatic publication by this audit.
+
+- **Wikidata Lexemes:** structured Lexeme data is CC0. The bounded investigation
+  retrieved 92 entities and retained 89 exact Mandarin lexemes for 24 of 30 words;
+  20 words have a matching P1721 statement and 18 have a sense. None of these
+  matched lexemes has a Vietnamese gloss. Most core assertions are unreferenced;
+  neither a category header nor a linked item's Vietnamese label establishes two
+  independent lexical definitions. Keep language, exact lemma, form, sense,
+  revision and field-specific references. Related-word search hits and Japanese
+  entries are excluded. CC0, Wikimedia hosting and a different domain do not prove
+  independence from Wiktionary/CEDICT. Absence in bounded search is not a global
+  absence claim. Query Service outage/429 was not retried endlessly; API resume
+  respected a five-minute cooldown and six-second pacing.
+- **Chinese Open Wordnet 1.1 (2026-10-24):** a newer, downloadable, permissively
+  licensed release exists. It has all 30 sampled spellings, but only 26 matching
+  readings. Its Pinyin comes from CC-CEDICT, so it is not independent reading
+  corroboration. The curated NTU-MC export excludes solely automatic sources,
+  but keeps senses without source tags; COW corrections also rescue some senses
+  from BOW/SEW/Wiktionary through LLM review. Neither export preserves the original
+  per-sense `src` field. Independence must be evaluated per field/sense, not denied
+  or granted globally. In particular, do not count the rescued wristwatch sense
+  as a new independent attestation merely because two model runs accepted it.
+  Preserve the [complete COW license](source-notices/cow-1.1-LICENSE.txt).
+- COW sample hazards include `还` return-object with `hai2`, `几` quantity with
+  `ji1`, `得` only `de2` verb, and `了` only `liao3`. These do not support the taught
+  `huán`, `jǐ`, structural `de`, or particle `le`. Do not overwrite correct learner
+  data with a source's incompatible reading or map WordNet `x` automatically to
+  an interjection. Missing `很` Chinese definition cannot be filled by assuming
+  the base English synset was retrieved.
+- **Vietnamese follow-up:** the VLSP project page identifies its WordNet but
+  supplies no reusable dataset grant; the author's toolkit instructions request
+  permission. UKC Vietnamese 1.0 lists NC-SA and mixed Wiktionary/other provenance.
+  Neither is a newly licensed, independently attested Vietnamese bridge for this
+  release. No restricted export or broken legacy endpoint was scraped/retried.
+
+The narrow POS-only counterfactual still yields **0/30** core-eligible records.
+No verification-policy release, adapter, trust catalog, receipt or data import is
+created. Vietnamese teaching glosses stay unverified; useful source observations
+are not reported as current-policy PASS.
+
 ## Research follow-up — 2026-10-30
 
 - [CC-CEDICT primary download/terms](https://www.mdbg.net/chinese/dictionary?page=cc-cedict):
