@@ -59,6 +59,7 @@ services:
     depends_on:
       backend:
         condition: service_healthy
+        restart: true
     mem_limit: ${JIAYOU_FRONTEND_MEMORY_LIMIT:?Measure capacity first}
     cpus: ${JIAYOU_FRONTEND_CPU_LIMIT:?Measure capacity first}
     pids_limit: ${JIAYOU_FRONTEND_PIDS_LIMIT:?Measure PID budget first}

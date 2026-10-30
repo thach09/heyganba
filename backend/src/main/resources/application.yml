@@ -147,5 +147,5 @@ sentry:
   send-default-pii: false
   max-request-body-size: none
   traces-sample-rate: ${SENTRY_TRACES_SAMPLE_RATE:0.2}
-  environment: ${SPRING_PROFILES_ACTIVE:prodelopment}
+  environment: ${SPRING_PROFILES_ACTIVE:jiayou-prod}
 

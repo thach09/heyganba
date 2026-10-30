@@ -295,7 +295,11 @@ off-host encrypted backups, separate retention/credentials/restore targets and a
 owner-approved maintenance/recovery policy. Host reboots and Arch package/daemon updates
 require a shared maintenance decision, never an automatic Jiayou rollout action.
 
-Later execution sequence:
+The owner confirms this repository is independent of Ganbarou. Host discovery below
+is for later deployment only, never a prerequisite for repository cleanup, merge or
+rename. Repository-side provider isolation is recorded in deployment-isolation.md.
+
+Later host-deployment execution sequence:
 1. Obtain explicit read-only host discovery authorization and complete the separate
    checklist; identify actual Ganbarou datasource and ingress before choosing changes.
 2. Review resource admission and a Jiayou-only target/secret/storage/backup manifest.
