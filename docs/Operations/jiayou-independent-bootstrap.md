@@ -3,7 +3,10 @@
 This is an opt-in schema bootstrap, not a deployment, legacy upgrade, user-data
 transfer or content release. Ganbarou's hostname, database, migrations, credentials
 and provider settings must remain unchanged. The authoritative recovery context is
-the 30 October 2026 recovery report and independent-production architecture proposal.
+the 30 October 2026 recovery report and independent-production architecture proposal,
+as amended by the owner's later hosting decision: **Jiayou will be self-hosted on a
+dedicated laptop after domain acquisition. Vercel and Render are not its intended
+production hosts.** The following plan supersedes earlier provider-project proposals.
 
 ## Source inventory and deliberate derivation
 
@@ -141,9 +144,100 @@ candidate to simulate compatibility. A future infrastructure/release PR must pro
 an explicit Jiayou first-bootstrap job/approval and scoped target metadata, while
 preserving the legacy upgrade gate. This implementation adds no deployment pathway.
 
-Before release: owner-selected separate frontend hostname/project, dedicated backend,
-separate production and staging DB projects/roles/secrets, target identity inventory,
+Before release: an owner-selected separate hostname and laptop environment, an isolated
+Compose stack with dedicated PostgreSQL storage/roles/secrets, target identity inventory,
 HTTPS/CORS/cookie verification, backup/restore rehearsal and explicit owner approval.
-Main currently triggers Vercel production independently of Actions; even a green local
-candidate must not be pushed/merged without checking Preview/deployment bindings.
+**Merge gate:** existing Vercel main auto-deploy is independent of GitHub Actions. It
+must be isolated or disabled through a separately authorized change before merges
+resume. Render/Vercel settings remain untouched; this decision does not itself disable
+either integration. A branch push also needs independently verified safe Preview targets.
 No legacy user/account/progress/SRS/notebook/exam/reward transfer is included.
+
+## Self-hosting readiness — future deployment plan only
+
+The bootstrap profile is provider independent. A regression test accepts a private
+Compose DNS service name with an explicit database/port/role/target, without a public
+IP or hosting API. No Compose deployment file, network, volume, tunnel or production
+credential is created by this change. Host operating system, CPU/RAM/storage capacity,
+Docker runtime availability, network/CGNAT conditions and the domain remain undecided.
+
+Proposed service boundaries:
+
+| Service | Responsibility and isolation |
+| --- | --- |
+| PostgreSQL | Private database network, dedicated Jiayou database/roles and external persistent volume; **no published host database port**; no Ganbarou database or shared data directory |
+| Spring Boot | Immutable backend image, explicit jiayou-prod inputs, private DB connection and internal HTTP listener; reachable only through the reverse proxy |
+| Static frontend | Immutable compiled assets in a static web service; no browser-side secrets; explicit API target, preferably same-origin `/api/v1` behind the proxy |
+| HTTPS reverse proxy | Owner-selected hostname, TLS/renewal, static frontend and API routing; preserve `/api/v1`, Secure/HttpOnly cookies and authenticated-response cache exclusions |
+| Optional cloudflared | Only after network/domain review and authorization; outbound Tunnel to the proxy instead of requiring a public IP/inbound router mapping; tunnel token external and service-scoped |
+| Backup job | Scoped backup credential, external output location and encrypted off-laptop retention; never writes backups only into the database's own volume |
+
+Keep host-specific paths and volume identities outside the image/repository. Persist
+PostgreSQL data, proxy certificates/state and any selected file/blob storage separately
+from containers; define ownership/permissions and disk-capacity monitoring after the OS
+is known. Database-backed audio stays in DB backups unless a separately reviewed local
+file/object backend is selected; do not assume existing Cloudflare R2 configuration.
+Keep logs bounded/rotated and exclude secrets from images, frontend builds and logs.
+
+Supply credentials via service-scoped external secret files or an operator-protected
+environment. Spring's external `SPRING_CONFIG_IMPORT=configtree:<mounted-directory>/`
+can load the Jiayou keys from mounted files; this does not add automatic `_FILE` support
+to arbitrary variables. Database image secret-file support is a separate contract.
+Do not commit `.env`, passwords, signing keys, tunnel tokens or certificates. Compose
+local secret files require host access controls and are not automatically an encrypted
+secret store. Externalize profile selection, coordinates, mode, authorization and target
+identity; the approved packaged migration path/hash remain allowlisted, not an arbitrary
+host-mounted SQL directory. No staging migration or initial admin script goes into
+PostgreSQL entrypoint initialization folders.
+
+Planned startup ordering: database ready → explicitly approved one-time initialization
+→ validated backend ready → proxy routes API traffic. The bootstrap acknowledgement
+must **not** remain an automatically retried initialize command: on failure, stop and
+inspect; after success, switch subsequent starts to validate mode. A future bootstrap
+service must exit after successful verification or otherwise provide an explicit
+completion contract; the current application is a long-running server, not a finished
+one-shot migration executable. Do not use service_completed_successfully on it as-is.
+
+Use a PostgreSQL connection/readiness check plus an actual expected-database/lineage
+verification; pg_isready alone does not attest identity or migration success. Backend
+readiness must include database access, while liveness should describe the process
+without causing restart storms during DB outages. Probe only internal endpoints and
+review their security matchers: current security permits the aggregate actuator health
+path, not automatically every readiness/liveness subpath. Static/proxy checks must also
+verify the intended frontend artifact/API route. Compose dependency health checks gate
+startup, not continuous recovery; an unhealthy status alone does not restart a container.
+
+Plan `unless-stopped` restart policies for long-running DB/backend/static/proxy/tunnel
+services and `no` for the explicitly invoked initialization step; initialization must
+not loop on failure. Verify Docker/runtime autostart on the selected OS separately.
+Include graceful backend termination and
+adequate database stop time. Set measured per-service CPU/memory/PID limits, JVM heap
+headroom and PostgreSQL connection/memory budgets only after laptop capacity is known.
+The existing backend Dockerfile's Render-oriented EXPOSE metadata and JVM percentage
+are not a laptop sizing decision; future Compose must set and verify its own internal
+port/resource budget. Never assume DB dependency ordering guarantees a recovered backend.
+
+Backup/restore acceptance: define owner-approved RPO/RTO and retention; scheduled logical
+backups of the dedicated DB with required role metadata, encryption and off-laptop copies;
+monitor backup success, disk space and retention. Rehearse restore into a separate empty
+isolated database/volume with no public route, then verify history/checksums, users/FKs,
+content status and application reads before documenting recovery time. A live filesystem
+copy of PGDATA is not a sufficient backup strategy. Do not restore over the running
+production DB or change its lineage as a shortcut. Laptop sleep, reboot, power loss,
+disk loss and network interruption need an explicit operational policy; Compose restart
+settings cannot keep an asleep/offline host available.
+
+For direct HTTPS, assess real inbound connectivity/firewall/CGNAT and certificate
+renewal before choosing any ports or NAT mapping. For Tunnel, verify outbound reachability,
+TLS termination/origin transport and the trusted proxy chain instead. In both cases,
+sanitize forwarded headers at the proxy, narrowly configure trusted proxy CIDRs, and
+validate scheme/client-IP handling, cookies, CORS and auth/admin rate limits. No wildcard
+trust of arbitrary forwarded headers and no caching of authenticated/progress/admin
+responses. No actual hostname, public IP, router rule, DNS record or Tunnel is assumed.
+
+Official references for the future implementation:
+- [Compose startup ordering](https://docs.docker.com/compose/how-tos/startup-order/)
+- [Compose service configuration](https://docs.docker.com/reference/compose-file/services/)
+- [Compose secrets](https://docs.docker.com/compose/how-tos/use-secrets/)
+- [Cloudflare Tunnel fundamentals](https://developers.cloudflare.com/tunnel/concepts/)
+- [Spring Boot external configuration](https://docs.spring.io/spring-boot/3.5/reference/features/external-config.html)

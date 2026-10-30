@@ -1,4 +1,7 @@
 # Opt-in independent lineage. Required values deliberately have no legacy fallback.
+# Provider independent: usable with a private Compose PostgreSQL service name.
+# Credentials/config come from the operator environment or an external config tree;
+# no hosting account, domain, volume path or public address is embedded here.
 spring:
   application:
     name: jiayou-backend

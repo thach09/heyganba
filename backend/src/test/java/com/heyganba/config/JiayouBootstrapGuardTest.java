@@ -66,6 +66,14 @@ class JiayouBootstrapGuardTest {
         assertThatCode(() -> JiayouBootstrapGuard.validateEnvironment(environment(valid()))).doesNotThrowAnyException();
     }
 
+    @Test
+    void privateComposeServiceNameNeedsNoHostingProviderOrPublicIp() {
+        var p = settings("jdbc:postgresql://postgres:5432/jiayou_compose_fixture", "initialize");
+        assertThatCode(() -> JiayouBootstrapGuard.validateEnvironment(environment(p))).doesNotThrowAnyException();
+        p.put("JIAYOU_DATABASE_HOST", "another-service");
+        assertThatThrownBy(() -> JiayouBootstrapGuard.validateEnvironment(environment(p))).hasMessageContaining("host identity");
+    }
+
     @ParameterizedTest
     @ValueSource(strings = {"JIAYOU_PRODUCT", "JIAYOU_ENVIRONMENT", "JIAYOU_TARGET_ID", "JIAYOU_BOOTSTRAP_MODE",
             "JIAYOU_BOOTSTRAP_AUTHORIZATION", "JIAYOU_DATABASE_URL", "JIAYOU_DATABASE_HOST", "JIAYOU_DATABASE_PORT",
