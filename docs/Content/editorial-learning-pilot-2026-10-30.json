@@ -1,0 +1,49 @@
+{
+  "warning": "DRAFT — proposed editorial study only; not CORE_VERIFIED or PUBLISHED",
+  "proposedPolicyVersion": "JIAYOU_EDITORIAL_SIMPLE_NOUN_V0_1_PROPOSED",
+  "operatorAdopted": false,
+  "textLicenseProposal": "CC-BY-SA-4.0 for these original editorial adaptations; publication rights authority remains separate",
+  "sourceFactsFile": "editorial-pilot-source-facts-2026-10-30.json",
+  "entries": [
+    {
+      "vocabularyId": 34,
+      "semanticFrame": "LIQUID_WATER",
+      "word": "水",
+      "traditional": "水",
+      "reading": "shuǐ",
+      "partOfSpeech": "noun",
+      "conceptId": "Q283",
+      "vietnameseTerm": "nước",
+      "vietnameseDefinition": "Nước, chất lỏng thường dùng trong sinh hoạt.",
+      "exampleZh": "这是水。",
+      "examplePinyin": "Zhè shì shuǐ.",
+      "exampleVi": "Đây là nước.",
+      "learnerContext": "Người nói đang nhận diện nước ở dạng lỏng.",
+      "authoringState": "EDITORIAL_DRAFT",
+      "lexicalCertification": "CORE_NEEDS_RESEARCH",
+      "publicationState": "NOT_AUTHORIZED",
+      "hanViet": null,
+      "authorsNote": "Original agent-authored educational wording; independent source facts cited separately. No independent assessor or learner study."
+    },
+    {
+      "vocabularyId": 104,
+      "semanticFrame": "EDUCATIONAL_INSTITUTION",
+      "word": "学校",
+      "traditional": "學校",
+      "reading": "xuéxiào",
+      "partOfSpeech": "noun",
+      "conceptId": "Q3914",
+      "vietnameseTerm": "trường học",
+      "vietnameseDefinition": "Trường học, nơi tổ chức việc dạy và học.",
+      "exampleZh": "这是学校。",
+      "examplePinyin": "Zhè shì xuéxiào.",
+      "exampleVi": "Đây là trường học.",
+      "learnerContext": "Người nói đang nhận diện một trường học.",
+      "authoringState": "EDITORIAL_DRAFT",
+      "lexicalCertification": "CORE_NEEDS_RESEARCH",
+      "publicationState": "NOT_AUTHORIZED",
+      "hanViet": null,
+      "authorsNote": "Original agent-authored educational wording; independent source facts cited separately. No independent assessor or learner study."
+    }
+  ]
+}

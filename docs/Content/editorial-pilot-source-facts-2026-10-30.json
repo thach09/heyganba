@@ -1,0 +1,318 @@
+{
+  "version": "JIAYOU_EDITORIAL_TWO_NOUNS_FACTS_V0_1",
+  "purpose": "Research benchmark fixture, not trusted publication evidence or a general linguistic validator",
+  "sourceBaseCommit": "486171e2951c08ddd4732d7ef1a134cfd8f6f569",
+  "sourceMatrixSha256": "c612600f3cf1dd16834a288ae84e4b77016a3be5217e00f3e4d04b16b4c1aced",
+  "frames": [
+    {
+      "vocabularyId": 34,
+      "semanticFrame": "LIQUID_WATER",
+      "word": "水",
+      "traditional": "水",
+      "reading": "shuǐ",
+      "partOfSpeech": "noun",
+      "conceptId": "Q283",
+      "vietnameseTerm": "nước",
+      "vietnameseDefinitionTemplate": "Nước, chất lỏng thường dùng trong sinh hoạt.",
+      "senseScope": "physical liquid water only; not country, surname, generic liquid or five elements",
+      "sourceBindings": {
+        "cedict": {
+          "sourceId": "cc-cedict",
+          "family": "cedict",
+          "entryId": "line-62308",
+          "senseId": "sense-0",
+          "snapshotSha256": "714c3e7ea6086956f163eb9387d627859e5c00c0e51725197b7a0c670cc2641a",
+          "extractionSha256": "0da456081a531ce00f1dfa93576bb1d96f479de59c4940fef5b6aa1e614ee336",
+          "reading": "shuǐ",
+          "traditional": "水",
+          "partOfSpeech": null,
+          "definitionLanguage": "en",
+          "lexicalRole": "DEFINITION",
+          "dependencies": [
+            "cedict"
+          ],
+          "license": "CC-BY-SA-4.0",
+          "selectedGloss": "water"
+        },
+        "cow": {
+          "entryId": "cow-w1188",
+          "synset": "cow-14845743-n",
+          "definition": [
+            {
+              "language": "cmn",
+              "text": "二元化合物，室温下为无色无味的液体；零摄氏度以下冻结成冰，一百摄氏度以上沸腾；泛用为溶剂"
+            }
+          ],
+          "packageSha256": "93e9357dda50a38ce626904c2229479afa177df74d9c504aebfeba06ff2f241e",
+          "readingFamily": "cedict",
+          "perSenseOrigin": "NOT_EXPORTED; do not count as proven independent"
+        },
+        "wikidata": {
+          "lexemeId": "L8219",
+          "senseId": "L8219-S1",
+          "formId": "L8219-F1",
+          "reading": "shuǐ",
+          "category": "Q1084",
+          "conceptId": "Q283",
+          "revision": 2458938859,
+          "revisionUrl": "https://www.wikidata.org/w/index.php?title=Lexeme:L8219&oldid=2458938859",
+          "snapshotSha256": "35b650ea332866658f3f135986658cdd37c45f9a18f2704d522bb91a56fb9c6c",
+          "coreReferences": "UNREFERENCED; not independent certification"
+        },
+        "conceptVietnameseLabel": {
+          "item": "Q283",
+          "label": "nước",
+          "snapshotSha256": "9e85877183de1f64f9e228c10103ce641265a91bb673f16cadb0d8a02b7991db",
+          "meaning": "lexical label only, not a complete definition",
+          "independence": "same Wikidata family, not a second vote"
+        },
+        "vietnameseMonolingualCheck": {
+          "page": "nước",
+          "revision": 2462344,
+          "sense": "Vietnamese noun, sense 1",
+          "snapshotSha256": "2e67d1f495bd7ce8af921fd8319e468e6787f4dd245c90c76b737e07237bfa3e",
+          "role": "READ_ONLY_SCOPE_CORROBORATION; Ho Ngoc Duc upstream disclosed; do not reproduce source definitions or count as independent bilingual proof"
+        }
+      },
+      "curriculumResearch": {
+        "officialId": 192,
+        "version": "CTI_2025_11_EFFECTIVE_2026_07_PINNED_NOT_ASSERTED_LATEST",
+        "primaryLevel": 1,
+        "sourceSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941",
+        "assertion": "word/reading research match only, not HSK course certification"
+      }
+    },
+    {
+      "vocabularyId": 104,
+      "semanticFrame": "EDUCATIONAL_INSTITUTION",
+      "word": "学校",
+      "traditional": "學校",
+      "reading": "xuéxiào",
+      "partOfSpeech": "noun",
+      "conceptId": "Q3914",
+      "vietnameseTerm": "trường học",
+      "vietnameseDefinitionTemplate": "Trường học, nơi tổ chức việc dạy và học.",
+      "senseScope": "educational institution only; not school of thought or a generic building",
+      "sourceBindings": {
+        "cedict": {
+          "sourceId": "cc-cedict",
+          "family": "cedict",
+          "entryId": "line-31776",
+          "senseId": "sense-0",
+          "snapshotSha256": "714c3e7ea6086956f163eb9387d627859e5c00c0e51725197b7a0c670cc2641a",
+          "extractionSha256": "f34137ca0fabebe3489d98b0411ae86f68b85d35cac2919369abdd81e0660ad4",
+          "reading": "xuéxiào",
+          "traditional": "學校",
+          "partOfSpeech": null,
+          "definitionLanguage": "en",
+          "lexicalRole": "DEFINITION",
+          "dependencies": [
+            "cedict"
+          ],
+          "license": "CC-BY-SA-4.0",
+          "selectedGloss": "school"
+        },
+        "cow": {
+          "entryId": "cow-w58953",
+          "synset": "cow-08276720-n",
+          "definition": [
+            {
+              "language": "cmn",
+              "text": "教育机构"
+            }
+          ],
+          "packageSha256": "93e9357dda50a38ce626904c2229479afa177df74d9c504aebfeba06ff2f241e",
+          "readingFamily": "cedict",
+          "perSenseOrigin": "NOT_EXPORTED; do not count as proven independent"
+        },
+        "wikidata": {
+          "lexemeId": "L204160",
+          "senseId": "L204160-S1",
+          "formId": "L204160-F1",
+          "reading": "xuéxiào",
+          "category": "Q1084",
+          "conceptId": "Q3914",
+          "revision": 2498800279,
+          "revisionUrl": "https://www.wikidata.org/w/index.php?title=Lexeme:L204160&oldid=2498800279",
+          "snapshotSha256": "1b111776c02af10dd93d8121181230b7f167cdbf1b44a8169a15215ee6df9aab",
+          "coreReferences": "UNREFERENCED; not independent certification"
+        },
+        "conceptVietnameseLabel": {
+          "item": "Q3914",
+          "label": "trường học",
+          "snapshotSha256": "9e85877183de1f64f9e228c10103ce641265a91bb673f16cadb0d8a02b7991db",
+          "meaning": "lexical label only, not a complete definition",
+          "independence": "same Wikidata family, not a second vote"
+        },
+        "vietnameseMonolingualCheck": {
+          "page": "trường học",
+          "revision": 2360175,
+          "sense": "Vietnamese noun, sense 1",
+          "snapshotSha256": "2e67d1f495bd7ce8af921fd8319e468e6787f4dd245c90c76b737e07237bfa3e",
+          "role": "READ_ONLY_SCOPE_CORROBORATION; Ho Ngoc Duc upstream disclosed; do not reproduce source definitions or count as independent bilingual proof"
+        }
+      },
+      "curriculumResearch": {
+        "officialId": 250,
+        "version": "CTI_2025_11_EFFECTIVE_2026_07_PINNED_NOT_ASSERTED_LATEST",
+        "primaryLevel": 1,
+        "sourceSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941",
+        "assertion": "word/reading research match only, not HSK course certification"
+      }
+    }
+  ],
+  "grammar": {
+    "templateId": "DEMONSTRATIVE_COPULA_NOUN_V0_1",
+    "zhPrefix": "这是",
+    "pinyinPrefix": "Zhè shì ",
+    "viPrefix": "Đây là ",
+    "source": "https://en.wikibooks.org/w/index.php?title=Chinese_(Mandarin)/Lesson_1&oldid=4659960",
+    "revision": 4659960,
+    "snapshotSha256": "32f7a1549861612f114942730f5958e41ed3993a8d7dfb067ef2c89eb2c6ffb1",
+    "supportedFact": "Subject/pronoun + 是 + noun phrase. This does not independently certify every generated sentence.",
+    "prefixReadingSource": "CC-CEDICT 这 zhe4 (pronoun), 是 shi4 (copula); same snapshot as targets."
+  },
+  "newSourceLocks": [
+    {
+      "key": "vi-words",
+      "url": "https://vi.wiktionary.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&titles=n%C6%B0%E1%BB%9Bc%7Ctr%C6%B0%E1%BB%9Dng+h%E1%BB%8Dc&maxlag=5",
+      "snapshotSha256": "2e67d1f495bd7ce8af921fd8319e468e6787f4dd245c90c76b737e07237bfa3e",
+      "bytes": 9367,
+      "status": 200,
+      "retrievedAt": "2026-10-30T06:06:54.552930+00:00"
+    },
+    {
+      "key": "grammar",
+      "url": "https://en.wikibooks.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&titles=Chinese+%28Mandarin%29%2FLesson+1&maxlag=5",
+      "snapshotSha256": "32f7a1549861612f114942730f5958e41ed3993a8d7dfb067ef2c89eb2c6ffb1",
+      "bytes": 14608,
+      "status": 200,
+      "retrievedAt": "2026-10-30T06:07:01.471217+00:00"
+    },
+    {
+      "key": "vi-rights",
+      "url": "https://vi.wiktionary.org/w/api.php?action=query&format=json&meta=siteinfo&siprop=rightsinfo",
+      "snapshotSha256": "fa38222c2bad8f9148c06cd020a15e9c86c8254a51d92296b3b4231cfd7a63b8",
+      "status": 200,
+      "retrievedAt": "2026-10-30T06:16:44.239344+00:00"
+    },
+    {
+      "key": "book-rights",
+      "url": "https://en.wikibooks.org/w/api.php?action=query&format=json&meta=siteinfo&siprop=rightsinfo",
+      "snapshotSha256": "8a7345e12679082632295a2c2889b16f3c288f0fbc71082bc0fdf5929a518bb7",
+      "status": 200,
+      "retrievedAt": "2026-10-30T06:16:50.694147+00:00"
+    },
+    {
+      "key": "concepts",
+      "url": "https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&ids=Q283%7CQ3914&props=info%7Clabels%7Cdescriptions&languages=en%7Cvi",
+      "snapshotSha256": "2f9b12d631d6e8ccf122031ad6d66ea371a7ff55d4d63d14ae8d0624f132ed89",
+      "status": 200,
+      "retrievedAt": "2026-10-30T06:16:57.143597+00:00"
+    }
+  ],
+  "cowCompleteLicense": "Copyright: 2013, 2014 Francis Bond, Shan Wang\n           2015-2022 Francis Bond, Luís Morgado da Costa\n           2023-2026 Francis Bond\n\nChinese Open WordNet\n\nThis software and database is being provided to you, the LICENSEE\nunder the following license.  By obtaining, using and/or copying this\nsoftware and database, you agree that you have read, understood, and\nwill comply with these terms and conditions:\n  \n  Permission to use, copy, modify and distribute this software and\n  database and its documentation for any purpose and without fee or\n  royalty is hereby granted, provided that you agree to comply with\n  the following copyright notice and statements, including the\n  disclaimer, and that the same appear on ALL copies of the software,\n  database and documentation, including modifications that you make\n  for internal use or for distribution.\n  \nChinese Open Wordnet Copyright 2013,2014 by Francis Bond and Shan\nWang; 2015-2022 by Francis Bond and Luís Morgado da Costa; 2023-2026\nby Francis Bond.  All rights reserved.\n  \nTHIS SOFTWARE AND DATABASE IS PROVIDED \"AS IS\" AND WE MAKE NO\nREPRESENTATIONS OR WARRANTIES, EXPRESS OR IMPLIED.  BY WAY OF EXAMPLE,\nBUT NOT LIMITATION, WE MAKE NO REPRESENTATIONS OR WARRANTIES OF\nMERCHANTABILITY OR FITNESS FOR ANY PARTICULAR PURPOSE OR THAT THE USE\nOF THE LICENSED SOFTWARE, DATABASE OR DOCUMENTATION WILL NOT INFRINGE\nANY THIRD PARTY PATENTS, COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS.\n  \nTitle to copyright in this software, database and any associated\ndocumentation shall at all times remain with the copyright holders and\nLICENSEE agrees to preserve same.\n",
+  "conceptEntityEvidence": {
+    "response": {
+      "entities": {
+        "Q283": {
+          "pageid": 459,
+          "ns": 0,
+          "title": "Q283",
+          "lastrevid": 2560755578,
+          "modified": "2026-10-25T16:43:12Z",
+          "type": "item",
+          "id": "Q283",
+          "labels": {
+            "en": {
+              "language": "en",
+              "value": "water"
+            },
+            "vi": {
+              "language": "vi",
+              "value": "nước"
+            }
+          },
+          "descriptions": {
+            "en": {
+              "language": "en",
+              "value": "chemical compound whose molecules are formed by two hydrogen atoms and one oxygen atom"
+            },
+            "vi": {
+              "language": "vi",
+              "value": "một chất lỏng, hợp chất hóa học với công thức H2O"
+            }
+          }
+        },
+        "Q3914": {
+          "pageid": 4821,
+          "ns": 0,
+          "title": "Q3914",
+          "lastrevid": 2559240952,
+          "modified": "2026-10-20T14:00:19Z",
+          "type": "item",
+          "id": "Q3914",
+          "labels": {
+            "en": {
+              "language": "en",
+              "value": "school"
+            },
+            "vi": {
+              "language": "vi",
+              "value": "trường học"
+            }
+          },
+          "descriptions": {
+            "en": {
+              "language": "en",
+              "value": "institution, facility or building for the education of students by teachers"
+            }
+          }
+        }
+      },
+      "success": 1
+    },
+    "snapshotSha256": "2f9b12d631d6e8ccf122031ad6d66ea371a7ff55d4d63d14ae8d0624f132ed89",
+    "scope": "Concept labels/descriptions are corroboration, not complete dictionary definitions. Liquid context comes from the Chinese sense and lesson frame, not an assumption all H2O is liquid."
+  },
+  "sourceRights": {
+    "ccCedict": {
+      "license": "CC-BY-SA-4.0",
+      "attribution": "CC-CEDICT contributors / MDBG",
+      "url": "https://www.mdbg.net/chinese/dictionary?page=cc-cedict",
+      "obligations": [
+        "attribution",
+        "indicate editorial adaptations",
+        "share-alike for adaptations"
+      ]
+    },
+    "cow": {
+      "license": "WordNet-style permissive",
+      "notice": "docs/Content/source-notices/cow-1.1-LICENSE.txt",
+      "pinyinUpstream": "CC-CEDICT; not independent reading evidence"
+    },
+    "wikidata": {
+      "license": "CC0",
+      "origin": "Community assertions with unresolved field-level upstream; citations retained"
+    },
+    "wikibooks": {
+      "license": "CC-BY-SA-4.0 per current site footer; additional terms may apply",
+      "attribution": "Wikibooks contributors, Chinese (Mandarin)/Lesson 1, revision 4659960",
+      "reuse": "Grammar fact only; pilot sentences authored independently, not taken from lesson examples"
+    },
+    "viWiktionary": {
+      "declaredSiteLicense": "CC-BY-SA-4.0; additional terms may apply",
+      "attribution": "Vietnamese Wiktionary contributors; pages credit Ho Ngoc Duc/FVDP",
+      "upstreamExpressionRights": "NOT_INDEPENDENTLY_CLEARED",
+      "use": "Read-only sense checking. Source definitions/examples not included in pilot or reused as output."
+    }
+  },
+  "constraints": {
+    "noExternalApiRequired": true,
+    "freeTextValidation": false,
+    "countsAsCoreVerified": false,
+    "publicationAuthorityChanged": false,
+    "newDatabaseRows": 0,
+    "receiptsIssued": 0
+  }
+}

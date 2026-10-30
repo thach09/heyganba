@@ -1,0 +1,349 @@
+{
+  "baselineHead": "486171e2951c08ddd4732d7ef1a134cfd8f6f569",
+  "branch": "feat/v2.1-ux-and-stability",
+  "strategyDecision": "Propose separately versioned bounded editorial authoring quality; do not adopt a general validator or change publication authority from this development benchmark.",
+  "pilot": {
+    "existingIds": [
+      34,
+      104
+    ],
+    "entries": 2,
+    "authoringState": "EDITORIAL_DRAFT",
+    "editorialValidated": 0,
+    "coreVerified": 0,
+    "published": 0,
+    "newVocabularyRows": 0,
+    "databaseWrites": 0,
+    "realExternalAssessorCalls": 0,
+    "independentLanguageAdjudications": 0
+  },
+  "benchmark": {
+    "policy": "JIAYOU_EDITORIAL_SIMPLE_NOUN_V0_1_PROPOSED",
+    "policyAdopted": false,
+    "authoringState": "EDITORIAL_DRAFT",
+    "factsSha256": "ce34c1d7e6c1680dc755092b187c58082c223c26ecd15ebc8df781bba7aa67b1",
+    "benchmarkSha256": "02a4ba4eb40e0c84deae72192d108c02b66debd8ebda320cb742ecd19598928a",
+    "cases": 26,
+    "proposedPolicyPass": 2,
+    "abstained": 24,
+    "oracleMismatches": 0,
+    "independentAdjudications": 0,
+    "heldOutCases": 0,
+    "coreVerified": 0,
+    "published": 0,
+    "stateTransitions": 0,
+    "databaseWrites": 0,
+    "limitation": "Author-designed development replay; no general semantic/naturalness validation or independent false-approval estimate.",
+    "results": [
+      {
+        "id": "positive-water",
+        "kind": "positive",
+        "expected": "PASS_PROPOSED_B",
+        "actual": "PASS_PROPOSED_B",
+        "reason": "CLOSED_FRAME_AND_TEMPLATE_CHECKS_ONLY",
+        "agreesWithDevelopmentOracle": true
+      },
+      {
+        "id": "positive-school",
+        "kind": "positive",
+        "expected": "PASS_PROPOSED_B",
+        "actual": "PASS_PROPOSED_B",
+        "reason": "CLOSED_FRAME_AND_TEMPLATE_CHECKS_ONLY",
+        "agreesWithDevelopmentOracle": true
+      },
+      {
+        "id": "wrong-water-tone",
+        "kind": "adversarial",
+        "expected": "ABSTAIN",
+        "actual": "ABSTAIN",
+        "reason": "FRAME_OR_FIELD_MISMATCH:reading",
+        "agreesWithDevelopmentOracle": true
+      },
+      {
+        "id": "wrong-water-concept-country",
+        "kind": "adversarial",
+        "expected": "ABSTAIN",
+        "actual": "ABSTAIN",
+        "reason": "FRAME_OR_FIELD_MISMATCH:conceptId",
+        "agreesWithDevelopmentOracle": true
+      },
+      {
+        "id": "wrong-water-concept-five-elements",
+        "kind": "adversarial",
+        "expected": "ABSTAIN",
+        "actual": "ABSTAIN",
+        "reason": "FRAME_OR_FIELD_MISMATCH:conceptId",
+        "agreesWithDevelopmentOracle": true
+      },
+      {
+        "id": "wrong-water-sense-generic-liquid",
+        "kind": "adversarial",
+        "expected": "ABSTAIN",
+        "actual": "ABSTAIN",
+        "reason": "FRAME_OR_FIELD_MISMATCH:conceptId",
+        "agreesWithDevelopmentOracle": true
+      },
+      {
+        "id": "wrong-water-pos-adjective",
+        "kind": "adversarial",
+        "expected": "ABSTAIN",
+        "actual": "ABSTAIN",
+        "reason": "FRAME_OR_FIELD_MISMATCH:partOfSpeech",
+        "agreesWithDevelopmentOracle": true
+      },
+      {
+        "id": "wrong-vietnamese-concept",
+        "kind": "adversarial",
+        "expected": "ABSTAIN",
+        "actual": "ABSTAIN",
+        "reason": "FRAME_OR_FIELD_MISMATCH:vietnameseTerm",
+        "agreesWithDevelopmentOracle": true
+      },
+      {
+        "id": "unsupported-potability-claim",
+        "kind": "adversarial",
+        "expected": "ABSTAIN",
+        "actual": "ABSTAIN",
+        "reason": "UNMODELLED_EDITORIAL_SURFACE:vietnameseDefinition",
+        "agreesWithDevelopmentOracle": true
+      },
+      {
+        "id": "wrong-example-meaning",
+        "kind": "adversarial",
+        "expected": "ABSTAIN",
+        "actual": "ABSTAIN",
+        "reason": "UNMODELLED_EDITORIAL_SURFACE:exampleVi",
+        "agreesWithDevelopmentOracle": true
+      },
+      {
+        "id": "wrong-example-pinyin",
+        "kind": "adversarial",
+        "expected": "ABSTAIN",
+        "actual": "ABSTAIN",
+        "reason": "UNMODELLED_EDITORIAL_SURFACE:examplePinyin",
+        "agreesWithDevelopmentOracle": true
+      },
+      {
+        "id": "wrong-chinese-sentence",
+        "kind": "adversarial",
+        "expected": "ABSTAIN",
+        "actual": "ABSTAIN",
+        "reason": "UNMODELLED_EDITORIAL_SURFACE:exampleZh",
+        "agreesWithDevelopmentOracle": true
+      },
+      {
+        "id": "unauthorized-optional-field",
+        "kind": "adversarial",
+        "expected": "ABSTAIN",
+        "actual": "ABSTAIN",
+        "reason": "CERTIFICATION_PUBLICATION_OR_ENRICHMENT_SPOOF",
+        "agreesWithDevelopmentOracle": true
+      },
+      {
+        "id": "spoof-core-state",
+        "kind": "adversarial",
+        "expected": "ABSTAIN",
+        "actual": "ABSTAIN",
+        "reason": "CERTIFICATION_PUBLICATION_OR_ENRICHMENT_SPOOF",
+        "agreesWithDevelopmentOracle": true
+      },
+      {
+        "id": "spoof-published-state",
+        "kind": "adversarial",
+        "expected": "ABSTAIN",
+        "actual": "ABSTAIN",
+        "reason": "CERTIFICATION_PUBLICATION_OR_ENRICHMENT_SPOOF",
+        "agreesWithDevelopmentOracle": true
+      },
+      {
+        "id": "invented-approval-flag",
+        "kind": "adversarial",
+        "expected": "ABSTAIN",
+        "actual": "ABSTAIN",
+        "reason": "UNSUPPORTED_SCHEMA_OR_SELF_ASSERTED_AUTHORITY",
+        "agreesWithDevelopmentOracle": true
+      },
+      {
+        "id": "wrong-school-reading",
+        "kind": "adversarial",
+        "expected": "ABSTAIN",
+        "actual": "ABSTAIN",
+        "reason": "FRAME_OR_FIELD_MISMATCH:reading",
+        "agreesWithDevelopmentOracle": true
+      },
+      {
+        "id": "school-hospital-sense",
+        "kind": "adversarial",
+        "expected": "ABSTAIN",
+        "actual": "ABSTAIN",
+        "reason": "FRAME_OR_FIELD_MISMATCH:conceptId",
+        "agreesWithDevelopmentOracle": true
+      },
+      {
+        "id": "school-of-thought-prose",
+        "kind": "adversarial",
+        "expected": "ABSTAIN",
+        "actual": "ABSTAIN",
+        "reason": "UNMODELLED_EDITORIAL_SURFACE:vietnameseDefinition",
+        "agreesWithDevelopmentOracle": true
+      },
+      {
+        "id": "scope-204",
+        "kind": "scope-abstention-not-wrong-chinese",
+        "expected": "ABSTAIN",
+        "actual": "ABSTAIN",
+        "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+        "agreesWithDevelopmentOracle": true
+      },
+      {
+        "id": "scope-251",
+        "kind": "scope-abstention-not-wrong-chinese",
+        "expected": "ABSTAIN",
+        "actual": "ABSTAIN",
+        "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+        "agreesWithDevelopmentOracle": true
+      },
+      {
+        "id": "scope-425",
+        "kind": "scope-abstention-not-wrong-chinese",
+        "expected": "ABSTAIN",
+        "actual": "ABSTAIN",
+        "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+        "agreesWithDevelopmentOracle": true
+      },
+      {
+        "id": "scope-49",
+        "kind": "scope-abstention-not-wrong-chinese",
+        "expected": "ABSTAIN",
+        "actual": "ABSTAIN",
+        "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+        "agreesWithDevelopmentOracle": true
+      },
+      {
+        "id": "scope-6",
+        "kind": "scope-abstention-not-wrong-chinese",
+        "expected": "ABSTAIN",
+        "actual": "ABSTAIN",
+        "reason": "OUTSIDE_TWO_NOUN_PILOT_NOT_A_LINGUISTIC_ERROR",
+        "agreesWithDevelopmentOracle": true
+      },
+      {
+        "id": "valid-free-example-not-covered",
+        "kind": "valid-but-outside-template",
+        "expected": "ABSTAIN",
+        "actual": "ABSTAIN",
+        "reason": "UNMODELLED_EDITORIAL_SURFACE:exampleZh",
+        "agreesWithDevelopmentOracle": true
+      },
+      {
+        "id": "valid-vietnamese-paraphrase-not-covered",
+        "kind": "valid-but-outside-template",
+        "expected": "ABSTAIN",
+        "actual": "ABSTAIN",
+        "reason": "UNMODELLED_EDITORIAL_SURFACE:exampleVi",
+        "agreesWithDevelopmentOracle": true
+      }
+    ]
+  },
+  "targetedChecks": {
+    "offlineRegression": {
+      "total": 87,
+      "passed": 87,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "exitCode": 0
+    },
+    "failClosedChecks": [
+      {
+        "name": "tampered evidence fixture",
+        "expected": "nonzero fail closed",
+        "exitCode": 1
+      },
+      {
+        "name": "duplicate JSON keys",
+        "expected": "nonzero fail closed",
+        "exitCode": 1
+      },
+      {
+        "name": "nonfinite JSON",
+        "expected": "nonzero fail closed",
+        "exitCode": 1
+      },
+      {
+        "name": "duplicate case identities",
+        "expected": "nonzero fail closed",
+        "exitCode": 1
+      },
+      {
+        "name": "oracle mismatch reported as failure",
+        "expected": "nonzero fail closed",
+        "exitCode": 1
+      },
+      {
+        "name": "existing evidence result cannot be overwritten",
+        "expected": "nonzero fail closed",
+        "exitCode": 1
+      }
+    ],
+    "benchmarkExitCode": 0,
+    "scope": "Development benchmark and security behavior, not independent lexical certification."
+  },
+  "caseKinds": {
+    "positive": 2,
+    "adversarial": 17,
+    "scope-abstention-not-wrong-chinese": 5,
+    "valid-but-outside-template": 2
+  },
+  "independenceLimit": "Agent-authored seed, oracle and constrained templates; no held-out or independent adjudication. Oracle agreement is not a general false-approval estimate.",
+  "lexicalAStatus": "Prior current-policy core results remain unpromoted. No new production-verification adapter or full 610-candidate run with editorial text.",
+  "sourceChecks": {
+    "freshResponses": 5,
+    "newSnapshotHashesMatch": true,
+    "priorPrimarySnapshotHashesMatch": true,
+    "committedMatrixUsed": true,
+    "dirtyMaintainerMatrixUsedAsAuthority": false
+  },
+  "originalBaselineFilesHashed": 1018,
+  "unchangedBaselineHashes": 1018,
+  "existingFileHashDelta": [],
+  "changedFiles": [
+    "docs/Content/editorial-validation-policy-proposal-v0.1.md",
+    "docs/Content/editorial-learning-pilot-2026-10-30.json",
+    "docs/Content/editorial-pilot-source-facts-2026-10-30.json",
+    "docs/QA/editorial-pilot-benchmark-2026-10-30.json",
+    "scripts/evaluate_editorial_pilot.py",
+    "docs/QA/editorial-learning-strategy-2026-10-30.md",
+    "docs/QA/editorial-pilot-results-2026-10-30.json"
+  ],
+  "fileSha256ExceptSelf": {
+    "docs/Content/editorial-validation-policy-proposal-v0.1.md": "a41bbb277d81fe3c53829359086bf4a7472b4e559115e83f431ef34aee390bbf",
+    "docs/Content/editorial-learning-pilot-2026-10-30.json": "6c5572d5e5acb5ee46fac1dd85be41c433cdfb43b79b257d2d84944730e0f01f",
+    "docs/Content/editorial-pilot-source-facts-2026-10-30.json": "ce34c1d7e6c1680dc755092b187c58082c223c26ecd15ebc8df781bba7aa67b1",
+    "docs/QA/editorial-pilot-benchmark-2026-10-30.json": "02a4ba4eb40e0c84deae72192d108c02b66debd8ebda320cb742ecd19598928a",
+    "scripts/evaluate_editorial_pilot.py": "ea4ce55a9972b631f8ea8812b571148e23da5709d71b85d49aa9c567272b1a91",
+    "docs/QA/editorial-learning-strategy-2026-10-30.md": "0aa935e03955f7968a94390d8ee685839308fcf28585bf0dc266884df9676bf7"
+  },
+  "privateEvidenceRoot": "C:\\Users\\LENOVO\\AppData\\Local\\Temp\\jiayou-editorial-strategy-pcao2ft4",
+  "privateReproductionScripts": {
+    "prepare-pilot.py": "568893dcfc7be1b4d68126a088a30724e0a0e2c9874c203fef9daf00ffb79921",
+    "acquire-focused.py": "2a54575022a7e130bb87fa41d087c8e6719448b71489d26406c15bf2440e86ad",
+    "check-rights-and-concepts.py": "1492b5cc2edb4423ab5ea0996c933d5540d238b4a476d558d49e739284412079",
+    "run-targeted.py": "40c1852ce824dbe983e9b7d68795fa77378b425c95ea83dc906a1cfa133d51a5"
+  },
+  "notRun": {
+    "java": "No backend runtime/build changes",
+    "postgres": "No database or migration changes; no cluster started",
+    "frontendLintBuild": "No frontend changes"
+  },
+  "publicationAuthorityModified": false,
+  "editorialWorkflowImplemented": false,
+  "researchBenchmarkImplemented": true,
+  "newDependencies": 0,
+  "commitLookup": "git log -1 --format=%H -- docs/QA/editorial-learning-strategy-2026-10-30.md",
+  "originalGitStatusEntries": 121,
+  "maintainerStatusPreserved": true,
+  "isolatedSourceAndFixturesMatchFinal": true,
+  "gitDiffCheckExitCode": 0,
+  "baselineIndexEmpty": true
+}
