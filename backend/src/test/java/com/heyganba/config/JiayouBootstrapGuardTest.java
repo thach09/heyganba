@@ -123,4 +123,15 @@ class JiayouBootstrapGuardTest {
             assertThatThrownBy(() -> JiayouBootstrapGuard.validateEnvironment(environment(p))).isInstanceOf(RuntimeException.class);
         }
     }
+
+    @Test
+    void jiayouInputsWithMissingOrMisspelledProfileCannotFallBackToLegacy() {
+        for (String profile : new String[]{"prod", "jiayou-production"}) {
+            try (var context = new AnnotationConfigApplicationContext()) {
+                var e = environment(valid()); e.setActiveProfiles(profile);
+                context.setEnvironment(e); context.register(JiayouBootstrapConfiguration.class);
+                assertThatThrownBy(context::refresh).hasMessageContaining("exclusive");
+            }
+        }
+    }
 }

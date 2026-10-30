@@ -41,6 +41,11 @@ public final class JiayouBootstrapGuard {
         return result;
     }
 
+    private static URI uri(String value) {
+        try { return URI.create(value); }
+        catch (IllegalArgumentException ex) { throw new IllegalStateException("Jiayou bootstrap blocked: malformed target/origin URI"); }
+    }
+
     public static void validateEnvironment(Environment e) {
         require(Arrays.equals(e.getActiveProfiles(), new String[]{"jiayou-prod"}), "exclusive jiayou-prod profile required");
         require(value(e, "JIAYOU_PRODUCT").equals("Jiayou"), "product identity");
@@ -52,7 +57,7 @@ public final class JiayouBootstrapGuard {
         require(value(e, "JIAYOU_BOOTSTRAP_AUTHORIZATION").equals(mode + ":Jiayou:production:" + id), "target-bound authorization");
         String url = value(e, "JIAYOU_DATABASE_URL");
         require(url.startsWith("jdbc:postgresql://"), "explicit PostgreSQL URL");
-        URI uri = URI.create(url.substring(5));
+        URI uri = uri(url.substring(5));
         require(uri.getUserInfo() == null && url.indexOf('#') < 0 && uri.getHost() != null, "single explicit database host");
         require(uri.getHost().equals(value(e, "JIAYOU_DATABASE_HOST")), "configured database host identity");
         require(uri.getPort() == Integer.parseInt(value(e, "JIAYOU_DATABASE_PORT")), "explicit database port identity");
@@ -86,7 +91,7 @@ public final class JiayouBootstrapGuard {
         String origins = value(e, "JIAYOU_CORS_ALLOWED_ORIGINS");
         require(origins.equals(value(e, "app.cors.allowed-origins")), "explicit independent CORS binding");
         for (String origin : origins.split(",", -1)) {
-            URI parsed = URI.create(origin);
+            URI parsed = uri(origin);
             require("https".equals(parsed.getScheme()) && parsed.getHost() != null && !origin.contains("*")
                     && !Set.of("heyganba.site", "www.heyganba.site").contains(parsed.getHost())
                     && parsed.getUserInfo() == null && parsed.getQuery() == null && origin.indexOf('#') < 0

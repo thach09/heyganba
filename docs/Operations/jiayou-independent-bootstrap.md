@@ -42,6 +42,9 @@ administrator exists; an empty app is not a complete learning-content launch.
 
 Select **only** `SPRING_PROFILES_ACTIVE=jiayou-prod`. Mixed prod/staging/dev/test
 profiles are rejected. The new profile overrides legacy datasource/Flyway fallbacks.
+Supplying any Jiayou-only input with a missing or misspelled profile also fails
+before datasource construction. Existing profiles without Jiayou inputs retain their
+behavior; an artifact with no Jiayou inputs cannot infer an operator's launch intent.
 Every value below must be provisioned independently for the authorized new target;
 no actual hostname, provider project, credential or production resource is created
 by this implementation.
