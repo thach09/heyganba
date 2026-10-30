@@ -1,0 +1,1106 @@
+[
+  {
+    "status": " M",
+    "path": "PRODUCT.md",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "29c2f94bcbd525c9f2880dd3c662e511a669fc0e38023c4b161c92744a8142cd"
+  },
+  {
+    "status": " M",
+    "path": "backend/pom.xml",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "023f464b58ff448338b5320bff003dc0088c18043c27a2b24e163d6a914c29f9"
+  },
+  {
+    "status": " M",
+    "path": "backend/src/main/java/com/heyganba/controller/AdminController.java",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "6ce70f7386739de6bc69d1cda55027ff2906839d4bc25792c61fa47d974413b7"
+  },
+  {
+    "status": " M",
+    "path": "backend/src/main/java/com/heyganba/dto/dictionary/DictionarySearchResponse.java",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "bf031e20d64b13187c48f2597bbe918c45a42c7f90aef1c59cdd32a997d2011a"
+  },
+  {
+    "status": " M",
+    "path": "backend/src/main/java/com/heyganba/dto/flashcard/FlashcardDueResponse.java",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "4d3180f3c4f301fddd41588fa838f5fd73f578e9c3b429d7566082a5d0ea8c3b"
+  },
+  {
+    "status": " M",
+    "path": "backend/src/main/java/com/heyganba/dto/vocabulary/VocabularyWordResponse.java",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "0a1dcd5d5f0a65eba7ffe09746924135feb2a4033d1da7dc40a02dbbefd9c4e6"
+  },
+  {
+    "status": " M",
+    "path": "backend/src/main/java/com/heyganba/model/entity/Vocabulary.java",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "8a45bceefbc421e2779c9cd31f3515f25fdd2b7614215db547c5f1f379b0369a"
+  },
+  {
+    "status": " M",
+    "path": "backend/src/main/java/com/heyganba/repository/VocabularyRepository.java",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "0530225005877e9044349724b52a2571168cb27828c7878e46f605e6c84ee4ab"
+  },
+  {
+    "status": " M",
+    "path": "backend/src/main/java/com/heyganba/service/AdminContentService.java",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "7fa2d5cc19c77ff13d97c9f3f423507f8e01ce3c7bf9f75959f56dee7869c209"
+  },
+  {
+    "status": " M",
+    "path": "backend/src/main/java/com/heyganba/service/DictionaryService.java",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "b51787b99f20ee3a850f531c7a7aabb75d1429403d390b1b4dd3d6fa34801755"
+  },
+  {
+    "status": " M",
+    "path": "backend/src/main/java/com/heyganba/service/KanjiService.java",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "708630a3c10dbbc331421941cc1e676bbd5bc96dffedbbaf2dff048eaddc18f1"
+  },
+  {
+    "status": " M",
+    "path": "backend/src/main/java/com/heyganba/service/VocabNotebookService.java",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "0e22021e3a540057f92f32c82772fef8cbdc0e8b609d2cb7ba37d5731f4298e0"
+  },
+  {
+    "status": " M",
+    "path": "backend/src/main/resources/application-prod.yml",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "e6f04294082aec8eeb2630c71341e0e0587cb8975a5697f0878307dcc9fe6d43"
+  },
+  {
+    "status": " M",
+    "path": "backend/src/main/resources/application.yml",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "34b880efef4ea6b60f859053daffc2bac921333a7f25b5142c168abcd83b8058"
+  },
+  {
+    "status": " M",
+    "path": "backend/src/test/java/com/heyganba/AdminContentServiceTest.java",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "3896a80d9769225dd7494ef7f586fe61a32e612b31dc76e6dff8a8fffc177faa"
+  },
+  {
+    "status": " M",
+    "path": "backend/src/test/java/com/heyganba/AssistedDictionaryCurationIntegrityTest.java",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "6ec4e136a3599c34c34eab921c1cb02ae5d26f04034d146127c662dde971a6c8"
+  },
+  {
+    "status": " M",
+    "path": "backend/src/test/java/com/heyganba/DictionaryCandidateSelectionTest.java",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "ccdf07860c34eebce1cdc81e22b059d813d0a0d836b390bceb6dd4a778b7b858"
+  },
+  {
+    "status": " M",
+    "path": "backend/src/test/java/com/heyganba/DictionaryCoverageSearchTest.java",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "d9dd24ab0bb6e0bc0160b77256cdb6f56e139abfd9bff16f3e39fa690afa3b5f"
+  },
+  {
+    "status": " M",
+    "path": "backend/src/test/java/com/heyganba/DictionaryNotebookApiTest.java",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "1b643f14a765f454f434fb656772883ee444e532d9f4dd2c90e09a04c0b9ff34"
+  },
+  {
+    "status": " M",
+    "path": "backend/src/test/java/com/heyganba/FlashcardApiTest.java",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "c2ffe5f2bd97f5bc72c8527604d7a94803e72503391d68b80c098679a70d822c"
+  },
+  {
+    "status": " M",
+    "path": "backend/src/test/java/com/heyganba/JwtTokenProviderTest.java",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "aa822c060234025aacd0a98b2b4769dde3841050c52c60610beae772ca856c4d"
+  },
+  {
+    "status": " M",
+    "path": "backend/src/test/java/com/heyganba/PostgresSchemaStagingRehearsalTest.java",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "2055694e167515abfdabde14c563f2c57e8d767591eb47f3193b2a46b337a5b9"
+  },
+  {
+    "status": " M",
+    "path": "backend/src/test/java/com/heyganba/support/ContentApiTestBase.java",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "8fe00558aff99b7bdbf95f835273d6ce21773f0fa2adccaa8b82ffe0af73b715"
+  },
+  {
+    "status": " M",
+    "path": "docs/Content/vocabulary-real-evidence-matrix-2026-10-30.json",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "fca823041cf4ea76fe93d2b99e838cc2aae6647d381a9941e8b3f93e46e00921"
+  },
+  {
+    "status": " M",
+    "path": "docs/Dictionary/coverage-after-rehearsal.json",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "507642dbc3c197d17a2e923b12373679b824866c88ef9235ec2d0b965a5edd13"
+  },
+  {
+    "status": " M",
+    "path": "docs/Dictionary/coverage-baseline.json",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "75d116b8b3a0eb80a8266f302fe1c24d9ee2517af2c83730ea6bd7a8e5b4e7a5"
+  },
+  {
+    "status": " M",
+    "path": "docs/Dictionary/vietnamese-coverage-baseline.json",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "c2fdd899b0b82be1ed94cea166103037cf066b5edc9d171d3a4b8a8d73b12565"
+  },
+  {
+    "status": " M",
+    "path": "docs/Dictionary/vietnamese-coverage-candidate.json",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "b3a6ffdebbfb926203af352e49674f2b0bbeb2eccecb50db3b4f1f5dcbe15249"
+  },
+  {
+    "status": " M",
+    "path": "docs/Internal/AGENTS.md",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "6138f415c50da5a20eef968e17c350e2ca90cd0e5bf716c72967844f24625724"
+  },
+  {
+    "status": " M",
+    "path": "docs/QA/foundation-recovery-final.md",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "2f6a52279f29232d15c3cee8fd9fdcada4a03626b12b42b021f2eefcd2c18537"
+  },
+  {
+    "status": " M",
+    "path": "docs/curriculum-roadmap-m1-m3.md",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "2f4f8a0c5d84a55f655d58f5d6e160179f7b3534238b61c61b6512e11df945cf"
+  },
+  {
+    "status": " M",
+    "path": "docs/roadmap.md",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "8b450d74282267a7592c16eaf9e72d9d2d1e22231757c68c4df39171d5f1e4b4"
+  },
+  {
+    "status": " M",
+    "path": "frontend/.env.example",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "a08caa5d81df49a3e76c52d9b5498f49cf6109a6f1b8e1dfacfb6b93971a9699"
+  },
+  {
+    "status": " M",
+    "path": "frontend/index.html",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "f047d00813970a0dd5edc92d11eb594d44ad3d8ea8c438e3f4aa89f7700aecdd"
+  },
+  {
+    "status": " M",
+    "path": "frontend/src/app/routes.tsx",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "91b77e8ab9733cf096430b875df5a76770f247e970934d430bae0b4ac335a6fb"
+  },
+  {
+    "status": " M",
+    "path": "frontend/src/features/admin/AdminView.tsx",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "e00a8cfda7af65295515ff6546813f19547b4b529c62d560cc7a06a3a99ac15d"
+  },
+  {
+    "status": " M",
+    "path": "frontend/src/features/admin/ReviewQueuePanel.tsx",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "9929ee897caacc6aaf07fb239a5d3f99c819d2f5ec42b948863c16bd85bf7ddd"
+  },
+  {
+    "status": " M",
+    "path": "frontend/src/features/admin/types.ts",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "9b8980e1e0127fdc9d5762269f17c98f37f4bf6491cad49be44092fc36da5d33"
+  },
+  {
+    "status": " M",
+    "path": "frontend/src/features/companion/CompanionWidget.tsx",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "f1e16af0b8b5dd22d12f2c9a5da5d80143cd623fd7aea7a246b64d3b7b5c64c6"
+  },
+  {
+    "status": " M",
+    "path": "frontend/src/features/dashboard/DashboardView.tsx",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "2959cbe22392128c8146eae2eb41b36dfa735f51a299ece962154ecf17d70a4a"
+  },
+  {
+    "status": " M",
+    "path": "frontend/src/features/dashboard/HskRoadmap.tsx",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "306b196cb0dcda80647bf6d0bee806b14692c6d0433ca95e0b6b495f234d08c6"
+  },
+  {
+    "status": " M",
+    "path": "frontend/vercel.json",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "9d7991be4a5ce2f3783ec9327089b3e42c1b3cf0eabbd5916364ddfcdbf99c2e"
+  },
+  {
+    "status": " D",
+    "path": "render.yaml",
+    "classification": "ARCHIVE",
+    "reason": "Preserve old deployment configuration; its deletion is recorded, not silently propagated.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "absent": true
+  },
+  {
+    "status": " M",
+    "path": "scripts/verify-postgres-m21.ps1",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "838d004e13c4a5378740ece836294f300a953b400bead97fdb580dca5e3148b4"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/legacy-japanese/resources/db/migration-staging/dictionary-coverage-pilot.json",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unapproved release/staging or legacy content; retain outside release lineage; never publish by cleanup.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "d7590f14cabd3ec582c9e9a6bce73651b518b67e0289e6e5c558cb58ab8689bd"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-a.tsv",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unapproved release/staging or legacy content; retain outside release lineage; never publish by cleanup.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "0afc4e72ef6b0fa25d9d112b2cc4f61a3d2eb62514d5d84b9b5fb89ce22038b0"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-b.metadata.json",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unapproved release/staging or legacy content; retain outside release lineage; never publish by cleanup.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "658500ab9c1bd29c9e9fca0ad418da1e41419aa10144b64b0fced91176d9a46c"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-b.tsv",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unapproved release/staging or legacy content; retain outside release lineage; never publish by cleanup.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "8929dde150215dd3b97e0dcc28f6a68e880024aceb7daf085f50e8a49f947024"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-c.metadata.json",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unapproved release/staging or legacy content; retain outside release lineage; never publish by cleanup.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "db6f97e10d4111c1ae928c3b6f51e9806967eed8f9d0a6c3f3701dc9e23d8484"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-c.tsv",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unapproved release/staging or legacy content; retain outside release lineage; never publish by cleanup.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "fcbefe1b193fcbaa242951f3d8dfec5e578e5f352317b94b18a354b12ba8d4c7"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-d.metadata.json",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unapproved release/staging or legacy content; retain outside release lineage; never publish by cleanup.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "3593c0be6c2dadfbb867388efdc784be2d47ffaac9c156b52f4f2c42f09b4390"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-d.tsv",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unapproved release/staging or legacy content; retain outside release lineage; never publish by cleanup.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "8c35f56152d0d3d1c7e85e654739022016e547a27a0565db8e4db489ce093c84"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-e.metadata.json",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unapproved release/staging or legacy content; retain outside release lineage; never publish by cleanup.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "d2e79cf294718ebcd4b3989a7e467e884f65267e9efc610c6a7113f77ec51a2f"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-e.tsv",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unapproved release/staging or legacy content; retain outside release lineage; never publish by cleanup.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "91938bb9b567655fddf734e81cd53221fd8132d1f7ec7fc91a5f48bb3c0cb150"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-f.metadata.json",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unapproved release/staging or legacy content; retain outside release lineage; never publish by cleanup.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "a9028acb4b0d7e94b5520cc5956b81996a7330230bed8348621d0e5d54ae31da"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-f.tsv",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unapproved release/staging or legacy content; retain outside release lineage; never publish by cleanup.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "db052d0c347a536103e28134318dc728a9a50fd4357f580b9eda13d3f26c76b9"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-exclusions.tsv",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unapproved release/staging or legacy content; retain outside release lineage; never publish by cleanup.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "c58a6dc0a3737553e71f162f803fd2cd0dee60c7c0bd199f2738a62226f18051"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/legacy-japanese/resources/dictionary/README.md",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "6e0a7b5bd47568663941065b56eab260ac1b6cc2c177d88d44ba2420fa3e6bb8"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/legacy-japanese/resources/dictionary/assisted-ja-vi.tsv",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "c78db41c230fa7b7bd288c8e46152870f3512ef35c940584f9172c341428aaf1"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/legacy-japanese/resources/dictionary/curated-ja-vi.tsv",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "3b42c6d5d315f3117d91071ba3a24d94e6cbb65d735bb2e6587f13869756a6d1"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/legacy-japanese/resources/dictionary/jmdict.tsv.gz",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "57d0941a4c314aa7621a2da041ada77e1b5b1bfe9611cd792512ec78c2979a29"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/legacy-japanese/resources/dictionary/snapshot.json",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "7c47bf31f0d7b3800b79bc00f4457955f392e5e87708e16e823df411b9d07005"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/main/java/com/heyganba/controller/AdminVocabularyProvenanceController.java",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "4a614f620bdf222ca0b753ef8170db7c3f4c7db6049e384ff6f5ae7c69b67e35"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/main/java/com/heyganba/dto/admin/AdminContentResponses.java",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "d6e651fd138c2b1af12c3a9a730fcc75e1666dd356d519955f083b9b2353e226"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/main/java/com/heyganba/service/VocabularyProvenanceService.java",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "44f69de5351dac77676d72906caffc64af7c3ec38444de678eb41e583b017263"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/main/resources/db/migration-release/V15__publish_web_cross_checked_vocabulary_batch.sql",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unapproved release/staging or legacy content; retain outside release lineage; never publish by cleanup.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "e7cbc36ef5b688f815f05bd7baefb4b3116c07171304e937afafd0946be642fb"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/main/resources/db/migration-release/V16__publish_hsk1_web_cross_checked_batch_01.sql",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unapproved release/staging or legacy content; retain outside release lineage; never publish by cleanup.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "34cd1a03a3b218bbe9cb15252a7477a1a35fd5bd8cfbe41b33b2958dc9f24019"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/main/resources/db/migration-release/V17__clear_unverified_vocabulary_optional_fields.sql",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unapproved release/staging or legacy content; retain outside release lineage; never publish by cleanup.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "4306313fd55a647577be6072b50d88e5068182187613d1b3bfb96a2abbdec1c6"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/main/resources/db/migration-release/V18__publish_hsk1_web_cross_checked_batch_02.sql",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unapproved release/staging or legacy content; retain outside release lineage; never publish by cleanup.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "e70aa9730050d07838065b1c985f6aa12c29e302476707d418f236a9627c6d75"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/main/resources/db/migration-release/V19__publish_hsk1_web_cross_checked_batch_03.sql",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unapproved release/staging or legacy content; retain outside release lineage; never publish by cleanup.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "98e5b472f1956118725f05071ff64614176204a0aee466500ed13f3fb5fbf6e6"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/main/resources/db/migration-release/V20__publish_hsk1_web_cross_checked_batch_04.sql",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unapproved release/staging or legacy content; retain outside release lineage; never publish by cleanup.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "a6a05739cc305f0be50e15fcc6693a760df8dfe5f2041e619cedd79ae616013d"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/main/resources/db/migration-release/V21__resolve_verified_pending_vocabulary.sql",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unapproved release/staging or legacy content; retain outside release lineage; never publish by cleanup.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "d4cc8de6a8e9c55f790213c58d04e72029d57aee8091188a2c6e22a3de1b1a31"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/main/resources/db/migration-release/V22__repair_hsk1_batch_text_encoding.sql",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unapproved release/staging or legacy content; retain outside release lineage; never publish by cleanup.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "3f4fceacbbbf2506693958cd26c82196b001dbb76b29db19cbb6b0f1e8aa4388"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/main/resources/db/migration-release/V23__publish_hsk2_web_cross_checked_batch_01.sql",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unapproved release/staging or legacy content; retain outside release lineage; never publish by cleanup.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "fd051643fa47971d0850c27575d48c68cb8c4056fd5a300a9e50d92077297edc"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/main/resources/db/migration-staging/V15__publish_web_cross_checked_vocabulary_batch.sql",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unapproved release/staging or legacy content; retain outside release lineage; never publish by cleanup.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "e7cbc36ef5b688f815f05bd7baefb4b3116c07171304e937afafd0946be642fb"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/main/resources/db/migration-staging/V16__publish_hsk1_web_cross_checked_batch_01.sql",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unapproved release/staging or legacy content; retain outside release lineage; never publish by cleanup.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "34cd1a03a3b218bbe9cb15252a7477a1a35fd5bd8cfbe41b33b2958dc9f24019"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/main/resources/db/migration-staging/V17__clear_unverified_vocabulary_optional_fields.sql",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unapproved release/staging or legacy content; retain outside release lineage; never publish by cleanup.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "4306313fd55a647577be6072b50d88e5068182187613d1b3bfb96a2abbdec1c6"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/main/resources/db/migration-staging/V18__publish_hsk1_web_cross_checked_batch_02.sql",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unapproved release/staging or legacy content; retain outside release lineage; never publish by cleanup.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "e70aa9730050d07838065b1c985f6aa12c29e302476707d418f236a9627c6d75"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/main/resources/db/migration-staging/V19__publish_hsk1_web_cross_checked_batch_03.sql",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unapproved release/staging or legacy content; retain outside release lineage; never publish by cleanup.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "98e5b472f1956118725f05071ff64614176204a0aee466500ed13f3fb5fbf6e6"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/main/resources/db/migration-staging/V20__publish_hsk1_web_cross_checked_batch_04.sql",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unapproved release/staging or legacy content; retain outside release lineage; never publish by cleanup.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "a6a05739cc305f0be50e15fcc6693a760df8dfe5f2041e619cedd79ae616013d"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/main/resources/db/migration-staging/V21__resolve_verified_pending_vocabulary.sql",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unapproved release/staging or legacy content; retain outside release lineage; never publish by cleanup.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "d4cc8de6a8e9c55f790213c58d04e72029d57aee8091188a2c6e22a3de1b1a31"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/main/resources/db/migration-staging/V22__repair_hsk1_batch_text_encoding.sql",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unapproved release/staging or legacy content; retain outside release lineage; never publish by cleanup.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "3f4fceacbbbf2506693958cd26c82196b001dbb76b29db19cbb6b0f1e8aa4388"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/main/resources/db/migration-staging/V23__publish_hsk2_web_cross_checked_batch_01.sql",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unapproved release/staging or legacy content; retain outside release lineage; never publish by cleanup.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "fd051643fa47971d0850c27575d48c68cb8c4056fd5a300a9e50d92077297edc"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/test/java/com/heyganba/AdminDraftPublicationTest.java",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "7e3711a14e896374ec469d27171450a8dfb859002e990e2217244a2a135f4732"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/test/java/com/heyganba/HanziVocabularyWithdrawalTest.java",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "ddf5d56c0c3d12f7c28bb1735e9cbe93a7c392ccf88063192085d356813aa251"
+  },
+  {
+    "status": "??",
+    "path": "backend/src/test/java/com/heyganba/VocabularyWebEvidenceTest.java",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "fce0c09ec7c087c6dca51a02bf987d1fd2b63939246e38b40e55df99646ac799"
+  },
+  {
+    "status": "??",
+    "path": "docs/Content/approved-vocabulary-source-audit-v23.json",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "e2bdd289314c11568f8b7ae70c453a816c74e1cc0bbd2e4bf48e425093969fe5"
+  },
+  {
+    "status": "??",
+    "path": "docs/Content/collins-entry-observations-2026-10-20.json",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "9e3ffb68761de95ccaa6ca58563798e37e3ba2659b525121bf2c65e3b18b4319"
+  },
+  {
+    "status": "??",
+    "path": "docs/Content/curriculum-coverage-checkpoint-2026-10-20-v23.json",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "7327e2dc6b4e9905f07da6a515d2b907c7ba8373077db1f4a0bb1f2212b36bf8"
+  },
+  {
+    "status": "??",
+    "path": "docs/Content/curriculum-coverage-checkpoint-2026-10-20.json",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "afeeafe7ecd6823994e3ac6af3edf1b22a4f50717627a764b85dab7613c4408f"
+  },
+  {
+    "status": "??",
+    "path": "docs/Content/hsk1-content-correction-2026-10-20.json",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "0a27a00c94058807f9c0a13418775aad63f75e4baf49c73b545393e7e5f69bf9"
+  },
+  {
+    "status": "??",
+    "path": "docs/Content/hsk1-web-cross-check-batch-02-2026-10-20.json",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "1c7baa4600b3a7c1271d6f8bae29d2a2048a27c358f0daab379f4faba026f6d8"
+  },
+  {
+    "status": "??",
+    "path": "docs/Content/hsk1-web-cross-check-batch-03-2026-10-20.json",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "45e1a96a25a67c5b4483980ca6d2d4241e098f3807bb3073e7c638d74bd85e52"
+  },
+  {
+    "status": "??",
+    "path": "docs/Content/hsk1-web-cross-check-batch-04-2026-10-20.json",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "650b8764f0b5cabb60288188fc3b60e3eda9d43d2fd14131361e917152363df2"
+  },
+  {
+    "status": "??",
+    "path": "docs/Content/hsk1-web-cross-check-batch-2026-10-20.json",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "640c42251fa123aa399ec84f8cae3d29a67b2ef4a8f0c9c7cbd961a7e19a0456"
+  },
+  {
+    "status": "??",
+    "path": "docs/Content/hsk2-web-cross-check-batch-01-2026-10-20.json",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "7b9d130b126ecde834bbe5180d54c3abff2174d838639b3323b983ec317965bc"
+  },
+  {
+    "status": "??",
+    "path": "docs/Content/optional-fields-clearance-2026-10-20.json",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "bcae140430d8d93089ea8b99a2766b35d8dda525eeda968d74a640c9109fbfe0"
+  },
+  {
+    "status": "??",
+    "path": "docs/Content/pending-resolution-status-2026-10-20.json",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "a9a5f26bdd12b377559a9291ba9c975e9d44eb03666a92053b99b9ac21d3c863"
+  },
+  {
+    "status": "??",
+    "path": "docs/Content/unmatched-official-ids-2026-10-20-v23.json",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "314763a278439789522ac3effbf80c8822b52ee65561d7e299e479092076373f"
+  },
+  {
+    "status": "??",
+    "path": "docs/Content/unmatched-official-ids-2026-10-20.json",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "2d90014331a96c76d6f59d7652ec8bdaf67d8d0b45e3ff5cf1c5528519812e79"
+  },
+  {
+    "status": "??",
+    "path": "docs/Content/vocabulary-evidence-queue-2026-10-20.json",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "cca063652bc073193f1b559a1acf43014b6896899c2b78beff95f18bb1af804a"
+  },
+  {
+    "status": "??",
+    "path": "docs/Content/web-cross-check-batch-2026-10-20.json",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "c10a855e666ed8280643d871a426b796e0a9782fb2f7e6f6d7bd5ee51d3f7a31"
+  },
+  {
+    "status": "??",
+    "path": "docs/Content/web-cross-check-policy.md",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "e0f2700039d972530c07dbeade48fdc2e5a9b39651c8cb7c922cce69640328bc"
+  },
+  {
+    "status": "??",
+    "path": "docs/Content/web-cross-check-resolution-batch-2026-10-20.json",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "f5221b6897975586422eb6b24dbbe4c82e15044d0a165becf08b2f0ac1ce0106"
+  },
+  {
+    "status": "??",
+    "path": "docs/QA/ci-migration-check-f6c9ea7-2026-10-18.md",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "4af5b09854e0e4fb22feeaf11dcec4cba75b489beb08962211cd8f441318878e"
+  },
+  {
+    "status": "??",
+    "path": "docs/QA/hsk3-comparison-2026-10-19.json",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "5927f94b30cb9b906b73120fbd9a4f79a360afbd175c135eb47c36cf54328958"
+  },
+  {
+    "status": "??",
+    "path": "docs/QA/legacy-path-audit-2026-10-20.json",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "b39a4da15ce42099569a26d5c7f45b845e11bd9873cae601cacf035458750713"
+  },
+  {
+    "status": "??",
+    "path": "docs/QA/master-baseline-2026-10-19.json",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "7e67c088205cb20aa614ea597fcb939481d64b52bb9fb5c44d56f31fcc8988b6"
+  },
+  {
+    "status": "??",
+    "path": "docs/QA/master-readiness-2026-10-19.md",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "1bb187e23b1781599dace46cb32bf01ecde95b69d49a9bcd89bf9d77b3c07cb8"
+  },
+  {
+    "status": "??",
+    "path": "docs/QA/master-readiness-2026-10-20.md",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "7a3bd472aae49ca89a3c574b6f57ceb7213752aa40644ce05c12e4181a5f9145"
+  },
+  {
+    "status": "??",
+    "path": "docs/QA/master-worktree-final-2026-10-19.json",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "4c7a89de1098e24d0c860b6d9b0970f11490bfff5d99f0c5d50bcbaf5c03196b"
+  },
+  {
+    "status": "??",
+    "path": "docs/QA/master-worktree-final-2026-10-20.json",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "93082b17403799a3e486da5ef42ef45201631ea8ba8bda34221cf5b107e8a2ee"
+  },
+  {
+    "status": "??",
+    "path": "docs/QA/readiness-v23-2026-10-20.md",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "adba7b4299ae8c52d09f167a0f770dcc449a881e04a2fa896b242160deb5d985"
+  },
+  {
+    "status": "??",
+    "path": "docs/QA/selfhost-baseline-2026-10-19.json",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "978fabb8766e8b6f3db24ca712e6610ac409a132c40bd2264f8afb966f91ae3f"
+  },
+  {
+    "status": "??",
+    "path": "docs/QA/selfhost-readiness-2026-10-19.md",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "09c1737e7d65affceae1e63228b13f3c9abc35044f50b9f9053105bb3e8346c1"
+  },
+  {
+    "status": "??",
+    "path": "docs/QA/spring-advisory-exception-2026-10-20.md",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "bf0cfe3fc214ffd6cba6cfdd4616ed4224fce288b69d875b274f8f3a0192de8b"
+  },
+  {
+    "status": "??",
+    "path": "docs/QA/v23-verification-2026-10-20.json",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "584dadc67ebe0321e3d96cd6f4a493efe25989b5e4e4bd2d92fff3d53d2f74b0"
+  },
+  {
+    "status": "??",
+    "path": "docs/QA/vocabulary-audit-2026-10-19.json",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "9b992445a9cc4c0d04758034b8506ac8153d807bd9af327dc308e67af270ca6f"
+  },
+  {
+    "status": "??",
+    "path": "docs/QA/worktree-delta-v23-2026-10-20.json",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "8acebd1c7b6df19c2d9dc0cf133c5c4746ef38895759f7ce22c116ff59cdffce"
+  },
+  {
+    "status": "??",
+    "path": "docs/QA/worktree-status-v23-2026-10-20.txt",
+    "classification": "ARCHIVE",
+    "reason": "Retain provenance/research evidence; historical claims are not current release approval.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "983e6a058be4f2af7613778575a70a07f5a89ee55e98a88eb61de6ce73ae1593"
+  },
+  {
+    "status": "??",
+    "path": "docs/archive/pre-selfhost/render.yaml",
+    "classification": "ARCHIVE",
+    "reason": "Preserve old deployment configuration; its deletion is recorded, not silently propagated.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "28a6f568db339a8c8b9a2985c53d9fdbf381f7abf1acb50edbbc21eef1afe46d"
+  },
+  {
+    "status": "??",
+    "path": "docs/self-host-runbook.md",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "17e8153d506045ed9dda8dea57293b50309a022e2b9b4df807a9faf4be166cff"
+  },
+  {
+    "status": "??",
+    "path": "frontend/src/features/admin/VocabularyProvenanceEditor.tsx",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "db02929b970e25a3d7a01fdd5c7583f4fb074f2bd2d13517f476cf81db89750b"
+  },
+  {
+    "status": "??",
+    "path": "frontend/tests/unit/vocabulary-provenance.test.tsx",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "cd25bbb8fb81a151401045b0511d90b829e49ecfa1efde6fd86f68591d50a517"
+  },
+  {
+    "status": "??",
+    "path": "scripts/audit-approved-vocabulary-evidence.py",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "a5906837930f941e776556fcf4bc7b10a7044b2457b1ed245e73654e7489476c"
+  },
+  {
+    "status": "??",
+    "path": "scripts/audit-chinese-vocabulary.mjs",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "5839520576460cac57d739a706f0634d279948e7310b1910888908a0d1ede01e"
+  },
+  {
+    "status": "??",
+    "path": "scripts/audit-published-corpus.py",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "00a814290117208dff15a5effaca09a2daf8895d7c06c1cd3f5e2cf23d6e2076"
+  },
+  {
+    "status": "??",
+    "path": "scripts/audit-vocabulary-evidence.py",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "af7cf38f40aa8c29edab0fecb65822edba74cd493d01db7ee461e5d479986469"
+  },
+  {
+    "status": "??",
+    "path": "scripts/compare-hsk-syllabus.py",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "a240d36f7288a798b08f393c002d564a107e9a447fcf892d050e9611b8ca8a93"
+  },
+  {
+    "status": "??",
+    "path": "scripts/extract_hanzi.mjs",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "a5e3f1992de283527dc8fd60cc51e2de4111db91a62a8da1671f06cd8ad3dcd3"
+  },
+  {
+    "status": "??",
+    "path": "scripts/extract_hanzi.py",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "8fb28febad07c26699c0ad9a58b5c197cf80b15688c9eebfdd68e2961c8c5fab"
+  },
+  {
+    "status": "??",
+    "path": "scripts/generate-hsk1-content-correction-migration.py",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "21e4b14b6120cbcc8098b2ba6a2523b2d8822caf281001971d097820e74f8b22"
+  },
+  {
+    "status": "??",
+    "path": "scripts/generate-hsk1-web-supplement-migration.py",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "7e665f37d0df15399624ea9588726ebfe6feceb6fd2d01a641e1c4adfba62801"
+  },
+  {
+    "status": "??",
+    "path": "scripts/generate-hsk2-web-supplement-migration.py",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "624e5037cfef11320d8e029675cbe5265a42b4921c4339dc5e3a78ae2034d317"
+  },
+  {
+    "status": "??",
+    "path": "scripts/generate-optional-field-clearance-migration.py",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "1ec246bdb4b429ad2cd7dfabd93d50c92048d3b6e1a9d85f0f7eb7586c17d964"
+  },
+  {
+    "status": "??",
+    "path": "scripts/generate-pending-resolution-migration.py",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "b391a223ebf36a28b14382192ddaee99847256fb78239845a85ee503bced280a"
+  },
+  {
+    "status": "??",
+    "path": "scripts/generate-reviewed-vocabulary-migration.py",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "580e3be14daf53c34d15e0bb4e552974bd7f78be0c1f6e0e0bbb1882c3f74fb6"
+  },
+  {
+    "status": "??",
+    "path": "scripts/test_compare_hsk_syllabus.py",
+    "classification": "NEEDS_REVIEW",
+    "reason": "Unfinished feature/readiness work depends on feature-branch schema/content; retain as an identifiable archive, not force into security/bootstrap release.",
+    "disposition": "retained in verified private backup and local original-work archive branch; excluded from handover release",
+    "sha256": "4f9ff7d3607b829a3eaa33c04ae5b16dd4723244a3bd9e9df05e118ac26aeaf6"
+  }
+]

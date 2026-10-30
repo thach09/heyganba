@@ -74,6 +74,16 @@ class JiayouBootstrapGuardTest {
         assertThatThrownBy(() -> JiayouBootstrapGuard.validateEnvironment(environment(p))).hasMessageContaining("host identity");
     }
 
+    @Test
+    void defaultApplicationLaunchFailsBeforeConnectingToALegacyFallback() {
+        Throwable failure = catchThrowable(() -> new org.springframework.boot.builder.SpringApplicationBuilder(com.heyganba.HeyGanbaApplication.class)
+                .web(org.springframework.boot.WebApplicationType.NONE)
+                .run("--spring.datasource.url=jdbc:postgresql://127.0.0.1:1/must_not_connect", "--spring.main.banner-mode=off"));
+        assertThat(failure).isNotNull();
+        assertThat(org.springframework.core.NestedExceptionUtils.getMostSpecificCause(failure))
+                .hasMessage("Jiayou bootstrap blocked: missing JIAYOU_PRODUCT");
+    }
+
     @ParameterizedTest
     @ValueSource(strings = {"JIAYOU_PRODUCT", "JIAYOU_ENVIRONMENT", "JIAYOU_TARGET_ID", "JIAYOU_BOOTSTRAP_MODE",
             "JIAYOU_BOOTSTRAP_AUTHORIZATION", "JIAYOU_DATABASE_URL", "JIAYOU_DATABASE_HOST", "JIAYOU_DATABASE_PORT",
