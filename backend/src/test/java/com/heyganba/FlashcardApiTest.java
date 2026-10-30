@@ -25,6 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -347,5 +348,20 @@ class FlashcardApiTest extends com.heyganba.support.ContentApiTestBase {
 
         mockMvc.perform(get("/flashcard/stats"))
                 .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void warmedDueCacheCannotExposeVocabularyWhoseApprovalWasRevoked() throws Exception {
+        String token = registerAndGetToken("cache-revoked@audit.test");
+        String first = mockMvc.perform(get("/flashcard/due-today").header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+        assertThat(objectMapper.readTree(first).path("data").toString()).contains(wordBook.getWord());
+        wordBook.setReviewStatus(com.heyganba.model.enums.ReviewStatus.PENDING_REVIEW);
+        vocabularyRepository.saveAndFlush(wordBook);
+        String cached = mockMvc.perform(get("/flashcard/due-today").header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+        for (var card : objectMapper.readTree(cached).path("data")) {
+            assertThat(card.path("vocabularyId").asLong()).isNotEqualTo(wordBook.getId());
+        }
     }
 }

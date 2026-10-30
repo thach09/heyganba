@@ -38,8 +38,9 @@ class AdminContentServiceTest {
     private LessonRepository lessonRepository;
     @Mock
     private AuditLogService auditLogService;
+    @Mock
+    private com.heyganba.service.VocabularyPublicationAuthority publication;
 
-    @Mock private com.heyganba.service.VocabularyPublicationAuthority publication;
     private AdminContentService adminContentService;
     private User admin;
 

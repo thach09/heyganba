@@ -1,0 +1,1609 @@
+{
+  "asOf": "2026-10-20",
+  "branch": "feat/v2.1-ux-and-stability",
+  "head": "220fb2573bac470008f3eba1d57ce995351ed45d",
+  "sourceAudit": {
+    "checkedAt": "2026-10-20",
+    "method": "per-record pinned dictionary/syllabus row reconciliation; readable Wiktionary/Collins headwords inspected; Collins direct HTTP 403 recorded separately; pre/post cleanup and later-approval SQL-compatible digests recomputed",
+    "sourceSnapshots": {
+      "cedict.gz": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+      "moe-concise.zip": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+      "collins-entry-observations-2026-10-20.json": "9e3ffb68761de95ccaa6ca58563798e37e3ba2659b525121bf2c65e3b18b4319",
+      "cti-hsk3-2025-11.pdf": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+    },
+    "sourceRecordCounts": {
+      "CC_CEDICT": 125301,
+      "TAIWAN_MOE": 45178
+    },
+    "original495AuditRecords": 495,
+    "additionalHsk1Records": 63,
+    "hsk1BatchCounts": [
+      20,
+      20,
+      20,
+      3
+    ],
+    "additionalHsk2Records": 20,
+    "resolvedLegacyRecords": 5,
+    "resolvedNewProposals": 1,
+    "additionalResolutionRecords": 6,
+    "optionalClearanceRecords": 584,
+    "approvedRecords": 584,
+    "publishedLexicalIdentities": 555,
+    "statusCounts": {
+      "PINNED_SOURCE_ROWS_AND_POST_CLEARANCE_DIGEST_RECONCILED": 584
+    },
+    "officialClassificationStatusCounts": {
+      "CTI_PRIMARY_LEVEL_1": 269,
+      "NO_CTI_3_0_LEVEL_CONFIRMED_KEEP_INTERNAL_SELECTION": 25,
+      "AMBIGUOUS_CTI_3_0_LEVEL_DO_NOT_COUNT_AS_HSK_1_6": 8,
+      "CTI_PRIMARY_LEVEL_2": 87,
+      "CTI_PRIMARY_LEVEL_3": 59,
+      "CTI_PRIMARY_LEVEL_4": 43,
+      "CTI_PRIMARY_LEVEL_5": 38,
+      "CTI_LEVEL_7_9_NOT_HSK_1_6": 42,
+      "CTI_PRIMARY_LEVEL_6": 13
+    },
+    "officialCoverage": {
+      "definition": "Distinct CTI 3.0 primary-level IDs with one unambiguous exact spelling/reading linkage; ambiguous same-reading cross-level IDs excluded. Does not assert semantic or teaching-material completeness.",
+      "mappedUniqueOfficialIdsByLevel": {
+        "1": 244,
+        "2": 86,
+        "3": 59,
+        "4": 43,
+        "5": 38,
+        "6": 13
+      },
+      "unmatchedOfficialIdsByLevel": {
+        "1": 56,
+        "2": 114,
+        "3": 441,
+        "4": 957,
+        "5": 1562,
+        "6": 1787
+      },
+      "mappedTotal": 483,
+      "unmatchedTotal": 4917
+    },
+    "lexicalDuplicateAudit": {
+      "existingDuplicateGroups": 29,
+      "recordsInDuplicateGroups": 58,
+      "newHsk1BatchDuplicateGroups": 0,
+      "newHsk1BatchCollisionsWithPublishedIdentity": 0,
+      "newHsk2BatchDuplicateGroups": 0,
+      "newHsk2BatchCollisionsWithPublishedIdentity": 0
+    }
+  },
+  "artifact": {
+    "sourceManifest": "backend\\src\\main\\resources\\db\\release-migrations-manifest.json",
+    "sourceMigrationCount": 23,
+    "artifact": {
+      "jar": "D:\\GitHub\\heyganba\\backend\\target\\heyganba-backend-0.0.1-SNAPSHOT.jar",
+      "sha256": "440a13a0753e26026af49f69475c9bc1046194a77edf75a1c7c31f1e06f3513f",
+      "sqlMigrationResources": [
+        "BOOT-INF/classes/db/migration-release/V10__learning_insights_and_sentence_order.sql",
+        "BOOT-INF/classes/db/migration-release/V11__align_optional_content_nullability.sql",
+        "BOOT-INF/classes/db/migration-release/V12__performance_indexes_and_constraints.sql",
+        "BOOT-INF/classes/db/migration-release/V13__vocabulary_provenance_review_gate.sql",
+        "BOOT-INF/classes/db/migration-release/V14__web_cross_check_evidence_policy.sql",
+        "BOOT-INF/classes/db/migration-release/V15__publish_web_cross_checked_vocabulary_batch.sql",
+        "BOOT-INF/classes/db/migration-release/V16__publish_hsk1_web_cross_checked_batch_01.sql",
+        "BOOT-INF/classes/db/migration-release/V17__clear_unverified_vocabulary_optional_fields.sql",
+        "BOOT-INF/classes/db/migration-release/V18__publish_hsk1_web_cross_checked_batch_02.sql",
+        "BOOT-INF/classes/db/migration-release/V19__publish_hsk1_web_cross_checked_batch_03.sql",
+        "BOOT-INF/classes/db/migration-release/V20__publish_hsk1_web_cross_checked_batch_04.sql",
+        "BOOT-INF/classes/db/migration-release/V21__resolve_verified_pending_vocabulary.sql",
+        "BOOT-INF/classes/db/migration-release/V22__repair_hsk1_batch_text_encoding.sql",
+        "BOOT-INF/classes/db/migration-release/V23__publish_hsk2_web_cross_checked_batch_01.sql",
+        "BOOT-INF/classes/db/migration-release/V4__sample_lesson_greetings.sql",
+        "BOOT-INF/classes/db/migration-release/V5__hsk1_thematic_curriculum_expansion.sql",
+        "BOOT-INF/classes/db/migration-release/V6__hsk1_standard_course_grammar_and_exams.sql",
+        "BOOT-INF/classes/db/migration-release/V7__hsk1_complete_150_vocab_and_hanzi_radicals.sql",
+        "BOOT-INF/classes/db/migration-release/V8__hsk2_standard_course_and_approve_all_curriculum.sql",
+        "BOOT-INF/classes/db/migration-release/V9__hsk1_to_hsk6_complete_curriculum_and_grammar.sql",
+        "BOOT-INF/classes/db/migration/V1__init_chinese_schema.sql",
+        "BOOT-INF/classes/db/migration/V2__seed_chinese_hsk1_data.sql",
+        "BOOT-INF/classes/db/migration/V3__disable_public_seed_admin_credential.sql"
+      ],
+      "migrationCount": 23,
+      "packagedMigrationSha256": {
+        "db/migration/V1__init_chinese_schema.sql": "50625fd3193b585f3367fb701046d8bc1de5ff4bb1aca4acbbd9cea439e00d50",
+        "db/migration/V2__seed_chinese_hsk1_data.sql": "84715d7e9521c2072756be043790acab8d01fb7b37f9054ff3b04b66b6fe04b7",
+        "db/migration/V3__disable_public_seed_admin_credential.sql": "5d67c0f1655db69741804651e7762bc022729aff9282a8af437156af97d86f9d",
+        "db/migration-release/V4__sample_lesson_greetings.sql": "0235740d198468b2c48c4b68fcd21c317bb2a65fb2493c9af44234a1fa2641ed",
+        "db/migration-release/V5__hsk1_thematic_curriculum_expansion.sql": "9c7baed778e2fb42707492bd6b8888b22395268ee88ff10cd2de8d9f53182eba",
+        "db/migration-release/V6__hsk1_standard_course_grammar_and_exams.sql": "0b8e19d9f80e80b9a38925a40a1acc5b31b54654ec3e804f059d05c3d4c93ddb",
+        "db/migration-release/V7__hsk1_complete_150_vocab_and_hanzi_radicals.sql": "fb659ed744855688fef79d82cd361e601da4170705039a3e37731fda59c81690",
+        "db/migration-release/V8__hsk2_standard_course_and_approve_all_curriculum.sql": "cf3bcd83287dd62b01cde92d937ca927371d4c9bef795d6746f2fd2b11ae3752",
+        "db/migration-release/V9__hsk1_to_hsk6_complete_curriculum_and_grammar.sql": "d9925bf56e11ba34f85d8eb41cf95ad46dc47f0ab465d68ece7819fc6804afdb",
+        "db/migration-release/V10__learning_insights_and_sentence_order.sql": "34cfdc068fbef17d2e4e0c39dd4eb95fe3361dfef74c9f7ba377bde3c0da6d75",
+        "db/migration-release/V11__align_optional_content_nullability.sql": "3e410b683ac9343808a3da6c82fb43747338d9fbf86f9863ab678228e5097b5a",
+        "db/migration-release/V12__performance_indexes_and_constraints.sql": "86fb6c0cb6d17e659f77ef924f23b7cce27a271e4c56dba7bb97e2f5522c3c6a",
+        "db/migration-release/V13__vocabulary_provenance_review_gate.sql": "dc71942e25cfd1d87c4ece6c84e1b680aa8f73686162449db03ff2b4978449e2",
+        "db/migration-release/V14__web_cross_check_evidence_policy.sql": "295be98f707a77455989ba5b4cc58bf3e3d242537af5d630ad985aa9b043a864",
+        "db/migration-release/V15__publish_web_cross_checked_vocabulary_batch.sql": "e7cbc36ef5b688f815f05bd7baefb4b3116c07171304e937afafd0946be642fb",
+        "db/migration-release/V16__publish_hsk1_web_cross_checked_batch_01.sql": "34cd1a03a3b218bbe9cb15252a7477a1a35fd5bd8cfbe41b33b2958dc9f24019",
+        "db/migration-release/V17__clear_unverified_vocabulary_optional_fields.sql": "4306313fd55a647577be6072b50d88e5068182187613d1b3bfb96a2abbdec1c6",
+        "db/migration-release/V18__publish_hsk1_web_cross_checked_batch_02.sql": "e70aa9730050d07838065b1c985f6aa12c29e302476707d418f236a9627c6d75",
+        "db/migration-release/V19__publish_hsk1_web_cross_checked_batch_03.sql": "98e5b472f1956118725f05071ff64614176204a0aee466500ed13f3fb5fbf6e6",
+        "db/migration-release/V20__publish_hsk1_web_cross_checked_batch_04.sql": "a6a05739cc305f0be50e15fcc6693a760df8dfe5f2041e619cedd79ae616013d",
+        "db/migration-release/V21__resolve_verified_pending_vocabulary.sql": "d4cc8de6a8e9c55f790213c58d04e72029d57aee8091188a2c6e22a3de1b1a31",
+        "db/migration-release/V22__repair_hsk1_batch_text_encoding.sql": "3f4fceacbbbf2506693958cd26c82196b001dbb76b29db19cbb6b0f1e8aa4388",
+        "db/migration-release/V23__publish_hsk2_web_cross_checked_batch_01.sql": "fd051643fa47971d0850c27575d48c68cb8c4056fd5a300a9e50d92077297edc"
+      },
+      "packagedManifestMatchesSource": true,
+      "callbackSha256": "cfb855bc26e63781d1908872d4fabe9786f29c320e1a753bf8d27a9695be7042",
+      "stagingResources": 0,
+      "japaneseResources": 0,
+      "qaFixtureResources": 0,
+      "qaAccountMarkerResources": 0,
+      "resourceInventory": [
+        "BOOT-INF/classes/application-dev.yml",
+        "BOOT-INF/classes/application-prod.yml",
+        "BOOT-INF/classes/application-staging.yml",
+        "BOOT-INF/classes/application.yml",
+        "BOOT-INF/classes/db/migration-release/V10__learning_insights_and_sentence_order.sql",
+        "BOOT-INF/classes/db/migration-release/V11__align_optional_content_nullability.sql",
+        "BOOT-INF/classes/db/migration-release/V12__performance_indexes_and_constraints.sql",
+        "BOOT-INF/classes/db/migration-release/V13__vocabulary_provenance_review_gate.sql",
+        "BOOT-INF/classes/db/migration-release/V14__web_cross_check_evidence_policy.sql",
+        "BOOT-INF/classes/db/migration-release/V15__publish_web_cross_checked_vocabulary_batch.sql",
+        "BOOT-INF/classes/db/migration-release/V16__publish_hsk1_web_cross_checked_batch_01.sql",
+        "BOOT-INF/classes/db/migration-release/V17__clear_unverified_vocabulary_optional_fields.sql",
+        "BOOT-INF/classes/db/migration-release/V18__publish_hsk1_web_cross_checked_batch_02.sql",
+        "BOOT-INF/classes/db/migration-release/V19__publish_hsk1_web_cross_checked_batch_03.sql",
+        "BOOT-INF/classes/db/migration-release/V20__publish_hsk1_web_cross_checked_batch_04.sql",
+        "BOOT-INF/classes/db/migration-release/V21__resolve_verified_pending_vocabulary.sql",
+        "BOOT-INF/classes/db/migration-release/V22__repair_hsk1_batch_text_encoding.sql",
+        "BOOT-INF/classes/db/migration-release/V23__publish_hsk2_web_cross_checked_batch_01.sql",
+        "BOOT-INF/classes/db/migration-release/V4__sample_lesson_greetings.sql",
+        "BOOT-INF/classes/db/migration-release/V5__hsk1_thematic_curriculum_expansion.sql",
+        "BOOT-INF/classes/db/migration-release/V6__hsk1_standard_course_grammar_and_exams.sql",
+        "BOOT-INF/classes/db/migration-release/V7__hsk1_complete_150_vocab_and_hanzi_radicals.sql",
+        "BOOT-INF/classes/db/migration-release/V8__hsk2_standard_course_and_approve_all_curriculum.sql",
+        "BOOT-INF/classes/db/migration-release/V9__hsk1_to_hsk6_complete_curriculum_and_grammar.sql",
+        "BOOT-INF/classes/db/migration/V1__init_chinese_schema.sql",
+        "BOOT-INF/classes/db/migration/V2__seed_chinese_hsk1_data.sql",
+        "BOOT-INF/classes/db/migration/V3__disable_public_seed_admin_credential.sql",
+        "BOOT-INF/classes/db/migration/beforeEachMigrate.sql",
+        "BOOT-INF/classes/db/release-migrations-manifest.json"
+      ],
+      "classResourceCount": 368
+    }
+  },
+  "productionFresh": {
+    "status": "PASS",
+    "database": "heyganba_prod_fresh8_20261020",
+    "rows": 648,
+    "approved": 584,
+    "pending": 64,
+    "matchedAuditedRecords": 584,
+    "preservedLegacyIds": 496,
+    "unpublishedOptionalRowsWithValues": 0,
+    "digestMismatches": 0,
+    "contentMultisetSha256": "83fd27518ccba1b3e2e48e07139da7defa323cb10054082392853cbd3f9c049d",
+    "classificationRows": 86,
+    "userCountAtSnapshot": 0,
+    "migrationHistory": [
+      {
+        "type": "SQL",
+        "script": "V1__init_chinese_schema.sql",
+        "success": true,
+        "version": "1",
+        "checksum": -113479774,
+        "description": "init chinese schema",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:41:55.286875",
+        "execution_time": 321,
+        "installed_rank": 1
+      },
+      {
+        "type": "SQL",
+        "script": "V2__seed_chinese_hsk1_data.sql",
+        "success": true,
+        "version": "2",
+        "checksum": 1078891756,
+        "description": "seed chinese hsk1 data",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:41:55.658754",
+        "execution_time": 37,
+        "installed_rank": 2
+      },
+      {
+        "type": "SQL",
+        "script": "V3__disable_public_seed_admin_credential.sql",
+        "success": true,
+        "version": "3",
+        "checksum": 1272160687,
+        "description": "disable public seed admin credential",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:41:55.723136",
+        "execution_time": 12,
+        "installed_rank": 3
+      },
+      {
+        "type": "SQL",
+        "script": "V4__sample_lesson_greetings.sql",
+        "success": true,
+        "version": "4",
+        "checksum": 602462840,
+        "description": "sample lesson greetings",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:41:55.749546",
+        "execution_time": 13,
+        "installed_rank": 4
+      },
+      {
+        "type": "SQL",
+        "script": "V5__hsk1_thematic_curriculum_expansion.sql",
+        "success": true,
+        "version": "5",
+        "checksum": -1624911416,
+        "description": "hsk1 thematic curriculum expansion",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:41:55.776546",
+        "execution_time": 14,
+        "installed_rank": 5
+      },
+      {
+        "type": "SQL",
+        "script": "V6__hsk1_standard_course_grammar_and_exams.sql",
+        "success": true,
+        "version": "6",
+        "checksum": -295367122,
+        "description": "hsk1 standard course grammar and exams",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:41:55.807597",
+        "execution_time": 21,
+        "installed_rank": 6
+      },
+      {
+        "type": "SQL",
+        "script": "V7__hsk1_complete_150_vocab_and_hanzi_radicals.sql",
+        "success": true,
+        "version": "7",
+        "checksum": 102146397,
+        "description": "hsk1 complete 150 vocab and hanzi radicals",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:41:55.847155",
+        "execution_time": 26,
+        "installed_rank": 7
+      },
+      {
+        "type": "SQL",
+        "script": "V8__hsk2_standard_course_and_approve_all_curriculum.sql",
+        "success": true,
+        "version": "8",
+        "checksum": -1708428934,
+        "description": "hsk2 standard course and approve all curriculum",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:41:55.898427",
+        "execution_time": 37,
+        "installed_rank": 8
+      },
+      {
+        "type": "SQL",
+        "script": "V9__hsk1_to_hsk6_complete_curriculum_and_grammar.sql",
+        "success": true,
+        "version": "9",
+        "checksum": 1347452477,
+        "description": "hsk1 to hsk6 complete curriculum and grammar",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:41:55.953433",
+        "execution_time": 53,
+        "installed_rank": 9
+      },
+      {
+        "type": "SQL",
+        "script": "V10__learning_insights_and_sentence_order.sql",
+        "success": true,
+        "version": "10",
+        "checksum": 1770207113,
+        "description": "learning insights and sentence order",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:41:56.032878",
+        "execution_time": 11,
+        "installed_rank": 10
+      },
+      {
+        "type": "SQL",
+        "script": "V11__align_optional_content_nullability.sql",
+        "success": true,
+        "version": "11",
+        "checksum": -29741130,
+        "description": "align optional content nullability",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:41:56.055229",
+        "execution_time": 9,
+        "installed_rank": 11
+      },
+      {
+        "type": "SQL",
+        "script": "V12__performance_indexes_and_constraints.sql",
+        "success": true,
+        "version": "12",
+        "checksum": -2128560928,
+        "description": "performance indexes and constraints",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:41:56.075253",
+        "execution_time": 25,
+        "installed_rank": 12
+      },
+      {
+        "type": "SQL",
+        "script": "V13__vocabulary_provenance_review_gate.sql",
+        "success": true,
+        "version": "13",
+        "checksum": 493508260,
+        "description": "vocabulary provenance review gate",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:41:56.110952",
+        "execution_time": 20,
+        "installed_rank": 13
+      },
+      {
+        "type": "SQL",
+        "script": "V14__web_cross_check_evidence_policy.sql",
+        "success": true,
+        "version": "14",
+        "checksum": -522125796,
+        "description": "web cross check evidence policy",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:41:56.14409",
+        "execution_time": 9,
+        "installed_rank": 14
+      },
+      {
+        "type": "SQL",
+        "script": "V15__publish_web_cross_checked_vocabulary_batch.sql",
+        "success": true,
+        "version": "15",
+        "checksum": -927459724,
+        "description": "publish web cross checked vocabulary batch",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:41:56.163561",
+        "execution_time": 612,
+        "installed_rank": 15
+      },
+      {
+        "type": "SQL",
+        "script": "V16__publish_hsk1_web_cross_checked_batch_01.sql",
+        "success": true,
+        "version": "16",
+        "checksum": 525450764,
+        "description": "publish hsk1 web cross checked batch 01",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:41:57.027397",
+        "execution_time": 44,
+        "installed_rank": 16
+      },
+      {
+        "type": "SQL",
+        "script": "V17__clear_unverified_vocabulary_optional_fields.sql",
+        "success": true,
+        "version": "17",
+        "checksum": 1486532459,
+        "description": "clear unverified vocabulary optional fields",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:41:57.092407",
+        "execution_time": 134,
+        "installed_rank": 17
+      },
+      {
+        "type": "SQL",
+        "script": "V18__publish_hsk1_web_cross_checked_batch_02.sql",
+        "success": true,
+        "version": "18",
+        "checksum": 59074469,
+        "description": "publish hsk1 web cross checked batch 02",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:41:57.263573",
+        "execution_time": 33,
+        "installed_rank": 18
+      },
+      {
+        "type": "SQL",
+        "script": "V19__publish_hsk1_web_cross_checked_batch_03.sql",
+        "success": true,
+        "version": "19",
+        "checksum": 439507999,
+        "description": "publish hsk1 web cross checked batch 03",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:41:57.31761",
+        "execution_time": 34,
+        "installed_rank": 19
+      },
+      {
+        "type": "SQL",
+        "script": "V20__publish_hsk1_web_cross_checked_batch_04.sql",
+        "success": true,
+        "version": "20",
+        "checksum": 1489006787,
+        "description": "publish hsk1 web cross checked batch 04",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:41:57.372173",
+        "execution_time": 16,
+        "installed_rank": 20
+      },
+      {
+        "type": "SQL",
+        "script": "V21__resolve_verified_pending_vocabulary.sql",
+        "success": true,
+        "version": "21",
+        "checksum": 2130076618,
+        "description": "resolve verified pending vocabulary",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:41:57.401787",
+        "execution_time": 22,
+        "installed_rank": 21
+      },
+      {
+        "type": "SQL",
+        "script": "V22__repair_hsk1_batch_text_encoding.sql",
+        "success": true,
+        "version": "22",
+        "checksum": -422267401,
+        "description": "repair hsk1 batch text encoding",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:41:57.43919",
+        "execution_time": 41,
+        "installed_rank": 22
+      },
+      {
+        "type": "SQL",
+        "script": "V23__publish_hsk2_web_cross_checked_batch_01.sql",
+        "success": true,
+        "version": "23",
+        "checksum": -1535385572,
+        "description": "publish hsk2 web cross checked batch 01",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:41:57.505911",
+        "execution_time": 31,
+        "installed_rank": 23
+      }
+    ],
+    "sourceAuditSha256": "e2bdd289314c11568f8b7ae70c453a816c74e1cc0bbd2e4bf48e425093969fe5",
+    "databaseSnapshotSha256": "0786df25f26fcfaec3226b524fd2cf369afd10da1d3c99f63ed188025ee8e5b4"
+  },
+  "productionUpgrade": {
+    "status": "PASS",
+    "database": "heyganba_prod_upgrade7_20261020",
+    "rows": 648,
+    "approved": 584,
+    "pending": 64,
+    "matchedAuditedRecords": 584,
+    "preservedLegacyIds": 496,
+    "unpublishedOptionalRowsWithValues": 0,
+    "digestMismatches": 0,
+    "contentMultisetSha256": "83fd27518ccba1b3e2e48e07139da7defa323cb10054082392853cbd3f9c049d",
+    "classificationRows": 86,
+    "userCountAtSnapshot": 0,
+    "migrationHistory": [
+      {
+        "type": "SQL",
+        "script": "V1__init_chinese_schema.sql",
+        "success": true,
+        "version": "1",
+        "checksum": -113479774,
+        "description": "init chinese schema",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:42:13.971199",
+        "execution_time": 288,
+        "installed_rank": 1
+      },
+      {
+        "type": "SQL",
+        "script": "V2__seed_chinese_hsk1_data.sql",
+        "success": true,
+        "version": "2",
+        "checksum": 1078891756,
+        "description": "seed chinese hsk1 data",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:42:14.301037",
+        "execution_time": 29,
+        "installed_rank": 2
+      },
+      {
+        "type": "SQL",
+        "script": "V3__disable_public_seed_admin_credential.sql",
+        "success": true,
+        "version": "3",
+        "checksum": 1272160687,
+        "description": "disable public seed admin credential",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:42:14.35404",
+        "execution_time": 9,
+        "installed_rank": 3
+      },
+      {
+        "type": "SQL",
+        "script": "V4__sample_lesson_greetings.sql",
+        "success": true,
+        "version": "4",
+        "checksum": 602462840,
+        "description": "sample lesson greetings",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:42:14.375939",
+        "execution_time": 12,
+        "installed_rank": 4
+      },
+      {
+        "type": "SQL",
+        "script": "V5__hsk1_thematic_curriculum_expansion.sql",
+        "success": true,
+        "version": "5",
+        "checksum": -1624911416,
+        "description": "hsk1 thematic curriculum expansion",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:42:14.400136",
+        "execution_time": 12,
+        "installed_rank": 5
+      },
+      {
+        "type": "SQL",
+        "script": "V6__hsk1_standard_course_grammar_and_exams.sql",
+        "success": true,
+        "version": "6",
+        "checksum": -295367122,
+        "description": "hsk1 standard course grammar and exams",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:42:14.428737",
+        "execution_time": 25,
+        "installed_rank": 6
+      },
+      {
+        "type": "SQL",
+        "script": "V7__hsk1_complete_150_vocab_and_hanzi_radicals.sql",
+        "success": true,
+        "version": "7",
+        "checksum": 102146397,
+        "description": "hsk1 complete 150 vocab and hanzi radicals",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:42:14.468171",
+        "execution_time": 18,
+        "installed_rank": 7
+      },
+      {
+        "type": "SQL",
+        "script": "V8__hsk2_standard_course_and_approve_all_curriculum.sql",
+        "success": true,
+        "version": "8",
+        "checksum": -1708428934,
+        "description": "hsk2 standard course and approve all curriculum",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:42:14.500883",
+        "execution_time": 29,
+        "installed_rank": 8
+      },
+      {
+        "type": "SQL",
+        "script": "V9__hsk1_to_hsk6_complete_curriculum_and_grammar.sql",
+        "success": true,
+        "version": "9",
+        "checksum": 1347452477,
+        "description": "hsk1 to hsk6 complete curriculum and grammar",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:42:14.546638",
+        "execution_time": 47,
+        "installed_rank": 9
+      },
+      {
+        "type": "SQL",
+        "script": "V10__learning_insights_and_sentence_order.sql",
+        "success": true,
+        "version": "10",
+        "checksum": 1770207113,
+        "description": "learning insights and sentence order",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:42:14.617841",
+        "execution_time": 11,
+        "installed_rank": 10
+      },
+      {
+        "type": "SQL",
+        "script": "V11__align_optional_content_nullability.sql",
+        "success": true,
+        "version": "11",
+        "checksum": -29741130,
+        "description": "align optional content nullability",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:42:14.640024",
+        "execution_time": 8,
+        "installed_rank": 11
+      },
+      {
+        "type": "SQL",
+        "script": "V12__performance_indexes_and_constraints.sql",
+        "success": true,
+        "version": "12",
+        "checksum": -2128560928,
+        "description": "performance indexes and constraints",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:42:14.657888",
+        "execution_time": 21,
+        "installed_rank": 12
+      },
+      {
+        "type": "SQL",
+        "script": "V13__vocabulary_provenance_review_gate.sql",
+        "success": true,
+        "version": "13",
+        "checksum": 493508260,
+        "description": "vocabulary provenance review gate",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:42:14.688012",
+        "execution_time": 19,
+        "installed_rank": 13
+      },
+      {
+        "type": "SQL",
+        "script": "V14__web_cross_check_evidence_policy.sql",
+        "success": true,
+        "version": "14",
+        "checksum": -522125796,
+        "description": "web cross check evidence policy",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:42:14.719538",
+        "execution_time": 7,
+        "installed_rank": 14
+      },
+      {
+        "type": "SQL",
+        "script": "V15__publish_web_cross_checked_vocabulary_batch.sql",
+        "success": true,
+        "version": "15",
+        "checksum": -927459724,
+        "description": "publish web cross checked vocabulary batch",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:42:14.735236",
+        "execution_time": 538,
+        "installed_rank": 15
+      },
+      {
+        "type": "SQL",
+        "script": "V16__publish_hsk1_web_cross_checked_batch_01.sql",
+        "success": true,
+        "version": "16",
+        "checksum": 525450764,
+        "description": "publish hsk1 web cross checked batch 01",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:42:15.53124",
+        "execution_time": 37,
+        "installed_rank": 16
+      },
+      {
+        "type": "SQL",
+        "script": "V17__clear_unverified_vocabulary_optional_fields.sql",
+        "success": true,
+        "version": "17",
+        "checksum": 1486532459,
+        "description": "clear unverified vocabulary optional fields",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:43:11.474076",
+        "execution_time": 112,
+        "installed_rank": 17
+      },
+      {
+        "type": "SQL",
+        "script": "V18__publish_hsk1_web_cross_checked_batch_02.sql",
+        "success": true,
+        "version": "18",
+        "checksum": 59074469,
+        "description": "publish hsk1 web cross checked batch 02",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:43:11.700987",
+        "execution_time": 26,
+        "installed_rank": 18
+      },
+      {
+        "type": "SQL",
+        "script": "V19__publish_hsk1_web_cross_checked_batch_03.sql",
+        "success": true,
+        "version": "19",
+        "checksum": 439507999,
+        "description": "publish hsk1 web cross checked batch 03",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:43:11.761208",
+        "execution_time": 26,
+        "installed_rank": 19
+      },
+      {
+        "type": "SQL",
+        "script": "V20__publish_hsk1_web_cross_checked_batch_04.sql",
+        "success": true,
+        "version": "20",
+        "checksum": 1489006787,
+        "description": "publish hsk1 web cross checked batch 04",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:43:11.809453",
+        "execution_time": 12,
+        "installed_rank": 20
+      },
+      {
+        "type": "SQL",
+        "script": "V21__resolve_verified_pending_vocabulary.sql",
+        "success": true,
+        "version": "21",
+        "checksum": 2130076618,
+        "description": "resolve verified pending vocabulary",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:43:11.839785",
+        "execution_time": 15,
+        "installed_rank": 21
+      },
+      {
+        "type": "SQL",
+        "script": "V22__repair_hsk1_batch_text_encoding.sql",
+        "success": true,
+        "version": "22",
+        "checksum": -422267401,
+        "description": "repair hsk1 batch text encoding",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:43:11.868503",
+        "execution_time": 29,
+        "installed_rank": 22
+      },
+      {
+        "type": "SQL",
+        "script": "V23__publish_hsk2_web_cross_checked_batch_01.sql",
+        "success": true,
+        "version": "23",
+        "checksum": -1535385572,
+        "description": "publish hsk2 web cross checked batch 01",
+        "installed_by": "postgres",
+        "installed_on": "2026-10-20T13:43:11.924335",
+        "execution_time": 23,
+        "installed_rank": 23
+      }
+    ],
+    "sourceAuditSha256": "e2bdd289314c11568f8b7ae70c453a816c74e1cc0bbd2e4bf48e425093969fe5",
+    "databaseSnapshotSha256": "99cbc8072ce4025acc0513219ec39f20037dff735e460afd60212a5a06017f59"
+  },
+  "checksumPreservation": {
+    "status": "PASS",
+    "V1ToV22SourceAndPackagedSha256Unchanged": true,
+    "upgradeV1ToV16AppliedFlywayChecksumsUnchanged": true,
+    "freshAndUpgradeProfile": "prod",
+    "flywayLocationsOverride": false,
+    "stagingOrQaResourcesPackaged": false,
+    "jarSha256": "440a13a0753e26026af49f69475c9bc1046194a77edf75a1c7c31f1e06f3513f",
+    "V23Sha256": "fd051643fa47971d0850c27575d48c68cb8c4056fd5a300a9e50d92077297edc"
+  },
+  "tests": {
+    "h2": {
+      "total": 251,
+      "passed": 248,
+      "failed": 0,
+      "error": 0,
+      "skipped": 3,
+      "skips": [
+        {
+          "class": "com.heyganba.PostgresSchemaStagingRehearsalTest",
+          "name": "caseA_officialSchemaOnly",
+          "status": "skipped",
+          "skipReason": "System property [postgres.rehearsal] does not exist"
+        },
+        {
+          "class": "com.heyganba.PostgresSchemaStagingRehearsalTest",
+          "name": "caseB_stagingSchemaWithV4",
+          "status": "skipped",
+          "skipReason": "System property [postgres.rehearsal] does not exist"
+        },
+        {
+          "class": "com.heyganba.PostgresSchemaStagingRehearsalTest",
+          "name": "caseC_hibernateSchemaValidation",
+          "status": "skipped",
+          "skipReason": "System property [postgres.rehearsal] does not exist"
+        }
+      ]
+    },
+    "postgresCiEnvironment": {
+      "command": "mvn -B test",
+      "ciEnvironmentWithLocalPortAndDatabaseSubstitution": true,
+      "total": 251,
+      "passed": 248,
+      "failed": 0,
+      "error": 0,
+      "skipped": 3,
+      "skips": [
+        {
+          "class": "com.heyganba.PostgresSchemaStagingRehearsalTest",
+          "name": "caseA_officialSchemaOnly",
+          "status": "skipped",
+          "skipReason": "System property [postgres.rehearsal] does not exist"
+        },
+        {
+          "class": "com.heyganba.PostgresSchemaStagingRehearsalTest",
+          "name": "caseB_stagingSchemaWithV4",
+          "status": "skipped",
+          "skipReason": "System property [postgres.rehearsal] does not exist"
+        },
+        {
+          "class": "com.heyganba.PostgresSchemaStagingRehearsalTest",
+          "name": "caseC_hibernateSchemaValidation",
+          "status": "skipped",
+          "skipReason": "System property [postgres.rehearsal] does not exist"
+        }
+      ]
+    },
+    "postgresCiOptInRehearsal": {
+      "total": 3,
+      "passed": 3,
+      "failed": 0,
+      "error": 0,
+      "skipped": 0,
+      "xml": "backups/evidence-recovery-2026-10-20/rehearsal-ci-v23.xml"
+    },
+    "frontend": {
+      "legacyPassed": 8,
+      "vitestPassed": 179,
+      "totalPassed": 187,
+      "failed": 0,
+      "skipped": 0,
+      "lintExitCode": 0,
+      "buildExitCode": 0
+    },
+    "gitDiffCheck": {
+      "exitCode": 0,
+      "remainingWarnings": "Git LF-to-CRLF normalization notices only"
+    }
+  },
+  "testCaseDelta": {
+    "baselineTotal": 250,
+    "currentTotal": 251,
+    "added": [
+      {
+        "class": "com.heyganba.FlywayLocationsConfigTest",
+        "name": "productionLocationsUseReleaseAllowlist"
+      },
+      {
+        "class": "com.heyganba.FlywayLocationsConfigTest",
+        "name": "releaseMigrationsMatchAllowlistAndStagingSources"
+      },
+      {
+        "class": "com.heyganba.FlywayLocationsConfigTest",
+        "name": "stagingResourcesAreAvailableToTests"
+      },
+      {
+        "class": "com.heyganba.VocabularyWebEvidenceTest",
+        "name": "collinsDictionaryEvidenceIsIndependentButUnrelatedPublisherPagesCannotApprove"
+      },
+      {
+        "class": "com.heyganba.VocabularyWebEvidenceTest",
+        "name": "unverifiedOptionalFieldsAreOmittedFromVocabularyDictionaryAndSrsDtos"
+      }
+    ],
+    "removedOrReplaced": [
+      {
+        "class": "com.heyganba.FlywayLocationsConfigTest",
+        "name": "defaultLocationsIncludeStagingContent"
+      },
+      {
+        "class": "com.heyganba.FlywayLocationsConfigTest",
+        "name": "pendingMigrationsLiveInStagingFolderOnly"
+      },
+      {
+        "class": "com.heyganba.FlywayLocationsConfigTest",
+        "name": "productionLocationsIncludeAllCurriculum"
+      },
+      {
+        "class": "com.heyganba.FlywayLocationsConfigTest",
+        "name": "stagingFolderHasNoVersionClashWithMainFolder"
+      }
+    ]
+  },
+  "legacyTestScope": {
+    "scope": "Separate historical Japanese audit profile; not executed or counted as Chinese release tests",
+    "classes": [
+      {
+        "class": "AssistedDictionaryCurationIntegrityTest",
+        "testMethods": 3
+      },
+      {
+        "class": "DictionaryCandidateSelectionTest",
+        "testMethods": 2
+      },
+      {
+        "class": "DictionaryCoverageSearchTest",
+        "testMethods": 1
+      },
+      {
+        "class": "DictionaryCurationIntegrityTest",
+        "testMethods": 2
+      },
+      {
+        "class": "DictionaryNotebookApiTest",
+        "testMethods": 15
+      },
+      {
+        "class": "DictionaryPilotPostgresRehearsalTest",
+        "testMethods": 1
+      }
+    ],
+    "testMethods": 24
+  },
+  "uiV23": {
+    "dictionaryAndNotebook": {
+      "status": "PASS",
+      "words": [
+        {
+          "id": 1,
+          "word": "你好"
+        },
+        {
+          "id": 629,
+          "word": "爱好"
+        }
+      ],
+      "optionalFields": "absent"
+    },
+    "layouts": [
+      {
+        "width": 1440,
+        "scrollWidth": 1440,
+        "selectedHsk": "HSK 2",
+        "correctCoverage": true,
+        "incompleteLabel": true,
+        "status": "PASS"
+      },
+      {
+        "width": 390,
+        "scrollWidth": 390,
+        "selectedHsk": "HSK 2",
+        "correctCoverage": true,
+        "incompleteLabel": true,
+        "status": "PASS"
+      }
+    ],
+    "pageErrors": []
+  },
+  "performance": {
+    "before": {
+      "lcpMedianMs": 3158.6412,
+      "lcpRangeMs": [
+        3158.4840000000004,
+        3159.1116
+      ],
+      "clsMedian": 0.0036247945590809887,
+      "clsRange": [
+        0.0036247945590809887,
+        0.014681560456766744
+      ],
+      "lcpRunsMs": [
+        3158.4840000000004,
+        3158.6412,
+        3159.1116
+      ],
+      "clsRuns": [
+        0.0036247945590809887,
+        0.014681560456766744,
+        0.0036247945590809887
+      ],
+      "resourceSummaries": [
+        [
+          {
+            "resourceType": "total",
+            "label": "Total",
+            "requestCount": 16,
+            "transferSize": 476445
+          },
+          {
+            "resourceType": "script",
+            "label": "Script",
+            "requestCount": 4,
+            "transferSize": 250888
+          },
+          {
+            "resourceType": "font",
+            "label": "Font",
+            "requestCount": 7,
+            "transferSize": 201203
+          },
+          {
+            "resourceType": "stylesheet",
+            "label": "Stylesheet",
+            "requestCount": 2,
+            "transferSize": 20782
+          },
+          {
+            "resourceType": "other",
+            "label": "Other",
+            "requestCount": 2,
+            "transferSize": 2030
+          },
+          {
+            "resourceType": "document",
+            "label": "Document",
+            "requestCount": 1,
+            "transferSize": 1542
+          },
+          {
+            "resourceType": "image",
+            "label": "Image",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "media",
+            "label": "Media",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "third-party",
+            "label": "Third-party",
+            "requestCount": 0,
+            "transferSize": 0
+          }
+        ],
+        [
+          {
+            "resourceType": "total",
+            "label": "Total",
+            "requestCount": 16,
+            "transferSize": 476442
+          },
+          {
+            "resourceType": "script",
+            "label": "Script",
+            "requestCount": 4,
+            "transferSize": 250888
+          },
+          {
+            "resourceType": "font",
+            "label": "Font",
+            "requestCount": 7,
+            "transferSize": 201203
+          },
+          {
+            "resourceType": "stylesheet",
+            "label": "Stylesheet",
+            "requestCount": 2,
+            "transferSize": 20782
+          },
+          {
+            "resourceType": "other",
+            "label": "Other",
+            "requestCount": 2,
+            "transferSize": 2027
+          },
+          {
+            "resourceType": "document",
+            "label": "Document",
+            "requestCount": 1,
+            "transferSize": 1542
+          },
+          {
+            "resourceType": "image",
+            "label": "Image",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "media",
+            "label": "Media",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "third-party",
+            "label": "Third-party",
+            "requestCount": 0,
+            "transferSize": 0
+          }
+        ],
+        [
+          {
+            "resourceType": "total",
+            "label": "Total",
+            "requestCount": 16,
+            "transferSize": 476445
+          },
+          {
+            "resourceType": "script",
+            "label": "Script",
+            "requestCount": 4,
+            "transferSize": 250888
+          },
+          {
+            "resourceType": "font",
+            "label": "Font",
+            "requestCount": 7,
+            "transferSize": 201203
+          },
+          {
+            "resourceType": "stylesheet",
+            "label": "Stylesheet",
+            "requestCount": 2,
+            "transferSize": 20782
+          },
+          {
+            "resourceType": "other",
+            "label": "Other",
+            "requestCount": 2,
+            "transferSize": 2030
+          },
+          {
+            "resourceType": "document",
+            "label": "Document",
+            "requestCount": 1,
+            "transferSize": 1542
+          },
+          {
+            "resourceType": "image",
+            "label": "Image",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "media",
+            "label": "Media",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "third-party",
+            "label": "Third-party",
+            "requestCount": 0,
+            "transferSize": 0
+          }
+        ]
+      ],
+      "apiStatusCodes": [
+        [
+          200
+        ],
+        [
+          200
+        ],
+        [
+          200
+        ]
+      ]
+    },
+    "after": {
+      "lcpMedianMs": 3160.1618999999996,
+      "lcpRangeMs": [
+        3159.5434499999997,
+        3163.119
+      ],
+      "clsMedian": 0.0036247945590809887,
+      "clsRange": [
+        0.0036247945590809887,
+        0.014681560456766744
+      ],
+      "allApiHealthy": true,
+      "lcpRunsMs": [
+        3163.119,
+        3160.1618999999996,
+        3159.5434499999997
+      ],
+      "clsRuns": [
+        0.014681560456766744,
+        0.0036247945590809887,
+        0.0036247945590809887
+      ],
+      "resourceSummaries": [
+        [
+          {
+            "resourceType": "total",
+            "label": "Total",
+            "requestCount": 16,
+            "transferSize": 476437
+          },
+          {
+            "resourceType": "script",
+            "label": "Script",
+            "requestCount": 4,
+            "transferSize": 250883
+          },
+          {
+            "resourceType": "font",
+            "label": "Font",
+            "requestCount": 7,
+            "transferSize": 201203
+          },
+          {
+            "resourceType": "stylesheet",
+            "label": "Stylesheet",
+            "requestCount": 2,
+            "transferSize": 20782
+          },
+          {
+            "resourceType": "other",
+            "label": "Other",
+            "requestCount": 2,
+            "transferSize": 2027
+          },
+          {
+            "resourceType": "document",
+            "label": "Document",
+            "requestCount": 1,
+            "transferSize": 1542
+          },
+          {
+            "resourceType": "image",
+            "label": "Image",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "media",
+            "label": "Media",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "third-party",
+            "label": "Third-party",
+            "requestCount": 0,
+            "transferSize": 0
+          }
+        ],
+        [
+          {
+            "resourceType": "total",
+            "label": "Total",
+            "requestCount": 16,
+            "transferSize": 476440
+          },
+          {
+            "resourceType": "script",
+            "label": "Script",
+            "requestCount": 4,
+            "transferSize": 250883
+          },
+          {
+            "resourceType": "font",
+            "label": "Font",
+            "requestCount": 7,
+            "transferSize": 201203
+          },
+          {
+            "resourceType": "stylesheet",
+            "label": "Stylesheet",
+            "requestCount": 2,
+            "transferSize": 20782
+          },
+          {
+            "resourceType": "other",
+            "label": "Other",
+            "requestCount": 2,
+            "transferSize": 2030
+          },
+          {
+            "resourceType": "document",
+            "label": "Document",
+            "requestCount": 1,
+            "transferSize": 1542
+          },
+          {
+            "resourceType": "image",
+            "label": "Image",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "media",
+            "label": "Media",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "third-party",
+            "label": "Third-party",
+            "requestCount": 0,
+            "transferSize": 0
+          }
+        ],
+        [
+          {
+            "resourceType": "total",
+            "label": "Total",
+            "requestCount": 16,
+            "transferSize": 476440
+          },
+          {
+            "resourceType": "script",
+            "label": "Script",
+            "requestCount": 4,
+            "transferSize": 250883
+          },
+          {
+            "resourceType": "font",
+            "label": "Font",
+            "requestCount": 7,
+            "transferSize": 201203
+          },
+          {
+            "resourceType": "stylesheet",
+            "label": "Stylesheet",
+            "requestCount": 2,
+            "transferSize": 20782
+          },
+          {
+            "resourceType": "other",
+            "label": "Other",
+            "requestCount": 2,
+            "transferSize": 2030
+          },
+          {
+            "resourceType": "document",
+            "label": "Document",
+            "requestCount": 1,
+            "transferSize": 1542
+          },
+          {
+            "resourceType": "image",
+            "label": "Image",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "media",
+            "label": "Media",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "third-party",
+            "label": "Third-party",
+            "requestCount": 0,
+            "transferSize": 0
+          }
+        ]
+      ],
+      "apiStatusCodes": [
+        [
+          200
+        ],
+        [
+          200
+        ],
+        [
+          200
+        ]
+      ]
+    },
+    "offlineDiagnostic": {
+      "lcpMedianMs": 3088.83045,
+      "lcpRangeMs": [
+        3082.4282999999996,
+        3158.7780000000002
+      ],
+      "clsMedian": 0.08748858382100583,
+      "clsRange": [
+        0.0874026786569582,
+        0.09496106544256282
+      ],
+      "lcpRunsMs": [
+        3088.83045,
+        3158.7780000000002,
+        3082.4282999999996
+      ],
+      "clsRuns": [
+        0.09496106544256282,
+        0.08748858382100583,
+        0.0874026786569582
+      ],
+      "resourceSummaries": [
+        [
+          {
+            "resourceType": "total",
+            "label": "Total",
+            "requestCount": 16,
+            "transferSize": 475880
+          },
+          {
+            "resourceType": "script",
+            "label": "Script",
+            "requestCount": 4,
+            "transferSize": 250883
+          },
+          {
+            "resourceType": "font",
+            "label": "Font",
+            "requestCount": 7,
+            "transferSize": 201203
+          },
+          {
+            "resourceType": "stylesheet",
+            "label": "Stylesheet",
+            "requestCount": 2,
+            "transferSize": 20782
+          },
+          {
+            "resourceType": "document",
+            "label": "Document",
+            "requestCount": 1,
+            "transferSize": 1542
+          },
+          {
+            "resourceType": "other",
+            "label": "Other",
+            "requestCount": 2,
+            "transferSize": 1470
+          },
+          {
+            "resourceType": "image",
+            "label": "Image",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "media",
+            "label": "Media",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "third-party",
+            "label": "Third-party",
+            "requestCount": 0,
+            "transferSize": 0
+          }
+        ],
+        [
+          {
+            "resourceType": "total",
+            "label": "Total",
+            "requestCount": 16,
+            "transferSize": 475880
+          },
+          {
+            "resourceType": "script",
+            "label": "Script",
+            "requestCount": 4,
+            "transferSize": 250883
+          },
+          {
+            "resourceType": "font",
+            "label": "Font",
+            "requestCount": 7,
+            "transferSize": 201203
+          },
+          {
+            "resourceType": "stylesheet",
+            "label": "Stylesheet",
+            "requestCount": 2,
+            "transferSize": 20782
+          },
+          {
+            "resourceType": "document",
+            "label": "Document",
+            "requestCount": 1,
+            "transferSize": 1542
+          },
+          {
+            "resourceType": "other",
+            "label": "Other",
+            "requestCount": 2,
+            "transferSize": 1470
+          },
+          {
+            "resourceType": "image",
+            "label": "Image",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "media",
+            "label": "Media",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "third-party",
+            "label": "Third-party",
+            "requestCount": 0,
+            "transferSize": 0
+          }
+        ],
+        [
+          {
+            "resourceType": "total",
+            "label": "Total",
+            "requestCount": 16,
+            "transferSize": 475880
+          },
+          {
+            "resourceType": "script",
+            "label": "Script",
+            "requestCount": 4,
+            "transferSize": 250883
+          },
+          {
+            "resourceType": "font",
+            "label": "Font",
+            "requestCount": 7,
+            "transferSize": 201203
+          },
+          {
+            "resourceType": "stylesheet",
+            "label": "Stylesheet",
+            "requestCount": 2,
+            "transferSize": 20782
+          },
+          {
+            "resourceType": "document",
+            "label": "Document",
+            "requestCount": 1,
+            "transferSize": 1542
+          },
+          {
+            "resourceType": "other",
+            "label": "Other",
+            "requestCount": 2,
+            "transferSize": 1470
+          },
+          {
+            "resourceType": "image",
+            "label": "Image",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "media",
+            "label": "Media",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "third-party",
+            "label": "Third-party",
+            "requestCount": 0,
+            "transferSize": 0
+          }
+        ]
+      ],
+      "apiStatusCodes": [
+        [
+          502
+        ],
+        [
+          502
+        ],
+        [
+          502
+        ]
+      ]
+    },
+    "cdpConnected": {
+      "settings": {
+        "width": 412,
+        "height": 823,
+        "deviceScaleFactor": 1.75,
+        "latencyMs": 150,
+        "downloadBytesPerSecond": 204800,
+        "uploadBytesPerSecond": 84375,
+        "cpuThrottle": 4,
+        "cacheDisabled": true,
+        "freshChromeProcessPerRun": true
+      },
+      "valuesMs": [
+        1988,
+        2172,
+        2136
+      ],
+      "medianMs": 2136,
+      "rangeMs": [
+        1988,
+        2172
+      ]
+    },
+    "lighthouseLcpTargetMet": false,
+    "lighthouseClsTargetMet": true,
+    "fieldInpOrCwvMeasured": false
+  },
+  "runtimeDependencyAudit": {
+    "dependencies": 104,
+    "exitCode": 0,
+    "retainedExceptions": [
+      "CVE-2026-47884 / GHSA-pc63-qcmh-9cmg",
+      "CVE-2026-47890 / GHSA-j9f9-w8pj-32f8"
+    ],
+    "exceptionReviewDue": "2026-10-27",
+    "claimZeroCves": false
+  },
+  "localSmokeProcessesStopped": true
+}

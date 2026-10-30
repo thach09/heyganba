@@ -1,0 +1,221 @@
+{
+  "branch": "feat/v2.1-ux-and-stability",
+  "head": "220fb2573bac470008f3eba1d57ce995351ed45d",
+  "files": [
+    {
+      "path": "PRODUCT.md",
+      "status": " M",
+      "sha256": "6cd46f4a1bab32852e46e53423e2e95073141743935083042456bb8f84be424d"
+    },
+    {
+      "path": "backend/src/main/java/com/heyganba/controller/AdminController.java",
+      "status": " M",
+      "sha256": "6ce70f7386739de6bc69d1cda55027ff2906839d4bc25792c61fa47d974413b7"
+    },
+    {
+      "path": "backend/src/main/java/com/heyganba/controller/HealthController.java",
+      "status": " M",
+      "sha256": "655944b0e5b5608d52d86d6a8f4a0801f3308409b48fc3e840d6aa6cff5b786a"
+    },
+    {
+      "path": "backend/src/main/java/com/heyganba/service/AdminContentService.java",
+      "status": " M",
+      "sha256": "afd782d26d2fbecb70557bd2dad7455226e5ea6531613028d17317c716396c39"
+    },
+    {
+      "path": "backend/src/main/java/com/heyganba/service/RateLimiterService.java",
+      "status": " M",
+      "sha256": "160896b2c41305a3d2add33860d901cc570b77f611055a6478a38f5f95b91936"
+    },
+    {
+      "path": "backend/src/main/java/com/heyganba/service/srs/InMemorySrsDueCache.java",
+      "status": " M",
+      "sha256": "345c630df068d70d3bdd8ab89044346aa473db9598315cc4fdbb0fd7340aec6c"
+    },
+    {
+      "path": "backend/src/main/resources/dictionary/assisted-ja-vi.tsv",
+      "status": " M",
+      "sha256": "c78db41c230fa7b7bd288c8e46152870f3512ef35c940584f9172c341428aaf1"
+    },
+    {
+      "path": "backend/src/test/java/com/heyganba/AssistedDictionaryCurationIntegrityTest.java",
+      "status": " M",
+      "sha256": "9d0f5e8eea9ac55ef086378326ea93c2812fabe2eaf9124a00bb1576b8d0091d"
+    },
+    {
+      "path": "backend/src/test/java/com/heyganba/DictionaryCoverageSearchTest.java",
+      "status": " M",
+      "sha256": "3e8211c2e8860dfe87da3e64034fa8bcf22b66b35516cc418c3f6f972e5efabb"
+    },
+    {
+      "path": "backend/src/test/java/com/heyganba/DictionaryCurationIntegrityTest.java",
+      "status": " M",
+      "sha256": "0a70a490e440b75489799764034ab1922b4e9071cd67b9ea8dbfdb4a1573616c"
+    },
+    {
+      "path": "backend/src/test/java/com/heyganba/PostgresSchemaStagingRehearsalTest.java",
+      "status": " M",
+      "sha256": "a7071161e3ba2f3c591b090f8fad98453075dcc451d31dca899cbfec84c9fa9d"
+    },
+    {
+      "path": "docs/Dictionary/coverage-after-rehearsal.json",
+      "status": " M",
+      "sha256": "507642dbc3c197d17a2e923b12373679b824866c88ef9235ec2d0b965a5edd13"
+    },
+    {
+      "path": "docs/Dictionary/coverage-baseline.json",
+      "status": " M",
+      "sha256": "75d116b8b3a0eb80a8266f302fe1c24d9ee2517af2c83730ea6bd7a8e5b4e7a5"
+    },
+    {
+      "path": "docs/Dictionary/vietnamese-coverage-baseline.json",
+      "status": " M",
+      "sha256": "c2fdd899b0b82be1ed94cea166103037cf066b5edc9d171d3a4b8a8d73b12565"
+    },
+    {
+      "path": "docs/Dictionary/vietnamese-coverage-candidate.json",
+      "status": " M",
+      "sha256": "b3a6ffdebbfb926203af352e49674f2b0bbeb2eccecb50db3b4f1f5dcbe15249"
+    },
+    {
+      "path": "docs/curriculum-roadmap-m1-m3.md",
+      "status": " M",
+      "sha256": "96a232011eec67984b615d50ba204568bdbd3ae34a12f8eb3ae66804c073ea60"
+    },
+    {
+      "path": "docs/roadmap.md",
+      "status": " M",
+      "sha256": "600a36e64b5b7eedef31012da093d053f48ad4282919c0f4388d6e347f1bf2c7"
+    },
+    {
+      "path": "frontend/src/components/OrientalDecorBackground.tsx",
+      "status": " M",
+      "sha256": "ced2fe297cb49be15f6d444b85ab50514e45744222f6cf52f32ec9ced8c15517"
+    },
+    {
+      "path": "frontend/src/features/admin/AdminView.tsx",
+      "status": " M",
+      "sha256": "e00a8cfda7af65295515ff6546813f19547b4b529c62d560cc7a06a3a99ac15d"
+    },
+    {
+      "path": "frontend/src/features/admin/types.ts",
+      "status": " M",
+      "sha256": "9b8980e1e0127fdc9d5762269f17c98f37f4bf6491cad49be44092fc36da5d33"
+    },
+    {
+      "path": "frontend/src/features/dashboard/DashboardView.tsx",
+      "status": " M",
+      "sha256": "e00e0788fd97f7945f5b5c5ae3d23ae30d95ade6bfa7dac9a74079338b82d145"
+    },
+    {
+      "path": "frontend/src/features/dashboard/HskRoadmap.tsx",
+      "status": " M",
+      "sha256": "7a0069ab06ce0afe852a8d7884133b914030f6b6a217655e1df27e9f8825595c"
+    },
+    {
+      "path": "frontend/src/features/dictionary/DictionaryNotebookView.tsx",
+      "status": " M",
+      "sha256": "8498f532fd6ccd1aab7c2299f25ae795c2f36dd4025b30e3120dd29ce6706f96"
+    },
+    {
+      "path": "frontend/src/features/exam/ExamView.tsx",
+      "status": " M",
+      "sha256": "7f28c16e8b25f385d2fe1eaacfbdc66fecd52b81b0bdc09f5dd7c3688fa85e33"
+    },
+    {
+      "path": "frontend/src/features/exam/activeAttempt.ts",
+      "status": " M",
+      "sha256": "7e7c86b077614ad423a0b58f43594a0920e6b4b9f908f74886d28b4300e06ff0"
+    },
+    {
+      "path": "frontend/src/features/grammar/GrammarView.tsx",
+      "status": " M",
+      "sha256": "8a20f266cbb9bb420eb83d4d3eeb68a6de83d47a810f2022b75524c04e5fb7bf"
+    },
+    {
+      "path": "frontend/src/features/hanzi/HanziStationView.tsx",
+      "status": " M",
+      "sha256": "70d2bc77e8996061e1ce408a36f87c2bab589cc4eadeaa3477effbbdf23b483a"
+    },
+    {
+      "path": "frontend/src/services/chineseSpeech.ts",
+      "status": " M",
+      "sha256": "fab748b25ce5d0d404ae9f87250efef75b29a04a24b35cb031fe2459ad032736"
+    },
+    {
+      "path": "frontend/tests/unit/qa-batch-b.test.tsx",
+      "status": " M",
+      "sha256": "1b100a9391bdf80e9f1963167ac0850d09db2b2dd22db829d04fc60f1be30700"
+    },
+    {
+      "path": "frontend/tests/unit/v21-edtech-ux.test.tsx",
+      "status": " M",
+      "sha256": "2a6a8e0af7dbd833f063d0bd39b50ffa866a3e3adab165d31d49345e99d5cbb4"
+    },
+    {
+      "path": "scripts/verify-postgres-m21.ps1",
+      "status": " M",
+      "sha256": "838d004e13c4a5378740ece836294f300a953b400bead97fdb580dca5e3148b4"
+    },
+    {
+      "path": "backend/src/main/java/com/heyganba/dto/admin/AdminContentResponses.java",
+      "status": "??",
+      "sha256": "d6e651fd138c2b1af12c3a9a730fcc75e1666dd356d519955f083b9b2353e226"
+    },
+    {
+      "path": "backend/src/main/resources/db/migration-staging/V12__performance_indexes_and_constraints.sql",
+      "status": "??",
+      "sha256": "86fb6c0cb6d17e659f77ef924f23b7cce27a271e4c56dba7bb97e2f5522c3c6a"
+    },
+    {
+      "path": "backend/src/test/java/com/heyganba/AdminDraftPublicationTest.java",
+      "status": "??",
+      "sha256": "48608d7bfadd5e25b0180ddbad3131581914605f6c9ec288509f31c679d973e7"
+    },
+    {
+      "path": "backend/src/test/java/com/heyganba/HealthReadinessTest.java",
+      "status": "??",
+      "sha256": "e5b267070cd98eaf1e28c438f4a2003ad0c05a8d1e02bbfe4ce3778f3057e5dd"
+    },
+    {
+      "path": "docs/QA/ci-migration-check-f6c9ea7-2026-10-18.md",
+      "status": "??",
+      "sha256": "4af5b09854e0e4fb22feeaf11dcec4cba75b489beb08962211cd8f441318878e"
+    },
+    {
+      "path": "docs/QA/selfhost-baseline-2026-10-19.json",
+      "status": "??",
+      "sha256": "978fabb8766e8b6f3db24ca712e6610ac409a132c40bd2264f8afb966f91ae3f"
+    },
+    {
+      "path": "docs/QA/selfhost-readiness-2026-10-19.md",
+      "status": "??",
+      "sha256": "09c1737e7d65affceae1e63228b13f3c9abc35044f50b9f9053105bb3e8346c1"
+    },
+    {
+      "path": "docs/QA/vocabulary-audit-2026-10-19.json",
+      "status": "??",
+      "sha256": "9b992445a9cc4c0d04758034b8506ac8153d807bd9af327dc308e67af270ca6f"
+    },
+    {
+      "path": "frontend/tests/unit/dashboard-target.test.tsx",
+      "status": "??",
+      "sha256": "cfd9a58e07b83b6ce217df0717e695e27837c86107161387e83f24473d72b2fe"
+    },
+    {
+      "path": "scripts/audit-chinese-vocabulary.mjs",
+      "status": "??",
+      "sha256": "5839520576460cac57d739a706f0634d279948e7310b1910888908a0d1ede01e"
+    },
+    {
+      "path": "scripts/extract_hanzi.mjs",
+      "status": "??",
+      "sha256": "a5e3f1992de283527dc8fd60cc51e2de4111db91a62a8da1671f06cd8ad3dcd3"
+    },
+    {
+      "path": "scripts/extract_hanzi.py",
+      "status": "??",
+      "sha256": "8fb28febad07c26699c0ad9a58b5c197cf80b15688c9eebfdd68e2961c8c5fab"
+    }
+  ]
+}

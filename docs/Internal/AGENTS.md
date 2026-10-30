@@ -82,15 +82,29 @@ Sau mỗi phase, agent báo cáo ngắn gọn gồm 3 phần:
 - **Trên Windows, `mvn clean` fail khi app đang chạy** (`Failed to delete ...\target\classes\...`) vì file bị khoá.
   Dừng tiến trình đang giữ cổng 8080 trước khi build/clean, rồi mới `spring-boot:run`.
 
-## Quy tắc nội dung chờ duyệt & múi giờ (quyết định của Thach — bắt buộc tuân thủ)
+## Trạng thái nội dung, bằng chứng từ vựng & múi giờ
 
-- **Nội dung CHƯA được duyệt tiếng Trung phải nằm ở `backend/src/main/resources/db/migration-staging`**, không được
-  đặt vào `db/migration` (thư mục đó chạy ở CẢ production). `application-prod.yml` chỉ trỏ `classpath:db/migration`;
-  local/staging trỏ cả 2 thư mục. Guard test: `FlywayLocationsConfigTest` (kiểm tra cả version trùng giữa 2 thư mục).
-  Promote = chuyển file sang `db/migration` + `UPDATE review_status='APPROVED'` sau khi có người duyệt.
-- **Mọi bản ghi nội dung mới phải để `review_status = 'PENDING_REVIEW'`** (mặc định từ V13). Khi thêm bảng/bảng mới có
-  nội dung học thuật, thêm cột `review_status` + index và khai báo trong `ContentReviewStatusService` để
-  `GET /content/review-status` phản ánh đúng (đừng để nội dung nháp bị coi là đã sẵn sàng).
+- `migration-staging` là tên thư mục lịch sử, không biểu thị trạng thái duyệt. `application.yml` và
+  `application-prod.yml` hiện cùng nạp `classpath:db/migration` và `classpath:db/migration-staging`; mỗi migration
+  trong hai vị trí có thể chạy ở production. Giữ V1–V15 bất biến sau khi áp dụng, dùng số phiên bản mới và kiểm tra
+  cả hai vị trí trước khi phát hành. `FlywayLocationsConfigTest` phát hiện version trùng.
+- Bản ghi nội dung mới qua API phải mặc định `PENDING_REVIEW`. Riêng từ vựng được phép xác minh theo
+  `WEB_CROSS_CHECKED` và chính sách hiện hành trong `docs/Content/web-cross-check-policy.md`; không bắt buộc chữ ký
+  giáo viên. Chỉ chuyển sang `APPROVED` khi evidence hiện hành gắn với digest nội dung và đủ hai họ từ điển độc lập
+  cho chữ, Pinyin có thanh, nghĩa đang dạy và từ loại. HSK cần syllabus CTI có phiên bản cụ thể; không suy ra từ
+  nhãn giáo trình nội bộ. Không tạo danh tính người duyệt giả. Ghi nguồn qua API vẫn để pending; admin phải thực hiện
+  thao tác duyệt riêng. Giữ quyền admin, rate limit, digest và khả năng thu hồi khi nội dung đổi.
+- Hán Việt và ví dụ là trường tùy chọn có bằng chứng riêng. Nếu chưa xác minh, giữ cờ `*_verified=false` và không
+  phát các trường đó qua API học viên, SRS, sổ từ hoặc nội dung đề thi.
+- Mọi loại nội dung học thuật khác tiếp tục ở trạng thái pending cho đến khi có chính sách xác minh riêng; không áp
+  quy trình từ vựng sang ngữ pháp, bài đọc, Hán Việt hay ví dụ một cách tự động.
+- Nhập nội dung số lượng lớn bắt buộc qua migration Flyway mới, với manifest quyết định từng mục, digest trước/sau,
+  giấy phép nguồn đã rà và rehearsal PostgreSQL; không dùng Admin UI để bulk import.
+- Khi thêm bảng nội dung học thuật, thêm `review_status` + index và khai báo trong `ContentReviewStatusService` để
+  `GET /content/review-status` phản ánh đúng.
+- **Múi giờ "ngày học" là `Asia/Ho_Chi_Minh` ở mọi môi trường** (`app.streak.zone`, mặc định trong `StreakService.DEFAULT_ZONE`).
+  Mọi logic "một ngày" (streak, heatmap, TTL cache SRS, cron job) phải lấy theo zone này, KHÔNG hardcode UTC
+  (trước đây heatmap/cache dùng UTC nên user học 0h–7h sáng giờ VN bị tính sang ngày hôm trước).
 - **Múi giờ "ngày học" là `Asia/Ho_Chi_Minh` ở mọi môi trường** (`app.streak.zone`, mặc định trong `StreakService.DEFAULT_ZONE`).
   Mọi logic "một ngày" (streak, heatmap, TTL cache SRS, cron job) phải lấy theo zone này, KHÔNG hardcode UTC
   (trước đây heatmap/cache dùng UTC nên user học 0h–7h sáng giờ VN bị tính sang ngày hôm trước).

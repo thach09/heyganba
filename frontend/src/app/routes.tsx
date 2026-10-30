@@ -3,7 +3,8 @@ import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { useAuth } from './useAuth';
 import { ErrorBoundary } from './ErrorBoundary';
 
-const Dashboard = lazy(() => import('../features/dashboard/DashboardView').then(m => ({ default: m.DashboardView })));
+// The home route contains the LCP text: discover its code in the initial graph.
+import { DashboardView as Dashboard } from '../features/dashboard/DashboardView';
 const Flashcard = lazy(() => import('../features/flashcard/FlashcardView').then(m => ({ default: m.FlashcardView })));
 const Dictionary = lazy(() => import('../features/dictionary/DictionaryNotebookView').then(m => ({ default: m.DictionaryNotebookView })));
 const Pinyin = lazy(() => import('../features/pinyin/PinyinStationView').then(m => ({ default: m.PinyinStationView })));

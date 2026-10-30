@@ -2,6 +2,7 @@ package com.heyganba.controller;
 
 import com.heyganba.common.response.ApiResponse;
 import com.heyganba.config.UserPrincipal;
+import com.heyganba.dto.admin.AdminContentResponses.*;
 import com.heyganba.dto.admin.AdminExerciseRequest;
 import com.heyganba.dto.admin.AdminKanjiRequest;
 import com.heyganba.dto.admin.AdminVocabularyRequest;
@@ -186,33 +187,33 @@ public class AdminController {
     }
 
     @GetMapping("/vocabulary")
-    public ResponseEntity<ApiResponse<List<Vocabulary>>> listVocabulary(
+    public ResponseEntity<ApiResponse<List<VocabularyItem>>> listVocabulary(
             @RequestParam(required = false) @jakarta.validation.constraints.Size(max=200) String q,
             @RequestParam(required = false, defaultValue = "0") @jakarta.validation.constraints.Min(0) @jakarta.validation.constraints.Max(10000) int page,
             @RequestParam(required = false, defaultValue = "50") @jakarta.validation.constraints.Min(1) @jakarta.validation.constraints.Max(100) int size
     ) {
-        return ResponseEntity.ok(ApiResponse.success(adminContentService.listVocabulary(q, page, size)));
+        return ResponseEntity.ok(ApiResponse.success(adminContentService.listVocabulary(q, page, size).stream().map(VocabularyItem::from).toList()));
     }
 
     @PostMapping("/vocabulary")
-    public ResponseEntity<ApiResponse<Vocabulary>> createVocabulary(
+    public ResponseEntity<ApiResponse<VocabularyItem>> createVocabulary(
             @AuthenticationPrincipal UserPrincipal admin,
             @Valid @RequestBody AdminVocabularyRequest request
     ) {
         User user = userRepository.getReferenceById(admin.getId());
         Vocabulary created = adminContentService.createVocabulary(user, request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(created, "Thêm từ vựng thành công"));
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(VocabularyItem.from(created), "Đã lưu từ vựng chờ duyệt"));
     }
 
     @PutMapping("/vocabulary/{id}")
-    public ResponseEntity<ApiResponse<Vocabulary>> updateVocabulary(
+    public ResponseEntity<ApiResponse<VocabularyItem>> updateVocabulary(
             @AuthenticationPrincipal UserPrincipal admin,
             @PathVariable @jakarta.validation.constraints.Positive Long id,
             @Valid @RequestBody AdminVocabularyRequest request
     ) {
         User user = userRepository.getReferenceById(admin.getId());
         Vocabulary updated = adminContentService.updateVocabulary(user, id, request);
-        return ResponseEntity.ok(ApiResponse.success(updated, "Cập nhật từ vựng thành công"));
+        return ResponseEntity.ok(ApiResponse.success(VocabularyItem.from(updated), "Đã lưu thay đổi chờ duyệt"));
     }
 
     @DeleteMapping("/vocabulary/{id}")
@@ -228,33 +229,33 @@ public class AdminController {
     // ================= CRUD KANJI =================
 
     @GetMapping({"/hanzi", "/kanji"})
-    public ResponseEntity<ApiResponse<List<Kanji>>> listKanji(
+    public ResponseEntity<ApiResponse<List<HanziItem>>> listKanji(
             @RequestParam(required = false) @jakarta.validation.constraints.Size(max=200) String q,
             @RequestParam(required = false, defaultValue = "0") @jakarta.validation.constraints.Min(0) @jakarta.validation.constraints.Max(10000) int page,
             @RequestParam(required = false, defaultValue = "50") @jakarta.validation.constraints.Min(1) @jakarta.validation.constraints.Max(100) int size
     ) {
-        return ResponseEntity.ok(ApiResponse.success(adminContentService.listKanji(q, page, size)));
+        return ResponseEntity.ok(ApiResponse.success(adminContentService.listKanji(q, page, size).stream().map(HanziItem::from).toList()));
     }
 
     @PostMapping({"/hanzi", "/kanji"})
-    public ResponseEntity<ApiResponse<Kanji>> createKanji(
+    public ResponseEntity<ApiResponse<HanziItem>> createKanji(
             @AuthenticationPrincipal UserPrincipal admin,
             @Valid @RequestBody AdminKanjiRequest request
     ) {
         User user = userRepository.getReferenceById(admin.getId());
         Kanji created = adminContentService.createKanji(user, request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(created, "Thêm Kanji thành công"));
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(HanziItem.from(created), "Đã lưu chữ Hán chờ duyệt"));
     }
 
     @PutMapping({"/hanzi/{id}", "/kanji/{id}"})
-    public ResponseEntity<ApiResponse<Kanji>> updateKanji(
+    public ResponseEntity<ApiResponse<HanziItem>> updateKanji(
             @AuthenticationPrincipal UserPrincipal admin,
             @PathVariable @jakarta.validation.constraints.Positive Long id,
             @Valid @RequestBody AdminKanjiRequest request
     ) {
         User user = userRepository.getReferenceById(admin.getId());
         Kanji updated = adminContentService.updateKanji(user, id, request);
-        return ResponseEntity.ok(ApiResponse.success(updated, "Cập nhật Kanji thành công"));
+        return ResponseEntity.ok(ApiResponse.success(HanziItem.from(updated), "Đã lưu thay đổi chờ duyệt"));
     }
 
     @DeleteMapping({"/hanzi/{id}", "/kanji/{id}"})
@@ -270,33 +271,33 @@ public class AdminController {
     // ================= CRUD BÀI TẬP NGỮ PHÁP =================
 
     @GetMapping("/exercises")
-    public ResponseEntity<ApiResponse<List<GrammarExercise>>> listExercises(
+    public ResponseEntity<ApiResponse<List<ExerciseItem>>> listExercises(
             @RequestParam(required = false) @jakarta.validation.constraints.Size(max=200) String q,
             @RequestParam(required = false, defaultValue = "0") @jakarta.validation.constraints.Min(0) @jakarta.validation.constraints.Max(10000) int page,
             @RequestParam(required = false, defaultValue = "50") @jakarta.validation.constraints.Min(1) @jakarta.validation.constraints.Max(100) int size
     ) {
-        return ResponseEntity.ok(ApiResponse.success(adminContentService.listExercises(q, page, size)));
+        return ResponseEntity.ok(ApiResponse.success(adminContentService.listExercises(q, page, size).stream().map(ExerciseItem::from).toList()));
     }
 
     @PostMapping("/exercises")
-    public ResponseEntity<ApiResponse<GrammarExercise>> createExercise(
+    public ResponseEntity<ApiResponse<ExerciseItem>> createExercise(
             @AuthenticationPrincipal UserPrincipal admin,
             @Valid @RequestBody AdminExerciseRequest request
     ) {
         User user = userRepository.getReferenceById(admin.getId());
         GrammarExercise created = adminContentService.createExercise(user, request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(created, "Thêm bài tập thành công"));
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(ExerciseItem.from(created), "Đã lưu bài tập chờ duyệt"));
     }
 
     @PutMapping("/exercises/{id}")
-    public ResponseEntity<ApiResponse<GrammarExercise>> updateExercise(
+    public ResponseEntity<ApiResponse<ExerciseItem>> updateExercise(
             @AuthenticationPrincipal UserPrincipal admin,
             @PathVariable @jakarta.validation.constraints.Positive Long id,
             @Valid @RequestBody AdminExerciseRequest request
     ) {
         User user = userRepository.getReferenceById(admin.getId());
         GrammarExercise updated = adminContentService.updateExercise(user, id, request);
-        return ResponseEntity.ok(ApiResponse.success(updated, "Cập nhật bài tập thành công"));
+        return ResponseEntity.ok(ApiResponse.success(ExerciseItem.from(updated), "Đã lưu thay đổi chờ duyệt"));
     }
 
     @DeleteMapping("/exercises/{id}")

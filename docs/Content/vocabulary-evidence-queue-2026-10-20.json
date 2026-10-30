@@ -1,0 +1,6078 @@
+{
+  "accessed": "2026-10-20",
+  "method": "LEXICAL_QUEUE_ONLY_NOT_APPROVAL",
+  "sourceFiles": {
+    "cedict.gz": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+    "moe-concise.zip": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+  },
+  "sources": [
+    {
+      "provider": "MDBG CC-CEDICT",
+      "dataFamily": "CC_CEDICT",
+      "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "provider": "Taiwan Ministry of Education concise dictionary",
+      "dataFamily": "TAIWAN_MOE",
+      "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+      "license": "CC BY-ND 3.0 Taiwan; source text retained locally without redistribution or derivative translation"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "word": "你好",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 2,
+      "word": "谢谢",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 3,
+      "word": "不客气",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "cedictMatches": 0,
+      "moeEntryIds": []
+    },
+    {
+      "id": 4,
+      "word": "对不起",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 5,
+      "word": "没关系",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 6,
+      "word": "再见",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "532400008"
+      ]
+    },
+    {
+      "id": 7,
+      "word": "好",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "2727"
+      ]
+    },
+    {
+      "id": 8,
+      "word": "请",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "3742"
+      ]
+    },
+    {
+      "id": 9,
+      "word": "老师",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "179200095"
+      ]
+    },
+    {
+      "id": 10,
+      "word": "学生",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 11,
+      "word": "中国",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 12,
+      "word": "越南",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 13,
+      "word": "学习",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "415000027"
+      ]
+    },
+    {
+      "id": 14,
+      "word": "汉语",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "277300010"
+      ]
+    },
+    {
+      "id": 15,
+      "word": "朋友",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 16,
+      "word": "高兴",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "224000054"
+      ]
+    },
+    {
+      "id": 17,
+      "word": "认识",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 18,
+      "word": "很",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "2780"
+      ]
+    },
+    {
+      "id": 19,
+      "word": "人",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "5201"
+      ]
+    },
+    {
+      "id": 20,
+      "word": "叫",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "3222"
+      ]
+    },
+    {
+      "id": 21,
+      "word": "什么",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "505800001"
+      ]
+    },
+    {
+      "id": 22,
+      "word": "名字",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "077000042"
+      ]
+    },
+    {
+      "id": 23,
+      "word": "爸爸",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "001800001"
+      ]
+    },
+    {
+      "id": 24,
+      "word": "妈妈",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "052700001"
+      ]
+    },
+    {
+      "id": 25,
+      "word": "哪",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "1585"
+      ]
+    },
+    {
+      "id": 26,
+      "word": "喝",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "2675"
+      ]
+    },
+    {
+      "id": 27,
+      "word": "茶",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "4659"
+      ]
+    },
+    {
+      "id": 28,
+      "word": "吃",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "4620",
+        "4625"
+      ]
+    },
+    {
+      "id": 29,
+      "word": "米饭",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "070300001"
+      ]
+    },
+    {
+      "id": 30,
+      "word": "钱",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "3674"
+      ]
+    },
+    {
+      "id": 31,
+      "word": "买",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "0582"
+      ]
+    },
+    {
+      "id": 32,
+      "word": "多少",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 33,
+      "word": "块",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "2600"
+      ]
+    },
+    {
+      "id": 34,
+      "word": "水",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "5163"
+      ]
+    },
+    {
+      "id": 35,
+      "word": "苹果",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "0499A0001"
+      ]
+    },
+    {
+      "id": 36,
+      "word": "家",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "3120",
+        "3119"
+      ]
+    },
+    {
+      "id": 37,
+      "word": "有",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "6046"
+      ]
+    },
+    {
+      "id": 38,
+      "word": "书",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "5112"
+      ]
+    },
+    {
+      "id": 39,
+      "word": "好",
+      "hskLevel": null,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "2727"
+      ]
+    },
+    {
+      "id": 40,
+      "word": "谢谢",
+      "hskLevel": null,
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 41,
+      "word": "叫",
+      "hskLevel": null,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "3222"
+      ]
+    },
+    {
+      "id": 42,
+      "word": "再见",
+      "hskLevel": null,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "532400008"
+      ]
+    },
+    {
+      "id": 43,
+      "word": "我",
+      "hskLevel": null,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "6287"
+      ]
+    },
+    {
+      "id": 44,
+      "word": "名字",
+      "hskLevel": null,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "077000042"
+      ]
+    },
+    {
+      "id": 45,
+      "word": "什么",
+      "hskLevel": null,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "505800001"
+      ]
+    },
+    {
+      "id": 46,
+      "word": "是",
+      "hskLevel": null,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "4934"
+      ]
+    },
+    {
+      "id": 47,
+      "word": "人",
+      "hskLevel": null,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "5201"
+      ]
+    },
+    {
+      "id": 48,
+      "word": "你",
+      "hskLevel": null,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "1640",
+        "1639"
+      ]
+    },
+    {
+      "id": 49,
+      "word": "几",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "3070"
+      ]
+    },
+    {
+      "id": 50,
+      "word": "个",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "2225",
+        "2226"
+      ]
+    },
+    {
+      "id": 51,
+      "word": "没",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "0587"
+      ]
+    },
+    {
+      "id": 52,
+      "word": "有",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "6046"
+      ]
+    },
+    {
+      "id": 53,
+      "word": "女儿",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "173100057"
+      ]
+    },
+    {
+      "id": 54,
+      "word": "儿子",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "582800012"
+      ]
+    },
+    {
+      "id": 55,
+      "word": "妹妹",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "060400001"
+      ]
+    },
+    {
+      "id": 56,
+      "word": "弟弟",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "114800003"
+      ]
+    },
+    {
+      "id": 57,
+      "word": "姐姐",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "317400004"
+      ]
+    },
+    {
+      "id": 58,
+      "word": "哥哥",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "220000001"
+      ]
+    },
+    {
+      "id": 59,
+      "word": "妈妈",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "052700001"
+      ]
+    },
+    {
+      "id": 60,
+      "word": "爸爸",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "001800001"
+      ]
+    },
+    {
+      "id": 61,
+      "word": "家",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "3120",
+        "3119"
+      ]
+    },
+    {
+      "id": 62,
+      "word": "时候",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 63,
+      "word": "下午",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "390700084"
+      ]
+    },
+    {
+      "id": 64,
+      "word": "中午",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "460100073"
+      ]
+    },
+    {
+      "id": 65,
+      "word": "上午",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "508000090"
+      ]
+    },
+    {
+      "id": 66,
+      "word": "星期",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 67,
+      "word": "号",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "2734"
+      ]
+    },
+    {
+      "id": 68,
+      "word": "月",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "6523"
+      ]
+    },
+    {
+      "id": 69,
+      "word": "年",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 3,
+      "moeEntryIds": [
+        "1679"
+      ]
+    },
+    {
+      "id": 70,
+      "word": "昨天",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "538500001"
+      ]
+    },
+    {
+      "id": 71,
+      "word": "明天",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "077400011"
+      ]
+    },
+    {
+      "id": 72,
+      "word": "今天",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "331800002"
+      ]
+    },
+    {
+      "id": 73,
+      "word": "分",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "0873"
+      ]
+    },
+    {
+      "id": 74,
+      "word": "点",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "1200"
+      ]
+    },
+    {
+      "id": 75,
+      "word": "现在",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "403000028"
+      ]
+    },
+    {
+      "id": 76,
+      "word": "多少",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 77,
+      "word": "想",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "4074"
+      ]
+    },
+    {
+      "id": 78,
+      "word": "喜欢",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 79,
+      "word": "块",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "2600"
+      ]
+    },
+    {
+      "id": 80,
+      "word": "钱",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "3674"
+      ]
+    },
+    {
+      "id": 81,
+      "word": "买",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "0582"
+      ]
+    },
+    {
+      "id": 82,
+      "word": "菜",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "5457"
+      ]
+    },
+    {
+      "id": 83,
+      "word": "苹果",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "0499A0001"
+      ]
+    },
+    {
+      "id": 84,
+      "word": "米饭",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "070300001"
+      ]
+    },
+    {
+      "id": 85,
+      "word": "水",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "5163"
+      ]
+    },
+    {
+      "id": 86,
+      "word": "茶",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "4659"
+      ]
+    },
+    {
+      "id": 87,
+      "word": "喝",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "2675"
+      ]
+    },
+    {
+      "id": 88,
+      "word": "吃",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "4620",
+        "4625"
+      ]
+    },
+    {
+      "id": 89,
+      "word": "里",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 4,
+      "moeEntryIds": [
+        "1882",
+        "1875"
+      ]
+    },
+    {
+      "id": 90,
+      "word": "后",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 3,
+      "moeEntryIds": [
+        "2746",
+        "2743"
+      ]
+    },
+    {
+      "id": 91,
+      "word": "前",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "3665"
+      ]
+    },
+    {
+      "id": 92,
+      "word": "哪儿",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 93,
+      "word": "来",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "1757"
+      ]
+    },
+    {
+      "id": 94,
+      "word": "去",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "3770"
+      ]
+    },
+    {
+      "id": 95,
+      "word": "北京",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 96,
+      "word": "商店",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "507200005"
+      ]
+    },
+    {
+      "id": 97,
+      "word": "饭馆",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "087200006"
+      ]
+    },
+    {
+      "id": 98,
+      "word": "医生",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "584500008"
+      ]
+    },
+    {
+      "id": 99,
+      "word": "医院",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "584500011"
+      ]
+    },
+    {
+      "id": 100,
+      "word": "工作",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "246600031"
+      ]
+    },
+    {
+      "id": 101,
+      "word": "同学",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "156000051"
+      ]
+    },
+    {
+      "id": 102,
+      "word": "老师",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "179200095"
+      ]
+    },
+    {
+      "id": 103,
+      "word": "学生",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 104,
+      "word": "学校",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "415000029"
+      ]
+    },
+    {
+      "id": 105,
+      "word": "没关系",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 106,
+      "word": "不客气",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "cedictMatches": 0,
+      "moeEntryIds": []
+    },
+    {
+      "id": 107,
+      "word": "坐",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "5388"
+      ]
+    },
+    {
+      "id": 108,
+      "word": "做",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "5395"
+      ]
+    },
+    {
+      "id": 109,
+      "word": "写",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "3928"
+      ]
+    },
+    {
+      "id": 110,
+      "word": "读",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "1241"
+      ]
+    },
+    {
+      "id": 111,
+      "word": "说话",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "514800016"
+      ]
+    },
+    {
+      "id": 112,
+      "word": "听",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "1488"
+      ]
+    },
+    {
+      "id": 113,
+      "word": "看",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "2562"
+      ]
+    },
+    {
+      "id": 114,
+      "word": "身体",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "505100007"
+      ]
+    },
+    {
+      "id": 115,
+      "word": "下雨",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "390700087"
+      ]
+    },
+    {
+      "id": 116,
+      "word": "冷",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "1850"
+      ]
+    },
+    {
+      "id": 117,
+      "word": "热",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "5184"
+      ]
+    },
+    {
+      "id": 118,
+      "word": "天气",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "147500077"
+      ]
+    },
+    {
+      "id": 119,
+      "word": "电视",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "120900107"
+      ]
+    },
+    {
+      "id": 120,
+      "word": "电脑",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "120900021"
+      ]
+    },
+    {
+      "id": 121,
+      "word": "杯子",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "006900008"
+      ]
+    },
+    {
+      "id": 122,
+      "word": "东西",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "1306000451"
+      ]
+    },
+    {
+      "id": 123,
+      "word": "怎么样",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 124,
+      "word": "怎么",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "535700002"
+      ]
+    },
+    {
+      "id": 125,
+      "word": "后面",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 126,
+      "word": "前面",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 0,
+      "moeEntryIds": []
+    },
+    {
+      "id": 127,
+      "word": "下",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "3907"
+      ]
+    },
+    {
+      "id": 128,
+      "word": "上",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "5080"
+      ]
+    },
+    {
+      "id": 129,
+      "word": "回",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 4,
+      "moeEntryIds": [
+        "2897",
+        "2894"
+      ]
+    },
+    {
+      "id": 130,
+      "word": "住",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "4526"
+      ]
+    },
+    {
+      "id": 131,
+      "word": "开",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "2521"
+      ]
+    },
+    {
+      "id": 132,
+      "word": "火车站",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "286100035"
+      ]
+    },
+    {
+      "id": 133,
+      "word": "出租车",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 134,
+      "word": "飞机",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "082400014"
+      ]
+    },
+    {
+      "id": 135,
+      "word": "猫",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "0611"
+      ]
+    },
+    {
+      "id": 136,
+      "word": "衣服",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 137,
+      "word": "电影",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "120900144"
+      ]
+    },
+    {
+      "id": 138,
+      "word": "学习",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "415000027"
+      ]
+    },
+    {
+      "id": 139,
+      "word": "对不起",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 140,
+      "word": "喂",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 3,
+      "moeEntryIds": [
+        "6343",
+        "6344"
+      ]
+    },
+    {
+      "id": 141,
+      "word": "些",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "3913"
+      ]
+    },
+    {
+      "id": 142,
+      "word": "少",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "4994"
+      ]
+    },
+    {
+      "id": 143,
+      "word": "小",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "3963"
+      ]
+    },
+    {
+      "id": 144,
+      "word": "漂亮",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 145,
+      "word": "高兴",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "224000054"
+      ]
+    },
+    {
+      "id": 146,
+      "word": "认识",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 147,
+      "word": "听见",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 148,
+      "word": "看见",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "256200019"
+      ]
+    },
+    {
+      "id": 149,
+      "word": "睡觉",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "516700006"
+      ]
+    },
+    {
+      "id": 150,
+      "word": "打电话",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "101400032"
+      ]
+    },
+    {
+      "id": 151,
+      "word": "阴",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 3,
+      "moeEntryIds": [
+        "6137"
+      ]
+    },
+    {
+      "id": 152,
+      "word": "晴",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "3737"
+      ]
+    },
+    {
+      "id": 153,
+      "word": "向",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 4,
+      "moeEntryIds": [
+        "4086",
+        "4079"
+      ]
+    },
+    {
+      "id": 154,
+      "word": "往",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "6412"
+      ]
+    },
+    {
+      "id": 155,
+      "word": "站",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "4406"
+      ]
+    },
+    {
+      "id": 156,
+      "word": "票",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "0464"
+      ]
+    },
+    {
+      "id": 157,
+      "word": "服务员",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "095800021"
+      ]
+    },
+    {
+      "id": 158,
+      "word": "宾馆",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "025300002"
+      ]
+    },
+    {
+      "id": 159,
+      "word": "公里",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "247200024"
+      ]
+    },
+    {
+      "id": 160,
+      "word": "百",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "0061"
+      ]
+    },
+    {
+      "id": 161,
+      "word": "千",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "3648",
+        "3661"
+      ]
+    },
+    {
+      "id": 162,
+      "word": "远",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "6560"
+      ]
+    },
+    {
+      "id": 163,
+      "word": "近",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "3339"
+      ]
+    },
+    {
+      "id": 164,
+      "word": "慢",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "0652"
+      ]
+    },
+    {
+      "id": 165,
+      "word": "快",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "2598"
+      ]
+    },
+    {
+      "id": 166,
+      "word": "公共汽车",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "247200039"
+      ]
+    },
+    {
+      "id": 167,
+      "word": "机场",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "302000027"
+      ]
+    },
+    {
+      "id": 168,
+      "word": "身体",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "505100007"
+      ]
+    },
+    {
+      "id": 169,
+      "word": "步",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "0290"
+      ]
+    },
+    {
+      "id": 170,
+      "word": "早",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "5332"
+      ]
+    },
+    {
+      "id": 171,
+      "word": "药",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "6021",
+        "6023"
+      ]
+    },
+    {
+      "id": 172,
+      "word": "眼睛",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 173,
+      "word": "手表",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "500400005"
+      ]
+    },
+    {
+      "id": 174,
+      "word": "运动",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "658600002"
+      ]
+    },
+    {
+      "id": 175,
+      "word": "休息",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 176,
+      "word": "吃药",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 177,
+      "word": "生病",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "508600002"
+      ]
+    },
+    {
+      "id": 178,
+      "word": "跳舞",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "147300032"
+      ]
+    },
+    {
+      "id": 179,
+      "word": "唱歌",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "4773000061"
+      ]
+    },
+    {
+      "id": 180,
+      "word": "跑步",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "035300002"
+      ]
+    },
+    {
+      "id": 181,
+      "word": "游泳",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "603900012"
+      ]
+    },
+    {
+      "id": 182,
+      "word": "打篮球",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "cedictMatches": 0,
+      "moeEntryIds": []
+    },
+    {
+      "id": 183,
+      "word": "踢足球",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "cedictMatches": 0,
+      "moeEntryIds": []
+    },
+    {
+      "id": 184,
+      "word": "便宜",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 185,
+      "word": "贵",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "2427"
+      ]
+    },
+    {
+      "id": 186,
+      "word": "丈夫",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 187,
+      "word": "妻子",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "3525000031"
+      ]
+    },
+    {
+      "id": 188,
+      "word": "房间",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "089900008"
+      ]
+    },
+    {
+      "id": 189,
+      "word": "时间",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "490400014"
+      ]
+    },
+    {
+      "id": 190,
+      "word": "事情",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 191,
+      "word": "问题",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "640000004"
+      ]
+    },
+    {
+      "id": 192,
+      "word": "羊肉",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 193,
+      "word": "西瓜",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "381900008"
+      ]
+    },
+    {
+      "id": 194,
+      "word": "鸡蛋",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 195,
+      "word": "牛奶",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "167300016"
+      ]
+    },
+    {
+      "id": 196,
+      "word": "咖啡",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "248800001"
+      ]
+    },
+    {
+      "id": 197,
+      "word": "意思",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "592200023"
+      ]
+    },
+    {
+      "id": 198,
+      "word": "考试",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "253400020"
+      ]
+    },
+    {
+      "id": 199,
+      "word": "开始",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "252100085"
+      ]
+    },
+    {
+      "id": 200,
+      "word": "准备",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "459000001"
+      ]
+    },
+    {
+      "id": 201,
+      "word": "别",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "0214"
+      ]
+    },
+    {
+      "id": 202,
+      "word": "过",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 203,
+      "word": "着",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "4341"
+      ]
+    },
+    {
+      "id": 204,
+      "word": "得",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "1021"
+      ]
+    },
+    {
+      "id": 205,
+      "word": "最",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 3,
+      "moeEntryIds": [
+        "5399"
+      ]
+    },
+    {
+      "id": 206,
+      "word": "更",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "2330"
+      ]
+    },
+    {
+      "id": 207,
+      "word": "比",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "0165"
+      ]
+    },
+    {
+      "id": 208,
+      "word": "黑",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "2717"
+      ]
+    },
+    {
+      "id": 209,
+      "word": "白",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "0060"
+      ]
+    },
+    {
+      "id": 210,
+      "word": "红",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "2993"
+      ]
+    },
+    {
+      "id": 211,
+      "word": "颜色",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "609400003"
+      ]
+    },
+    {
+      "id": 212,
+      "word": "手机",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "500400058"
+      ]
+    },
+    {
+      "id": 213,
+      "word": "礼物",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "188600027"
+      ]
+    },
+    {
+      "id": 214,
+      "word": "快乐",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "259800008"
+      ]
+    },
+    {
+      "id": 215,
+      "word": "生日",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "508600068"
+      ]
+    },
+    {
+      "id": 216,
+      "word": "希望",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "382200002"
+      ]
+    },
+    {
+      "id": 217,
+      "word": "觉得",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "348500001"
+      ]
+    },
+    {
+      "id": 218,
+      "word": "告诉",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 219,
+      "word": "已经",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "587100003"
+      ]
+    },
+    {
+      "id": 220,
+      "word": "但是",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "108900004"
+      ]
+    },
+    {
+      "id": 221,
+      "word": "虽然",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "567200002"
+      ]
+    },
+    {
+      "id": 222,
+      "word": "所以",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "566500012"
+      ]
+    },
+    {
+      "id": 223,
+      "word": "因为",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "612800021"
+      ]
+    },
+    {
+      "id": 224,
+      "word": "让",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "5225"
+      ]
+    },
+    {
+      "id": 225,
+      "word": "财政",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "544800010"
+      ]
+    },
+    {
+      "id": 226,
+      "word": "不管",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "028500118"
+      ]
+    },
+    {
+      "id": 227,
+      "word": "狗",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "2259"
+      ]
+    },
+    {
+      "id": 228,
+      "word": "捍卫",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "276800001"
+      ]
+    },
+    {
+      "id": 229,
+      "word": "自私",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "530000130"
+      ]
+    },
+    {
+      "id": 230,
+      "word": "非常",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "081700008"
+      ]
+    },
+    {
+      "id": 231,
+      "word": "就",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "3252"
+      ]
+    },
+    {
+      "id": 232,
+      "word": "换",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "2940"
+      ]
+    },
+    {
+      "id": 233,
+      "word": "宁可",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 234,
+      "word": "公司",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "247200100"
+      ]
+    },
+    {
+      "id": 235,
+      "word": "媒体",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "059800002"
+      ]
+    },
+    {
+      "id": 236,
+      "word": "满意",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "064900032"
+      ]
+    },
+    {
+      "id": 237,
+      "word": "压力",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "594900005"
+      ]
+    },
+    {
+      "id": 238,
+      "word": "玩",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "6363"
+      ]
+    },
+    {
+      "id": 239,
+      "word": "电子邮件",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 0,
+      "moeEntryIds": []
+    },
+    {
+      "id": 240,
+      "word": "教室",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "322500022"
+      ]
+    },
+    {
+      "id": 241,
+      "word": "普及",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "052000004"
+      ]
+    },
+    {
+      "id": 242,
+      "word": "孩子",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "270700003"
+      ]
+    },
+    {
+      "id": 243,
+      "word": "门",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "0660"
+      ]
+    },
+    {
+      "id": 244,
+      "word": "一起",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 0,
+      "moeEntryIds": []
+    },
+    {
+      "id": 245,
+      "word": "佩服",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "034000001"
+      ]
+    },
+    {
+      "id": 246,
+      "word": "习惯",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "386600002"
+      ]
+    },
+    {
+      "id": 247,
+      "word": "分钟",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "087300056"
+      ]
+    },
+    {
+      "id": 248,
+      "word": "变化",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "025000015"
+      ]
+    },
+    {
+      "id": 249,
+      "word": "不可思议",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "028500133"
+      ]
+    },
+    {
+      "id": 250,
+      "word": "安静",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "580600030"
+      ]
+    },
+    {
+      "id": 251,
+      "word": "还",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "2930"
+      ]
+    },
+    {
+      "id": 252,
+      "word": "的",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "1020"
+      ]
+    },
+    {
+      "id": 253,
+      "word": "欢迎",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "292500015"
+      ]
+    },
+    {
+      "id": 254,
+      "word": "高",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "2240"
+      ]
+    },
+    {
+      "id": 255,
+      "word": "安慰",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "580600059"
+      ]
+    },
+    {
+      "id": 256,
+      "word": "健康",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "329400006"
+      ]
+    },
+    {
+      "id": 257,
+      "word": "冷静",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "185000027"
+      ]
+    },
+    {
+      "id": 258,
+      "word": "结论",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "315500009"
+      ]
+    },
+    {
+      "id": 259,
+      "word": "姓",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "4108"
+      ]
+    },
+    {
+      "id": 260,
+      "word": "三",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "5622"
+      ]
+    },
+    {
+      "id": 261,
+      "word": "到",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "1052"
+      ]
+    },
+    {
+      "id": 262,
+      "word": "右边",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 0,
+      "moeEntryIds": [
+        "605300001"
+      ]
+    },
+    {
+      "id": 263,
+      "word": "先生",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 0,
+      "moeEntryIds": [
+        "399800031"
+      ]
+    },
+    {
+      "id": 264,
+      "word": "明显",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "077400023"
+      ]
+    },
+    {
+      "id": 265,
+      "word": "未尝",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "633700020"
+      ]
+    },
+    {
+      "id": 266,
+      "word": "自行车",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "530000073"
+      ]
+    },
+    {
+      "id": 267,
+      "word": "题",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "1439"
+      ]
+    },
+    {
+      "id": 268,
+      "word": "忽略",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "280400002"
+      ]
+    },
+    {
+      "id": 269,
+      "word": "批评",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "041600003"
+      ]
+    },
+    {
+      "id": 270,
+      "word": "重要",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "461700035"
+      ]
+    },
+    {
+      "id": 271,
+      "word": "上班",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "508000001"
+      ]
+    },
+    {
+      "id": 272,
+      "word": "效率",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "397100006"
+      ]
+    },
+    {
+      "id": 273,
+      "word": "误会",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "627300006"
+      ]
+    },
+    {
+      "id": 274,
+      "word": "犹豫",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "604300006"
+      ]
+    },
+    {
+      "id": 275,
+      "word": "那",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "1590"
+      ]
+    },
+    {
+      "id": 276,
+      "word": "合作",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "267900032"
+      ]
+    },
+    {
+      "id": 277,
+      "word": "原谅",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "655100020"
+      ]
+    },
+    {
+      "id": 278,
+      "word": "穿",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "4847"
+      ]
+    },
+    {
+      "id": 279,
+      "word": "和",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 4,
+      "moeEntryIds": [
+        "2677",
+        "2678"
+      ]
+    },
+    {
+      "id": 280,
+      "word": "竟然",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "340000003"
+      ]
+    },
+    {
+      "id": 281,
+      "word": "终于",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "460600015"
+      ]
+    },
+    {
+      "id": 282,
+      "word": "顺便",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "517500001"
+      ]
+    },
+    {
+      "id": 283,
+      "word": "无论",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "624100042"
+      ]
+    },
+    {
+      "id": 284,
+      "word": "地图",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "114700044"
+      ]
+    },
+    {
+      "id": 285,
+      "word": "介绍",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "317700003"
+      ]
+    },
+    {
+      "id": 286,
+      "word": "偶然",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "580000007"
+      ]
+    },
+    {
+      "id": 287,
+      "word": "洞察",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "131000012"
+      ]
+    },
+    {
+      "id": 288,
+      "word": "岂不",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 289,
+      "word": "毕竟",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "019500001"
+      ]
+    },
+    {
+      "id": 290,
+      "word": "晚上",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 0,
+      "moeEntryIds": [
+        "637600014"
+      ]
+    },
+    {
+      "id": 291,
+      "word": "解决",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "317600022"
+      ]
+    },
+    {
+      "id": 292,
+      "word": "小姐",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 0,
+      "moeEntryIds": [
+        "396300037"
+      ]
+    },
+    {
+      "id": 293,
+      "word": "离",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "1862"
+      ]
+    },
+    {
+      "id": 294,
+      "word": "回答",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "289400007"
+      ]
+    },
+    {
+      "id": 295,
+      "word": "尽管",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "333700002"
+      ]
+    },
+    {
+      "id": 296,
+      "word": "普遍",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "052000001"
+      ]
+    },
+    {
+      "id": 297,
+      "word": "颁布",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "011700001"
+      ]
+    },
+    {
+      "id": 298,
+      "word": "借",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "3186",
+        "3185"
+      ]
+    },
+    {
+      "id": 299,
+      "word": "成绩",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 300,
+      "word": "出",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "4801",
+        "4803"
+      ]
+    },
+    {
+      "id": 301,
+      "word": "敏锐",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "076400004"
+      ]
+    },
+    {
+      "id": 302,
+      "word": "报纸",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "010900029"
+      ]
+    },
+    {
+      "id": 303,
+      "word": "淘汰",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "136500001"
+      ]
+    },
+    {
+      "id": 304,
+      "word": "累",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "1782"
+      ]
+    },
+    {
+      "id": 305,
+      "word": "懂",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "1308"
+      ]
+    },
+    {
+      "id": 306,
+      "word": "悲观",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "007600014"
+      ]
+    },
+    {
+      "id": 307,
+      "word": "知道",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "422600005"
+      ]
+    },
+    {
+      "id": 308,
+      "word": "影响",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "621500011"
+      ]
+    },
+    {
+      "id": 309,
+      "word": "改善",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "223000031"
+      ]
+    },
+    {
+      "id": 310,
+      "word": "履行",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "218100003"
+      ]
+    },
+    {
+      "id": 311,
+      "word": "固然",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "237000006"
+      ]
+    },
+    {
+      "id": 312,
+      "word": "谦虚",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "366200004"
+      ]
+    },
+    {
+      "id": 313,
+      "word": "把握",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "001500012"
+      ]
+    },
+    {
+      "id": 314,
+      "word": "幸亏",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "410900002"
+      ]
+    },
+    {
+      "id": 315,
+      "word": "环境",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "292900006"
+      ]
+    },
+    {
+      "id": 316,
+      "word": "我们",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "628700002"
+      ]
+    },
+    {
+      "id": 317,
+      "word": "敷衍",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "093600002"
+      ]
+    },
+    {
+      "id": 318,
+      "word": "按照",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "581600012"
+      ]
+    },
+    {
+      "id": 319,
+      "word": "可以",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "250800042"
+      ]
+    },
+    {
+      "id": 320,
+      "word": "不言而喻",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "028500380"
+      ]
+    },
+    {
+      "id": 321,
+      "word": "保护",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "009600015"
+      ]
+    },
+    {
+      "id": 322,
+      "word": "错",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "5515"
+      ]
+    },
+    {
+      "id": 323,
+      "word": "客观",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "251500007"
+      ]
+    },
+    {
+      "id": 324,
+      "word": "倘若",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "141900002"
+      ]
+    },
+    {
+      "id": 325,
+      "word": "传统",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "485100009"
+      ]
+    },
+    {
+      "id": 326,
+      "word": "全力以赴",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "378800015"
+      ]
+    },
+    {
+      "id": 327,
+      "word": "真",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "4419"
+      ]
+    },
+    {
+      "id": 328,
+      "word": "搬",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "0116"
+      ]
+    },
+    {
+      "id": 329,
+      "word": "九",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "3238"
+      ]
+    },
+    {
+      "id": 330,
+      "word": "遏制",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "574300002"
+      ]
+    },
+    {
+      "id": 331,
+      "word": "洗",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "3873"
+      ]
+    },
+    {
+      "id": 332,
+      "word": "这",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "4338"
+      ]
+    },
+    {
+      "id": 333,
+      "word": "一",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "5837"
+      ]
+    },
+    {
+      "id": 334,
+      "word": "女人",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "173100051"
+      ]
+    },
+    {
+      "id": 335,
+      "word": "多",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "1255"
+      ]
+    },
+    {
+      "id": 336,
+      "word": "正在",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "448500047"
+      ]
+    },
+    {
+      "id": 337,
+      "word": "促进",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "549600002"
+      ]
+    },
+    {
+      "id": 338,
+      "word": "克服",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "251200001"
+      ]
+    },
+    {
+      "id": 339,
+      "word": "倡导",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "477200001"
+      ]
+    },
+    {
+      "id": 340,
+      "word": "分析",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "087300048"
+      ]
+    },
+    {
+      "id": 341,
+      "word": "竞争",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "340700006"
+      ]
+    },
+    {
+      "id": 342,
+      "word": "半途而废",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "012400008"
+      ]
+    },
+    {
+      "id": 343,
+      "word": "而且",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "582700003"
+      ]
+    },
+    {
+      "id": 344,
+      "word": "件",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "3291"
+      ]
+    },
+    {
+      "id": 345,
+      "word": "聪明",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 0,
+      "moeEntryIds": [
+        "554600002"
+      ]
+    },
+    {
+      "id": 346,
+      "word": "被",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "0082"
+      ]
+    },
+    {
+      "id": 347,
+      "word": "课",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "2519"
+      ]
+    },
+    {
+      "id": 348,
+      "word": "创新",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "487200010"
+      ]
+    },
+    {
+      "id": 349,
+      "word": "博大精深",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "004600002"
+      ]
+    },
+    {
+      "id": 350,
+      "word": "船",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "4848"
+      ]
+    },
+    {
+      "id": 351,
+      "word": "热情",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "518400027"
+      ]
+    },
+    {
+      "id": 352,
+      "word": "除了",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 353,
+      "word": "屡见不鲜",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "217800004"
+      ]
+    },
+    {
+      "id": 354,
+      "word": "未免",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "633700006"
+      ]
+    },
+    {
+      "id": 355,
+      "word": "好吃",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "2727000171"
+      ]
+    },
+    {
+      "id": 356,
+      "word": "安排",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "580600004"
+      ]
+    },
+    {
+      "id": 357,
+      "word": "呼吁",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "280300016"
+      ]
+    },
+    {
+      "id": 358,
+      "word": "它",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "1317",
+        "1321"
+      ]
+    },
+    {
+      "id": 359,
+      "word": "弊端",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "019000002"
+      ]
+    },
+    {
+      "id": 360,
+      "word": "大家",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "101500258"
+      ]
+    },
+    {
+      "id": 361,
+      "word": "城市",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "478300011"
+      ]
+    },
+    {
+      "id": 362,
+      "word": "参加",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "546800007"
+      ]
+    },
+    {
+      "id": 363,
+      "word": "谨慎",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "333400004"
+      ]
+    },
+    {
+      "id": 364,
+      "word": "经验",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "338000033"
+      ]
+    },
+    {
+      "id": 365,
+      "word": "严谨",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "609500011"
+      ]
+    },
+    {
+      "id": 366,
+      "word": "万一",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "638200037"
+      ]
+    },
+    {
+      "id": 367,
+      "word": "不但",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "028500053"
+      ]
+    },
+    {
+      "id": 368,
+      "word": "努力",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "171200001"
+      ]
+    },
+    {
+      "id": 369,
+      "word": "大",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "1015"
+      ]
+    },
+    {
+      "id": 370,
+      "word": "从容不迫",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 371,
+      "word": "进",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "3343"
+      ]
+    },
+    {
+      "id": 372,
+      "word": "您",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "1694"
+      ]
+    },
+    {
+      "id": 373,
+      "word": "责任",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "531200009"
+      ]
+    },
+    {
+      "id": 374,
+      "word": "桌子",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "454400006"
+      ]
+    },
+    {
+      "id": 375,
+      "word": "六",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "1973"
+      ]
+    },
+    {
+      "id": 376,
+      "word": "证明",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "449200001"
+      ]
+    },
+    {
+      "id": 377,
+      "word": "简直",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "328900015"
+      ]
+    },
+    {
+      "id": 378,
+      "word": "通过",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "155800022"
+      ]
+    },
+    {
+      "id": 379,
+      "word": "男人",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "161800027"
+      ]
+    },
+    {
+      "id": 380,
+      "word": "接受",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "314500034"
+      ]
+    },
+    {
+      "id": 381,
+      "word": "既然",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "308700004"
+      ]
+    },
+    {
+      "id": 382,
+      "word": "举足轻重",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "343800023"
+      ]
+    },
+    {
+      "id": 383,
+      "word": "零",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "2054"
+      ]
+    },
+    {
+      "id": 384,
+      "word": "一旦",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "583700061"
+      ]
+    },
+    {
+      "id": 385,
+      "word": "字",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "5299"
+      ]
+    },
+    {
+      "id": 386,
+      "word": "循序渐进",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "419100006"
+      ]
+    },
+    {
+      "id": 387,
+      "word": "着急",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 388,
+      "word": "办公室",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "012900011"
+      ]
+    },
+    {
+      "id": 389,
+      "word": "吧",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "0023"
+      ]
+    },
+    {
+      "id": 390,
+      "word": "危机",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 391,
+      "word": "蓬勃",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "040600001"
+      ]
+    },
+    {
+      "id": 392,
+      "word": "给",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "2236"
+      ]
+    },
+    {
+      "id": 393,
+      "word": "质量",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 394,
+      "word": "鱼",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "6463"
+      ]
+    },
+    {
+      "id": 395,
+      "word": "越来越",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 396,
+      "word": "礼貌",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "188600010"
+      ]
+    },
+    {
+      "id": 397,
+      "word": "珍惜",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 398,
+      "word": "瞻仰",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "439400002"
+      ]
+    },
+    {
+      "id": 399,
+      "word": "元",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "6540"
+      ]
+    },
+    {
+      "id": 400,
+      "word": "衡量",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "279900001"
+      ]
+    },
+    {
+      "id": 401,
+      "word": "呼吁",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "280300016"
+      ]
+    },
+    {
+      "id": 402,
+      "word": "岁",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "5683"
+      ]
+    },
+    {
+      "id": 403,
+      "word": "呢",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "1595"
+      ]
+    },
+    {
+      "id": 404,
+      "word": "空调",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "266100009"
+      ]
+    },
+    {
+      "id": 405,
+      "word": "照顾",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 0,
+      "moeEntryIds": [
+        "436200011"
+      ]
+    },
+    {
+      "id": 406,
+      "word": "会",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "2917"
+      ]
+    },
+    {
+      "id": 407,
+      "word": "外",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "6298"
+      ]
+    },
+    {
+      "id": 408,
+      "word": "十",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "4898"
+      ]
+    },
+    {
+      "id": 409,
+      "word": "护照",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "284100010"
+      ]
+    },
+    {
+      "id": 410,
+      "word": "五",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "6243"
+      ]
+    },
+    {
+      "id": 411,
+      "word": "索性",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "566600006"
+      ]
+    },
+    {
+      "id": 412,
+      "word": "相辅相成",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "405700011"
+      ]
+    },
+    {
+      "id": 413,
+      "word": "羡慕",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "403500001"
+      ]
+    },
+    {
+      "id": 414,
+      "word": "从",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 3,
+      "moeEntryIds": [
+        "5551"
+      ]
+    },
+    {
+      "id": 415,
+      "word": "四",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "5566"
+      ]
+    },
+    {
+      "id": 416,
+      "word": "吗",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "0541"
+      ]
+    },
+    {
+      "id": 417,
+      "word": "检查",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "328500010"
+      ]
+    },
+    {
+      "id": 418,
+      "word": "兴趣",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "411200004"
+      ]
+    },
+    {
+      "id": 419,
+      "word": "在",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "5325"
+      ]
+    },
+    {
+      "id": 420,
+      "word": "踢",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "1432"
+      ]
+    },
+    {
+      "id": 421,
+      "word": "要",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "6020"
+      ]
+    },
+    {
+      "id": 422,
+      "word": "可能",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "250800008"
+      ]
+    },
+    {
+      "id": 423,
+      "word": "找",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "4357"
+      ]
+    },
+    {
+      "id": 424,
+      "word": "椅子",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "587600002"
+      ]
+    },
+    {
+      "id": 425,
+      "word": "了",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "1756"
+      ]
+    },
+    {
+      "id": 426,
+      "word": "他",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "1318"
+      ]
+    },
+    {
+      "id": 427,
+      "word": "爱",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "5762"
+      ]
+    },
+    {
+      "id": 428,
+      "word": "感冒",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "228900002"
+      ]
+    },
+    {
+      "id": 429,
+      "word": "以外",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "587200026"
+      ]
+    },
+    {
+      "id": 430,
+      "word": "潜移默化",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "367200016"
+      ]
+    },
+    {
+      "id": 431,
+      "word": "规定",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "241400005"
+      ]
+    },
+    {
+      "id": 432,
+      "word": "害羞",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "271600004"
+      ]
+    },
+    {
+      "id": 433,
+      "word": "震撼",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "444000006"
+      ]
+    },
+    {
+      "id": 434,
+      "word": "节约",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "316900024"
+      ]
+    },
+    {
+      "id": 435,
+      "word": "何况",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "268200006"
+      ]
+    },
+    {
+      "id": 436,
+      "word": "去年",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "377000001"
+      ]
+    },
+    {
+      "id": 437,
+      "word": "决定",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "346500002"
+      ]
+    },
+    {
+      "id": 438,
+      "word": "所谓",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "566500015"
+      ]
+    },
+    {
+      "id": 439,
+      "word": "承担",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "478700005"
+      ]
+    },
+    {
+      "id": 440,
+      "word": "采取",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "545200010"
+      ]
+    },
+    {
+      "id": 441,
+      "word": "帮助",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "014000009"
+      ]
+    },
+    {
+      "id": 442,
+      "word": "棘手",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "305500001"
+      ]
+    },
+    {
+      "id": 443,
+      "word": "后悔",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "274600017"
+      ]
+    },
+    {
+      "id": 444,
+      "word": "公斤",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "247200060"
+      ]
+    },
+    {
+      "id": 445,
+      "word": "总之",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "541700029"
+      ]
+    },
+    {
+      "id": 446,
+      "word": "归根结底",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 447,
+      "word": "奇怪",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "355300008"
+      ]
+    },
+    {
+      "id": 448,
+      "word": "理所当然",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "188000037"
+      ]
+    },
+    {
+      "id": 449,
+      "word": "完",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "6362"
+      ]
+    },
+    {
+      "id": 450,
+      "word": "问",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "6400"
+      ]
+    },
+    {
+      "id": 451,
+      "word": "现象",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "403000011"
+      ]
+    },
+    {
+      "id": 452,
+      "word": "拒绝",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "344100005"
+      ]
+    },
+    {
+      "id": 453,
+      "word": "本",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "0133"
+      ]
+    },
+    {
+      "id": 454,
+      "word": "左边",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 0,
+      "moeEntryIds": [
+        "538600000"
+      ]
+    },
+    {
+      "id": 455,
+      "word": "必然",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "017500008"
+      ]
+    },
+    {
+      "id": 456,
+      "word": "能",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "1630"
+      ]
+    },
+    {
+      "id": 457,
+      "word": "发烧",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "080500074"
+      ]
+    },
+    {
+      "id": 458,
+      "word": "骄傲",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "320300002"
+      ]
+    },
+    {
+      "id": 459,
+      "word": "方便",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "089200001"
+      ]
+    },
+    {
+      "id": 460,
+      "word": "体会",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "144300017"
+      ]
+    },
+    {
+      "id": 461,
+      "word": "认真",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "521300011"
+      ]
+    },
+    {
+      "id": 462,
+      "word": "她",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "1319"
+      ]
+    },
+    {
+      "id": 463,
+      "word": "交流",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "318800017"
+      ]
+    },
+    {
+      "id": 464,
+      "word": "每",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "0601"
+      ]
+    },
+    {
+      "id": 465,
+      "word": "根据",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "229700008"
+      ]
+    },
+    {
+      "id": 466,
+      "word": "层出不穷",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "548900004"
+      ]
+    },
+    {
+      "id": 467,
+      "word": "哪怕",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 468,
+      "word": "造诣",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "533900016"
+      ]
+    },
+    {
+      "id": 469,
+      "word": "八",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "0001"
+      ]
+    },
+    {
+      "id": 470,
+      "word": "赋予",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "100200005"
+      ]
+    },
+    {
+      "id": 471,
+      "word": "斟酌",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "442200001"
+      ]
+    },
+    {
+      "id": 472,
+      "word": "道歉",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "105600024"
+      ]
+    },
+    {
+      "id": 473,
+      "word": "次",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "5434"
+      ]
+    },
+    {
+      "id": 474,
+      "word": "卖",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "0585"
+      ]
+    },
+    {
+      "id": 475,
+      "word": "太",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "1350"
+      ]
+    },
+    {
+      "id": 476,
+      "word": "也",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "5975"
+      ]
+    },
+    {
+      "id": 477,
+      "word": "无非",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "624100013"
+      ]
+    },
+    {
+      "id": 478,
+      "word": "酝酿",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "658800001"
+      ]
+    },
+    {
+      "id": 479,
+      "word": "储备",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 480,
+      "word": "长",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "4757"
+      ]
+    },
+    {
+      "id": 481,
+      "word": "趋势",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "375700004"
+      ]
+    },
+    {
+      "id": 482,
+      "word": "侥幸",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "321800001"
+      ]
+    },
+    {
+      "id": 483,
+      "word": "早上",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 0,
+      "moeEntryIds": [
+        "533200019"
+      ]
+    },
+    {
+      "id": 484,
+      "word": "旅游",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "217600018"
+      ]
+    },
+    {
+      "id": 485,
+      "word": "不妨",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "028500033"
+      ]
+    },
+    {
+      "id": 486,
+      "word": "还",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "2710"
+      ]
+    },
+    {
+      "id": 487,
+      "word": "妥协",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "153100002"
+      ]
+    },
+    {
+      "id": 488,
+      "word": "为",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "6340"
+      ]
+    },
+    {
+      "id": 489,
+      "word": "打扫",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "101400146"
+      ]
+    },
+    {
+      "id": 490,
+      "word": "文学",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "638700038"
+      ]
+    },
+    {
+      "id": 491,
+      "word": "不仅",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "028500185"
+      ]
+    },
+    {
+      "id": 492,
+      "word": "刻不容缓",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "251400003"
+      ]
+    },
+    {
+      "id": 493,
+      "word": "两",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "2034"
+      ]
+    },
+    {
+      "id": 494,
+      "word": "谁",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 0,
+      "moeEntryIds": []
+    },
+    {
+      "id": 495,
+      "word": "怀疑",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "288200009"
+      ]
+    },
+    {
+      "id": 496,
+      "word": "其实",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "354400006"
+      ]
+    },
+    {
+      "id": 497,
+      "word": "主观",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "451600019"
+      ]
+    },
+    {
+      "id": 498,
+      "word": "起床",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "356900025"
+      ]
+    },
+    {
+      "id": 499,
+      "word": "感兴趣",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 500,
+      "word": "筹备",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "470200001"
+      ]
+    },
+    {
+      "id": 501,
+      "word": "稍微",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 502,
+      "word": "解释",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "317600027"
+      ]
+    },
+    {
+      "id": 503,
+      "word": "安全",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "580600033"
+      ]
+    },
+    {
+      "id": 504,
+      "word": "简单",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "328900005"
+      ]
+    },
+    {
+      "id": 505,
+      "word": "二",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "5835"
+      ]
+    },
+    {
+      "id": 506,
+      "word": "鼓励",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "236000004"
+      ]
+    },
+    {
+      "id": 507,
+      "word": "科学",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "249700009"
+      ]
+    },
+    {
+      "id": 508,
+      "word": "七",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "3522"
+      ]
+    },
+    {
+      "id": 509,
+      "word": "害怕",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "271600001"
+      ]
+    },
+    {
+      "id": 510,
+      "word": "都",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "1060"
+      ]
+    },
+    {
+      "id": 511,
+      "word": "法律",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "081100016"
+      ]
+    },
+    {
+      "id": 512,
+      "word": "态度",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 0,
+      "moeEntryIds": [
+        "135500001"
+      ]
+    },
+    {
+      "id": 513,
+      "word": "张",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "4451"
+      ]
+    },
+    {
+      "id": 514,
+      "word": "阐述",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "472800003"
+      ]
+    },
+    {
+      "id": 515,
+      "word": "收入",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "500200041"
+      ]
+    },
+    {
+      "id": 516,
+      "word": "观点",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "244300002"
+      ]
+    },
+    {
+      "id": 517,
+      "word": "日",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "5181"
+      ]
+    },
+    {
+      "id": 518,
+      "word": "恍然大悟",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "297500003"
+      ]
+    },
+    {
+      "id": 519,
+      "word": "送",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "5706"
+      ]
+    },
+    {
+      "id": 520,
+      "word": "何必",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "268200001"
+      ]
+    },
+    {
+      "id": 521,
+      "word": "忙",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "0666"
+      ]
+    },
+    {
+      "id": 522,
+      "word": "鉴于",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 523,
+      "word": "讲究",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 0,
+      "moeEntryIds": []
+    },
+    {
+      "id": 524,
+      "word": "究竟",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    },
+    {
+      "id": 525,
+      "word": "逻辑",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 0,
+      "moeEntryIds": [
+        "211900002"
+      ]
+    },
+    {
+      "id": 526,
+      "word": "计划",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "308600007"
+      ]
+    },
+    {
+      "id": 527,
+      "word": "旁边",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "038400002"
+      ]
+    },
+    {
+      "id": 528,
+      "word": "乐观",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "175500010"
+      ]
+    },
+    {
+      "id": 529,
+      "word": "独立",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "123600020"
+      ]
+    },
+    {
+      "id": 530,
+      "word": "把",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "0015"
+      ]
+    },
+    {
+      "id": 531,
+      "word": "丰富",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "092000003"
+      ]
+    },
+    {
+      "id": 532,
+      "word": "雪",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "4152"
+      ]
+    },
+    {
+      "id": 533,
+      "word": "小时",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "396300060"
+      ]
+    },
+    {
+      "id": 534,
+      "word": "成语",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "478200042"
+      ]
+    },
+    {
+      "id": 535,
+      "word": "坚持",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "326300010"
+      ]
+    },
+    {
+      "id": 536,
+      "word": "不",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "0285"
+      ]
+    },
+    {
+      "id": 537,
+      "word": "安居乐业",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "580600032"
+      ]
+    },
+    {
+      "id": 538,
+      "word": "融洽",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "527100007"
+      ]
+    },
+    {
+      "id": 539,
+      "word": "第一",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "115000011"
+      ]
+    },
+    {
+      "id": 540,
+      "word": "弥补",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "069900001"
+      ]
+    },
+    {
+      "id": 541,
+      "word": "诠释",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "379300001"
+      ]
+    },
+    {
+      "id": 542,
+      "word": "笑",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "3974"
+      ]
+    },
+    {
+      "id": 543,
+      "word": "走",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "5346"
+      ]
+    },
+    {
+      "id": 544,
+      "word": "策略",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "544400004"
+      ]
+    },
+    {
+      "id": 545,
+      "word": "观念",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "244300003"
+      ]
+    },
+    {
+      "id": 546,
+      "word": "盲目",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "066800002"
+      ]
+    },
+    {
+      "id": 547,
+      "word": "崛起",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "347300001"
+      ]
+    },
+    {
+      "id": 548,
+      "word": "惭愧",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "547200001"
+      ]
+    },
+    {
+      "id": 549,
+      "word": "路",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "2102"
+      ]
+    },
+    {
+      "id": 550,
+      "word": "再",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "5324"
+      ]
+    },
+    {
+      "id": 551,
+      "word": "总结",
+      "hskLevel": 4,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "541700024"
+      ]
+    },
+    {
+      "id": 552,
+      "word": "新",
+      "hskLevel": 2,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 2,
+      "moeEntryIds": [
+        "4049"
+      ]
+    },
+    {
+      "id": 553,
+      "word": "必须",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "017500005"
+      ]
+    },
+    {
+      "id": 554,
+      "word": "承诺",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "478700007"
+      ]
+    },
+    {
+      "id": 555,
+      "word": "彻底",
+      "hskLevel": 5,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "467400005"
+      ]
+    },
+    {
+      "id": 556,
+      "word": "地铁",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "114700043"
+      ]
+    },
+    {
+      "id": 557,
+      "word": "办法",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "012900003"
+      ]
+    },
+    {
+      "id": 558,
+      "word": "水果",
+      "hskLevel": 1,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "516300045"
+      ]
+    },
+    {
+      "id": 559,
+      "word": "精益求精",
+      "hskLevel": 6,
+      "status": "PENDING_REVIEW",
+      "reason": "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED",
+      "cedictMatches": 1,
+      "moeEntryIds": [
+        "337700042"
+      ]
+    },
+    {
+      "id": 560,
+      "word": "行李",
+      "hskLevel": 3,
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "cedictMatches": 1,
+      "moeEntryIds": []
+    }
+  ],
+  "counts": {
+    "SECOND_INDEPENDENT_ENTRY_NOT_FOUND": 24,
+    "READING_OR_REGIONAL_DIFFERENCE": 50,
+    "SEMANTIC_AND_OPTIONAL_FIELDS_CHECK_REQUIRED": 486
+  }
+}

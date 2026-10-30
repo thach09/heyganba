@@ -6,6 +6,7 @@ spring:
     show-sql: false
 
   flyway:
+    # Production only loads the checked-in release allowlist; staging resources are not in the JAR.
     locations: classpath:db/migration,classpath:db/migration-release
 
 management:

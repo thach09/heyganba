@@ -44,6 +44,7 @@ export interface HanziAdminItem {
 
 export interface ExerciseAdminItem {
   id: number;
+  grammarRuleId?: number;
   questionText: string;
   optionsJson: string;
   correctAnswer: string;

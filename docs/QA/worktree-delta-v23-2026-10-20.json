@@ -1,0 +1,3419 @@
+{
+  "capturedAtUtc": "2026-10-20T07:04:54.677806+00:00",
+  "branch": "feat/v2.1-ux-and-stability",
+  "head": "220fb2573bac470008f3eba1d57ce995351ed45d",
+  "scope": "Content hashes against saved working-tree snapshots; unchanged maintainer edits are not attributed to this task.",
+  "originalBaseline": {
+    "path": "backups\\evidence-recovery-2026-10-20\\baseline.json",
+    "sha256": "57935240bf20791e2103bca8524072be013e96d26ecd95e748d15b3b84a3e64c",
+    "fileCount": 700,
+    "dirtyEntries": 70
+  },
+  "continuationBaseline": {
+    "path": "backups\\evidence-recovery-2026-10-20\\continuation-baseline-2026-10-20.json",
+    "sha256": "e6d6fb8b7d6f3e1eed1b621b6d4ff7b90a2da41ccf2ba2aa2c03da960fb1020c",
+    "trackedDiffSha256": "c162258c5f74f93e417615b79fddbfbcef38b6d0677a631fb21e070830213ebe",
+    "dirtyEntries": 319
+  },
+  "current": {
+    "nonIgnoredFileCountExcludingThisManifest": 946,
+    "statusEntryCountAllUntrackedFiles": 386,
+    "statusCounts": {
+      " M": 73,
+      " D": 21,
+      "??": 292
+    },
+    "stagedPaths": [],
+    "trackedDiffBinarySha256": "95de275954845548706bb3885a05f390b68d85cca195b4031b0cea78bf36cde2",
+    "trackedDiffBinaryBytes": 28560211,
+    "statusShortPath": "docs/QA/worktree-status-v23-2026-10-20.txt",
+    "statusShortSha256": "983e6a058be4f2af7613778575a70a07f5a89ee55e98a88eb61de6ce73ae1593",
+    "gitDiffCheckExitCode": 0,
+    "gitDiffCheckWarnings": [
+      "warning: in the working copy of 'PRODUCT.md', LF will be replaced by CRLF the next time Git touches it",
+      "warning: in the working copy of 'backend/src/test/java/com/heyganba/FlywayLocationsConfigTest.java', LF will be replaced by CRLF the next time Git touches it",
+      "warning: in the working copy of 'docs/Dictionary/coverage-after-rehearsal.json', LF will be replaced by CRLF the next time Git touches it",
+      "warning: in the working copy of 'docs/Dictionary/coverage-baseline.json', LF will be replaced by CRLF the next time Git touches it",
+      "warning: in the working copy of 'docs/Dictionary/vietnamese-coverage-baseline.json', LF will be replaced by CRLF the next time Git touches it",
+      "warning: in the working copy of 'docs/Dictionary/vietnamese-coverage-candidate.json', LF will be replaced by CRLF the next time Git touches it",
+      "warning: in the working copy of 'docs/roadmap.md', LF will be replaced by CRLF the next time Git touches it",
+      "warning: in the working copy of 'frontend/src/features/exam/activeAttempt.ts', LF will be replaced by CRLF the next time Git touches it",
+      "warning: in the working copy of 'frontend/tests/unit/v21-edtech-ux.test.tsx', LF will be replaced by CRLF the next time Git touches it"
+    ]
+  },
+  "deltaFromOriginalBaseline": {
+    "newFiles": [
+      {
+        "path": "backend/src/legacy-japanese/README.md",
+        "sha256": "6928e5d1f4d86edb06a58a3ea3056806b16da8fc92799951bc90452032c3efd9"
+      },
+      {
+        "path": "backend/src/legacy-japanese/resources/db/migration-staging/dictionary-coverage-pilot.json",
+        "sha256": "d7590f14cabd3ec582c9e9a6bce73651b518b67e0289e6e5c558cb58ab8689bd"
+      },
+      {
+        "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-a.tsv",
+        "sha256": "0afc4e72ef6b0fa25d9d112b2cc4f61a3d2eb62514d5d84b9b5fb89ce22038b0"
+      },
+      {
+        "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-b.metadata.json",
+        "sha256": "658500ab9c1bd29c9e9fca0ad418da1e41419aa10144b64b0fced91176d9a46c"
+      },
+      {
+        "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-b.tsv",
+        "sha256": "8929dde150215dd3b97e0dcc28f6a68e880024aceb7daf085f50e8a49f947024"
+      },
+      {
+        "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-c.metadata.json",
+        "sha256": "db6f97e10d4111c1ae928c3b6f51e9806967eed8f9d0a6c3f3701dc9e23d8484"
+      },
+      {
+        "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-c.tsv",
+        "sha256": "fcbefe1b193fcbaa242951f3d8dfec5e578e5f352317b94b18a354b12ba8d4c7"
+      },
+      {
+        "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-d.metadata.json",
+        "sha256": "3593c0be6c2dadfbb867388efdc784be2d47ffaac9c156b52f4f2c42f09b4390"
+      },
+      {
+        "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-d.tsv",
+        "sha256": "8c35f56152d0d3d1c7e85e654739022016e547a27a0565db8e4db489ce093c84"
+      },
+      {
+        "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-e.metadata.json",
+        "sha256": "d2e79cf294718ebcd4b3989a7e467e884f65267e9efc610c6a7113f77ec51a2f"
+      },
+      {
+        "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-e.tsv",
+        "sha256": "91938bb9b567655fddf734e81cd53221fd8132d1f7ec7fc91a5f48bb3c0cb150"
+      },
+      {
+        "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-f.metadata.json",
+        "sha256": "a9028acb4b0d7e94b5520cc5956b81996a7330230bed8348621d0e5d54ae31da"
+      },
+      {
+        "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-f.tsv",
+        "sha256": "db052d0c347a536103e28134318dc728a9a50fd4357f580b9eda13d3f26c76b9"
+      },
+      {
+        "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-exclusions.tsv",
+        "sha256": "c58a6dc0a3737553e71f162f803fd2cd0dee60c7c0bd199f2738a62226f18051"
+      },
+      {
+        "path": "backend/src/legacy-japanese/resources/dictionary/README.md",
+        "sha256": "6e0a7b5bd47568663941065b56eab260ac1b6cc2c177d88d44ba2420fa3e6bb8"
+      },
+      {
+        "path": "backend/src/legacy-japanese/resources/dictionary/assisted-ja-vi.tsv",
+        "sha256": "c78db41c230fa7b7bd288c8e46152870f3512ef35c940584f9172c341428aaf1"
+      },
+      {
+        "path": "backend/src/legacy-japanese/resources/dictionary/curated-ja-vi.tsv",
+        "sha256": "3b42c6d5d315f3117d91071ba3a24d94e6cbb65d735bb2e6587f13869756a6d1"
+      },
+      {
+        "path": "backend/src/legacy-japanese/resources/dictionary/jmdict.tsv.gz",
+        "sha256": "57d0941a4c314aa7621a2da041ada77e1b5b1bfe9611cd792512ec78c2979a29"
+      },
+      {
+        "path": "backend/src/legacy-japanese/resources/dictionary/snapshot.json",
+        "sha256": "7c47bf31f0d7b3800b79bc00f4457955f392e5e87708e16e823df411b9d07005"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-release/V10__learning_insights_and_sentence_order.sql",
+        "sha256": "34cfdc068fbef17d2e4e0c39dd4eb95fe3361dfef74c9f7ba377bde3c0da6d75"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-release/V11__align_optional_content_nullability.sql",
+        "sha256": "3e410b683ac9343808a3da6c82fb43747338d9fbf86f9863ab678228e5097b5a"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-release/V12__performance_indexes_and_constraints.sql",
+        "sha256": "86fb6c0cb6d17e659f77ef924f23b7cce27a271e4c56dba7bb97e2f5522c3c6a"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-release/V13__vocabulary_provenance_review_gate.sql",
+        "sha256": "dc71942e25cfd1d87c4ece6c84e1b680aa8f73686162449db03ff2b4978449e2"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-release/V14__web_cross_check_evidence_policy.sql",
+        "sha256": "295be98f707a77455989ba5b4cc58bf3e3d242537af5d630ad985aa9b043a864"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-release/V15__publish_web_cross_checked_vocabulary_batch.sql",
+        "sha256": "e7cbc36ef5b688f815f05bd7baefb4b3116c07171304e937afafd0946be642fb"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-release/V16__publish_hsk1_web_cross_checked_batch_01.sql",
+        "sha256": "34cd1a03a3b218bbe9cb15252a7477a1a35fd5bd8cfbe41b33b2958dc9f24019"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-release/V17__clear_unverified_vocabulary_optional_fields.sql",
+        "sha256": "4306313fd55a647577be6072b50d88e5068182187613d1b3bfb96a2abbdec1c6"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-release/V18__publish_hsk1_web_cross_checked_batch_02.sql",
+        "sha256": "e70aa9730050d07838065b1c985f6aa12c29e302476707d418f236a9627c6d75"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-release/V19__publish_hsk1_web_cross_checked_batch_03.sql",
+        "sha256": "98e5b472f1956118725f05071ff64614176204a0aee466500ed13f3fb5fbf6e6"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-release/V20__publish_hsk1_web_cross_checked_batch_04.sql",
+        "sha256": "a6a05739cc305f0be50e15fcc6693a760df8dfe5f2041e619cedd79ae616013d"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-release/V21__resolve_verified_pending_vocabulary.sql",
+        "sha256": "d4cc8de6a8e9c55f790213c58d04e72029d57aee8091188a2c6e22a3de1b1a31"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-release/V22__repair_hsk1_batch_text_encoding.sql",
+        "sha256": "3f4fceacbbbf2506693958cd26c82196b001dbb76b29db19cbb6b0f1e8aa4388"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-release/V23__publish_hsk2_web_cross_checked_batch_01.sql",
+        "sha256": "fd051643fa47971d0850c27575d48c68cb8c4056fd5a300a9e50d92077297edc"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-release/V4__sample_lesson_greetings.sql",
+        "sha256": "0235740d198468b2c48c4b68fcd21c317bb2a65fb2493c9af44234a1fa2641ed"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-release/V5__hsk1_thematic_curriculum_expansion.sql",
+        "sha256": "9c7baed778e2fb42707492bd6b8888b22395268ee88ff10cd2de8d9f53182eba"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-release/V6__hsk1_standard_course_grammar_and_exams.sql",
+        "sha256": "0b8e19d9f80e80b9a38925a40a1acc5b31b54654ec3e804f059d05c3d4c93ddb"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-release/V7__hsk1_complete_150_vocab_and_hanzi_radicals.sql",
+        "sha256": "fb659ed744855688fef79d82cd361e601da4170705039a3e37731fda59c81690"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-release/V8__hsk2_standard_course_and_approve_all_curriculum.sql",
+        "sha256": "cf3bcd83287dd62b01cde92d937ca927371d4c9bef795d6746f2fd2b11ae3752"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-release/V9__hsk1_to_hsk6_complete_curriculum_and_grammar.sql",
+        "sha256": "d9925bf56e11ba34f85d8eb41cf95ad46dc47f0ab465d68ece7819fc6804afdb"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-staging/V14__web_cross_check_evidence_policy.sql",
+        "sha256": "295be98f707a77455989ba5b4cc58bf3e3d242537af5d630ad985aa9b043a864"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-staging/V15__publish_web_cross_checked_vocabulary_batch.sql",
+        "sha256": "e7cbc36ef5b688f815f05bd7baefb4b3116c07171304e937afafd0946be642fb"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-staging/V16__publish_hsk1_web_cross_checked_batch_01.sql",
+        "sha256": "34cd1a03a3b218bbe9cb15252a7477a1a35fd5bd8cfbe41b33b2958dc9f24019"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-staging/V17__clear_unverified_vocabulary_optional_fields.sql",
+        "sha256": "4306313fd55a647577be6072b50d88e5068182187613d1b3bfb96a2abbdec1c6"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-staging/V18__publish_hsk1_web_cross_checked_batch_02.sql",
+        "sha256": "e70aa9730050d07838065b1c985f6aa12c29e302476707d418f236a9627c6d75"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-staging/V19__publish_hsk1_web_cross_checked_batch_03.sql",
+        "sha256": "98e5b472f1956118725f05071ff64614176204a0aee466500ed13f3fb5fbf6e6"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-staging/V20__publish_hsk1_web_cross_checked_batch_04.sql",
+        "sha256": "a6a05739cc305f0be50e15fcc6693a760df8dfe5f2041e619cedd79ae616013d"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-staging/V21__resolve_verified_pending_vocabulary.sql",
+        "sha256": "d4cc8de6a8e9c55f790213c58d04e72029d57aee8091188a2c6e22a3de1b1a31"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-staging/V22__repair_hsk1_batch_text_encoding.sql",
+        "sha256": "3f4fceacbbbf2506693958cd26c82196b001dbb76b29db19cbb6b0f1e8aa4388"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-staging/V23__publish_hsk2_web_cross_checked_batch_01.sql",
+        "sha256": "fd051643fa47971d0850c27575d48c68cb8c4056fd5a300a9e50d92077297edc"
+      },
+      {
+        "path": "backend/src/main/resources/db/release-migrations-manifest.json",
+        "sha256": "32d1513730e8f25a257dae6f3b7d7443af5d49ee9d427a3af04dc7aea879d1d1"
+      },
+      {
+        "path": "backend/src/test/java/com/heyganba/ChineseDictionaryBoundaryTest.java",
+        "sha256": "8a1b162710627a1870471dc9d5e192589522b32b08890e869c5e532c794785cd"
+      },
+      {
+        "path": "backend/src/test/java/com/heyganba/HanziVocabularyWithdrawalTest.java",
+        "sha256": "ddf5d56c0c3d12f7c28bb1735e9cbe93a7c392ccf88063192085d356813aa251"
+      },
+      {
+        "path": "backend/src/test/java/com/heyganba/VocabularyWebEvidenceTest.java",
+        "sha256": "7c5bec5688c5ff0e17ae091b554718a1cdfd9c4a71211bf1d5f8e4f41d88ba40"
+      },
+      {
+        "path": "backend/src/test/java/com/heyganba/service/AssistedDictionaryCuration.java",
+        "sha256": "6440063cedfcaf39cd1739206f804302fdc8811c191f6cba1b2be9d2b9201b5a"
+      },
+      {
+        "path": "backend/src/test/java/com/heyganba/service/DictionaryCuration.java",
+        "sha256": "0f93d6a33c8e2e2580bafbac8639e09d7ab09b7d5d8207cdd516414f0e8d02e9"
+      },
+      {
+        "path": "docs/Content/approved-vocabulary-source-audit-v23.json",
+        "sha256": "e2bdd289314c11568f8b7ae70c453a816c74e1cc0bbd2e4bf48e425093969fe5"
+      },
+      {
+        "path": "docs/Content/collins-entry-observations-2026-10-20.json",
+        "sha256": "9e3ffb68761de95ccaa6ca58563798e37e3ba2659b525121bf2c65e3b18b4319"
+      },
+      {
+        "path": "docs/Content/curriculum-coverage-checkpoint-2026-10-20-v23.json",
+        "sha256": "7327e2dc6b4e9905f07da6a515d2b907c7ba8373077db1f4a0bb1f2212b36bf8"
+      },
+      {
+        "path": "docs/Content/curriculum-coverage-checkpoint-2026-10-20.json",
+        "sha256": "afeeafe7ecd6823994e3ac6af3edf1b22a4f50717627a764b85dab7613c4408f"
+      },
+      {
+        "path": "docs/Content/hsk1-content-correction-2026-10-20.json",
+        "sha256": "0a27a00c94058807f9c0a13418775aad63f75e4baf49c73b545393e7e5f69bf9"
+      },
+      {
+        "path": "docs/Content/hsk1-web-cross-check-batch-02-2026-10-20.json",
+        "sha256": "1c7baa4600b3a7c1271d6f8bae29d2a2048a27c358f0daab379f4faba026f6d8"
+      },
+      {
+        "path": "docs/Content/hsk1-web-cross-check-batch-03-2026-10-20.json",
+        "sha256": "45e1a96a25a67c5b4483980ca6d2d4241e098f3807bb3073e7c638d74bd85e52"
+      },
+      {
+        "path": "docs/Content/hsk1-web-cross-check-batch-04-2026-10-20.json",
+        "sha256": "650b8764f0b5cabb60288188fc3b60e3eda9d43d2fd14131361e917152363df2"
+      },
+      {
+        "path": "docs/Content/hsk1-web-cross-check-batch-2026-10-20.json",
+        "sha256": "640c42251fa123aa399ec84f8cae3d29a67b2ef4a8f0c9c7cbd961a7e19a0456"
+      },
+      {
+        "path": "docs/Content/hsk2-web-cross-check-batch-01-2026-10-20.json",
+        "sha256": "7b9d130b126ecde834bbe5180d54c3abff2174d838639b3323b983ec317965bc"
+      },
+      {
+        "path": "docs/Content/optional-fields-clearance-2026-10-20.json",
+        "sha256": "bcae140430d8d93089ea8b99a2766b35d8dda525eeda968d74a640c9109fbfe0"
+      },
+      {
+        "path": "docs/Content/pending-resolution-status-2026-10-20.json",
+        "sha256": "a9a5f26bdd12b377559a9291ba9c975e9d44eb03666a92053b99b9ac21d3c863"
+      },
+      {
+        "path": "docs/Content/unmatched-official-ids-2026-10-20-v23.json",
+        "sha256": "314763a278439789522ac3effbf80c8822b52ee65561d7e299e479092076373f"
+      },
+      {
+        "path": "docs/Content/unmatched-official-ids-2026-10-20.json",
+        "sha256": "2d90014331a96c76d6f59d7652ec8bdaf67d8d0b45e3ff5cf1c5528519812e79"
+      },
+      {
+        "path": "docs/Content/vocabulary-evidence-queue-2026-10-20.json",
+        "sha256": "cca063652bc073193f1b559a1acf43014b6896899c2b78beff95f18bb1af804a"
+      },
+      {
+        "path": "docs/Content/web-cross-check-batch-2026-10-20.json",
+        "sha256": "c10a855e666ed8280643d871a426b796e0a9782fb2f7e6f6d7bd5ee51d3f7a31"
+      },
+      {
+        "path": "docs/Content/web-cross-check-policy.md",
+        "sha256": "e0f2700039d972530c07dbeade48fdc2e5a9b39651c8cb7c922cce69640328bc"
+      },
+      {
+        "path": "docs/Content/web-cross-check-resolution-batch-2026-10-20.json",
+        "sha256": "f5221b6897975586422eb6b24dbbe4c82e15044d0a165becf08b2f0ac1ce0106"
+      },
+      {
+        "path": "docs/QA/legacy-path-audit-2026-10-20.json",
+        "sha256": "b39a4da15ce42099569a26d5c7f45b845e11bd9873cae601cacf035458750713"
+      },
+      {
+        "path": "docs/QA/master-readiness-2026-10-20.md",
+        "sha256": "7a3bd472aae49ca89a3c574b6f57ceb7213752aa40644ce05c12e4181a5f9145"
+      },
+      {
+        "path": "docs/QA/master-worktree-final-2026-10-20.json",
+        "sha256": "93082b17403799a3e486da5ef42ef45201631ea8ba8bda34221cf5b107e8a2ee"
+      },
+      {
+        "path": "docs/QA/readiness-v23-2026-10-20.md",
+        "sha256": "823410759bb01ebfb690b3b1fc74d6bc79eb155249cc7cd5c221198ecc729adc"
+      },
+      {
+        "path": "docs/QA/spring-advisory-exception-2026-10-20.md",
+        "sha256": "bf0cfe3fc214ffd6cba6cfdd4616ed4224fce288b69d875b274f8f3a0192de8b"
+      },
+      {
+        "path": "docs/QA/v23-verification-2026-10-20.json",
+        "sha256": "584dadc67ebe0321e3d96cd6f4a493efe25989b5e4e4bd2d92fff3d53d2f74b0"
+      },
+      {
+        "path": "docs/QA/worktree-status-v23-2026-10-20.txt",
+        "sha256": "983e6a058be4f2af7613778575a70a07f5a89ee55e98a88eb61de6ce73ae1593"
+      },
+      {
+        "path": "frontend/public/fonts/BeVietnamPro-400-rest.woff2",
+        "sha256": "29542a8538291a5f7249b69800e64fc73bf7d92e929dd78d85c9e1a87ab75c5e"
+      },
+      {
+        "path": "frontend/public/fonts/BeVietnamPro-400.woff2",
+        "sha256": "1e6db0b93fc05fd13ab826235102097757c7957a02ffe5286280a45afeeca638"
+      },
+      {
+        "path": "frontend/public/fonts/BeVietnamPro-500-rest.woff2",
+        "sha256": "0992852dbb458c07bd82efd4f86cb014f79420833a9521b089b4875eadfd09aa"
+      },
+      {
+        "path": "frontend/public/fonts/BeVietnamPro-500.woff2",
+        "sha256": "3a2c2711cc315473d98bd1877f5ef62f32f3987dc4f162f1041acc084f36ef8f"
+      },
+      {
+        "path": "frontend/public/fonts/BeVietnamPro-600-rest.woff2",
+        "sha256": "f89d308ce8a688c5b3cc83ab25a8d5a9b13df283382a5a6269a161e32526588b"
+      },
+      {
+        "path": "frontend/public/fonts/BeVietnamPro-600.woff2",
+        "sha256": "dfdb6d68b790bbf6732ca08b085b7b7d21a075ef9aaac59625db69bdacc1850c"
+      },
+      {
+        "path": "frontend/public/fonts/BeVietnamPro-700-rest.woff2",
+        "sha256": "9697921f2a010fab80eded065135abb62de6ca7311137cb5fe2f77472b1df369"
+      },
+      {
+        "path": "frontend/public/fonts/BeVietnamPro-700.woff2",
+        "sha256": "90fc80784be7ce88242d40c5b2dadbc479cbad506b19587fe4b8af16da0054c2"
+      },
+      {
+        "path": "frontend/public/fonts/BeVietnamPro-OFL.txt",
+        "sha256": "6b7f8f73609a25ea78c891e34cf37b06f8a676b7ea986e941e43b009110f2a85"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-0.woff2",
+        "sha256": "4646729b0a51356f32cede09a2d61c7113b0ea0d4c814e79bbf77ddff2ff2823"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-1.woff2",
+        "sha256": "c2bca5d2d43471bbf56d49804a5b1cb9048a728792902572373ee450c2c374c7"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-10.woff2",
+        "sha256": "227c356bb9b1c2929c5f7f647fc212820241f6aad816c331b53f32f2617cf433"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-11.woff2",
+        "sha256": "f55c8a1f11be9b1fd5e2413f0496aad8063626acdb727f0ee946ec56b86ed011"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-12.woff2",
+        "sha256": "e778bf5c2bb1a32053a575de7a9b535fb1a9b387f8baac6b7019318748338fd3"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-124.woff2",
+        "sha256": "b9645d07e65eef47b5ef5f0bf764b72ffe168b3823dfda81428b46a27347dfae"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-128.woff2",
+        "sha256": "7913a0cabf1d0d169a8776db28626556175189a70b579769d5571b776b99a623"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-129.woff2",
+        "sha256": "1f7d6d5f3fbb426ffe60ea4ff6789b78c0a0db21b60be7d821c2ace2dab97225"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-13.woff2",
+        "sha256": "dda8b0cb70e67378e180ddef3ec46bcdcd8ae61e136fedee8c9c417b1cd1045a"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-131.woff2",
+        "sha256": "b6ec9775de645feb5067ee3e7467e3a60a2dc7e81a2e03de5113535e4a0e83a5"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-132.woff2",
+        "sha256": "de395899caaccdcbf7eb8bf6c54474c0a1d5ff6c683363e6a19cb9671b56729f"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-133.woff2",
+        "sha256": "1114e2ce7abf5e46de96b5ba1c7218917632b590bb3380831cac55e08b9bb150"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-138.woff2",
+        "sha256": "af82df5963b914d0f47ba46c2bf748da6f4772945d9629ffff70ab16c75056c3"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-14.woff2",
+        "sha256": "a19eebffbb773d65e304af6a254844c75fa9cb2443f429dffa3fe19393fb2e6f"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-141.woff2",
+        "sha256": "4758aae7fccb9f440fb1ca838aa2e1317edf94b5109881d2f50e4c1897f30cf8"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-143.woff2",
+        "sha256": "da4015e38b3890c8a4bfd7a686c1e8a8c9c3aa7d91f724a20d690b6891ad5fb8"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-144.woff2",
+        "sha256": "3f1931eb8490f9ffa15c64c5acd03374cd50d2ab21073da2593c71e59923def8"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-146.woff2",
+        "sha256": "606c96f28de1c3fd499298df4a48c2bb914cbc42ed0a14f4a59622ad8425ba92"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-149.woff2",
+        "sha256": "22a1961c9c49e4fac09eaa019418cebc91b2dbeda91cc15a30dc44e4e7bc4aaa"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-15.woff2",
+        "sha256": "28479ac5d326c4e9ff919f38905c20bd1d1d5698f46b56bbbea98ae3a08cff30"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-150.woff2",
+        "sha256": "75664cde70869ce393128fda78721648e08d8703e4f7077cfce93dee1fe815a3"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-151.woff2",
+        "sha256": "fee0683b955778f4d7c6f81edbca416f7c73d9696a3a0932a78c7874d1829211"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-152.woff2",
+        "sha256": "0471b980b048e49e4d280f9d0b35f8855ca744016221eb8f306dfe3e6af536c9"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-153.woff2",
+        "sha256": "df2fef0d286c98e8965a972718df3add7940e8b8def0c39d1b7a491501633951"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-154.woff2",
+        "sha256": "b24b56840df626932da7b790a3149de17644f5bbdf268d75cf7e0a67de1fa350"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-155.woff2",
+        "sha256": "477090de0f98a8e2fbf02c0be1c78482bd693e35ff848720bf1d5fed36e4d8d6"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-158.woff2",
+        "sha256": "d12dfb1f0bbb55e3200ef301c256ed6578e497df6c1f9235b1ccdb45f4b5aeb5"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-159.woff2",
+        "sha256": "c675c014e59f5065c00a65c3e51ee22111ed602ca0db0a6c6b4053c2a4e139d6"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-16.woff2",
+        "sha256": "85c2d02697743fb85f1a7aea96461ae9ee5d106068d96ee99fb52e106207b328"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-161.woff2",
+        "sha256": "be24b8787be91f28a7c33e03e01dc548380e680562cf4938fa2fcf8400b6fd1c"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-162.woff2",
+        "sha256": "945521cb5e1bedd413bed65f0ab33fbf93080cfe6f0a4f8014b6e9329060ea9f"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-163.woff2",
+        "sha256": "f86b1ce6d5417518e91a07140647d9be30188b3a74e1929de4c21415ecb9604e"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-165.woff2",
+        "sha256": "dcc0af34f988da7bd81feaf6a064821f682ba4a7ae8fb6f9d906121fe9839b04"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-166.woff2",
+        "sha256": "0b1c4d844a92b29fac608596fc69e09907474fc9bf6c2e93ee23f43327f660c2"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-167.woff2",
+        "sha256": "e32414de5274be28888b740b5e0c344d2041c558c5c5852a3639c1e0b0a00599"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-169.woff2",
+        "sha256": "b05b78a1cf197e79d9f71482b4455491f7d0062e55f81291ff94f1b0749e0c9d"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-17.woff2",
+        "sha256": "575bfb9e46fbe03c676c87ee43770033ba67ca831d4b8e84cb9da62320738843"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-170.woff2",
+        "sha256": "c98757a21f09d5bc3f7a7420744efe2b92ea781d57654b27afe0af2eae895f1e"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-171.woff2",
+        "sha256": "e34a19ab533a3680aee6fd1583f51a2f21d54f62960901fa97b6929dc641d79e"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-172.woff2",
+        "sha256": "cadda3a68f007723a34d00ec0a957a425c11c79171d140bfc2783f18c31ed04e"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-173.woff2",
+        "sha256": "1e73221c25f7dba4ce10eebba6c2205fecb1d9c03add49dff0810de253222430"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-174.woff2",
+        "sha256": "6518dd70c6586421b2b9be32d5b2cdb2cec382fda8ce417fccce516b05d0cc1d"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-175.woff2",
+        "sha256": "da7c0c79eb301da8a0103f6448b7b0d348872090f3783561308234ea8fdd8566"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-176.woff2",
+        "sha256": "862d7c983e322a7dca187489cdfe38bba057edffb4090ef330a0c81af4856c8e"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-177.woff2",
+        "sha256": "515f89a071f9b2e9462a27264e22712124c57ba6d1ffa0be9d928f2f5dd993af"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-178.woff2",
+        "sha256": "478f11d9f6fbc5e7575ad131bbc369fd1ce8a9fa6b73089d4d45b784f1c9fcb9"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-179.woff2",
+        "sha256": "b3ec4e7af76d8cfaf0b9da7809e29dd8a54041ba59eff088635615f883f8aebf"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-18.woff2",
+        "sha256": "a8e10ed477976268c1c0f07dcfb9c2a9c40347a1d81e0eeb3170a7e0887763f3"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-181.woff2",
+        "sha256": "9924768f4018432955becd11c810cb97c5c62390dd4138cc34449a3ac4cd8f32"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-19.woff2",
+        "sha256": "b713a0d3b8245ce579570e59df03eedb9f3aeff625f1d61c24c9e839e182270a"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-190.woff2",
+        "sha256": "5c2163b3636df69cdb14004a24ab86e036d7b0825b91afc3a6323ae3ad5e9e33"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-195.woff2",
+        "sha256": "a28aa782decd0b04483522f5eef77f121bb9061df789206039eaffbc3de95803"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-196.woff2",
+        "sha256": "6bc96f25f77efe87f673f10dda6c6bd00f2a0ffaaa87688809e092f59a161206"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-20.woff2",
+        "sha256": "3e9a5f9f8c229e9b989bbd6c44bde69dc2c4a9be11e5b2a2a78e015e68b27c71"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-21.woff2",
+        "sha256": "b435e5ac37455b52b5f177427e1717a6d7a242dbc80915189010144f1f0989d4"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-22.woff2",
+        "sha256": "e32ed557919b15f523bfb8e68699b6451fc0879d499296c8366a38232c2114a3"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-23.woff2",
+        "sha256": "0f41f1f0691f719a7398b6164b841a8f2067b383f21b9d9de034ac708276fd96"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-24.woff2",
+        "sha256": "48505987c4ae6c77ec220a158608d32d909708ab2ac1b9d8cca6e63a819430d7"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-25.woff2",
+        "sha256": "47678cfed38c67fdbaa789c39e1bb66a894e7025931630d304e7f436a31fb628"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-26.woff2",
+        "sha256": "c04895b33fbac50dccf5e642b36f71d8dd8931db1d21c2dfa20ae99d3676af0d"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-27.woff2",
+        "sha256": "e15eaf087a0f14cc4616702366a2e0fdf414c8fa4f77b858360bb77ddfa4b460"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-28.woff2",
+        "sha256": "1a44dfda7b45399f47c61a31d7e4c440b4d3123f8085afcbedf9ff3d2954c546"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-29.woff2",
+        "sha256": "8bdbd2d67653a8cb4f8d759b7a43e2f183373cc6064ec9a11664a57aafe094b5"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-30.woff2",
+        "sha256": "e971f0cef4fbffc2a2d7796d7e8d1a6e836e3719d3be574909cfa830ac8d082b"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-31.woff2",
+        "sha256": "c10c42cf0f0f79527b012642254398f12a891042257c7cce7ded19a73fd438d2"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-32.woff2",
+        "sha256": "9c792e311dbedf6c8fc96ac83155da78a6392507aaded9a62e6b4f7192aafe51"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-33.woff2",
+        "sha256": "fc18dd8c70c88a39ffa5b5d4d4a17d29819971386b88503c4fb7d0e12dcb373f"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-34.woff2",
+        "sha256": "d7d883d2994375a6f90533c479fe9cde5d1821fc5fd730b12b1dd85047d92442"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-35.woff2",
+        "sha256": "331cd5374f323a31a6b7c678ed24cce8aca2d4437650118c61e3dc4b7ef3c7a6"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-36.woff2",
+        "sha256": "0b523cfcf8f8ea89685e729e7c6759b64b75cbf0dd9df6098929a19c21497497"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-37.woff2",
+        "sha256": "2322959e06d5a2658879f0b6badd5378c9b50d709bd94aa074479c103bbaefcb"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-38.woff2",
+        "sha256": "8a26c27bf4332329f80b3d610952a3667bb42dfd18fcbf146d12da3b06e785f9"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-39.woff2",
+        "sha256": "9158dd7a8b3e5525b71e7eb3a76bb25d4f771a5017ddaedf4d44e4ab3ab7c690"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-62.woff2",
+        "sha256": "e956594fad9c6a5c16dc8cdf823d66b54abf38e27941a16a20c3aa047d8ccae4"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-63.woff2",
+        "sha256": "6d79c629967e760d796abf1d6aa7577a81bd776ea8991023d63fb75f7ce65955"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-7.woff2",
+        "sha256": "2aae55442ad50fa737ebf7becc5fcdd977bb96b62256ab19a3954f139f0caaef"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-8.woff2",
+        "sha256": "4212307255c68e1fb4161d46293f4e9d59ca9f8e033b75c6388ddde740c9213b"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-9.woff2",
+        "sha256": "aa29541234a02323fbbb5d44f0767c28b041e77254263032535c27d8e15d2fdc"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-OFL.txt",
+        "sha256": "1c05c68c34f9708415aada51f17e1b0092d2cea709bf4a94cd38114f9e73d7d9"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-pets.woff2",
+        "sha256": "fa5250504d6bf569ea848165a541c0ad9eecf756389bdc7098811871b4dc6997"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSansSC-ui.woff2",
+        "sha256": "e9627c9828c16e68e4a90827266c081ef21298da6387996fb037f55e46eff6ef"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-0.woff2",
+        "sha256": "ae537ed8113279b6662e3a3be6c09cc306044fe5a54c831a2c00a6b5ea5103e0"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-1.woff2",
+        "sha256": "f94917dc076611cd04065b636da908ac4d1a791dbc45f8aef2417dd4f84dd01e"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-10.woff2",
+        "sha256": "354a6d521ac7a6848248c6357e154b78c502039bca657fe24e6aa724c2ce2029"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-11.woff2",
+        "sha256": "7b8322c2faa3af8cb237c58cc7c9599859992978e258f5ae57c236174aab93cf"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-12.woff2",
+        "sha256": "705269b8300ad621d937e3e185463dccad7aeec00c8108dff9f9a8ff801d67ea"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-124.woff2",
+        "sha256": "b5e75014f4d5253f22c4b5e5e87771a53e3d36afd2e3c6e258aaed0694807048"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-128.woff2",
+        "sha256": "6fb622138d11d6655471d5ad1836f7886004f4c8c8a59dda4fb550318be902e0"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-129.woff2",
+        "sha256": "7a38f51e2ee700c6895fdc309e945b548245406b40b8f6ec6fcc3118e3fd17c8"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-13.woff2",
+        "sha256": "2f4925436d28e92d8460a63668cd1b6eeb95e2e6ba4b6eb9584f4a7911b30328"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-131.woff2",
+        "sha256": "4ce28829dde2ab55844e7b1f0702a9e03686603e7fef0af56d929d467c0f2005"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-132.woff2",
+        "sha256": "2c6df60aadeda01657f593d3ada60c2f5ad71a4ff8e88eff0b5ca01df50adb9d"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-133.woff2",
+        "sha256": "98fdcaa7870b0db531d0c045888fc476c934355325790b44767aa80a508de478"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-138.woff2",
+        "sha256": "fac38c9017ee618c148f17b27591e6cb86c29f83ef6429dc58c0b8fa1d601382"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-14.woff2",
+        "sha256": "6b8d84192cc2eb6557d007939a9b99490ca5bd6ce4c19b688a73fa74f684d80f"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-141.woff2",
+        "sha256": "24b381063a517438845d9a5289ae118f5e37fa66f15a7b01a6e281a00c2a28c6"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-143.woff2",
+        "sha256": "5cc83f3f62c0a9e67c35f4f96c7d670abfabe6d7eeafd1867c0f15c37b5e7aa6"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-144.woff2",
+        "sha256": "aebe8fe3c9c6b4f59353c8078c95c6cdf9bd717feb2b99c1a4a957ea3a068660"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-146.woff2",
+        "sha256": "48de69e00e7a04419fb9cda93a42415306a82ab8dcf2be315b4ccbfd9b1c0f34"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-149.woff2",
+        "sha256": "b1f1ab72c6120caf0d9c15fba0015971ced4af18c6a6f74d30986c74ab984c3a"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-15.woff2",
+        "sha256": "8d445e9328eb4fc77e5dfaf709c2a411032261d3c89a7c05be84e59fc4146984"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-151.woff2",
+        "sha256": "916edc128d5303e96200e55bd22b39744ac8349caf5ca34762286f6af0e12286"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-152.woff2",
+        "sha256": "f8382e1ace7b47f7e48a0baa1c45d7a219ed41bb1271a932cce0dda1c6e0184a"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-153.woff2",
+        "sha256": "77a2388a0fb202dfaa054416df97b9cc713cd8baf825492606081b6d3c3a2948"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-154.woff2",
+        "sha256": "8ce0e14231a3d8cd8601dff7b9898b0387b6ebca9b3540aa7c98866a2fb5ed2b"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-155.woff2",
+        "sha256": "b38b6c5737d65f701595676bf4d618ea172c55876cbee691c2ae50e135edb422"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-158.woff2",
+        "sha256": "798e7ea4f7bd6840bff70bb01d10821c0b366516a004fb27ab5f08d16b0c6258"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-159.woff2",
+        "sha256": "7e9604f3327020b0e9ad61cf2311e8f3d9a5a590d75e893d7ba896c90d2770ff"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-16.woff2",
+        "sha256": "726ad4b081f9f1b4e802442d570a101d50850b9250f5135396b0ea25182d36cd"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-161.woff2",
+        "sha256": "80816df3d951c1e5bdf71857836a99eaa83cb2ca6a1267534bc452dca6c93c9a"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-162.woff2",
+        "sha256": "33a55c6e2254aec884691b2f8421da315c7f6388d787a1367f6f8849f8e05c8a"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-163.woff2",
+        "sha256": "bb2e7be74bac0d30e1d1a0fd4242d4ff3719822e098cc74c3fbb95cf0cd53f54"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-165.woff2",
+        "sha256": "17e3209d1171d682a7b0854092731d9e782001ef2aa9ea69005c35f109b79854"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-166.woff2",
+        "sha256": "dd680260677920b747b8f4023926a40bd5699be912196e2e37652b4ef37c0e9e"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-167.woff2",
+        "sha256": "43356d58298ccc5ba5fc2212fbd737a49c58d320ca932ab6255179e0c39c3c31"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-169.woff2",
+        "sha256": "c3bc78e7ff488d1c4949cc07c7c3e3cccda4c5b7f68ad4e383e0aebd28a08737"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-17.woff2",
+        "sha256": "c3de023143ea88df5f4a584173db7301f1fe8abcdcd48843d1ba7c2c2c6eeb85"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-170.woff2",
+        "sha256": "caccaadd5c86330062df5b8e87a869d40fbc671a08c634c008ced65dfeb5eeca"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-171.woff2",
+        "sha256": "8d545e6b724a1512eaff14246e28390425c6a05a16f5129a066489c1ce2e06a1"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-172.woff2",
+        "sha256": "0ac400295ea29ed49f713a0174a0df5f0f55c5c4351dd74a7c0dce3983671dee"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-173.woff2",
+        "sha256": "a8d443607b05953d88af44c29991b2e42bb66ae132168a3942e09dcc18a17286"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-174.woff2",
+        "sha256": "55844b032c223b0312e561f7d8771bfd1d3a772c126a6348b4eb90831b1cb86a"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-175.woff2",
+        "sha256": "6683ce2a9ed72878a5bc45f0f724f9b094747ef524e525044c3c9c2a06eea495"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-176.woff2",
+        "sha256": "0fddd2b61500287b7fd087b55afa564ecbc14626a408710eb30eea201876f85d"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-177.woff2",
+        "sha256": "289ec99086c64b33013fb7df9460b2adc8296c36dc6c1b4c92dd9f17cc6db69b"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-178.woff2",
+        "sha256": "183e814e4421dd92e12fd7c2fda5865fb5959ea7e2702c86cc21fa5b5f296202"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-179.woff2",
+        "sha256": "3d16bddac653d8e74e886d7e76d4f6425228d5c11e39c12c00ee1bbaa2906281"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-18.woff2",
+        "sha256": "907ba57ae7221ec2ad894e9f6fe4ab0b13f6a78d21a9e3a0df9e434f19d7721a"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-181.woff2",
+        "sha256": "6a272fc50c13cda441aed2e2b09ec7da4b8b1465ff9f827c36182fa497f75ce3"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-19.woff2",
+        "sha256": "64984cb60724c5c6ba127a4923f4afb3e0d287f0ca85f6ecabcc0ccbe74599f0"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-190.woff2",
+        "sha256": "5adb6d7f494618e771be39d8bf4df362b3b699d35421517f5342aba18fc258cb"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-20.woff2",
+        "sha256": "022f2a970f8a4757ec5434b883a4c5cc15d53b11123d1974e20629eb4cf1f02f"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-21.woff2",
+        "sha256": "3026157841498c23e0f52c964cae870828a970fdb49b5fa93169a3933ec7b6cd"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-22.woff2",
+        "sha256": "c2c0e1a29210b0acb1f4d453b2ad1d1379704b415c72cfcbf55dc9789e887c37"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-23.woff2",
+        "sha256": "91a6e5d6fc0e68daf5dfec8883bd93d082bb7a7ad0616b745c149652a57033f3"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-24.woff2",
+        "sha256": "141898ae5c8d9320eb7a0da8836ee7370f0b34e9a67fe2efedbedbf22cc981e0"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-25.woff2",
+        "sha256": "e2ff3217e3c624705d9c9966eb1ba28d7ae760a54f548eddafe60e83e356ec95"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-26.woff2",
+        "sha256": "8d5f34d6c3f5a4e231b61c504f3969bc882768109c7054e0ab6e1cbd19ae9f93"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-27.woff2",
+        "sha256": "b9147f18f49112f24ea41ef921338f6d92b0716c91855b4780734da98130a305"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-28.woff2",
+        "sha256": "7963d04331a754bf532be9077cb61573f79c1b1e0809bccc18ce9522fad76828"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-29.woff2",
+        "sha256": "5beed6167afcecba1fe8a0270abe9607e77d75af318cd40127486c8053b1611c"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-30.woff2",
+        "sha256": "5a01892dc372f65207d1ccd9a51f3fbb50d034e734caee9c99a1c81663d26508"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-31.woff2",
+        "sha256": "75ae562669ce6de9e5facf51ff61cb5194e403923411dd358f0ca33ea2953c02"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-32.woff2",
+        "sha256": "8571a782f203fb97ad4b89fc77ab5969f4c40a2947852aad97efc08e335de8c6"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-33.woff2",
+        "sha256": "e8a1aae96c0ce6c923dff4e37ca92bb3453e6d0a07326b19a070287a61b9e44f"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-34.woff2",
+        "sha256": "963dee84a2a3c45f62218e269ad6110a021cc603e91c55ecdf137538b820bee3"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-35.woff2",
+        "sha256": "32318e19a68bf16c80cdcf6f001b027075f22bfb95716026c08d56ca44a82b1a"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-36.woff2",
+        "sha256": "cd9fc85a25e6384ad9c7a61977d5f872bbef7ff619900a382544b8ba759b770c"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-37.woff2",
+        "sha256": "79acd53684f54f8001325ac415506415178af7a580639607e9cadbb107feb591"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-38.woff2",
+        "sha256": "8e1ddd0ba474a804a2a00f8cffb25dddf6e7d57592594123e82577c100a7ddc5"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-39.woff2",
+        "sha256": "44b4299757ac1b26118e44535a8fdaff9178ec60e41a9039f97105224dc5a0f5"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-62.woff2",
+        "sha256": "f3f1119d359787c351cf12d0eb947ed0b03b02bcf0a9fedce962a6afdce3e930"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-63.woff2",
+        "sha256": "bd5356085e2fdb69dd73355b3094c8075a27f802a25503a59dc7c42ec3c4d14e"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-7.woff2",
+        "sha256": "c1cca939bdf06b0dd05590f9f48fb71f0b1a3ff6e58dafbba0f19af49adc8ac0"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-8.woff2",
+        "sha256": "38bd9d4766a6f193bd29a501e241d804b8ae9a4273c032f002e06cfd900dc04c"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-9.woff2",
+        "sha256": "da35f82afea9026159e0da22b4c8858bac65e3c502092ccde7a115628137106e"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-OFL.txt",
+        "sha256": "5e0da210fb04058a8c0087985d2d456b931c2579811a49655721d3cf0c36b6d6"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-pets.woff2",
+        "sha256": "5d2336dfaec0bae568540e8d5e4705cfbb916fa3b6cdf585f206137b218ca874"
+      },
+      {
+        "path": "frontend/public/fonts/NotoSerifSC-ui.woff2",
+        "sha256": "4e95f77b12b44fedda36b0129fcd190bb72d92b21b6235d8f9790c72af31110a"
+      },
+      {
+        "path": "frontend/public/fonts/fonts.css",
+        "sha256": "95016acecde4b98672e5007ec336e05902e9c9b8cd9df2a5456fcb76f1e4111a"
+      },
+      {
+        "path": "frontend/public/fonts/manifest.json",
+        "sha256": "a8db8466abc6e6fe6bf843ff8bc8568070a2938d43b5f20d21f9c44e8965373c"
+      },
+      {
+        "path": "frontend/src/features/flashcard/lessonPracticeSession.ts",
+        "sha256": "91b9461fc30ee08eb2a3cae14c731db4f8884d1a352c5198f4f4de2dac6b63c7"
+      },
+      {
+        "path": "frontend/src/lib/hanziWriter.ts",
+        "sha256": "fe5270632aff2607750c1d598ac76a872b15ae83a26c976e96334d32f5fb1d39"
+      },
+      {
+        "path": "frontend/tests/unit/app-shell-reconnect.test.tsx",
+        "sha256": "377571bd93918ec1244d40aceefb71ad87001f68e35d8f119f9da1e4136987a7"
+      },
+      {
+        "path": "frontend/tests/unit/chineseSpeech.test.ts",
+        "sha256": "2c0efda68e93e43d0a43c00061ed525bbb9702f78d6f1bf9ca96ee5160f8f63c"
+      },
+      {
+        "path": "frontend/tests/unit/lesson-quiz-recovery.test.tsx",
+        "sha256": "5237660def2f509d9efc97c8971684aaaa4a43a699414153d9210e1a78a5ff79"
+      },
+      {
+        "path": "scripts/audit-approved-vocabulary-evidence.py",
+        "sha256": "a5906837930f941e776556fcf4bc7b10a7044b2457b1ed245e73654e7489476c"
+      },
+      {
+        "path": "scripts/audit-production-artifact.py",
+        "sha256": "e576d961395d77d9b998877a8a7e560e0a63008d9ef911184e3eecb7744f4873"
+      },
+      {
+        "path": "scripts/audit-published-corpus.py",
+        "sha256": "00a814290117208dff15a5effaca09a2daf8895d7c06c1cd3f5e2cf23d6e2076"
+      },
+      {
+        "path": "scripts/audit-vocabulary-evidence.py",
+        "sha256": "af7cf38f40aa8c29edab0fecb65822edba74cd493d01db7ee461e5d479986469"
+      },
+      {
+        "path": "scripts/build-local-fonts.py",
+        "sha256": "e30773c9311b1b463d05993e717d52e58dbf06399c9b131d654c462b1d259a86"
+      },
+      {
+        "path": "scripts/generate-hsk1-content-correction-migration.py",
+        "sha256": "21e4b14b6120cbcc8098b2ba6a2523b2d8822caf281001971d097820e74f8b22"
+      },
+      {
+        "path": "scripts/generate-hsk1-web-supplement-migration.py",
+        "sha256": "7e665f37d0df15399624ea9588726ebfe6feceb6fd2d01a641e1c4adfba62801"
+      },
+      {
+        "path": "scripts/generate-hsk2-web-supplement-migration.py",
+        "sha256": "624e5037cfef11320d8e029675cbe5265a42b4921c4339dc5e3a78ae2034d317"
+      },
+      {
+        "path": "scripts/generate-optional-field-clearance-migration.py",
+        "sha256": "1ec246bdb4b429ad2cd7dfabd93d50c92048d3b6e1a9d85f0f7eb7586c17d964"
+      },
+      {
+        "path": "scripts/generate-pending-resolution-migration.py",
+        "sha256": "b391a223ebf36a28b14382192ddaee99847256fb78239845a85ee503bced280a"
+      },
+      {
+        "path": "scripts/generate-reviewed-vocabulary-migration.py",
+        "sha256": "580e3be14daf53c34d15e0bb4e552974bd7f78be0c1f6e0e0bbb1882c3f74fb6"
+      }
+    ],
+    "changedFiles": [
+      {
+        "path": ".github/workflows/ci.yml",
+        "beforeSha256": "eba59668f8b0e072af871d13313327fd839312248e67c4129544e3231b0222f0",
+        "afterSha256": "ee017844c05d6b43d3e3dfb4349d6eb043318b3013796116692f1d161572cb90"
+      },
+      {
+        "path": "PRODUCT.md",
+        "beforeSha256": "39f0ebf2054f37925c82c38b72be62e46d5de2cc333b91c911c9af113d23add6",
+        "afterSha256": "29c2f94bcbd525c9f2880dd3c662e511a669fc0e38023c4b161c92744a8142cd"
+      },
+      {
+        "path": "backend/pom.xml",
+        "beforeSha256": "26996a6fc5f38aa6fd1008ac4260a00a93aab3c03eff99ef3a8ae919acf690d3",
+        "afterSha256": "7528daaea6c732c42710487ecd283646cb3b9d04f1986172c57000df346e66ab"
+      },
+      {
+        "path": "backend/src/main/java/com/heyganba/dto/dictionary/DictionarySearchResponse.java",
+        "beforeSha256": "b78e5bd638216eccc1093deea1dc97168ae0e7f0bf84ae1b38b7f98e2b4c3f4b",
+        "afterSha256": "bf031e20d64b13187c48f2597bbe918c45a42c7f90aef1c59cdd32a997d2011a"
+      },
+      {
+        "path": "backend/src/main/java/com/heyganba/dto/flashcard/FlashcardDueResponse.java",
+        "beforeSha256": "e1a8db5b8674cbdccaded320c6b8c438e0902948520c8f96a313922651196bc7",
+        "afterSha256": "4d3180f3c4f301fddd41588fa838f5fd73f578e9c3b429d7566082a5d0ea8c3b"
+      },
+      {
+        "path": "backend/src/main/java/com/heyganba/dto/kanji/KanjiResponse.java",
+        "beforeSha256": "e322aebdc721444f843567be2395e352551dcc506479fcbeb97f588dfd76b926",
+        "afterSha256": "a7ce6b30e8aeb224d942b8ad6a7eb2e9d42bffe67570e55ac9286e10f9243c08"
+      },
+      {
+        "path": "backend/src/main/java/com/heyganba/dto/vocabulary/VocabularyWordResponse.java",
+        "beforeSha256": "bbe81720767d8d12a9a4b685d6645a054154e90a874aec489debf55b8b85b25b",
+        "afterSha256": "0a1dcd5d5f0a65eba7ffe09746924135feb2a4033d1da7dc40a02dbbefd9c4e6"
+      },
+      {
+        "path": "backend/src/main/java/com/heyganba/model/entity/Vocabulary.java",
+        "beforeSha256": "cbd5fe12b861c2badcd0c2ed9368231da709a375e773b770b9de53d5fc299f4b",
+        "afterSha256": "8a45bceefbc421e2779c9cd31f3515f25fdd2b7614215db547c5f1f379b0369a"
+      },
+      {
+        "path": "backend/src/main/java/com/heyganba/service/DictionaryService.java",
+        "beforeSha256": "fb28cd36cc1999882c2df71c2cfec7121f484cf269bfae1f0a861f028afb08c0",
+        "afterSha256": "e2fdc0c07da70a8e6e8cf725ba479bfc006636d9c4b1eda330a5e2f804ee6e1f"
+      },
+      {
+        "path": "backend/src/main/java/com/heyganba/service/ExamService.java",
+        "beforeSha256": "3c4c2b8a21d32507c5c7307bfb4f22e42a87915eba762be23c69804da3af6131",
+        "afterSha256": "158d7fbf3edac59cddeae237874bac2d2da8597c91ec4613a1ef2c6806249fec"
+      },
+      {
+        "path": "backend/src/main/java/com/heyganba/service/KanjiService.java",
+        "beforeSha256": "a860e4e8dc61d799aa0b2ddb1fdd004f49d63d5ad3192ad2c82ffb553b27700d",
+        "afterSha256": "054cb5a6f2e9ebae70e166df8aeb25b3c15d20933452b8e9d33010ecad6035a4"
+      },
+      {
+        "path": "backend/src/main/java/com/heyganba/service/VocabNotebookService.java",
+        "beforeSha256": "6844c20e874930622d516eb484fc670ffa494e0c61fe34d4f98a639b1ca788ac",
+        "afterSha256": "572d7dadcbe2d360f619c6e2164f6886db75abba455939c491ea85f82f4ce6f2"
+      },
+      {
+        "path": "backend/src/main/java/com/heyganba/service/VocabularyProvenanceService.java",
+        "beforeSha256": "8adb82b48c4597e7c4130466cd9e95406db7700773109d1292b8bb1840bfdb68",
+        "afterSha256": "68ca990b341fa5c3aa102cc78082d3068d5566793c8699e8baded6adaec64c13"
+      },
+      {
+        "path": "backend/src/main/resources/application-prod.yml",
+        "beforeSha256": "de12c7f6153d92ed514bd94a6a6fe14537324db5e7f24752a4993f4e6ab7a811",
+        "afterSha256": "e6f04294082aec8eeb2630c71341e0e0587cb8975a5697f0878307dcc9fe6d43"
+      },
+      {
+        "path": "backend/src/main/resources/application.yml",
+        "beforeSha256": "398be3486a7f4f60f8a8c0444b2c411f7344c64e4caee34f1c139298228f052e",
+        "afterSha256": "d1418d8d3bdf01ca5c8579a9072a199d2c60c17c31cb1eb226cc9957440d1bd4"
+      },
+      {
+        "path": "backend/src/test/java/com/heyganba/AdminDraftPublicationTest.java",
+        "beforeSha256": "4b51686b69bdd44357558b654416150f2cf4960de045f55f1edc0a0801eb9bea",
+        "afterSha256": "7e3711a14e896374ec469d27171450a8dfb859002e990e2217244a2a135f4732"
+      },
+      {
+        "path": "backend/src/test/java/com/heyganba/AssistedDictionaryCurationIntegrityTest.java",
+        "beforeSha256": "733ec69dbf3bd8f775662b624e5c0c04cd6ff01ea218f0df1288c8adafdbf4c4",
+        "afterSha256": "6ec4e136a3599c34c34eab921c1cb02ae5d26f04034d146127c662dde971a6c8"
+      },
+      {
+        "path": "backend/src/test/java/com/heyganba/DictionaryCandidateSelectionTest.java",
+        "beforeSha256": "621756a09ef49970a36801dbdfb8d30dd540db057c4dd8b679ce0e4a81320899",
+        "afterSha256": "ccdf07860c34eebce1cdc81e22b059d813d0a0d836b390bceb6dd4a778b7b858"
+      },
+      {
+        "path": "backend/src/test/java/com/heyganba/DictionaryCoverageSearchTest.java",
+        "beforeSha256": "8af49d156068e997053d4ebcf22a9700069b35d047d99ec85199ca7b435e728b",
+        "afterSha256": "d9dd24ab0bb6e0bc0160b77256cdb6f56e139abfd9bff16f3e39fa690afa3b5f"
+      },
+      {
+        "path": "backend/src/test/java/com/heyganba/DictionaryCurationIntegrityTest.java",
+        "beforeSha256": "91107660185babea6191f1df8290d9e649715a7c4db1848af01ba61870768464",
+        "afterSha256": "e588ca45759a2c4d00088333be8ca77fefc15d7eada55ebd763e2bb91a6008e0"
+      },
+      {
+        "path": "backend/src/test/java/com/heyganba/DictionaryNotebookApiTest.java",
+        "beforeSha256": "297d61b4c49d417f0c63456f385d97c91722f44e40a0e2932fbc360926c92b8e",
+        "afterSha256": "84dd83ed75a1375b318b50cf0446554b934dc5c1e48060d921f28079d5567376"
+      },
+      {
+        "path": "backend/src/test/java/com/heyganba/DictionaryPilotPostgresRehearsalTest.java",
+        "beforeSha256": "b7a6002693c5c895b001dcdfeff50ddb7f77d5689edca9c3961fd18d8f42b643",
+        "afterSha256": "27583f22ec6b1ea8ff9cd773493283ab8a415f080309c8d11f5c56819149e996"
+      },
+      {
+        "path": "backend/src/test/java/com/heyganba/FlywayLocationsConfigTest.java",
+        "beforeSha256": "1717db8fe5fb39becce3b1958c06d6b208e7053888c89a800a5646efb4ce0c3e",
+        "afterSha256": "4080823637aba786022373213b1ef84ce95cb86a74183e685932a9fc623ec91f"
+      },
+      {
+        "path": "backend/src/test/java/com/heyganba/PostgresSchemaStagingRehearsalTest.java",
+        "beforeSha256": "9b7d3ff93244d5ca5ea7e8b5f264c6d827bda1c9bec4c37b63b0612b0edeaad1",
+        "afterSha256": "2055694e167515abfdabde14c563f2c57e8d767591eb47f3193b2a46b337a5b9"
+      },
+      {
+        "path": "backend/src/test/java/com/heyganba/support/ContentApiTestBase.java",
+        "beforeSha256": "0193cd96acf4bea604aa777be0de73186639f69db1f164ad415526f7e180d71f",
+        "afterSha256": "b8e3678e8b44284795b61dadfc2b5b81f590af38635dbe2fb8ecc6b114ee49b0"
+      },
+      {
+        "path": "backend/src/test/resources/application-test.yml",
+        "beforeSha256": "cabe43e29a3fe1cca1d62fda23f2f4a20a3a72b9e0cb219c98415f8de9637aba",
+        "afterSha256": "e7e80ede53d68c61fad61143f8e6f54566237295b18dd6eba16b68df35d6e797"
+      },
+      {
+        "path": "docs/Internal/AGENTS.md",
+        "beforeSha256": "850d0af4c20f0b99e7882e2d72933e20e48add4d8de5a37c8b6c62aa536b7a1f",
+        "afterSha256": "6138f415c50da5a20eef968e17c350e2ca90cd0e5bf716c72967844f24625724"
+      },
+      {
+        "path": "docs/curriculum-roadmap-m1-m3.md",
+        "beforeSha256": "96a232011eec67984b615d50ba204568bdbd3ae34a12f8eb3ae66804c073ea60",
+        "afterSha256": "2f4f8a0c5d84a55f655d58f5d6e160179f7b3534238b61c61b6512e11df945cf"
+      },
+      {
+        "path": "docs/roadmap.md",
+        "beforeSha256": "600a36e64b5b7eedef31012da093d053f48ad4282919c0f4388d6e347f1bf2c7",
+        "afterSha256": "8b450d74282267a7592c16eaf9e72d9d2d1e22231757c68c4df39171d5f1e4b4"
+      },
+      {
+        "path": "docs/self-host-runbook.md",
+        "beforeSha256": "c492bd052a276ecf81d83692ca2ade6ee254d8e0992cacbeb6e98930ec7b94b4",
+        "afterSha256": "17e8153d506045ed9dda8dea57293b50309a022e2b9b4df807a9faf4be166cff"
+      },
+      {
+        "path": "frontend/index.html",
+        "beforeSha256": "14a05beac7a92bc214afa1811ddf0016b92460806385b8542359e5ed5e351571",
+        "afterSha256": "f047d00813970a0dd5edc92d11eb594d44ad3d8ea8c438e3f4aa89f7700aecdd"
+      },
+      {
+        "path": "frontend/src/app/AppShell.tsx",
+        "beforeSha256": "906aaf19bcaa0c00f2723bb263a58736ffc9ea1ff8962a678465b6959207be55",
+        "afterSha256": "e62978ab8663c0ff50463cc664a1f4eca4a3d73d03928a2cf5fb41fce905684a"
+      },
+      {
+        "path": "frontend/src/app/routes.tsx",
+        "beforeSha256": "3f191e389f6ed664d84ce3a5057cc6a7c18ab9e98620d324524f64aac7091b00",
+        "afterSha256": "91b77e8ab9733cf096430b875df5a76770f247e970934d430bae0b4ac335a6fb"
+      },
+      {
+        "path": "frontend/src/features/admin/VocabularyProvenanceEditor.tsx",
+        "beforeSha256": "369ce237a1bc7e21d08a891ddb650c0c47e071d66e26a5b1ea408ec7a55216d4",
+        "afterSha256": "db02929b970e25a3d7a01fdd5c7583f4fb074f2bd2d13517f476cf81db89750b"
+      },
+      {
+        "path": "frontend/src/features/companion/CompanionWidget.tsx",
+        "beforeSha256": "bc842974f8c3b0103473dda399b0ba2fe4f3d6dd444bf6987a73d00dd739dccc",
+        "afterSha256": "f1e16af0b8b5dd22d12f2c9a5da5d80143cd623fd7aea7a246b64d3b7b5c64c6"
+      },
+      {
+        "path": "frontend/src/features/companion/three/Companion3DCanvas.tsx",
+        "beforeSha256": "21c0b0b8534f4aa3ec2eaa662fe02a6a2e7c2317a198f3f96d3923d11664c91e",
+        "afterSha256": "7edb9d52e4afdce5f3ea58fd059e34dee398af0097860cd56f7e1e37d9ba6068"
+      },
+      {
+        "path": "frontend/src/features/dashboard/DashboardView.tsx",
+        "beforeSha256": "e00e0788fd97f7945f5b5c5ae3d23ae30d95ade6bfa7dac9a74079338b82d145",
+        "afterSha256": "2959cbe22392128c8146eae2eb41b36dfa735f51a299ece962154ecf17d70a4a"
+      },
+      {
+        "path": "frontend/src/features/dashboard/HskRoadmap.tsx",
+        "beforeSha256": "7a0069ab06ce0afe852a8d7884133b914030f6b6a217655e1df27e9f8825595c",
+        "afterSha256": "306b196cb0dcda80647bf6d0bee806b14692c6d0433ca95e0b6b495f234d08c6"
+      },
+      {
+        "path": "frontend/src/features/dashboard/LearningInsights.tsx",
+        "beforeSha256": "1d82303526bc264cb168f65e77ea51e587e0839117820098245366efcfa0ecbb",
+        "afterSha256": "e5bf795c1c64ab7ef6758a9766c413036551fb57761d9ea84eb4a7ae3622b0ec"
+      },
+      {
+        "path": "frontend/src/features/dictionary/DictionaryNotebookView.tsx",
+        "beforeSha256": "0e5b75b71e5b4ff7caa79702a10ecb2aadf2ad21dc5190b2d58b1cb70e78a4c2",
+        "afterSha256": "873ad098661617e26248fb250e344bec03282c0892ac4a910b89865c8cbaaa3b"
+      },
+      {
+        "path": "frontend/src/features/exam/ExamView.tsx",
+        "beforeSha256": "7f28c16e8b25f385d2fe1eaacfbdc66fecd52b81b0bdc09f5dd7c3688fa85e33",
+        "afterSha256": "8544d1ec2cc4dc09287764da674cecc5fdc8a5037d72976d7205f80d754761ea"
+      },
+      {
+        "path": "frontend/src/features/flashcard/FlashcardView.tsx",
+        "beforeSha256": "81b1d4e592931cc71d76b773f1bdeeae83bec4779be5464f5fd1b3d8ca720ac2",
+        "afterSha256": "61767de43506a4205063ffe005b77f8fb514b5ef7bc04d7ea3b9e461c67072fc"
+      },
+      {
+        "path": "frontend/src/features/grammar/GrammarView.tsx",
+        "beforeSha256": "8a20f266cbb9bb420eb83d4d3eeb68a6de83d47a810f2022b75524c04e5fb7bf",
+        "afterSha256": "0875dd247277ee1498d649b97e7105f5804ca9d43afe51ec9979d5ad66e3b0ed"
+      },
+      {
+        "path": "frontend/src/features/hanzi/HanziStationView.tsx",
+        "beforeSha256": "308cfc5cde41995d32dac867851a916c16aad5919eaefcde68b6a183ff64d96d",
+        "afterSha256": "3696d3485a05aa79fd2f0f4ea6afc869deecb878a792b94263a7c1308511692c"
+      },
+      {
+        "path": "frontend/src/features/pinyin/PinyinStationView.tsx",
+        "beforeSha256": "1a4cfc4c802151e193ea380020f5fcfd0bad2a559f3cd9b62412df41ee50c3d4",
+        "afterSha256": "98121795da2ea80e76dbd66d03f16c7831fbdf7d58d3a8387b1cdaa9e7ff8b42"
+      },
+      {
+        "path": "frontend/src/lib/api/client.ts",
+        "beforeSha256": "4d2963f3c288a5366f175fc64ad9b67dabd289638bae004114645c0aa345b7b7",
+        "afterSha256": "38d868fcf515410b5fed026b1c557efedfc6d231ed5f16810ae2f984d888de1b"
+      },
+      {
+        "path": "frontend/tests/unit/api.test.ts",
+        "beforeSha256": "4a32177250cbb21c6ea690ace97d6d051e9e019ae0faf8e80e9dccdff1a36f79",
+        "afterSha256": "9ec820c7e1a02ba24f4e46ce43432e9cea785565aabe899d5d0b8a26ec263780"
+      },
+      {
+        "path": "frontend/tests/unit/curriculum-m6.test.tsx",
+        "beforeSha256": "f7bf1b86934bcbd999e7013a898fc1a75d4c90e9a71fafd6832013c783a63c9a",
+        "afterSha256": "140b20beeee5a00f5cd57e21451019ffb96c3397173cf52f4f873abed05f44e5"
+      },
+      {
+        "path": "frontend/tests/unit/dashboard-target.test.tsx",
+        "beforeSha256": "cfd9a58e07b83b6ce217df0717e695e27837c86107161387e83f24473d72b2fe",
+        "afterSha256": "e9809abb2213118d3142acecf6cfdd88682d5be635e5baac75090cbb7399f215"
+      },
+      {
+        "path": "frontend/tests/unit/flashcard-lifecycle.test.tsx",
+        "beforeSha256": "9900e4ab7bdb201a7b4d251aa0a49f011f18025b177c59f8e30ec0a654e0aab1",
+        "afterSha256": "893c688994ff12d671ced8511536259aa109f4dcd336b89112dc45da9c73559a"
+      },
+      {
+        "path": "frontend/tests/unit/flashcard-m22.test.tsx",
+        "beforeSha256": "2908b6f585a13feeec13cd426be01c0deed4a4e3dab2f8fc337402317d2b2b72",
+        "afterSha256": "80b542219555e968ccf34f78fc83c306f0c723659da2cd36748aa5e4c14e2b9d"
+      },
+      {
+        "path": "frontend/tests/unit/grammar-hsk.test.tsx",
+        "beforeSha256": "30b22a3d4c1b3c0bddb5aa85f43ed7ca9e1e34ee611b47a95c9dae4ab564af59",
+        "afterSha256": "db3e401c933afab332363fcce093b3028464b81ef6c4e4a7e0cf97ea91d07a1e"
+      },
+      {
+        "path": "frontend/tests/unit/hanzi-hsk.test.tsx",
+        "beforeSha256": "0a0f9cb980923592a6720edf15447b1874115767ea71f780cf07df0717c7b380",
+        "afterSha256": "522abb94e496e9334ea58e44323d6c80c0cccd3c572ae417e553875d44a75620"
+      },
+      {
+        "path": "frontend/tests/unit/qa-batch-b.test.tsx",
+        "beforeSha256": "1b100a9391bdf80e9f1963167ac0850d09db2b2dd22db829d04fc60f1be30700",
+        "afterSha256": "af59573bcff103e8de8c0d581f36637f42a54f7822c734f49e4f447314ad5594"
+      },
+      {
+        "path": "frontend/tests/unit/v21-edtech-ux.test.tsx",
+        "beforeSha256": "e477d779f5a8f46957044c4ebc76109cfcfa58adee9e9f93d455eea7254c5f40",
+        "afterSha256": "52843e012935ab42c0abd7e514e974d7957dc4b55deba8ef03dca74338a4423a"
+      },
+      {
+        "path": "frontend/tests/unit/vocabulary-provenance.test.tsx",
+        "beforeSha256": "e5be26771fb5dab4e36afb532048497f3a3e4f42be53d461f442aaa2c5f9b82b",
+        "afterSha256": "cd25bbb8fb81a151401045b0511d90b829e49ecfa1efde6fd86f68591d50a517"
+      }
+    ],
+    "deletedFiles": [
+      {
+        "path": "backend/src/main/java/com/heyganba/service/AssistedDictionaryCuration.java",
+        "beforeSha256": "6440063cedfcaf39cd1739206f804302fdc8811c191f6cba1b2be9d2b9201b5a"
+      },
+      {
+        "path": "backend/src/main/java/com/heyganba/service/DictionaryCuration.java",
+        "beforeSha256": "0f93d6a33c8e2e2580bafbac8639e09d7ab09b7d5d8207cdd516414f0e8d02e9"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-staging/dictionary-coverage-pilot.json",
+        "beforeSha256": "d7590f14cabd3ec582c9e9a6bce73651b518b67e0289e6e5c558cb58ab8689bd"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-a.tsv",
+        "beforeSha256": "0afc4e72ef6b0fa25d9d112b2cc4f61a3d2eb62514d5d84b9b5fb89ce22038b0"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-b.metadata.json",
+        "beforeSha256": "658500ab9c1bd29c9e9fca0ad418da1e41419aa10144b64b0fced91176d9a46c"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-b.tsv",
+        "beforeSha256": "8929dde150215dd3b97e0dcc28f6a68e880024aceb7daf085f50e8a49f947024"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-c.metadata.json",
+        "beforeSha256": "db6f97e10d4111c1ae928c3b6f51e9806967eed8f9d0a6c3f3701dc9e23d8484"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-c.tsv",
+        "beforeSha256": "fcbefe1b193fcbaa242951f3d8dfec5e578e5f352317b94b18a354b12ba8d4c7"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-d.metadata.json",
+        "beforeSha256": "3593c0be6c2dadfbb867388efdc784be2d47ffaac9c156b52f4f2c42f09b4390"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-d.tsv",
+        "beforeSha256": "8c35f56152d0d3d1c7e85e654739022016e547a27a0565db8e4db489ce093c84"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-e.metadata.json",
+        "beforeSha256": "d2e79cf294718ebcd4b3989a7e467e884f65267e9efc610c6a7113f77ec51a2f"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-e.tsv",
+        "beforeSha256": "91938bb9b567655fddf734e81cd53221fd8132d1f7ec7fc91a5f48bb3c0cb150"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-f.metadata.json",
+        "beforeSha256": "a9028acb4b0d7e94b5520cc5956b81996a7330230bed8348621d0e5d54ae31da"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-f.tsv",
+        "beforeSha256": "db052d0c347a536103e28134318dc728a9a50fd4357f580b9eda13d3f26c76b9"
+      },
+      {
+        "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-exclusions.tsv",
+        "beforeSha256": "c58a6dc0a3737553e71f162f803fd2cd0dee60c7c0bd199f2738a62226f18051"
+      },
+      {
+        "path": "backend/src/main/resources/dictionary/README.md",
+        "beforeSha256": "6e0a7b5bd47568663941065b56eab260ac1b6cc2c177d88d44ba2420fa3e6bb8"
+      },
+      {
+        "path": "backend/src/main/resources/dictionary/assisted-ja-vi.tsv",
+        "beforeSha256": "c78db41c230fa7b7bd288c8e46152870f3512ef35c940584f9172c341428aaf1"
+      },
+      {
+        "path": "backend/src/main/resources/dictionary/curated-ja-vi.tsv",
+        "beforeSha256": "3b42c6d5d315f3117d91071ba3a24d94e6cbb65d735bb2e6587f13869756a6d1"
+      },
+      {
+        "path": "backend/src/main/resources/dictionary/jmdict.tsv.gz",
+        "beforeSha256": "57d0941a4c314aa7621a2da041ada77e1b5b1bfe9611cd792512ec78c2979a29"
+      },
+      {
+        "path": "backend/src/main/resources/dictionary/snapshot.json",
+        "beforeSha256": "7c47bf31f0d7b3800b79bc00f4457955f392e5e87708e16e823df411b9d07005"
+      }
+    ]
+  },
+  "deltaFromContinuationBaseline": {
+    "changedExistingDirtyFiles": [
+      {
+        "path": ".github/workflows/ci.yml",
+        "beforeSha256": "eba59668f8b0e072af871d13313327fd839312248e67c4129544e3231b0222f0",
+        "afterSha256": "ee017844c05d6b43d3e3dfb4349d6eb043318b3013796116692f1d161572cb90"
+      },
+      {
+        "path": "PRODUCT.md",
+        "beforeSha256": "31e52f84ef35fa4d0c6cadd309595682e09b2cc3475b4ed36f225f68dd65d206",
+        "afterSha256": "29c2f94bcbd525c9f2880dd3c662e511a669fc0e38023c4b161c92744a8142cd"
+      },
+      {
+        "path": "backend/pom.xml",
+        "beforeSha256": "59cf8e07b55604712aa61cacccf4bfe3b1d1041156c5f3488733628f08cbe699",
+        "afterSha256": "7528daaea6c732c42710487ecd283646cb3b9d04f1986172c57000df346e66ab"
+      },
+      {
+        "path": "backend/src/main/java/com/heyganba/service/VocabularyProvenanceService.java",
+        "beforeSha256": "cc9633149ac3bc2bcba33f0138b07bb4d44f91c01e63edca2904a31d3a8dec9b",
+        "afterSha256": "68ca990b341fa5c3aa102cc78082d3068d5566793c8699e8baded6adaec64c13"
+      },
+      {
+        "path": "backend/src/test/java/com/heyganba/PostgresSchemaStagingRehearsalTest.java",
+        "beforeSha256": "829f7e443a8023f16a562b3b9ae44fde6bf945f27222e8688175a1ffa4d516a2",
+        "afterSha256": "2055694e167515abfdabde14c563f2c57e8d767591eb47f3193b2a46b337a5b9"
+      },
+      {
+        "path": "backend/src/test/java/com/heyganba/VocabularyWebEvidenceTest.java",
+        "beforeSha256": "2dfa8353d99dfcf193a7db607d84876f61f28882046fbd8ab9a425b778c0c603",
+        "afterSha256": "7c5bec5688c5ff0e17ae091b554718a1cdfd9c4a71211bf1d5f8e4f41d88ba40"
+      },
+      {
+        "path": "docs/Content/curriculum-coverage-checkpoint-2026-10-20.json",
+        "beforeSha256": "319f03ef98770709cfee5e3fee66bd4c83e3c3c1a930a3cd5d645e1f3affe516",
+        "afterSha256": "afeeafe7ecd6823994e3ac6af3edf1b22a4f50717627a764b85dab7613c4408f"
+      },
+      {
+        "path": "docs/Content/web-cross-check-policy.md",
+        "beforeSha256": "e8c1bee3e31bb6c8ae8d706d365a1310befe16381625887a36ad710102d8094a",
+        "afterSha256": "e0f2700039d972530c07dbeade48fdc2e5a9b39651c8cb7c922cce69640328bc"
+      },
+      {
+        "path": "docs/QA/master-readiness-2026-10-20.md",
+        "beforeSha256": "01526af0238f80095e1e56671ffb0ea6dbba7b20758009fcc64baaddb95932ea",
+        "afterSha256": "7a3bd472aae49ca89a3c574b6f57ceb7213752aa40644ce05c12e4181a5f9145"
+      },
+      {
+        "path": "docs/curriculum-roadmap-m1-m3.md",
+        "beforeSha256": "67756bbb49ff16980f6f79830570c7e250f95125cd5bf84f3606405b3eb683c7",
+        "afterSha256": "2f4f8a0c5d84a55f655d58f5d6e160179f7b3534238b61c61b6512e11df945cf"
+      },
+      {
+        "path": "docs/roadmap.md",
+        "beforeSha256": "600a36e64b5b7eedef31012da093d053f48ad4282919c0f4388d6e347f1bf2c7",
+        "afterSha256": "8b450d74282267a7592c16eaf9e72d9d2d1e22231757c68c4df39171d5f1e4b4"
+      },
+      {
+        "path": "frontend/src/app/AppShell.tsx",
+        "beforeSha256": "0c1edb33450e7aacb8024eee057c38762090c420973a9c6c3863d73901fb8be8",
+        "afterSha256": "e62978ab8663c0ff50463cc664a1f4eca4a3d73d03928a2cf5fb41fce905684a"
+      },
+      {
+        "path": "frontend/src/features/admin/VocabularyProvenanceEditor.tsx",
+        "beforeSha256": "ae232b0c97cc95b5639f0ff0d14b5b6847d2ff88daa1a42092c395ddf30a5d41",
+        "afterSha256": "db02929b970e25a3d7a01fdd5c7583f4fb074f2bd2d13517f476cf81db89750b"
+      },
+      {
+        "path": "frontend/src/features/dashboard/DashboardView.tsx",
+        "beforeSha256": "e00e0788fd97f7945f5b5c5ae3d23ae30d95ade6bfa7dac9a74079338b82d145",
+        "afterSha256": "2959cbe22392128c8146eae2eb41b36dfa735f51a299ece962154ecf17d70a4a"
+      },
+      {
+        "path": "frontend/src/features/dashboard/HskRoadmap.tsx",
+        "beforeSha256": "7a0069ab06ce0afe852a8d7884133b914030f6b6a217655e1df27e9f8825595c",
+        "afterSha256": "306b196cb0dcda80647bf6d0bee806b14692c6d0433ca95e0b6b495f234d08c6"
+      },
+      {
+        "path": "frontend/src/features/dictionary/DictionaryNotebookView.tsx",
+        "beforeSha256": "0e5b75b71e5b4ff7caa79702a10ecb2aadf2ad21dc5190b2d58b1cb70e78a4c2",
+        "afterSha256": "873ad098661617e26248fb250e344bec03282c0892ac4a910b89865c8cbaaa3b"
+      },
+      {
+        "path": "frontend/src/features/exam/ExamView.tsx",
+        "beforeSha256": "7f28c16e8b25f385d2fe1eaacfbdc66fecd52b81b0bdc09f5dd7c3688fa85e33",
+        "afterSha256": "8544d1ec2cc4dc09287764da674cecc5fdc8a5037d72976d7205f80d754761ea"
+      },
+      {
+        "path": "frontend/src/features/flashcard/FlashcardView.tsx",
+        "beforeSha256": "b8ceec8a0da4fe5349c2bd8e8ec2275ccdea810a52404e150ec281ad77cada92",
+        "afterSha256": "61767de43506a4205063ffe005b77f8fb514b5ef7bc04d7ea3b9e461c67072fc"
+      },
+      {
+        "path": "frontend/src/features/grammar/GrammarView.tsx",
+        "beforeSha256": "39c22bdabbc05a4fbe08c9878faa9f52579273e25b25b56bc2b4a1bcd62066c3",
+        "afterSha256": "0875dd247277ee1498d649b97e7105f5804ca9d43afe51ec9979d5ad66e3b0ed"
+      },
+      {
+        "path": "frontend/src/features/hanzi/HanziStationView.tsx",
+        "beforeSha256": "5188c39883b2eb1eb3cacfa8b036d6115fcba9dc8b2428b5e8b12424fd7e3586",
+        "afterSha256": "3696d3485a05aa79fd2f0f4ea6afc869deecb878a792b94263a7c1308511692c"
+      },
+      {
+        "path": "frontend/src/features/pinyin/PinyinStationView.tsx",
+        "beforeSha256": "1a4cfc4c802151e193ea380020f5fcfd0bad2a559f3cd9b62412df41ee50c3d4",
+        "afterSha256": "98121795da2ea80e76dbd66d03f16c7831fbdf7d58d3a8387b1cdaa9e7ff8b42"
+      },
+      {
+        "path": "frontend/tests/unit/dashboard-target.test.tsx",
+        "beforeSha256": "cfd9a58e07b83b6ce217df0717e695e27837c86107161387e83f24473d72b2fe",
+        "afterSha256": "e9809abb2213118d3142acecf6cfdd88682d5be635e5baac75090cbb7399f215"
+      },
+      {
+        "path": "frontend/tests/unit/flashcard-m22.test.tsx",
+        "beforeSha256": "2908b6f585a13feeec13cd426be01c0deed4a4e3dab2f8fc337402317d2b2b72",
+        "afterSha256": "80b542219555e968ccf34f78fc83c306f0c723659da2cd36748aa5e4c14e2b9d"
+      },
+      {
+        "path": "frontend/tests/unit/v21-edtech-ux.test.tsx",
+        "beforeSha256": "e477d779f5a8f46957044c4ebc76109cfcfa58adee9e9f93d455eea7254c5f40",
+        "afterSha256": "52843e012935ab42c0abd7e514e974d7957dc4b55deba8ef03dca74338a4423a"
+      }
+    ],
+    "newlyDirtyPaths": [
+      {
+        "xy": " M",
+        "path": "backend/src/main/resources/application-prod.yml"
+      },
+      {
+        "xy": " M",
+        "path": "backend/src/main/resources/application.yml"
+      },
+      {
+        "xy": " M",
+        "path": "backend/src/test/java/com/heyganba/FlywayLocationsConfigTest.java"
+      },
+      {
+        "xy": " M",
+        "path": "backend/src/test/java/com/heyganba/support/ContentApiTestBase.java"
+      },
+      {
+        "xy": " M",
+        "path": "backend/src/test/resources/application-test.yml"
+      },
+      {
+        "xy": " M",
+        "path": "frontend/src/features/dashboard/LearningInsights.tsx"
+      },
+      {
+        "xy": " M",
+        "path": "frontend/tests/unit/curriculum-m6.test.tsx"
+      },
+      {
+        "xy": " M",
+        "path": "frontend/tests/unit/grammar-hsk.test.tsx"
+      },
+      {
+        "xy": "??",
+        "path": "backend/src/main/resources/db/migration-release/V10__learning_insights_and_sentence_order.sql"
+      },
+      {
+        "xy": "??",
+        "path": "backend/src/main/resources/db/migration-release/V11__align_optional_content_nullability.sql"
+      },
+      {
+        "xy": "??",
+        "path": "backend/src/main/resources/db/migration-release/V12__performance_indexes_and_constraints.sql"
+      },
+      {
+        "xy": "??",
+        "path": "backend/src/main/resources/db/migration-release/V13__vocabulary_provenance_review_gate.sql"
+      },
+      {
+        "xy": "??",
+        "path": "backend/src/main/resources/db/migration-release/V14__web_cross_check_evidence_policy.sql"
+      },
+      {
+        "xy": "??",
+        "path": "backend/src/main/resources/db/migration-release/V15__publish_web_cross_checked_vocabulary_batch.sql"
+      },
+      {
+        "xy": "??",
+        "path": "backend/src/main/resources/db/migration-release/V16__publish_hsk1_web_cross_checked_batch_01.sql"
+      },
+      {
+        "xy": "??",
+        "path": "backend/src/main/resources/db/migration-release/V17__clear_unverified_vocabulary_optional_fields.sql"
+      },
+      {
+        "xy": "??",
+        "path": "backend/src/main/resources/db/migration-release/V18__publish_hsk1_web_cross_checked_batch_02.sql"
+      },
+      {
+        "xy": "??",
+        "path": "backend/src/main/resources/db/migration-release/V19__publish_hsk1_web_cross_checked_batch_03.sql"
+      },
+      {
+        "xy": "??",
+        "path": "backend/src/main/resources/db/migration-release/V20__publish_hsk1_web_cross_checked_batch_04.sql"
+      },
+      {
+        "xy": "??",
+        "path": "backend/src/main/resources/db/migration-release/V21__resolve_verified_pending_vocabulary.sql"
+      },
+      {
+        "xy": "??",
+        "path": "backend/src/main/resources/db/migration-release/V22__repair_hsk1_batch_text_encoding.sql"
+      },
+      {
+        "xy": "??",
+        "path": "backend/src/main/resources/db/migration-release/V23__publish_hsk2_web_cross_checked_batch_01.sql"
+      },
+      {
+        "xy": "??",
+        "path": "backend/src/main/resources/db/migration-release/V4__sample_lesson_greetings.sql"
+      },
+      {
+        "xy": "??",
+        "path": "backend/src/main/resources/db/migration-release/V5__hsk1_thematic_curriculum_expansion.sql"
+      },
+      {
+        "xy": "??",
+        "path": "backend/src/main/resources/db/migration-release/V6__hsk1_standard_course_grammar_and_exams.sql"
+      },
+      {
+        "xy": "??",
+        "path": "backend/src/main/resources/db/migration-release/V7__hsk1_complete_150_vocab_and_hanzi_radicals.sql"
+      },
+      {
+        "xy": "??",
+        "path": "backend/src/main/resources/db/migration-release/V8__hsk2_standard_course_and_approve_all_curriculum.sql"
+      },
+      {
+        "xy": "??",
+        "path": "backend/src/main/resources/db/migration-release/V9__hsk1_to_hsk6_complete_curriculum_and_grammar.sql"
+      },
+      {
+        "xy": "??",
+        "path": "backend/src/main/resources/db/migration-staging/V16__publish_hsk1_web_cross_checked_batch_01.sql"
+      },
+      {
+        "xy": "??",
+        "path": "backend/src/main/resources/db/migration-staging/V17__clear_unverified_vocabulary_optional_fields.sql"
+      },
+      {
+        "xy": "??",
+        "path": "backend/src/main/resources/db/migration-staging/V18__publish_hsk1_web_cross_checked_batch_02.sql"
+      },
+      {
+        "xy": "??",
+        "path": "backend/src/main/resources/db/migration-staging/V19__publish_hsk1_web_cross_checked_batch_03.sql"
+      },
+      {
+        "xy": "??",
+        "path": "backend/src/main/resources/db/migration-staging/V20__publish_hsk1_web_cross_checked_batch_04.sql"
+      },
+      {
+        "xy": "??",
+        "path": "backend/src/main/resources/db/migration-staging/V21__resolve_verified_pending_vocabulary.sql"
+      },
+      {
+        "xy": "??",
+        "path": "backend/src/main/resources/db/migration-staging/V22__repair_hsk1_batch_text_encoding.sql"
+      },
+      {
+        "xy": "??",
+        "path": "backend/src/main/resources/db/migration-staging/V23__publish_hsk2_web_cross_checked_batch_01.sql"
+      },
+      {
+        "xy": "??",
+        "path": "backend/src/main/resources/db/release-migrations-manifest.json"
+      },
+      {
+        "xy": "??",
+        "path": "docs/Content/approved-vocabulary-source-audit-v23.json"
+      },
+      {
+        "xy": "??",
+        "path": "docs/Content/collins-entry-observations-2026-10-20.json"
+      },
+      {
+        "xy": "??",
+        "path": "docs/Content/curriculum-coverage-checkpoint-2026-10-20-v23.json"
+      },
+      {
+        "xy": "??",
+        "path": "docs/Content/hsk1-content-correction-2026-10-20.json"
+      },
+      {
+        "xy": "??",
+        "path": "docs/Content/hsk1-web-cross-check-batch-02-2026-10-20.json"
+      },
+      {
+        "xy": "??",
+        "path": "docs/Content/hsk1-web-cross-check-batch-03-2026-10-20.json"
+      },
+      {
+        "xy": "??",
+        "path": "docs/Content/hsk1-web-cross-check-batch-04-2026-10-20.json"
+      },
+      {
+        "xy": "??",
+        "path": "docs/Content/hsk1-web-cross-check-batch-2026-10-20.json"
+      },
+      {
+        "xy": "??",
+        "path": "docs/Content/hsk2-web-cross-check-batch-01-2026-10-20.json"
+      },
+      {
+        "xy": "??",
+        "path": "docs/Content/optional-fields-clearance-2026-10-20.json"
+      },
+      {
+        "xy": "??",
+        "path": "docs/Content/pending-resolution-status-2026-10-20.json"
+      },
+      {
+        "xy": "??",
+        "path": "docs/Content/unmatched-official-ids-2026-10-20-v23.json"
+      },
+      {
+        "xy": "??",
+        "path": "docs/Content/unmatched-official-ids-2026-10-20.json"
+      },
+      {
+        "xy": "??",
+        "path": "docs/Content/web-cross-check-resolution-batch-2026-10-20.json"
+      },
+      {
+        "xy": "??",
+        "path": "docs/QA/legacy-path-audit-2026-10-20.json"
+      },
+      {
+        "xy": "??",
+        "path": "docs/QA/readiness-v23-2026-10-20.md"
+      },
+      {
+        "xy": "??",
+        "path": "docs/QA/v23-verification-2026-10-20.json"
+      },
+      {
+        "xy": "??",
+        "path": "docs/QA/worktree-delta-v23-2026-10-20.json"
+      },
+      {
+        "xy": "??",
+        "path": "docs/QA/worktree-status-v23-2026-10-20.txt"
+      },
+      {
+        "xy": "??",
+        "path": "frontend/src/features/flashcard/lessonPracticeSession.ts"
+      },
+      {
+        "xy": "??",
+        "path": "frontend/tests/unit/app-shell-reconnect.test.tsx"
+      },
+      {
+        "xy": "??",
+        "path": "frontend/tests/unit/lesson-quiz-recovery.test.tsx"
+      },
+      {
+        "xy": "??",
+        "path": "scripts/audit-approved-vocabulary-evidence.py"
+      },
+      {
+        "xy": "??",
+        "path": "scripts/audit-production-artifact.py"
+      },
+      {
+        "xy": "??",
+        "path": "scripts/audit-published-corpus.py"
+      },
+      {
+        "xy": "??",
+        "path": "scripts/generate-hsk1-content-correction-migration.py"
+      },
+      {
+        "xy": "??",
+        "path": "scripts/generate-hsk1-web-supplement-migration.py"
+      },
+      {
+        "xy": "??",
+        "path": "scripts/generate-hsk2-web-supplement-migration.py"
+      },
+      {
+        "xy": "??",
+        "path": "scripts/generate-optional-field-clearance-migration.py"
+      },
+      {
+        "xy": "??",
+        "path": "scripts/generate-pending-resolution-migration.py"
+      }
+    ],
+    "unchangedExistingDirtyFiles": 274
+  },
+  "legacyMoveAudit": "docs/QA/legacy-path-audit-2026-10-20.json",
+  "selfReferenceExclusion": "This manifest is listed in status but excluded from its own content hash inventory. Its final SHA-256 is saved in ignored backups/evidence-recovery-2026-10-20/v23-final-capture-hashes.json.",
+  "status": [
+    {
+      "xy": " M",
+      "path": ".github/workflows/ci.yml"
+    },
+    {
+      "xy": " M",
+      "path": "PRODUCT.md"
+    },
+    {
+      "xy": " M",
+      "path": "backend/pom.xml"
+    },
+    {
+      "xy": " M",
+      "path": "backend/src/main/java/com/heyganba/controller/AdminController.java"
+    },
+    {
+      "xy": " M",
+      "path": "backend/src/main/java/com/heyganba/controller/HealthController.java"
+    },
+    {
+      "xy": " M",
+      "path": "backend/src/main/java/com/heyganba/dto/dictionary/DictionarySearchResponse.java"
+    },
+    {
+      "xy": " M",
+      "path": "backend/src/main/java/com/heyganba/dto/flashcard/FlashcardDueResponse.java"
+    },
+    {
+      "xy": " M",
+      "path": "backend/src/main/java/com/heyganba/dto/kanji/KanjiResponse.java"
+    },
+    {
+      "xy": " M",
+      "path": "backend/src/main/java/com/heyganba/dto/vocabulary/VocabularyWordResponse.java"
+    },
+    {
+      "xy": " M",
+      "path": "backend/src/main/java/com/heyganba/model/entity/Vocabulary.java"
+    },
+    {
+      "xy": " M",
+      "path": "backend/src/main/java/com/heyganba/repository/VocabularyRepository.java"
+    },
+    {
+      "xy": " M",
+      "path": "backend/src/main/java/com/heyganba/service/AdminContentService.java"
+    },
+    {
+      "xy": " D",
+      "path": "backend/src/main/java/com/heyganba/service/AssistedDictionaryCuration.java"
+    },
+    {
+      "xy": " D",
+      "path": "backend/src/main/java/com/heyganba/service/DictionaryCuration.java"
+    },
+    {
+      "xy": " M",
+      "path": "backend/src/main/java/com/heyganba/service/DictionaryService.java"
+    },
+    {
+      "xy": " M",
+      "path": "backend/src/main/java/com/heyganba/service/ExamService.java"
+    },
+    {
+      "xy": " M",
+      "path": "backend/src/main/java/com/heyganba/service/FlashcardService.java"
+    },
+    {
+      "xy": " M",
+      "path": "backend/src/main/java/com/heyganba/service/KanjiService.java"
+    },
+    {
+      "xy": " M",
+      "path": "backend/src/main/java/com/heyganba/service/RateLimiterService.java"
+    },
+    {
+      "xy": " M",
+      "path": "backend/src/main/java/com/heyganba/service/VocabNotebookService.java"
+    },
+    {
+      "xy": " M",
+      "path": "backend/src/main/java/com/heyganba/service/srs/InMemorySrsDueCache.java"
+    },
+    {
+      "xy": " M",
+      "path": "backend/src/main/resources/application-prod.yml"
+    },
+    {
+      "xy": " M",
+      "path": "backend/src/main/resources/application.yml"
+    },
+    {
+      "xy": " D",
+      "path": "backend/src/main/resources/db/migration-staging/dictionary-coverage-pilot.json"
+    },
+    {
+      "xy": " D",
+      "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-a.tsv"
+    },
+    {
+      "xy": " D",
+      "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-b.metadata.json"
+    },
+    {
+      "xy": " D",
+      "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-b.tsv"
+    },
+    {
+      "xy": " D",
+      "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-c.metadata.json"
+    },
+    {
+      "xy": " D",
+      "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-c.tsv"
+    },
+    {
+      "xy": " D",
+      "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-d.metadata.json"
+    },
+    {
+      "xy": " D",
+      "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-d.tsv"
+    },
+    {
+      "xy": " D",
+      "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-e.metadata.json"
+    },
+    {
+      "xy": " D",
+      "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-e.tsv"
+    },
+    {
+      "xy": " D",
+      "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-f.metadata.json"
+    },
+    {
+      "xy": " D",
+      "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-f.tsv"
+    },
+    {
+      "xy": " D",
+      "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-exclusions.tsv"
+    },
+    {
+      "xy": " D",
+      "path": "backend/src/main/resources/dictionary/README.md"
+    },
+    {
+      "xy": " D",
+      "path": "backend/src/main/resources/dictionary/assisted-ja-vi.tsv"
+    },
+    {
+      "xy": " D",
+      "path": "backend/src/main/resources/dictionary/curated-ja-vi.tsv"
+    },
+    {
+      "xy": " D",
+      "path": "backend/src/main/resources/dictionary/jmdict.tsv.gz"
+    },
+    {
+      "xy": " D",
+      "path": "backend/src/main/resources/dictionary/snapshot.json"
+    },
+    {
+      "xy": " M",
+      "path": "backend/src/test/java/com/heyganba/AdminContentServiceTest.java"
+    },
+    {
+      "xy": " M",
+      "path": "backend/src/test/java/com/heyganba/AssistedDictionaryCurationIntegrityTest.java"
+    },
+    {
+      "xy": " M",
+      "path": "backend/src/test/java/com/heyganba/DictionaryCandidateSelectionTest.java"
+    },
+    {
+      "xy": " M",
+      "path": "backend/src/test/java/com/heyganba/DictionaryCoverageSearchTest.java"
+    },
+    {
+      "xy": " M",
+      "path": "backend/src/test/java/com/heyganba/DictionaryCurationIntegrityTest.java"
+    },
+    {
+      "xy": " M",
+      "path": "backend/src/test/java/com/heyganba/DictionaryNotebookApiTest.java"
+    },
+    {
+      "xy": " M",
+      "path": "backend/src/test/java/com/heyganba/DictionaryPilotPostgresRehearsalTest.java"
+    },
+    {
+      "xy": " M",
+      "path": "backend/src/test/java/com/heyganba/FlashcardApiTest.java"
+    },
+    {
+      "xy": " M",
+      "path": "backend/src/test/java/com/heyganba/FlywayLocationsConfigTest.java"
+    },
+    {
+      "xy": " M",
+      "path": "backend/src/test/java/com/heyganba/JwtTokenProviderTest.java"
+    },
+    {
+      "xy": " M",
+      "path": "backend/src/test/java/com/heyganba/PostgresSchemaStagingRehearsalTest.java"
+    },
+    {
+      "xy": " M",
+      "path": "backend/src/test/java/com/heyganba/support/ContentApiTestBase.java"
+    },
+    {
+      "xy": " M",
+      "path": "backend/src/test/resources/application-test.yml"
+    },
+    {
+      "xy": " M",
+      "path": "docs/Dictionary/coverage-after-rehearsal.json"
+    },
+    {
+      "xy": " M",
+      "path": "docs/Dictionary/coverage-baseline.json"
+    },
+    {
+      "xy": " M",
+      "path": "docs/Dictionary/vietnamese-coverage-baseline.json"
+    },
+    {
+      "xy": " M",
+      "path": "docs/Dictionary/vietnamese-coverage-candidate.json"
+    },
+    {
+      "xy": " M",
+      "path": "docs/Internal/AGENTS.md"
+    },
+    {
+      "xy": " M",
+      "path": "docs/curriculum-roadmap-m1-m3.md"
+    },
+    {
+      "xy": " M",
+      "path": "docs/roadmap.md"
+    },
+    {
+      "xy": " M",
+      "path": "frontend/.env.example"
+    },
+    {
+      "xy": " M",
+      "path": "frontend/index.html"
+    },
+    {
+      "xy": " M",
+      "path": "frontend/src/app/AppShell.tsx"
+    },
+    {
+      "xy": " M",
+      "path": "frontend/src/app/routes.tsx"
+    },
+    {
+      "xy": " M",
+      "path": "frontend/src/components/OrientalDecorBackground.tsx"
+    },
+    {
+      "xy": " M",
+      "path": "frontend/src/features/admin/AdminView.tsx"
+    },
+    {
+      "xy": " M",
+      "path": "frontend/src/features/admin/ReviewQueuePanel.tsx"
+    },
+    {
+      "xy": " M",
+      "path": "frontend/src/features/admin/types.ts"
+    },
+    {
+      "xy": " M",
+      "path": "frontend/src/features/companion/CompanionWidget.tsx"
+    },
+    {
+      "xy": " M",
+      "path": "frontend/src/features/companion/three/Companion3DCanvas.tsx"
+    },
+    {
+      "xy": " M",
+      "path": "frontend/src/features/dashboard/DashboardView.tsx"
+    },
+    {
+      "xy": " M",
+      "path": "frontend/src/features/dashboard/HskRoadmap.tsx"
+    },
+    {
+      "xy": " M",
+      "path": "frontend/src/features/dashboard/LearningInsights.tsx"
+    },
+    {
+      "xy": " M",
+      "path": "frontend/src/features/dictionary/DictionaryNotebookView.tsx"
+    },
+    {
+      "xy": " M",
+      "path": "frontend/src/features/exam/ExamView.tsx"
+    },
+    {
+      "xy": " M",
+      "path": "frontend/src/features/exam/activeAttempt.ts"
+    },
+    {
+      "xy": " M",
+      "path": "frontend/src/features/flashcard/FlashcardView.tsx"
+    },
+    {
+      "xy": " M",
+      "path": "frontend/src/features/grammar/GrammarView.tsx"
+    },
+    {
+      "xy": " M",
+      "path": "frontend/src/features/hanzi/HanziStationView.tsx"
+    },
+    {
+      "xy": " M",
+      "path": "frontend/src/features/pinyin/PinyinStationView.tsx"
+    },
+    {
+      "xy": " M",
+      "path": "frontend/src/lib/api/client.ts"
+    },
+    {
+      "xy": " M",
+      "path": "frontend/src/services/chineseSpeech.ts"
+    },
+    {
+      "xy": " M",
+      "path": "frontend/tests/unit/api.test.ts"
+    },
+    {
+      "xy": " M",
+      "path": "frontend/tests/unit/curriculum-m6.test.tsx"
+    },
+    {
+      "xy": " M",
+      "path": "frontend/tests/unit/flashcard-lifecycle.test.tsx"
+    },
+    {
+      "xy": " M",
+      "path": "frontend/tests/unit/flashcard-m22.test.tsx"
+    },
+    {
+      "xy": " M",
+      "path": "frontend/tests/unit/grammar-hsk.test.tsx"
+    },
+    {
+      "xy": " M",
+      "path": "frontend/tests/unit/hanzi-hsk.test.tsx"
+    },
+    {
+      "xy": " M",
+      "path": "frontend/tests/unit/qa-batch-b.test.tsx"
+    },
+    {
+      "xy": " M",
+      "path": "frontend/tests/unit/v21-edtech-ux.test.tsx"
+    },
+    {
+      "xy": " M",
+      "path": "frontend/vercel.json"
+    },
+    {
+      "xy": " D",
+      "path": "render.yaml"
+    },
+    {
+      "xy": " M",
+      "path": "scripts/verify-postgres-m21.ps1"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/legacy-japanese/README.md"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/legacy-japanese/resources/db/migration-staging/dictionary-coverage-pilot.json"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-a.tsv"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-b.metadata.json"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-b.tsv"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-c.metadata.json"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-c.tsv"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-d.metadata.json"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-d.tsv"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-e.metadata.json"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-e.tsv"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-f.metadata.json"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-batch-f.tsv"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/legacy-japanese/resources/db/migration-staging/vietnamese-assisted-exclusions.tsv"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/legacy-japanese/resources/dictionary/README.md"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/legacy-japanese/resources/dictionary/assisted-ja-vi.tsv"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/legacy-japanese/resources/dictionary/curated-ja-vi.tsv"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/legacy-japanese/resources/dictionary/jmdict.tsv.gz"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/legacy-japanese/resources/dictionary/snapshot.json"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/main/java/com/heyganba/controller/AdminVocabularyProvenanceController.java"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/main/java/com/heyganba/dto/admin/AdminContentResponses.java"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/main/java/com/heyganba/service/VocabularyProvenanceService.java"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/main/resources/db/migration-release/V10__learning_insights_and_sentence_order.sql"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/main/resources/db/migration-release/V11__align_optional_content_nullability.sql"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/main/resources/db/migration-release/V12__performance_indexes_and_constraints.sql"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/main/resources/db/migration-release/V13__vocabulary_provenance_review_gate.sql"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/main/resources/db/migration-release/V14__web_cross_check_evidence_policy.sql"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/main/resources/db/migration-release/V15__publish_web_cross_checked_vocabulary_batch.sql"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/main/resources/db/migration-release/V16__publish_hsk1_web_cross_checked_batch_01.sql"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/main/resources/db/migration-release/V17__clear_unverified_vocabulary_optional_fields.sql"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/main/resources/db/migration-release/V18__publish_hsk1_web_cross_checked_batch_02.sql"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/main/resources/db/migration-release/V19__publish_hsk1_web_cross_checked_batch_03.sql"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/main/resources/db/migration-release/V20__publish_hsk1_web_cross_checked_batch_04.sql"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/main/resources/db/migration-release/V21__resolve_verified_pending_vocabulary.sql"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/main/resources/db/migration-release/V22__repair_hsk1_batch_text_encoding.sql"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/main/resources/db/migration-release/V23__publish_hsk2_web_cross_checked_batch_01.sql"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/main/resources/db/migration-release/V4__sample_lesson_greetings.sql"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/main/resources/db/migration-release/V5__hsk1_thematic_curriculum_expansion.sql"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/main/resources/db/migration-release/V6__hsk1_standard_course_grammar_and_exams.sql"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/main/resources/db/migration-release/V7__hsk1_complete_150_vocab_and_hanzi_radicals.sql"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/main/resources/db/migration-release/V8__hsk2_standard_course_and_approve_all_curriculum.sql"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/main/resources/db/migration-release/V9__hsk1_to_hsk6_complete_curriculum_and_grammar.sql"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/main/resources/db/migration-staging/V12__performance_indexes_and_constraints.sql"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/main/resources/db/migration-staging/V13__vocabulary_provenance_review_gate.sql"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/main/resources/db/migration-staging/V14__web_cross_check_evidence_policy.sql"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/main/resources/db/migration-staging/V15__publish_web_cross_checked_vocabulary_batch.sql"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/main/resources/db/migration-staging/V16__publish_hsk1_web_cross_checked_batch_01.sql"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/main/resources/db/migration-staging/V17__clear_unverified_vocabulary_optional_fields.sql"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/main/resources/db/migration-staging/V18__publish_hsk1_web_cross_checked_batch_02.sql"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/main/resources/db/migration-staging/V19__publish_hsk1_web_cross_checked_batch_03.sql"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/main/resources/db/migration-staging/V20__publish_hsk1_web_cross_checked_batch_04.sql"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/main/resources/db/migration-staging/V21__resolve_verified_pending_vocabulary.sql"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/main/resources/db/migration-staging/V22__repair_hsk1_batch_text_encoding.sql"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/main/resources/db/migration-staging/V23__publish_hsk2_web_cross_checked_batch_01.sql"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/main/resources/db/release-migrations-manifest.json"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/test/java/com/heyganba/AdminDraftPublicationTest.java"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/test/java/com/heyganba/ChineseDictionaryBoundaryTest.java"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/test/java/com/heyganba/HanziVocabularyWithdrawalTest.java"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/test/java/com/heyganba/HealthReadinessTest.java"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/test/java/com/heyganba/VocabularyWebEvidenceTest.java"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/test/java/com/heyganba/service/AssistedDictionaryCuration.java"
+    },
+    {
+      "xy": "??",
+      "path": "backend/src/test/java/com/heyganba/service/DictionaryCuration.java"
+    },
+    {
+      "xy": "??",
+      "path": "docs/Content/approved-vocabulary-source-audit-v23.json"
+    },
+    {
+      "xy": "??",
+      "path": "docs/Content/collins-entry-observations-2026-10-20.json"
+    },
+    {
+      "xy": "??",
+      "path": "docs/Content/curriculum-coverage-checkpoint-2026-10-20-v23.json"
+    },
+    {
+      "xy": "??",
+      "path": "docs/Content/curriculum-coverage-checkpoint-2026-10-20.json"
+    },
+    {
+      "xy": "??",
+      "path": "docs/Content/hsk1-content-correction-2026-10-20.json"
+    },
+    {
+      "xy": "??",
+      "path": "docs/Content/hsk1-web-cross-check-batch-02-2026-10-20.json"
+    },
+    {
+      "xy": "??",
+      "path": "docs/Content/hsk1-web-cross-check-batch-03-2026-10-20.json"
+    },
+    {
+      "xy": "??",
+      "path": "docs/Content/hsk1-web-cross-check-batch-04-2026-10-20.json"
+    },
+    {
+      "xy": "??",
+      "path": "docs/Content/hsk1-web-cross-check-batch-2026-10-20.json"
+    },
+    {
+      "xy": "??",
+      "path": "docs/Content/hsk2-web-cross-check-batch-01-2026-10-20.json"
+    },
+    {
+      "xy": "??",
+      "path": "docs/Content/optional-fields-clearance-2026-10-20.json"
+    },
+    {
+      "xy": "??",
+      "path": "docs/Content/pending-resolution-status-2026-10-20.json"
+    },
+    {
+      "xy": "??",
+      "path": "docs/Content/unmatched-official-ids-2026-10-20-v23.json"
+    },
+    {
+      "xy": "??",
+      "path": "docs/Content/unmatched-official-ids-2026-10-20.json"
+    },
+    {
+      "xy": "??",
+      "path": "docs/Content/vocabulary-evidence-queue-2026-10-20.json"
+    },
+    {
+      "xy": "??",
+      "path": "docs/Content/web-cross-check-batch-2026-10-20.json"
+    },
+    {
+      "xy": "??",
+      "path": "docs/Content/web-cross-check-policy.md"
+    },
+    {
+      "xy": "??",
+      "path": "docs/Content/web-cross-check-resolution-batch-2026-10-20.json"
+    },
+    {
+      "xy": "??",
+      "path": "docs/QA/ci-migration-check-f6c9ea7-2026-10-18.md"
+    },
+    {
+      "xy": "??",
+      "path": "docs/QA/hsk3-comparison-2026-10-19.json"
+    },
+    {
+      "xy": "??",
+      "path": "docs/QA/legacy-path-audit-2026-10-20.json"
+    },
+    {
+      "xy": "??",
+      "path": "docs/QA/master-baseline-2026-10-19.json"
+    },
+    {
+      "xy": "??",
+      "path": "docs/QA/master-readiness-2026-10-19.md"
+    },
+    {
+      "xy": "??",
+      "path": "docs/QA/master-readiness-2026-10-20.md"
+    },
+    {
+      "xy": "??",
+      "path": "docs/QA/master-worktree-final-2026-10-19.json"
+    },
+    {
+      "xy": "??",
+      "path": "docs/QA/master-worktree-final-2026-10-20.json"
+    },
+    {
+      "xy": "??",
+      "path": "docs/QA/readiness-v23-2026-10-20.md"
+    },
+    {
+      "xy": "??",
+      "path": "docs/QA/selfhost-baseline-2026-10-19.json"
+    },
+    {
+      "xy": "??",
+      "path": "docs/QA/selfhost-readiness-2026-10-19.md"
+    },
+    {
+      "xy": "??",
+      "path": "docs/QA/spring-advisory-exception-2026-10-20.md"
+    },
+    {
+      "xy": "??",
+      "path": "docs/QA/v23-verification-2026-10-20.json"
+    },
+    {
+      "xy": "??",
+      "path": "docs/QA/vocabulary-audit-2026-10-19.json"
+    },
+    {
+      "xy": "??",
+      "path": "docs/QA/worktree-delta-v23-2026-10-20.json"
+    },
+    {
+      "xy": "??",
+      "path": "docs/QA/worktree-status-v23-2026-10-20.txt"
+    },
+    {
+      "xy": "??",
+      "path": "docs/archive/pre-selfhost/render.yaml"
+    },
+    {
+      "xy": "??",
+      "path": "docs/self-host-runbook.md"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/BeVietnamPro-400-rest.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/BeVietnamPro-400.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/BeVietnamPro-500-rest.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/BeVietnamPro-500.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/BeVietnamPro-600-rest.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/BeVietnamPro-600.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/BeVietnamPro-700-rest.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/BeVietnamPro-700.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/BeVietnamPro-OFL.txt"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-0.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-1.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-10.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-11.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-12.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-124.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-128.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-129.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-13.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-131.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-132.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-133.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-138.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-14.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-141.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-143.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-144.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-146.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-149.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-15.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-150.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-151.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-152.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-153.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-154.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-155.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-158.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-159.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-16.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-161.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-162.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-163.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-165.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-166.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-167.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-169.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-17.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-170.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-171.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-172.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-173.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-174.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-175.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-176.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-177.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-178.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-179.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-18.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-181.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-19.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-190.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-195.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-196.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-20.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-21.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-22.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-23.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-24.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-25.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-26.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-27.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-28.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-29.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-30.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-31.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-32.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-33.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-34.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-35.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-36.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-37.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-38.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-39.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-62.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-63.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-7.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-8.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-9.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-OFL.txt"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-pets.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSansSC-ui.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-0.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-1.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-10.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-11.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-12.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-124.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-128.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-129.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-13.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-131.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-132.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-133.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-138.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-14.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-141.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-143.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-144.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-146.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-149.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-15.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-151.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-152.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-153.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-154.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-155.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-158.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-159.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-16.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-161.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-162.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-163.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-165.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-166.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-167.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-169.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-17.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-170.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-171.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-172.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-173.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-174.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-175.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-176.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-177.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-178.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-179.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-18.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-181.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-19.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-190.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-20.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-21.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-22.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-23.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-24.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-25.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-26.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-27.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-28.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-29.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-30.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-31.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-32.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-33.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-34.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-35.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-36.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-37.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-38.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-39.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-62.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-63.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-7.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-8.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-9.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-OFL.txt"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-pets.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/NotoSerifSC-ui.woff2"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/fonts.css"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/public/fonts/manifest.json"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/src/features/admin/VocabularyProvenanceEditor.tsx"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/src/features/flashcard/lessonPracticeSession.ts"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/src/lib/hanziWriter.ts"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/tests/unit/app-shell-reconnect.test.tsx"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/tests/unit/chineseSpeech.test.ts"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/tests/unit/dashboard-target.test.tsx"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/tests/unit/lesson-quiz-recovery.test.tsx"
+    },
+    {
+      "xy": "??",
+      "path": "frontend/tests/unit/vocabulary-provenance.test.tsx"
+    },
+    {
+      "xy": "??",
+      "path": "scripts/audit-approved-vocabulary-evidence.py"
+    },
+    {
+      "xy": "??",
+      "path": "scripts/audit-chinese-vocabulary.mjs"
+    },
+    {
+      "xy": "??",
+      "path": "scripts/audit-production-artifact.py"
+    },
+    {
+      "xy": "??",
+      "path": "scripts/audit-published-corpus.py"
+    },
+    {
+      "xy": "??",
+      "path": "scripts/audit-vocabulary-evidence.py"
+    },
+    {
+      "xy": "??",
+      "path": "scripts/build-local-fonts.py"
+    },
+    {
+      "xy": "??",
+      "path": "scripts/compare-hsk-syllabus.py"
+    },
+    {
+      "xy": "??",
+      "path": "scripts/extract_hanzi.mjs"
+    },
+    {
+      "xy": "??",
+      "path": "scripts/extract_hanzi.py"
+    },
+    {
+      "xy": "??",
+      "path": "scripts/generate-hsk1-content-correction-migration.py"
+    },
+    {
+      "xy": "??",
+      "path": "scripts/generate-hsk1-web-supplement-migration.py"
+    },
+    {
+      "xy": "??",
+      "path": "scripts/generate-hsk2-web-supplement-migration.py"
+    },
+    {
+      "xy": "??",
+      "path": "scripts/generate-optional-field-clearance-migration.py"
+    },
+    {
+      "xy": "??",
+      "path": "scripts/generate-pending-resolution-migration.py"
+    },
+    {
+      "xy": "??",
+      "path": "scripts/generate-reviewed-vocabulary-migration.py"
+    },
+    {
+      "xy": "??",
+      "path": "scripts/test_compare_hsk_syllabus.py"
+    }
+  ]
+}

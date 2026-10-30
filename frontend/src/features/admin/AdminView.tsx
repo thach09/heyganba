@@ -969,7 +969,7 @@ export const AdminView: React.FC = () => {
                           onClick={() => {
                             setEditingExerciseId(ex.id);
                             setExerciseForm({
-                              grammarRuleId: 1,
+                              grammarRuleId: ex.grammarRuleId ?? 1,
                               questionText: ex.questionText,
                               optionsJson: ex.optionsJson,
                               correctAnswer: ex.correctAnswer,

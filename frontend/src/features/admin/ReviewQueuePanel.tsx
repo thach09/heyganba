@@ -1,7 +1,8 @@
 import { useRequestScope } from '../../lib/hooks/useRequestScope';
 import { adminApi } from './api';
+import { VocabularyProvenanceEditor } from './VocabularyProvenanceEditor';
 import type { ReviewQueueItem } from './types';
-import React, { useCallback, useEffect, useState, useMemo } from 'react';
+import React, { useCallback, useEffect, useState, useMemo, useRef } from 'react';
 import { RefreshCw, CheckCircle2, XCircle, Search, Filter, ShieldCheck, AlertTriangle, BookOpen, FileText } from 'lucide-react';
 
 const CONTENT_LABEL: Record<string, string> = {
@@ -17,6 +18,8 @@ const tdClass = 'border-b border-rule py-2.5 align-top text-fg-60 text-[12.5px]'
 export const ReviewQueuePanel: React.FC = () => {
   const { run, cancel } = useRequestScope();
   const [items, setItems] = useState<ReviewQueueItem[]>([]);
+  const [editingSource, setEditingSource] = useState<{ id: number; label: string } | null>(null);
+  const sourceOpener = useRef<HTMLButtonElement | null>(null);
   const [onlyNeedsCheck, setOnlyNeedsCheck] = useState(false);
   const [typeFilter, setTypeFilter] = useState<'ALL' | 'VOCABULARY' | 'HANZI' | 'GRAMMAR_EXERCISE'>('ALL');
   const [statusFilter, setStatusFilter] = useState<'ALL' | 'PENDING' | 'APPROVED' | 'NEEDS_CHECK'>('ALL');
@@ -151,7 +154,7 @@ export const ReviewQueuePanel: React.FC = () => {
   const [bulkApproving, setBulkApproving] = useState(false);
 
   const handleApproveAll = async () => {
-    if (!confirm('Bạn có chắc chắn muốn TỰ ĐỘNG PHÊ DUYỆT TOÀN BỘ nội dung đang chờ duyệt (M1-M5: HSK 1 + HSK 2) sang APPROVED?')) return;
+    if (!confirm('Duyệt các mục đủ điều kiện? Từ vựng thiếu nguồn cho nội dung hiện tại sẽ được giữ chờ duyệt.')) return;
     setBulkApproving(true);
     setError(null);
     const res = await run('adminApi.approveAllReviewItems', (signal) =>
@@ -161,7 +164,7 @@ export const ReviewQueuePanel: React.FC = () => {
     if (!res) return;
     if (res.success) {
       const count = res.data?.approvedCount ?? 0;
-      setSuccessToast(`Đã tự động phê duyệt toàn bộ ${count} mục nội dung thành công (APPROVED).`);
+      setSuccessToast(`Đã duyệt ${count} mục đủ điều kiện. Từ chưa đủ nguồn vẫn chờ duyệt.`);
       void load();
     } else {
       setError(res.message || 'Lỗi khi phê duyệt hàng loạt.');
@@ -179,7 +182,7 @@ export const ReviewQueuePanel: React.FC = () => {
           </div>
           <p className="mt-1 text-[12.5px] leading-[1.7] text-fg-60">
             Kiểm tra và phê duyệt nội dung học thuật tiếng Trung (từ vựng, chữ Hán, bài tập). Sử dụng nút{' '}
-            <strong className="text-jade-ink">Duyệt tất cả</strong> để phê duyệt nhanh toàn bộ giáo trình.
+            <strong className="text-jade-ink">Ghi nguồn</strong> cho từng từ trước khi duyệt. Duyệt hàng loạt bỏ qua từ chưa đủ nguồn cho nội dung hiện tại.
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -188,10 +191,10 @@ export const ReviewQueuePanel: React.FC = () => {
             disabled={bulkApproving || loading}
             onClick={() => void handleApproveAll()}
             className="flex cursor-pointer items-center gap-1.5 border border-jade bg-jade/10 px-3 py-1.5 text-[11px] font-semibold text-jade-ink hover:bg-jade/20 transition-colors dark:text-jade-ink"
-            title="Tự động phê duyệt toàn bộ nội dung giáo trình"
+            title="Duyệt các mục đủ điều kiện, giữ từ thiếu nguồn chờ duyệt"
           >
             <CheckCircle2 size={13} className={bulkApproving ? 'animate-spin' : ''} />
-            <span>{bulkApproving ? 'Đang duyệt...' : 'Duyệt tất cả (Bulk Approve)'}</span>
+            <span>{bulkApproving ? 'Đang duyệt...' : 'Duyệt mục đủ điều kiện'}</span>
           </button>
           <button
             type="button"
@@ -214,6 +217,7 @@ export const ReviewQueuePanel: React.FC = () => {
       </div>
 
       {/* Notifications */}
+      {editingSource && <VocabularyProvenanceEditor key={editingSource.id} {...editingSource} onClose={() => { setEditingSource(null); sourceOpener.current?.focus(); }} />}
       {successToast && (
         <div className="flex items-center gap-2 border-l-2 border-jade bg-tint px-4 py-2.5 text-[12.5px] text-jade-ink dark:text-jade-ink">
           <CheckCircle2 size={15} />
@@ -433,6 +437,8 @@ export const ReviewQueuePanel: React.FC = () => {
                   </td>
                   <td className={`${tdClass} px-3 text-right`}>
                     <div className="flex items-center justify-end gap-1.5">
+                      {item.contentType === 'VOCABULARY' && <button type="button" onClick={event => { sourceOpener.current = event.currentTarget; setEditingSource({ id: item.id, label: item.label }); }}
+                        className="border border-rule px-2.5 py-1 text-[11px] text-fg-60">Ghi nguồn</button>}
                       <button
                         type="button"
                         disabled={isProcessing || item.reviewStatus === 'APPROVED'}

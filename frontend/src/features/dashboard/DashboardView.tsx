@@ -17,7 +17,11 @@ import { CompanionWidget } from '../companion/CompanionWidget';
 const TRACKER_DAYS = 24 * 7;
 const CHART_DAYS = 30;
 const INTENSITY = [0.06, 0.22, 0.44, 0.66, 0.9];
-
+const OFFICIAL_HSK_COVERAGE: Record<number, { mapped: number; total: number }> = {
+  1: { mapped: 244, total: 300 }, 2: { mapped: 86, total: 200 },
+  3: { mapped: 59, total: 500 }, 4: { mapped: 43, total: 1000 },
+  5: { mapped: 38, total: 1600 }, 6: { mapped: 13, total: 1800 },
+};
 
 
 
@@ -313,7 +317,7 @@ export const DashboardView: React.FC = () => {
         <div className="mt-4 flex flex-wrap items-center justify-between gap-4">
           <div className="max-w-xl">
             <p className="text-xs text-fg-60 leading-relaxed">
-              HSK {targetHsk} là mục tiêu học. Nhóm bài học hiện có là tuyển chọn nội bộ, chưa bao phủ toàn bộ nội dung HSK chính thức.
+              HSK {targetHsk} là mục tiêu học. Đã ghép chắc chắn {OFFICIAL_HSK_COVERAGE[targetHsk].mapped}/{OFFICIAL_HSK_COVERAGE[targetHsk].total} ID từ và cách đọc CTI 3.0; các mục nhiều ID cùng cách đọc chưa tính. Nhóm bài học hiện có là tuyển chọn nội bộ, không phải phạm vi CTI đầy đủ.
             </p>
           </div>
 

@@ -56,7 +56,7 @@ spring:
     url: ${SPRING_FLYWAY_URL:${spring.datasource.url}}
     user: ${SPRING_FLYWAY_USER:${spring.datasource.username}}
     password: ${SPRING_FLYWAY_PASSWORD:${spring.datasource.password}}
-    # không phải trạng thái duyệt nội dung. Kiểm tra từng migration và nguồn trước khi phát hành.
+    # Only the explicit release allowlist is packaged. Staging SQL is test-only.
     locations: classpath:db/migration,classpath:db/migration-release
 
   # Redis (Phase 2/5): chỉ được dùng khi app.srs.cache=redis. mặc định memory nên Redis không bắt buộc.

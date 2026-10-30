@@ -1,0 +1,94 @@
+[
+    {
+        "Path":  "backend/src/main/resources/db/migration-staging/V12__performance_indexes_and_constraints.sql",
+        "SHA256":  "86FB6C0CB6D17E659F77EF924F23B7CCE27A271E4C56DBA7BB97E2F5522C3C6A"
+    },
+    {
+        "Path":  "docs/QA/ci-migration-check-f6c9ea7-2026-10-18.md",
+        "SHA256":  "4AF5B09854E0E4FB22FEEAF11DCEC4CBA75B489BEB08962211CD8F441318878E"
+    },
+    {
+        "Path":  "scripts/extract_hanzi.mjs",
+        "SHA256":  "A5E3F1992DE283527DC8FD60CC51E2DE4111DB91A62A8DA1671F06CD8AD3DCD3"
+    },
+    {
+        "Path":  "scripts/extract_hanzi.py",
+        "SHA256":  "8FB28FEBAD07C26699C0AD9A58B5C197CF80B15688C9EEBFDD68E2961C8C5FAB"
+    },
+    {
+        "Path":  "backend/src/main/java/com/heyganba/service/RateLimiterService.java",
+        "SHA256":  "160896B2C41305A3D2ADD33860D901CC570B77F611055A6478A38F5F95B91936"
+    },
+    {
+        "Path":  "backend/src/main/java/com/heyganba/service/srs/InMemorySrsDueCache.java",
+        "SHA256":  "345C630DF068D70D3BDD8AB89044346AA473DB9598315CC4FDBB0FD7340AEC6C"
+    },
+    {
+        "Path":  "backend/src/main/resources/dictionary/assisted-ja-vi.tsv",
+        "SHA256":  "C78DB41C230FA7B7BD288C8E46152870F3512EF35C940584F9172C341428AAF1"
+    },
+    {
+        "Path":  "backend/src/test/java/com/heyganba/AssistedDictionaryCurationIntegrityTest.java",
+        "SHA256":  "9D0F5E8EEA9AC55EF086378326EA93C2812FABE2EAF9124A00BB1576B8D0091D"
+    },
+    {
+        "Path":  "backend/src/test/java/com/heyganba/DictionaryCoverageSearchTest.java",
+        "SHA256":  "3E8211C2E8860DFE87DA3E64034FA8BCF22B66B35516CC418C3F6F972E5EFABB"
+    },
+    {
+        "Path":  "backend/src/test/java/com/heyganba/DictionaryCurationIntegrityTest.java",
+        "SHA256":  "0A70A490E440B75489799764034AB1922B4E9071CD67B9EA8DBFDB4A1573616C"
+    },
+    {
+        "Path":  "backend/src/test/java/com/heyganba/PostgresSchemaStagingRehearsalTest.java",
+        "SHA256":  "A7071161E3BA2F3C591B090F8FAD98453075DCC451D31DCA899CBFEC84C9FA9D"
+    },
+    {
+        "Path":  "docs/Dictionary/coverage-after-rehearsal.json",
+        "SHA256":  "507642DBC3C197D17A2E923B12373679B824866C88EF9235EC2D0B965A5EDD13"
+    },
+    {
+        "Path":  "docs/Dictionary/coverage-baseline.json",
+        "SHA256":  "75D116B8B3A0EB80A8266F302FE1C24D9EE2517AF2C83730EA6BD7A8E5B4E7A5"
+    },
+    {
+        "Path":  "docs/Dictionary/vietnamese-coverage-baseline.json",
+        "SHA256":  "C2FDD899B0B82BE1ED94CEA166103037CF066B5EDC9D171D3A4B8A8D73B12565"
+    },
+    {
+        "Path":  "docs/Dictionary/vietnamese-coverage-candidate.json",
+        "SHA256":  "B3A6FFDEBBFB926203AF352E49674F2B0BBEB2ECCECB50DB3B4F1F5DCBE15249"
+    },
+    {
+        "Path":  "frontend/src/features/dictionary/DictionaryNotebookView.tsx",
+        "SHA256":  "8498F532FD6CCD1AAB7C2299F25AE795C2F36DD4025B30E3120DD29CE6706F96"
+    },
+    {
+        "Path":  "frontend/src/features/exam/ExamView.tsx",
+        "SHA256":  "7F28C16E8B25F385D2FE1EAACFBDC66FECD52B81B0BDC09F5DD7C3688FA85E33"
+    },
+    {
+        "Path":  "frontend/src/features/exam/activeAttempt.ts",
+        "SHA256":  "7E7C86B077614AD423A0B58F43594A0920E6B4B9F908F74886D28B4300E06FF0"
+    },
+    {
+        "Path":  "frontend/src/features/grammar/GrammarView.tsx",
+        "SHA256":  "8A20F266CBB9BB420EB83D4D3EEB68A6DE83D47A810F2022B75524C04E5FB7BF"
+    },
+    {
+        "Path":  "frontend/src/features/hanzi/HanziStationView.tsx",
+        "SHA256":  "70D2BC77E8996061E1CE408A36F87C2BAB589CC4EADEAA3477EFFBBDF23B483A"
+    },
+    {
+        "Path":  "frontend/src/services/chineseSpeech.ts",
+        "SHA256":  "FAB748B25CE5D0D404AE9F87250EFEF75B29A04A24B35CB031FE2459AD032736"
+    },
+    {
+        "Path":  "frontend/tests/unit/v21-edtech-ux.test.tsx",
+        "SHA256":  "2A6A8E0AF7DBD833F063D0BD39B50FFA866A3E3ADAB165D31D49345E99D5CBB4"
+    },
+    {
+        "Path":  "scripts/verify-postgres-m21.ps1",
+        "SHA256":  "838D004E13C4A5378740ECE836294F300A953B400BEAD97FDB580DCA5E3148B4"
+    }
+]

@@ -16,6 +16,8 @@ public interface VocabularyRepository extends JpaRepository<Vocabulary, Long> {
     @Query("SELECT v FROM Vocabulary v WHERE v.id = :id")
     java.util.Optional<Vocabulary> findByIdForUpdate(@Param("id") Long id);
 
+    @Query("SELECT v.id FROM Vocabulary v WHERE v.id IN :ids AND v.reviewStatus = com.heyganba.model.enums.ReviewStatus.APPROVED")
+    List<Long> findApprovedIds(@Param("ids") java.util.Collection<Long> ids);
     java.util.Optional<Vocabulary> findByDictionaryEntryId(Long dictionaryEntryId);
 
     @Query("SELECT v FROM Vocabulary v LEFT JOIN FETCH v.lesson WHERE v.dictionaryEntryId IS NULL ORDER BY v.id")

@@ -156,6 +156,8 @@ public class AdminContentService {
         vocab.setExampleVi(req.getExampleMeaning() != null ? req.getExampleMeaning().trim() : null);
         vocab.setReviewStatus(ReviewStatus.PENDING_REVIEW);
         vocab.setNeedsHumanCheck(true);
+        vocab.setReviewedAt(null);
+        vocab.setReviewedBy(null);
 
         Vocabulary saved = vocabularyRepository.save(vocab);
         String after = saved.getWord() + " (" + saved.getReading() + ")";
@@ -200,7 +202,8 @@ public class AdminContentService {
                 .meaning(req.getMeaning().trim())
                 .mnemonic(req.getMnemonic() != null ? req.getMnemonic().trim() : null)
                 .lesson(lesson)
-                .reviewStatus(ReviewStatus.APPROVED)
+                .reviewStatus(ReviewStatus.PENDING_REVIEW)
+                .needsHumanCheck(true)
                 .build();
 
         Kanji saved = kanjiRepository.save(kanji);
@@ -227,6 +230,8 @@ public class AdminContentService {
         kanji.setSinoVietnamese(req.getSinoVietnamese() != null ? req.getSinoVietnamese().trim() : null);
         kanji.setMeaning(req.getMeaning().trim());
         kanji.setMnemonic(req.getMnemonic() != null ? req.getMnemonic().trim() : null);
+        kanji.setReviewStatus(ReviewStatus.PENDING_REVIEW);
+        kanji.setNeedsHumanCheck(true);
 
         Kanji saved = kanjiRepository.save(kanji);
         String after = saved.getCharacter() + " (" + saved.getMeaning() + ")";
@@ -268,7 +273,8 @@ public class AdminContentService {
                 .explanation(req.getExplanation() != null ? req.getExplanation().trim() : null)
                 .isCommonMistake(Boolean.TRUE.equals(req.getIsCommonMistake()))
                 .mistakeCategory(req.getMistakeCategory() != null ? req.getMistakeCategory().trim() : null)
-                .reviewStatus(ReviewStatus.APPROVED)
+                .reviewStatus(ReviewStatus.PENDING_REVIEW)
+                .needsHumanCheck(true)
                 .build();
 
         GrammarExercise saved = grammarExerciseRepository.save(exercise);
@@ -295,6 +301,8 @@ public class AdminContentService {
         exercise.setExplanation(req.getExplanation() != null ? req.getExplanation().trim() : null);
         exercise.setIsCommonMistake(Boolean.TRUE.equals(req.getIsCommonMistake()));
         exercise.setMistakeCategory(req.getMistakeCategory() != null ? req.getMistakeCategory().trim() : null);
+        exercise.setReviewStatus(ReviewStatus.PENDING_REVIEW);
+        exercise.setNeedsHumanCheck(true);
 
         GrammarExercise saved = grammarExerciseRepository.save(exercise);
         String after = saved.getQuestionText();

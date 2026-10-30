@@ -12,9 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@org.springframework.test.context.ActiveProfiles("legacy-japanese")
 @org.springframework.test.context.TestPropertySource(properties="app.dictionary.legacy-catalog-enabled=true")
 @org.junit.jupiter.api.Tag("legacy-japanese")
-@org.springframework.test.context.ActiveProfiles("legacy-japanese")
 class DictionaryCandidateSelectionTest extends ContentApiTestBase {
     @Autowired DictionaryEntryRepository dictionary;
     @Autowired DictionaryService search;

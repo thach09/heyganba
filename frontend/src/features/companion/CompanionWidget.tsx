@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState, type ComponentProps } from 'react';
 import { Heart, RefreshCw, X, Sparkles } from 'lucide-react';
 import { useCompanion } from './useCompanionStore';
 import { PET_DEFINITIONS, GROWTH_STAGES } from './petData';
@@ -8,6 +8,42 @@ import { OrientalCard } from '../../components/OrientalCard';
 const Companion3DCanvas = lazy(() =>
   import('./three/Companion3DCanvas').then((m) => ({ default: m.Companion3DCanvas ?? m.default }))
 );
+
+// Decorations start after critical resources finish and only while visible.
+// The learner can request interaction immediately without waiting for the idle task.
+function DeferredCompanionCanvas(props: ComponentProps<typeof Companion3DCanvas>) {
+  const host = useRef<HTMLDivElement>(null);
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    let idle: number | undefined;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    let frame: number | undefined;
+    let cancelled = false;
+    const load = () => {
+      if (cancelled) return;
+      if ('requestIdleCallback' in window) idle = window.requestIdleCallback(() => { if (!cancelled) setReady(true); }, { timeout: 2000 });
+      else timer = setTimeout(() => { if (!cancelled) setReady(true); }, 0);
+    };
+    const visible = () => {
+      // Give the real text/font layout a paint before importing and compiling Three.js.
+      // Pointer interaction above can still request the canvas immediately.
+      void (document.fonts?.ready ?? Promise.resolve()).then(() => {
+        if (cancelled) return;
+        frame = requestAnimationFrame(() => {
+          frame = requestAnimationFrame(load);
+        });
+      });
+    };
+    const observer = typeof IntersectionObserver !== 'undefined' ? new IntersectionObserver(entries => {
+      if (entries.some(entry => entry.isIntersecting)) { observer?.disconnect(); visible(); }
+    }) : null;
+    if (observer && host.current) observer.observe(host.current); else visible();
+    return () => { cancelled = true; observer?.disconnect(); if (frame !== undefined) cancelAnimationFrame(frame); if (idle !== undefined) window.cancelIdleCallback(idle); if (timer !== undefined) clearTimeout(timer); };
+  }, []);
+  return <div ref={host} style={{ minHeight: (props.size ?? 200) + 80 }} onPointerDown={() => setReady(true)}>
+    {ready ? <Suspense fallback={<CompanionSkeletonFallback size={props.size} />}><Companion3DCanvas {...props} /></Suspense> : <CompanionSkeletonFallback size={props.size} />}
+  </div>;
+}
 
 // Lightweight SVG skeleton fallback for 3D canvas (0 CLS layout guarantee)
 export function CompanionSkeletonFallback({ size = 96, className = '' }: { size?: number; className?: string }) {
@@ -123,7 +159,7 @@ export function CompanionWidget() {
         {/* Interactive 3D Pet Display */}
         <div className="flex flex-shrink-0 flex-col items-center">
           <Suspense fallback={<CompanionSkeletonFallback size={180} />}>
-            <Companion3DCanvas
+            <DeferredCompanionCanvas
               petId={selectedPetId}
               stage={growthStage}
               mood={mood}
@@ -275,7 +311,7 @@ export function CompanionWidget() {
                   >
                     <div className="flex h-16 w-16 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg bg-tint border border-rule">
                       <Suspense fallback={<CompanionSkeletonFallback size={60} />}>
-                        <Companion3DCanvas
+                        <DeferredCompanionCanvas
                           petId={id}
                           stage="junior"
                           mood={isSelected ? 'happy' : 'idle'}

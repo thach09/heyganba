@@ -2,7 +2,7 @@
 
 > **Tài liệu đặc tả trải nghiệm học tập dành cho người Việt mới bắt đầu**  
 > Đối chiếu chuẩn: *Đề án Phương án Pinyin Hán ngữ (Hanyu Pinyin Fang'an 1958 - Bộ Giáo dục CHND Trung Hoa: [moe.gov.cn](http://www.moe.gov.cn/jyb_sjzl/ziliao/A19/195802/t19580201_186000.html))*.  
-> Tiêu chuẩn cấp độ: Định hướng Tiêu chuẩn Năng lực Giáo dục Tiếng Trung Quốc tế (HSK 3.0).
+> Định hướng dài hạn: HSK 3.0. Kho triển khai hiện là nội dung chọn lọc đang bổ sung, chưa chứng minh đủ HSK 3.0. Tính đến 20/10/2026, đối chiếu CTI 3.0 2025-11 xác nhận duy nhất 244/300 ID HSK 1, 86/200 HSK 2, 59/500 HSK 3, 43/1.000 HSK 4, 38/1.600 HSK 5 và 13/1.800 HSK 6. Các mục dưới đây gồm đặc tả lịch sử; xem [bản đồ coverage hiện tại](Content/curriculum-coverage-checkpoint-2026-10-20-v23.json).
 
 ---
 
@@ -79,3 +79,7 @@ graph TD
   - Các bài học ngữ pháp có cấu trúc trực quan, câu ví dụ thực tế.
   - Bài tập có chấm điểm tức thì, giải thích chi tiết vì sao sai.
   - Ghi nhận lịch sử làm bài tập và tính điểm thông thạo ngữ pháp.
+
+## Checkpoint xác minh web — 20/10/2026
+
+Theo quyết định maintainer mới, từ vựng đủ hai nguồn từ điển độc lập được mở bằng `WEB_CROSS_CHECKED`, giữ digest, phân quyền và thu hồi khi sửa. V15: 491 bản ghi cũ + 4 mục bổ sung approved, 69 bản ghi cũ pending. Hán Việt và ví dụ chưa xác minh giữ riêng. [Policy/nguồn từng mục](Content/web-cross-check-policy.md). Không còn điều kiện khóa toàn bộ corpus chờ giáo viên. Các nhãn sáu cấp cũ là nhóm nội bộ, phân loại CTI 3.0 ghi riêng, chưa tuyên bố đủ HSK 1–6.

@@ -1,0 +1,104 @@
+{
+  "asOf": "2026-10-20",
+  "source": {
+    "authority": "Chinese Testing International",
+    "syllabusVersion": "HSK 3.0, 2025-11",
+    "sha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941",
+    "metric": "unique lexical identity mapping by primary syllabus level; not full semantic or teaching-material coverage"
+  },
+  "vocabularyPublication": {
+    "legacyRecordsReviewedAndPublished": 496,
+    "newRecordsReviewedAndPublished": 88,
+    "publishedTotal": 584,
+    "legacyRecordsPending": 64,
+    "additionalProposalPending": 0,
+    "optionalHanVietAndExamplesPublishedFromThisBatch": 0,
+    "publishedUniqueLexicalIdentities": 555,
+    "latestRelease": "V23: 20 manually selected HSK 2 official IDs with two independent dictionary records each; all source audited; optional fields absent."
+  },
+  "internalCourseLabels": {
+    "approvedByLevel": {
+      "intro": 10,
+      "1": 228,
+      "2": 156,
+      "3": 44,
+      "4": 43,
+      "5": 48,
+      "6": 55
+    },
+    "note": "Internal lesson grouping. It does not assert official CTI HSK placement."
+  },
+  "officialSyllabusPrimaryLevelIdentityCheckpoint": {
+    "officialEntryCounts": {
+      "1": 300,
+      "2": 200,
+      "3": 500,
+      "4": 1000,
+      "5": 1600,
+      "6": 1800
+    },
+    "mappedVerifiedLexicalIdentities": {
+      "1": 244,
+      "2": 86,
+      "3": 59,
+      "4": 43,
+      "5": 38,
+      "6": 13
+    },
+    "unmatchedOfficialEntryIds": {
+      "1": 56,
+      "2": 114,
+      "3": 441,
+      "4": 957,
+      "5": 1562,
+      "6": 1787
+    },
+    "officialEntriesTotal": 5400,
+    "mappedPrimaryLevelIdentitiesTotal": 483,
+    "unmatchedOfficialEntryIdsTotal": 4917,
+    "qualification": "Conservative unique-ID mapping checks exact official ID, spelling or an independently verified traditional form, and tone-marked Pinyin against CTI HSK 3.0 2025-11. It excludes 15 IDs across 8 same-spelling/reading cases that span multiple CTI levels, plus 42 published entries whose only CTI level is 7-9. Internal HSK fields are not used to assign official levels. This does not claim full semantic or teaching-material coverage.",
+    "latestBatch": {
+      "migration": "V23__publish_hsk2_web_cross_checked_batch_01.sql",
+      "manifest": "hsk2-web-cross-check-batch-01-2026-10-20.json",
+      "sourceAudit": "approved-vocabulary-source-audit-v23.json",
+      "officialIds": [
+        302,
+        303,
+        306,
+        315,
+        317,
+        318,
+        319,
+        320,
+        321,
+        322,
+        329,
+        342,
+        344,
+        348,
+        349,
+        353,
+        355,
+        360,
+        364,
+        374
+      ],
+      "coverageBefore": {
+        "level2Mapped": 66,
+        "level2Unmatched": 134
+      },
+      "coverageAfter": {
+        "level2Mapped": 86,
+        "level2Unmatched": 114
+      }
+    }
+  },
+  "nextCheckpoint": "Continue HSK 1 first, then HSK 2-6, in small evidence-backed batches. The 4,917 unmatched official IDs remain a reconciliation queue, not an import list. Publish only decisions that meet WEB_CROSS_CHECKED_2026_10_20_V1; keep unresolved entries pending and record missing official IDs without copying protected syllabus content.",
+  "readingVariantExcludedFromOfficialMapping": {
+    "word": "学生",
+    "teachingPinyin": "xuésheng",
+    "officialEntryId": 248,
+    "officialPinyin": "xuéshēng",
+    "reason": "Neutral tone and first tone are not treated as the same reading for coverage."
+  }
+}

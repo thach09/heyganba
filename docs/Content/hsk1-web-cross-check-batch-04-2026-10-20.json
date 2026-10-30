@@ -1,0 +1,295 @@
+{
+  "policy": "WEB_CROSS_CHECKED_2026_10_20_V1",
+  "method": "Per-record reconciliation of pinned CC-CEDICT and Taiwan MOE source entries; CTI only confirms official ID, spelling, Pinyin and HSK level.",
+  "reviewedAt": "2026-10-20T04:20:10Z",
+  "courseGrouping": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+  "officialSyllabusVersion": "CTI_HSK_3.0_2025-11",
+  "batch": 4,
+  "items": [
+    {
+      "content": {
+        "word": "对",
+        "traditional": "對",
+        "pinyin": "duì",
+        "pinyin_normalized": null,
+        "meaning_vi": "đúng; chính xác",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Tính từ",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "5bfff3cf40a2834fd267f799d4f14cd731c2292a0ee121664e99199a91c48440",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Vietnamese meanings and part-of-speech labels are editorially compiled from the selected CC-CEDICT and Taiwan MOE definitions and usage; they are not Vietnamese translations supplied by either source.",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "4cba97abbd5bff7ca37ce7e247907088ae3c1e01a4c2f437f5bcdecd227c7f5c",
+            "subjectWord": "对",
+            "subjectReading": "duì",
+            "accessedAt": "2026-10-20T04:20:10Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "1278",
+            "subjectWord": "对",
+            "subjectReading": "duì",
+            "accessedAt": "2026-10-20T04:20:10Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "44",
+            "subjectWord": "对",
+            "subjectReading": "duì",
+            "accessedAt": "2026-10-20T04:20:10Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Confirms the official CTI ID, spelling, tone-marked Pinyin, and HSK 1 level only; it does not support Vietnamese meaning or part of speech.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 44,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "对",
+        "pinyin": "duì"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    },
+    {
+      "content": {
+        "word": "们",
+        "traditional": "們",
+        "pinyin": "men",
+        "pinyin_normalized": null,
+        "meaning_vi": "hậu tố chỉ số nhiều",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Hậu tố / trợ từ",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "85c9b7e4c5d028349a84aae9c4e93fe325f3404036e97a713ef00ebff046ec27",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Vietnamese meanings and part-of-speech labels are editorially compiled from the selected CC-CEDICT and Taiwan MOE definitions and usage; they are not Vietnamese translations supplied by either source.",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "8ebfbe91a6a415e84efcd579fa996f1530f7c32a1922cbd54991db5a2c776df3",
+            "subjectWord": "们",
+            "subjectReading": "men",
+            "accessedAt": "2026-10-20T04:20:10Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "6623",
+            "subjectWord": "们",
+            "subjectReading": "men",
+            "accessedAt": "2026-10-20T04:20:10Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "124",
+            "subjectWord": "们",
+            "subjectReading": "men",
+            "accessedAt": "2026-10-20T04:20:10Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Confirms the official CTI ID, spelling, tone-marked Pinyin, and HSK 1 level only; it does not support Vietnamese meaning or part of speech.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 124,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "们",
+        "pinyin": "men"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    },
+    {
+      "content": {
+        "word": "只",
+        "traditional": "隻",
+        "pinyin": "zhī",
+        "pinyin_normalized": null,
+        "meaning_vi": "con (lượng từ cho động vật)",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Lượng từ",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "0584cf7d8e8905effd3805d5c0f7d9f3f6b157660eea2d14dc3e931bc03a066a",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Vietnamese meanings and part-of-speech labels are editorially compiled from the selected CC-CEDICT and Taiwan MOE definitions and usage; they are not Vietnamese translations supplied by either source.",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "581d513b4eb982ff2d6a6c2a42d35fc95f889ac4403e5a150167f06b7ff82077",
+            "subjectWord": "只",
+            "subjectReading": "zhī",
+            "accessedAt": "2026-10-20T04:20:10Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "4228",
+            "subjectWord": "只",
+            "subjectReading": "zhī",
+            "accessedAt": "2026-10-20T04:20:10Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "287",
+            "subjectWord": "只",
+            "subjectReading": "zhī",
+            "accessedAt": "2026-10-20T04:20:10Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Confirms the official CTI ID, spelling, tone-marked Pinyin, and HSK 1 level only; it does not support Vietnamese meaning or part of speech.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 287,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "只",
+        "pinyin": "zhī"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    }
+  ]
+}

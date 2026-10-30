@@ -1,12 +1,12 @@
-﻿# ==============================================================================
+# ==============================================================================
 # Script: scripts/verify-postgres-m21.ps1
-# Muc dich: Kiem chung PostgreSQL trong moi truong co lap cho Milestone M6 (V1-V11)
+# Muc dich: Kiem chung PostgreSQL trong moi truong co lap cho Milestone v2.1 (V1-V12)
 #
 # Kiem tra:
 # 1. Truong hop A (Schema chinh thuc): Chi nap db/migration (V1-V3)
-# 2. Truong hop B (Schema local/staging): Nap db/migration + db/migration-staging (V1-V11)
+# 2. Truong hop B (Schema local/staging): Nap db/migration + db/migration-staging (V1-V12)
 # 3. Hibernate ddl-auto=validate thuc su chay tren PostgreSQL khong dung create/create-drop
-# 4. Tu dong phe duyet toan bo (APPROVED, 0 pending), HSK 1-6 approved, V4-V11 twice idempotent, all sequences
+# 4. Tu dong phe duyet toan bo (APPROVED, 0 pending), HSK 1-6 approved, V4-V12 twice idempotent, all sequences
 # 5. Schema chinh thuc khong nap V4, V5, V6, V7, V8
 # 6. Dong bo sequence BIGSERIAL: ban ghi tu sinh ID lon hon MAX(id) thuc te (lessons, vocabulary, hanzi)
 # 7. Phan biet ro: Flyway migrate lai nap 0 migration moi va SQL seed tu chong trung khi tai chay
@@ -238,12 +238,12 @@ try {
 
     Write-Host "`n[5/5] TONG KET KET QUA KIEM CHUNG POSTGRESQL:" -ForegroundColor Green
     Write-Host "-----------------------------------------------------------------" -ForegroundColor Green
-    Write-Host " ✓ Case A (Schema chinh thuc): Chi co V1-V3, khong co V4-V11, khong co bai hoc staging: PASS" -ForegroundColor Green
-    Write-Host " ✓ Case B (Schema local/staging): Co V1-V11, tu dong phe duyet toan bo (APPROVED, 0 pending), HSK 1-6, original records preserved: PASS" -ForegroundColor Green
+    Write-Host " ✓ Case A (Schema chinh thuc): Chi co V1-V3, khong co V4-V12, khong co bai hoc staging: PASS" -ForegroundColor Green
+    Write-Host " ✓ Case B (Schema local/staging): Co V1-V12, tu dong phe duyet toan bo (APPROVED, 0 pending), HSK 1-6, original records preserved: PASS" -ForegroundColor Green
     Write-Host " ✓ Toan bo tu vung deu dat APPROVED (expanded curriculum), sequences BIGSERIAL dong bo: PASS" -ForegroundColor Green
     Write-Host " ✓ Dong bo sequence BIGSERIAL (lessons, vocabulary, hanzi): ban ghi tu sinh ID lon hon MAX(id) thuc te: PASS" -ForegroundColor Green
     Write-Host " ✓ Flyway idempotency: chay lai migrate khi schema da du nap 0 migration moi: PASS" -ForegroundColor Green
-    Write-Host " ✓ SQL seed idempotency: nap lai toan bo file SQL V4-V11 hai lan khong tao ban ghi trung: PASS" -ForegroundColor Green
+    Write-Host " ✓ SQL seed idempotency: nap lai toan bo file SQL V4-V12 hai lan khong tao ban ghi trung: PASS" -ForegroundColor Green
     Write-Host " ✓ Hibernate/Spring ddl-auto=validate thuc su ket noi PostgreSQL va thanh cong: PASS" -ForegroundColor Green
     Write-Host " ✓ Surefire XML verification: ca 3 test cases deu thuc thi thanh cong (0 fail, 0 error, 0 skip): PASS" -ForegroundColor Green
     Write-Host "-----------------------------------------------------------------" -ForegroundColor Green

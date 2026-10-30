@@ -171,7 +171,7 @@ class PostgresSchemaStagingRehearsalTest {
 
     @Test
     @Order(2)
-    @DisplayName("Case B: Nạp V1-V11, kiểm tra giáo trình HSK 1–6, sequence và SQL idempotent")
+    @DisplayName("Case B: Nạp V1-V23, kiểm tra nội dung HSK, trường tùy chọn và tính lặp an toàn")
     void caseB_stagingSchemaWithV4() throws Exception {
         String urlB = getUrlB();
         String user = getDbUser();
@@ -184,19 +184,19 @@ class PostgresSchemaStagingRehearsalTest {
         Flyway flyway = Flyway.configure()
                 .dataSource(urlB, user, pass)
                 .locations("classpath:db/migration", "classpath:db/migration-staging")
-                .target("11")
+                .target("12") // Verify legacy curriculum first, then the provenance upgrade below.
                 .cleanDisabled(true)
                 .load();
 
         var result = flyway.migrate();
         assertThat(result.success).isTrue();
-        assertThat(result.migrationsExecuted).isEqualTo(11); // V1 through V11
+        assertThat(result.migrationsExecuted).isEqualTo(12); // V1 through V12
 
         try (Connection conn = DriverManager.getConnection(urlB, user, pass);
              Statement stmt = conn.createStatement()) {
 
-            // 1. flyway_schema_history contains every additive migration through V11.
-            try (ResultSet rs = stmt.executeQuery("SELECT version, success FROM flyway_schema_history WHERE version IN ('4', '5', '6', '7', '8', '9', '10', '11') ORDER BY CAST(version AS INTEGER)")) {
+            // 1. flyway_schema_history contains every additive migration through V12.
+            try (ResultSet rs = stmt.executeQuery("SELECT version, success FROM flyway_schema_history WHERE version IN ('4', '5', '6', '7', '8', '9', '10', '11', '12') ORDER BY CAST(version AS INTEGER)")) {
                 assertThat(rs.next()).isTrue();
                 assertThat(rs.getString("version")).isEqualTo("4");
                 assertThat(rs.getBoolean("success")).isTrue();
@@ -224,6 +224,9 @@ class PostgresSchemaStagingRehearsalTest {
                 assertThat(rs.getBoolean("success")).isTrue();
                 assertThat(rs.next()).isTrue();
                 assertThat(rs.getString("version")).isEqualTo("11");
+                assertThat(rs.getBoolean("success")).isTrue();
+                assertThat(rs.next()).isTrue();
+                assertThat(rs.getString("version")).isEqualTo("12");
                 assertThat(rs.getBoolean("success")).isTrue();
                 assertThat(rs.next()).isFalse();
             }
@@ -333,7 +336,7 @@ class PostgresSchemaStagingRehearsalTest {
                 "V4__sample_lesson_greetings.sql", "V5__hsk1_thematic_curriculum_expansion.sql",
                 "V6__hsk1_standard_course_grammar_and_exams.sql", "V7__hsk1_complete_150_vocab_and_hanzi_radicals.sql",
                 "V8__hsk2_standard_course_and_approve_all_curriculum.sql", "V9__hsk1_to_hsk6_complete_curriculum_and_grammar.sql", "V10__learning_insights_and_sentence_order.sql",
-                "V11__align_optional_content_nullability.sql"
+                "V11__align_optional_content_nullability.sql", "V12__performance_indexes_and_constraints.sql"
             };
             for (int repeat = 0; repeat < 2; repeat++) {
                 for (String migration : migrations) stmt.execute(loadStagingMigrationSql(migration));
@@ -501,11 +504,103 @@ class PostgresSchemaStagingRehearsalTest {
                 ps.executeUpdate();
             }
         }
+        // Upgrade the preserved legacy curriculum to the current publication policy.
+        Flyway current = Flyway.configure().dataSource(urlB, user, pass)
+                .locations("classpath:db/migration", "classpath:db/migration-staging").target("13").cleanDisabled(true).load();
+        assertThat(current.migrate().migrationsExecuted).isEqualTo(1); // additive V13, no seed rewrite
+        try (Connection conn = DriverManager.getConnection(urlB, user, pass); Statement stmt = conn.createStatement()) {
+            try (ResultSet rs = stmt.executeQuery("SELECT count(*), count(*) FILTER (WHERE review_status='PENDING_REVIEW' AND needs_human_check), count(*) FILTER (WHERE review_status='APPROVED'), count(*) FILTER (WHERE curriculum_version='INTERNAL_SIX_LEVEL_SELECTION_V9') FROM vocabulary")) {
+                rs.next(); assertThat(rs.getInt(1)).isEqualTo(560);
+                assertThat(rs.getInt(2)).isEqualTo(560); assertThat(rs.getInt(3)).isZero();
+                assertThat(rs.getInt(4)).isEqualTo(560);
+            }
+        }
+        assertThat(current.migrate().migrationsExecuted).isZero();
+        Flyway webPolicy = Flyway.configure().dataSource(urlB, user, pass)
+                .locations("classpath:db/migration", "classpath:db/migration-staging").target("20").cleanDisabled(true).load();
+        assertThat(webPolicy.migrate().migrationsExecuted).isEqualTo(7);
+        try (Connection conn = DriverManager.getConnection(urlB, user, pass); Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT count(*), count(*) FILTER (WHERE review_status='APPROVED'), count(*) FILTER (WHERE review_status='PENDING_REVIEW'), count(*) FILTER (WHERE reviewed_by IS NOT NULL), count(*) FILTER (WHERE han_viet_verified OR example_verified), count(*) FILTER (WHERE han_viet IS NOT NULL OR sino_vietnamese IS NOT NULL OR example_zh IS NOT NULL OR example_sentence IS NOT NULL OR example_pinyin IS NOT NULL OR example_reading IS NOT NULL OR example_vi IS NOT NULL OR example_meaning IS NOT NULL) FROM vocabulary")) {
+            assertThat(rs.next()).isTrue();
+            assertThat(rs.getInt(1)).isEqualTo(627);
+            assertThat(rs.getInt(2)).isEqualTo(558);
+            assertThat(rs.getInt(3)).isEqualTo(69);
+            assertThat(rs.getInt(4)).isZero(); // Web verification does not invent a human identity.
+            assertThat(rs.getInt(5)).isZero(); // No unsupported optional field is marked verified.
+            assertThat(rs.getInt(6)).isZero(); // V17 removes unsupported values and normalizes blank fields to NULL.
+        }
+        assertThat(webPolicy.migrate().migrationsExecuted).isZero();
+        // Replaying the unpublished release scripts after later batches must
+        // preserve all content, even when they share a curriculum version.
+        try (Connection conn = DriverManager.getConnection(urlB, user, pass);
+             Statement stmt = conn.createStatement()) {
+            String fingerprintSql = "SELECT md5(string_agg(row_to_json(v)::text, E'\\n' ORDER BY v.id)) FROM vocabulary v";
+            String beforeReplay;
+            try (ResultSet rs = stmt.executeQuery(fingerprintSql)) {
+                assertThat(rs.next()).isTrue();
+                beforeReplay = rs.getString(1);
+            }
+            String[] replayScripts = {
+                    "V17__clear_unverified_vocabulary_optional_fields.sql",
+                    "V18__publish_hsk1_web_cross_checked_batch_02.sql",
+                    "V19__publish_hsk1_web_cross_checked_batch_03.sql",
+                    "V20__publish_hsk1_web_cross_checked_batch_04.sql"
+            };
+            for (int replay = 0; replay < 2; replay++) {
+                for (String script : replayScripts) {
+                    stmt.execute(loadStagingMigrationSql(script));
+                }
+            }
+            try (ResultSet rs = stmt.executeQuery(fingerprintSql)) {
+                assertThat(rs.next()).isTrue();
+                assertThat(rs.getString(1)).isEqualTo(beforeReplay);
+            }
+            try (ResultSet rs = stmt.executeQuery("SELECT count(*) FROM vocabulary_syllabus_classification")) {
+                assertThat(rs.next()).isTrue();
+                assertThat(rs.getInt(1)).isEqualTo(63);
+            }
+        }
+        Flyway resolution = Flyway.configure().dataSource(urlB, user, pass)
+                .locations("classpath:db/migration", "classpath:db/migration-staging").cleanDisabled(true).load();
+        assertThat(resolution.migrate().migrationsExecuted).isEqualTo(3);
+        try (Connection conn = DriverManager.getConnection(urlB, user, pass); Statement stmt = conn.createStatement()) {
+            String fingerprintSql = "SELECT md5(string_agg(row_to_json(v)::text, E'\\n' ORDER BY v.id)) FROM vocabulary v";
+            String beforeReplay;
+            try (ResultSet rs = stmt.executeQuery(fingerprintSql)) {
+                assertThat(rs.next()).isTrue(); beforeReplay = rs.getString(1);
+            }
+            stmt.execute(loadStagingMigrationSql("V21__resolve_verified_pending_vocabulary.sql"));
+            stmt.execute(loadStagingMigrationSql("V21__resolve_verified_pending_vocabulary.sql"));
+            stmt.execute(loadStagingMigrationSql("V22__repair_hsk1_batch_text_encoding.sql"));
+            stmt.execute(loadStagingMigrationSql("V22__repair_hsk1_batch_text_encoding.sql"));
+            stmt.execute(loadStagingMigrationSql("V23__publish_hsk2_web_cross_checked_batch_01.sql"));
+            stmt.execute(loadStagingMigrationSql("V23__publish_hsk2_web_cross_checked_batch_01.sql"));
+            try (ResultSet rs = stmt.executeQuery(fingerprintSql)) {
+                assertThat(rs.next()).isTrue(); assertThat(rs.getString(1)).isEqualTo(beforeReplay);
+            }
+            try (ResultSet rs = stmt.executeQuery("SELECT count(*),count(*) FILTER(WHERE review_status='APPROVED'),count(*) FILTER(WHERE review_status='PENDING_REVIEW') FROM vocabulary")) {
+                assertThat(rs.next()).isTrue(); assertThat(rs.getInt(1)).isEqualTo(648);
+                assertThat(rs.getInt(2)).isEqualTo(584); assertThat(rs.getInt(3)).isEqualTo(64);
+            }
+            try (ResultSet rs = stmt.executeQuery("SELECT count(*) FROM lessons l JOIN vocabulary v ON v.lesson_id=l.id WHERE l.slug='cti-hsk3-level2-verified-batch-01' AND v.review_status='APPROVED' AND v.hsk_level=2")) {
+                assertThat(rs.next()).isTrue(); assertThat(rs.getInt(1)).isEqualTo(20);
+            }
+            try (ResultSet rs = stmt.executeQuery("SELECT count(*) FROM vocabulary WHERE curriculum_version='INTERNAL_WEB_SUPPLEMENT_2026_10_20' AND (position('?' in meaning_vi)>0 OR position('?' in part_of_speech)>0 OR traditional='?')")) {
+                assertThat(rs.next()).isTrue(); assertThat(rs.getInt(1)).isZero();
+            }
+            try (ResultSet rs = stmt.executeQuery("SELECT count(*) FROM vocabulary WHERE word='只' AND pinyin='zhī' AND traditional='隻' AND meaning_vi='con (lượng từ cho động vật)' AND review_status='APPROVED'")) {
+                assertThat(rs.next()).isTrue(); assertThat(rs.getInt(1)).isEqualTo(1);
+            }
+            try (ResultSet rs = stmt.executeQuery("SELECT count(*) FROM vocabulary_syllabus_classification WHERE official_level=2 AND syllabus_version='CTI_HSK_3.0_2025-11'")) {
+                assertThat(rs.next()).isTrue(); assertThat(rs.getInt(1)).isEqualTo(20);
+            }
+        }
+        assertThat(resolution.migrate().migrationsExecuted).isZero();
     }
 
     @Test
     @Order(3)
-    @DisplayName("Case C: Khởi động Spring với PostgreSQL và ddl-auto=validate trên schema V1-V11")
+    @DisplayName("Case C: PostgreSQL Hibernate validation và kiểm tra policy/digest cho vocabulary đã đối chiếu")
     void caseC_hibernateSchemaValidation() throws Exception {
         String urlB = getUrlB();
         String user = getDbUser();
@@ -518,7 +613,6 @@ class PostgresSchemaStagingRehearsalTest {
         Flyway.configure()
                 .dataSource(urlB, user, pass)
                 .locations("classpath:db/migration", "classpath:db/migration-staging")
-                .target("11")
                 .cleanDisabled(true)
                 .load()
                 .migrate();
@@ -562,6 +656,24 @@ class PostgresSchemaStagingRehearsalTest {
 
             assertThat(context.isRunning()).isTrue();
             assertThat(context.containsBean("entityManagerFactory")).isTrue();
+            var vocabulary = context.getBean(com.heyganba.repository.VocabularyRepository.class);
+            var policy = context.getBean(com.heyganba.service.VocabularyProvenanceService.class);
+            var approved = vocabulary.findAll().stream()
+                    .filter(v -> v.getReviewStatus() == com.heyganba.model.enums.ReviewStatus.APPROVED).toList();
+            assertThat(approved).hasSize(584).allSatisfy(v -> {
+                assertThat(policy.complete(v)).as("Policy and digest for vocabulary %s", v.getId()).isTrue();
+                assertThat(v.getReviewedBy()).isNull();
+                assertThat(v.publishedHanViet()).isNull();
+                assertThat(v.publishedExampleSentence()).isNull();
+                assertThat(v.publishedExampleReading()).isNull();
+                assertThat(v.publishedExampleMeaning()).isNull();
+            });
+            try (var connection = context.getBean(javax.sql.DataSource.class).getConnection();
+                 var statement = connection.createStatement();
+                 var rows = statement.executeQuery("SELECT count(*) FROM vocabulary_syllabus_classification WHERE syllabus_version='CTI_HSK_3.0_2025-11' AND official_level=1")) {
+                assertThat(rows.next()).isTrue();
+                assertThat(rows.getLong(1)).isEqualTo(66);
+            }
 
             // Kiểm tra database thực tế qua DataSource thực sự là database B
             DataSource dataSource = context.getBean(DataSource.class);

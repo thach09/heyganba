@@ -15,9 +15,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /** Data/query regressions in an isolated fixture catalog; full-catalog ranks are measured separately over HTTP. */
+@org.springframework.test.context.ActiveProfiles("legacy-japanese")
 @org.springframework.test.context.TestPropertySource(properties="app.dictionary.legacy-catalog-enabled=true")
 @org.junit.jupiter.api.Tag("legacy-japanese")
-@org.springframework.test.context.ActiveProfiles("legacy-japanese")
 class DictionaryCoverageSearchTest extends ContentApiTestBase {
     @Autowired DictionaryEntryRepository dictionary;
     @Autowired MockMvc mvc;

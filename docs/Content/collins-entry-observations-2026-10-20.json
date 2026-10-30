@@ -1,0 +1,60 @@
+{
+  "retrievedAt": "2026-10-20T05:31:36Z",
+  "retrievalMethod": "Readable page text retrieved with web.run open/find; publisher and the dictionary headword section were inspected. Direct local urllib HTTP requests returned 403 and are not claimed as successful downloads.",
+  "independence": "The headword sections identify HarperCollins Publishers as their publisher. This is the Collins Simplified-English dictionary, independent of CC-CEDICT and Taiwan MOE; CC-CEDICT mirrors are not additional sources.",
+  "copyrightHandling": "Only short headword facts/excerpts are retained, under 25 quoted words per entry. No dictionary body or examples are republished.",
+  "entries": [
+    {
+      "entryId": "student",
+      "reference": "https://www.collinsdictionary.com/dictionary/chinese-english/%E5%AD%A6%E7%94%9F",
+      "word": "学生",
+      "pinyin": "xuésheng",
+      "partOfSpeech": "名",
+      "selectedGloss": "student",
+      "editorialMeaningVi": "Học sinh, sinh viên",
+      "excerpt": "学生 [xuésheng] 名 student",
+      "scopeNote": "Confirms the neutral-tone dictionary reading and student sense. CTI entry 248 instead prints xuéshēng; this neutral-tone record is not counted as a match to that official ID.",
+      "accessStatus": "READABLE_WEB_RETRIEVAL",
+      "directLocalHttpStatus": 403
+    },
+    {
+      "entryId": "friend",
+      "reference": "https://www.collinsdictionary.com/dictionary/chinese-english/%E6%9C%8B%E5%8F%8B",
+      "word": "朋友",
+      "pinyin": "péngyou",
+      "partOfSpeech": "名",
+      "selectedGloss": "friend",
+      "editorialMeaningVi": "Bạn bè",
+      "excerpt": "朋友 [péngyou] 名 1. (指友谊) friend",
+      "scopeNote": "Selects the friendship sense only; romantic senses are not added to the teaching gloss.",
+      "accessStatus": "READABLE_WEB_RETRIEVAL",
+      "directLocalHttpStatus": 403
+    },
+    {
+      "entryId": "know",
+      "reference": "https://www.collinsdictionary.com/dictionary/chinese-english/%E8%AE%A4%E8%AF%86",
+      "word": "认识",
+      "pinyin": "rènshi",
+      "partOfSpeech": "动",
+      "selectedGloss": "know (a person)",
+      "editorialMeaningVi": "Quen biết (một người)",
+      "excerpt": "认识 [rènshi] 动 know",
+      "scopeNote": "The verb section and its person-related usage support acquaintance. Two legacy Vietnamese glosses are narrowed to Quen biết (một người); the noun understanding and broader recognition senses are not taught in this decision.",
+      "accessStatus": "READABLE_WEB_RETRIEVAL",
+      "directLocalHttpStatus": 403
+    },
+    {
+      "entryId": "supermarket",
+      "reference": "https://www.collinsdictionary.com/dictionary/chinese-english/%E8%B6%85%E5%B8%82",
+      "word": "超市",
+      "pinyin": "chāoshì",
+      "partOfSpeech": "名",
+      "selectedGloss": "supermarket",
+      "editorialMeaningVi": "Siêu thị",
+      "excerpt": "超市 [chāoshì] 名 supermarket",
+      "scopeNote": "The noun and reading match the pending proposal. CTI 3.0 entry 19 is level 1; labels from older HSK lists are not reused.",
+      "accessStatus": "READABLE_WEB_RETRIEVAL",
+      "directLocalHttpStatus": 403
+    }
+  ]
+}

@@ -128,6 +128,47 @@ public class Vocabulary {
     @Column(name = "source_ref", length = 160)
     private String sourceRef;
 
+    @Column(name = "curriculum_version", length = 100)
+    private String curriculumVersion;
+    @Column(name = "source_version", length = 100)
+    private String sourceVersion;
+    @Column(name = "lexical_source_ref", columnDefinition = "TEXT")
+    private String lexicalSourceRef;
+    @Column(name = "meaning_source_ref", columnDefinition = "TEXT")
+    private String meaningSourceRef;
+    @Column(name = "han_viet_source_ref", columnDefinition = "TEXT")
+    private String hanVietSourceRef;
+    @Column(name = "example_source_ref", columnDefinition = "TEXT")
+    private String exampleSourceRef;
+    @Column(name = "provenance_content_sha256", length = 64)
+    private String provenanceContentSha256;
+    @Column(name = "provenance_recorded_at")
+    private Instant provenanceRecordedAt;
+    @Column(name = "reviewed_at")
+    private Instant reviewedAt;
+    @Column(name = "reviewed_by")
+    private Long reviewedBy;
+
+    @Column(name = "verification_method", length = 40)
+    private String verificationMethod;
+    @Column(name = "verification_policy_version", length = 80)
+    private String verificationPolicyVersion;
+    @Column(name = "verification_evidence_json", columnDefinition = "TEXT")
+    private String verificationEvidenceJson;
+    @Builder.Default
+    @Column(name = "han_viet_verified", nullable = false)
+    private Boolean hanVietVerified = false;
+    @Builder.Default
+    @Column(name = "example_verified", nullable = false)
+    private Boolean exampleVerified = false;
+
+    // Retain draft optional fields for administration, but omit them from learner DTOs.
+    public String publishedHanViet() { return withheld(hanVietVerified) ? null : getSinoVietnamese(); }
+    public String publishedExampleSentence() { return withheld(exampleVerified) ? null : getExampleSentence(); }
+    public String publishedExampleReading() { return withheld(exampleVerified) ? null : getExampleReading(); }
+    public String publishedExampleMeaning() { return withheld(exampleVerified) ? null : getExampleMeaning(); }
+    private boolean withheld(Boolean verified) { return "WEB_CROSS_CHECKED".equals(verificationMethod) && !Boolean.TRUE.equals(verified); }
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;

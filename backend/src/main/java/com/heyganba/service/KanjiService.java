@@ -31,11 +31,11 @@ public class KanjiService {
 
     private final KanjiRepository kanjiRepository;
     private final VocabularyPublicationAuthority publication;
-    private final com.heyganba.repository.VocabularyRepository vocabularyRepository;
-    private final com.fasterxml.jackson.databind.ObjectMapper json;
     private final RadicalRepository radicalRepository;
     private final KanjiPracticeProgressRepository progressRepository;
     private final UserRepository userRepository;
+    private final com.heyganba.repository.VocabularyRepository vocabularyRepository;
+    private final com.fasterxml.jackson.databind.ObjectMapper json;
 
     /**
      * Tra cứu kanji theo bài học / bộ thủ / từ khoá. Dữ liệu seed chỉ vài chục chữ nên lọc kết hợp

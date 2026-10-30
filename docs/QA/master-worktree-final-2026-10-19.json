@@ -1,0 +1,580 @@
+{
+    "date":  "2026-10-19",
+    "branch":  "feat/v2.1-ux-and-stability",
+    "head":  "220fb2573bac470008f3eba1d57ce995351ed45d",
+    "stagedPaths":  [
+
+                    ],
+    "stagedEmpty":  true,
+    "baselineCount":  43,
+    "baselinePreserved":  [
+                              {
+                                  "path":  "backend/src/main/java/com/heyganba/controller/AdminController.java",
+                                  "beforeSha256":  "6ce70f7386739de6bc69d1cda55027ff2906839d4bc25792c61fa47d974413b7",
+                                  "afterSha256":  "6ce70f7386739de6bc69d1cda55027ff2906839d4bc25792c61fa47d974413b7"
+                              },
+                              {
+                                  "path":  "backend/src/main/java/com/heyganba/controller/HealthController.java",
+                                  "beforeSha256":  "655944b0e5b5608d52d86d6a8f4a0801f3308409b48fc3e840d6aa6cff5b786a",
+                                  "afterSha256":  "655944b0e5b5608d52d86d6a8f4a0801f3308409b48fc3e840d6aa6cff5b786a"
+                              },
+                              {
+                                  "path":  "backend/src/main/java/com/heyganba/service/RateLimiterService.java",
+                                  "beforeSha256":  "160896b2c41305a3d2add33860d901cc570b77f611055a6478a38f5f95b91936",
+                                  "afterSha256":  "160896b2c41305a3d2add33860d901cc570b77f611055a6478a38f5f95b91936"
+                              },
+                              {
+                                  "path":  "backend/src/main/java/com/heyganba/service/srs/InMemorySrsDueCache.java",
+                                  "beforeSha256":  "345c630df068d70d3bdd8ab89044346aa473db9598315cc4fdbb0fd7340aec6c",
+                                  "afterSha256":  "345c630df068d70d3bdd8ab89044346aa473db9598315cc4fdbb0fd7340aec6c"
+                              },
+                              {
+                                  "path":  "backend/src/main/resources/dictionary/assisted-ja-vi.tsv",
+                                  "beforeSha256":  "c78db41c230fa7b7bd288c8e46152870f3512ef35c940584f9172c341428aaf1",
+                                  "afterSha256":  "c78db41c230fa7b7bd288c8e46152870f3512ef35c940584f9172c341428aaf1"
+                              },
+                              {
+                                  "path":  "docs/Dictionary/coverage-after-rehearsal.json",
+                                  "beforeSha256":  "507642dbc3c197d17a2e923b12373679b824866c88ef9235ec2d0b965a5edd13",
+                                  "afterSha256":  "507642dbc3c197d17a2e923b12373679b824866c88ef9235ec2d0b965a5edd13"
+                              },
+                              {
+                                  "path":  "docs/Dictionary/coverage-baseline.json",
+                                  "beforeSha256":  "75d116b8b3a0eb80a8266f302fe1c24d9ee2517af2c83730ea6bd7a8e5b4e7a5",
+                                  "afterSha256":  "75d116b8b3a0eb80a8266f302fe1c24d9ee2517af2c83730ea6bd7a8e5b4e7a5"
+                              },
+                              {
+                                  "path":  "docs/Dictionary/vietnamese-coverage-baseline.json",
+                                  "beforeSha256":  "c2fdd899b0b82be1ed94cea166103037cf066b5edc9d171d3a4b8a8d73b12565",
+                                  "afterSha256":  "c2fdd899b0b82be1ed94cea166103037cf066b5edc9d171d3a4b8a8d73b12565"
+                              },
+                              {
+                                  "path":  "docs/Dictionary/vietnamese-coverage-candidate.json",
+                                  "beforeSha256":  "b3a6ffdebbfb926203af352e49674f2b0bbeb2eccecb50db3b4f1f5dcbe15249",
+                                  "afterSha256":  "b3a6ffdebbfb926203af352e49674f2b0bbeb2eccecb50db3b4f1f5dcbe15249"
+                              },
+                              {
+                                  "path":  "docs/curriculum-roadmap-m1-m3.md",
+                                  "beforeSha256":  "96a232011eec67984b615d50ba204568bdbd3ae34a12f8eb3ae66804c073ea60",
+                                  "afterSha256":  "96a232011eec67984b615d50ba204568bdbd3ae34a12f8eb3ae66804c073ea60"
+                              },
+                              {
+                                  "path":  "docs/roadmap.md",
+                                  "beforeSha256":  "600a36e64b5b7eedef31012da093d053f48ad4282919c0f4388d6e347f1bf2c7",
+                                  "afterSha256":  "600a36e64b5b7eedef31012da093d053f48ad4282919c0f4388d6e347f1bf2c7"
+                              },
+                              {
+                                  "path":  "frontend/src/components/OrientalDecorBackground.tsx",
+                                  "beforeSha256":  "ced2fe297cb49be15f6d444b85ab50514e45744222f6cf52f32ec9ced8c15517",
+                                  "afterSha256":  "ced2fe297cb49be15f6d444b85ab50514e45744222f6cf52f32ec9ced8c15517"
+                              },
+                              {
+                                  "path":  "frontend/src/features/admin/AdminView.tsx",
+                                  "beforeSha256":  "e00a8cfda7af65295515ff6546813f19547b4b529c62d560cc7a06a3a99ac15d",
+                                  "afterSha256":  "e00a8cfda7af65295515ff6546813f19547b4b529c62d560cc7a06a3a99ac15d"
+                              },
+                              {
+                                  "path":  "frontend/src/features/admin/types.ts",
+                                  "beforeSha256":  "9b8980e1e0127fdc9d5762269f17c98f37f4bf6491cad49be44092fc36da5d33",
+                                  "afterSha256":  "9b8980e1e0127fdc9d5762269f17c98f37f4bf6491cad49be44092fc36da5d33"
+                              },
+                              {
+                                  "path":  "frontend/src/features/dashboard/DashboardView.tsx",
+                                  "beforeSha256":  "e00e0788fd97f7945f5b5c5ae3d23ae30d95ade6bfa7dac9a74079338b82d145",
+                                  "afterSha256":  "e00e0788fd97f7945f5b5c5ae3d23ae30d95ade6bfa7dac9a74079338b82d145"
+                              },
+                              {
+                                  "path":  "frontend/src/features/dashboard/HskRoadmap.tsx",
+                                  "beforeSha256":  "7a0069ab06ce0afe852a8d7884133b914030f6b6a217655e1df27e9f8825595c",
+                                  "afterSha256":  "7a0069ab06ce0afe852a8d7884133b914030f6b6a217655e1df27e9f8825595c"
+                              },
+                              {
+                                  "path":  "frontend/src/features/exam/ExamView.tsx",
+                                  "beforeSha256":  "7f28c16e8b25f385d2fe1eaacfbdc66fecd52b81b0bdc09f5dd7c3688fa85e33",
+                                  "afterSha256":  "7f28c16e8b25f385d2fe1eaacfbdc66fecd52b81b0bdc09f5dd7c3688fa85e33"
+                              },
+                              {
+                                  "path":  "frontend/src/features/exam/activeAttempt.ts",
+                                  "beforeSha256":  "7e7c86b077614ad423a0b58f43594a0920e6b4b9f908f74886d28b4300e06ff0",
+                                  "afterSha256":  "7e7c86b077614ad423a0b58f43594a0920e6b4b9f908f74886d28b4300e06ff0"
+                              },
+                              {
+                                  "path":  "frontend/src/features/grammar/GrammarView.tsx",
+                                  "beforeSha256":  "8a20f266cbb9bb420eb83d4d3eeb68a6de83d47a810f2022b75524c04e5fb7bf",
+                                  "afterSha256":  "8a20f266cbb9bb420eb83d4d3eeb68a6de83d47a810f2022b75524c04e5fb7bf"
+                              },
+                              {
+                                  "path":  "frontend/src/services/chineseSpeech.ts",
+                                  "beforeSha256":  "fab748b25ce5d0d404ae9f87250efef75b29a04a24b35cb031fe2459ad032736",
+                                  "afterSha256":  "fab748b25ce5d0d404ae9f87250efef75b29a04a24b35cb031fe2459ad032736"
+                              },
+                              {
+                                  "path":  "frontend/tests/unit/qa-batch-b.test.tsx",
+                                  "beforeSha256":  "1b100a9391bdf80e9f1963167ac0850d09db2b2dd22db829d04fc60f1be30700",
+                                  "afterSha256":  "1b100a9391bdf80e9f1963167ac0850d09db2b2dd22db829d04fc60f1be30700"
+                              },
+                              {
+                                  "path":  "scripts/verify-postgres-m21.ps1",
+                                  "beforeSha256":  "838d004e13c4a5378740ece836294f300a953b400bead97fdb580dca5e3148b4",
+                                  "afterSha256":  "838d004e13c4a5378740ece836294f300a953b400bead97fdb580dca5e3148b4"
+                              },
+                              {
+                                  "path":  "backend/src/main/java/com/heyganba/dto/admin/AdminContentResponses.java",
+                                  "beforeSha256":  "d6e651fd138c2b1af12c3a9a730fcc75e1666dd356d519955f083b9b2353e226",
+                                  "afterSha256":  "d6e651fd138c2b1af12c3a9a730fcc75e1666dd356d519955f083b9b2353e226"
+                              },
+                              {
+                                  "path":  "backend/src/main/resources/db/migration-staging/V12__performance_indexes_and_constraints.sql",
+                                  "beforeSha256":  "86fb6c0cb6d17e659f77ef924f23b7cce27a271e4c56dba7bb97e2f5522c3c6a",
+                                  "afterSha256":  "86fb6c0cb6d17e659f77ef924f23b7cce27a271e4c56dba7bb97e2f5522c3c6a"
+                              },
+                              {
+                                  "path":  "backend/src/test/java/com/heyganba/HealthReadinessTest.java",
+                                  "beforeSha256":  "e5b267070cd98eaf1e28c438f4a2003ad0c05a8d1e02bbfe4ce3778f3057e5dd",
+                                  "afterSha256":  "e5b267070cd98eaf1e28c438f4a2003ad0c05a8d1e02bbfe4ce3778f3057e5dd"
+                              },
+                              {
+                                  "path":  "docs/QA/ci-migration-check-f6c9ea7-2026-10-18.md",
+                                  "beforeSha256":  "4af5b09854e0e4fb22feeaf11dcec4cba75b489beb08962211cd8f441318878e",
+                                  "afterSha256":  "4af5b09854e0e4fb22feeaf11dcec4cba75b489beb08962211cd8f441318878e"
+                              },
+                              {
+                                  "path":  "docs/QA/selfhost-baseline-2026-10-19.json",
+                                  "beforeSha256":  "978fabb8766e8b6f3db24ca712e6610ac409a132c40bd2264f8afb966f91ae3f",
+                                  "afterSha256":  "978fabb8766e8b6f3db24ca712e6610ac409a132c40bd2264f8afb966f91ae3f"
+                              },
+                              {
+                                  "path":  "docs/QA/selfhost-readiness-2026-10-19.md",
+                                  "beforeSha256":  "09c1737e7d65affceae1e63228b13f3c9abc35044f50b9f9053105bb3e8346c1",
+                                  "afterSha256":  "09c1737e7d65affceae1e63228b13f3c9abc35044f50b9f9053105bb3e8346c1"
+                              },
+                              {
+                                  "path":  "docs/QA/vocabulary-audit-2026-10-19.json",
+                                  "beforeSha256":  "9b992445a9cc4c0d04758034b8506ac8153d807bd9af327dc308e67af270ca6f",
+                                  "afterSha256":  "9b992445a9cc4c0d04758034b8506ac8153d807bd9af327dc308e67af270ca6f"
+                              },
+                              {
+                                  "path":  "frontend/tests/unit/dashboard-target.test.tsx",
+                                  "beforeSha256":  "cfd9a58e07b83b6ce217df0717e695e27837c86107161387e83f24473d72b2fe",
+                                  "afterSha256":  "cfd9a58e07b83b6ce217df0717e695e27837c86107161387e83f24473d72b2fe"
+                              },
+                              {
+                                  "path":  "scripts/audit-chinese-vocabulary.mjs",
+                                  "beforeSha256":  "5839520576460cac57d739a706f0634d279948e7310b1910888908a0d1ede01e",
+                                  "afterSha256":  "5839520576460cac57d739a706f0634d279948e7310b1910888908a0d1ede01e"
+                              },
+                              {
+                                  "path":  "scripts/extract_hanzi.mjs",
+                                  "beforeSha256":  "a5e3f1992de283527dc8fd60cc51e2de4111db91a62a8da1671f06cd8ad3dcd3",
+                                  "afterSha256":  "a5e3f1992de283527dc8fd60cc51e2de4111db91a62a8da1671f06cd8ad3dcd3"
+                              },
+                              {
+                                  "path":  "scripts/extract_hanzi.py",
+                                  "beforeSha256":  "8fb28febad07c26699c0ad9a58b5c197cf80b15688c9eebfdd68e2961c8c5fab",
+                                  "afterSha256":  "8fb28febad07c26699c0ad9a58b5c197cf80b15688c9eebfdd68e2961c8c5fab"
+                              }
+                          ],
+    "baselineChanged":  [
+                            {
+                                "path":  "PRODUCT.md",
+                                "beforeSha256":  "6cd46f4a1bab32852e46e53423e2e95073141743935083042456bb8f84be424d",
+                                "afterSha256":  "39f0ebf2054f37925c82c38b72be62e46d5de2cc333b91c911c9af113d23add6"
+                            },
+                            {
+                                "path":  "backend/src/main/java/com/heyganba/service/AdminContentService.java",
+                                "beforeSha256":  "afd782d26d2fbecb70557bd2dad7455226e5ea6531613028d17317c716396c39",
+                                "afterSha256":  "c778ab7b57d304f80851239eebb322b9c67a926325f6c3e40ab3babababd8d20"
+                            },
+                            {
+                                "path":  "backend/src/test/java/com/heyganba/AssistedDictionaryCurationIntegrityTest.java",
+                                "beforeSha256":  "9d0f5e8eea9ac55ef086378326ea93c2812fabe2eaf9124a00bb1576b8d0091d",
+                                "afterSha256":  "733ec69dbf3bd8f775662b624e5c0c04cd6ff01ea218f0df1288c8adafdbf4c4"
+                            },
+                            {
+                                "path":  "backend/src/test/java/com/heyganba/DictionaryCoverageSearchTest.java",
+                                "beforeSha256":  "3e8211c2e8860dfe87da3e64034fa8bcf22b66b35516cc418c3f6f972e5efabb",
+                                "afterSha256":  "8af49d156068e997053d4ebcf22a9700069b35d047d99ec85199ca7b435e728b"
+                            },
+                            {
+                                "path":  "backend/src/test/java/com/heyganba/DictionaryCurationIntegrityTest.java",
+                                "beforeSha256":  "0a70a490e440b75489799764034ab1922b4e9071cd67b9ea8dbfdb4a1573616c",
+                                "afterSha256":  "91107660185babea6191f1df8290d9e649715a7c4db1848af01ba61870768464"
+                            },
+                            {
+                                "path":  "backend/src/test/java/com/heyganba/PostgresSchemaStagingRehearsalTest.java",
+                                "beforeSha256":  "a7071161e3ba2f3c591b090f8fad98453075dcc451d31dca899cbfec84c9fa9d",
+                                "afterSha256":  "9b7d3ff93244d5ca5ea7e8b5f264c6d827bda1c9bec4c37b63b0612b0edeaad1"
+                            },
+                            {
+                                "path":  "frontend/src/features/dictionary/DictionaryNotebookView.tsx",
+                                "beforeSha256":  "8498f532fd6ccd1aab7c2299f25ae795c2f36dd4025b30e3120dd29ce6706f96",
+                                "afterSha256":  "0e5b75b71e5b4ff7caa79702a10ecb2aadf2ad21dc5190b2d58b1cb70e78a4c2"
+                            },
+                            {
+                                "path":  "frontend/src/features/hanzi/HanziStationView.tsx",
+                                "beforeSha256":  "70d2bc77e8996061e1ce408a36f87c2bab589cc4eadeaa3477effbbdf23b483a",
+                                "afterSha256":  "308cfc5cde41995d32dac867851a916c16aad5919eaefcde68b6a183ff64d96d"
+                            },
+                            {
+                                "path":  "frontend/tests/unit/v21-edtech-ux.test.tsx",
+                                "beforeSha256":  "2a6a8e0af7dbd833f063d0bd39b50ffa866a3e3adab165d31d49345e99d5cbb4",
+                                "afterSha256":  "e477d779f5a8f46957044c4ebc76109cfcfa58adee9e9f93d455eea7254c5f40"
+                            },
+                            {
+                                "path":  "backend/src/test/java/com/heyganba/AdminDraftPublicationTest.java",
+                                "beforeSha256":  "48608d7bfadd5e25b0180ddbad3131581914605f6c9ec288509f31c679d973e7",
+                                "afterSha256":  "4b51686b69bdd44357558b654416150f2cf4960de045f55f1edc0a0801eb9bea"
+                            }
+                        ],
+    "taskFileCount":  39,
+    "taskFiles":  [
+                      {
+                          "path":  ".github/workflows/ci.yml",
+                          "gitStatus":  " M",
+                          "sha256":  "eba59668f8b0e072af871d13313327fd839312248e67c4129544e3231b0222f0",
+                          "baselineFile":  false,
+                          "hashNote":  null
+                      },
+                      {
+                          "path":  "backend/src/main/java/com/heyganba/controller/AdminVocabularyProvenanceController.java",
+                          "gitStatus":  "??",
+                          "sha256":  "4a614f620bdf222ca0b753ef8170db7c3f4c7db6049e384ff6f5ae7c69b67e35",
+                          "baselineFile":  false,
+                          "hashNote":  null
+                      },
+                      {
+                          "path":  "backend/src/main/java/com/heyganba/model/entity/Vocabulary.java",
+                          "gitStatus":  " M",
+                          "sha256":  "cbd5fe12b861c2badcd0c2ed9368231da709a375e773b770b9de53d5fc299f4b",
+                          "baselineFile":  false,
+                          "hashNote":  null
+                      },
+                      {
+                          "path":  "backend/src/main/java/com/heyganba/repository/VocabularyRepository.java",
+                          "gitStatus":  " M",
+                          "sha256":  "7ec06aa5178ebf80c4501a5aebec9d7192a3ffa06f6cbdf62d2033605c1dc686",
+                          "baselineFile":  false,
+                          "hashNote":  null
+                      },
+                      {
+                          "path":  "backend/src/main/java/com/heyganba/service/AdminContentService.java",
+                          "gitStatus":  " M",
+                          "sha256":  "c778ab7b57d304f80851239eebb322b9c67a926325f6c3e40ab3babababd8d20",
+                          "baselineFile":  true,
+                          "hashNote":  null
+                      },
+                      {
+                          "path":  "backend/src/main/java/com/heyganba/service/FlashcardService.java",
+                          "gitStatus":  " M",
+                          "sha256":  "62bf378233cf697fde24435cc9ee4cd3da297c3440c40fe501ecddcb5aefc280",
+                          "baselineFile":  false,
+                          "hashNote":  null
+                      },
+                      {
+                          "path":  "backend/src/main/java/com/heyganba/service/VocabularyProvenanceService.java",
+                          "gitStatus":  "??",
+                          "sha256":  "8adb82b48c4597e7c4130466cd9e95406db7700773109d1292b8bb1840bfdb68",
+                          "baselineFile":  false,
+                          "hashNote":  null
+                      },
+                      {
+                          "path":  "backend/src/main/resources/db/migration-staging/V13__vocabulary_provenance_review_gate.sql",
+                          "gitStatus":  "??",
+                          "sha256":  "dc71942e25cfd1d87c4ece6c84e1b680aa8f73686162449db03ff2b4978449e2",
+                          "baselineFile":  false,
+                          "hashNote":  null
+                      },
+                      {
+                          "path":  "backend/src/test/java/com/heyganba/AdminContentServiceTest.java",
+                          "gitStatus":  " M",
+                          "sha256":  "f7d4b66137a6b56526df146c338989be9d03442a65d7e56266d849c0080cdd9a",
+                          "baselineFile":  false,
+                          "hashNote":  null
+                      },
+                      {
+                          "path":  "backend/src/test/java/com/heyganba/AdminDraftPublicationTest.java",
+                          "gitStatus":  "??",
+                          "sha256":  "4b51686b69bdd44357558b654416150f2cf4960de045f55f1edc0a0801eb9bea",
+                          "baselineFile":  true,
+                          "hashNote":  null
+                      },
+                      {
+                          "path":  "backend/src/test/java/com/heyganba/AssistedDictionaryCurationIntegrityTest.java",
+                          "gitStatus":  " M",
+                          "sha256":  "733ec69dbf3bd8f775662b624e5c0c04cd6ff01ea218f0df1288c8adafdbf4c4",
+                          "baselineFile":  true,
+                          "hashNote":  null
+                      },
+                      {
+                          "path":  "backend/src/test/java/com/heyganba/DictionaryCoverageSearchTest.java",
+                          "gitStatus":  "  ",
+                          "sha256":  "8af49d156068e997053d4ebcf22a9700069b35d047d99ec85199ca7b435e728b",
+                          "baselineFile":  true,
+                          "hashNote":  null
+                      },
+                      {
+                          "path":  "backend/src/test/java/com/heyganba/DictionaryCurationIntegrityTest.java",
+                          "gitStatus":  "  ",
+                          "sha256":  "91107660185babea6191f1df8290d9e649715a7c4db1848af01ba61870768464",
+                          "baselineFile":  true,
+                          "hashNote":  null
+                      },
+                      {
+                          "path":  "backend/src/test/java/com/heyganba/FlashcardApiTest.java",
+                          "gitStatus":  " M",
+                          "sha256":  "c2ffe5f2bd97f5bc72c8527604d7a94803e72503391d68b80c098679a70d822c",
+                          "baselineFile":  false,
+                          "hashNote":  null
+                      },
+                      {
+                          "path":  "backend/src/test/java/com/heyganba/JwtTokenProviderTest.java",
+                          "gitStatus":  " M",
+                          "sha256":  "aa822c060234025aacd0a98b2b4769dde3841050c52c60610beae772ca856c4d",
+                          "baselineFile":  false,
+                          "hashNote":  null
+                      },
+                      {
+                          "path":  "backend/src/test/java/com/heyganba/PostgresSchemaStagingRehearsalTest.java",
+                          "gitStatus":  " M",
+                          "sha256":  "9b7d3ff93244d5ca5ea7e8b5f264c6d827bda1c9bec4c37b63b0612b0edeaad1",
+                          "baselineFile":  true,
+                          "hashNote":  null
+                      },
+                      {
+                          "path":  "docs/archive/pre-selfhost/render.yaml",
+                          "gitStatus":  "??",
+                          "sha256":  "28a6f568db339a8c8b9a2985c53d9fdbf381f7abf1acb50edbbc21eef1afe46d",
+                          "baselineFile":  false,
+                          "hashNote":  null
+                      },
+                      {
+                          "path":  "docs/QA/hsk3-comparison-2026-10-19.json",
+                          "gitStatus":  "??",
+                          "sha256":  "5927f94b30cb9b906b73120fbd9a4f79a360afbd175c135eb47c36cf54328958",
+                          "baselineFile":  false,
+                          "hashNote":  null
+                      },
+                      {
+                          "path":  "docs/QA/master-baseline-2026-10-19.json",
+                          "gitStatus":  "??",
+                          "sha256":  "7e67c088205cb20aa614ea597fcb939481d64b52bb9fb5c44d56f31fcc8988b6",
+                          "baselineFile":  false,
+                          "hashNote":  null
+                      },
+                      {
+                          "path":  "docs/QA/master-readiness-2026-10-19.md",
+                          "gitStatus":  "??",
+                          "sha256":  "1bb187e23b1781599dace46cb32bf01ecde95b69d49a9bcd89bf9d77b3c07cb8",
+                          "baselineFile":  false,
+                          "hashNote":  null
+                      },
+                      {
+                          "path":  "docs/QA/master-worktree-final-2026-10-19.json",
+                          "gitStatus":  "??",
+                          "sha256":  null,
+                          "baselineFile":  false,
+                          "hashNote":  "Self hash excluded to avoid recursion"
+                      },
+                      {
+                          "path":  "docs/self-host-runbook.md",
+                          "gitStatus":  "??",
+                          "sha256":  "c492bd052a276ecf81d83692ca2ade6ee254d8e0992cacbeb6e98930ec7b94b4",
+                          "baselineFile":  false,
+                          "hashNote":  null
+                      },
+                      {
+                          "path":  "frontend/.env.example",
+                          "gitStatus":  " M",
+                          "sha256":  "a08caa5d81df49a3e76c52d9b5498f49cf6109a6f1b8e1dfacfb6b93971a9699",
+                          "baselineFile":  false,
+                          "hashNote":  null
+                      },
+                      {
+                          "path":  "frontend/index.html",
+                          "gitStatus":  " M",
+                          "sha256":  "14a05beac7a92bc214afa1811ddf0016b92460806385b8542359e5ed5e351571",
+                          "baselineFile":  false,
+                          "hashNote":  null
+                      },
+                      {
+                          "path":  "frontend/src/features/admin/ReviewQueuePanel.tsx",
+                          "gitStatus":  " M",
+                          "sha256":  "9929ee897caacc6aaf07fb239a5d3f99c819d2f5ec42b948863c16bd85bf7ddd",
+                          "baselineFile":  false,
+                          "hashNote":  null
+                      },
+                      {
+                          "path":  "frontend/src/features/admin/VocabularyProvenanceEditor.tsx",
+                          "gitStatus":  "??",
+                          "sha256":  "369ce237a1bc7e21d08a891ddb650c0c47e071d66e26a5b1ea408ec7a55216d4",
+                          "baselineFile":  false,
+                          "hashNote":  null
+                      },
+                      {
+                          "path":  "frontend/src/features/dictionary/DictionaryNotebookView.tsx",
+                          "gitStatus":  " M",
+                          "sha256":  "0e5b75b71e5b4ff7caa79702a10ecb2aadf2ad21dc5190b2d58b1cb70e78a4c2",
+                          "baselineFile":  true,
+                          "hashNote":  null
+                      },
+                      {
+                          "path":  "frontend/src/features/flashcard/FlashcardView.tsx",
+                          "gitStatus":  " M",
+                          "sha256":  "81b1d4e592931cc71d76b773f1bdeeae83bec4779be5464f5fd1b3d8ca720ac2",
+                          "baselineFile":  false,
+                          "hashNote":  null
+                      },
+                      {
+                          "path":  "frontend/src/features/hanzi/HanziStationView.tsx",
+                          "gitStatus":  " M",
+                          "sha256":  "308cfc5cde41995d32dac867851a916c16aad5919eaefcde68b6a183ff64d96d",
+                          "baselineFile":  true,
+                          "hashNote":  null
+                      },
+                      {
+                          "path":  "frontend/src/features/pinyin/PinyinStationView.tsx",
+                          "gitStatus":  " M",
+                          "sha256":  "1a4cfc4c802151e193ea380020f5fcfd0bad2a559f3cd9b62412df41ee50c3d4",
+                          "baselineFile":  false,
+                          "hashNote":  null
+                      },
+                      {
+                          "path":  "frontend/tests/unit/flashcard-m22.test.tsx",
+                          "gitStatus":  " M",
+                          "sha256":  "2908b6f585a13feeec13cd426be01c0deed4a4e3dab2f8fc337402317d2b2b72",
+                          "baselineFile":  false,
+                          "hashNote":  null
+                      },
+                      {
+                          "path":  "frontend/tests/unit/hanzi-hsk.test.tsx",
+                          "gitStatus":  " M",
+                          "sha256":  "0a0f9cb980923592a6720edf15447b1874115767ea71f780cf07df0717c7b380",
+                          "baselineFile":  false,
+                          "hashNote":  null
+                      },
+                      {
+                          "path":  "frontend/tests/unit/v21-edtech-ux.test.tsx",
+                          "gitStatus":  " M",
+                          "sha256":  "e477d779f5a8f46957044c4ebc76109cfcfa58adee9e9f93d455eea7254c5f40",
+                          "baselineFile":  true,
+                          "hashNote":  null
+                      },
+                      {
+                          "path":  "frontend/tests/unit/vocabulary-provenance.test.tsx",
+                          "gitStatus":  "??",
+                          "sha256":  "e5be26771fb5dab4e36afb532048497f3a3e4f42be53d461f442aaa2c5f9b82b",
+                          "baselineFile":  false,
+                          "hashNote":  null
+                      },
+                      {
+                          "path":  "frontend/vercel.json",
+                          "gitStatus":  " M",
+                          "sha256":  "9d7991be4a5ce2f3783ec9327089b3e42c1b3cf0eabbd5916364ddfcdbf99c2e",
+                          "baselineFile":  false,
+                          "hashNote":  null
+                      },
+                      {
+                          "path":  "PRODUCT.md",
+                          "gitStatus":  " M",
+                          "sha256":  "39f0ebf2054f37925c82c38b72be62e46d5de2cc333b91c911c9af113d23add6",
+                          "baselineFile":  true,
+                          "hashNote":  null
+                      },
+                      {
+                          "path":  "render.yaml",
+                          "gitStatus":  " D",
+                          "sha256":  null,
+                          "baselineFile":  false,
+                          "hashNote":  "Archived from root; see docs/archive/pre-selfhost/render.yaml"
+                      },
+                      {
+                          "path":  "scripts/compare-hsk-syllabus.py",
+                          "gitStatus":  "??",
+                          "sha256":  "a240d36f7288a798b08f393c002d564a107e9a447fcf892d050e9611b8ca8a93",
+                          "baselineFile":  false,
+                          "hashNote":  null
+                      },
+                      {
+                          "path":  "scripts/test_compare_hsk_syllabus.py",
+                          "gitStatus":  "??",
+                          "sha256":  "4f9ff7d3607b829a3eaa33c04ae5b16dd4723244a3bd9e9df05e118ac26aeaf6",
+                          "baselineFile":  false,
+                          "hashNote":  null
+                      }
+                  ],
+    "gitStatusShort":  [
+                           " M .github/workflows/ci.yml",
+                           " M PRODUCT.md",
+                           " M backend/src/main/java/com/heyganba/controller/AdminController.java",
+                           " M backend/src/main/java/com/heyganba/controller/HealthController.java",
+                           " M backend/src/main/java/com/heyganba/model/entity/Vocabulary.java",
+                           " M backend/src/main/java/com/heyganba/repository/VocabularyRepository.java",
+                           " M backend/src/main/java/com/heyganba/service/AdminContentService.java",
+                           " M backend/src/main/java/com/heyganba/service/FlashcardService.java",
+                           " M backend/src/main/java/com/heyganba/service/RateLimiterService.java",
+                           " M backend/src/main/java/com/heyganba/service/srs/InMemorySrsDueCache.java",
+                           " M backend/src/main/resources/dictionary/assisted-ja-vi.tsv",
+                           " M backend/src/test/java/com/heyganba/AdminContentServiceTest.java",
+                           " M backend/src/test/java/com/heyganba/AssistedDictionaryCurationIntegrityTest.java",
+                           " M backend/src/test/java/com/heyganba/FlashcardApiTest.java",
+                           " M backend/src/test/java/com/heyganba/JwtTokenProviderTest.java",
+                           " M backend/src/test/java/com/heyganba/PostgresSchemaStagingRehearsalTest.java",
+                           " M docs/Dictionary/coverage-after-rehearsal.json",
+                           " M docs/Dictionary/coverage-baseline.json",
+                           " M docs/Dictionary/vietnamese-coverage-baseline.json",
+                           " M docs/Dictionary/vietnamese-coverage-candidate.json",
+                           " M docs/curriculum-roadmap-m1-m3.md",
+                           " M docs/roadmap.md",
+                           " M frontend/.env.example",
+                           " M frontend/index.html",
+                           " M frontend/src/components/OrientalDecorBackground.tsx",
+                           " M frontend/src/features/admin/AdminView.tsx",
+                           " M frontend/src/features/admin/ReviewQueuePanel.tsx",
+                           " M frontend/src/features/admin/types.ts",
+                           " M frontend/src/features/dashboard/DashboardView.tsx",
+                           " M frontend/src/features/dashboard/HskRoadmap.tsx",
+                           " M frontend/src/features/dictionary/DictionaryNotebookView.tsx",
+                           " M frontend/src/features/exam/ExamView.tsx",
+                           " M frontend/src/features/exam/activeAttempt.ts",
+                           " M frontend/src/features/flashcard/FlashcardView.tsx",
+                           " M frontend/src/features/grammar/GrammarView.tsx",
+                           " M frontend/src/features/hanzi/HanziStationView.tsx",
+                           " M frontend/src/features/pinyin/PinyinStationView.tsx",
+                           " M frontend/src/services/chineseSpeech.ts",
+                           " M frontend/tests/unit/flashcard-m22.test.tsx",
+                           " M frontend/tests/unit/hanzi-hsk.test.tsx",
+                           " M frontend/tests/unit/qa-batch-b.test.tsx",
+                           " M frontend/tests/unit/v21-edtech-ux.test.tsx",
+                           " M frontend/vercel.json",
+                           " D render.yaml",
+                           " M scripts/verify-postgres-m21.ps1",
+                           "?? backend/src/main/java/com/heyganba/controller/AdminVocabularyProvenanceController.java",
+                           "?? backend/src/main/java/com/heyganba/dto/admin/AdminContentResponses.java",
+                           "?? backend/src/main/java/com/heyganba/service/VocabularyProvenanceService.java",
+                           "?? backend/src/main/resources/db/migration-staging/V12__performance_indexes_and_constraints.sql",
+                           "?? backend/src/main/resources/db/migration-staging/V13__vocabulary_provenance_review_gate.sql",
+                           "?? backend/src/test/java/com/heyganba/AdminDraftPublicationTest.java",
+                           "?? backend/src/test/java/com/heyganba/HealthReadinessTest.java",
+                           "?? docs/QA/ci-migration-check-f6c9ea7-2026-10-18.md",
+                           "?? docs/QA/hsk3-comparison-2026-10-19.json",
+                           "?? docs/QA/master-baseline-2026-10-19.json",
+                           "?? docs/QA/master-readiness-2026-10-19.md",
+                           "?? docs/QA/master-worktree-final-2026-10-19.json",
+                           "?? docs/QA/selfhost-baseline-2026-10-19.json",
+                           "?? docs/QA/selfhost-readiness-2026-10-19.md",
+                           "?? docs/QA/vocabulary-audit-2026-10-19.json",
+                           "?? docs/archive/pre-selfhost/render.yaml",
+                           "?? docs/self-host-runbook.md",
+                           "?? frontend/src/features/admin/VocabularyProvenanceEditor.tsx",
+                           "?? frontend/tests/unit/dashboard-target.test.tsx",
+                           "?? frontend/tests/unit/vocabulary-provenance.test.tsx",
+                           "?? scripts/audit-chinese-vocabulary.mjs",
+                           "?? scripts/compare-hsk-syllabus.py",
+                           "?? scripts/extract_hanzi.mjs",
+                           "?? scripts/extract_hanzi.py",
+                           "?? scripts/test_compare_hsk_syllabus.py"
+                       ],
+    "artifactRoot":  "backups/master-readiness-2026-10-19 (gitignored)",
+    "temporaryHelpers":  "Moved only task-created frontend helpers to ignored ui-helper.mjs and ax-helper.mjs; no baseline file moved",
+    "localQaServices":  "Ports 15176/18091/15451 no longer listening; Docker daemon stopped; no container or database removed"
+}

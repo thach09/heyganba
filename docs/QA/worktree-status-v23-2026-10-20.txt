@@ -1,0 +1,162 @@
+ M .github/workflows/ci.yml
+ M PRODUCT.md
+ M backend/pom.xml
+ M backend/src/main/java/com/heyganba/controller/AdminController.java
+ M backend/src/main/java/com/heyganba/controller/HealthController.java
+ M backend/src/main/java/com/heyganba/dto/dictionary/DictionarySearchResponse.java
+ M backend/src/main/java/com/heyganba/dto/flashcard/FlashcardDueResponse.java
+ M backend/src/main/java/com/heyganba/dto/kanji/KanjiResponse.java
+ M backend/src/main/java/com/heyganba/dto/vocabulary/VocabularyWordResponse.java
+ M backend/src/main/java/com/heyganba/model/entity/Vocabulary.java
+ M backend/src/main/java/com/heyganba/repository/VocabularyRepository.java
+ M backend/src/main/java/com/heyganba/service/AdminContentService.java
+ D backend/src/main/java/com/heyganba/service/AssistedDictionaryCuration.java
+ D backend/src/main/java/com/heyganba/service/DictionaryCuration.java
+ M backend/src/main/java/com/heyganba/service/DictionaryService.java
+ M backend/src/main/java/com/heyganba/service/ExamService.java
+ M backend/src/main/java/com/heyganba/service/FlashcardService.java
+ M backend/src/main/java/com/heyganba/service/KanjiService.java
+ M backend/src/main/java/com/heyganba/service/RateLimiterService.java
+ M backend/src/main/java/com/heyganba/service/VocabNotebookService.java
+ M backend/src/main/java/com/heyganba/service/srs/InMemorySrsDueCache.java
+ M backend/src/main/resources/application-prod.yml
+ M backend/src/main/resources/application.yml
+ D backend/src/main/resources/db/migration-staging/dictionary-coverage-pilot.json
+ D backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-a.tsv
+ D backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-b.metadata.json
+ D backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-b.tsv
+ D backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-c.metadata.json
+ D backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-c.tsv
+ D backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-d.metadata.json
+ D backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-d.tsv
+ D backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-e.metadata.json
+ D backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-e.tsv
+ D backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-f.metadata.json
+ D backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-f.tsv
+ D backend/src/main/resources/db/migration-staging/vietnamese-assisted-exclusions.tsv
+ D backend/src/main/resources/dictionary/README.md
+ D backend/src/main/resources/dictionary/assisted-ja-vi.tsv
+ D backend/src/main/resources/dictionary/curated-ja-vi.tsv
+ D backend/src/main/resources/dictionary/jmdict.tsv.gz
+ D backend/src/main/resources/dictionary/snapshot.json
+ M backend/src/test/java/com/heyganba/AdminContentServiceTest.java
+ M backend/src/test/java/com/heyganba/AssistedDictionaryCurationIntegrityTest.java
+ M backend/src/test/java/com/heyganba/DictionaryCandidateSelectionTest.java
+ M backend/src/test/java/com/heyganba/DictionaryCoverageSearchTest.java
+ M backend/src/test/java/com/heyganba/DictionaryCurationIntegrityTest.java
+ M backend/src/test/java/com/heyganba/DictionaryNotebookApiTest.java
+ M backend/src/test/java/com/heyganba/DictionaryPilotPostgresRehearsalTest.java
+ M backend/src/test/java/com/heyganba/FlashcardApiTest.java
+ M backend/src/test/java/com/heyganba/FlywayLocationsConfigTest.java
+ M backend/src/test/java/com/heyganba/JwtTokenProviderTest.java
+ M backend/src/test/java/com/heyganba/PostgresSchemaStagingRehearsalTest.java
+ M backend/src/test/java/com/heyganba/support/ContentApiTestBase.java
+ M backend/src/test/resources/application-test.yml
+ M docs/Dictionary/coverage-after-rehearsal.json
+ M docs/Dictionary/coverage-baseline.json
+ M docs/Dictionary/vietnamese-coverage-baseline.json
+ M docs/Dictionary/vietnamese-coverage-candidate.json
+ M docs/Internal/AGENTS.md
+ M docs/curriculum-roadmap-m1-m3.md
+ M docs/roadmap.md
+ M frontend/.env.example
+ M frontend/index.html
+ M frontend/src/app/AppShell.tsx
+ M frontend/src/app/routes.tsx
+ M frontend/src/components/OrientalDecorBackground.tsx
+ M frontend/src/features/admin/AdminView.tsx
+ M frontend/src/features/admin/ReviewQueuePanel.tsx
+ M frontend/src/features/admin/types.ts
+ M frontend/src/features/companion/CompanionWidget.tsx
+ M frontend/src/features/companion/three/Companion3DCanvas.tsx
+ M frontend/src/features/dashboard/DashboardView.tsx
+ M frontend/src/features/dashboard/HskRoadmap.tsx
+ M frontend/src/features/dashboard/LearningInsights.tsx
+ M frontend/src/features/dictionary/DictionaryNotebookView.tsx
+ M frontend/src/features/exam/ExamView.tsx
+ M frontend/src/features/exam/activeAttempt.ts
+ M frontend/src/features/flashcard/FlashcardView.tsx
+ M frontend/src/features/grammar/GrammarView.tsx
+ M frontend/src/features/hanzi/HanziStationView.tsx
+ M frontend/src/features/pinyin/PinyinStationView.tsx
+ M frontend/src/lib/api/client.ts
+ M frontend/src/services/chineseSpeech.ts
+ M frontend/tests/unit/api.test.ts
+ M frontend/tests/unit/curriculum-m6.test.tsx
+ M frontend/tests/unit/flashcard-lifecycle.test.tsx
+ M frontend/tests/unit/flashcard-m22.test.tsx
+ M frontend/tests/unit/grammar-hsk.test.tsx
+ M frontend/tests/unit/hanzi-hsk.test.tsx
+ M frontend/tests/unit/qa-batch-b.test.tsx
+ M frontend/tests/unit/v21-edtech-ux.test.tsx
+ M frontend/vercel.json
+ D render.yaml
+ M scripts/verify-postgres-m21.ps1
+?? backend/src/legacy-japanese/
+?? backend/src/main/java/com/heyganba/controller/AdminVocabularyProvenanceController.java
+?? backend/src/main/java/com/heyganba/dto/admin/AdminContentResponses.java
+?? backend/src/main/java/com/heyganba/service/VocabularyProvenanceService.java
+?? backend/src/main/resources/db/migration-release/
+?? backend/src/main/resources/db/migration-staging/V12__performance_indexes_and_constraints.sql
+?? backend/src/main/resources/db/migration-staging/V13__vocabulary_provenance_review_gate.sql
+?? backend/src/main/resources/db/migration-staging/V14__web_cross_check_evidence_policy.sql
+?? backend/src/main/resources/db/migration-staging/V15__publish_web_cross_checked_vocabulary_batch.sql
+?? backend/src/main/resources/db/migration-staging/V16__publish_hsk1_web_cross_checked_batch_01.sql
+?? backend/src/main/resources/db/migration-staging/V17__clear_unverified_vocabulary_optional_fields.sql
+?? backend/src/main/resources/db/migration-staging/V18__publish_hsk1_web_cross_checked_batch_02.sql
+?? backend/src/main/resources/db/migration-staging/V19__publish_hsk1_web_cross_checked_batch_03.sql
+?? backend/src/main/resources/db/migration-staging/V20__publish_hsk1_web_cross_checked_batch_04.sql
+?? backend/src/main/resources/db/migration-staging/V21__resolve_verified_pending_vocabulary.sql
+?? backend/src/main/resources/db/migration-staging/V22__repair_hsk1_batch_text_encoding.sql
+?? backend/src/main/resources/db/migration-staging/V23__publish_hsk2_web_cross_checked_batch_01.sql
+?? backend/src/main/resources/db/release-migrations-manifest.json
+?? backend/src/test/java/com/heyganba/AdminDraftPublicationTest.java
+?? backend/src/test/java/com/heyganba/ChineseDictionaryBoundaryTest.java
+?? backend/src/test/java/com/heyganba/HanziVocabularyWithdrawalTest.java
+?? backend/src/test/java/com/heyganba/HealthReadinessTest.java
+?? backend/src/test/java/com/heyganba/VocabularyWebEvidenceTest.java
+?? backend/src/test/java/com/heyganba/service/
+?? docs/Content/
+?? docs/QA/ci-migration-check-f6c9ea7-2026-10-18.md
+?? docs/QA/hsk3-comparison-2026-10-19.json
+?? docs/QA/legacy-path-audit-2026-10-20.json
+?? docs/QA/master-baseline-2026-10-19.json
+?? docs/QA/master-readiness-2026-10-19.md
+?? docs/QA/master-readiness-2026-10-20.md
+?? docs/QA/master-worktree-final-2026-10-19.json
+?? docs/QA/master-worktree-final-2026-10-20.json
+?? docs/QA/readiness-v23-2026-10-20.md
+?? docs/QA/selfhost-baseline-2026-10-19.json
+?? docs/QA/selfhost-readiness-2026-10-19.md
+?? docs/QA/spring-advisory-exception-2026-10-20.md
+?? docs/QA/v23-verification-2026-10-20.json
+?? docs/QA/vocabulary-audit-2026-10-19.json
+?? docs/QA/worktree-delta-v23-2026-10-20.json
+?? docs/QA/worktree-status-v23-2026-10-20.txt
+?? docs/archive/pre-selfhost/
+?? docs/self-host-runbook.md
+?? frontend/public/fonts/
+?? frontend/src/features/admin/VocabularyProvenanceEditor.tsx
+?? frontend/src/features/flashcard/lessonPracticeSession.ts
+?? frontend/src/lib/hanziWriter.ts
+?? frontend/tests/unit/app-shell-reconnect.test.tsx
+?? frontend/tests/unit/chineseSpeech.test.ts
+?? frontend/tests/unit/dashboard-target.test.tsx
+?? frontend/tests/unit/lesson-quiz-recovery.test.tsx
+?? frontend/tests/unit/vocabulary-provenance.test.tsx
+?? scripts/audit-approved-vocabulary-evidence.py
+?? scripts/audit-chinese-vocabulary.mjs
+?? scripts/audit-production-artifact.py
+?? scripts/audit-published-corpus.py
+?? scripts/audit-vocabulary-evidence.py
+?? scripts/build-local-fonts.py
+?? scripts/compare-hsk-syllabus.py
+?? scripts/extract_hanzi.mjs
+?? scripts/extract_hanzi.py
+?? scripts/generate-hsk1-content-correction-migration.py
+?? scripts/generate-hsk1-web-supplement-migration.py
+?? scripts/generate-hsk2-web-supplement-migration.py
+?? scripts/generate-optional-field-clearance-migration.py
+?? scripts/generate-pending-resolution-migration.py
+?? scripts/generate-reviewed-vocabulary-migration.py
+?? scripts/test_compare_hsk_syllabus.py

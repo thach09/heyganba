@@ -34,7 +34,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.ConnectionCallback;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
+
+import java.sql.ResultSet;
 
 /**
  * Base class cho các test có dữ liệu nội dung (kana/vocabulary/kanji/grammar).
@@ -116,6 +120,9 @@ public abstract class ContentApiTestBase {
     @Autowired
     protected com.heyganba.repository.VocabNotebookRepository notebookRepository;
 
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
     /**
      * Rate limiter là state trong memory của Spring context — context được chia sẻ giữa các test class,
      * nên phải reset ở đây. Nếu không, test A đăng ký/đăng nhập nhiều lần sẽ làm test B nhận 429
@@ -152,6 +159,9 @@ public abstract class ContentApiTestBase {
         auditLogRepository.deleteAll();
         readingPassageRepository.deleteAll();
         notebookRepository.deleteAll();
+        if (hasVocabularySyllabusClassificationTable()) {
+            jdbcTemplate.update("DELETE FROM vocabulary_syllabus_classification");
+        }
         grammarExerciseRepository.deleteAll();
         grammarRuleRepository.deleteAll();
         kanjiProgressRepository.deleteAll();
@@ -165,6 +175,15 @@ public abstract class ContentApiTestBase {
         roleRepository.deleteAll();
         lessonRepository.deleteAll();
         srsDueCache.clearAll();
+    }
+
+    private boolean hasVocabularySyllabusClassificationTable() {
+        return Boolean.TRUE.equals(jdbcTemplate.execute((ConnectionCallback<Boolean>) connection -> {
+            try (ResultSet tables = connection.getMetaData().getTables(
+                    connection.getCatalog(), null, "vocabulary_syllabus_classification", new String[]{"TABLE"})) {
+                return tables.next();
+            }
+        }));
     }
 
     // ------------------------------------------------------------------

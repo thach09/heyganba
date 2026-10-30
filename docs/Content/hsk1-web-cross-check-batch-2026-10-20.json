@@ -1,0 +1,1910 @@
+{
+  "policy": "WEB_CROSS_CHECKED_2026_10_20_V1",
+  "method": "Pinned-source web cross-check; CTI syllabus used only for official ID, word, Pinyin and level.",
+  "reviewedAt": "2026-10-20",
+  "courseGrouping": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+  "officialSyllabusVersion": "CTI_HSK_3.0_2025-11",
+  "items": [
+    {
+      "content": {
+        "word": "包子",
+        "traditional": "包子",
+        "pinyin": "bāozi",
+        "pinyin_normalized": null,
+        "meaning_vi": "bánh bao",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Danh từ",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "bff8df5841e9f9be073eed703e1f7b1731a9780ccbf89c845cf68a9d59f1f309",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Nghĩa tiếng Việt do biên soạn dựa trên CC-CEDICT đã đối chiếu với mục MOE độc lập; không phải bản dịch có sẵn trong nguồn. Attribution/license: docs/Content/web-cross-check-policy.md",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "9479630f16f9fd8178127ccbf955851462d135aa58e302be1028f02808c5432e",
+            "subjectWord": "包子",
+            "subjectReading": "bāozi",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "Nghĩa nguồn đã đọc khớp nghĩa tiếng Việt biên soạn “bánh bao”; không gộp nghĩa đồng âm khác.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "008900024",
+            "subjectWord": "包子",
+            "subjectReading": "bāozi",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "Định nghĩa và ví dụ cách dùng MOE độc lập đã đọc, khớp nghĩa Việt biên soạn; không sao chép hoặc dịch lời định nghĩa MOE.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "8",
+            "subjectWord": "包子",
+            "subjectReading": "bāozi",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Chỉ xác nhận ID, chữ, Pinyin và cấp HSK 1; không xác nhận nghĩa Việt hay từ loại.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 8,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "包子",
+        "pinyin": "bāozi"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    },
+    {
+      "content": {
+        "word": "车",
+        "traditional": "車",
+        "pinyin": "chē",
+        "pinyin_normalized": null,
+        "meaning_vi": "xe; phương tiện",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Danh từ",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "85b6eb5029dd6cce71164924fb79ff72973b7753b43452f7411f789f59d4f80b",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Nghĩa tiếng Việt do biên soạn dựa trên CC-CEDICT đã đối chiếu với mục MOE độc lập; không phải bản dịch có sẵn trong nguồn. Attribution/license: docs/Content/web-cross-check-policy.md",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "f7c4022a7240a77dcddafe93d0d37c9d4a63d9003bbc49ee17b8dc01ff22888b",
+            "subjectWord": "车",
+            "subjectReading": "chē",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "Nghĩa nguồn đã đọc khớp nghĩa tiếng Việt biên soạn “xe; phương tiện”; không gộp nghĩa đồng âm khác.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "4668",
+            "subjectWord": "車",
+            "subjectReading": "chē",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "Định nghĩa và ví dụ cách dùng MOE độc lập đã đọc, khớp nghĩa Việt biên soạn; không sao chép hoặc dịch lời định nghĩa MOE.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "20",
+            "subjectWord": "车",
+            "subjectReading": "chē",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Chỉ xác nhận ID, chữ, Pinyin và cấp HSK 1; không xác nhận nghĩa Việt hay từ loại.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 20,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "车",
+        "pinyin": "chē"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    },
+    {
+      "content": {
+        "word": "大学",
+        "traditional": "大學",
+        "pinyin": "dàxué",
+        "pinyin_normalized": null,
+        "meaning_vi": "trường đại học",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Danh từ",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "d45c4ea21773ef97615b2cbe1cfcbb3a085247520603e63408b87eee2a710428",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Nghĩa tiếng Việt do biên soạn dựa trên CC-CEDICT đã đối chiếu với mục MOE độc lập; không phải bản dịch có sẵn trong nguồn. Attribution/license: docs/Content/web-cross-check-policy.md",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "e49956005553e038ed23cad700f2710eb6b15785d6e0c8e6a7c736c700f2e77d",
+            "subjectWord": "大学",
+            "subjectReading": "dàxué",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "Nghĩa nguồn đã đọc khớp nghĩa tiếng Việt biên soạn “trường đại học”; không gộp nghĩa đồng âm khác.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "101500331",
+            "subjectWord": "大學",
+            "subjectReading": "dàxué",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "Định nghĩa và ví dụ cách dùng MOE độc lập đã đọc, khớp nghĩa Việt biên soạn; không sao chép hoặc dịch lời định nghĩa MOE.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "27",
+            "subjectWord": "大学",
+            "subjectReading": "dàxué",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Chỉ xác nhận ID, chữ, Pinyin và cấp HSK 1; không xác nhận nghĩa Việt hay từ loại.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 27,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "大学",
+        "pinyin": "dàxué"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    },
+    {
+      "content": {
+        "word": "大学生",
+        "traditional": "大學生",
+        "pinyin": "dàxuéshēng",
+        "pinyin_normalized": null,
+        "meaning_vi": "sinh viên đại học",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Danh từ",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "b91a9b0c0d70978799f8ac69f2b0bcbb662e95359456a3f82d4c6ebfb7d482d4",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Nghĩa tiếng Việt do biên soạn dựa trên CC-CEDICT đã đối chiếu với mục MOE độc lập; không phải bản dịch có sẵn trong nguồn. Attribution/license: docs/Content/web-cross-check-policy.md",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "09edf2f0c12035f8881ba5e518aaa5d7940821268d33a82fda147747460312a4",
+            "subjectWord": "大学生",
+            "subjectReading": "dàxuéshēng",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "Nghĩa nguồn đã đọc khớp nghĩa tiếng Việt biên soạn “sinh viên đại học”; không gộp nghĩa đồng âm khác.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "101500338",
+            "subjectWord": "大學生",
+            "subjectReading": "dàxuéshēng",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "Định nghĩa và ví dụ cách dùng MOE độc lập đã đọc, khớp nghĩa Việt biên soạn; không sao chép hoặc dịch lời định nghĩa MOE.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "28",
+            "subjectWord": "大学生",
+            "subjectReading": "dàxuéshēng",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Chỉ xác nhận ID, chữ, Pinyin và cấp HSK 1; không xác nhận nghĩa Việt hay từ loại.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 28,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "大学生",
+        "pinyin": "dàxuéshēng"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    },
+    {
+      "content": {
+        "word": "第",
+        "traditional": "第",
+        "pinyin": "dì",
+        "pinyin_normalized": null,
+        "meaning_vi": "tiền tố chỉ thứ tự",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Tiền tố",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "1b260765654facc975ca0862723696ad179dae60240460d75e91b670135e832e",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Nghĩa tiếng Việt do biên soạn dựa trên CC-CEDICT đã đối chiếu với mục MOE độc lập; không phải bản dịch có sẵn trong nguồn. Attribution/license: docs/Content/web-cross-check-policy.md",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "8b41c3b2a1ce4209f2ef5ad55addc5e3a896367b5c9b6d30bc9791e8a386f51b",
+            "subjectWord": "第",
+            "subjectReading": "dì",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "Nghĩa nguồn đã đọc khớp nghĩa tiếng Việt biên soạn “tiền tố chỉ thứ tự”; không gộp nghĩa đồng âm khác.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "1150",
+            "subjectWord": "第",
+            "subjectReading": "dì",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "Định nghĩa và ví dụ cách dùng MOE độc lập đã đọc, khớp nghĩa Việt biên soạn; không sao chép hoặc dịch lời định nghĩa MOE.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "31",
+            "subjectWord": "第",
+            "subjectReading": "dì",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Chỉ xác nhận ID, chữ, Pinyin và cấp HSK 1; không xác nhận nghĩa Việt hay từ loại.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 31,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "第",
+        "pinyin": "dì"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    },
+    {
+      "content": {
+        "word": "店",
+        "traditional": "店",
+        "pinyin": "diàn",
+        "pinyin_normalized": null,
+        "meaning_vi": "cửa hàng",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Danh từ",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "bb53ae96f33707de0c3a21f70d6351de58a5b889ca8f5234d7f6b7b1f1051ee3",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Nghĩa tiếng Việt do biên soạn dựa trên CC-CEDICT đã đối chiếu với mục MOE độc lập; không phải bản dịch có sẵn trong nguồn. Attribution/license: docs/Content/web-cross-check-policy.md",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "1198b6ac68d7fabb8aa6d2e10f6e6087755524c35101e4610c4a7d80c5904508",
+            "subjectWord": "店",
+            "subjectReading": "diàn",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "Nghĩa nguồn đã đọc khớp nghĩa tiếng Việt biên soạn “cửa hàng”; không gộp nghĩa đồng âm khác.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "1204",
+            "subjectWord": "店",
+            "subjectReading": "diàn",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "Định nghĩa và ví dụ cách dùng MOE độc lập đã đọc, khớp nghĩa Việt biên soạn; không sao chép hoặc dịch lời định nghĩa MOE.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "34",
+            "subjectWord": "店",
+            "subjectReading": "diàn",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Chỉ xác nhận ID, chữ, Pinyin và cấp HSK 1; không xác nhận nghĩa Việt hay từ loại.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 34,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "店",
+        "pinyin": "diàn"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    },
+    {
+      "content": {
+        "word": "电话",
+        "traditional": "電話",
+        "pinyin": "diànhuà",
+        "pinyin_normalized": null,
+        "meaning_vi": "điện thoại",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Danh từ",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "a8c027821a7221c0dabe74984b170ec639985eb357242aac2ee44fdf03c5c763",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Nghĩa tiếng Việt do biên soạn dựa trên CC-CEDICT đã đối chiếu với mục MOE độc lập; không phải bản dịch có sẵn trong nguồn. Attribution/license: docs/Content/web-cross-check-policy.md",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "9f359686b28c12a22c005bbb21275109ba20af7efe76e04a9f2bcd743957d6a4",
+            "subjectWord": "电话",
+            "subjectReading": "diànhuà",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "Nghĩa nguồn đã đọc khớp nghĩa tiếng Việt biên soạn “điện thoại”; không gộp nghĩa đồng âm khác.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "120900063",
+            "subjectWord": "電話",
+            "subjectReading": "diànhuà",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "Định nghĩa và ví dụ cách dùng MOE độc lập đã đọc, khớp nghĩa Việt biên soạn; không sao chép hoặc dịch lời định nghĩa MOE.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "35",
+            "subjectWord": "电话",
+            "subjectReading": "diànhuà",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Chỉ xác nhận ID, chữ, Pinyin và cấp HSK 1; không xác nhận nghĩa Việt hay từ loại.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 35,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "电话",
+        "pinyin": "diànhuà"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    },
+    {
+      "content": {
+        "word": "电影院",
+        "traditional": "電影院",
+        "pinyin": "diànyǐngyuàn",
+        "pinyin_normalized": null,
+        "meaning_vi": "rạp chiếu phim",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Danh từ",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "0538d894b18d528649a67574f0e0ba54eceed6b929229e9e33f7863c879e49c9",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Nghĩa tiếng Việt do biên soạn dựa trên CC-CEDICT đã đối chiếu với mục MOE độc lập; không phải bản dịch có sẵn trong nguồn. Attribution/license: docs/Content/web-cross-check-policy.md",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "2d2aba572e0376c41c61d63e9ae921605796d696a3f3e9907a84e3ce5810af1e",
+            "subjectWord": "电影院",
+            "subjectReading": "diànyǐngyuàn",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "Nghĩa nguồn đã đọc khớp nghĩa tiếng Việt biên soạn “rạp chiếu phim”; không gộp nghĩa đồng âm khác.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "120900151",
+            "subjectWord": "電影院",
+            "subjectReading": "diànyǐngyuàn",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "Định nghĩa và ví dụ cách dùng MOE độc lập đã đọc, khớp nghĩa Việt biên soạn; không sao chép hoặc dịch lời định nghĩa MOE.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "39",
+            "subjectWord": "电影院",
+            "subjectReading": "diànyǐngyuàn",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Chỉ xác nhận ID, chữ, Pinyin và cấp HSK 1; không xác nhận nghĩa Việt hay từ loại.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 39,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "电影院",
+        "pinyin": "diànyǐngyuàn"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    },
+    {
+      "content": {
+        "word": "读书",
+        "traditional": "讀書",
+        "pinyin": "dúshū",
+        "pinyin_normalized": null,
+        "meaning_vi": "đọc sách",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Động từ",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "33bdccd269a8f8dc3da595fd8649ddfecf5ee0012f817db80b971cf372d7346a",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Nghĩa tiếng Việt do biên soạn dựa trên CC-CEDICT đã đối chiếu với mục MOE độc lập; không phải bản dịch có sẵn trong nguồn. Attribution/license: docs/Content/web-cross-check-policy.md",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "391551df2ba6c5a6efcb902b676e3603013ca4a15df7f1686fa3f8556ae02b71",
+            "subjectWord": "读书",
+            "subjectReading": "dúshū",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "Nghĩa nguồn đã đọc khớp nghĩa tiếng Việt biên soạn “đọc sách”; không gộp nghĩa đồng âm khác.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "124100007",
+            "subjectWord": "讀書",
+            "subjectReading": "dúshū",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "Định nghĩa và ví dụ cách dùng MOE độc lập đã đọc, khớp nghĩa Việt biên soạn; không sao chép hoặc dịch lời định nghĩa MOE.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "43",
+            "subjectWord": "读书",
+            "subjectReading": "dúshū",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Chỉ xác nhận ID, chữ, Pinyin và cấp HSK 1; không xác nhận nghĩa Việt hay từ loại.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 43,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "读书",
+        "pinyin": "dúshū"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    },
+    {
+      "content": {
+        "word": "饭",
+        "traditional": "飯",
+        "pinyin": "fàn",
+        "pinyin_normalized": null,
+        "meaning_vi": "cơm đã nấu",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Danh từ",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "f9595db10e5f35e07666f139c87772ffe6e52a794d5eaae73638b18aa052c4ee",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Nghĩa tiếng Việt do biên soạn dựa trên CC-CEDICT đã đối chiếu với mục MOE độc lập; không phải bản dịch có sẵn trong nguồn. Attribution/license: docs/Content/web-cross-check-policy.md",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "507af8101110dffd6f142a0f067bba827636375c6cb90eaabe4aa493d66ccc10",
+            "subjectWord": "饭",
+            "subjectReading": "fàn",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "Nghĩa nguồn đã đọc khớp nghĩa tiếng Việt biên soạn “cơm đã nấu”; không gộp nghĩa đồng âm khác.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "0872",
+            "subjectWord": "飯",
+            "subjectReading": "fàn",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "Định nghĩa và ví dụ cách dùng MOE độc lập đã đọc, khớp nghĩa Việt biên soạn; không sao chép hoặc dịch lời định nghĩa MOE.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "50",
+            "subjectWord": "饭",
+            "subjectReading": "fàn",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Chỉ xác nhận ID, chữ, Pinyin và cấp HSK 1; không xác nhận nghĩa Việt hay từ loại.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 50,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "饭",
+        "pinyin": "fàn"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    },
+    {
+      "content": {
+        "word": "饭店",
+        "traditional": "飯店",
+        "pinyin": "fàndiàn",
+        "pinyin_normalized": null,
+        "meaning_vi": "nhà hàng",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Danh từ",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "8551b3f0f5dd16a779c7e0a662fc8fc20d31ce0005ab1cde8688b6c4f00ee893",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Nghĩa tiếng Việt do biên soạn dựa trên CC-CEDICT đã đối chiếu với mục MOE độc lập; không phải bản dịch có sẵn trong nguồn. Attribution/license: docs/Content/web-cross-check-policy.md",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "e3abb8566496762f669e3d965201486997d6cd60700f59b15266c7699b23600f",
+            "subjectWord": "饭店",
+            "subjectReading": "fàndiàn",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "Nghĩa nguồn đã đọc khớp nghĩa tiếng Việt biên soạn “nhà hàng”; không gộp nghĩa đồng âm khác.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "087200001",
+            "subjectWord": "飯店",
+            "subjectReading": "fàndiàn",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "Định nghĩa và ví dụ cách dùng MOE độc lập đã đọc, khớp nghĩa Việt biên soạn; không sao chép hoặc dịch lời định nghĩa MOE.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "51",
+            "subjectWord": "饭店",
+            "subjectReading": "fàndiàn",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Chỉ xác nhận ID, chữ, Pinyin và cấp HSK 1; không xác nhận nghĩa Việt hay từ loại.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 51,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "饭店",
+        "pinyin": "fàndiàn"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    },
+    {
+      "content": {
+        "word": "歌",
+        "traditional": "歌",
+        "pinyin": "gē",
+        "pinyin_normalized": null,
+        "meaning_vi": "bài hát",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Danh từ",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "5a1d8a5d4982f8a4804dc08b1b1a5148425ec8ffa7fcc4dcd85d5cd0ee60336b",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Nghĩa tiếng Việt do biên soạn dựa trên CC-CEDICT đã đối chiếu với mục MOE độc lập; không phải bản dịch có sẵn trong nguồn. Attribution/license: docs/Content/web-cross-check-policy.md",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "328d582d489098880d1aa0bf0507cf4a6df593741f5ae69ad91d3884c8d8bb8c",
+            "subjectWord": "歌",
+            "subjectReading": "gē",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "Nghĩa nguồn đã đọc khớp nghĩa tiếng Việt biên soạn “bài hát”; không gộp nghĩa đồng âm khác.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "2201",
+            "subjectWord": "歌",
+            "subjectReading": "gē",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "Định nghĩa và ví dụ cách dùng MOE độc lập đã đọc, khớp nghĩa Việt biên soạn; không sao chép hoặc dịch lời định nghĩa MOE.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "58",
+            "subjectWord": "歌",
+            "subjectReading": "gē",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Chỉ xác nhận ID, chữ, Pinyin và cấp HSK 1; không xác nhận nghĩa Việt hay từ loại.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 58,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "歌",
+        "pinyin": "gē"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    },
+    {
+      "content": {
+        "word": "国",
+        "traditional": "國",
+        "pinyin": "guó",
+        "pinyin_normalized": null,
+        "meaning_vi": "quốc gia",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Danh từ",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "f43ec287ba0030d67d3e17ba91a8359905560dae2050052a442cdecf3fa404f8",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Nghĩa tiếng Việt do biên soạn dựa trên CC-CEDICT đã đối chiếu với mục MOE độc lập; không phải bản dịch có sẵn trong nguồn. Attribution/license: docs/Content/web-cross-check-policy.md",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "93a3fb955628a6d41625bfa020c128ae9e0addd7c58e72aab63f47d04c7526bb",
+            "subjectWord": "国",
+            "subjectReading": "guó",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "Nghĩa nguồn đã đọc khớp nghĩa tiếng Việt biên soạn “quốc gia”; không gộp nghĩa đồng âm khác.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "2395",
+            "subjectWord": "國",
+            "subjectReading": "guó",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "Định nghĩa và ví dụ cách dùng MOE độc lập đã đọc, khớp nghĩa Việt biên soạn; không sao chép hoặc dịch lời định nghĩa MOE.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "66",
+            "subjectWord": "国",
+            "subjectReading": "guó",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Chỉ xác nhận ID, chữ, Pinyin và cấp HSK 1; không xác nhận nghĩa Việt hay từ loại.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 66,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "国",
+        "pinyin": "guó"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    },
+    {
+      "content": {
+        "word": "汉字",
+        "traditional": "漢字",
+        "pinyin": "Hànzì",
+        "pinyin_normalized": null,
+        "meaning_vi": "chữ Hán",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Danh từ",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "3f34c17c3e659a5d91639a14fc1eb6a38b8d4ce62f068007dbdaefd5b30982fd",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Nghĩa tiếng Việt do biên soạn dựa trên CC-CEDICT đã đối chiếu với mục MOE độc lập; không phải bản dịch có sẵn trong nguồn. Attribution/license: docs/Content/web-cross-check-policy.md",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "d95cfd28e898ca4d43c103dc8ba402a096243f910b835668bbab59d7c2de6c75",
+            "subjectWord": "汉字",
+            "subjectReading": "Hànzì",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "Nghĩa nguồn đã đọc khớp nghĩa tiếng Việt biên soạn “chữ Hán”; không gộp nghĩa đồng âm khác.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "277300006",
+            "subjectWord": "漢字",
+            "subjectReading": "Hànzì",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "Định nghĩa và ví dụ cách dùng MOE độc lập đã đọc, khớp nghĩa Việt biên soạn; không sao chép hoặc dịch lời định nghĩa MOE.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "70",
+            "subjectWord": "汉字",
+            "subjectReading": "Hànzì",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Chỉ xác nhận ID, chữ, Pinyin và cấp HSK 1; không xác nhận nghĩa Việt hay từ loại.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 70,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "汉字",
+        "pinyin": "Hànzì"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    },
+    {
+      "content": {
+        "word": "火车",
+        "traditional": "火車",
+        "pinyin": "huǒchē",
+        "pinyin_normalized": null,
+        "meaning_vi": "tàu hỏa",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Danh từ",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "aed31396a249a2fab96b347b81621bd72222ebac9eb44aa3c0a9b41a6df8a5be",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Nghĩa tiếng Việt do biên soạn dựa trên CC-CEDICT đã đối chiếu với mục MOE độc lập; không phải bản dịch có sẵn trong nguồn. Attribution/license: docs/Content/web-cross-check-policy.md",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "86a2576893f0e1ae26c59aa336379fbbfdbae876c0b5120e814eac59b1119711",
+            "subjectWord": "火车",
+            "subjectReading": "huǒchē",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "Nghĩa nguồn đã đọc khớp nghĩa tiếng Việt biên soạn “tàu hỏa”; không gộp nghĩa đồng âm khác.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "286100033",
+            "subjectWord": "火車",
+            "subjectReading": "huǒchē",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "Định nghĩa và ví dụ cách dùng MOE độc lập đã đọc, khớp nghĩa Việt biên soạn; không sao chép hoặc dịch lời định nghĩa MOE.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "83",
+            "subjectWord": "火车",
+            "subjectReading": "huǒchē",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Chỉ xác nhận ID, chữ, Pinyin và cấp HSK 1; không xác nhận nghĩa Việt hay từ loại.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 83,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "火车",
+        "pinyin": "huǒchē"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    },
+    {
+      "content": {
+        "word": "家人",
+        "traditional": "家人",
+        "pinyin": "jiārén",
+        "pinyin_normalized": null,
+        "meaning_vi": "người nhà; thành viên gia đình",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Danh từ",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "dde86c2420df6bdb97e4e991a65c2e2e8714585e6314ab10da044ac02b281ce4",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Nghĩa tiếng Việt do biên soạn dựa trên CC-CEDICT đã đối chiếu với mục MOE độc lập; không phải bản dịch có sẵn trong nguồn. Attribution/license: docs/Content/web-cross-check-policy.md",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "09f5549a0b1f1aec89e271bac2840bc947305a512e5be58691a924bba85e4f19",
+            "subjectWord": "家人",
+            "subjectReading": "jiārén",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "Nghĩa nguồn đã đọc khớp nghĩa tiếng Việt biên soạn “người nhà; thành viên gia đình”; không gộp nghĩa đồng âm khác.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "311900048",
+            "subjectWord": "家人",
+            "subjectReading": "jiārén",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "Định nghĩa và ví dụ cách dùng MOE độc lập đã đọc, khớp nghĩa Việt biên soạn; không sao chép hoặc dịch lời định nghĩa MOE.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "87",
+            "subjectWord": "家人",
+            "subjectReading": "jiārén",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Chỉ xác nhận ID, chữ, Pinyin và cấp HSK 1; không xác nhận nghĩa Việt hay từ loại.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 87,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "家人",
+        "pinyin": "jiārén"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    },
+    {
+      "content": {
+        "word": "饺子",
+        "traditional": "餃子",
+        "pinyin": "jiǎozi",
+        "pinyin_normalized": null,
+        "meaning_vi": "sủi cảo",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Danh từ",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "74277a0b67d55d4fac97a91700824702d460f287ac90646180b9330f8fc37d0d",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Nghĩa tiếng Việt do biên soạn dựa trên CC-CEDICT đã đối chiếu với mục MOE độc lập; không phải bản dịch có sẵn trong nguồn. Attribution/license: docs/Content/web-cross-check-policy.md",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "9fc18c2776b8366bf9c7a0aa15159af9f2961f1059c772a686c4563356891a56",
+            "subjectWord": "饺子",
+            "subjectReading": "jiǎozi",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "Nghĩa nguồn đã đọc khớp nghĩa tiếng Việt biên soạn “sủi cảo”; không gộp nghĩa đồng âm khác.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "321400001",
+            "subjectWord": "餃子",
+            "subjectReading": "jiǎozi",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "Định nghĩa và ví dụ cách dùng MOE độc lập đã đọc, khớp nghĩa Việt biên soạn; không sao chép hoặc dịch lời định nghĩa MOE.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "90",
+            "subjectWord": "饺子",
+            "subjectReading": "jiǎozi",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Chỉ xác nhận ID, chữ, Pinyin và cấp HSK 1; không xác nhận nghĩa Việt hay từ loại.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 90,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "饺子",
+        "pinyin": "jiǎozi"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    },
+    {
+      "content": {
+        "word": "今年",
+        "traditional": "今年",
+        "pinyin": "jīnnián",
+        "pinyin_normalized": null,
+        "meaning_vi": "năm nay",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Danh từ",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "2a7b53e750ca9421f14859692390e21e2e70c1bf18d79e1795889eaabfef0ece",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Nghĩa tiếng Việt do biên soạn dựa trên CC-CEDICT đã đối chiếu với mục MOE độc lập; không phải bản dịch có sẵn trong nguồn. Attribution/license: docs/Content/web-cross-check-policy.md",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "50baee9f79153f8fb9c4c2b53406bf70ad8e79d66e17548859e1136b71b284b3",
+            "subjectWord": "今年",
+            "subjectReading": "jīnnián",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "Nghĩa nguồn đã đọc khớp nghĩa tiếng Việt biên soạn “năm nay”; không gộp nghĩa đồng âm khác.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "331800003",
+            "subjectWord": "今年",
+            "subjectReading": "jīnnián",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "Định nghĩa và ví dụ cách dùng MOE độc lập đã đọc, khớp nghĩa Việt biên soạn; không sao chép hoặc dịch lời định nghĩa MOE.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "93",
+            "subjectWord": "今年",
+            "subjectReading": "jīnnián",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Chỉ xác nhận ID, chữ, Pinyin và cấp HSK 1; không xác nhận nghĩa Việt hay từ loại.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 93,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "今年",
+        "pinyin": "jīnnián"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    },
+    {
+      "content": {
+        "word": "开车",
+        "traditional": "開車",
+        "pinyin": "kāichē",
+        "pinyin_normalized": null,
+        "meaning_vi": "lái xe",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Động từ",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "7da800dd6fce878473de277017d26986e127aaaa8cb2a634925184a5032f0eed",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Nghĩa tiếng Việt do biên soạn dựa trên CC-CEDICT đã đối chiếu với mục MOE độc lập; không phải bản dịch có sẵn trong nguồn. Attribution/license: docs/Content/web-cross-check-policy.md",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "6b885673c5394fa0627f1b2a3d84c007f1640bf6960127e1589683627ee26037",
+            "subjectWord": "开车",
+            "subjectReading": "kāichē",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "Nghĩa nguồn đã đọc khớp nghĩa tiếng Việt biên soạn “lái xe”; không gộp nghĩa đồng âm khác.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "252100078",
+            "subjectWord": "開車",
+            "subjectReading": "kāichē",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "Định nghĩa và ví dụ cách dùng MOE độc lập đã đọc, khớp nghĩa Việt biên soạn; không sao chép hoặc dịch lời định nghĩa MOE.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "98",
+            "subjectWord": "开车",
+            "subjectReading": "kāichē",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Chỉ xác nhận ID, chữ, Pinyin và cấp HSK 1; không xác nhận nghĩa Việt hay từ loại.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 98,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "开车",
+        "pinyin": "kāichē"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    },
+    {
+      "content": {
+        "word": "看病",
+        "traditional": "看病",
+        "pinyin": "kànbìng",
+        "pinyin_normalized": null,
+        "meaning_vi": "đi khám bệnh",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Động từ",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "8be4cdbcc691c0db0a3620aa8b71219aae1d8967e60215ca76073252dd122205",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Nghĩa tiếng Việt do biên soạn dựa trên CC-CEDICT đã đối chiếu với mục MOE độc lập; không phải bản dịch có sẵn trong nguồn. Attribution/license: docs/Content/web-cross-check-policy.md",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "06efff9d74f0cf1da07bd30455ad5e00c332a5872a7ccb3b7a6e4abac4650a1d",
+            "subjectWord": "看病",
+            "subjectReading": "kànbìng",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "Nghĩa nguồn đã đọc khớp nghĩa tiếng Việt biên soạn “đi khám bệnh”; không gộp nghĩa đồng âm khác.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "256200003",
+            "subjectWord": "看病",
+            "subjectReading": "kànbìng",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "Định nghĩa và ví dụ cách dùng MOE độc lập đã đọc, khớp nghĩa Việt biên soạn; không sao chép hoặc dịch lời định nghĩa MOE.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "100",
+            "subjectWord": "看病",
+            "subjectReading": "kànbìng",
+            "accessedAt": "2026-10-20T00:00:00Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Chỉ xác nhận ID, chữ, Pinyin và cấp HSK 1; không xác nhận nghĩa Việt hay từ loại.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 100,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "看病",
+        "pinyin": "kànbìng"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    }
+  ],
+  "decisionNote": "Vietnamese glosses and POS are editorial choices from cited dictionary senses, not translations or POS labels copied from sources. Optional Han-Viet/examples are withheld."
+}

@@ -11,13 +11,13 @@
 - Không force-push, merge main, deploy, gọi deploy hook hoặc truy cập database thật. CI recovery giữ ba job kiểm thử và bỏ deploy hook đang được maintainer loại bỏ.
 - Danh sách file từng commit, toàn bộ status còn lại, hash trước/sau và nguồn evidence nằm trong [inventory](foundation-recovery-inventory.json). Không dùng `git add -A`.
 
-| Commit mới | Kết quả |
-|---|---|
-| `84083bd` | Tách frozen V1 digest khỏi graph provenance chưa phát hành; giữ sáu golden/compatibility test, chuyển assertion cho metadata tương lai sang test đang giữ ngoài commit |
-| `2b2fbf3` | Thu hồi checkpoint đúng tài khoản sau logout thành công, đổi tài khoản/mật khẩu; bảo vệ tab cũ và phản hồi logout muộn |
-| `0c0e755` | Publication authority, ràng buộc receipt/digest/revision/rights, khóa transition và bảo vệ các đường đọc/cache/exam |
-| `00cfef1` | Tách corpus/helper Nhật khỏi runtime; audit lịch sử bằng fixture ngoài repo được pin hash |
-| `44a673f` | Allowlist migration V1–V14, cấu hình fail-closed, kiểm tra JAR và rehearsal PostgreSQL production |
+| Commit mới | Kết quả                                                                                                                                                                |
+| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `84083bd`  | Tách frozen V1 digest khỏi graph provenance chưa phát hành; giữ sáu golden/compatibility test, chuyển assertion cho metadata tương lai sang test đang giữ ngoài commit |
+| `2b2fbf3`  | Thu hồi checkpoint đúng tài khoản sau logout thành công, đổi tài khoản/mật khẩu; bảo vệ tab cũ và phản hồi logout muộn                                                 |
+| `0c0e755`  | Publication authority, ràng buộc receipt/digest/revision/rights, khóa transition và bảo vệ các đường đọc/cache/exam                                                    |
+| `00cfef1`  | Tách corpus/helper Nhật khỏi runtime; audit lịch sử bằng fixture ngoài repo được pin hash                                                                              |
+| `44a673f`  | Allowlist migration V1–V14, cấu hình fail-closed, kiểm tra JAR và rehearsal PostgreSQL production                                                                      |
 
 ## Nguyên nhân và bản sửa
 
@@ -37,20 +37,20 @@ Logout chỉ xóa recovery của owner sau xác nhận máy chủ; lỗi logout 
 
 Source xuất từ Git commit code vào thư mục `final-committed` trong backup riêng; không dùng working tree bẩn để tuyên bố HEAD xanh.
 
-| Lệnh / phạm vi | Kết quả thực |
-|---|---|
-| `mvn -o -B clean verify`, H2 | exit 0; 509 total, **502 passed, 0 failures, 0 errors, 7 skipped** |
-| `mvn -o -B test`, PostgreSQL 16, env CI, DB local riêng | exit 0; **509 / 502 / 0 / 0 / 7** |
-| `ProductionMigrationSafetyTest`, opt-in | exit 0; **4/4 passed** |
-| `PostgresSchemaStagingRehearsalTest`, opt-in | exit 0; **3/3 passed** |
-| `-Plegacy-japanese-audit test` với fixture đã materialize | exit 0; **24 total, 23 passed, 0 failures/errors, 1 skipped** |
-| `npm ci` trên checkout commit | exit 0 |
-| `npm test` | exit 0; **276/276 Vitest, 31 files; 8/8 Node tests** |
-| `npm run lint`, `npm run build` | đều exit 0; không có lint/build warning trong log cuối |
-| `npm audit --audit-level=moderate` | exit 0; không có advisory npm được báo tại lần chạy |
-| Runtime Maven dependency audit | exit 0; **104 dependencies**, giữ hai exception Spring bên dưới |
+| Lệnh / phạm vi                                                         | Kết quả thực                                                            |
+| ---------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| `mvn -o -B clean verify`, H2                                           | exit 0; 509 total, **502 passed, 0 failures, 0 errors, 7 skipped**      |
+| `mvn -o -B test`, PostgreSQL 16, env CI, DB local riêng                | exit 0; **509 / 502 / 0 / 0 / 7**                                       |
+| `ProductionMigrationSafetyTest`, opt-in                                | exit 0; **4/4 passed**                                                  |
+| `PostgresSchemaStagingRehearsalTest`, opt-in                           | exit 0; **3/3 passed**                                                  |
+| `-Plegacy-japanese-audit test` với fixture đã materialize              | exit 0; **24 total, 23 passed, 0 failures/errors, 1 skipped**           |
+| `npm ci` trên checkout commit                                          | exit 0                                                                  |
+| `npm test`                                                             | exit 0; **276/276 Vitest, 31 files; 8/8 Node tests**                    |
+| `npm run lint`, `npm run build`                                        | đều exit 0; không có lint/build warning trong log cuối                  |
+| `npm audit --audit-level=moderate`                                     | exit 0; không có advisory npm được báo tại lần chạy                     |
+| Runtime Maven dependency audit                                         | exit 0; **104 dependencies**, giữ hai exception Spring bên dưới         |
 | Artifact audit, kể cả `python -O` và bốn artifact giả lập không hợp lệ | exit 0; từ chối V21, corpus Nhật, QA fixture và trust catalog chèn thêm |
-| `git diff --check`, staged check | exit 0 sau ngoại lệ whitespace hẹp được giải thích bên dưới |
+| `git diff --check`, staged check                                       | exit 0 sau ngoại lệ whitespace hẹp được giải thích bên dưới             |
 
 Bảy skip default là ba rehearsal schema và bốn rehearsal production cần DB trống riêng; cả bảy testcase này đã chạy riêng và pass, không được cộng lại để tăng tổng testcase. Skip duy nhất của profile Nhật là `dictionary.pilot.rehearsal`: cần catalog lịch sử đã provision. Loader cũ đã bị purge; phần test còn lại không chứng minh fresh import 218.867 mục. Không chạy nó và không giả tạo dataset để nhận PASS.
 

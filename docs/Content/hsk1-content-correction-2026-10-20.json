@@ -1,0 +1,1397 @@
+{
+  "asOf": "2026-10-20",
+  "finding": "A PowerShell-to-Python encoding conversion replaced Vietnamese diacritics in batch 02-04 content and evidence strings with literal question marks. Their prior content digests matched the damaged text, so digest equality alone did not prove the meanings were correct.",
+  "repair": "Re-authored 43 Vietnamese editorial meanings and part-of-speech labels against the recorded CC-CEDICT and Taiwan MOE entry IDs. Corrected the traditional form of 只 to 隻. CTI continues to support only official ID, spelling, tone-marked Pinyin, and HSK level.",
+  "policy": "WEB_CROSS_CHECKED_2026_10_20_V1; no human-review requirement",
+  "rowsCorrected": 43,
+  "migration": {
+    "version": 22,
+    "fileName": "V22__repair_hsk1_batch_text_encoding.sql",
+    "sha256": "3f4fceacbbbf2506693958cd26c82196b001dbb76b29db19cbb6b0f1e8aa4388",
+    "replaySafe": true,
+    "historicalChecksumsV1ThroughV21Preserved": true
+  },
+  "sourceSnapshots": {
+    "CC_CEDICT": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+    "TAIWAN_MOE": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+    "CTI_HSK_3.0_2025-11": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+  },
+  "records": [
+    {
+      "word": "明年",
+      "pinyin": "míngnián",
+      "oldMeaningVi": "n?m sau",
+      "newMeaningVi": "năm sau",
+      "oldPartOfSpeech": "Danh t? ch? th?i gian",
+      "newPartOfSpeech": "Danh từ chỉ thời gian",
+      "oldTraditional": "明年",
+      "newTraditional": "明年",
+      "oldDigest": "4fc4b0a61bcdea05a0b3d20c3b3f5aade2fdb4ab9407ad49d86660e1381fff36",
+      "newDigest": "24972e20c3cfbd1011547b91a0f6b4add63f6aa7f738f5acc09431e480be458b",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "3df3a6a492a2294fbc32af9d3a3f8601c0ab2d2aa2c5807ab58e4b0b93c4bcbf"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "077400012"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "128"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "那些",
+      "pinyin": "nàxiē",
+      "oldMeaningVi": "nh?ng ... kia",
+      "newMeaningVi": "những ... kia",
+      "oldPartOfSpeech": "??i t? ch? ??nh",
+      "newPartOfSpeech": "Đại từ chỉ định",
+      "oldTraditional": "那些",
+      "newTraditional": "那些",
+      "oldDigest": "696bedcf22a08e566659c0d1730b7659edd179b9c0ec67e382b1aa4a8c889d8a",
+      "newDigest": "ce10b7d11d62d4f2bf1c72fc768233d33984cb3439df961f97ebc219acd3495c",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "a6be4304520e7baf6029e18ab044f014f945992d0502246886295c23c9513df0"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "1590000013"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "141"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "你们",
+      "pinyin": "nǐmen",
+      "oldMeaningVi": "c?c b?n",
+      "newMeaningVi": "các bạn",
+      "oldPartOfSpeech": "??i t? nh?n x?ng",
+      "newPartOfSpeech": "Đại từ nhân xưng",
+      "oldTraditional": "你們",
+      "newTraditional": "你們",
+      "oldDigest": "840d173937c1edae5d77866eecd3d50221b26d60e61106440abba46329694fd4",
+      "newDigest": "b1cd7fa217a921dc1b3517615966a45103e9a5dfe40e08faeb01ce8cf23bdcbe",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "4da0bfbda42ae783745f4d59c753e7b5ed0aeca657f8612206825deeb59814ff"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "163900001"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "148"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "女士",
+      "pinyin": "nǚshì",
+      "oldMeaningVi": "qu? b?; b? (c?ch g?i l?ch s?)",
+      "newMeaningVi": "quý bà; bà (cách gọi lịch sự)",
+      "oldPartOfSpeech": "Danh t? / danh x?ng",
+      "newPartOfSpeech": "Danh từ / danh xưng",
+      "oldTraditional": "女士",
+      "newTraditional": "女士",
+      "oldDigest": "fa037385efaffe7def6e36c13fefb2ea573ef5fa73fcc2cd55df4ec2c68b6a69",
+      "newDigest": "260266953926c1976520161c8575be998b71ae923ff8eb235b140cf9ba10fd93",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "b1bf9aa6f1cdd978ceea4261934ddfdd23f03c8f937781c8a888b84147150dc8"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "173100046"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "155"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "请问",
+      "pinyin": "qǐngwèn",
+      "oldMeaningVi": "xin h?i; cho h?i",
+      "newMeaningVi": "xin hỏi; cho hỏi",
+      "oldPartOfSpeech": "C?m t? h?i l?ch s?",
+      "newPartOfSpeech": "Cụm từ hỏi lịch sự",
+      "oldTraditional": "請問",
+      "newTraditional": "請問",
+      "oldDigest": "ae50729a10fc49a9b9ea6f23a624199c112e7a9a622f2c41efb699e444f45e94",
+      "newDigest": "21939a805852b5149100a4126e8bd7bf9a289684308e941f075d955a2b61f1e3",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "e99cf4f2dea402f3a70624c415841c26995d3908ce153ddfdb0e2ac0b2a6c007"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "374200016"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "166"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "上课",
+      "pinyin": "shàngkè",
+      "oldMeaningVi": "l?n l?p; v?o ti?t h?c",
+      "newMeaningVi": "lên lớp; vào tiết học",
+      "oldPartOfSpeech": "??ng t?",
+      "newPartOfSpeech": "Động từ",
+      "oldTraditional": "上課",
+      "newTraditional": "上課",
+      "oldDigest": "50fce27da8f5837f7bb5477d89b6d6bd43c5d37cb3b8dab7deaf624af70ddb51",
+      "newDigest": "a81a970cb206807eb652c009f5e3bb9fc9f85d86e61b6ed5a19c6f504a36d991",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "be4fa4a125f70b8a9e75f56c86660802308e7891fa3788899c67cd050f6151f9"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "508000031"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "177"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "上学",
+      "pinyin": "shàngxué",
+      "oldMeaningVi": "?i h?c",
+      "newMeaningVi": "đi học",
+      "oldPartOfSpeech": "??ng t?",
+      "newPartOfSpeech": "Động từ",
+      "oldTraditional": "上學",
+      "newTraditional": "上學",
+      "oldDigest": "6faa68a705c5559a6c7e208745c018a9934e447ec7aea5beaba0456a5a4e23a7",
+      "newDigest": "0186694858f9ead6ce58df09049354e8413752f03944cd3bc5b8246ec77e7c55",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "7e98d3c8c7335247b9db574d5bb613ccab141b332e79dd5caa8b6a8bf79100b1"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "508000049"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "179"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "书店",
+      "pinyin": "shūdiàn",
+      "oldMeaningVi": "hi?u s?ch; nh? s?ch",
+      "newMeaningVi": "hiệu sách; nhà sách",
+      "oldPartOfSpeech": "Danh t?",
+      "newPartOfSpeech": "Danh từ",
+      "oldTraditional": "書店",
+      "newTraditional": "書店",
+      "oldDigest": "910911af635ed10278e428ca7658e797e8824532ab950fd9179df01690ce2447",
+      "newDigest": "963308bd5e4a82988d7ac0c11c9715ba101c60bfae8a9a4fb02797591ea77d39",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "7a726180355c8c2f1a02ed9da7c8d84eeba4dfa7a6384b0733bf0fef26dde008"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "511200010"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "191"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "睡",
+      "pinyin": "shuì",
+      "oldMeaningVi": "ng?",
+      "newMeaningVi": "ngủ",
+      "oldPartOfSpeech": "??ng t?",
+      "newPartOfSpeech": "Động từ",
+      "oldTraditional": "睡",
+      "newTraditional": "睡",
+      "oldDigest": "c55f7a03357333e01a7e28c62a906fd0b6db277ffb71c44a4971e3aeabfda16e",
+      "newDigest": "da1693a5c7537728d5d57ca2f6b57339e3710b798aa2bea6c021811043c97b7f",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "9ca8b18e035b27c47cfd0c64d37f850069c91dbba188f60297aa3a47ca58bc52"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "5167"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "194"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "他们",
+      "pinyin": "tāmen",
+      "oldMeaningVi": "h?",
+      "newMeaningVi": "họ (nam hoặc nhóm hỗn hợp)",
+      "oldPartOfSpeech": "??i t? nh?n x?ng",
+      "newPartOfSpeech": "Đại từ nhân xưng",
+      "oldTraditional": "他們",
+      "newTraditional": "他們",
+      "oldDigest": "06fe30f9fdba1a82b14e7f1bf30e74b87a106c82c87762b5a54f08a932427d45",
+      "newDigest": "a91f784036bda8c521df8c3eeb6756c85084d4b9f05a3e33e7d695ebe2d04a16",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "415c94e322a905a9e83f3454b6557bbff2b736c5e61b2a31daf8c157184c4369"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "131800001"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "203"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "它们",
+      "pinyin": "tāmen",
+      "oldMeaningVi": "ch?ng",
+      "newMeaningVi": "chúng (chỉ sự vật hoặc động vật)",
+      "oldPartOfSpeech": "??i t? nh?n x?ng ch? s? v?t",
+      "newPartOfSpeech": "Đại từ nhân xưng chỉ sự vật",
+      "oldTraditional": "它們",
+      "newTraditional": "它們",
+      "oldDigest": "818f58912c0dfd928e806dc59c8b22c34f14edb882bd42645b6bd3a4b60ac968",
+      "newDigest": "985ad19af91ced6ea89c887e1d8eef6137c167be11718b4029073b2ecf0cc461",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "cf09a9d4bf660eeb5dee7fc537ff51af04581db19dd2779c4927254d12d31ce8"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "131700001"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "204"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "她们",
+      "pinyin": "tāmen",
+      "oldMeaningVi": "h?",
+      "newMeaningVi": "họ (nhóm nữ)",
+      "oldPartOfSpeech": "??i t? nh?n x?ng ch? n? gi?i",
+      "newPartOfSpeech": "Đại từ nhân xưng chỉ nữ giới",
+      "oldTraditional": "她們",
+      "newTraditional": "她們",
+      "oldDigest": "65d53592e3a2a9c04f019bb7ee326d273871a972be6f783849bd41265cef51c1",
+      "newDigest": "648e34f9cd4610454101f9d4b0555be61273885c2b2eeada622ab2174811e94b",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "3795e4dbedf4db4e1a5489b3956780686476c9918a2f6e00cf4380b48ef1de3c"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "131900001"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "205"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "晚饭",
+      "pinyin": "wǎnfàn",
+      "oldMeaningVi": "b?a t?i",
+      "newMeaningVi": "bữa tối",
+      "oldPartOfSpeech": "Danh t?",
+      "newPartOfSpeech": "Danh từ",
+      "oldTraditional": "晚飯",
+      "newTraditional": "晚飯",
+      "oldDigest": "fd50681fe7d61a3f3013f1f063da173c4e710d05272e0128c8a634198ddb5956",
+      "newDigest": "e131446eaa4c2bf85bd42a88969cb1fa322f492384ace1968a4d81253f3abbfc",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "79aed80f4a47e6f2e71b076ebcfe5480144163522571ab61e899da4fd2fe41d8"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "637600003"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "216"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "下班",
+      "pinyin": "xiàbān",
+      "oldMeaningVi": "tan l?m; h?t gi? l?m",
+      "newMeaningVi": "tan làm; hết giờ làm",
+      "oldPartOfSpeech": "??ng t?",
+      "newPartOfSpeech": "Động từ",
+      "oldTraditional": "下班",
+      "newTraditional": "下班",
+      "oldDigest": "21737717df19a109e42d2d492e657e8731049c93cadb22a88fc2eff6d5dd6468",
+      "newDigest": "140b91e346f4819494de8ccb2006a2da53531a34699c8056614afdfe0824c703",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "2ff9bfcc84116e0839bd430e49a7037a02cdb02632cff354d17f643c60d162dd"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "390700004"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "228"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "下课",
+      "pinyin": "xiàkè",
+      "oldMeaningVi": "tan h?c; h?t ti?t",
+      "newMeaningVi": "tan học; hết tiết",
+      "oldPartOfSpeech": "??ng t?",
+      "newPartOfSpeech": "Động từ",
+      "oldTraditional": "下課",
+      "newTraditional": "下課",
+      "oldDigest": "7253904f39e326db3ac200af03e3015bcff99b9dde12e78f9ad65a1f3e91ffd2",
+      "newDigest": "517560cc9a72f58b95a8b749d729227e771f653f032cec82b9adb1ab3ebeb5b0",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "eaed7a9307032e6456e0acd03d025c5e709705f3189cc72b8d6858ed0d6ee1a5"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "390700041"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "229"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "小朋友",
+      "pinyin": "xiǎopéngyǒu",
+      "oldMeaningVi": "tr? em; b?n nh?",
+      "newMeaningVi": "trẻ em; bạn nhỏ",
+      "oldPartOfSpeech": "Danh t?",
+      "newPartOfSpeech": "Danh từ",
+      "oldTraditional": "小朋友",
+      "newTraditional": "小朋友",
+      "oldDigest": "8e436ca9c582899fbb024768a6da3acaf0c7e46ab7b35a2269df73f576ac4d74",
+      "newDigest": "4e60abe46629e6b1109e90dd6a063d5e4ea06b77d01926f272f3a6f24372669c",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "f8b9cba16768e9897ad338418cf0975a67f2c573faa3b15154e901ad8f8e7762"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "396300085"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "235"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "小学",
+      "pinyin": "xiǎoxué",
+      "oldMeaningVi": "tr??ng ti?u h?c",
+      "newMeaningVi": "trường tiểu học",
+      "oldPartOfSpeech": "Danh t?",
+      "newPartOfSpeech": "Danh từ",
+      "oldTraditional": "小學",
+      "newTraditional": "小學",
+      "oldDigest": "6d0a55f3198f8fc806a2a3a92d85e14a12ce988d7fbfd35c26aca7db569fe9fd",
+      "newDigest": "cead75772e3731d02f0c88064e7eaaed50630b5e7e352e34d5e556e12d166c58",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "a9673b124886257f0c0a7387a36fc468bf6c362b1dd3f36b89031570968f2048"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "396300050"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "237"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "小学生",
+      "pinyin": "xiǎoxuéshēng",
+      "oldMeaningVi": "h?c sinh ti?u h?c",
+      "newMeaningVi": "học sinh tiểu học",
+      "oldPartOfSpeech": "Danh t?",
+      "newPartOfSpeech": "Danh từ",
+      "oldTraditional": "小學生",
+      "newTraditional": "小學生",
+      "oldDigest": "96c1d5a6f3033d8ec51f1cf96845e78b1ace5d980318bedff4278b2e9fb73ba3",
+      "newDigest": "c4074510b0473aeea652f8e100d78f29d14f2c91c2feeda29e408f22d9287ae2",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "726790e770ae8bb38e5456ec0c43e7e5e4da1b595227ed13bafa63ee1c8baca6"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "396300051"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "238"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "有点儿",
+      "pinyin": "yǒudiǎnr",
+      "oldMeaningVi": "h?i; c? ch?t",
+      "newMeaningVi": "hơi; một chút",
+      "oldPartOfSpeech": "Ph? t? ch? m?c ??",
+      "newPartOfSpeech": "Phó từ chỉ mức độ",
+      "oldTraditional": "有點兒",
+      "newTraditional": "有點兒",
+      "oldDigest": "da339dab4e9e49d37b49b7909256b204676a371cd3036d80591e165b514feabf",
+      "newDigest": "ac8f20970e85c65ef7ab250e0bc55ce45c6776e603725e7386f0ff869440f2cc",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "e70527486577facfeba054147699de5a49a98b6ce4883cdf210d3ecc6c94681e"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "604600016"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "265"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "做饭",
+      "pinyin": "zuò fàn",
+      "oldMeaningVi": "n?u ?n; chu?n b? b?a ?n",
+      "newMeaningVi": "nấu ăn; chuẩn bị bữa ăn",
+      "oldPartOfSpeech": "??ng t?",
+      "newPartOfSpeech": "Động từ",
+      "oldTraditional": "做飯",
+      "newTraditional": "做飯",
+      "oldDigest": "4e45e0a2c104e065baf1a0cb4c04d333c6bc6b1ba75842c90d6cb0ef5ee5c2ef",
+      "newDigest": "e9afab38b752f2c2026c5cc3d01d2ec8fccf64b092e2b8790a4a60633928c92d",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "8e1a593cce1d26d91af863dfb60df6c84ab3739260d14a50f0c99858d406404d"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "5395000011"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "300"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "边",
+      "pinyin": "biān",
+      "oldMeaningVi": "b?n; c?nh; m?p",
+      "newMeaningVi": "bên; cạnh; mép",
+      "oldPartOfSpeech": "Danh t?",
+      "newPartOfSpeech": "Danh từ",
+      "oldTraditional": "邊",
+      "newTraditional": "邊",
+      "oldDigest": "d2f2075a2fc902b1d3907c00d66ccdcbbc0fa88e93e54397e6548f482fc2bab1",
+      "newDigest": "280936ce0e2af8569ba9ae0daa28c36828b61ed18bcdf7821879eaf0765fa5fe",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "97fcfcfb62f8727dc44bdad3e5f8b2ea9c4cfa74eebc0448cfed480da82ed5f3"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "0235"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "11"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "好看",
+      "pinyin": "hǎokàn",
+      "oldMeaningVi": "??p; d? nh?n",
+      "newMeaningVi": "đẹp; dễ nhìn",
+      "oldPartOfSpeech": "T?nh t?",
+      "newPartOfSpeech": "Tính từ",
+      "oldTraditional": "好看",
+      "newTraditional": "好看",
+      "oldDigest": "3113bb222b626591cf9078ecbcab4d2a3942a576d655a3e6019e00252e6250b5",
+      "newDigest": "8e4380bb58c46f8a8cab92650c207124f9532d1327e8ceb1c4cfcd1e4f07c16a",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "0736f9ce9f0f44d49fc666ec08bb801002e2f627810cccd0f5830759a1e2a21d"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "2727000071"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "73"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "见",
+      "pinyin": "jiàn",
+      "oldMeaningVi": "th?y; nh?n th?y",
+      "newMeaningVi": "thấy; nhìn thấy",
+      "oldPartOfSpeech": "??ng t?",
+      "newPartOfSpeech": "Động từ",
+      "oldTraditional": "見",
+      "newTraditional": "見",
+      "oldDigest": "9eb700e9d0f35b6a0a22d354c936e545002f4f6100ed2d0eea1164d93ea541f5",
+      "newDigest": "47684af2ae5dedd56fb1c3c21343d7896c7a22b7657ffce81a8b9a70eb087445",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "5327f875baed4918f7024c45d67a0f641dbcab1a0e5172f81a1d71daa529b563"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "3292"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "88"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "口",
+      "pinyin": "kǒu",
+      "oldMeaningVi": "mi?ng",
+      "newMeaningVi": "miệng",
+      "oldPartOfSpeech": "Danh t?",
+      "newPartOfSpeech": "Danh từ",
+      "oldTraditional": "口",
+      "newTraditional": "口",
+      "oldDigest": "f8fda68388066a83d959ab6c8fb9ffec5218129ad21014d8c83dea98cabf8eec",
+      "newDigest": "220e1ab1276e8e8fb65e3ca821e59219930515364be06e94dde032cc725f234a",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "57ba74dc4aabd8a340735d970125410517bcae59cb33bf62cd83c31594974535"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "2542"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "104"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "没有",
+      "pinyin": "méiyǒu",
+      "oldMeaningVi": "kh?ng c?; kh?ng t?n t?i",
+      "newMeaningVi": "không có; không tồn tại",
+      "oldPartOfSpeech": "??ng t? ph? ??nh",
+      "newPartOfSpeech": "Động từ phủ định",
+      "oldTraditional": "沒有",
+      "newTraditional": "沒有",
+      "oldDigest": "806cb8fb03ff5957b3c9263667c23ce5d0ac7085c54516a4d3599d27b50086bc",
+      "newDigest": "696bcd9c37b95780266d199450e54cec202758b11db95e1ae7af1cc0878797bf",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "95bcf2f2ced6c2f3d280fc84f963bcac240b409bb3b5849de23e29a96c3e0012"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "058700018"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "122"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "面包",
+      "pinyin": "miànbāo",
+      "oldMeaningVi": "b?nh m?",
+      "newMeaningVi": "bánh mì",
+      "oldPartOfSpeech": "Danh t?",
+      "newPartOfSpeech": "Danh từ",
+      "oldTraditional": "麵包",
+      "newTraditional": "麵包",
+      "oldDigest": "c64c2af7bf41cb97b01453da6b36133b6820366702e14b508ee80ad266652d6b",
+      "newDigest": "8a59e828925ba177e4db176640982481adae799de8077cfffbc70daee0484d77",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "e35f9cbd8cbeef8740c69b2be36fc7f70e14ac04fbad56beb505a64ea1a6259e"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "075400001"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "126"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "哪里",
+      "pinyin": "nǎlǐ",
+      "oldMeaningVi": "? ??u; n?i n?o",
+      "newMeaningVi": "ở đâu; nơi nào",
+      "oldPartOfSpeech": "??i t? nghi v?n ch? n?i ch?n",
+      "newPartOfSpeech": "Đại từ nghi vấn chỉ nơi chốn",
+      "oldTraditional": "哪裡",
+      "newTraditional": "哪裡",
+      "oldDigest": "8dc23832e26cd29466e904122319df000cd449918f494a4887197ac0f58b42ec",
+      "newDigest": "bcf88b5fb8ac1df2a446a65dc8e4d6f4e9bf76e96e3cec53fc483ac3907f8a8d",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "1cbf30143c6c85035d762cc5f3472b807051f65a600dd6dd75184eb7d5b53621"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "158500002"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "133"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "男",
+      "pinyin": "nán",
+      "oldMeaningVi": "nam; ??n ?ng",
+      "newMeaningVi": "nam; đàn ông",
+      "oldPartOfSpeech": "Danh t?",
+      "newPartOfSpeech": "Danh từ",
+      "oldTraditional": "男",
+      "newTraditional": "男",
+      "oldDigest": "c320c432c1b9bb7e991861afeb8d769143c188e4c596801150fff74545c5c9a9",
+      "newDigest": "4bf7a6d0ccbc92916b939b2526f414414f79fc7c7411e4682c66a9a9912b041b",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "8ae50bbc035b2dbcda53ea1e40c8d54527bb09ecef8291197289427301a9d91c"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "1618"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "142"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "女",
+      "pinyin": "nǚ",
+      "oldMeaningVi": "n?; ph? n?",
+      "newMeaningVi": "nữ; phụ nữ",
+      "oldPartOfSpeech": "Danh t?",
+      "newPartOfSpeech": "Danh từ",
+      "oldTraditional": "女",
+      "newTraditional": "女",
+      "oldDigest": "7fb197ff1acde80964ba3b631cf3a6e925f60bb74efb44759e5e6feeb870279a",
+      "newDigest": "933324d37ccf691d53ebbd29f3625c79c0b55e1a7927456fa96adfe3e589b9d5",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "00f12cd3eed90e60963d69fb4a015774b4ec1ea0e1b519a66fb33ff46ba9f8bd"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "1731"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "152"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "事",
+      "pinyin": "shì",
+      "oldMeaningVi": "s? vi?c; chuy?n",
+      "newMeaningVi": "sự việc; chuyện",
+      "oldPartOfSpeech": "Danh t?",
+      "newPartOfSpeech": "Danh từ",
+      "oldTraditional": "事",
+      "newTraditional": "事",
+      "oldDigest": "5d7b9a89d8ba87bd5ba7a2f647595bff17229cc44d1ec1b5cc10918e5e36b48e",
+      "newDigest": "3573a1b046eb23255cb0b181482881e8b35279b2fe151acfb2c4278801e23d9a",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "3ddba3a21ba766e39fdb2ae7d2694742cbb62d8d8dedd8d40aeb23b70e54e50b"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "4930"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "187"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "说",
+      "pinyin": "shuō",
+      "oldMeaningVi": "n?i; k?",
+      "newMeaningVi": "nói; kể",
+      "oldPartOfSpeech": "??ng t?",
+      "newPartOfSpeech": "Động từ",
+      "oldTraditional": "說",
+      "newTraditional": "說",
+      "oldDigest": "ff8fec7343f1ab1d122298112439384e249682807e05b1135f820a5147a8f059",
+      "newDigest": "3c26b9cc1472dfd113c2aaf6b4bdf2aa9117023f7f76c6a2e091bb8306a40991",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "9e4e044c62ca55e9adc9f256645d0422b81b326a58b1e3dee16d1ba4b5699c54"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "5148"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "196"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "天",
+      "pinyin": "tiān",
+      "oldMeaningVi": "ng?y",
+      "newMeaningVi": "ngày",
+      "oldPartOfSpeech": "Danh t? ch? th?i gian",
+      "newPartOfSpeech": "Danh từ chỉ thời gian",
+      "oldTraditional": "天",
+      "newTraditional": "天",
+      "oldDigest": "a4534ecbae39261068d2880d10e7de79ae4d74cf04c80d6296ed908bdbd19bb1",
+      "newDigest": "ff794fc58cb46dcdfd4c4baf9987d69a65610344a2ebe426935784ade2c3945e",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "c6017ecd2596b16713d5c5598222d40f80fbfc256342ac187b89ef4c03efa3de"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "1475"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "207"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "晚",
+      "pinyin": "wǎn",
+      "oldMeaningVi": "bu?i t?i; ??m",
+      "newMeaningVi": "buổi tối; đêm",
+      "oldPartOfSpeech": "Danh t? ch? th?i gian",
+      "newPartOfSpeech": "Danh từ chỉ thời gian",
+      "oldTraditional": "晚",
+      "newTraditional": "晚",
+      "oldDigest": "697d5cd6239ea1e0a97152b61b810c3a7a1ded3d49c062dd150d2c7768fcfa41",
+      "newDigest": "94f7b6021ce16cc9f35361e375c4a4ed9d4b5b12058de2f94cef1a77c9718f0c",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "833193d4c48408041c9d7897634df7c0f2d25194627d726cb313c6552285c415"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "6376"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "215"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "学",
+      "pinyin": "xué",
+      "oldMeaningVi": "h?c; h?c t?p",
+      "newMeaningVi": "học; học tập",
+      "oldPartOfSpeech": "??ng t?",
+      "newPartOfSpeech": "Động từ",
+      "oldTraditional": "學",
+      "newTraditional": "學",
+      "oldDigest": "daec27e0f7baa3fdfe6d83d3ccf671939fa166b350a126347ef7d119e4c22d29",
+      "newDigest": "4ee982f924fd42f584717b09599d68a6019f14dbb22109b55ccffa6880d03663",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "1ecd7b1b8a8033a1ce42190698482eda31bf5220faa983cc5f6b32e204101a86"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "4150"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "247"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "雨",
+      "pinyin": "yǔ",
+      "oldMeaningVi": "m?a",
+      "newMeaningVi": "mưa",
+      "oldPartOfSpeech": "Danh t?",
+      "newPartOfSpeech": "Danh từ",
+      "oldTraditional": "雨",
+      "newTraditional": "雨",
+      "oldDigest": "338dc65dcabc48009700cfb10e6fc8db50f0babbcbb14c3ef6df9c9083632fdd",
+      "newDigest": "268f10403d85176be92b506f8110d41b5d6bec7fae00100a53cd2dcc512a5a3f",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "c20379cab072cc03dd8f8709953f7299e0169664a1fbebd682d7338f99bb81c7"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "6468"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "267"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "早饭",
+      "pinyin": "zǎofàn",
+      "oldMeaningVi": "b?a s?ng",
+      "newMeaningVi": "bữa sáng",
+      "oldPartOfSpeech": "Danh t?",
+      "newPartOfSpeech": "Danh từ",
+      "oldTraditional": "早飯",
+      "newTraditional": "早飯",
+      "oldDigest": "202f4fd2fcb68d62f055e38dd9a61077a5623624809104e0bcba2d82ab4b3e92",
+      "newDigest": "dd5461fe3b5b98c22c8a8bb5919ad9400abafead220815bc3cb8afc61c3965a8",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "c17b100a22034c3ae11d2057f0d8f99849afd602a3f3c9fc00edf3364e1cea2b"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "533200003"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "274"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "这个",
+      "pinyin": "zhège",
+      "oldMeaningVi": "c?i n?y",
+      "newMeaningVi": "cái này",
+      "oldPartOfSpeech": "??i t? ch? ??nh",
+      "newPartOfSpeech": "Đại từ chỉ định",
+      "oldTraditional": "這個",
+      "newTraditional": "這個",
+      "oldDigest": "ea3e81583a356c0c0ccc6c2d480bb10eaa84ba643738f861ce20717e5def7519",
+      "newDigest": "87187568a39260a000d2f9ff261bcb252ff8bfa74e434f49646235cef35dd4dc",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "cfdba62fe34459320c5b3cc54ca2d81d6a37a341b110053c6e1bbd510d84e449"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "433800004"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "281"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "这里",
+      "pinyin": "zhèlǐ",
+      "oldMeaningVi": "? ??y; n?i n?y",
+      "newMeaningVi": "ở đây; nơi này",
+      "oldPartOfSpeech": "T? ch? n?i ch?n",
+      "newPartOfSpeech": "Từ chỉ nơi chốn",
+      "oldTraditional": "這裡",
+      "newTraditional": "這裡",
+      "oldDigest": "f9d20a639a0cb3b0beebcb9944ff3815c0f21dfd83e32ca22679234153b59325",
+      "newDigest": "62a368ce29e50968cfc3a73b7cf1d13a85a01950c96b8b640d9da1ea89f60e44",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "47576380b7cc3bb66e6878b19101b5e561e0d621378d52553f415fbd72604379"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "433800003"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "282"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "这儿",
+      "pinyin": "zhèr",
+      "oldMeaningVi": "? ??y; ch? n?y",
+      "newMeaningVi": "ở đây; chỗ này",
+      "oldPartOfSpeech": "T? ch? n?i ch?n",
+      "newPartOfSpeech": "Từ chỉ nơi chốn",
+      "oldTraditional": "這兒",
+      "newTraditional": "這兒",
+      "oldDigest": "86ce57acfa960aa4e08643894dbc35f2fa857fecf24d1c7a7b1bcb8ca64515f5",
+      "newDigest": "8d0b2d700a04f489a2b77144191d9894260eaaa61469eede24bd2ba8121e14ad",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "a1e8652731abb7bba24c52156043ad641c3b9acacce630d056c1ead8eb721097"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "433800008"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "283"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "这些",
+      "pinyin": "zhèxiē",
+      "oldMeaningVi": "nh?ng ... n?y",
+      "newMeaningVi": "những ... này",
+      "oldPartOfSpeech": "??i t? ch? ??nh",
+      "newPartOfSpeech": "Đại từ chỉ định",
+      "oldTraditional": "這些",
+      "newTraditional": "這些",
+      "oldDigest": "26e7ef80e38087ec3029ec3b6cf6ee01841c7c729cc06b3844ccc2ab5dc32055",
+      "newDigest": "927722f56301f7ccf82d2dbdca7cb21763c2dfbab06fef6575372a2663df1c3d",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "4b7cfefba9163add2f827c6389a8690a44b898419cc1319822cfb931b090fed7"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "433800006"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "284"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "对",
+      "pinyin": "duì",
+      "oldMeaningVi": "??ng; ch?nh x?c",
+      "newMeaningVi": "đúng; chính xác",
+      "oldPartOfSpeech": "T?nh t?",
+      "newPartOfSpeech": "Tính từ",
+      "oldTraditional": "對",
+      "newTraditional": "對",
+      "oldDigest": "40918e18bd8e4f151cbc7c11376034c243b6d0ae6fbc969b7480acee56ec11c9",
+      "newDigest": "5bfff3cf40a2834fd267f799d4f14cd731c2292a0ee121664e99199a91c48440",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "4cba97abbd5bff7ca37ce7e247907088ae3c1e01a4c2f437f5bcdecd227c7f5c"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "1278"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "44"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "们",
+      "pinyin": "men",
+      "oldMeaningVi": "h?u t? ch? s? nhi?u",
+      "newMeaningVi": "hậu tố chỉ số nhiều",
+      "oldPartOfSpeech": "H?u t? / tr? t?",
+      "newPartOfSpeech": "Hậu tố / trợ từ",
+      "oldTraditional": "們",
+      "newTraditional": "們",
+      "oldDigest": "a85dae48ca977d043aca929cad338fc2330766eeabec6a9976fa1157ef4fa228",
+      "newDigest": "85c9b7e4c5d028349a84aae9c4e93fe325f3404036e97a713ef00ebff046ec27",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "8ebfbe91a6a415e84efcd579fa996f1530f7c32a1922cbd54991db5a2c776df3"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "6623"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "124"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    },
+    {
+      "word": "只",
+      "pinyin": "zhī",
+      "oldMeaningVi": "con (l??ng t? cho ??ng v?t)",
+      "newMeaningVi": "con (lượng từ cho động vật)",
+      "oldPartOfSpeech": "L??ng t?",
+      "newPartOfSpeech": "Lượng từ",
+      "oldTraditional": "?",
+      "newTraditional": "隻",
+      "oldDigest": "09be042a395cac256749630c9e26b0cc46fab1cbc03c600765cad6e3a277e58b",
+      "newDigest": "0584cf7d8e8905effd3805d5c0f7d9f3f6b157660eea2d14dc3e931bc03a066a",
+      "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+      "sourceEntryIds": [
+        {
+          "family": "CC_CEDICT",
+          "entryId": "581d513b4eb982ff2d6a6c2a42d35fc95f889ac4403e5a150167f06b7ff82077"
+        },
+        {
+          "family": "TAIWAN_MOE",
+          "entryId": "4228"
+        },
+        {
+          "family": "CTI_HSK_SYLLABUS",
+          "entryId": "287"
+        }
+      ],
+      "sourceSnapshotSha256": [
+        "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+        "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2",
+        "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+      ]
+    }
+  ]
+}

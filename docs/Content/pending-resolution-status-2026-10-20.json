@@ -1,0 +1,1079 @@
+{
+  "asOf": "2026-10-20",
+  "policy": "WEB_CROSS_CHECKED_2026_10_20_V1",
+  "originalLegacyPending": 69,
+  "resolvedLegacyIds": [
+    10,
+    15,
+    17,
+    103,
+    146
+  ],
+  "resolvedProposal": "超市",
+  "remainingLegacyPending": 64,
+  "reasonCounts": {
+    "READING_OR_REGIONAL_DIFFERENCE": 43,
+    "SECOND_INDEPENDENT_ENTRY_NOT_FOUND": 19,
+    "CALENDAR_DATE_SENSE_NOT_CONFIRMED_BY_SECOND_DICTIONARY": 1,
+    "ADVERB_SENSE_NEEDS_ANOTHER_DICTIONARY_CHECK": 1
+  },
+  "sourceSnapshots": {
+    "cedict": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096",
+    "moe": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+  },
+  "records": [
+    {
+      "id": 5,
+      "word": "没关系",
+      "teachingPinyin": "méi guānxi",
+      "editorialMeaningViPending": "Không sao đâu / Không có chi",
+      "partOfSpeech": "Cụm từ",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "058700007",
+          "word": "沒關係",
+          "pinyin": "méi guān xì"
+        }
+      ],
+      "missingEvidence": "Teaching reading is méi guānxi; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 11,
+      "word": "中国",
+      "teachingPinyin": "zhōngguó",
+      "editorialMeaningViPending": "Trung Quốc",
+      "partOfSpeech": "Danh từ riêng",
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "pinnedMoeCandidates": [],
+      "missingEvidence": "The pinned sources do not provide a second independent exact headword/reading match for 中国 (zhōngguó). Read an additional independent dictionary entry supporting the selected sense and word class.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 12,
+      "word": "越南",
+      "teachingPinyin": "yuènán",
+      "editorialMeaningViPending": "Việt Nam",
+      "partOfSpeech": "Danh từ riêng",
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "pinnedMoeCandidates": [],
+      "missingEvidence": "The pinned sources do not provide a second independent exact headword/reading match for 越南 (yuènán). Read an additional independent dictionary entry supporting the selected sense and word class.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 32,
+      "word": "多少",
+      "teachingPinyin": "duōshao",
+      "editorialMeaningViPending": "Bao nhiêu",
+      "partOfSpeech": "Đại từ",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "1255000301",
+          "word": "多少",
+          "pinyin": "duō shǎo"
+        }
+      ],
+      "missingEvidence": "Teaching reading is duōshao; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 62,
+      "word": "时候",
+      "teachingPinyin": "shíhou",
+      "editorialMeaningViPending": "Lúc, khi",
+      "partOfSpeech": "Danh từ",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "490400010",
+          "word": "時候",
+          "pinyin": "shí hòu"
+        }
+      ],
+      "missingEvidence": "Teaching reading is shíhou; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 66,
+      "word": "星期",
+      "teachingPinyin": "xīngqī",
+      "editorialMeaningViPending": "Tuần, thứ",
+      "partOfSpeech": "Danh từ",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "408700008",
+          "word": "星期",
+          "pinyin": "xīng qí"
+        }
+      ],
+      "missingEvidence": "Teaching reading is xīngqī; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 67,
+      "word": "号",
+      "teachingPinyin": "hào",
+      "editorialMeaningViPending": "Ngày (trong tháng)",
+      "partOfSpeech": "Danh từ",
+      "status": "PENDING_REVIEW",
+      "reason": "CALENDAR_DATE_SENSE_NOT_CONFIRMED_BY_SECOND_DICTIONARY",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "2726",
+          "word": "號",
+          "pinyin": "háo"
+        },
+        {
+          "entryId": "2734",
+          "word": "號",
+          "pinyin": "hào"
+        }
+      ],
+      "missingEvidence": "The selected calendar-date sense is not supported by the second dictionary entry inspected. A headword/reading match or CTI level alone cannot approve that sense.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 76,
+      "word": "多少",
+      "teachingPinyin": "duōshao",
+      "editorialMeaningViPending": "Bao nhiêu",
+      "partOfSpeech": "Đại từ nghi vấn",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "1255000301",
+          "word": "多少",
+          "pinyin": "duō shǎo"
+        }
+      ],
+      "missingEvidence": "Teaching reading is duōshao; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 78,
+      "word": "喜欢",
+      "teachingPinyin": "xǐhuan",
+      "editorialMeaningViPending": "Thích, ưa chuộng",
+      "partOfSpeech": "Động từ",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "387600005",
+          "word": "喜歡",
+          "pinyin": "xǐ huān"
+        }
+      ],
+      "missingEvidence": "Teaching reading is xǐhuan; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 92,
+      "word": "哪儿",
+      "teachingPinyin": "nǎr",
+      "editorialMeaningViPending": "Ở đâu, chỗ nào",
+      "partOfSpeech": "Đại từ nghi vấn",
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "pinnedMoeCandidates": [],
+      "missingEvidence": "The pinned sources do not provide a second independent exact headword/reading match for 哪儿 (nǎr). Read an additional independent dictionary entry supporting the selected sense and word class.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 95,
+      "word": "北京",
+      "teachingPinyin": "Běijīng",
+      "editorialMeaningViPending": "Bắc Kinh (Thủ đô Trung Quốc)",
+      "partOfSpeech": "Danh từ riêng",
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "pinnedMoeCandidates": [],
+      "missingEvidence": "The pinned sources do not provide a second independent exact headword/reading match for 北京 (Běijīng). Read an additional independent dictionary entry supporting the selected sense and word class.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 105,
+      "word": "没关系",
+      "teachingPinyin": "méi guānxi",
+      "editorialMeaningViPending": "Không sao, không hề gì",
+      "partOfSpeech": "Cụm từ",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "058700007",
+          "word": "沒關係",
+          "pinyin": "méi guān xì"
+        }
+      ],
+      "missingEvidence": "Teaching reading is méi guānxi; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 123,
+      "word": "怎么样",
+      "teachingPinyin": "zěnmeyàng",
+      "editorialMeaningViPending": "Thế nào, ra sao",
+      "partOfSpeech": "Đại từ nghi vấn",
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "pinnedMoeCandidates": [],
+      "missingEvidence": "The pinned sources do not provide a second independent exact headword/reading match for 怎么样 (zěnmeyàng). Read an additional independent dictionary entry supporting the selected sense and word class.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 125,
+      "word": "后面",
+      "teachingPinyin": "hòumian",
+      "editorialMeaningViPending": "Phía sau, đằng sau",
+      "partOfSpeech": "Danh từ vị trí",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "2746000031",
+          "word": "後面",
+          "pinyin": "hòu miàn"
+        }
+      ],
+      "missingEvidence": "Teaching reading is hòumian; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 126,
+      "word": "前面",
+      "teachingPinyin": "qiánmian",
+      "editorialMeaningViPending": "Phía trước, đằng trước",
+      "partOfSpeech": "Danh từ vị trí",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "366500006",
+          "word": "前面",
+          "pinyin": "qián miàn"
+        }
+      ],
+      "missingEvidence": "Teaching reading is qiánmian; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 133,
+      "word": "出租车",
+      "teachingPinyin": "chūzūchē",
+      "editorialMeaningViPending": "Xe taxi",
+      "partOfSpeech": "Danh từ",
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "pinnedMoeCandidates": [],
+      "missingEvidence": "The pinned sources do not provide a second independent exact headword/reading match for 出租车 (chūzūchē). Read an additional independent dictionary entry supporting the selected sense and word class.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 136,
+      "word": "衣服",
+      "teachingPinyin": "yīfu",
+      "editorialMeaningViPending": "Quần áo",
+      "partOfSpeech": "Danh từ",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "583800002",
+          "word": "衣服",
+          "pinyin": "yī fú"
+        }
+      ],
+      "missingEvidence": "Teaching reading is yīfu; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 144,
+      "word": "漂亮",
+      "teachingPinyin": "piàoliang",
+      "editorialMeaningViPending": "Xinh đẹp, đẹp",
+      "partOfSpeech": "Tính từ",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "046600001",
+          "word": "漂亮",
+          "pinyin": "piào liàng"
+        }
+      ],
+      "missingEvidence": "Teaching reading is piàoliang; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 147,
+      "word": "听见",
+      "teachingPinyin": "tīngjiàn",
+      "editorialMeaningViPending": "Nghe thấy",
+      "partOfSpeech": "Động từ",
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "pinnedMoeCandidates": [],
+      "missingEvidence": "The pinned sources do not provide a second independent exact headword/reading match for 听见 (tīngjiàn). Read an additional independent dictionary entry supporting the selected sense and word class.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 172,
+      "word": "眼睛",
+      "teachingPinyin": "yǎnjing",
+      "editorialMeaningViPending": "Mắt, đôi mắt",
+      "partOfSpeech": "Danh từ",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "610100022",
+          "word": "眼睛",
+          "pinyin": "yǎn jīng"
+        }
+      ],
+      "missingEvidence": "Teaching reading is yǎnjing; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 175,
+      "word": "休息",
+      "teachingPinyin": "xiūxi",
+      "editorialMeaningViPending": "Nghỉ ngơi",
+      "partOfSpeech": "Động từ",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "397600008",
+          "word": "休息",
+          "pinyin": "xiū xí"
+        }
+      ],
+      "missingEvidence": "Teaching reading is xiūxi; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 176,
+      "word": "吃药",
+      "teachingPinyin": "chī yào",
+      "editorialMeaningViPending": "Uống thuốc",
+      "partOfSpeech": "Cụm động từ",
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "pinnedMoeCandidates": [],
+      "missingEvidence": "The pinned sources do not provide a second independent exact headword/reading match for 吃药 (chī yào). Read an additional independent dictionary entry supporting the selected sense and word class.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 182,
+      "word": "打篮球",
+      "teachingPinyin": "dǎ lánqiú",
+      "editorialMeaningViPending": "Chơi bóng rổ",
+      "partOfSpeech": "Cụm động từ",
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "pinnedMoeCandidates": [],
+      "missingEvidence": "The pinned sources do not provide a second independent exact headword/reading match for 打篮球 (dǎ lánqiú). Read an additional independent dictionary entry supporting the selected sense and word class.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 183,
+      "word": "踢足球",
+      "teachingPinyin": "tī zúqiú",
+      "editorialMeaningViPending": "Đá bóng, đá bóng đá",
+      "partOfSpeech": "Cụm động từ",
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "pinnedMoeCandidates": [],
+      "missingEvidence": "The pinned sources do not provide a second independent exact headword/reading match for 踢足球 (tī zúqiú). Read an additional independent dictionary entry supporting the selected sense and word class.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 184,
+      "word": "便宜",
+      "teachingPinyin": "piányi",
+      "editorialMeaningViPending": "Rẻ, giá rẻ",
+      "partOfSpeech": "Tính từ",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "024500018",
+          "word": "便宜",
+          "pinyin": "biàn yí"
+        },
+        {
+          "entryId": "047300002",
+          "word": "便宜",
+          "pinyin": "pián yí"
+        }
+      ],
+      "missingEvidence": "Teaching reading is piányi; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 186,
+      "word": "丈夫",
+      "teachingPinyin": "zhàngfu",
+      "editorialMeaningViPending": "Chồng",
+      "partOfSpeech": "Danh từ",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "445600002",
+          "word": "丈夫",
+          "pinyin": "zhàng fū"
+        }
+      ],
+      "missingEvidence": "Teaching reading is zhàngfu; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 190,
+      "word": "事情",
+      "teachingPinyin": "shìqing",
+      "editorialMeaningViPending": "Sự việc, việc",
+      "partOfSpeech": "Danh từ",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "493000020",
+          "word": "事情",
+          "pinyin": "shì qíng"
+        }
+      ],
+      "missingEvidence": "Teaching reading is shìqing; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 192,
+      "word": "羊肉",
+      "teachingPinyin": "yángròu",
+      "editorialMeaningViPending": "Thịt cừu",
+      "partOfSpeech": "Danh từ",
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "pinnedMoeCandidates": [],
+      "missingEvidence": "The pinned sources do not provide a second independent exact headword/reading match for 羊肉 (yángròu). Read an additional independent dictionary entry supporting the selected sense and word class.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 194,
+      "word": "鸡蛋",
+      "teachingPinyin": "jīdàn",
+      "editorialMeaningViPending": "Trứng gà",
+      "partOfSpeech": "Danh từ",
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "pinnedMoeCandidates": [],
+      "missingEvidence": "The pinned sources do not provide a second independent exact headword/reading match for 鸡蛋 (jīdàn). Read an additional independent dictionary entry supporting the selected sense and word class.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 202,
+      "word": "过",
+      "teachingPinyin": "guo",
+      "editorialMeaningViPending": "Đã từng (trải nghiệm)",
+      "partOfSpeech": "Trợ từ động thái",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "2392",
+          "word": "過",
+          "pinyin": "guō"
+        },
+        {
+          "entryId": "2404",
+          "word": "過",
+          "pinyin": "guò"
+        }
+      ],
+      "missingEvidence": "Teaching reading is guo; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 218,
+      "word": "告诉",
+      "teachingPinyin": "gàosu",
+      "editorialMeaningViPending": "Bảo, nói cho biết",
+      "partOfSpeech": "Động từ",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "225100015",
+          "word": "告訴",
+          "pinyin": "gào sù"
+        }
+      ],
+      "missingEvidence": "Teaching reading is gàosu; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 230,
+      "word": "非常",
+      "teachingPinyin": "fēi cháng",
+      "editorialMeaningViPending": "rất, vô cùng",
+      "partOfSpeech": "Phó từ",
+      "status": "PENDING_REVIEW",
+      "reason": "ADVERB_SENSE_NEEDS_ANOTHER_DICTIONARY_CHECK",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "081700008",
+          "word": "非常",
+          "pinyin": "fēi cháng"
+        }
+      ],
+      "missingEvidence": "CC-CEDICT supports the selected adverb very; the pinned MOE entry instead concerns exceptional/unusual. Find another independent entry for the adverb before publication.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 233,
+      "word": "宁可",
+      "teachingPinyin": "nìng kě",
+      "editorialMeaningViPending": "thà",
+      "partOfSpeech": "Phó từ",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "169800003",
+          "word": "寧可",
+          "pinyin": "níng kě"
+        }
+      ],
+      "missingEvidence": "Teaching reading is nìng kě; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 239,
+      "word": "电子邮件",
+      "teachingPinyin": "diàn zi yóu jiàn",
+      "editorialMeaningViPending": "thư điện tử",
+      "partOfSpeech": "Danh từ",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "1209001330",
+          "word": "電子郵件",
+          "pinyin": "diàn zǐ yóu jiàn"
+        }
+      ],
+      "missingEvidence": "Teaching reading is diàn zi yóu jiàn; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 244,
+      "word": "一起",
+      "teachingPinyin": "yì qǐ",
+      "editorialMeaningViPending": "cùng nhau",
+      "partOfSpeech": "Phó từ",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "583700150",
+          "word": "一起",
+          "pinyin": "yī qǐ"
+        }
+      ],
+      "missingEvidence": "Teaching reading is yì qǐ; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 262,
+      "word": "右边",
+      "teachingPinyin": "yòu biān",
+      "editorialMeaningViPending": "bên phải",
+      "partOfSpeech": "Danh từ vị trí",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "605300001",
+          "word": "右邊",
+          "pinyin": "yòu biān"
+        }
+      ],
+      "missingEvidence": "Teaching reading is yòu biān; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 263,
+      "word": "先生",
+      "teachingPinyin": "xiān shēng",
+      "editorialMeaningViPending": "ông, ngài",
+      "partOfSpeech": "Danh từ",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "399800031",
+          "word": "先生",
+          "pinyin": "xiān shēng"
+        }
+      ],
+      "missingEvidence": "Teaching reading is xiān shēng; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 288,
+      "word": "岂不",
+      "teachingPinyin": "qǐ bù",
+      "editorialMeaningViPending": "há chẳng",
+      "partOfSpeech": "Phó từ",
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "pinnedMoeCandidates": [],
+      "missingEvidence": "The pinned sources do not provide a second independent exact headword/reading match for 岂不 (qǐ bù). Read an additional independent dictionary entry supporting the selected sense and word class.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 290,
+      "word": "晚上",
+      "teachingPinyin": "wǎn shàng",
+      "editorialMeaningViPending": "buổi tối",
+      "partOfSpeech": "Danh từ thời gian",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "637600014",
+          "word": "晚上",
+          "pinyin": "wǎn shàng"
+        }
+      ],
+      "missingEvidence": "Teaching reading is wǎn shàng; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 292,
+      "word": "小姐",
+      "teachingPinyin": "xiǎo jiě",
+      "editorialMeaningViPending": "cô, tiểu thư",
+      "partOfSpeech": "Danh từ",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "396300037",
+          "word": "小姐",
+          "pinyin": "xiǎo jiě"
+        }
+      ],
+      "missingEvidence": "Teaching reading is xiǎo jiě; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 299,
+      "word": "成绩",
+      "teachingPinyin": "chéng jì",
+      "editorialMeaningViPending": "thành tích, điểm số",
+      "partOfSpeech": "Danh từ",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "478200014",
+          "word": "成績",
+          "pinyin": "chéng jī"
+        }
+      ],
+      "missingEvidence": "Teaching reading is chéng jì; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 345,
+      "word": "聪明",
+      "teachingPinyin": "cōng míng",
+      "editorialMeaningViPending": "thông minh",
+      "partOfSpeech": "Tính từ",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "554600002",
+          "word": "聰明",
+          "pinyin": "cōng míng"
+        }
+      ],
+      "missingEvidence": "Teaching reading is cōng míng; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 352,
+      "word": "除了",
+      "teachingPinyin": "chú le",
+      "editorialMeaningViPending": "ngoài, trừ",
+      "partOfSpeech": "Giới từ",
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "pinnedMoeCandidates": [],
+      "missingEvidence": "The pinned sources do not provide a second independent exact headword/reading match for 除了 (chú le). Read an additional independent dictionary entry supporting the selected sense and word class.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 370,
+      "word": "从容不迫",
+      "teachingPinyin": "cóng róng bù pò",
+      "editorialMeaningViPending": "ung dung, bình tĩnh",
+      "partOfSpeech": "Thành ngữ",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "554700002",
+          "word": "從容不迫",
+          "pinyin": "cōng róng bù pò"
+        }
+      ],
+      "missingEvidence": "Teaching reading is cóng róng bù pò; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 387,
+      "word": "着急",
+      "teachingPinyin": "zháo jí",
+      "editorialMeaningViPending": "sốt ruột",
+      "partOfSpeech": "Tính từ",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "435300002",
+          "word": "著急",
+          "pinyin": "zhāo jí"
+        }
+      ],
+      "missingEvidence": "Teaching reading is zháo jí; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 390,
+      "word": "危机",
+      "teachingPinyin": "wēi jī",
+      "editorialMeaningViPending": "khủng hoảng",
+      "partOfSpeech": "Danh từ",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "630700004",
+          "word": "危機",
+          "pinyin": "wéi jī"
+        }
+      ],
+      "missingEvidence": "Teaching reading is wēi jī; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 393,
+      "word": "质量",
+      "teachingPinyin": "zhì liàng",
+      "editorialMeaningViPending": "chất lượng",
+      "partOfSpeech": "Danh từ",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "424400006",
+          "word": "質量",
+          "pinyin": "zhí liàng"
+        }
+      ],
+      "missingEvidence": "Teaching reading is zhì liàng; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 395,
+      "word": "越来越",
+      "teachingPinyin": "yuè lái yuè",
+      "editorialMeaningViPending": "càng ngày càng",
+      "partOfSpeech": "Cấu trúc",
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "pinnedMoeCandidates": [],
+      "missingEvidence": "The pinned sources do not provide a second independent exact headword/reading match for 越来越 (yuè lái yuè). Read an additional independent dictionary entry supporting the selected sense and word class.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 397,
+      "word": "珍惜",
+      "teachingPinyin": "zhēn xī",
+      "editorialMeaningViPending": "trân trọng",
+      "partOfSpeech": "Động từ",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "441400006",
+          "word": "珍惜",
+          "pinyin": "zhēn xí"
+        }
+      ],
+      "missingEvidence": "Teaching reading is zhēn xī; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 405,
+      "word": "照顾",
+      "teachingPinyin": "zhào gù",
+      "editorialMeaningViPending": "chăm sóc",
+      "partOfSpeech": "Động từ",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "436200011",
+          "word": "照顧",
+          "pinyin": "zhào gù"
+        }
+      ],
+      "missingEvidence": "Teaching reading is zhào gù; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 446,
+      "word": "归根结底",
+      "teachingPinyin": "guī gēn jié dǐ",
+      "editorialMeaningViPending": "xét đến cùng",
+      "partOfSpeech": "Thành ngữ",
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "pinnedMoeCandidates": [],
+      "missingEvidence": "The pinned sources do not provide a second independent exact headword/reading match for 归根结底 (guī gēn jié dǐ). Read an additional independent dictionary entry supporting the selected sense and word class.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 454,
+      "word": "左边",
+      "teachingPinyin": "zuǒ biān",
+      "editorialMeaningViPending": "bên trái",
+      "partOfSpeech": "Danh từ vị trí",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "538600000",
+          "word": "左邊",
+          "pinyin": "zuǒ biān"
+        }
+      ],
+      "missingEvidence": "Teaching reading is zuǒ biān; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 467,
+      "word": "哪怕",
+      "teachingPinyin": "nǎ pà",
+      "editorialMeaningViPending": "dù cho",
+      "partOfSpeech": "Liên từ",
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "pinnedMoeCandidates": [],
+      "missingEvidence": "The pinned sources do not provide a second independent exact headword/reading match for 哪怕 (nǎ pà). Read an additional independent dictionary entry supporting the selected sense and word class.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 479,
+      "word": "储备",
+      "teachingPinyin": "chǔ bèi",
+      "editorialMeaningViPending": "dự trữ",
+      "partOfSpeech": "Động từ",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "481200001",
+          "word": "儲備",
+          "pinyin": "chú bèi"
+        }
+      ],
+      "missingEvidence": "Teaching reading is chǔ bèi; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 483,
+      "word": "早上",
+      "teachingPinyin": "zǎo shàng",
+      "editorialMeaningViPending": "buổi sáng",
+      "partOfSpeech": "Danh từ thời gian",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "533200019",
+          "word": "早上",
+          "pinyin": "zǎo shàng"
+        }
+      ],
+      "missingEvidence": "Teaching reading is zǎo shàng; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 494,
+      "word": "谁",
+      "teachingPinyin": "shuí",
+      "editorialMeaningViPending": "ai",
+      "partOfSpeech": "Đại từ",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "4984",
+          "word": "誰",
+          "pinyin": "shéi"
+        }
+      ],
+      "missingEvidence": "Teaching reading is shuí; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 499,
+      "word": "感兴趣",
+      "teachingPinyin": "gǎn xìng qù",
+      "editorialMeaningViPending": "có hứng thú",
+      "partOfSpeech": "Cụm động từ",
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "pinnedMoeCandidates": [],
+      "missingEvidence": "The pinned sources do not provide a second independent exact headword/reading match for 感兴趣 (gǎn xìng qù). Read an additional independent dictionary entry supporting the selected sense and word class.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 501,
+      "word": "稍微",
+      "teachingPinyin": "shāo wēi",
+      "editorialMeaningViPending": "hơi, một chút",
+      "partOfSpeech": "Phó từ",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "498700008",
+          "word": "稍微",
+          "pinyin": "shāo wéi"
+        }
+      ],
+      "missingEvidence": "Teaching reading is shāo wēi; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 512,
+      "word": "态度",
+      "teachingPinyin": "tài dù",
+      "editorialMeaningViPending": "thái độ",
+      "partOfSpeech": "Danh từ",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "135500001",
+          "word": "態度",
+          "pinyin": "tài dù"
+        }
+      ],
+      "missingEvidence": "Teaching reading is tài dù; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 522,
+      "word": "鉴于",
+      "teachingPinyin": "jiàn yú",
+      "editorialMeaningViPending": "xét thấy",
+      "partOfSpeech": "Giới từ",
+      "status": "PENDING_REVIEW",
+      "reason": "SECOND_INDEPENDENT_ENTRY_NOT_FOUND",
+      "pinnedMoeCandidates": [],
+      "missingEvidence": "The pinned sources do not provide a second independent exact headword/reading match for 鉴于 (jiàn yú). Read an additional independent dictionary entry supporting the selected sense and word class.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 523,
+      "word": "讲究",
+      "teachingPinyin": "jiǎng jiū",
+      "editorialMeaningViPending": "chú trọng, cầu kỳ",
+      "partOfSpeech": "Động từ",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "336400009",
+          "word": "講究",
+          "pinyin": "jiǎng jiù"
+        }
+      ],
+      "missingEvidence": "Teaching reading is jiǎng jiū; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 524,
+      "word": "究竟",
+      "teachingPinyin": "jiū jìng",
+      "editorialMeaningViPending": "rốt cuộc",
+      "partOfSpeech": "Phó từ",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "324700002",
+          "word": "究竟",
+          "pinyin": "jiù jìng"
+        }
+      ],
+      "missingEvidence": "Teaching reading is jiū jìng; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 525,
+      "word": "逻辑",
+      "teachingPinyin": "luó jí",
+      "editorialMeaningViPending": "lôgic",
+      "partOfSpeech": "Danh từ",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "211900002",
+          "word": "邏輯",
+          "pinyin": "luó jí"
+        }
+      ],
+      "missingEvidence": "Teaching reading is luó jí; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    },
+    {
+      "id": 560,
+      "word": "行李",
+      "teachingPinyin": "xíng li",
+      "editorialMeaningViPending": "hành lý",
+      "partOfSpeech": "Danh từ",
+      "status": "PENDING_REVIEW",
+      "reason": "READING_OR_REGIONAL_DIFFERENCE",
+      "pinnedMoeCandidates": [
+        {
+          "entryId": "409700008",
+          "word": "行李",
+          "pinyin": "xíng lǐ"
+        }
+      ],
+      "missingEvidence": "Teaching reading is xíng li; the pinned MOE candidates list other tones/neutral-tone conventions. Obtain an independent entry that supports this exact reading and the selected sense; do not strip tones to approve.",
+      "requiredMethod": "WEB_CROSS_CHECKED; no mandatory human-review gate"
+    }
+  ]
+}

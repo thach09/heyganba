@@ -72,7 +72,7 @@ public class DictionaryService {
         List<RankedWord> matchedCourse = vocabularyRepository.findCourseWords().stream()
                 .filter(v -> publication.canRead(v))
                 .map(v -> new RankedWord(Word.from(v), relevance(v.getWord(), v.getReading(), v.getMeaning(), null,
-                        v.getSinoVietnamese(), normalized, vietnameseSearch, toneSensitive), 1000))
+                        v.publishedHanViet(), normalized, vietnameseSearch, toneSensitive), 1000))
                 .filter(candidate -> candidate.relevance() < 9)
                 .sorted(WORD_ORDER).toList();
         int courseStart = Math.min(page * PAGE_SIZE, matchedCourse.size());

@@ -1,0 +1,1910 @@
+{
+  "policy": "WEB_CROSS_CHECKED_2026_10_20_V1",
+  "method": "Per-record pinned CC-CEDICT and Taiwan MOE source entry reconciliation; CTI HSK 3.0 used only for official ID, word, Pinyin and primary level.",
+  "reviewedAt": "2026-10-20T04:16:27Z",
+  "courseGrouping": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+  "officialSyllabusVersion": "CTI_HSK_3.0_2025-11",
+  "batch": 2,
+  "items": [
+    {
+      "content": {
+        "word": "明年",
+        "traditional": "明年",
+        "pinyin": "míngnián",
+        "pinyin_normalized": null,
+        "meaning_vi": "năm sau",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Danh từ chỉ thời gian",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "24972e20c3cfbd1011547b91a0f6b4add63f6aa7f738f5acc09431e480be458b",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Vietnamese meanings and part-of-speech labels are editorially compiled from the selected CC-CEDICT and Taiwan MOE definitions and usage; they are not Vietnamese translations supplied by either source.",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "3df3a6a492a2294fbc32af9d3a3f8601c0ab2d2aa2c5807ab58e4b0b93c4bcbf",
+            "subjectWord": "明年",
+            "subjectReading": "míngnián",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "077400012",
+            "subjectWord": "明年",
+            "subjectReading": "míngnián",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "128",
+            "subjectWord": "明年",
+            "subjectReading": "míngnián",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Confirms the official CTI ID, spelling, tone-marked Pinyin, and HSK 1 level only; it does not support Vietnamese meaning or part of speech.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 128,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "明年",
+        "pinyin": "míngnián"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    },
+    {
+      "content": {
+        "word": "那些",
+        "traditional": "那些",
+        "pinyin": "nàxiē",
+        "pinyin_normalized": null,
+        "meaning_vi": "những ... kia",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Đại từ chỉ định",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "ce10b7d11d62d4f2bf1c72fc768233d33984cb3439df961f97ebc219acd3495c",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Vietnamese meanings and part-of-speech labels are editorially compiled from the selected CC-CEDICT and Taiwan MOE definitions and usage; they are not Vietnamese translations supplied by either source.",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "a6be4304520e7baf6029e18ab044f014f945992d0502246886295c23c9513df0",
+            "subjectWord": "那些",
+            "subjectReading": "nàxiē",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "1590000013",
+            "subjectWord": "那些",
+            "subjectReading": "nàxiē",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "141",
+            "subjectWord": "那些",
+            "subjectReading": "nàxiē",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Confirms the official CTI ID, spelling, tone-marked Pinyin, and HSK 1 level only; it does not support Vietnamese meaning or part of speech.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 141,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "那些",
+        "pinyin": "nàxiē"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    },
+    {
+      "content": {
+        "word": "你们",
+        "traditional": "你們",
+        "pinyin": "nǐmen",
+        "pinyin_normalized": null,
+        "meaning_vi": "các bạn",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Đại từ nhân xưng",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "b1cd7fa217a921dc1b3517615966a45103e9a5dfe40e08faeb01ce8cf23bdcbe",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Vietnamese meanings and part-of-speech labels are editorially compiled from the selected CC-CEDICT and Taiwan MOE definitions and usage; they are not Vietnamese translations supplied by either source.",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "4da0bfbda42ae783745f4d59c753e7b5ed0aeca657f8612206825deeb59814ff",
+            "subjectWord": "你们",
+            "subjectReading": "nǐmen",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "163900001",
+            "subjectWord": "你们",
+            "subjectReading": "nǐmen",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "148",
+            "subjectWord": "你们",
+            "subjectReading": "nǐmen",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Confirms the official CTI ID, spelling, tone-marked Pinyin, and HSK 1 level only; it does not support Vietnamese meaning or part of speech.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 148,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "你们",
+        "pinyin": "nǐmen"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    },
+    {
+      "content": {
+        "word": "女士",
+        "traditional": "女士",
+        "pinyin": "nǚshì",
+        "pinyin_normalized": null,
+        "meaning_vi": "quý bà; bà (cách gọi lịch sự)",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Danh từ / danh xưng",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "260266953926c1976520161c8575be998b71ae923ff8eb235b140cf9ba10fd93",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Vietnamese meanings and part-of-speech labels are editorially compiled from the selected CC-CEDICT and Taiwan MOE definitions and usage; they are not Vietnamese translations supplied by either source.",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "b1bf9aa6f1cdd978ceea4261934ddfdd23f03c8f937781c8a888b84147150dc8",
+            "subjectWord": "女士",
+            "subjectReading": "nǚshì",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "173100046",
+            "subjectWord": "女士",
+            "subjectReading": "nǚshì",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "155",
+            "subjectWord": "女士",
+            "subjectReading": "nǚshì",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Confirms the official CTI ID, spelling, tone-marked Pinyin, and HSK 1 level only; it does not support Vietnamese meaning or part of speech.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 155,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "女士",
+        "pinyin": "nǚshì"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    },
+    {
+      "content": {
+        "word": "请问",
+        "traditional": "請問",
+        "pinyin": "qǐngwèn",
+        "pinyin_normalized": null,
+        "meaning_vi": "xin hỏi; cho hỏi",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Cụm từ hỏi lịch sự",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "21939a805852b5149100a4126e8bd7bf9a289684308e941f075d955a2b61f1e3",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Vietnamese meanings and part-of-speech labels are editorially compiled from the selected CC-CEDICT and Taiwan MOE definitions and usage; they are not Vietnamese translations supplied by either source.",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "e99cf4f2dea402f3a70624c415841c26995d3908ce153ddfdb0e2ac0b2a6c007",
+            "subjectWord": "请问",
+            "subjectReading": "qǐngwèn",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "374200016",
+            "subjectWord": "请问",
+            "subjectReading": "qǐngwèn",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "166",
+            "subjectWord": "请问",
+            "subjectReading": "qǐngwèn",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Confirms the official CTI ID, spelling, tone-marked Pinyin, and HSK 1 level only; it does not support Vietnamese meaning or part of speech.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 166,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "请问",
+        "pinyin": "qǐngwèn"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    },
+    {
+      "content": {
+        "word": "上课",
+        "traditional": "上課",
+        "pinyin": "shàngkè",
+        "pinyin_normalized": null,
+        "meaning_vi": "lên lớp; vào tiết học",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Động từ",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "a81a970cb206807eb652c009f5e3bb9fc9f85d86e61b6ed5a19c6f504a36d991",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Vietnamese meanings and part-of-speech labels are editorially compiled from the selected CC-CEDICT and Taiwan MOE definitions and usage; they are not Vietnamese translations supplied by either source.",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "be4fa4a125f70b8a9e75f56c86660802308e7891fa3788899c67cd050f6151f9",
+            "subjectWord": "上课",
+            "subjectReading": "shàngkè",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "508000031",
+            "subjectWord": "上课",
+            "subjectReading": "shàngkè",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "177",
+            "subjectWord": "上课",
+            "subjectReading": "shàngkè",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Confirms the official CTI ID, spelling, tone-marked Pinyin, and HSK 1 level only; it does not support Vietnamese meaning or part of speech.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 177,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "上课",
+        "pinyin": "shàngkè"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    },
+    {
+      "content": {
+        "word": "上学",
+        "traditional": "上學",
+        "pinyin": "shàngxué",
+        "pinyin_normalized": null,
+        "meaning_vi": "đi học",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Động từ",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "0186694858f9ead6ce58df09049354e8413752f03944cd3bc5b8246ec77e7c55",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Vietnamese meanings and part-of-speech labels are editorially compiled from the selected CC-CEDICT and Taiwan MOE definitions and usage; they are not Vietnamese translations supplied by either source.",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "7e98d3c8c7335247b9db574d5bb613ccab141b332e79dd5caa8b6a8bf79100b1",
+            "subjectWord": "上学",
+            "subjectReading": "shàngxué",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "508000049",
+            "subjectWord": "上学",
+            "subjectReading": "shàngxué",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "179",
+            "subjectWord": "上学",
+            "subjectReading": "shàngxué",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Confirms the official CTI ID, spelling, tone-marked Pinyin, and HSK 1 level only; it does not support Vietnamese meaning or part of speech.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 179,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "上学",
+        "pinyin": "shàngxué"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    },
+    {
+      "content": {
+        "word": "书店",
+        "traditional": "書店",
+        "pinyin": "shūdiàn",
+        "pinyin_normalized": null,
+        "meaning_vi": "hiệu sách; nhà sách",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Danh từ",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "963308bd5e4a82988d7ac0c11c9715ba101c60bfae8a9a4fb02797591ea77d39",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Vietnamese meanings and part-of-speech labels are editorially compiled from the selected CC-CEDICT and Taiwan MOE definitions and usage; they are not Vietnamese translations supplied by either source.",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "7a726180355c8c2f1a02ed9da7c8d84eeba4dfa7a6384b0733bf0fef26dde008",
+            "subjectWord": "书店",
+            "subjectReading": "shūdiàn",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "511200010",
+            "subjectWord": "书店",
+            "subjectReading": "shūdiàn",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "191",
+            "subjectWord": "书店",
+            "subjectReading": "shūdiàn",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Confirms the official CTI ID, spelling, tone-marked Pinyin, and HSK 1 level only; it does not support Vietnamese meaning or part of speech.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 191,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "书店",
+        "pinyin": "shūdiàn"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    },
+    {
+      "content": {
+        "word": "睡",
+        "traditional": "睡",
+        "pinyin": "shuì",
+        "pinyin_normalized": null,
+        "meaning_vi": "ngủ",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Động từ",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "da1693a5c7537728d5d57ca2f6b57339e3710b798aa2bea6c021811043c97b7f",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Vietnamese meanings and part-of-speech labels are editorially compiled from the selected CC-CEDICT and Taiwan MOE definitions and usage; they are not Vietnamese translations supplied by either source.",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "9ca8b18e035b27c47cfd0c64d37f850069c91dbba188f60297aa3a47ca58bc52",
+            "subjectWord": "睡",
+            "subjectReading": "shuì",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "5167",
+            "subjectWord": "睡",
+            "subjectReading": "shuì",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "194",
+            "subjectWord": "睡",
+            "subjectReading": "shuì",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Confirms the official CTI ID, spelling, tone-marked Pinyin, and HSK 1 level only; it does not support Vietnamese meaning or part of speech.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 194,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "睡",
+        "pinyin": "shuì"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    },
+    {
+      "content": {
+        "word": "他们",
+        "traditional": "他們",
+        "pinyin": "tāmen",
+        "pinyin_normalized": null,
+        "meaning_vi": "họ (nam hoặc nhóm hỗn hợp)",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Đại từ nhân xưng",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "a91f784036bda8c521df8c3eeb6756c85084d4b9f05a3e33e7d695ebe2d04a16",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Vietnamese meanings and part-of-speech labels are editorially compiled from the selected CC-CEDICT and Taiwan MOE definitions and usage; they are not Vietnamese translations supplied by either source.",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "415c94e322a905a9e83f3454b6557bbff2b736c5e61b2a31daf8c157184c4369",
+            "subjectWord": "他们",
+            "subjectReading": "tāmen",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "131800001",
+            "subjectWord": "他们",
+            "subjectReading": "tāmen",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "203",
+            "subjectWord": "他们",
+            "subjectReading": "tāmen",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Confirms the official CTI ID, spelling, tone-marked Pinyin, and HSK 1 level only; it does not support Vietnamese meaning or part of speech.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 203,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "他们",
+        "pinyin": "tāmen"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    },
+    {
+      "content": {
+        "word": "它们",
+        "traditional": "它們",
+        "pinyin": "tāmen",
+        "pinyin_normalized": null,
+        "meaning_vi": "chúng (chỉ sự vật hoặc động vật)",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Đại từ nhân xưng chỉ sự vật",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "985ad19af91ced6ea89c887e1d8eef6137c167be11718b4029073b2ecf0cc461",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Vietnamese meanings and part-of-speech labels are editorially compiled from the selected CC-CEDICT and Taiwan MOE definitions and usage; they are not Vietnamese translations supplied by either source.",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "cf09a9d4bf660eeb5dee7fc537ff51af04581db19dd2779c4927254d12d31ce8",
+            "subjectWord": "它们",
+            "subjectReading": "tāmen",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "131700001",
+            "subjectWord": "它们",
+            "subjectReading": "tāmen",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "204",
+            "subjectWord": "它们",
+            "subjectReading": "tāmen",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Confirms the official CTI ID, spelling, tone-marked Pinyin, and HSK 1 level only; it does not support Vietnamese meaning or part of speech.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 204,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "它们",
+        "pinyin": "tāmen"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    },
+    {
+      "content": {
+        "word": "她们",
+        "traditional": "她們",
+        "pinyin": "tāmen",
+        "pinyin_normalized": null,
+        "meaning_vi": "họ (nhóm nữ)",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Đại từ nhân xưng chỉ nữ giới",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "648e34f9cd4610454101f9d4b0555be61273885c2b2eeada622ab2174811e94b",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Vietnamese meanings and part-of-speech labels are editorially compiled from the selected CC-CEDICT and Taiwan MOE definitions and usage; they are not Vietnamese translations supplied by either source.",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "3795e4dbedf4db4e1a5489b3956780686476c9918a2f6e00cf4380b48ef1de3c",
+            "subjectWord": "她们",
+            "subjectReading": "tāmen",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "131900001",
+            "subjectWord": "她们",
+            "subjectReading": "tāmen",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "205",
+            "subjectWord": "她们",
+            "subjectReading": "tāmen",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Confirms the official CTI ID, spelling, tone-marked Pinyin, and HSK 1 level only; it does not support Vietnamese meaning or part of speech.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 205,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "她们",
+        "pinyin": "tāmen"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    },
+    {
+      "content": {
+        "word": "晚饭",
+        "traditional": "晚飯",
+        "pinyin": "wǎnfàn",
+        "pinyin_normalized": null,
+        "meaning_vi": "bữa tối",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Danh từ",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "e131446eaa4c2bf85bd42a88969cb1fa322f492384ace1968a4d81253f3abbfc",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Vietnamese meanings and part-of-speech labels are editorially compiled from the selected CC-CEDICT and Taiwan MOE definitions and usage; they are not Vietnamese translations supplied by either source.",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "79aed80f4a47e6f2e71b076ebcfe5480144163522571ab61e899da4fd2fe41d8",
+            "subjectWord": "晚饭",
+            "subjectReading": "wǎnfàn",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "637600003",
+            "subjectWord": "晚饭",
+            "subjectReading": "wǎnfàn",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "216",
+            "subjectWord": "晚饭",
+            "subjectReading": "wǎnfàn",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Confirms the official CTI ID, spelling, tone-marked Pinyin, and HSK 1 level only; it does not support Vietnamese meaning or part of speech.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 216,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "晚饭",
+        "pinyin": "wǎnfàn"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    },
+    {
+      "content": {
+        "word": "下班",
+        "traditional": "下班",
+        "pinyin": "xiàbān",
+        "pinyin_normalized": null,
+        "meaning_vi": "tan làm; hết giờ làm",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Động từ",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "140b91e346f4819494de8ccb2006a2da53531a34699c8056614afdfe0824c703",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Vietnamese meanings and part-of-speech labels are editorially compiled from the selected CC-CEDICT and Taiwan MOE definitions and usage; they are not Vietnamese translations supplied by either source.",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "2ff9bfcc84116e0839bd430e49a7037a02cdb02632cff354d17f643c60d162dd",
+            "subjectWord": "下班",
+            "subjectReading": "xiàbān",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "390700004",
+            "subjectWord": "下班",
+            "subjectReading": "xiàbān",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "228",
+            "subjectWord": "下班",
+            "subjectReading": "xiàbān",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Confirms the official CTI ID, spelling, tone-marked Pinyin, and HSK 1 level only; it does not support Vietnamese meaning or part of speech.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 228,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "下班",
+        "pinyin": "xiàbān"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    },
+    {
+      "content": {
+        "word": "下课",
+        "traditional": "下課",
+        "pinyin": "xiàkè",
+        "pinyin_normalized": null,
+        "meaning_vi": "tan học; hết tiết",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Động từ",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "517560cc9a72f58b95a8b749d729227e771f653f032cec82b9adb1ab3ebeb5b0",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Vietnamese meanings and part-of-speech labels are editorially compiled from the selected CC-CEDICT and Taiwan MOE definitions and usage; they are not Vietnamese translations supplied by either source.",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "eaed7a9307032e6456e0acd03d025c5e709705f3189cc72b8d6858ed0d6ee1a5",
+            "subjectWord": "下课",
+            "subjectReading": "xiàkè",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "390700041",
+            "subjectWord": "下课",
+            "subjectReading": "xiàkè",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "229",
+            "subjectWord": "下课",
+            "subjectReading": "xiàkè",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Confirms the official CTI ID, spelling, tone-marked Pinyin, and HSK 1 level only; it does not support Vietnamese meaning or part of speech.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 229,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "下课",
+        "pinyin": "xiàkè"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    },
+    {
+      "content": {
+        "word": "小朋友",
+        "traditional": "小朋友",
+        "pinyin": "xiǎopéngyǒu",
+        "pinyin_normalized": null,
+        "meaning_vi": "trẻ em; bạn nhỏ",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Danh từ",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "4e60abe46629e6b1109e90dd6a063d5e4ea06b77d01926f272f3a6f24372669c",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Vietnamese meanings and part-of-speech labels are editorially compiled from the selected CC-CEDICT and Taiwan MOE definitions and usage; they are not Vietnamese translations supplied by either source.",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "f8b9cba16768e9897ad338418cf0975a67f2c573faa3b15154e901ad8f8e7762",
+            "subjectWord": "小朋友",
+            "subjectReading": "xiǎopéngyǒu",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "396300085",
+            "subjectWord": "小朋友",
+            "subjectReading": "xiǎopéngyǒu",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "235",
+            "subjectWord": "小朋友",
+            "subjectReading": "xiǎopéngyǒu",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Confirms the official CTI ID, spelling, tone-marked Pinyin, and HSK 1 level only; it does not support Vietnamese meaning or part of speech.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 235,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "小朋友",
+        "pinyin": "xiǎopéngyǒu"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    },
+    {
+      "content": {
+        "word": "小学",
+        "traditional": "小學",
+        "pinyin": "xiǎoxué",
+        "pinyin_normalized": null,
+        "meaning_vi": "trường tiểu học",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Danh từ",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "cead75772e3731d02f0c88064e7eaaed50630b5e7e352e34d5e556e12d166c58",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Vietnamese meanings and part-of-speech labels are editorially compiled from the selected CC-CEDICT and Taiwan MOE definitions and usage; they are not Vietnamese translations supplied by either source.",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "a9673b124886257f0c0a7387a36fc468bf6c362b1dd3f36b89031570968f2048",
+            "subjectWord": "小学",
+            "subjectReading": "xiǎoxué",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "396300050",
+            "subjectWord": "小学",
+            "subjectReading": "xiǎoxué",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "237",
+            "subjectWord": "小学",
+            "subjectReading": "xiǎoxué",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Confirms the official CTI ID, spelling, tone-marked Pinyin, and HSK 1 level only; it does not support Vietnamese meaning or part of speech.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 237,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "小学",
+        "pinyin": "xiǎoxué"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    },
+    {
+      "content": {
+        "word": "小学生",
+        "traditional": "小學生",
+        "pinyin": "xiǎoxuéshēng",
+        "pinyin_normalized": null,
+        "meaning_vi": "học sinh tiểu học",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Danh từ",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "c4074510b0473aeea652f8e100d78f29d14f2c91c2feeda29e408f22d9287ae2",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Vietnamese meanings and part-of-speech labels are editorially compiled from the selected CC-CEDICT and Taiwan MOE definitions and usage; they are not Vietnamese translations supplied by either source.",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "726790e770ae8bb38e5456ec0c43e7e5e4da1b595227ed13bafa63ee1c8baca6",
+            "subjectWord": "小学生",
+            "subjectReading": "xiǎoxuéshēng",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "396300051",
+            "subjectWord": "小学生",
+            "subjectReading": "xiǎoxuéshēng",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "238",
+            "subjectWord": "小学生",
+            "subjectReading": "xiǎoxuéshēng",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Confirms the official CTI ID, spelling, tone-marked Pinyin, and HSK 1 level only; it does not support Vietnamese meaning or part of speech.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 238,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "小学生",
+        "pinyin": "xiǎoxuéshēng"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    },
+    {
+      "content": {
+        "word": "有点儿",
+        "traditional": "有點兒",
+        "pinyin": "yǒudiǎnr",
+        "pinyin_normalized": null,
+        "meaning_vi": "hơi; một chút",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Phó từ chỉ mức độ",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "ac8f20970e85c65ef7ab250e0bc55ce45c6776e603725e7386f0ff869440f2cc",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Vietnamese meanings and part-of-speech labels are editorially compiled from the selected CC-CEDICT and Taiwan MOE definitions and usage; they are not Vietnamese translations supplied by either source.",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "e70527486577facfeba054147699de5a49a98b6ce4883cdf210d3ecc6c94681e",
+            "subjectWord": "有点儿",
+            "subjectReading": "yǒudiǎnr",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "604600016",
+            "subjectWord": "有点儿",
+            "subjectReading": "yǒudiǎnr",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "265",
+            "subjectWord": "有点儿",
+            "subjectReading": "yǒudiǎnr",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Confirms the official CTI ID, spelling, tone-marked Pinyin, and HSK 1 level only; it does not support Vietnamese meaning or part of speech.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 265,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "有点儿",
+        "pinyin": "yǒudiǎnr"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    },
+    {
+      "content": {
+        "word": "做饭",
+        "traditional": "做飯",
+        "pinyin": "zuò fàn",
+        "pinyin_normalized": null,
+        "meaning_vi": "nấu ăn; chuẩn bị bữa ăn",
+        "han_viet": null,
+        "example_zh": null,
+        "example_pinyin": null,
+        "example_vi": null,
+        "hsk_level": 1,
+        "part_of_speech": "Động từ",
+        "curriculum_version": "INTERNAL_WEB_SUPPLEMENT_2026_10_20"
+      },
+      "contentDigest": "e9afab38b752f2c2026c5cc3d01d2ec8fccf64b092e2b8790a4a60633928c92d",
+      "evidence": {
+        "curriculumVersion": "INTERNAL_WEB_SUPPLEMENT_2026_10_20",
+        "sourceVersion": "WEB-2026-10-20_CC-CEDICT-20261019_MOE-20260929",
+        "lexicalSourceRef": "Per-entry source ancestry and IDs in verification_evidence_json",
+        "meaningSourceRef": "Vietnamese meanings and part-of-speech labels are editorially compiled from the selected CC-CEDICT and Taiwan MOE definitions and usage; they are not Vietnamese translations supplied by either source.",
+        "hanVietSourceRef": null,
+        "exampleSourceRef": null,
+        "hskLevel": 1,
+        "verificationMethod": "WEB_CROSS_CHECKED",
+        "verificationPolicyVersion": "WEB_CROSS_CHECKED_2026_10_20_V1",
+        "sources": [
+          {
+            "provider": "MDBG CC-CEDICT downloadable release",
+            "dataFamily": "CC_CEDICT",
+            "reference": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+            "entryId": "8e1a593cce1d26d91af863dfb60df6c84ab3739260d14a50f0c99858d406404d",
+            "subjectWord": "做饭",
+            "subjectReading": "zuò fàn",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "2d42d41f75df8708d9d9b236d8ae15ecf1cef525aef8ebb8499a74cb09e1b096"
+          },
+          {
+            "provider": "Taiwan MOE Concise Mandarin Dictionary 20260929",
+            "dataFamily": "TAIWAN_MOE",
+            "reference": "https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/dict_concised_2014_20260929.zip",
+            "entryId": "5395000011",
+            "subjectWord": "做饭",
+            "subjectReading": "zuò fàn",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "WORD",
+              "READING",
+              "MEANING",
+              "PART_OF_SPEECH"
+            ],
+            "observation": "The pinned dictionary entry was checked for the exact headword, tone-marked reading, definition, and part of speech; the Vietnamese rendering is editorial.",
+            "snapshotSha256": "5bab99dac44ad7a6ccdcf481e770e8aca05ede7445c4cc25b8199e0e5df64cf2"
+          },
+          {
+            "provider": "Chinese Testing International syllabus 2025-11",
+            "dataFamily": "CTI_HSK_SYLLABUS",
+            "reference": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+            "entryId": "300",
+            "subjectWord": "做饭",
+            "subjectReading": "zuò fàn",
+            "accessedAt": "2026-10-20T04:16:27Z",
+            "accessStatus": "RETRIEVED",
+            "supports": [
+              "HSK_LEVEL",
+              "WORD",
+              "READING"
+            ],
+            "observation": "Confirms the official CTI ID, spelling, tone-marked Pinyin, and HSK 1 level only; it does not support Vietnamese meaning or part of speech.",
+            "snapshotSha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941"
+          }
+        ],
+        "publishHanViet": false,
+        "publishExamples": false
+      },
+      "officialClassification": {
+        "entryId": 300,
+        "syllabusVersion": "CTI_HSK_3.0_2025-11",
+        "primaryLevel": "1",
+        "word": "做饭",
+        "pinyin": "zuò fàn"
+      },
+      "decision": "APPROVE_CORE_ONLY",
+      "meaningViEditorial": true,
+      "hanVietAndExamplesPublished": false
+    }
+  ]
+}

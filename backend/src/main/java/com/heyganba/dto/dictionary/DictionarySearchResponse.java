@@ -26,11 +26,11 @@ public record DictionarySearchResponse(
                     ? v.getDictionaryEntry().getVietnameseMeaning() : null;
             VietnameseMeaningStatus vietnameseStatus = v.getDictionaryEntryId() != null && v.getDictionaryEntry() != null
                     ? v.getDictionaryEntry().getVietnameseStatus() : VietnameseMeaningStatus.NONE;
-            String sino = v.getHanViet() != null ? v.getHanViet() : v.getSinoVietnamese();
+            String sino = v.publishedHanViet();
             return new Word(v.getId(), v.getWord(), v.getReading(), v.getMeaning(), vietnamese, vietnameseStatus, sino,
-                    v.getExampleSentence() != null ? v.getExampleSentence() : v.getExampleZh(),
-                    v.getExampleReading() != null ? v.getExampleReading() : v.getExamplePinyin(),
-                    v.getExampleMeaning() != null ? v.getExampleMeaning() : v.getExampleVi(),
+                    v.publishedExampleSentence(),
+                    v.publishedExampleReading(),
+                    v.publishedExampleMeaning(),
                     v.getDictionaryEntryId() == null ? "HeyGanba" : "JMdict / EDRDG", v.getDictionaryEntryId() == null ? "vi" : "en",
                     v.getHskLevel() != null ? v.getHskLevel() : 1, v.getPartOfSpeech());
         }

@@ -174,10 +174,24 @@
                 </includes>
             </testResource>
         </testResources>
+<testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+            </testResource>
+            <testResource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>db/migration-staging/**</include>
+                </includes>
+            </testResource>
+        </testResources>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId><artifactId>maven-surefire-plugin</artifactId>
-                <configuration><excludedGroups>${test.excludedGroups}</excludedGroups></configuration>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <excludedGroups>${test.excludedGroups}</excludedGroups>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -206,6 +220,7 @@
         </plugins>
     </build>
     <profiles>
+        <!-- Historical Japanese corpus audit, outside the Chinese release/runtime. -->
         <profile>
             <id>legacy-japanese-audit</id>
             <properties><test.excludedGroups></test.excludedGroups></properties>

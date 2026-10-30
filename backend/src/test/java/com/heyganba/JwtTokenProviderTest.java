@@ -60,7 +60,7 @@ class JwtTokenProviderTest {
     @DisplayName("Secret do dashboard sinh (không phải Base64 nhưng ≥32 ký tự) vẫn dùng được — không chặn deploy vì định dạng")
     void nonBase64SecretWithEnoughEntropyIsAccepted() {
         // Render/nhiều nền tảng sinh secret dạng chuỗi ký tự ngẫu nhiên; chỉ cần ≥32 byte khoá là đủ cho HS256.
-        String rawSecret = "zK7pQ2mX9vT4rL8sW1yB6nD3fH5jC0aE";
+        String rawSecret = java.util.HexFormat.of().formatHex(java.security.SecureRandom.getSeed(32)) + "-raw";
 
         JwtTokenProvider provider = new JwtTokenProvider(rawSecret, 1800000L, 604800000L);
         String accessToken = provider.generateAccessToken(principal());
