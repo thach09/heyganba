@@ -12,11 +12,11 @@ vi.mock('../../src/features/dictionary/api', () => ({ dictionaryApi: {
 } }));
 const student = { id: 103, word: '学生', reading: 'xuésheng', meaning: 'API fixture meaning' };
 const result = (words: unknown[]) => ({ success: true, data: { vocabularies: words, hanzis: [] } });
-beforeEach(() => { api.search.mockReset(); api.addWord.mockReset(); api.addWord.mockResolvedValue({ success: true }); });
+beforeEach(() => { vi.stubEnv('VITE_ENABLE_READING_FIXTURES', 'true'); api.search.mockReset(); api.addWord.mockReset(); api.addWord.mockResolvedValue({ success: true }); });
 async function selectWord() {
   const view = render(<MemoryRouter><DictionaryNotebookView /></MemoryRouter>);
   fireEvent.click(screen.getByRole('button', { name: 'Đọc hiểu tiếng Trung' }));
-  fireEvent.click(screen.getByRole('button', { name: 'Tra nhanh từ "学生"' }));
+  fireEvent.click(await screen.findByRole('button', { name: 'Tra nhanh từ "学生"' }));
   await act(async () => {});
   await waitFor(() => expect((screen.getByRole('button', { name: '+ Lưu vào Sổ từ' }) as HTMLButtonElement).disabled).toBe(false));
   return view;
@@ -56,4 +56,13 @@ test('changing the passage cancels its pending lookup and clears the previous wo
   expect(screen.queryByTestId('interactive-word-popover')).toBeNull();
   expect(screen.queryByRole('dialog')).toBeNull();
   expect(api.addWord).not.toHaveBeenCalled();
+});
+
+test('default learner reading state exposes no unreviewed static passages', () => {
+  vi.stubEnv('VITE_ENABLE_READING_FIXTURES', 'false');
+  render(<MemoryRouter><DictionaryNotebookView /></MemoryRouter>);
+  fireEvent.click(screen.getByRole('button', { name: 'Đọc hiểu tiếng Trung' }));
+  expect(screen.getByRole('status').textContent).toContain('Chưa có bài đọc được xuất bản');
+  expect(screen.queryByRole('button', { name: /Tra nhanh từ/ })).toBeNull();
+  expect(screen.queryByText(/我是学生/)).toBeNull();
 });

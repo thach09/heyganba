@@ -1,6 +1,6 @@
 import { useRequestScope } from '../../lib/hooks/useRequestScope';
 import { dictionaryApi } from './api';
-import type { VocabularyItem, DictionarySearchResponse, VocabNotebookItem, VocabNotebook, PracticeResult } from './types';
+import type { VocabularyItem, DictionarySearchResponse, VocabNotebookItem, VocabNotebook, PracticeResult, ReadingPassageItem } from './types';
 import { useAuth } from '../../app/useAuth';
 import React, { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
@@ -9,7 +9,7 @@ import { getSavedUser } from '../../lib/api/session';
 import { SubmitButton } from '../../components/SubmitButton';
 import { Modal } from '../../components/Modal';
 import { speakChinese, stopChineseSpeech } from '../../services/chineseSpeech';
-import { ALL_READING_PASSAGES } from './readingData';
+import { developmentReadingFixtures } from './readingFixtures';
 
 const labelClass = 'text-[10.5px] font-semibold uppercase tracking-[0.18em] text-fg-38';
 
@@ -21,6 +21,12 @@ export const DictionaryNotebookView: React.FC = () => {
 };
 
 const DictionaryNotebookSessionView: React.FC = () => {
+  const [readingPassages, setReadingPassages] = useState<ReadingPassageItem[]>([]);
+  useEffect(() => {
+    let active = true;
+    void developmentReadingFixtures().then(passages => { if (active) setReadingPassages(passages); });
+    return () => { active = false; };
+  }, []);
   const { user, requireLogin: onRequireLogin } = useAuth();
   const { run, cancel, isActive } = useRequestScope(user?.userId);
   const [activeTab, setActiveTab] = useState<'DICTIONARY' | 'NOTEBOOKS' | 'READING'>('DICTIONARY');
@@ -791,7 +797,8 @@ const DictionaryNotebookSessionView: React.FC = () => {
 
       {/* TAB 3: CHINESE READING */}
       {activeTab === 'READING' && (() => {
-        const passages = ALL_READING_PASSAGES.filter(p => readingLevel === 'ALL' || p.hskLevel === readingLevel);
+        if (!readingPassages.length) return <p role="status" className="py-8 text-[13px] text-fg-60">Chưa có bài đọc được xuất bản. Bạn vẫn có thể tra từ và ôn sổ từ cá nhân.</p>;
+        const passages = readingPassages.filter(p => readingLevel === 'ALL' || p.hskLevel === readingLevel);
         const activePassage = passages.find((p) => p.id === selectedPassageId) || passages[0];
         return (
           <div className="mt-8 flex flex-col gap-6">
@@ -811,7 +818,7 @@ const DictionaryNotebookSessionView: React.FC = () => {
                 <button type="button" key={level} aria-pressed={readingLevel === level}
                   className="border border-rule-strong px-3 py-2 text-[12.5px] leading-relaxed text-fg-60"
                   onClick={() => { setReadingLevel(level); setReadingAnswers({}); setReadingChecked(false); setShowTranslation(false); setSelectedReadingWord(null); }}>
-                  {level === 'ALL' ? 'Tất cả' : `Nhóm ${level}`} ({ALL_READING_PASSAGES.filter(p => level === 'ALL' || p.hskLevel === level).length})
+                  {level === 'ALL' ? 'Tất cả' : `Nhóm ${level}`} ({readingPassages.filter(p => level === 'ALL' || p.hskLevel === level).length})
                 </button>
               ))}
             </div>

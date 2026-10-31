@@ -111,6 +111,7 @@ vi.mock('../../src/features/hanzi/api', () => ({
 
 describe('v2.1 EdTech UX & Stability Improvements', () => {
   beforeEach(() => {
+    vi.stubEnv('VITE_ENABLE_READING_FIXTURES', 'true');
     localStorage.clear();
     sessionStorage.clear();
     fixture.search.mockReset();

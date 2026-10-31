@@ -16,7 +16,7 @@ import { MascotBadge } from '../../components/MascotBadge';
 import { RedSealStamp } from '../../components/RedSealStamp';
 import { updateClassCode } from '../account/api';
 import type { AuthResponse } from '../../lib/api/types';
-import { isChineseSpeechSupported, speakChinese } from '../../services/chineseSpeech';
+import { speakChinese } from '../../services/chineseSpeech';
 import { Modal } from '../../components/Modal';
 import { learningKeyboardBlocked } from '../../lib/learningKeyboard';
 
@@ -235,15 +235,22 @@ export const ExamView: React.FC = () => {
   const playQuestionAudio = (question: ExamQuestion, event: React.MouseEvent, slow = false) => {
     event.stopPropagation();
     const text = question.audioText ?? (question as unknown as { audioPrompt?: string }).audioPrompt ?? question.questionText;
-    if (isChineseSpeechSupported()) {
-      speakChinese(text, { slow });
-    } else {
+    const failed = (message: string) => {
       setFeedback({
         type: 'error',
         title: 'Chưa phát được âm thanh',
-        message: 'Trình duyệt chưa hỗ trợ đọc tiếng Trung. Hãy thử trình duyệt khác.',
+        message,
       });
-    }
+    };
+    setFeedback(null);
+    const status = speakChinese(text, { slow, onError: error => {
+      // Starting another utterance intentionally cancels the previous one.
+      if (['canceled', 'interrupted'].includes((error as { error?: string })?.error ?? '')) return;
+      failed('Chưa phát được âm thanh. Bấm nghe để thử lại.');
+    } });
+    if (status === 'unsupported') failed('Trình duyệt chưa hỗ trợ đọc tiếng Trung. Hãy thử trình duyệt khác.');
+    else if (status === 'no-voice') failed('Thiết bị chưa có giọng Quan thoại. Hãy cài giọng tiếng Trung rồi thử lại.');
+    else if (status === 'error') failed('Chưa phát được âm thanh. Bấm nghe để thử lại.');
   };
 
   const startExam = async () => {
