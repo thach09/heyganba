@@ -23,6 +23,8 @@ public class AdminContentService {
 
     @org.springframework.beans.factory.annotation.Value("${app.legacy-phonetics-enabled:false}")
     private boolean legacyPhoneticsEnabled;
+    @org.springframework.beans.factory.annotation.Autowired
+    private org.springframework.core.env.Environment environment;
     private final KanaRepository kanaRepository;
     private final VocabularyRepository vocabularyRepository;
     private final VocabularyPublicationAuthority publication;
@@ -200,7 +202,8 @@ public class AdminContentService {
                 .meaning(req.getMeaning().trim())
                 .mnemonic(req.getMnemonic() != null ? req.getMnemonic().trim() : null)
                 .lesson(lesson)
-                .reviewStatus(ReviewStatus.APPROVED)
+                .reviewStatus(ReviewStatus.PENDING_REVIEW)
+                .needsHumanCheck(true)
                 .build();
 
         Kanji saved = kanjiRepository.save(kanji);
@@ -227,6 +230,8 @@ public class AdminContentService {
         kanji.setSinoVietnamese(req.getSinoVietnamese() != null ? req.getSinoVietnamese().trim() : null);
         kanji.setMeaning(req.getMeaning().trim());
         kanji.setMnemonic(req.getMnemonic() != null ? req.getMnemonic().trim() : null);
+        kanji.setReviewStatus(ReviewStatus.PENDING_REVIEW);
+        kanji.setNeedsHumanCheck(true);
 
         Kanji saved = kanjiRepository.save(kanji);
         String after = saved.getCharacter() + " (" + saved.getMeaning() + ")";
@@ -268,7 +273,8 @@ public class AdminContentService {
                 .explanation(req.getExplanation() != null ? req.getExplanation().trim() : null)
                 .isCommonMistake(Boolean.TRUE.equals(req.getIsCommonMistake()))
                 .mistakeCategory(req.getMistakeCategory() != null ? req.getMistakeCategory().trim() : null)
-                .reviewStatus(ReviewStatus.APPROVED)
+                .reviewStatus(ReviewStatus.PENDING_REVIEW)
+                .needsHumanCheck(true)
                 .build();
 
         GrammarExercise saved = grammarExerciseRepository.save(exercise);
@@ -295,6 +301,8 @@ public class AdminContentService {
         exercise.setExplanation(req.getExplanation() != null ? req.getExplanation().trim() : null);
         exercise.setIsCommonMistake(Boolean.TRUE.equals(req.getIsCommonMistake()));
         exercise.setMistakeCategory(req.getMistakeCategory() != null ? req.getMistakeCategory().trim() : null);
+        exercise.setReviewStatus(ReviewStatus.PENDING_REVIEW);
+        exercise.setNeedsHumanCheck(true);
 
         GrammarExercise saved = grammarExerciseRepository.save(exercise);
         String after = saved.getQuestionText();
@@ -316,6 +324,7 @@ public class AdminContentService {
 
     @Transactional
     public void approveContent(User admin, String contentType, Long id, String note) {
+        requirePublicationEnabled();
         String type = contentType.toUpperCase().trim();
         switch (type) {
             case "VOCABULARY" -> {
@@ -412,6 +421,7 @@ public class AdminContentService {
 
     @Transactional
     public int approveAllPending(User admin) {
+        requirePublicationEnabled();
         int count = 0;
         // Lock in ID order and recheck proof inside the same transaction as approval.
         for (Long id : vocabularyRepository.findAll().stream().map(Vocabulary::getId).sorted().toList()) {
@@ -464,5 +474,13 @@ public class AdminContentService {
 
         auditLogService.logAction(admin, "curriculum", null, "APPROVE_ALL", "PENDING_REVIEW", "APPROVED (" + count + " mục)");
         return count;
+    }
+
+    private void requirePublicationEnabled() {
+        // The initial Jiayou lineage deliberately permits drafts/archive only.
+        // Fail before writing instead of letting its database CHECK become a 500.
+        if (environment != null && environment.acceptsProfiles(org.springframework.core.env.Profiles.of("jiayou-prod"))) {
+            throw new BadRequestException("Chức năng xuất bản chưa được bật cho hệ thống này.");
+        }
     }
 }
