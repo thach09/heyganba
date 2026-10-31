@@ -93,7 +93,7 @@ export const PinyinStationView: React.FC = () => {
           </h2>
           <p className="mt-2.5 max-w-lg text-xs leading-relaxed text-fg-60">
             Nội dung phát âm M1 được biên soạn đối chiếu theo <b>Đề án Pinyin Hán ngữ 1958</b> và đang ở trạng thái <span className="font-sans text-gold-ink font-semibold">PENDING_REVIEW</span>.
-            Theo quy tắc an toàn dữ liệu học thuật của nền tảng HeyGanba, nội dung chưa mở tự do cho học viên đại trà khi chưa được phê duyệt chính thức (<span className="font-sans text-jade-ink">APPROVED</span>).
+            Theo quy tắc an toàn dữ liệu học thuật của nền tảng Jiayou, nội dung chưa mở tự do cho học viên đại trà khi chưa được phê duyệt chính thức (<span className="font-sans text-jade-ink">APPROVED</span>).
           </p>
 
           {/* Cảnh báo nếu học viên thông thường cố tình gắn ?preview=1 */}

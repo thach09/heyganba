@@ -214,7 +214,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <ChineseSealStamp />
             <div className="min-w-0">
               <div className="font-sans text-[16px] font-bold tracking-tight text-fg whitespace-nowrap">
-                Học tiếng Trung
+                Jiayou
               </div>
               <span className="block font-sans text-[11px] font-medium tracking-[0.16em] text-gold-ink">
                 中文学习 · 华语

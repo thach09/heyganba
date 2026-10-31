@@ -33,7 +33,7 @@ class TwoFactorAuthServiceTest {
         String url = twoFactorAuthService.getOtpAuthUrl(email, secret);
 
         assertThat(url).startsWith("otpauth://totp/");
-        assertThat(url).contains("HeyGanba");
+        assertThat(url).contains("Jiayou");
         assertThat(url).contains("admin%40heyganba.vn");
         assertThat(url).contains("secret=" + secret);
     }

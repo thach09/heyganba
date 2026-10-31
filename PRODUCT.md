@@ -1,6 +1,6 @@
-# Học tiếng Trung — sự thật sản phẩm
+# Jiayou — sự thật sản phẩm
 
-Cập nhật 17/10/2026. Đây là nền tảng học tiếng Trung cho người Việt trên desktop và điện thoại. Nhãn trung tính là “Học tiếng Trung”; tên thương hiệu mới chờ founder. Luật thị giác duy nhất: `frontend/DESIGN.md`.
+Cập nhật 17/10/2026. Đây là nền tảng học tiếng Trung cho người Việt trên desktop và điện thoại. Owner đã chọn tên Jiayou; Ganbarou tiếp tục là sản phẩm riêng tại heyganba.site. Luật thị giác duy nhất: `frontend/DESIGN.md`.
 
 ## Trạm học và dữ liệu
 

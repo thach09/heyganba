@@ -524,6 +524,7 @@ class PostgresSchemaStagingRehearsalTest {
         // Không dùng SpringApplicationBuilder.properties(...) làm cơ chế khoá datasource:
         // Truyền cấu hình rehearsal bắt buộc qua command-line arguments của .run(...) để có độ ưu tiên cao nhất.
         String[] cmdArgs = new String[] {
+                "--spring.profiles.active=prod", // Explicit legacy fixture, not the Jiayou bootstrap.
                 "--spring.datasource.url=" + urlB,
                 "--spring.datasource.username=" + user,
                 "--spring.datasource.password=" + pass,

@@ -9,9 +9,9 @@
         <relativePath/>
     </parent>
     <groupId>com.heyganba</groupId>
-    <artifactId>heyganba-backend</artifactId>
+    <artifactId>jiayou-backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>heyganba-backend</name>
+    <name>jiayou-backend</name>
     <description>Chinese learning platform backend API</description>
 
     <properties>

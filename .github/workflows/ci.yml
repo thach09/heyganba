@@ -1,4 +1,4 @@
-name: HeyGanba CI/CD Pipeline
+name: Jiayou CI
 
 on:
   push:
@@ -6,6 +6,20 @@ on:
   pull_request:
     branches: [ "main", "develop" ]
   workflow_dispatch:
+    inputs:
+      run_legacy_preflight:
+        description: Run read-only legacy source-history comparison (never deploys)
+        type: boolean
+        default: false
+      deployed_sha:
+        description: Full operator-verified deployed legacy SHA
+        type: string
+      locations:
+        description: Operator-verified effective legacy Flyway locations
+        type: string
+
+permissions:
+  contents: read
 
 # Huỷ run cũ khi có push mới trên cùng branch → tiết kiệm phút CI.
 concurrency:
@@ -159,62 +173,18 @@ jobs:
           path: frontend/dist/
           if-no-files-found: error
 
-  # ============================================================
-  # Deploy — Staging: KHÔNG cần job trong CI (tránh deploy trùng 2 lần).
-  # - Backend staging: Render Web Service `heyganba-backend-staging` (branch develop, autoDeploy=yes)
-  #   → requires a connected Render Git integration; verify provider HEAD after merge.
-  # - Frontend staging: Vercel Git Integration tự tạo preview cho branch `develop`
-  #   → https://heyganba-git-develop-thach09.vercel.app (dùng VITE_API_BASE_URL = API staging).
-  # CI validates this branch; a green run alone does not prove a staging deploy.
-  # ============================================================
-
-  # ============================================================
-  # Deploy — Production (BACKEND): job deploy DUY NHẤT còn lại trong CI.
-  # - Render service production đang để `autoDeploy: no` → push `main` KHÔNG tự deploy backend.
-  # - Cần: GitHub Environment `production` + Required reviewers, và secret
-  #   `RENDER_PROD_DEPLOY_HOOK_URL` (tạo Deploy Hook ở Render dashboard).
-  # - Chưa cấu hình secret → job tự skip kèm ::warning:: (CI vẫn xanh).
-  # Frontend production do Vercel Git Integration tự deploy khi push `main` (production branch = main).
-  # ============================================================
-  # Repository variables must be verified against the actual Render deployment
-  # and its effective Flyway locations before a release. Missing metadata fails
-  # closed; this source check never connects to the production database.
+  # Preserved PR48 protection. There is deliberately no automatic deployment job.
   backend-production-preflight:
     name: Backend Production Migration Preflight
     needs: [backend-test, backend-migration-check, frontend-test]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'workflow_dispatch' && inputs.run_legacy_preflight
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout full migration history
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - name: Verify deployed production migration history
+      - name: Verify legacy source history without database access
         env:
-          PRODUCTION_BACKEND_DEPLOYED_SHA: ${{ vars.PRODUCTION_BACKEND_DEPLOYED_SHA }}
-          PRODUCTION_FLYWAY_LOCATIONS: ${{ vars.PRODUCTION_FLYWAY_LOCATIONS }}
+          PRODUCTION_BACKEND_DEPLOYED_SHA: ${{ inputs.deployed_sha }}
+          PRODUCTION_FLYWAY_LOCATIONS: ${{ inputs.locations }}
         run: python3 backend/tools/production_migration_preflight.py --candidate-sha "$GITHUB_SHA"
-
-  deploy-backend-production:
-    name: Deploy Backend → Render (production)
-    needs: [backend-test, backend-migration-check, frontend-test, backend-production-preflight]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    environment: production
-    steps:
-      - name: Trigger Render deploy hook
-        env:
-          DEPLOY_HOOK: ${{ secrets.RENDER_PROD_DEPLOY_HOOK_URL }}
-        run: |
-          if [ -z "$DEPLOY_HOOK" ]; then
-            echo "::warning::Chưa cấu hình RENDER_PROD_DEPLOY_HOOK_URL — bỏ qua deploy backend production."
-            exit 0
-          fi
-          curl -fsS -X POST "$DEPLOY_HOOK"
-          echo "Đã trigger deploy backend production trên Render."
-
-  # Frontend production: KHÔNG cần job CI — Vercel Git Integration tự deploy khi push `main`
-  # (production branch = main). Job deploy bằng Vercel CLI đã được xoá để tránh deploy trùng
-  # và để không phải cấp VERCEL_TOKEN cho GitHub Actions.
-

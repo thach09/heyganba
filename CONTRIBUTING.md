@@ -1,6 +1,6 @@
-# Contributing to HeyGanba
+# Contributing to Jiayou
 
-Thanks for contributing to HeyGanba. This document defines how we write commits, branches and pull requests.
+Thanks for contributing to Jiayou. This document defines how we write commits, branches and pull requests.
 
 ## Language policy
 

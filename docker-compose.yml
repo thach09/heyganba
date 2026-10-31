@@ -1,62 +1,78 @@
+# Review template only. No host ports, public ingress or automatic initialization.
+name: ${JIAYOU_COMPOSE_PROJECT:?Choose a unique project identity}
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: heyganba-postgres
     restart: unless-stopped
-    ports:
-      - "127.0.0.1:5432:5432"
     environment:
-      POSTGRES_DB: heyganba
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in your local environment}
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+      POSTGRES_DB: ${JIAYOU_DATABASE_NAME:?Set dedicated database}
+      POSTGRES_USER: ${JIAYOU_POSTGRES_OWNER:?Set separate migration owner}
+      POSTGRES_PASSWORD: ${JIAYOU_POSTGRES_OWNER_PASSWORD:?Supply owner secret externally}
+    volumes: [jiayou_database:/var/lib/postgresql/data]
+    networks: [database]
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d heyganba"]
-      interval: 5s
+      test: [CMD-SHELL, 'pg_isready -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"']
+      interval: 10s
       timeout: 5s
       retries: 5
-
-  redis:
-    image: redis:7-alpine
-    container_name: heyganba-redis
-    restart: unless-stopped
-    ports:
-      - "127.0.0.1:6379:6379"
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-
+    mem_limit: ${JIAYOU_DB_MEMORY_LIMIT:?Measure capacity first}
+    cpus: ${JIAYOU_DB_CPU_LIMIT:?Measure capacity first}
+    pids_limit: ${JIAYOU_DB_PIDS_LIMIT:?Measure PID budget first}
   backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    container_name: heyganba-backend
+    image: ${JIAYOU_BACKEND_IMAGE:?Select an immutable reviewed image}
     restart: unless-stopped
-    ports:
-      - "127.0.0.1:8080:8080"
     environment:
-      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-prod}
-      JWT_SECRET: ${JWT_SECRET:?Set a private base64 JWT_SECRET}
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_NAME: heyganba
-      DB_USER: ${DB_USER:?Create the application database role first}
-      DB_PASSWORD: ${DB_PASSWORD:?Set the application role password}
-      SPRING_FLYWAY_USER: ${SPRING_FLYWAY_USER:?Set the migration owner}
-      SPRING_FLYWAY_PASSWORD: ${SPRING_FLYWAY_PASSWORD:?Set the migration owner password}
-      CORS_ALLOWED_ORIGINS: http://localhost:5173,http://localhost:3000
-      # "Ngày học" theo giờ VN ở mọi môi trường (quyết định đã chốt).
-      APP_STREAK_ZONE: Asia/Ho_Chi_Minh
-      # Cache SRS: giữ memory (Postgres trực tiếp) — Redis chưa bật vì chưa có managed instance.
-      APP_SRS_CACHE: memory
+      SPRING_PROFILES_ACTIVE: jiayou-prod
+      JIAYOU_PRODUCT: Jiayou
+      JIAYOU_ENVIRONMENT: production
+      JIAYOU_TARGET_ID: ${JIAYOU_TARGET_ID:?Set approved identity}
+      JIAYOU_DATABASE_URL: jdbc:postgresql://postgres:5432/${JIAYOU_DATABASE_NAME:?Set database}
+      JIAYOU_DATABASE_HOST: postgres
+      JIAYOU_DATABASE_PORT: '5432'
+      JIAYOU_DATABASE_NAME: ${JIAYOU_DATABASE_NAME:?Set database}
+      JIAYOU_DATABASE_USER: ${JIAYOU_DATABASE_USER:?Set role}
+      JIAYOU_DATABASE_PASSWORD: ${JIAYOU_DATABASE_PASSWORD:?Supply externally}
+      JIAYOU_JWT_SECRET: ${JIAYOU_JWT_SECRET:?Supply independent signing key}
+      JIAYOU_CORS_ALLOWED_ORIGINS: ${JIAYOU_CORS_ALLOWED_ORIGINS:?Set approved HTTPS origin}
+      JIAYOU_BOOTSTRAP_MODE: validate
+      JIAYOU_BOOTSTRAP_AUTHORIZATION: validate:Jiayou:production:${JIAYOU_TARGET_ID:?Set identity}
+      JAVA_TOOL_OPTIONS: ${JIAYOU_JAVA_TOOL_OPTIONS:?Set measured JVM budget}
+      TRUSTED_PROXY_CIDRS: ${JIAYOU_TRUSTED_PROXY_CIDRS:?Set reviewed immediate proxy peers}
+    networks: [database, application]
     depends_on:
       postgres:
         condition: service_healthy
-      redis:
+    mem_limit: ${JIAYOU_BACKEND_MEMORY_LIMIT:?Measure capacity first}
+    cpus: ${JIAYOU_BACKEND_CPU_LIMIT:?Measure capacity first}
+    pids_limit: ${JIAYOU_BACKEND_PIDS_LIMIT:?Measure PID budget first}
+    stop_grace_period: 30s
+    healthcheck:
+      test: [CMD, curl, --fail, --silent, --output, /dev/null, 'http://127.0.0.1:8080/api/v1/actuator/health']
+      interval: 15s
+      timeout: 5s
+      start_period: 60s
+      retries: 5
+  frontend:
+    image: ${JIAYOU_FRONTEND_IMAGE:?Select an immutable reviewed image}
+    restart: unless-stopped
+    networks: [application]
+    depends_on:
+      backend:
         condition: service_healthy
-
+        restart: true
+    mem_limit: ${JIAYOU_FRONTEND_MEMORY_LIMIT:?Measure capacity first}
+    cpus: ${JIAYOU_FRONTEND_CPU_LIMIT:?Measure capacity first}
+    pids_limit: ${JIAYOU_FRONTEND_PIDS_LIMIT:?Measure PID budget first}
+    healthcheck:
+      test: [CMD-SHELL, 'wget -q -O /dev/null http://127.0.0.1:8080/']
+      interval: 15s
+      timeout: 5s
+      retries: 5
+networks:
+  database:
+    internal: true
+  application: {}
 volumes:
-  postgres_data:
+  jiayou_database:
+    external: true
+    name: ${JIAYOU_DATABASE_VOLUME:?Provision a separate Jiayou volume}

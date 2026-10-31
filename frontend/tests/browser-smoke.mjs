@@ -121,7 +121,7 @@ try {
   await page.click('dialog[open] button[type="submit"]');
   await page.waitForFunction(() => !localStorage.getItem('heyganba_user'));
   await waitText('Đăng nhập');
-  await page.waitForSelector('dialog[aria-label="Đăng nhập vào HeyGanba"][open]');
+  await page.waitForSelector('dialog[aria-label="Đăng nhập vào Jiayou"][open]');
   await page.type('#auth-email', email);
   await page.type('#auth-password', 'NewLocalAudit456!');
   await page.click('dialog[open] button[type="submit"]');
