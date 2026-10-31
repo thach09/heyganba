@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { expect, test, vi } from 'vitest';
 import { Companion3DCanvas } from '../../src/features/companion/three/Companion3DCanvas';
 
@@ -48,4 +48,21 @@ test('reduced motion renders once without scheduling idle animation frames', () 
   expect(fixture.renderers[0].render).toHaveBeenCalledOnce();
   expect(schedule).not.toHaveBeenCalled();
   view.unmount();
+});
+
+test('the interactive WebGL control supports Enter and Space without scrolling', () => {
+  vi.stubGlobal('requestAnimationFrame', vi.fn(() => 21));
+  vi.stubGlobal('cancelAnimationFrame', vi.fn());
+  const cheer = vi.fn();
+  const view = render(<Companion3DCanvas petId="panda" stage="junior" onPetClick={cheer} />);
+  const control = screen.getByRole('button');
+  expect(fireEvent.keyDown(control, { key: 'Enter' })).toBe(false);
+  expect(fireEvent.keyDown(control, { key: ' ' })).toBe(false);
+  expect(cheer).toHaveBeenCalledTimes(2);
+  fireEvent.keyDown(control, { key: 'Escape' });
+  expect(cheer).toHaveBeenCalledTimes(2);
+  view.rerender(<Companion3DCanvas petId="panda" stage="junior" onPetClick={cheer} interactive={false} />);
+  expect(screen.queryByRole('button')).toBeNull();
+  fireEvent.keyDown(screen.getByTitle('Bấm hoặc kéo để tương tác với Linh Thú 3D'), { key: 'Enter' });
+  expect(cheer).toHaveBeenCalledTimes(2);
 });

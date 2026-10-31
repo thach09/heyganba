@@ -284,6 +284,11 @@ export function Companion3DCanvas({
         hidden={webGlUnavailable}
         role={interactive && !webGlUnavailable ? 'button' : undefined}
         tabIndex={interactive && !webGlUnavailable ? 0 : undefined}
+        onKeyDown={event => {
+          if (!interactive || webGlUnavailable || !['Enter', ' '].includes(event.key)) return;
+          event.preventDefault();
+          onPetClick?.();
+        }}
         title="Bấm hoặc kéo để tương tác với Linh Thú 3D"
         className={`relative cursor-grab active:cursor-grabbing transition-transform duration-200 active:scale-95 ${
           interactive ? 'hover:scale-105' : ''
