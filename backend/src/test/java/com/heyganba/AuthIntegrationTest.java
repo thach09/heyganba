@@ -53,7 +53,7 @@ class AuthIntegrationTest extends com.heyganba.support.ContentApiTestBase {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success", is(true)))
                 .andExpect(jsonPath("$.data.status", is("UP")))
-                .andExpect(jsonPath("$.data.service", is("heyganba-backend")));
+                .andExpect(jsonPath("$.data.service", is("jiayou-backend")));
     }
 
     @Test

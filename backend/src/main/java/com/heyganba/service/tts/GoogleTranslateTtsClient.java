@@ -20,7 +20,7 @@ public class GoogleTranslateTtsClient implements TtsClient {
 
     private static final Logger log = LoggerFactory.getLogger(GoogleTranslateTtsClient.class);
     private static final String ENDPOINT = "https://translate.google.com/translate_tts";
-    private static final String USER_AGENT = "Mozilla/5.0 (compatible; HeyGanba/1.0; +https://heyganba.site)";
+    private static final String USER_AGENT = "Jiayou/1.0";
     private static final Duration TIMEOUT = Duration.ofSeconds(10);
 
     private final HttpClient httpClient = HttpClient.newBuilder()

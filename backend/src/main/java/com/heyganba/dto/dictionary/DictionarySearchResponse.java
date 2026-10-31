@@ -31,7 +31,7 @@ public record DictionarySearchResponse(
                     v.getExampleSentence() != null ? v.getExampleSentence() : v.getExampleZh(),
                     v.getExampleReading() != null ? v.getExampleReading() : v.getExamplePinyin(),
                     v.getExampleMeaning() != null ? v.getExampleMeaning() : v.getExampleVi(),
-                    v.getDictionaryEntryId() == null ? "HeyGanba" : "JMdict / EDRDG", v.getDictionaryEntryId() == null ? "vi" : "en",
+                    v.getDictionaryEntryId() == null ? "Jiayou" : "JMdict / EDRDG", v.getDictionaryEntryId() == null ? "vi" : "en",
                     v.getHskLevel() != null ? v.getHskLevel() : 1, v.getPartOfSpeech());
         }
     }
