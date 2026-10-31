@@ -7,9 +7,10 @@ handover. Jiayou has no selected domain and must use its own hostname and stack.
 
 ## Source and build contract
 
-The planned repository name is thach09/jiayou. Treat it as final only after the rename
-and final report confirm the actual URL/SHA. Checkout the reviewed main SHA from that
-report, not an uncommitted research worktree. Frontend lives in frontend/, backend in
+The repository is https://github.com/thach09/jiayou. Read
+`docs/Operations/FINAL-ENGINEERING-AUDIT.md` and its evidence index for the reviewed
+release; verify the current main SHA with Git, not an uncommitted research worktree.
+Frontend lives in frontend/, backend in
 backend/, immutable SQL under backend/src/main/resources/db/, CI in .github/workflows/,
 current operations guidance in docs/Operations/. Historical reports are not release gates.
 

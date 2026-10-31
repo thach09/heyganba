@@ -1,0 +1,40 @@
+name: Jiayou container validation
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  isolated-container-check:
+    name: Container build and isolated startup checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate private Compose template without starting services
+        run: python3 scripts/validate-compose.py
+      - name: Build local images without publishing
+        run: |
+          docker build -t jiayou-backend:ci backend
+          docker build -t jiayou-frontend:ci frontend
+      - name: Validate Nginx configuration offline
+        run: docker run --rm --network none --add-host backend:127.0.0.1 jiayou-frontend:ci nginx -t
+      - name: Reject unauthorized backend startup offline
+        shell: bash
+        run: |
+          set +e
+          timeout 90 docker run --rm --network none jiayou-backend:ci > backend-startup.log 2>&1
+          result=$?
+          set -e
+          test "$result" -ne 0
+          test "$result" -ne 124
+          grep -q 'JIAYOU_PRODUCT' backend-startup.log
+      - name: Upload isolated startup evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: container-startup-evidence
+          path: backend-startup.log
+          if-no-files-found: ignore
