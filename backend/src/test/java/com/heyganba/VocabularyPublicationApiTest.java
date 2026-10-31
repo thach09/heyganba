@@ -36,6 +36,34 @@ class VocabularyPublicationApiTest extends ContentApiTestBase {
         return persistApprovedVocabulary(Vocabulary.builder().word(spelling).reading("fixture")
                 .meaning(meaning).hskLevel(1).build());
     }
+    @Test void coreSubsetReturnsNoSupplementalFieldsAndReintroducedDraftIsWithheldAcrossReads() throws Exception {
+        User user = learner();
+        Vocabulary core = word("core-subset-fixture", "Synthetic core meaning");
+        var notebook = notebooks.createNotebook(user.getId(), new CreateNotebookRequest("Fixture", null));
+        notebooks.addWordToNotebook(user.getId(), notebook.id(), new AddNotebookItemRequest(core.getId(), null));
+        mvc.perform(get("/vocabulary/" + core.getId())).andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.word").value("core-subset-fixture"))
+                .andExpect(jsonPath("$.data.hanViet").doesNotExist())
+                .andExpect(jsonPath("$.data.exampleZh").doesNotExist())
+                .andExpect(jsonPath("$.data.examplePinyin").doesNotExist())
+                .andExpect(jsonPath("$.data.exampleVi").doesNotExist());
+        mvc.perform(get("/dictionary/lookup/" + core.getId())).andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.vocabulary.word").value("core-subset-fixture"))
+                .andExpect(jsonPath("$.data.vocabulary.sinoVietnamese").doesNotExist())
+                .andExpect(jsonPath("$.data.vocabulary.exampleSentence").doesNotExist())
+                .andExpect(jsonPath("$.data.vocabulary.exampleReading").doesNotExist())
+                .andExpect(jsonPath("$.data.vocabulary.exampleMeaning").doesNotExist());
+        assertThat(flashcards.getDueToday(user.getId(), null)).hasSize(1);
+        core.setSinoVietnamese("UNVERIFIED DRAFT");
+        core.setExampleSentence("UNVERIFIED EXAMPLE");
+        vocabularyRepository.saveAndFlush(core);
+        mvc.perform(get("/vocabulary/" + core.getId())).andExpect(status().isNotFound());
+        mvc.perform(get("/dictionary/lookup/" + core.getId())).andExpect(status().isNotFound());
+        assertThat(dictionary.search("core-subset-fixture", 0).vocabularies()).isEmpty();
+        assertThat(flashcards.getDueToday(user.getId(), null)).isEmpty();
+        assertThat(notebooks.listNotebooks(user.getId()).getFirst().items()).isEmpty();
+        assertThat(vocabularyRepository.findById(core.getId())).isPresent();
+    }
     @Test void approvedFlagAndSelfDeclaredUrlNeverGrantPublicAccessOrApproval() throws Exception {
         Vocabulary draft = vocabularyRepository.save(Vocabulary.builder().word("untrusted").reading("fixture")
                 .meaning("fixture").partOfSpeech("TEST_ONLY").sourceRef("https://publisher.example/claim")

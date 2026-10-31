@@ -28,6 +28,39 @@ class VocabularyPublicationAuthorityTest {
         assertThat(authority.canRead(word)).isTrue();
         assertThat(authority.requireEligible(word).verificationId()).isEqualTo("fixture-issuer:fixture-101");
     }
+    @Test void retainedSupplementalDraftsCannotBePublishedWithCoreCapabilities() {
+        word.setSinoVietnamese("UNVERIFIED");
+        word.setExampleSentence("UNVERIFIED EXAMPLE");
+        ObjectNode payload = fixture.payload(word, 0);
+        ((ObjectNode) payload.path("capabilities")).put("hanViet", false).put("examples", false);
+        for (String field : java.util.List.of("HAN_VIET", "EXAMPLE_ZH")) {
+            ObjectNode result = (ObjectNode) payload.path("fieldResults").path(field);
+            result.put("result", "NOT_VERIFIED").putArray("evidenceIds");
+        }
+        fixture.put(word.getId(), payload, false);
+        assertThat(authority.canRead(word)).isFalse();
+    }
+    @Test void coreSubsetRequiresNewActualContentDigestAndCurrentRevision() {
+        word.setSinoVietnamese("DRAFT RETAINED OUTSIDE PUBLIC ROW");
+        fixture.register(word, 0);
+        word.setSinoVietnamese(null);
+        assertThat(authority.canRead(word)).isFalse(); // original V2 digest cannot bind a mask
+        when(audit.vocabularyEligibilityRevision(word.getId())).thenReturn(1L);
+        fixture.register(word, 0);
+        assertThat(authority.canRead(word)).isFalse();
+        fixture.register(word, 1);
+        assertThat(authority.canRead(word)).isTrue();
+        word.setExampleSentence("REINTRODUCED DRAFT");
+        assertThat(authority.canRead(word)).isFalse();
+    }
+    @Test void signedFalseOptionalPresenceDoesNotMatchRetainedDatabaseFields() {
+        word.setSinoVietnamese("UNVERIFIED");
+        ObjectNode payload = fixture.payload(word, 0);
+        ((ObjectNode) payload.path("capabilities")).put("hanViet", false);
+        ((ObjectNode) payload.path("fieldResults").path("HAN_VIET")).put("result", "NOT_PRESENT").putArray("evidenceIds");
+        fixture.put(word.getId(), payload, false);
+        assertThat(authority.canRead(word)).isFalse();
+    }
     @Test void noServerCatalogCannotBeReplacedByAnApprovedFlagOrPublisherUrl() {
         word.setSourceRef("https://www.collinsdictionary.com/dictionary/chinese-english/fixture");
         assertThat(new VocabularyPublicationAuthority(audit, "").canRead(word)).isFalse();
