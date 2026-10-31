@@ -1,0 +1,11 @@
+{
+  "main": "ce80be4b9adf780aee2bb387bb26e93770df7243",
+  "required_checks": [
+    "Backend Build & Test (H2)",
+    "Backend Migration Check (PostgreSQL + Flyway)",
+    "Frontend Lint & Build"
+  ],
+  "strict": true,
+  "enforce_admins": true,
+  "hooks": []
+}

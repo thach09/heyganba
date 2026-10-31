@@ -263,10 +263,7 @@ export function Companion3DCanvas({
             mood === 'happy' ? 'border-gold/60 ' : ''
           }`}
         >
-          <p className="font-serif text-[12.5px] font-medium tracking-wide text-fg">
-            {currentQuote.zh}
-          </p>
-          <p className="mt-0.5 text-[10.5px] leading-tight text-fg-60">
+          <p className="font-sans text-[12.5px] leading-relaxed text-fg-60">
             {currentQuote.vi}
           </p>
           {/* Arrow */}

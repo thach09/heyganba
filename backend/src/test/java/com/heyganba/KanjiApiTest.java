@@ -324,10 +324,10 @@ class KanjiApiTest extends com.heyganba.support.ContentApiTestBase {
     }
 
     @Test
-    @DisplayName("Anonymous đọc được bộ thủ, trạm chữ và ghi tiến độ yêu cầu đăng nhập")
-    void anonymousCanReadRadicalsButCannotReadOrWritePrivateStation() throws Exception {
+    @DisplayName("Anonymous đọc được bộ thủ và chữ đã duyệt, ghi tiến độ yêu cầu đăng nhập")
+    void anonymousCanReadApprovedStationButCannotWriteProgress() throws Exception {
         mockMvc.perform(get("/kanji"))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isOk());
 
         mockMvc.perform(get("/radicals"))
                 .andExpect(status().isOk());

@@ -1,0 +1,14 @@
+[
+  {
+    "check": "postgres-api-suite",
+    "exit": 0
+  },
+  {
+    "check": "postgres-staging-rehearsal",
+    "exit": 0
+  },
+  {
+    "check": "postgres-jiayou-bootstrap",
+    "exit": 0
+  }
+]

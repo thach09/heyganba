@@ -316,10 +316,10 @@ class GrammarApiTest extends com.heyganba.support.ContentApiTestBase {
     }
 
     @Test
-    @DisplayName("Anonymous không gọi được API ngữ pháp (401)")
-    void anonymousIsRejected() throws Exception {
+    @DisplayName("Anonymous đọc ngữ pháp đã duyệt; bài tập và chấm điểm vẫn yêu cầu đăng nhập")
+    void anonymousCanReadRulesButCannotAccessPersonalExercises() throws Exception {
         mockMvc.perform(get("/grammar/rules"))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isOk());
 
         mockMvc.perform(get("/grammar/exercises"))
                 .andExpect(status().isUnauthorized());

@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpServletRequestWrapper;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -53,15 +52,12 @@ public class MaxPayloadSizeFilter extends OncePerRequestFilter {
     }
 
     private void writeTooLarge(HttpServletResponse response, long declaredLength) throws IOException {
-        response.setStatus(HttpServletResponse.SC_REQUEST_ENTITY_TOO_LARGE);
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         ApiResponse<Void> body = ApiResponse.<Void>builder()
                 .success(false)
-                .message("Request body is too large (received " + declaredLength
-                        + " bytes, limit is " + maxRequestBytes + " bytes)")
+                .message("Nội dung yêu cầu quá lớn. Vui lòng rút ngắn rồi thử lại.")
                 .error("PAYLOAD_TOO_LARGE")
                 .build();
-        response.getWriter().write(objectMapper.writeValueAsString(body));
+        com.heyganba.common.response.JsonHttpResponse.write(response, HttpServletResponse.SC_REQUEST_ENTITY_TOO_LARGE, body, objectMapper);
     }
 
     /** Wrapper chỉ thay input stream; mọi hành vi khác giữ nguyên như request gốc. */

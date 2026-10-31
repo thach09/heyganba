@@ -680,7 +680,7 @@ export const FlashcardView: React.FC = () => {
               onClick={requireLogin}
               className="inline-flex items-center gap-1 rounded border border-gold/40 bg-card px-2.5 py-1 text-[11px] font-semibold text-gold-ink hover:bg-tint cursor-pointer transition-colors"
             >
-              <ShieldCheck size={13} /> Đăng nhập Admin
+              <ShieldCheck size={13} /> Đăng nhập
             </button>
           ) : (
             <span className="inline-flex items-center gap-1 rounded bg-stone-700/50 text-stone-300 border border-stone-600/50 px-2 py-0.5 text-[11px]">
@@ -736,7 +736,7 @@ export const FlashcardView: React.FC = () => {
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-cinnabar-ink">
             <span className="inline-block h-2 w-2 rounded-full bg-cinnabar" />
-            Trạm 2 · 词汇与记忆 · Từ vựng & Sổ từ · [M2.2 Hoạt động thật]
+            Từ vựng và sổ từ
             {(catalogLoading || lessonWordsLoading) && <RefreshCw size={13} className="animate-spin text-cinnabar-ink inline ml-1" />}
           </div>
           <h1 className="mt-1 font-serif text-3xl font-bold tracking-tight text-fg">
@@ -954,15 +954,7 @@ export const FlashcardView: React.FC = () => {
                 >
                   <Eye size={14} /> Bật xem trước bản nháp Admin
                 </button>
-              ) : (
-                <button
-                  type="button"
-                  onClick={requireLogin}
-                  className="mt-5 inline-flex items-center gap-1.5 rounded border border-cinnabar bg-cinnabar px-4 py-2 text-xs font-semibold text-on-accent cursor-pointer"
-                >
-                  <ShieldCheck size={14} /> Đăng nhập tài khoản Quản trị để Xem trước
-                </button>
-              )}
+              ) : <p role="status" className="mt-4 text-xs text-fg-60">Bạn có thể quay lại sau hoặc tra cứu trong Từ điển.</p>}
             </div>
           )}
 

@@ -167,7 +167,7 @@ describe('Milestone M2.2 - Thematic Curriculum & Flashcard Features', () => {
     ).toBeInTheDocument();
     expect(screen.getByText(/Chỉ nội dung đã duyệt được mở cho người học/)).toBeInTheDocument();
 
-    expect(screen.getByText(/Trạm 2 · 词汇与记忆 · Từ vựng & Sổ từ · \[M2.2 Hoạt động thật\]/)).toBeInTheDocument();
+    expect(screen.getByText('Từ vựng và sổ từ')).toBeInTheDocument();
   });
 
   it('filters lesson cards by curriculum level and displays correct milestone badges', async () => {

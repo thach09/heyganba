@@ -7,8 +7,8 @@ import { RefreshCw, CheckCircle2, XCircle, Search, Filter, ShieldCheck, AlertTri
 const CONTENT_LABEL: Record<string, string> = {
   KANA: 'Phát âm (tương thích dữ liệu cũ)',
   VOCABULARY: 'Từ vựng (词汇)',
-  HANZI: 'Chữ Hán (汉字)',
-  GRAMMAR_EXERCISE: 'Bài tập ngữ pháp (语法练习)',
+  HANZI: 'Chữ Hán',
+  GRAMMAR_EXERCISE: 'Bài tập ngữ pháp',
 };
 
 const thClass = 'border-b border-rule pb-2 text-left text-[10.5px] font-semibold uppercase tracking-[0.14em] text-fg-38';

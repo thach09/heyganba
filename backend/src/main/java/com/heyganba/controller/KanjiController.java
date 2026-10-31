@@ -40,7 +40,7 @@ public class KanjiController {
             @RequestParam(required = false) @jakarta.validation.constraints.Size(max=200) String search,
             @RequestParam(required = false) @jakarta.validation.constraints.Min(1) @jakarta.validation.constraints.Max(6) Integer hsk
     ) {
-        List<KanjiResponse> kanji = kanjiService.getKanji(currentUser.getId(), lesson, radical, search);
+        List<KanjiResponse> kanji = kanjiService.getKanji(currentUser == null ? null : currentUser.getId(), lesson, radical, search);
         if (hsk != null) {
             if (hsk < 1 || hsk > 6) throw new com.heyganba.common.exception.BadRequestException("HSK level must be between 1 and 6");
             kanji = kanji.stream().filter(item -> item.hskLevel() == hsk).toList();
@@ -53,7 +53,7 @@ public class KanjiController {
             @AuthenticationPrincipal UserPrincipal currentUser,
             @PathVariable @jakarta.validation.constraints.Positive Long id
     ) {
-        return ResponseEntity.ok(ApiResponse.success(kanjiService.getKanjiById(currentUser.getId(), id)));
+        return ResponseEntity.ok(ApiResponse.success(kanjiService.getKanjiById(currentUser == null ? null : currentUser.getId(), id)));
     }
 
     @GetMapping("/radicals")

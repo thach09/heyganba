@@ -8,6 +8,7 @@ import { SubmitButton } from '../../components/SubmitButton';
 import { Modal } from '../../components/Modal';
 
 interface AuthModalProps {
+  initialMode?: 'login'|'register';
   isOpen: boolean;
   onClose: () => void;
   onAuthSuccess: (user: AuthResponse) => void;
@@ -18,12 +19,13 @@ const inputClass =
   'h-10 w-full border border-rule-strong bg-bg px-4 text-[12.5px] text-fg outline-none transition-colors placeholder:text-fg-38 focus:border-fg';
 
 export const AuthModal: React.FC<AuthModalProps> = ({
+  initialMode='login',
   isOpen,
   onClose,
   onAuthSuccess,
 }) => {
   const { run, isActive } = useRequestScope();
-  const [isRegister, setIsRegister] = useState(false);
+  const [isRegister, setIsRegister] = useState(initialMode==='register');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
@@ -120,10 +122,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     id="auth-class-code"
                     type="text"
                     maxLength={50}
-                    placeholder="VD: JPD113-A"
+                    placeholder="Mã lớp (nếu có)"
                     value={classCode}
                     onChange={(e) => setClassCode(e.target.value)}
-                    title="Dùng để xếp hạng theo lớp; có thể bổ sung sau trong Trạm Thi Thử."
+                    title="Bạn có thể bổ sung mã lớp sau trong mục Tôi."
                     className={`${inputClass} pl-9`}
                   />
                 </div>

@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -75,27 +74,24 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(exceptions -> exceptions
                         .authenticationEntryPoint((request, response, authException) -> {
-                            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                             ApiResponse<Void> apiResponse = ApiResponse.<Void>builder()
                                     .success(false)
                                     .message("Vui lòng đăng nhập để tiếp tục.")
                                     .error("UNAUTHORIZED")
                                     .build();
-                            response.getWriter().write(objectMapper.writeValueAsString(apiResponse));
+                            com.heyganba.common.response.JsonHttpResponse.write(response, HttpServletResponse.SC_UNAUTHORIZED, apiResponse, objectMapper);
                         })
                         .accessDeniedHandler((request, response, accessDeniedException) -> {
-                            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                             ApiResponse<Void> apiResponse = ApiResponse.<Void>builder()
                                     .success(false)
                                     .message("Bạn không có quyền truy cập nội dung này.")
                                     .error("FORBIDDEN")
                                     .build();
-                            response.getWriter().write(objectMapper.writeValueAsString(apiResponse));
+                            com.heyganba.common.response.JsonHttpResponse.write(response, HttpServletResponse.SC_FORBIDDEN, apiResponse, objectMapper);
                         })
                 )
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/hanzi", "/hanzi/{id}", "/kanji", "/kanji/{id}", "/grammar/rules", "/grammar/rules/{id}").permitAll()
                         .requestMatchers("/auth/password").authenticated()
                         .requestMatchers(
                                 "/auth/**",

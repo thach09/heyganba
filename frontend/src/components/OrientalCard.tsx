@@ -30,7 +30,6 @@ export function OrientalCard({
           <span className={`break-words text-[12.5px] leading-relaxed ${tagVariant === 'jade' ? 'text-rank' : 'text-fg-60'}`}>
             {displayTag}
           </span>
-          <span aria-hidden="true" className="ml-auto shrink-0 font-serif text-[11px] leading-none text-fg/20 [writing-mode:vertical-rl]">温故知新</span>
           {bookmark && tag && bookmark !== tag && (
             <span className="break-words text-[12px] leading-relaxed text-fg-38">
               {tag}

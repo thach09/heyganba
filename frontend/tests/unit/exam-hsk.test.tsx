@@ -145,7 +145,7 @@ describe('HSK Mock Exam Engine (ExamView)', () => {
     fireEvent.click(screen.getByRole('button', { name: /Bắt đầu thi thử/ }));
 
     // Verify question 0 appears with listening section header
-    expect(await screen.findByText('Phần 1: Nghe hiểu (听力)')).toBeTruthy();
+    expect(await screen.findByText('Phần 1: Nghe hiểu')).toBeTruthy();
     expect(screen.getByText('Nghe phát âm và chọn nghĩa đúng của từ:')).toBeTruthy();
 
     // Verify Hanzi "学校" is NOT displayed in the question text to prevent leaking
@@ -168,7 +168,7 @@ describe('HSK Mock Exam Engine (ExamView)', () => {
     );
 
     fireEvent.click(screen.getByRole('button', { name: /Bắt đầu thi thử/ }));
-    await screen.findByText('Phần 1: Nghe hiểu (听力)');
+    await screen.findByText('Phần 1: Nghe hiểu');
 
     // Select option for Question 0
     fireEvent.click(screen.getByRole('button', { name: /1\s*Trường học/ }));
@@ -179,7 +179,7 @@ describe('HSK Mock Exam Engine (ExamView)', () => {
     fireEvent.click(paletteBtn1!);
 
     // Verify Question 1 appears (Reading section)
-    expect(await screen.findByText('Phần 2: Đọc hiểu & Ngữ pháp (阅读)')).toBeTruthy();
+    expect(await screen.findByText('Phần 2: Đọc hiểu và ngữ pháp')).toBeTruthy();
     fireEvent.click(screen.getByRole('button', { name: /1\s*想吃/ }));
 
     // Submit exam
@@ -187,8 +187,8 @@ describe('HSK Mock Exam Engine (ExamView)', () => {
 
     // Verify official score report: 200/200 scaled score and 合格 seal
     await screen.findByText(/200 \/ 200/);
-    expect(screen.getByText('合格')).toBeTruthy();
-    expect(screen.getByText(/Đạt chuẩn/)).toBeTruthy();
+    expect(screen.getByText('Đạt')).toBeTruthy();
+    expect(screen.getByText(/Hoàn thành bài luyện/)).toBeTruthy();
   });
 
   it('displays 「未过」 seal stamp and diagnostic review when score is below 120/200', async () => {
@@ -201,13 +201,13 @@ describe('HSK Mock Exam Engine (ExamView)', () => {
     );
 
     fireEvent.click(screen.getByRole('button', { name: /Bắt đầu thi thử/ }));
-    await screen.findByText('Phần 1: Nghe hiểu (听力)');
+    await screen.findByText('Phần 1: Nghe hiểu');
 
     // Submit with 1/2 correct (100 / 200 < 120)
     fireEvent.click(screen.getByRole('button', { name: 'Nộp bài' }));
 
     await screen.findByText(/100 \/ 200/);
-    expect(screen.getByText('未过')).toBeTruthy();
+    expect(screen.getByText('Ôn thêm')).toBeTruthy();
     expect(screen.getByText(/Cần ôn luyện thêm/)).toBeTruthy();
 
     // Verify diagnostic navigation links to Grammar and Dictionary

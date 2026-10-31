@@ -4,6 +4,7 @@ import type { AuthResponse } from '../lib/api/types';
 interface AuthContextValue {
   user: AuthResponse | null;
   requireLogin: () => void;
+  openRegistration?: () => void;
   logout: () => Promise<void>;
   changePassword: () => void;
   updateProfile: (user: AuthResponse) => void;

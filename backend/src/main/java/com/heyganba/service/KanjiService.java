@@ -87,7 +87,7 @@ public class KanjiService {
 
         ContentAccess.requireVisible(kanji.getReviewStatus(), "Kanji", kanjiId);
 
-        int practiceCount = progressRepository.findByUserIdAndKanjiId(userId, kanjiId)
+        int practiceCount = userId == null ? 0 : progressRepository.findByUserIdAndKanjiId(userId, kanjiId)
                 .map(KanjiPracticeProgress::getPracticeCount)
                 .orElse(0);
 
@@ -175,6 +175,7 @@ public class KanjiService {
     }
 
     private Map<Long, Integer> practiceCountsByKanjiId(Long userId) {
+        if (userId == null) return Map.of();
         Map<Long, Integer> counts = new HashMap<>();
         for (KanjiPracticeProgress progress : progressRepository.findByUserId(userId)) {
             counts.put(progress.getKanji().getId(), progress.getPracticeCount());

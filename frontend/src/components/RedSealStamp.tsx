@@ -9,11 +9,8 @@ interface RedSealStampProps {
 }
 
 /**
- * Chinese Traditional Red Seal Stamp (印章 / Đóng dấu triện đỏ)
- * Features:
- * - Cinnabar red (#E11D48) double ink borders
- * - Classic seal script typography (chữ triện / Hán thư)
- * - Spring slam micro-animation (scale: 2.4 -> 1.0, rotate: -12deg)
+ * Learning feedback stamp, using Vietnamese labels and existing theme tokens.
+ * Historical callers may retain their state identifiers; these are not lessons.
  */
 export const RedSealStamp: React.FC<RedSealStampProps> = ({
   text = '通',
@@ -22,6 +19,8 @@ export const RedSealStamp: React.FC<RedSealStampProps> = ({
   className = '',
   animated = true,
 }) => {
+  // Interface feedback labels, not dictionary translations or curriculum claims.
+  const label: string = ({'通':'Xong','熟':'Nhớ','合格':'Đạt','未过':'Ôn thêm','勉':'Cố lên'} as Record<string,string>)[text] ?? text;
   return (
     <div
       className={`relative inline-flex flex-col items-center justify-center select-none border-2 border-cinnabar bg-cinnabar/10 text-cinnabar-ink  ${
@@ -33,15 +32,15 @@ export const RedSealStamp: React.FC<RedSealStampProps> = ({
         borderRadius: '3px',
         padding: '3px',
       }}
-      aria-label={`Dấu triện: ${text}`}
+      aria-label={`Kết quả: ${label}`}
     >
       {/* Inner weathered frame */}
       <div className="flex h-full w-full flex-col items-center justify-center border border-dashed border-cinnabar/80 p-0.5">
         <span
-          className="font-serif font-bold tracking-widest leading-none text-cinnabar-ink"
-          style={{ fontSize: Math.round(size * 0.44) }}
+          className="font-sans font-bold leading-none text-cinnabar-ink"
+          style={{ fontSize: Math.min(Math.round(size * 0.44),Math.floor((size-12)/Math.max(label.length*.65,1))) }}
         >
-          {text}
+          {label}
         </span>
         {subText && (
           <span

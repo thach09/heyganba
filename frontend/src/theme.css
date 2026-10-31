@@ -1,5 +1,7 @@
 /* Visual contract: DESIGN.md, approved Xuan paper / inkstone palettes. */
 :root, [data-theme="dark"] {
+  --paper-brand-surface: #1C1B19;
+  --paper-brand-ink: #F5F2EB;
   color-scheme: dark;
   --paper-bg: #121211;
   --paper-card: #1C1B19;

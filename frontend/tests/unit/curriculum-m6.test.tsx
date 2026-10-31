@@ -100,7 +100,7 @@ test.each(levels)('exam level %i sends its level and displays server scoring met
   expect(JSON.parse(f.generate.mock.calls[0][0].body).hskLevel).toBe(n);
   fireEvent.click(screen.getByRole('button', {name:'Nộp bài'}));
   await screen.findByText(`${pass} / ${max}`);
-  expect(screen.getByText('合格')).toBeTruthy();
+  expect(screen.getByText('Đạt')).toBeTruthy();
 });
 test('reading catalog covers all six levels, with unique IDs and answer-backed questions', () => {
   expect(new Set(ALL_READING_PASSAGES.map(p=>p.id)).size).toBe(ALL_READING_PASSAGES.length);

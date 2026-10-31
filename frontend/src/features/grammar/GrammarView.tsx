@@ -116,9 +116,6 @@ export const GrammarView: React.FC = () => {
   }, []);
 
   const loadRules = useCallback(async () => {
-    if (!userId) {
-      return;
-    }
 
     const query = lesson ? `?lesson=${lesson}` : '';
     const res = await run('grammarApi.rules', (signal) => grammarApi.rules(query, { signal }));
@@ -131,23 +128,12 @@ export const GrammarView: React.FC = () => {
     } else {
       setError(res.message || 'Không tải được danh sách điểm ngữ pháp.');
     }
-  }, [lesson, run, userId]);
+  }, [lesson, run]);
 
   useEffect(() => {
-    if (!userId) {
-      cancel('grammarApi.rules');
-      cancel('grammarApi.exercises');
-      queueMicrotask(() => {
-        setRules([]);
-        setSelectedRule(null);
-        setExercises([]);
-        setExerciseState('idle');
-      });
-      return;
-    }
-
     // oxlint-disable-next-line react/set-state-in-effect
     void loadRules();
+    return ()=>{cancel('grammarApi.rules');cancel('grammarApi.exercises');};
   }, [userId, lesson, cancel, loadRules]);
 
   const loadExercises = useCallback(
@@ -337,15 +323,16 @@ export const GrammarView: React.FC = () => {
     setSearchParams({}, { replace: true });
   }, [searchParams, rules, setSearchParams]);
 
-  if (!user) {
+  if (!user && mode==='PRACTICE') {
     return (
       <div className="mx-auto flex w-full max-w-[560px] flex-col items-center pt-16 text-center">
-        <span className="font-serif text-[38px] font-bold leading-none text-fg">语法</span>
+        <h1 className="text-[30px] font-semibold text-fg">Luyện ngữ pháp</h1>
         <p className="mt-5 text-[13px] leading-[1.9] text-fg-60">
-          Đăng nhập để tra cứu ngữ pháp tiếng Trung và luyện bài tập phản xạ. Các nhóm hiện có là tuyển chọn nội bộ, không xác nhận độ phủ CTI HSK 3.0.
+          Đăng nhập để chấm bài và lưu tiến độ. Bạn vẫn có thể tra cứu nội dung đã duyệt.
         </p>
         <div className="mt-7">
           <SubmitButton onClick={onRequireLogin}>Đăng nhập / Đăng ký</SubmitButton>
+          <button type="button" onClick={()=>setMode('BROWSE')} className="ml-4 min-h-11 underline">Quay lại tra cứu</button>
         </div>
       </div>
     );
@@ -382,7 +369,7 @@ export const GrammarView: React.FC = () => {
       {/* Core Formula Box (Cấu trúc cốt lõi) */}
       <div className="rounded-lg border border-cinnabar/40 bg-cinnabar/10 p-3.5 ">
         <span className="text-[10.5px] font-semibold uppercase tracking-wider text-cinnabar-ink block mb-1">
-          Cấu trúc cốt lõi (核心句型):
+          Cấu trúc:
         </span>
         <div className="font-serif text-[17px] font-bold text-fg leading-relaxed">
           {selectedRule.structure}
@@ -489,13 +476,13 @@ export const GrammarView: React.FC = () => {
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-cinnabar-ink">
             <span className="inline-block h-2 w-2 rounded-full bg-cinnabar" />
-            Trạm 4 · 语法与句型 · Ngữ pháp tiếng Trung
+            Ngữ pháp tiếng Trung
           </div>
           <h1 className="mt-1 font-serif text-3xl font-bold tracking-tight text-fg">
             Ngữ pháp &amp; Luyện phản xạ
           </h1>
           <p className="mt-1.5 max-w-2xl text-xs leading-relaxed text-fg-60">
-            Học các cấu trúc ngữ pháp hiện có theo nhóm cấp nội bộ 1–6 qua phương pháp đối chiếu Việt - Trung. Đây là tuyển chọn đang bổ sung, chưa bao phủ toàn bộ nội dung chính thức của từng cấp.
+            Nội dung chọn lọc theo nhóm nội bộ. Đăng nhập để luyện tập và lưu tiến độ.
           </p>
         </div>
         <button
@@ -700,7 +687,7 @@ export const GrammarView: React.FC = () => {
       {mode === 'PRACTICE' && (
         <div className="mt-8 flex flex-col">
           <div className="mb-4 flex flex-wrap gap-2" aria-label="Dạng bài tập">
-            {(['MULTIPLE_CHOICE', 'SENTENCE_ORDER'] as const).map(type => <button key={type} type="button" disabled={checking} onClick={() => setExerciseType(type)} className={chipClass(exerciseType === type)}>{type === 'MULTIPLE_CHOICE' ? '选词填空 · Trắc nghiệm' : '连词成句 · Sắp xếp câu'}</button>)}
+            {(['MULTIPLE_CHOICE', 'SENTENCE_ORDER'] as const).map(type => <button key={type} type="button" disabled={checking} onClick={() => setExerciseType(type)} className={chipClass(exerciseType === type)}>{type === 'MULTIPLE_CHOICE' ? 'Trắc nghiệm' : 'Sắp xếp câu'}</button>)}
           </div>
           {/* Practice scope */}
           <div className="flex flex-wrap items-center gap-2.5">
