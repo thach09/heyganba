@@ -7,7 +7,10 @@ test('same-origin fonts retain authenticated assets, notices and complete fallba
  const manifest=JSON.parse(readFileSync(new URL('manifest.json',base),'utf8'));
  for(const [name,digest] of Object.entries(manifest.assets)){
   assert(!name.includes('/')&&!name.includes('..'));
-  assert.equal(createHash('sha256').update(readFileSync(new URL(name,base))).digest('hex'),digest,name);
+  const raw=readFileSync(new URL(name,base));
+  // Git may check text out as CRLF on Windows; authenticate canonical LF text.
+  const canonical=/\.(txt|css)$/.test(name)?Buffer.from(raw.toString('utf8').replace(/\r\n/g,'\n')):raw;
+  assert.equal(createHash('sha256').update(canonical).digest('hex'),digest,name);
  }
  assert.equal(manifest.fonts.length,6);
  assert(manifest.fonts.every(font=>font.fallbackComplete&&/^[a-f0-9]{64}$/.test(font.sha256)));

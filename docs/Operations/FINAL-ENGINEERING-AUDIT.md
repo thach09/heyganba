@@ -123,7 +123,12 @@ images or deploys. Bootstrap also validates main pushes.
 Docker daemon was unavailable locally during this audit. Compose configuration
 validation runs without starting services; fresh image/Nginx/fail-closed startup
 checks run in isolated GitHub CI. A first backend test exposed an obsolete service
-name assertion; it was corrected and full tests rerun. Browser harness corrections
+name assertion; it was corrected and full tests rerun. The first PR51 Linux run
+also caught Windows CRLF hashes in font text notices; canonical LF text hashes fix
+that portability defect while binary font integrity checks remain unchanged.
+GitHub's v4 setup/checkout actions emit Node20 compatibility/deprecation notices
+when the runner forces Node24; these runner warnings are disclosed, not suppressed.
+Browser harness corrections
 addressed offscreen selectors, the intended beforeunload confirmation and accessible
 name selection; these are not concealed product PASS claims. Vitest emits an
 environment-creation performance suggestion; test isolation was not weakened.
