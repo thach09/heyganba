@@ -1,0 +1,12 @@
+[
+  {
+    "family": "NotoSerifSC",
+    "codepoints": 30928,
+    "expected": 30928
+  },
+  {
+    "family": "NotoSansSC",
+    "codepoints": 30890,
+    "expected": 30890
+  }
+]

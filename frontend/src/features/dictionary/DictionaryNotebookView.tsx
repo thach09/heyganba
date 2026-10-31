@@ -1,6 +1,6 @@
 import { useRequestScope } from '../../lib/hooks/useRequestScope';
 import { dictionaryApi } from './api';
-import type { VocabularyItem, DictionarySearchResponse, VocabNotebookItem, VocabNotebook, PracticeResult } from './types';
+import type { VocabularyItem, DictionarySearchResponse, VocabNotebookItem, VocabNotebook, PracticeResult, ReadingPassageItem } from './types';
 import { useAuth } from '../../app/useAuth';
 import React, { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
@@ -9,7 +9,7 @@ import { getSavedUser } from '../../lib/api/session';
 import { SubmitButton } from '../../components/SubmitButton';
 import { Modal } from '../../components/Modal';
 import { speakChinese, stopChineseSpeech } from '../../services/chineseSpeech';
-import { ALL_READING_PASSAGES } from './readingData';
+import { developmentReadingFixtures } from './readingFixtures';
 
 const labelClass = 'text-[10.5px] font-semibold uppercase tracking-[0.18em] text-fg-38';
 
@@ -21,6 +21,12 @@ export const DictionaryNotebookView: React.FC = () => {
 };
 
 const DictionaryNotebookSessionView: React.FC = () => {
+  const [readingPassages, setReadingPassages] = useState<ReadingPassageItem[]>([]);
+  useEffect(() => {
+    let active = true;
+    void developmentReadingFixtures().then(passages => { if (active) setReadingPassages(passages); });
+    return () => { active = false; };
+  }, []);
   const { user, requireLogin: onRequireLogin } = useAuth();
   const { run, cancel, isActive } = useRequestScope(user?.userId);
   const [activeTab, setActiveTab] = useState<'DICTIONARY' | 'NOTEBOOKS' | 'READING'>('DICTIONARY');
@@ -60,6 +66,8 @@ const DictionaryNotebookSessionView: React.FC = () => {
   const [showTranslation, setShowTranslation] = useState(false);
   const [readingAnswers, setReadingAnswers] = useState<Record<number, string>>({});
   const [readingChecked, setReadingChecked] = useState(false);
+  const [selectedReadingWord, setSelectedReadingWord] = useState<{ word: string; pinyin: string; meaning: string } | null>(null);
+  useEffect(() => () => cancel('reading-word-lookup'), [activeTab, readingLevel, selectedPassageId, selectedReadingWord, cancel]);
 
   // Practice state
   const [practiceActive, setPracticeActive] = useState(false);
@@ -133,6 +141,7 @@ const DictionaryNotebookSessionView: React.FC = () => {
   useEffect(() => {
     const q = searchParams.get('q');
     if (q && q.trim()) {
+      setActiveTab('DICTIONARY');
       setSearchQuery(q.trim());
       void doSearch(q.trim());
     }
@@ -163,7 +172,7 @@ const DictionaryNotebookSessionView: React.FC = () => {
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps, react/set-state-in-effect
-    if (user && activeTab === 'NOTEBOOKS') {
+    if (user && (activeTab === 'NOTEBOOKS' || activeTab === 'READING')) {
       fetchNotebooks();
     }
     return () => cancel('dictionaryApi.notebooks');
@@ -386,7 +395,7 @@ const DictionaryNotebookSessionView: React.FC = () => {
               activeTab === 'READING' ? 'bg-fg text-bg font-semibold' : 'text-fg-60 hover:text-fg'
             }`}
           >
-            Đọc hiểu ngữ cảnh HSK
+            Đọc hiểu tiếng Trung
           </button>
         </div>
       </div>
@@ -418,7 +427,7 @@ const DictionaryNotebookSessionView: React.FC = () => {
             </SubmitButton>
           </form>
           <p className="text-[12.5px] leading-[1.8] text-fg-60">
-            Từ điển HSK & Giáo trình chuẩn: tra cứu chữ Hán, Pinyin, âm Hán Việt và nghĩa tiếng Việt.
+            Từ điển tiếng Trung: tra cứu chữ Hán, Pinyin, nghĩa tiếng Việt và âm Hán Việt khi có nguồn xác nhận.
           </p>
           {isSearching && <p role="status" className="text-[12.5px] text-fg-60">Đang tra cứu…</p>}
 
@@ -444,9 +453,9 @@ const DictionaryNotebookSessionView: React.FC = () => {
                           <div className="flex items-baseline justify-between gap-2">
                             <div className="flex flex-wrap items-center gap-2">
                               <span className="font-serif text-[20px] font-semibold text-fg">{v.word}</span>
-                              <span className="rounded bg-seal/10 px-1.5 py-0.5 text-[10.5px] font-semibold text-seal">
-                                HSK {v.hskLevel || 1}
-                              </span>
+                              {v.hskLevel != null && <span className="rounded bg-seal/10 px-1.5 py-0.5 text-[10.5px] font-semibold text-seal">
+                                Nhóm chọn lọc {v.hskLevel}
+                              </span>}
                               {v.partOfSpeech && (
                                 <span className="rounded border border-rule bg-bg px-1.5 py-0.5 text-[10px] text-fg-60">
                                   {v.partOfSpeech}
@@ -468,7 +477,7 @@ const DictionaryNotebookSessionView: React.FC = () => {
                               {additionalEnglishMeanings.length > 0 && <details className="ml-8 text-[11.5px] text-fg-60"><summary className="cursor-pointer">Các nghĩa khác ({additionalEnglishMeanings.length})</summary><div className="mt-1 leading-[1.7]">{additionalEnglishMeanings.join(' / ')}</div></details>}
                             </> : <div className="font-medium text-fg">{v.meaning}</div>}
                           </div>
-                          <div className="mt-2 text-[12.5px] text-fg-38">{v.meaningLanguage === 'en' ? 'Từ điển tham khảo · nghĩa Anh' : 'Giáo trình HSK Chuẩn · nghĩa Việt'}</div>
+                          <div className="mt-2 text-[12.5px] text-fg-38">{v.meaningLanguage === 'en' ? 'Từ điển tham khảo · nghĩa Anh' : 'Nghĩa Việt · học liệu hiện có'}</div>
                           {v.exampleSentence && (
                             <div className="mt-3 border-t border-rule/50 pt-2 text-[12px] text-fg-60">
                               <div className="font-serif">{v.exampleSentence}</div>
@@ -786,29 +795,30 @@ const DictionaryNotebookSessionView: React.FC = () => {
         </div>
       )}
 
-      {/* TAB 3: CONTEXTUAL READING (ĐỌC HIỂU NGỮ CẢNH HSK) */}
+      {/* TAB 3: CHINESE READING */}
       {activeTab === 'READING' && (() => {
-        const passages = ALL_READING_PASSAGES.filter(p => readingLevel === 'ALL' || p.hskLevel === readingLevel);
+        if (!readingPassages.length) return <p role="status" className="py-8 text-[13px] text-fg-60">Chưa có bài đọc được xuất bản. Bạn vẫn có thể tra từ và ôn sổ từ cá nhân.</p>;
+        const passages = readingPassages.filter(p => readingLevel === 'ALL' || p.hskLevel === readingLevel);
         const activePassage = passages.find((p) => p.id === selectedPassageId) || passages[0];
         return (
           <div className="mt-8 flex flex-col gap-6">
             <div>
               <div className="flex items-center gap-2">
-                <span className="rounded bg-seal/10 px-2 py-0.5 text-[11px] font-semibold text-seal">HSK 1–6</span>
+                <span className="rounded bg-seal/10 px-2 py-0.5 text-[11px] font-semibold text-seal">Bài đọc theo cấp</span>
                 <span className={labelClass}>Đọc hiểu & Hội thoại</span>
               </div>
               <h3 className="mt-1 font-serif text-[18px] font-semibold text-fg">Đọc hiểu ngữ cảnh & Hội thoại ngắn</h3>
               <p className="mt-1 text-[12.5px] text-fg-60">
-                Luyện tập đọc văn bản ngữ cảnh HSK 1–6. Bạn có thể bật/tắt Pinyin để rèn phản xạ nhận biết mặt chữ Hán và nghe giọng chuẩn để đối chiếu ngữ điệu.
+                Luyện các bài đọc chọn lọc đang có. Nhóm cấp dưới đây là phân nhóm nội bộ, không xác nhận độ phủ CTI HSK 3.0.
               </p>
             </div>
 
-            <div className="flex flex-wrap gap-2" aria-label="Cấp độ bài đọc">
+            <div className="flex flex-wrap gap-2" aria-label="Nhóm bài đọc">
               {(['ALL', 1, 2, 3, 4, 5, 6] as const).map(level => (
                 <button type="button" key={level} aria-pressed={readingLevel === level}
                   className="border border-rule-strong px-3 py-2 text-[12.5px] leading-relaxed text-fg-60"
-                  onClick={() => { setReadingLevel(level); setReadingAnswers({}); setReadingChecked(false); setShowTranslation(false); }}>
-                  {level === 'ALL' ? 'Tất cả' : `HSK ${level}`} ({ALL_READING_PASSAGES.filter(p => level === 'ALL' || p.hskLevel === level).length})
+                  onClick={() => { setReadingLevel(level); setReadingAnswers({}); setReadingChecked(false); setShowTranslation(false); setSelectedReadingWord(null); }}>
+                  {level === 'ALL' ? 'Tất cả' : `Nhóm ${level}`} ({readingPassages.filter(p => level === 'ALL' || p.hskLevel === level).length})
                 </button>
               ))}
             </div>
@@ -822,6 +832,7 @@ const DictionaryNotebookSessionView: React.FC = () => {
                     type="button"
                     onClick={() => {
                       setSelectedPassageId(passage.id);
+                      setSelectedReadingWord(null);
                       setReadingAnswers({});
                       setReadingChecked(false);
                       setShowTranslation(false);
@@ -858,9 +869,19 @@ const DictionaryNotebookSessionView: React.FC = () => {
                     type="button"
                     onClick={() => speakChinese(activePassage.passageText)}
                     className="inline-flex cursor-pointer items-center gap-1.5 rounded border border-seal/30 bg-seal/10 px-2.5 py-1 text-[11.5px] font-semibold text-seal hover:bg-seal/20"
+                    title="Nghe bài đọc chuẩn (0.95x)"
                   >
                     <Volume2 size={13} />
-                    <span>Nghe phát âm</span>
+                    <span>Nghe bài đọc</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => speakChinese(activePassage.passageText, { slow: true })}
+                    className="inline-flex cursor-pointer items-center gap-1 rounded border border-rule bg-bg px-2.5 py-1 text-[11.5px] font-medium text-fg-60 hover:text-fg hover:border-rule-strong transition-colors"
+                    title="Nghe chậm (0.75x)"
+                  >
+                    <span>🐢</span>
+                    <span>0.75x</span>
                   </button>
                   <button
                     type="button"
@@ -873,11 +894,155 @@ const DictionaryNotebookSessionView: React.FC = () => {
                 </div>
               </div>
 
-              {/* Passage text */}
+              {/* Passage text with Interactive Click-to-Lookup Words */}
               <div className="my-6">
-                <p className="font-serif text-[18px] leading-[2.2] tracking-wide text-fg">
-                  {activePassage.passageText}
-                </p>
+                <div className="font-serif text-[18px] leading-[2.3] tracking-wide text-fg">
+                  {(() => {
+                    if (!activePassage.vocabularyNotes) return <p>{activePassage.passageText}</p>;
+                    const rawItems = activePassage.vocabularyNotes.split(';').map(p => p.trim()).filter(Boolean);
+                    const vocabItems: { word: string; pinyin: string; meaning: string }[] = [];
+                    for (const raw of rawItems) {
+                      const m = raw.match(/^([^(\uff08]+)\s*[(\uff08]([^-\uff0d]+)[-\uff0d]\s*([^)\uff09]+)[)\uff09]/);
+                      if (m) {
+                        vocabItems.push({ word: m[1].trim(), pinyin: m[2].trim(), meaning: m[3].trim() });
+                      }
+                    }
+                    if (vocabItems.length === 0) return <p>{activePassage.passageText}</p>;
+
+                    const sorted = [...vocabItems].sort((a, b) => b.word.length - a.word.length);
+                    const escaped = sorted.map(item => item.word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
+                    const pattern = new RegExp(`(${escaped})`, 'g');
+                    const parts = activePassage.passageText.split(pattern);
+
+                    return (
+                      <p>
+                        {parts.map((segment, sIdx) => {
+                          const matchedWord = vocabItems.find(v => v.word === segment);
+                          if (!matchedWord) return <span key={sIdx}>{segment}</span>;
+                          const isSelected = selectedReadingWord?.word === matchedWord.word;
+                          return (
+                            <button
+                              key={sIdx}
+                              type="button"
+                              onClick={() => setSelectedReadingWord(isSelected ? null : matchedWord)}
+                              className={`inline-block cursor-pointer rounded px-1 transition-all ${
+                                isSelected
+                                  ? 'bg-seal text-on-accent font-bold ring-2 ring-seal/40'
+                                  : 'bg-seal/10 text-seal font-semibold hover:bg-seal/20 underline decoration-seal/40 underline-offset-4'
+                              }`}
+                              aria-label={`Tra nhanh từ "${matchedWord.word}"`}
+                              title={`Nhấn để tra từ "${matchedWord.word}"`}
+                            >
+                              {segment}
+                            </button>
+                          );
+                        })}
+                      </p>
+                    );
+                  })()}
+                </div>
+
+                {/* Interactive Word Popover Card */}
+                {selectedReadingWord && (
+                  <div
+                    data-testid="interactive-word-popover"
+                    className="relative my-4 rounded-xl border border-seal/40 bg-card p-4 shadow-sm"
+                  >
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <div className="flex items-baseline gap-3">
+                          <span className="font-serif text-2xl font-bold text-fg">
+                            {selectedReadingWord.word}
+                          </span>
+                          <span className="font-sans text-sm font-semibold text-seal">
+                            {selectedReadingWord.pinyin}
+                          </span>
+                        </div>
+                        <div className="mt-1 text-xs text-fg-60">
+                          <b className="font-medium text-fg">Ý nghĩa:</b> {selectedReadingWord.meaning}
+                        </div>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => setSelectedReadingWord(null)}
+                        className="cursor-pointer text-fg-38 hover:text-fg p-1"
+                        title="Đóng thẻ từ"
+                      >
+                        ✕
+                      </button>
+                    </div>
+
+                    <div className="mt-3 flex flex-wrap items-center gap-2 pt-3 border-t border-rule/50">
+                      <button
+                        type="button"
+                        onClick={() => speakChinese(selectedReadingWord.word)}
+                        className="inline-flex cursor-pointer items-center gap-1.5 rounded border border-rule bg-card px-2.5 py-1 text-xs text-fg-60 hover:text-seal transition-colors"
+                        title="Phát âm chuẩn (0.95x)"
+                      >
+                        <Volume2 size={13} />
+                        <span>Phát âm</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => speakChinese(selectedReadingWord.word, { slow: true })}
+                        className="inline-flex cursor-pointer items-center gap-1 rounded border border-rule bg-tint px-2 py-1 text-xs text-fg-60 hover:text-seal transition-colors"
+                        title="Phát âm chậm (0.75x)"
+                      >
+                        <span>🐢</span>
+                        <span>0.75x</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setActiveTab('DICTIONARY');
+                          setSearchQuery(selectedReadingWord.word);
+                          void doSearch(selectedReadingWord.word);
+                        }}
+                        className="inline-flex cursor-pointer items-center gap-1.5 rounded border border-seal/40 bg-seal/10 px-2.5 py-1 text-xs font-semibold text-seal hover:bg-seal hover:text-on-accent transition-all"
+                        title="Tra cứu từ điển chi tiết"
+                      >
+                        <Search size={13} />
+                        <span>Tra từ điển</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          if (!user) {
+                            onRequireLogin();
+                            return;
+                          }
+                          const personalNotebooks = notebooks.filter(notebook => !notebook.isPublicSample);
+                          if (personalNotebooks.length === 0) {
+                            showNotice('Vui lòng tạo ít nhất 1 Sổ từ vựng trước khi lưu từ.');
+                            setActiveTab('NOTEBOOKS');
+                            return;
+                          }
+                          // Reading notes have no persistent vocabulary identity. Resolve it
+                          // through the authorized API; never invent an ID or import a gloss.
+                          const res = await run('reading-word-lookup', signal => dictionaryApi.search(selectedReadingWord.word, 0, { signal }));
+                          if (!res) return;
+                          if (!res.success || !res.data) { showNotice('Chưa tra được từ để lưu. Vui lòng thử lại.'); return; }
+                          const normalized = (text: string) => text.normalize('NFC').toLowerCase().replace(/[\s'’]/g, '');
+                          const matches = res.data.vocabularies.filter(item => item.id > 0 && item.word === selectedReadingWord.word
+                            && normalized(item.reading) === normalized(selectedReadingWord.pinyin));
+                          if (matches.length !== 1) { showNotice('Hãy tra từ điển và chọn mục từ phù hợp để lưu.'); return; }
+                          setWordToAdd(matches[0]);
+                          setTargetNotebookId(personalNotebooks[0].id);
+                        }}
+                        disabled={loadingNotebooks}
+                        className="inline-flex cursor-pointer items-center gap-1.5 rounded border border-rule bg-card px-2.5 py-1 text-xs font-medium text-fg-60 hover:text-fg hover:border-fg transition-colors"
+                      >
+                        <BookmarkPlus size={13} />
+                        <span>+ Lưu vào Sổ từ</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
+
                 {showPinyin && (
                   <div className="mt-3 border-t border-rule/50 pt-3 font-sans text-[13.5px] leading-[1.9] text-fg-60">
                     {activePassage.passagePinyin}

@@ -1,0 +1,41 @@
+{
+  "retrieved_on": "2026-10-31",
+  "purpose": "Primary documentation cross-checks for independent review; no educational content publication or licensing authority inferred",
+  "sources": [
+    {
+      "url": "https://threejs.org/manual/pages/how-to-dispose-of-objects.html",
+      "publisher": "three.js project",
+      "publication_date": null,
+      "version_scope": "Current manual, applied to installed three 0.186.x resource lifecycle with source inspection",
+      "verified_fact": "Obsolete geometries/materials/textures require explicit disposal; scene removal does not dispose them. Shared resources require ownership-aware cleanup. Reusing a disposed material can regenerate GPU resources and incur a performance cost.",
+      "application_inference": "Pet3DModels module-global materials are shared across concurrent canvas scenes, so per-canvas unconditional disposal can cause recompilation in other scenes. Use owned clones or explicit shared lifetime management.",
+      "limitations": "Source review plus targeted tests does not measure actual GPU memory on every device. Earlier /manual/en/... links returned404; only the successfully retrieved /manual/pages/... source is relied on."
+    },
+    {
+      "url": "https://www.w3.org/TR/2018/REC-css-fonts-3-20180920/#unicode-range-desc",
+      "publisher": "W3C CSS Working Group",
+      "publication_date": "2018-09-20",
+      "version_scope": "CSS Fonts Module Level3 Recommendation",
+      "verified_fact": "Font resources can be selectively downloaded for the text covered by Unicode ranges.",
+      "application_inference": "22.27MB total complete localfont coverage is not the initial page transfer. Measure actual route font requests and preserve fallback coverage rather than removing arbitrary Hanzi glyphs.",
+      "independent_cross_check_url": "https://webkit.org/blog/6643/improved-font-loading/"
+    },
+    {
+      "url": "https://webaudio.github.io/web-speech-api/#dom-speechsynthesis-speak",
+      "publisher": "Web Speech API Community Group",
+      "publication_date": "2026-10-27",
+      "version_scope": "Draft Community Group Report, not a W3C Recommendation",
+      "verified_fact": "Speech synthesis uses browser/platform utterance queues and exposes errors; enqueueing is not proof of audible successful playback or pronunciation quality.",
+      "application_inference": "Exam control must surface unavailable Mandarin voice and asynchronous synthesis errors while leaving answer/timer/checkpoint state unchanged. Tests cannot certify native pronunciation or physical speaker output.",
+      "secondary_reference_url": "https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis/speak"
+    }
+  ],
+  "publication_scope": {
+    "approved_new_curriculum_items": 0,
+    "signed_receipts_created": 0,
+    "licenses_granted_by_review": 0,
+    "static_readings": "Quarantined behind compile-time DEV plus explicit fixture opt-in. They remain unapproved research/test data; copying them to server or production is not authorized.",
+    "research_pipeline_and_editorial_drafts": "Retained in original refs/backups. Failed editorial transfer and missing independent semantic/provenance/licensing evidence are not resolved by source-code tests.",
+    "5e2a1b5_split": "Its Java publication/authority regression subset is integrated through original35e4c6c/root9408f08; research projection/import pipeline is not thereby approved or published."
+  }
+}

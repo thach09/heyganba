@@ -1,11 +1,14 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Menu } from 'lucide-react';
 import { Sidebar } from '../components/Sidebar';
 import { useAuth } from './useAuth';
 import { AppRoutes } from './routes';
 import { progressApi } from '../features/progress/api';
+import { isRequestCancelled } from '../lib/api/client';
 import { OrientalDecorBackground } from '../components/OrientalDecorBackground';
 import { ThemeToggle } from '../components/ThemeToggle';
+import { useLocation } from 'react-router-dom';
+import { stopChineseSpeech } from '../services/chineseSpeech';
 
 /** The breakpoint must match the `@media (max-width: 900px)` query in index.css. */
 const MOBILE_BREAKPOINT_QUERY = '(max-width: 900px)';
@@ -41,6 +44,9 @@ function useIsMobileLayout(): boolean {
 
 export function AppShell() {
   const { user, requireLogin, logout, changePassword } = useAuth();
+  const { pathname, search } = useLocation();
+  // Queries select learning content too; hash/state-only navigation keeps the current speech.
+  useEffect(() => stopChineseSpeech, [pathname, search, user?.userId]);
   const isMobileLayout = useIsMobileLayout();
   /**
    * Manual user preference for the menu: `null` = not chosen yet -> follow the breakpoint default
@@ -53,6 +59,13 @@ export function AppShell() {
   // The overlay only exists on mobile; on desktop the sidebar is a fixed column, so no backdrop is needed.
   const isSidebarOverlay = isMobileLayout && isSidebarOpen;
   const [backendHealthy, setBackendHealthy] = useState<boolean | null>(null);
+  const [healthRetry, setHealthRetry] = useState(0);
+  const healthController = useRef<AbortController | null>(null);
+  const retryBackendHealth = useCallback(() => {
+    // Invalidate the old response immediately, before React schedules the next effect.
+    healthController.current?.abort();
+    setHealthRetry(value => value + 1);
+  }, []);
   // Real streak of the signed-in user - the topbar used to hardcode "3 ngày".
   const [streakCount, setStreakCount] = useState(0);
 
@@ -99,16 +112,22 @@ export function AppShell() {
   useEffect(() => {
     // Ping backend health check (/api/v1/health)
     const controller = new AbortController();
+    healthController.current = controller;
+    window.addEventListener('online', retryBackendHealth);
     progressApi.health( { signal: controller.signal })
       .then((res) => {
         if (controller.signal.aborted) return;
         setBackendHealthy(res.success && res.data?.status === 'UP');
       })
-      .catch(() => {
-        if (!controller.signal.aborted) setBackendHealthy(false);
+      .catch((error: unknown) => {
+        if (!controller.signal.aborted && !isRequestCancelled(error)) setBackendHealthy(false);
       });
-    return () => controller.abort();
-  }, []);
+    return () => {
+      controller.abort();
+      if (healthController.current === controller) healthController.current = null;
+      window.removeEventListener('online', retryBackendHealth);
+    };
+  }, [healthRetry, retryBackendHealth]);
 
   useEffect(() => {
     if (!user) {
@@ -195,6 +214,9 @@ export function AppShell() {
           {backendHealthy === false && (
             <div className="mb-5 border-l-2 border-l-red bg-tint px-4 py-3 text-[12.5px] leading-[1.8] text-fg-60">
               Tạm thời không kết nối được với máy chủ. Vui lòng thử lại sau ít phút.
+              <button type="button" onClick={retryBackendHealth} className="ml-2 cursor-pointer text-fg underline underline-offset-4">
+                Kiểm tra lại kết nối
+              </button>
               {import.meta.env.DEV && (
                 <span className="mt-1 block text-fg-38">
                   Dev: backend chưa chạy hoặc đang cold start — <code className="border border-rule px-1 text-[12px]">mvn

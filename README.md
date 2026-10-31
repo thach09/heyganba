@@ -1,5 +1,8 @@
 # Jiayou
 
+Engineering release review: [final audit](docs/Operations/FINAL-ENGINEERING-AUDIT.md)
+and its [41-commit disposition](docs/Operations/engineering-audit-evidence/v21-integration-matrix.json).
+
 Chinese learning for Vietnamese learners, built with React19/Vite and Spring Boot.
 Ganbarou is separate and remains at heyganba.site; this repository must never replace
 its running services, database or Docker deployment.

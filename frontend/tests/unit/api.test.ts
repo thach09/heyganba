@@ -9,6 +9,89 @@ const json = (data: unknown, status = 200) => new Response(JSON.stringify(data),
 });
 const tokens = { accessToken: 'new-access', refreshToken: 'new-refresh', userId: 1, role: 'ROLE_USER', fullName: 'Learner A' };
 const success = (data: unknown) => json({ success: true, data });
+
+test('a timed-out response returns a recoverable failure instead of silent cancellation', async () => {
+  const api = await loadApi();
+  vi.useFakeTimers();
+  vi.stubGlobal('fetch', vi.fn((_url: string, options: RequestInit) => new Promise((_, reject) => {
+    options.signal?.addEventListener('abort', () => reject(options.signal?.reason), { once: true });
+  })));
+  try {
+    const pending = api.apiRequest('/slow-response');
+    await vi.advanceTimersByTimeAsync(api.API_TIMEOUT_MS - 1);
+    expect(vi.getTimerCount()).toBe(1);
+    await vi.advanceTimersByTimeAsync(1);
+    const result = await pending;
+    expect(result.success).toBe(false);
+    expect(result.message).toContain('Chờ máy chủ quá lâu');
+    expect(result.message).not.toContain('private');
+    expect(vi.getTimerCount()).toBe(0);
+  } finally { vi.useRealTimers(); }
+});
+
+test.each(['json', 'blob'] as const)('%s body consumption is covered by the request deadline', async body => {
+  const api = await loadApi();
+  vi.useFakeTimers();
+  vi.stubGlobal('fetch', vi.fn((_url: string, options: RequestInit) => Promise.resolve({
+    ok: true, status: 200, headers: new Headers({ 'Content-Type': 'application/json' }),
+    [body]: () => new Promise((_, reject) => {
+      options.signal?.addEventListener('abort', () => reject(options.signal?.reason), { once: true });
+    }),
+  })));
+  try {
+    const pending = body === 'blob'
+      ? expect(api.apiBlob('/audio')).rejects.toMatchObject({ kind: 'network', message: 'Chờ máy chủ quá lâu. Vui lòng thử lại.' })
+      : api.apiRequest('/example').then(result => expect(result.error?.kind).toBe('network'));
+    await vi.advanceTimersByTimeAsync(api.API_TIMEOUT_MS);
+    await pending;
+    expect(vi.getTimerCount()).toBe(0);
+  } finally { vi.useRealTimers(); }
+});
+
+test('caller cancellation stays silent and releases its deadline and listener', async () => {
+  const api = await loadApi();
+  vi.useFakeTimers();
+  const controller = new AbortController();
+  const remove = vi.spyOn(controller.signal, 'removeEventListener');
+  vi.stubGlobal('fetch', vi.fn((_url: string, options: RequestInit) => new Promise((_, reject) => {
+    options.signal?.addEventListener('abort', () => reject(options.signal?.reason), { once: true });
+  })));
+  try {
+    const pending = expect(api.apiRequest('/example', { signal: controller.signal })).rejects.toMatchObject({ name: 'AbortError' });
+    controller.abort();
+    await pending;
+    expect(vi.getTimerCount()).toBe(0);
+    expect(remove).toHaveBeenCalledWith('abort', expect.any(Function));
+  } finally { remove.mockRestore(); vi.useRealTimers(); }
+});
+
+test('a stalled shared refresh times out without clearing the saved session or replaying writes', async () => {
+  const api = await loadApi();
+  vi.useFakeTimers();
+  const fetcher = vi.fn((url: string, options: RequestInit) => url.endsWith('/auth/refresh')
+    ? new Promise((_, reject) => options.signal?.addEventListener('abort', () => reject(options.signal?.reason), { once: true }))
+    : Promise.resolve(json({}, 401)));
+  vi.stubGlobal('fetch', fetcher);
+  try {
+    const pending = api.apiRequest('/flashcard/review', { method: 'POST', body: '{}' });
+    await vi.advanceTimersByTimeAsync(api.API_TIMEOUT_MS);
+    expect((await pending).success).toBe(false);
+    expect(api.getAccessToken()).toBe('old-access');
+    expect(api.getRefreshToken()).toBe('old-refresh');
+    expect(fetcher).toHaveBeenCalledTimes(2);
+    expect(vi.getTimerCount()).toBe(0);
+  } finally { vi.useRealTimers(); }
+});
+
+test('successful work disposes the deadline without waiting for it to fire', async () => {
+  const api = await loadApi();
+  vi.useFakeTimers();
+  vi.stubGlobal('fetch', vi.fn().mockResolvedValue(success(null)));
+  try {
+    expect((await api.apiRequest('/example')).success).toBe(true);
+    expect(vi.getTimerCount()).toBe(0);
+  } finally { vi.useRealTimers(); }
+});
 function deferred<T>() {
   let resolve!: (value: T) => void;
   const promise = new Promise<T>(r => { resolve = r; });
@@ -107,6 +190,30 @@ test('logout waits for rotation and revokes the latest token', async () => {
   const call = fetcher.mock.calls.find(([url]) => url.endsWith('/auth/logout'))!;
   expect(new Headers(call[1].headers).get('Authorization')).toBe('Bearer new-access');
   expect(api.getAccessToken()).toBeNull();
+});
+
+test('a delayed logout response cannot sign out a different account', async () => {
+  const gate = deferred<Response>();
+  vi.stubGlobal('fetch', vi.fn().mockImplementation(() => gate.promise));
+  const api = await loadApi();
+  const pending = api.logoutApi();
+  api.saveTokens('account-b-access', 'account-b-refresh');
+  api.saveUser({ ...tokens, userId: 2 });
+  gate.resolve(success(null));
+  expect(await pending).toBe(false);
+  expect(api.getAccessToken()).toBe('account-b-access');
+  expect(api.getSavedUser()?.userId).toBe(2);
+});
+
+test('a delayed logout response cannot clear a newer login for the same account', async () => {
+  const gate = deferred<Response>();
+  vi.stubGlobal('fetch', vi.fn().mockImplementation(() => gate.promise));
+  const api = await loadApi();
+  const pending = api.logoutApi();
+  api.saveTokens('newer-session', 'newer-refresh');
+  gate.resolve(success(null));
+  expect(await pending).toBe(false);
+  expect(api.getAccessToken()).toBe('newer-session');
 });
 test('login rejection does not trigger refresh', async () => {
   const fetcher = vi.fn().mockResolvedValue(json({}, 401));

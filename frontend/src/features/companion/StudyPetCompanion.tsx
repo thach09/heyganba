@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useRef } from 'react';
 import type { PetMood } from './types';
 import { useCompanion } from './useCompanionStore';
 import { FoodIcon, CompanionSkeletonFallback } from './CompanionWidget';
@@ -24,6 +24,16 @@ export function StudyPetCompanion({
   const { selectedPetId, bambooCount, mood: storeMood, setMood, growthStage } = useCompanion();
   const currentMood = propMood || storeMood;
   const activePet = PET_DEFINITIONS[selectedPetId] || PET_DEFINITIONS.panda;
+  const cheerTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => () => {
+    if (cheerTimer.current !== null) clearTimeout(cheerTimer.current);
+  }, []);
+  const cheer = useCallback(() => {
+    if (cheerTimer.current !== null) clearTimeout(cheerTimer.current);
+    setMood('happy');
+    cheerTimer.current = setTimeout(() => { cheerTimer.current = null; setMood('idle'); }, 2000);
+    onCheer?.();
+  }, [setMood, onCheer]);
 
   if (compact) {
     return (
@@ -42,11 +52,7 @@ export function StudyPetCompanion({
             size={42}
             showSpeechBubble={false}
             interactive={true}
-            onPetClick={() => {
-              setMood('happy');
-              setTimeout(() => setMood('idle'), 2000);
-              if (onCheer) onCheer();
-            }}
+            onPetClick={cheer}
           />
         </Suspense>
       </div>
@@ -72,11 +78,7 @@ export function StudyPetCompanion({
           size={96}
           showSpeechBubble={true}
           interactive={true}
-          onPetClick={() => {
-            setMood('happy');
-            setTimeout(() => setMood('idle'), 2000);
-            if (onCheer) onCheer();
-          }}
+          onPetClick={cheer}
         />
       </Suspense>
     </div>

@@ -1,0 +1,5516 @@
+[
+  {
+    "path": ".env.example",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": ".github/dependabot.yml",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": ".github/workflows/ci.yml",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": ".github/workflows/jiayou-bootstrap.yml",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": ".github/workflows/jiayou-containers.yml",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": ".gitignore",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "AGENTS.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "CONTRIBUTING.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "PRODUCT.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "README.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/.dockerignore",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/.env.example",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/Dockerfile",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/docs/legacy-audit-isolation.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/docs/vocabulary-publication.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/pom.xml",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/HeyGanbaApplication.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/common/exception/BadRequestException.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/common/exception/GlobalExceptionHandler.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/common/exception/PayloadTooLargeException.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/common/exception/ResourceNotFoundException.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/common/exception/TooManyRequestsException.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/common/response/ApiResponse.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/common/security/ContentAccess.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/common/util/ClientIpResolver.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/common/validation/PlainText.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/common/validation/PlainTextValidator.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/config/AdminWriteRateLimitFilter.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/config/CappedServletInputStream.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/config/ExpConfig.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/config/FeatureFlagProperties.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/config/ForwardedHeadersConfig.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/config/JiayouBootstrapConfiguration.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/config/JiayouBootstrapGuard.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/config/JwtAuthenticationFilter.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/config/JwtTokenProvider.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/config/MaxPayloadSizeFilter.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/config/SchedulingConfig.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/config/SecurityConfig.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/config/SentryPrivacyConfiguration.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/config/TrustedProxyFilter.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/config/UserPrincipal.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/controller/AdminController.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/controller/AudioController.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/controller/AuthController.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/controller/ContentReviewStatusController.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/controller/DictionaryController.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/controller/ExamController.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/controller/FlashcardController.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/controller/GrammarController.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/controller/HealthController.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/controller/KanaController.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/controller/KanjiController.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/controller/LearningInsightsController.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/controller/ProductEventController.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/controller/ProgressController.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/controller/UserController.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/controller/VocabNotebookController.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/controller/VocabularyController.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/domain/learning/LearningActivity.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/admin/AdminExerciseRequest.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/admin/AdminKanjiRequest.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/admin/AdminPasswordConfirmRequest.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/admin/AdminReviewQueueItem.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/admin/AdminVocabularyRequest.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/admin/AuditLogResponse.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/auth/AuthResponse.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/auth/ChangePasswordRequest.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/auth/LoginRequest.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/auth/LogoutRequest.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/auth/RefreshTokenRequest.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/auth/RegisterRequest.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/auth/TwoFactorCodeRequest.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/auth/TwoFactorSetupResponse.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/content/ContentReviewStatusResponse.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/dictionary/DictionarySearchResponse.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/exam/ExamGenerateRequest.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/exam/ExamHistoryResponse.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/exam/ExamQuestionResponse.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/exam/ExamResponse.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/exam/ExamSubmitRequest.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/exam/ExamSubmitResponse.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/flashcard/FlashcardDueResponse.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/flashcard/FlashcardReviewRequest.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/flashcard/FlashcardReviewResponse.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/flashcard/FlashcardStatsResponse.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/grammar/GrammarCheckRequest.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/grammar/GrammarCheckResponse.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/grammar/GrammarExerciseResponse.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/grammar/GrammarRuleResponse.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/kana/KanaQuizCheckRequest.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/kana/KanaQuizCheckResponse.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/kana/KanaResponse.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/kanji/KanjiProgressResponse.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/kanji/KanjiResponse.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/kanji/RadicalResponse.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/leaderboard/LeaderboardEntryResponse.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/leaderboard/LeaderboardResponse.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/notebook/AddNotebookItemRequest.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/notebook/CreateNotebookRequest.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/notebook/NotebookPracticeResultRequest.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/notebook/VocabNotebookItemResponse.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/notebook/VocabNotebookResponse.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/progress/CharacterMasteryResponse.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/progress/PracticeProgressRequest.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/progress/PracticeProgressResponse.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/progress/UserExpResponse.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/streak/StreakResponse.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/streak/StudyActivityDayResponse.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/user/LearningPreferenceRequest.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/user/UpdateClassCodeRequest.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/user/UserProfileResponse.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/vocabulary/VocabularyLessonResponse.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/dto/vocabulary/VocabularyWordResponse.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/model/entity/AuditLog.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/model/entity/CharacterMastery.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/model/entity/CompanionWallet.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/model/entity/DailyQuestClaim.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/model/entity/DictionaryEntry.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/model/entity/ExamResult.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/model/entity/GrammarExercise.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/model/entity/GrammarRule.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/model/entity/Kana.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/model/entity/Kanji.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/model/entity/KanjiPracticeProgress.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/model/entity/LearningAttempt.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/model/entity/LearningMutationReceipt.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/model/entity/Lesson.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/model/entity/MockExam.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/model/entity/MockExamPreset.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/model/entity/NotebookPracticeSession.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/model/entity/ProductEvent.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/model/entity/Radical.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/model/entity/ReadingPassage.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/model/entity/RevokedToken.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/model/entity/Role.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/model/entity/SrsReview.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/model/entity/Streak.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/model/entity/StudyActivity.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/model/entity/TtsAudio.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/model/entity/User.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/model/entity/UserLearningPreference.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/model/entity/VocabNotebook.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/model/entity/VocabNotebookItem.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/model/entity/Vocabulary.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/model/enums/KanaGroup.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/model/enums/KanaType.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/model/enums/ReviewStatus.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/model/enums/RoleName.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/model/enums/VietnameseMeaningStatus.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/repository/AuditLogRepository.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/repository/CharacterMasteryRepository.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/repository/CompanionWalletRepository.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/repository/DailyQuestClaimRepository.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/repository/DictionaryEntryRepository.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/repository/ExamResultRepository.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/repository/GrammarExerciseRepository.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/repository/GrammarRuleRepository.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/repository/KanaRepository.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/repository/KanjiPracticeProgressRepository.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/repository/KanjiRepository.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/repository/LearningMutationReceiptRepository.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/repository/LessonRepository.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/repository/MockExamPresetRepository.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/repository/MockExamRepository.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/repository/NotebookPracticeSessionRepository.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/repository/RadicalRepository.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/repository/ReadingPassageRepository.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/repository/RevokedTokenRepository.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/repository/RoleRepository.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/repository/SrsReviewRepository.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/repository/StreakRepository.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/repository/StudyActivityRepository.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/repository/TtsAudioRepository.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/repository/UserRepository.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/repository/VocabNotebookItemRepository.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/repository/VocabNotebookRepository.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/repository/VocabularyRepository.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/AdminContentService.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/AuditLogService.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/AuthService.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/CharacterMasteryService.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/CohortRetention.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/ContentReviewStatusService.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/CustomUserDetailsService.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/DictionarySearchText.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/DictionaryService.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/DictionaryText.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/ExamService.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/ExpService.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/FeatureFlagService.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/FlashcardService.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/GrammarService.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/KanaService.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/KanjiService.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/LeaderboardService.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/LearningEvidenceService.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/LearningInsightsService.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/LearningMutationReceiptService.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/LearningPreferenceService.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/ProductEventService.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/ProductMetricsService.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/RateLimiterService.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/RefreshCookieService.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/StreakPolicy.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/StreakService.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/StudyActivityService.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/TokenRevocationService.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/TwoFactorAuthService.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/UserService.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/VocabNotebookService.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/VocabularyContentDigest.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/VocabularyLegacyDigest.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/VocabularyPublicationAuthority.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/VocabularyService.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/evidence/EvidenceVerificationContext.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/evidence/EvidenceVerificationOutcome.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/evidence/VocabularyEvidenceReceipt.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/evidence/VocabularyEvidenceReceiptVerifier.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/srs/InMemorySrsDueCache.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/srs/RedisSrsDueCache.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/srs/SrsCacheSyncJob.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/srs/SrsDueCache.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/srs/SrsEngine.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/srs/SrsRating.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/tts/AudioStorageService.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/tts/GoogleTranslateTtsClient.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/tts/TtsAudioService.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/java/com/heyganba/service/tts/TtsClient.java",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "backend/src/main/resources/application-dev.yml",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/main/resources/application-jiayou-prod.yml",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/main/resources/application-prod.yml",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/main/resources/application-staging.yml",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/main/resources/application.yml",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/main/resources/db/jiayou-production/V1__jiayou_schema_only.sql",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Immutable migration/history or separately selected fixture lineage; no deletion or checksum rewrite"
+  },
+  {
+    "path": "backend/src/main/resources/db/migration-staging/V10__learning_insights_and_sentence_order.sql",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Immutable migration/history or separately selected fixture lineage; no deletion or checksum rewrite"
+  },
+  {
+    "path": "backend/src/main/resources/db/migration-staging/V11__align_optional_content_nullability.sql",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Immutable migration/history or separately selected fixture lineage; no deletion or checksum rewrite"
+  },
+  {
+    "path": "backend/src/main/resources/db/migration-staging/V4__sample_lesson_greetings.sql",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Immutable migration/history or separately selected fixture lineage; no deletion or checksum rewrite"
+  },
+  {
+    "path": "backend/src/main/resources/db/migration-staging/V5__hsk1_thematic_curriculum_expansion.sql",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Immutable migration/history or separately selected fixture lineage; no deletion or checksum rewrite"
+  },
+  {
+    "path": "backend/src/main/resources/db/migration-staging/V6__hsk1_standard_course_grammar_and_exams.sql",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Immutable migration/history or separately selected fixture lineage; no deletion or checksum rewrite"
+  },
+  {
+    "path": "backend/src/main/resources/db/migration-staging/V7__hsk1_complete_150_vocab_and_hanzi_radicals.sql",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Immutable migration/history or separately selected fixture lineage; no deletion or checksum rewrite"
+  },
+  {
+    "path": "backend/src/main/resources/db/migration-staging/V8__hsk2_standard_course_and_approve_all_curriculum.sql",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Immutable migration/history or separately selected fixture lineage; no deletion or checksum rewrite"
+  },
+  {
+    "path": "backend/src/main/resources/db/migration-staging/V9__hsk1_to_hsk6_complete_curriculum_and_grammar.sql",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Immutable migration/history or separately selected fixture lineage; no deletion or checksum rewrite"
+  },
+  {
+    "path": "backend/src/main/resources/db/migration-staging/dictionary-coverage-pilot.json",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-a.tsv",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-b.metadata.json",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-b.tsv",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-c.metadata.json",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-c.tsv",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-d.metadata.json",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-d.tsv",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-e.metadata.json",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-e.tsv",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-f.metadata.json",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-f.tsv",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "backend/src/main/resources/db/migration-staging/vietnamese-assisted-exclusions.tsv",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "backend/src/main/resources/db/migration/V1__init_chinese_schema.sql",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Immutable migration/history or separately selected fixture lineage; no deletion or checksum rewrite"
+  },
+  {
+    "path": "backend/src/main/resources/db/migration/V2__seed_chinese_hsk1_data.sql",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Immutable migration/history or separately selected fixture lineage; no deletion or checksum rewrite"
+  },
+  {
+    "path": "backend/src/main/resources/db/migration/V3__disable_public_seed_admin_credential.sql",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Immutable migration/history or separately selected fixture lineage; no deletion or checksum rewrite"
+  },
+  {
+    "path": "backend/src/main/resources/db/migration/beforeEachMigrate.sql",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Immutable migration/history or separately selected fixture lineage; no deletion or checksum rewrite"
+  },
+  {
+    "path": "backend/src/main/resources/dictionary/README.md",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "backend/src/main/resources/dictionary/assisted-ja-vi.tsv",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "backend/src/main/resources/dictionary/curated-ja-vi.tsv",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "backend/src/main/resources/dictionary/jmdict.tsv.gz",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "backend/src/main/resources/dictionary/snapshot.json",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/AdminContentServiceTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/AdminReviewQueueApiTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/AdminTwoFactorResetApiTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/AdminWriteRateLimitTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/AssistedDictionaryCurationIntegrityTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/AudioEndpointSecurityTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/AuthIntegrationTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/AuthRateLimitTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/BCryptTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/ChangePasswordApiTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/ChineseDictionaryBoundaryTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/CohortRetentionTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/ContentPersistenceContractTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/ContentReviewStatusApiTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/ContentReviewVisibilityTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/DictionaryCandidateSelectionTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/DictionaryCoverageSearchTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/DictionaryCurationIntegrityTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/DictionaryNotebookApiTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/DictionaryPilotPostgresRehearsalTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/ExamApiTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/ExpServiceTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/FeatureFlagTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/FlashcardApiTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/FlywayLocationsConfigTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/GrammarApiTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/HealthReadinessTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/HskCurriculumExamApiTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/InMemorySrsDueCacheTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/JwtTokenProviderTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/KanaApiTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/KanjiApiTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/LearningEvidenceTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/LearningInsightsApiTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/LearningMutationRetryTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/LearningPreferenceApiTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/MvcViewSurfaceTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/PayloadSizeLimitTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/PostgresSchemaStagingRehearsalTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/ProductEventApiTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/ProductEventFailureTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/PurgeLeftoversTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/RefreshCookieApiTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/SecurityHardeningPenTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/SecurityHardeningTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/SecurityRbacTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/SeedAdminCredentialMigrationTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/SrsEngineTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/StreakServiceTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/StudyActivityDaysTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/TrustedProxyFilterTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/TtsAudioServiceTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/TwoFactorAuthServiceTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/VocabNotebookServiceTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/VocabularyApiTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/VocabularyPublicationApiTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/config/CappedServletInputStreamTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/config/JiayouBootstrapGuardTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/config/JiayouBootstrapPostgresTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/config/SentryPrivacyTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/service/AssistedDictionaryCuration.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/service/DictionaryCuration.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/service/DictionaryLegacyProfileTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/service/RateLimiterLifecycleTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/service/VocabularyContentDigestTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/service/VocabularyDigestV1CompatibilityTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/service/VocabularyPublicationAuthorityTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/service/evidence/ReceiptFixtures.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/service/evidence/VocabularyEvidenceReceiptCryptoTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/service/evidence/VocabularyEvidenceReceiptGoldenVectorTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/service/evidence/VocabularyEvidenceReceiptStructureTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/service/srs/FlashcardCacheMissFallbackTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/service/srs/InMemorySrsDueCacheLifecycleTest.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/support/ContentApiTestBase.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/java/com/heyganba/support/PublicationCatalogFixture.java",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/src/test/resources/application-test.yml",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/tools/assemble-assisted-dictionary-release.mjs",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/tools/audit-runtime-dependencies.py",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/tools/build-coverage-benchmark.mjs",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/tools/check-dictionary-coverage.mjs",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/tools/clean-assisted-batch-out-of-scope.mjs",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/tools/generate-assisted-dictionary-batches.mjs",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/tools/import-jmdict.mjs",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/tools/materialize-legacy-audit.py",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/tools/measure-dictionary-coverage.mjs",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/tools/prepare-assisted-dictionary-batch.mjs",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/tools/prepare-dictionary-pilot.mjs",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/tools/production_migration_preflight.py",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/tools/report-dictionary-coverage.mjs",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/tools/report-vietnamese-dictionary-coverage.mjs",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/tools/spot-check-dictionary.mjs",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "backend/tools/tests/test_production_migration_preflight.py",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "docker-compose.yml",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "docs/Dictionary/Assisted-Vietnamese-Persistence-Proposal.md",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/Dictionary/Dictionary-Coverage-Report.md",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/Dictionary/README.md",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/Dictionary/Vietnamese-Coverage-Expansion-Report.md",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/Dictionary/coverage-after-rehearsal.json",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/Dictionary/coverage-baseline.json",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/Dictionary/coverage-benchmark.draft.json",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/Dictionary/coverage-concepts.txt",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/Dictionary/coverage-identities.json",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/Dictionary/coverage-query-density.csv",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/Dictionary/coverage-remaining-failures.json",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/Dictionary/coverage-results.csv",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/Dictionary/coverage-review-actions.md",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/Dictionary/coverage-spot-checks.json",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/Dictionary/vietnamese-coverage-baseline.json",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/Dictionary/vietnamese-coverage-candidate.json",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/HANDOVER.md",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/Internal/ADR-004-learning-activity-contract.md",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/Internal/AGENTS.md",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/Internal/FoundationReadinessReport.md",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/Internal/api-client-contract.md",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/Internal/audit-2026-10-06.md",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/Internal/backup-recovery-runbook.md",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/Internal/content-mapping-fpt-curriculum.md",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/Internal/deployment-plan.md",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/Internal/foundation-audit-2026-10-07.md",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/Internal/frontend-test-foundation.md",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/Internal/load-test.js",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/Internal/markdown-author-inventory.json",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/Internal/operational-readiness.md",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/Internal/preferences-and-rollout.md",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/Internal/privacy-account-lifecycle-audit.md",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/Internal/product-metrics.md",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/Internal/security-plan.md",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/Internal/security-release-2026-10-07.md",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/Internal/security-scan-staging.html",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/Internal/zap.yaml",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/Operations/deployment-isolation.md",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/Operations/jiayou-independent-bootstrap.md",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/Operations/jiayou-shared-host-discovery.md",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/Operations/legacy-identifiers.md",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/Operations/original-work-disposition.json",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/QA/Blocker-Idempotency-Proposal-20261008.md",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/QA/Bug-Fix-Report-20261008.md",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/QA/QA-Blocker-Fix-Report-20261008.md",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/QA/production-audit-2026-10-17.md",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/Roadmap/phase-2-flashcard-srs.md",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/Roadmap/phase-5-thi-thu-streak-admin.md",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/Roadmap/roadmap.md",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/archive/pre-conversion/Dictionary/README.md",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/archive/pre-conversion/Dictionary/Vietnamese-Coverage-Expansion-Report.md",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/archive/pre-conversion/Dictionary/coverage-review-actions.md",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/archive/pre-conversion/Internal/ADR-004-learning-activity-contract.md",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/archive/pre-conversion/Internal/FoundationReadinessReport.md",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/archive/pre-conversion/Internal/audit-2026-10-06.md",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/archive/pre-conversion/Internal/backup-recovery-runbook.md",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/archive/pre-conversion/Internal/content-mapping-fpt-curriculum.md",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/archive/pre-conversion/Internal/deployment-plan.md",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/archive/pre-conversion/Internal/foundation-audit-2026-10-07.md",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/archive/pre-conversion/Internal/operational-readiness.md",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/archive/pre-conversion/Internal/product-metrics.md",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/archive/pre-conversion/Internal/security-plan.md",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/archive/pre-conversion/Internal/security-release-2026-10-07.md",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/archive/pre-conversion/QA/Bug-Fix-Report-20261008.md",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/archive/pre-conversion/QA/QA-Blocker-Fix-Report-20261008.md",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/archive/pre-conversion/README.md",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/archive/pre-conversion/Roadmap/phase-2-flashcard-srs.md",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/archive/pre-conversion/Roadmap/phase-5-thi-thu-streak-admin.md",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/archive/pre-conversion/Roadmap/roadmap.md",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/archive/provider-deployment/backend-Dockerfile-before-selfhost",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/archive/provider-deployment/ci-before-selfhost.yml",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/archive/provider-deployment/dictionary-refresh.yml",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/archive/provider-deployment/docker-compose-before-isolation.yml",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/archive/provider-deployment/vercel-before-isolation.json",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Historical/regression/provenance source retained, not a Jiayou production content import"
+  },
+  {
+    "path": "docs/curriculum-roadmap-m1-m3.md",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/features/admin.md",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/features/authentication.md",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/features/companion.md",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/features/dashboard.md",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/features/exam.md",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/features/grammar-and-exam.md",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/features/grammar.md",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/features/hanzi.md",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/features/kana.md",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/features/kanji.md",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/features/pinyin.md",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/features/progress.md",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/features/vocabulary.md",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/introduction.md",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/m6-curriculum-sources.md",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/roadmap.md",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "docs/security-and-ops.md",
+    "classification": "REQUIRED_EVIDENCE",
+    "action": "retain",
+    "reason": "Current documentation or preserved evidence"
+  },
+  {
+    "path": "frontend/.dockerignore",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.env.example",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.gitignore",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.impeccable/surfaces/src-features-dashboard-dashboardview-tsx.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/SKILL.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/adapt.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/adapt.native.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/android.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/animate.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/audit.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/audit.native.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/bolder.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/clarify.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/colorize.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/craft-floor.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/craft.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/critique.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/degraded/asset-producer.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/degraded/documenter.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/degraded/finish-reviewer.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/degraded/manual-edit-applier.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/delight.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/distill.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/doctor.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/document.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/extract.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/harden.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/hooks.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/init.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/ios.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/layout.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/live-setup.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/live.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/new-work.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/onboard.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/operate.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/optimize.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/overdrive.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/polish.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/quieter.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/routing.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/shape.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/typeset.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/reference/visualize.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/scripts/VERSION",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/scripts/command-metadata.json",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/scripts/data/font-index-failures.json",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/scripts/data/font-index.json",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/scripts/impeccable",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/scripts/impeccable.cmd",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/scripts/live-browser-dom.js",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/scripts/live-browser-ignores.js",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/scripts/live-browser-session.js",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/scripts/live-browser.js",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.opencode/skills/impeccable/scripts/modern-screenshot.umd.js",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/.oxlintrc.json",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/ARCHITECTURE.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/DESIGN.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/Dockerfile",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/PRODUCT.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/README.md",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/index.html",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/nginx.conf",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/package-lock.json",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/package.json",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/public/apple-touch-icon.png",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/favicon.svg",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/BeVietnamPro-400-rest.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/BeVietnamPro-400.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/BeVietnamPro-500-rest.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/BeVietnamPro-500.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/BeVietnamPro-600-rest.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/BeVietnamPro-600.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/BeVietnamPro-700-rest.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/BeVietnamPro-700.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/BeVietnamPro-OFL.txt",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-0.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-1.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-10.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-11.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-12.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-124.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-128.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-129.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-13.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-131.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-132.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-133.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-138.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-14.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-141.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-143.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-144.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-146.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-149.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-15.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-150.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-151.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-152.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-153.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-154.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-155.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-158.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-159.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-16.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-161.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-162.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-163.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-165.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-166.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-167.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-169.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-17.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-170.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-171.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-172.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-173.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-174.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-175.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-176.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-177.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-178.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-179.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-18.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-181.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-19.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-190.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-195.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-196.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-20.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-21.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-22.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-23.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-24.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-25.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-26.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-27.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-28.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-29.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-30.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-31.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-32.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-33.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-34.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-35.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-36.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-37.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-38.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-39.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-62.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-63.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-7.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-8.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-9.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-OFL.txt",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-pets.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSansSC-ui.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-0.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-1.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-10.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-11.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-12.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-124.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-128.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-129.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-13.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-131.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-132.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-133.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-138.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-14.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-141.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-143.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-144.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-146.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-149.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-15.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-151.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-152.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-153.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-154.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-155.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-158.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-159.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-16.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-161.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-162.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-163.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-165.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-166.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-167.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-169.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-17.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-170.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-171.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-172.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-173.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-174.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-175.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-176.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-177.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-178.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-179.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-18.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-181.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-19.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-190.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-20.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-21.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-22.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-23.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-24.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-25.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-26.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-27.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-28.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-29.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-30.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-31.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-32.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-33.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-34.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-35.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-36.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-37.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-38.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-39.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-62.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-63.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-7.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-8.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-9.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-OFL.txt",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-pets.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/NotoSerifSC-ui.woff2",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/fonts.css",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/fonts/manifest.json",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/hanzi-data/ARPHICPL.TXT",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/hanzi-data/UPSTREAM-README.md",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\344\\270\\200.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\344\\270\\211.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\344\\270\\212.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\344\\270\\213.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\344\\270\\255.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\344\\271\\220.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\344\\272\\214.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\344\\272\\272.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\344\\273\\226.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\344\\275\\240.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\344\\276\\277.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\345\\207\\206.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\345\\216\\213.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\345\\217\\243.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\345\\217\\263.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\345\\220\\203.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\345\\226\\235.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\345\\233\\275.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\345\\234\\272.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\345\\242\\203.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\345\\244\\207.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\345\\244\\232.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\345\\244\\247.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\345\\245\\271.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\345\\245\\275.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\345\\255\\227.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\345\\255\\246.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\345\\256\\234.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\345\\256\\266.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\345\\260\\217.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\345\\260\\221.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\345\\261\\245.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\345\\261\\261.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\345\\267\\246.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\345\\276\\213.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\345\\277\\253.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\346\\200\\235.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\346\\203\\263.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\346\\204\\217.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\346\\205\\216.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\346\\205\\260.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\346\\210\\277.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\346\\211\\223.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\346\\212\\244.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\346\\222\\274.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\346\\226\\207.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\346\\227\\245.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\346\\234\\210.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\346\\234\\250.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\346\\234\\272.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\346\\257\\224.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\346\\260\\264.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\346\\263\\263.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\346\\270\\270.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\347\\201\\253.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\347\\216\\257.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\347\\224\\237.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\347\\227\\205.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\347\\234\\213.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\347\\256\\261.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\350\\200\\203.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\350\\215\\257.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\350\\257\\225.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\350\\257\\235.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\350\\257\\255.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\350\\257\\264.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\350\\260\\246.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\350\\264\\243.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\350\\264\\265.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\350\\266\\213.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\350\\275\\246.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\351\\205\\277.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\351\\207\\212.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\351\\211\\264.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "\"frontend/public/hanzi-data/\\351\\227\\264.json\"",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/public/vendor/asset-sha256.json",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/vendor/hanzi-writer-3.5.0.min.js",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/vendor/hanzi-writer-COPYING.md",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/public/vendor/hanzi-writer-LICENSE.txt",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/App.tsx",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/app/AppShell.tsx",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/app/AuthProvider.tsx",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/app/ErrorBoundary.tsx",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/app/routes.tsx",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/app/useAuth.ts",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/app/useTheme.ts",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/components/FeedbackAlert.tsx",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/components/FloatingExpReward.tsx",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/components/MascotBadge.tsx",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/components/Modal.tsx",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/components/OrientalCard.tsx",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/components/OrientalDecorBackground.tsx",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/components/RedSealStamp.tsx",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/components/Sidebar.tsx",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/components/SubmitButton.tsx",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/components/ThemeToggle.tsx",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/account/api.ts",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/admin/AdminView.tsx",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/admin/ReviewQueuePanel.tsx",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/admin/api.ts",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/admin/types.ts",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/auth/AuthModal.tsx",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/auth/ChangePasswordModal.tsx",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/auth/api.ts",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/companion/CompanionPetSvg.tsx",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/companion/CompanionWidget.tsx",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/companion/StudyPetCompanion.tsx",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/companion/petData.ts",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/companion/three/Companion3DCanvas.tsx",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/companion/three/Pet3DModels.ts",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/companion/types.ts",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/companion/useCompanionStore.ts",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/dashboard/DashboardView.tsx",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/dashboard/HskRoadmap.tsx",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/dashboard/LearningInsights.tsx",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/dashboard/types.ts",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/dictionary/DictionaryNotebookView.tsx",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/dictionary/api.ts",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/dictionary/m6ReadingData.json",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Unverified reading fixture; DEV-only explicit gate, compiled out of production"
+  },
+  {
+    "path": "frontend/src/features/dictionary/readingData.ts",
+    "classification": "HISTORICAL_ARCHIVE",
+    "action": "retain",
+    "reason": "Unverified reading fixture; DEV-only explicit gate, compiled out of production"
+  },
+  {
+    "path": "frontend/src/features/dictionary/readingFixtures.ts",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/dictionary/types.ts",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/exam/ExamView.tsx",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/exam/activeAttempt.ts",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/exam/api.ts",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/exam/types.ts",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/flashcard/FlashcardView.tsx",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/flashcard/api.ts",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/flashcard/lessonPracticeSession.ts",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/flashcard/types.ts",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/grammar/GrammarRulePage.tsx",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/grammar/GrammarView.tsx",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/grammar/SentenceOrderExercise.tsx",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/grammar/api.ts",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/grammar/types.ts",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/hanzi/HanziStationView.tsx",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/hanzi/api.ts",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/hanzi/types.ts",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/pinyin/PinyinQuiz.tsx",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/pinyin/PinyinStationView.tsx",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/pinyin/PinyinStepByStep.tsx",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/pinyin/PinyinTable.tsx",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/pinyin/ToneContourWave.tsx",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/pinyin/pinyinData.ts",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/progress/api.ts",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/progress/productEvents.ts",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/features/progress/types.ts",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/index.css",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/lib/api/client.ts",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/lib/api/session.ts",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/lib/api/types.ts",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/lib/handwritingScore.ts",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/lib/hanziWriter.ts",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/lib/hooks/useRequestScope.ts",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/lib/learningKeyboard.ts",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/lib/learningRecovery.ts",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/lib/observability/privacy.ts",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/main.tsx",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/services/chineseSpeech.ts",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/theme.css",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/src/vite-env.d.ts",
+    "classification": "REQUIRED_RUNTIME",
+    "action": "retain",
+    "reason": "Active source or asset"
+  },
+  {
+    "path": "frontend/tests/audit-layout.mjs",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/auth-cookie-smoke.mjs",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/browser-smoke.mjs",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/dictionary-search-smoke.mjs",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/glyph-browser.mjs",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/handwriting-ui.mjs",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/handwriting.test.mjs",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/local-fonts.test.mjs",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/m6-layout.mjs",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/qa-blocker-regression.mjs",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/qa-regression.mjs",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/unit/api.test.ts",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/unit/app-shell-reconnect.test.tsx",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/unit/app.test.tsx",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/unit/auth-provider.test.tsx",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/unit/auth-recovery-privacy.test.tsx",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/unit/chineseSpeech.test.ts",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/unit/companion-cheer-cleanup.test.tsx",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/unit/companion-material-ownership.test.tsx",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/unit/companion-resources.test.tsx",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/unit/companion-webgl.test.tsx",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/unit/curriculum-m6.test.tsx",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/unit/dashboard-target.test.tsx",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/unit/error-boundary.test.tsx",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/unit/exam-attempt-recovery.test.ts",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/unit/exam-audio-controls.test.tsx",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/unit/exam-audio-failure.test.tsx",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/unit/exam-hsk.test.tsx",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/unit/flashcard-lifecycle.test.tsx",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/unit/flashcard-m22.test.tsx",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/unit/grammar-hsk.test.tsx",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/unit/hanzi-hsk.test.tsx",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/unit/learning-recovery-privacy.test.ts",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/unit/lesson-quiz-recovery.test.tsx",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/unit/notebook-session.test.tsx",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/unit/pinyin-stepper.test.tsx",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/unit/pinyin.test.ts",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/unit/privacy.test.ts",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/unit/qa-batch-a.test.tsx",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/unit/qa-batch-b.test.tsx",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/unit/reading-fixture-gate.test.ts",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/unit/reading-notebook.test.tsx",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/unit/request-scope.test.tsx",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/unit/setup.ts",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/unit/sidebar-focus.test.tsx",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/unit/speech-lifecycle.test.tsx",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/unit/theme-and-ordering.test.tsx",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/unit/theme-contrast.test.ts",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tests/unit/v21-edtech-ux.test.tsx",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tsconfig.app.json",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tsconfig.json",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/tsconfig.node.json",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/vercel.json",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/vite.config.ts",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "frontend/vitest.config.ts",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "render.yaml",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "scripts/backup-postgres.ps1",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "scripts/backup-postgres.sh",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "scripts/build-local-fonts.py",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "scripts/build-m6-curriculum.py",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "scripts/create-app-db-role.sql",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "scripts/fetch-hanzi-assets.py",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "scripts/hanzi-characters.txt",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "scripts/m6-curriculum-content.py",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "scripts/m6-curriculum-vocabulary.tsv",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "scripts/m6-fetch.py",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "scripts/m6-hanviet.txt",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "scripts/validate-compose.py",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  },
+  {
+    "path": "scripts/verify-postgres-m21.ps1",
+    "classification": "REQUIRED_BUILD_TEST",
+    "action": "retain",
+    "reason": "Retained active build/test input"
+  }
+]

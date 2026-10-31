@@ -1,0 +1,12 @@
+{
+  "before": {
+    "javascript_bytes": 1253338,
+    "javascript_gzip_bytes": 345283,
+    "css_bytes": 72065
+  },
+  "after": {
+    "javascript_bytes": 1258649,
+    "javascript_gzip_bytes": 344211,
+    "css_bytes": 72777
+  }
+}

@@ -1,0 +1,345 @@
+{
+  "phase": "auth",
+  "results": [
+    {
+      "check": "auth-escape-close",
+      "width": 390,
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "check": "auth-escape-close",
+      "width": 768,
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "check": "auth-escape-close",
+      "width": 1024,
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "check": "auth-escape-close",
+      "width": 1440,
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "check": "auth-escape-close",
+      "width": 390,
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "check": "auth-escape-close",
+      "width": 768,
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "check": "auth-escape-close",
+      "width": 1024,
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "check": "auth-escape-close",
+      "width": 1440,
+      "theme": "dark",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "requests": [
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/insights",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/insights",
+      "method": "GET"
+    },
+    {
+      "path": "/streak/heatmap",
+      "method": "GET"
+    },
+    {
+      "path": "/flashcard/stats",
+      "method": "GET"
+    },
+    {
+      "path": "/exp",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/insights",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/insights",
+      "method": "GET"
+    },
+    {
+      "path": "/streak/heatmap",
+      "method": "GET"
+    },
+    {
+      "path": "/flashcard/stats",
+      "method": "GET"
+    },
+    {
+      "path": "/exp",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/insights",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/insights",
+      "method": "GET"
+    },
+    {
+      "path": "/streak/heatmap",
+      "method": "GET"
+    },
+    {
+      "path": "/flashcard/stats",
+      "method": "GET"
+    },
+    {
+      "path": "/exp",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/insights",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/insights",
+      "method": "GET"
+    },
+    {
+      "path": "/streak/heatmap",
+      "method": "GET"
+    },
+    {
+      "path": "/flashcard/stats",
+      "method": "GET"
+    },
+    {
+      "path": "/exp",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/insights",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/insights",
+      "method": "GET"
+    },
+    {
+      "path": "/streak/heatmap",
+      "method": "GET"
+    },
+    {
+      "path": "/flashcard/stats",
+      "method": "GET"
+    },
+    {
+      "path": "/exp",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/insights",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/insights",
+      "method": "GET"
+    },
+    {
+      "path": "/streak/heatmap",
+      "method": "GET"
+    },
+    {
+      "path": "/flashcard/stats",
+      "method": "GET"
+    },
+    {
+      "path": "/exp",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/insights",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/insights",
+      "method": "GET"
+    },
+    {
+      "path": "/streak/heatmap",
+      "method": "GET"
+    },
+    {
+      "path": "/flashcard/stats",
+      "method": "GET"
+    },
+    {
+      "path": "/exp",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/insights",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/insights",
+      "method": "GET"
+    },
+    {
+      "path": "/streak/heatmap",
+      "method": "GET"
+    },
+    {
+      "path": "/flashcard/stats",
+      "method": "GET"
+    },
+    {
+      "path": "/exp",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    }
+  ],
+  "limitations": "Synthetic empty API fixtures only. No production requests. WebGL disabled to exercise fallback. Does not prove backend persistence/auth."
+}

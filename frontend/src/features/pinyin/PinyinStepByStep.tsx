@@ -502,14 +502,16 @@ export const PinyinStepByStep: React.FC<Props> = ({ onGoToQuiz, onGoToTable }) =
                 setAudioWarning(null);
               }}
               title={s.title}
-              className={`h-2.5 rounded-full transition-all cursor-pointer ${
+              aria-label={`Chặng ${idx + 1}: ${s.title}`}
+              aria-current={idx === currentStepIndex ? 'step' : undefined}
+              className="flex h-6 min-w-6 cursor-pointer items-center justify-center"
+            ><span aria-hidden="true" className={`h-2.5 rounded-full transition-opacity motion-reduce:transition-none ${
                 idx === currentStepIndex
                   ? 'w-7 bg-cinnabar'
                   : idx < currentStepIndex
                   ? 'w-2.5 bg-cinnabar/40'
                   : 'w-2.5 bg-rule'
-              }`}
-            />
+              }`} /></button>
           ))}
         </div>
       </div>

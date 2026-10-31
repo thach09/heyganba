@@ -1,0 +1,1766 @@
+{
+  "audit_kind": "FINAL_FUNCTIONAL_DISPOSITION",
+  "main_sha": "96cba89748b41b719d574b100d7b3a697059513a",
+  "feature_sha": "9e8f3d789448c3d30e991bfd02de0f31785ffa1e",
+  "merge_base": "6169a015dd384ccaa085f0a89a1799035e240de7",
+  "comparison_counts": "4\t41",
+  "method": [
+    "git merge-base",
+    "full git log / diff-tree (not GitHub UI)",
+    "git cherry patch-equivalence",
+    "git range-diff",
+    "semantic source comparisons on runtime paths"
+  ],
+  "commits": [
+    {
+      "original_sha": "220fb2573bac470008f3eba1d57ce995351ed45d",
+      "subject": "fix(router): synchronize Smart Resume to /vocabulary?level=HSK and support fallback query params",
+      "intended_functional_contribution": "Target-level Smart Resume and compatible vocabulary query parameters",
+      "affected_source_files": [
+        "frontend/src/features/dashboard/DashboardView.tsx",
+        "frontend/src/features/flashcard/FlashcardView.tsx",
+        "frontend/tests/unit/v21-edtech-ux.test.tsx"
+      ],
+      "equivalent_functionality_on_main": [],
+      "patch_equivalent_to_main": false,
+      "final_tip_identical_files": [],
+      "risks_and_dependencies": {
+        "review": "Main dashboard lacks target selection and resume route. Final feature fixes NaN storage but new rounded/shadow/max-width panel violates DESIGN; adapt visual tokens/microcopy and test invalid storage.",
+        "required_historical_changes": [
+          "32cb6d6"
+        ]
+      },
+      "test_evidence": {
+        "historical_regression_files": [
+          "frontend/tests/unit/v21-edtech-ux.test.tsx"
+        ],
+        "current_execution": "NOT_RUN_BY_READ_ONLY_HISTORY_AUDITOR; integration owner must attach fresh batch results",
+        "review_method": "Full Git file lists, branch tip semantic comparison and commit patch inspection for runtime changes; historical report contents are not current test results"
+      },
+      "initial_disposition": "NEEDS_FIX",
+      "final_disposition": "FIXED_AND_TESTED",
+      "integrated_pr_or_commit": {
+        "pr": 51,
+        "commit": "6dc1141ba709a9a42eb2ad7bce32cd89f51e4e0a",
+        "note": "Selective functional integration, later repair commits and final squash PR are authoritative; not wholesale legacy branch merge."
+      },
+      "test_evidence_final": [
+        "Full backend H2/PG/bootstrap and frontend regression CI required before merge",
+        "independent-review.json",
+        "frontend/backend agent validation records"
+      ]
+    },
+    {
+      "original_sha": "de3143346053dacd357d0c41175f7f372a79f492",
+      "subject": "feat(vocabulary): add versioned academic content digest",
+      "intended_functional_contribution": "Standalone normalized versioned vocabulary academic digest",
+      "affected_source_files": [
+        "backend/src/main/java/com/heyganba/service/VocabularyContentDigest.java",
+        "backend/src/test/java/com/heyganba/service/VocabularyContentDigestTest.java",
+        "backend/src/test/java/com/heyganba/service/VocabularyDigestV1CompatibilityTest.java"
+      ],
+      "equivalent_functionality_on_main": [],
+      "patch_equivalent_to_main": false,
+      "final_tip_identical_files": [],
+      "risks_and_dependencies": {
+        "review": "Absent on main; not publication authorization. Include independent-build correction 84083bd.",
+        "required_historical_changes": [
+          "84083bd"
+        ]
+      },
+      "test_evidence": {
+        "historical_regression_files": [
+          "backend/src/test/java/com/heyganba/service/VocabularyContentDigestTest.java",
+          "backend/src/test/java/com/heyganba/service/VocabularyDigestV1CompatibilityTest.java"
+        ],
+        "current_execution": "NOT_RUN_BY_READ_ONLY_HISTORY_AUDITOR; integration owner must attach fresh batch results",
+        "review_method": "Full Git file lists, branch tip semantic comparison and commit patch inspection for runtime changes; historical report contents are not current test results"
+      },
+      "initial_disposition": "READY_TO_INTEGRATE",
+      "final_disposition": "FIXED_AND_TESTED",
+      "integrated_pr_or_commit": {
+        "pr": 50,
+        "commit": "13843f3bfa8d4e83023f70a4be028dd53b7cfc62",
+        "note": "Selective functional integration, later repair commits and final squash PR are authoritative; not wholesale legacy branch merge."
+      },
+      "test_evidence_final": [
+        "Full backend H2/PG/bootstrap and frontend regression CI required before merge",
+        "independent-review.json",
+        "frontend/backend agent validation records"
+      ]
+    },
+    {
+      "original_sha": "91209476ae8a527488d77177712d28ed5dd0346f",
+      "subject": "feat(security): add isolated signed evidence receipt verifier",
+      "intended_functional_contribution": "Ed25519 receipt verification with explicit trust, source policy, content/revision/identity binding",
+      "affected_source_files": [
+        "backend/src/main/java/com/heyganba/service/evidence/EvidenceVerificationContext.java",
+        "backend/src/main/java/com/heyganba/service/evidence/EvidenceVerificationOutcome.java",
+        "backend/src/main/java/com/heyganba/service/evidence/VocabularyEvidenceReceipt.java",
+        "backend/src/main/java/com/heyganba/service/evidence/VocabularyEvidenceReceiptVerifier.java",
+        "backend/src/test/java/com/heyganba/service/evidence/ReceiptFixtures.java",
+        "backend/src/test/java/com/heyganba/service/evidence/VocabularyEvidenceReceiptCryptoTest.java",
+        "backend/src/test/java/com/heyganba/service/evidence/VocabularyEvidenceReceiptGoldenVectorTest.java",
+        "backend/src/test/java/com/heyganba/service/evidence/VocabularyEvidenceReceiptStructureTest.java"
+      ],
+      "equivalent_functionality_on_main": [],
+      "patch_equivalent_to_main": false,
+      "final_tip_identical_files": [],
+      "risks_and_dependencies": {
+        "review": "Absent on main. Pure verifier does not verify source truth or grant reuse rights. Historical commit declares SR-01/SR-02 unresolved; active publication integration must fail closed until own catalog/rights configured.",
+        "required_historical_changes": [
+          "de31433",
+          "84083bd"
+        ]
+      },
+      "test_evidence": {
+        "historical_regression_files": [
+          "backend/src/test/java/com/heyganba/service/evidence/ReceiptFixtures.java",
+          "backend/src/test/java/com/heyganba/service/evidence/VocabularyEvidenceReceiptCryptoTest.java",
+          "backend/src/test/java/com/heyganba/service/evidence/VocabularyEvidenceReceiptGoldenVectorTest.java",
+          "backend/src/test/java/com/heyganba/service/evidence/VocabularyEvidenceReceiptStructureTest.java"
+        ],
+        "current_execution": "NOT_RUN_BY_READ_ONLY_HISTORY_AUDITOR; integration owner must attach fresh batch results",
+        "review_method": "Full Git file lists, branch tip semantic comparison and commit patch inspection for runtime changes; historical report contents are not current test results"
+      },
+      "initial_disposition": "READY_TO_INTEGRATE",
+      "final_disposition": "FIXED_AND_TESTED",
+      "integrated_pr_or_commit": {
+        "pr": 50,
+        "commit": "b4a1ffae1e47c088f2ed2bd3031fa569bc33cc43",
+        "note": "Selective functional integration, later repair commits and final squash PR are authoritative; not wholesale legacy branch merge."
+      },
+      "test_evidence_final": [
+        "Full backend H2/PG/bootstrap and frontend regression CI required before merge",
+        "independent-review.json",
+        "frontend/backend agent validation records"
+      ]
+    },
+    {
+      "original_sha": "9cecbbb608586707a51804fb03864c08ca22ff9f",
+      "subject": "build(frontend): bundle local Chinese and Vietnamese font assets",
+      "intended_functional_contribution": "Locally hosted Chinese and Vietnamese fonts with OFL notices",
+      "affected_source_files": [
+        "frontend/public/fonts/BeVietnamPro-400-rest.woff2",
+        "frontend/public/fonts/BeVietnamPro-400.woff2",
+        "frontend/public/fonts/BeVietnamPro-500-rest.woff2",
+        "frontend/public/fonts/BeVietnamPro-500.woff2",
+        "frontend/public/fonts/BeVietnamPro-600-rest.woff2",
+        "frontend/public/fonts/BeVietnamPro-600.woff2",
+        "frontend/public/fonts/BeVietnamPro-700-rest.woff2",
+        "frontend/public/fonts/BeVietnamPro-700.woff2",
+        "frontend/public/fonts/BeVietnamPro-OFL.txt",
+        "frontend/public/fonts/NotoSansSC-0.woff2",
+        "frontend/public/fonts/NotoSansSC-1.woff2",
+        "frontend/public/fonts/NotoSansSC-10.woff2",
+        "frontend/public/fonts/NotoSansSC-11.woff2",
+        "frontend/public/fonts/NotoSansSC-12.woff2",
+        "frontend/public/fonts/NotoSansSC-124.woff2",
+        "frontend/public/fonts/NotoSansSC-128.woff2",
+        "frontend/public/fonts/NotoSansSC-129.woff2",
+        "frontend/public/fonts/NotoSansSC-13.woff2",
+        "frontend/public/fonts/NotoSansSC-131.woff2",
+        "frontend/public/fonts/NotoSansSC-132.woff2",
+        "frontend/public/fonts/NotoSansSC-133.woff2",
+        "frontend/public/fonts/NotoSansSC-138.woff2",
+        "frontend/public/fonts/NotoSansSC-14.woff2",
+        "frontend/public/fonts/NotoSansSC-141.woff2",
+        "frontend/public/fonts/NotoSansSC-143.woff2",
+        "frontend/public/fonts/NotoSansSC-144.woff2",
+        "frontend/public/fonts/NotoSansSC-146.woff2",
+        "frontend/public/fonts/NotoSansSC-149.woff2",
+        "frontend/public/fonts/NotoSansSC-15.woff2",
+        "frontend/public/fonts/NotoSansSC-150.woff2",
+        "frontend/public/fonts/NotoSansSC-151.woff2",
+        "frontend/public/fonts/NotoSansSC-152.woff2",
+        "frontend/public/fonts/NotoSansSC-153.woff2",
+        "frontend/public/fonts/NotoSansSC-154.woff2",
+        "frontend/public/fonts/NotoSansSC-155.woff2",
+        "frontend/public/fonts/NotoSansSC-158.woff2",
+        "frontend/public/fonts/NotoSansSC-159.woff2",
+        "frontend/public/fonts/NotoSansSC-16.woff2",
+        "frontend/public/fonts/NotoSansSC-161.woff2",
+        "frontend/public/fonts/NotoSansSC-162.woff2",
+        "frontend/public/fonts/NotoSansSC-163.woff2",
+        "frontend/public/fonts/NotoSansSC-165.woff2",
+        "frontend/public/fonts/NotoSansSC-166.woff2",
+        "frontend/public/fonts/NotoSansSC-167.woff2",
+        "frontend/public/fonts/NotoSansSC-169.woff2",
+        "frontend/public/fonts/NotoSansSC-17.woff2",
+        "frontend/public/fonts/NotoSansSC-170.woff2",
+        "frontend/public/fonts/NotoSansSC-171.woff2",
+        "frontend/public/fonts/NotoSansSC-172.woff2",
+        "frontend/public/fonts/NotoSansSC-173.woff2",
+        "frontend/public/fonts/NotoSansSC-174.woff2",
+        "frontend/public/fonts/NotoSansSC-175.woff2",
+        "frontend/public/fonts/NotoSansSC-176.woff2",
+        "frontend/public/fonts/NotoSansSC-177.woff2",
+        "frontend/public/fonts/NotoSansSC-178.woff2",
+        "frontend/public/fonts/NotoSansSC-179.woff2",
+        "frontend/public/fonts/NotoSansSC-18.woff2",
+        "frontend/public/fonts/NotoSansSC-181.woff2",
+        "frontend/public/fonts/NotoSansSC-19.woff2",
+        "frontend/public/fonts/NotoSansSC-190.woff2",
+        "frontend/public/fonts/NotoSansSC-195.woff2",
+        "frontend/public/fonts/NotoSansSC-196.woff2",
+        "frontend/public/fonts/NotoSansSC-20.woff2",
+        "frontend/public/fonts/NotoSansSC-21.woff2",
+        "frontend/public/fonts/NotoSansSC-22.woff2",
+        "frontend/public/fonts/NotoSansSC-23.woff2",
+        "frontend/public/fonts/NotoSansSC-24.woff2",
+        "frontend/public/fonts/NotoSansSC-25.woff2",
+        "frontend/public/fonts/NotoSansSC-26.woff2",
+        "frontend/public/fonts/NotoSansSC-27.woff2",
+        "frontend/public/fonts/NotoSansSC-28.woff2",
+        "frontend/public/fonts/NotoSansSC-29.woff2",
+        "frontend/public/fonts/NotoSansSC-30.woff2",
+        "frontend/public/fonts/NotoSansSC-31.woff2",
+        "frontend/public/fonts/NotoSansSC-32.woff2",
+        "frontend/public/fonts/NotoSansSC-33.woff2",
+        "frontend/public/fonts/NotoSansSC-34.woff2",
+        "frontend/public/fonts/NotoSansSC-35.woff2",
+        "frontend/public/fonts/NotoSansSC-36.woff2",
+        "frontend/public/fonts/NotoSansSC-37.woff2",
+        "frontend/public/fonts/NotoSansSC-38.woff2",
+        "frontend/public/fonts/NotoSansSC-39.woff2",
+        "frontend/public/fonts/NotoSansSC-62.woff2",
+        "frontend/public/fonts/NotoSansSC-63.woff2",
+        "frontend/public/fonts/NotoSansSC-7.woff2",
+        "frontend/public/fonts/NotoSansSC-8.woff2",
+        "frontend/public/fonts/NotoSansSC-9.woff2",
+        "frontend/public/fonts/NotoSansSC-OFL.txt",
+        "frontend/public/fonts/NotoSansSC-pets.woff2",
+        "frontend/public/fonts/NotoSansSC-ui.woff2",
+        "frontend/public/fonts/NotoSerifSC-0.woff2",
+        "frontend/public/fonts/NotoSerifSC-1.woff2",
+        "frontend/public/fonts/NotoSerifSC-10.woff2",
+        "frontend/public/fonts/NotoSerifSC-11.woff2",
+        "frontend/public/fonts/NotoSerifSC-12.woff2",
+        "frontend/public/fonts/NotoSerifSC-124.woff2",
+        "frontend/public/fonts/NotoSerifSC-128.woff2",
+        "frontend/public/fonts/NotoSerifSC-129.woff2",
+        "frontend/public/fonts/NotoSerifSC-13.woff2",
+        "frontend/public/fonts/NotoSerifSC-131.woff2",
+        "frontend/public/fonts/NotoSerifSC-132.woff2",
+        "frontend/public/fonts/NotoSerifSC-133.woff2",
+        "frontend/public/fonts/NotoSerifSC-138.woff2",
+        "frontend/public/fonts/NotoSerifSC-14.woff2",
+        "frontend/public/fonts/NotoSerifSC-141.woff2",
+        "frontend/public/fonts/NotoSerifSC-143.woff2",
+        "frontend/public/fonts/NotoSerifSC-144.woff2",
+        "frontend/public/fonts/NotoSerifSC-146.woff2",
+        "frontend/public/fonts/NotoSerifSC-149.woff2",
+        "frontend/public/fonts/NotoSerifSC-15.woff2",
+        "frontend/public/fonts/NotoSerifSC-151.woff2",
+        "frontend/public/fonts/NotoSerifSC-152.woff2",
+        "frontend/public/fonts/NotoSerifSC-153.woff2",
+        "frontend/public/fonts/NotoSerifSC-154.woff2",
+        "frontend/public/fonts/NotoSerifSC-155.woff2",
+        "frontend/public/fonts/NotoSerifSC-158.woff2",
+        "frontend/public/fonts/NotoSerifSC-159.woff2",
+        "frontend/public/fonts/NotoSerifSC-16.woff2",
+        "frontend/public/fonts/NotoSerifSC-161.woff2",
+        "frontend/public/fonts/NotoSerifSC-162.woff2",
+        "frontend/public/fonts/NotoSerifSC-163.woff2",
+        "frontend/public/fonts/NotoSerifSC-165.woff2",
+        "frontend/public/fonts/NotoSerifSC-166.woff2",
+        "frontend/public/fonts/NotoSerifSC-167.woff2",
+        "frontend/public/fonts/NotoSerifSC-169.woff2",
+        "frontend/public/fonts/NotoSerifSC-17.woff2",
+        "frontend/public/fonts/NotoSerifSC-170.woff2",
+        "frontend/public/fonts/NotoSerifSC-171.woff2",
+        "frontend/public/fonts/NotoSerifSC-172.woff2",
+        "frontend/public/fonts/NotoSerifSC-173.woff2",
+        "frontend/public/fonts/NotoSerifSC-174.woff2",
+        "frontend/public/fonts/NotoSerifSC-175.woff2",
+        "frontend/public/fonts/NotoSerifSC-176.woff2",
+        "frontend/public/fonts/NotoSerifSC-177.woff2",
+        "frontend/public/fonts/NotoSerifSC-178.woff2",
+        "frontend/public/fonts/NotoSerifSC-179.woff2",
+        "frontend/public/fonts/NotoSerifSC-18.woff2",
+        "frontend/public/fonts/NotoSerifSC-181.woff2",
+        "frontend/public/fonts/NotoSerifSC-19.woff2",
+        "frontend/public/fonts/NotoSerifSC-190.woff2",
+        "frontend/public/fonts/NotoSerifSC-20.woff2",
+        "frontend/public/fonts/NotoSerifSC-21.woff2",
+        "frontend/public/fonts/NotoSerifSC-22.woff2",
+        "frontend/public/fonts/NotoSerifSC-23.woff2",
+        "frontend/public/fonts/NotoSerifSC-24.woff2",
+        "frontend/public/fonts/NotoSerifSC-25.woff2",
+        "frontend/public/fonts/NotoSerifSC-26.woff2",
+        "frontend/public/fonts/NotoSerifSC-27.woff2",
+        "frontend/public/fonts/NotoSerifSC-28.woff2",
+        "frontend/public/fonts/NotoSerifSC-29.woff2",
+        "frontend/public/fonts/NotoSerifSC-30.woff2",
+        "frontend/public/fonts/NotoSerifSC-31.woff2",
+        "frontend/public/fonts/NotoSerifSC-32.woff2",
+        "frontend/public/fonts/NotoSerifSC-33.woff2",
+        "frontend/public/fonts/NotoSerifSC-34.woff2",
+        "frontend/public/fonts/NotoSerifSC-35.woff2",
+        "frontend/public/fonts/NotoSerifSC-36.woff2",
+        "frontend/public/fonts/NotoSerifSC-37.woff2",
+        "frontend/public/fonts/NotoSerifSC-38.woff2",
+        "frontend/public/fonts/NotoSerifSC-39.woff2",
+        "frontend/public/fonts/NotoSerifSC-62.woff2",
+        "frontend/public/fonts/NotoSerifSC-63.woff2",
+        "frontend/public/fonts/NotoSerifSC-7.woff2",
+        "frontend/public/fonts/NotoSerifSC-8.woff2",
+        "frontend/public/fonts/NotoSerifSC-9.woff2",
+        "frontend/public/fonts/NotoSerifSC-OFL.txt",
+        "frontend/public/fonts/NotoSerifSC-pets.woff2",
+        "frontend/public/fonts/NotoSerifSC-ui.woff2",
+        "frontend/public/fonts/fonts.css",
+        "frontend/public/fonts/manifest.json",
+        "scripts/build-local-fonts.py"
+      ],
+      "equivalent_functionality_on_main": [],
+      "patch_equivalent_to_main": false,
+      "final_tip_identical_files": [],
+      "risks_and_dependencies": {
+        "review": "Asset-only checkpoint: main uses Google CDN, and commit does not wire HTML/CSS. Verify upstream hash/license, wire same-origin font CSS and measure loading; avoid shipping unused asset payload.",
+        "required_historical_changes": []
+      },
+      "test_evidence": {
+        "historical_regression_files": [],
+        "current_execution": "NOT_RUN_BY_READ_ONLY_HISTORY_AUDITOR; integration owner must attach fresh batch results",
+        "review_method": "Full Git file lists, branch tip semantic comparison and commit patch inspection for runtime changes; historical report contents are not current test results"
+      },
+      "initial_disposition": "NEEDS_FIX",
+      "final_disposition": "FIXED_AND_TESTED",
+      "integrated_pr_or_commit": {
+        "pr": 51,
+        "commit": "2962da21e90afe6d774f5a79ab8e4f8f297d37b7",
+        "note": "Selective functional integration, later repair commits and final squash PR are authoritative; not wholesale legacy branch merge."
+      },
+      "test_evidence_final": [
+        "Full backend H2/PG/bootstrap and frontend regression CI required before merge",
+        "independent-review.json",
+        "frontend/backend agent validation records"
+      ]
+    },
+    {
+      "original_sha": "af64ec50b20f3cd9bb17a496f173e21d0caa417c",
+      "subject": "fix(security): preserve rate-limit windows during cleanup",
+      "intended_functional_contribution": "Rate-limit windows survive cleanup",
+      "affected_source_files": [
+        "backend/src/main/java/com/heyganba/service/RateLimiterService.java",
+        "backend/src/test/java/com/heyganba/service/RateLimiterLifecycleTest.java"
+      ],
+      "equivalent_functionality_on_main": [
+        "d65f8df037d0d046ba9df76084fc27a7ac2e92b1"
+      ],
+      "patch_equivalent_to_main": true,
+      "final_tip_identical_files": [
+        "backend/src/main/java/com/heyganba/service/RateLimiterService.java",
+        "backend/src/test/java/com/heyganba/service/RateLimiterLifecycleTest.java"
+      ],
+      "risks_and_dependencies": {
+        "review": "git cherry reports exact patch-equivalence. PR46 squash d65f8df preserves same two-Java-file behavior. Do not reapply.",
+        "required_historical_changes": []
+      },
+      "test_evidence": {
+        "historical_regression_files": [
+          "backend/src/test/java/com/heyganba/service/RateLimiterLifecycleTest.java"
+        ],
+        "current_execution": "NOT_RUN_BY_READ_ONLY_HISTORY_AUDITOR; integration owner must attach fresh batch results",
+        "review_method": "Full Git file lists, branch tip semantic comparison and commit patch inspection for runtime changes; historical report contents are not current test results"
+      },
+      "initial_disposition": "ALREADY_IN_MAIN",
+      "final_disposition": "VERIFIED",
+      "integrated_pr_or_commit": {
+        "pr": 46,
+        "commit": "d65f8df037d0d046ba9df76084fc27a7ac2e92b1"
+      }
+    },
+    {
+      "original_sha": "7b08394bb1854510ef7bbc8a7385842b43d6ac70",
+      "subject": "fix(srs): enforce bounded in-memory cache and midnight expiry",
+      "intended_functional_contribution": "Bound SRS memory cache admission and expire exactly at study-zone midnight",
+      "affected_source_files": [
+        "backend/src/main/java/com/heyganba/service/srs/InMemorySrsDueCache.java",
+        "backend/src/test/java/com/heyganba/service/srs/FlashcardCacheMissFallbackTest.java",
+        "backend/src/test/java/com/heyganba/service/srs/InMemorySrsDueCacheLifecycleTest.java"
+      ],
+      "equivalent_functionality_on_main": [],
+      "patch_equivalent_to_main": false,
+      "final_tip_identical_files": [],
+      "risks_and_dependencies": {
+        "review": "Main uses unbounded ConcurrentHashMap without lifecycle capacity. Authoritative DB fallback remains on cache miss; integrate concurrency/capacity/timezone tests.",
+        "required_historical_changes": []
+      },
+      "test_evidence": {
+        "historical_regression_files": [
+          "backend/src/test/java/com/heyganba/service/srs/FlashcardCacheMissFallbackTest.java",
+          "backend/src/test/java/com/heyganba/service/srs/InMemorySrsDueCacheLifecycleTest.java"
+        ],
+        "current_execution": "NOT_RUN_BY_READ_ONLY_HISTORY_AUDITOR; integration owner must attach fresh batch results",
+        "review_method": "Full Git file lists, branch tip semantic comparison and commit patch inspection for runtime changes; historical report contents are not current test results"
+      },
+      "initial_disposition": "READY_TO_INTEGRATE",
+      "final_disposition": "FIXED_AND_TESTED",
+      "integrated_pr_or_commit": {
+        "pr": 50,
+        "commit": "4e2a143530f991070cf247b4b7cdac0c1bde382b",
+        "note": "Selective functional integration, later repair commits and final squash PR are authoritative; not wholesale legacy branch merge."
+      },
+      "test_evidence_final": [
+        "Full backend H2/PG/bootstrap and frontend regression CI required before merge",
+        "independent-review.json",
+        "frontend/backend agent validation records"
+      ]
+    },
+    {
+      "original_sha": "ab49788b80d285b774c64cd3f64b8ef5c369977b",
+      "subject": "fix(health): report backend readiness from actuator health",
+      "intended_functional_contribution": "Aggregate health readiness returns503 unless UP",
+      "affected_source_files": [
+        "backend/src/main/java/com/heyganba/controller/HealthController.java",
+        "backend/src/test/java/com/heyganba/HealthReadinessTest.java"
+      ],
+      "equivalent_functionality_on_main": [],
+      "patch_equivalent_to_main": false,
+      "final_tip_identical_files": [],
+      "risks_and_dependencies": {
+        "review": "Main unconditionally reports UP200. Rebrand returned service heyganba-backend to Jiayou. Need isolated PostgreSQL outage/recovery runtime verification beyond unit mock.",
+        "required_historical_changes": []
+      },
+      "test_evidence": {
+        "historical_regression_files": [
+          "backend/src/test/java/com/heyganba/HealthReadinessTest.java"
+        ],
+        "current_execution": "NOT_RUN_BY_READ_ONLY_HISTORY_AUDITOR; integration owner must attach fresh batch results",
+        "review_method": "Full Git file lists, branch tip semantic comparison and commit patch inspection for runtime changes; historical report contents are not current test results"
+      },
+      "initial_disposition": "READY_TO_INTEGRATE",
+      "final_disposition": "FIXED_AND_TESTED",
+      "integrated_pr_or_commit": {
+        "pr": 50,
+        "commit": "d191d8e4a0adba9b24ec54524e9d652e78eff786",
+        "note": "Selective functional integration, later repair commits and final squash PR are authoritative; not wholesale legacy branch merge."
+      },
+      "test_evidence_final": [
+        "Full backend H2/PG/bootstrap and frontend regression CI required before merge",
+        "independent-review.json",
+        "frontend/backend agent validation records"
+      ]
+    },
+    {
+      "original_sha": "8139667bdf53c0290a159dddc12cbf5844c73149",
+      "subject": "fix(speech): standardize Mandarin playback speeds and voice fallback",
+      "intended_functional_contribution": "Mandarin normal/slow speech rates and voice fallback",
+      "affected_source_files": [
+        "frontend/src/services/chineseSpeech.ts",
+        "frontend/tests/unit/chineseSpeech.test.ts",
+        "frontend/tests/unit/v21-edtech-ux.test.tsx"
+      ],
+      "equivalent_functionality_on_main": [],
+      "patch_equivalent_to_main": false,
+      "final_tip_identical_files": [],
+      "risks_and_dependencies": {
+        "review": "Main lacks normalized rate constants and tests. Browser voices/device playback remain platform dependent; no claim of native-pronunciation validation.",
+        "required_historical_changes": []
+      },
+      "test_evidence": {
+        "historical_regression_files": [
+          "frontend/tests/unit/chineseSpeech.test.ts",
+          "frontend/tests/unit/v21-edtech-ux.test.tsx"
+        ],
+        "current_execution": "NOT_RUN_BY_READ_ONLY_HISTORY_AUDITOR; integration owner must attach fresh batch results",
+        "review_method": "Full Git file lists, branch tip semantic comparison and commit patch inspection for runtime changes; historical report contents are not current test results"
+      },
+      "initial_disposition": "READY_TO_INTEGRATE",
+      "final_disposition": "FIXED_AND_TESTED",
+      "integrated_pr_or_commit": {
+        "pr": 51,
+        "commit": "c642ec368b23fe68e3d4d6dec9aad34b2346a965",
+        "note": "Selective functional integration, later repair commits and final squash PR are authoritative; not wholesale legacy branch merge."
+      },
+      "test_evidence_final": [
+        "Full backend H2/PG/bootstrap and frontend regression CI required before merge",
+        "independent-review.json",
+        "frontend/backend agent validation records"
+      ]
+    },
+    {
+      "original_sha": "7eab30581d5dfe8f7c020cdd7546a13a0ad9d5f4",
+      "subject": "fix(exam): harden active attempt checkpoint recovery",
+      "intended_functional_contribution": "Exam attempt freshness/legacy recovery and revision conflict detection",
+      "affected_source_files": [
+        "frontend/src/features/exam/activeAttempt.ts",
+        "frontend/tests/unit/exam-attempt-recovery.test.ts"
+      ],
+      "equivalent_functionality_on_main": [],
+      "patch_equivalent_to_main": false,
+      "final_tip_identical_files": [],
+      "risks_and_dependencies": {
+        "review": "Main lacks fresh checkpoint validation/revision guard. Cross-tab storage is best-effort, not atomic; logout gap repaired separately by2b2fbf3.",
+        "required_historical_changes": [
+          "2b2fbf3"
+        ]
+      },
+      "test_evidence": {
+        "historical_regression_files": [
+          "frontend/tests/unit/exam-attempt-recovery.test.ts"
+        ],
+        "current_execution": "NOT_RUN_BY_READ_ONLY_HISTORY_AUDITOR; integration owner must attach fresh batch results",
+        "review_method": "Full Git file lists, branch tip semantic comparison and commit patch inspection for runtime changes; historical report contents are not current test results"
+      },
+      "initial_disposition": "READY_TO_INTEGRATE",
+      "final_disposition": "FIXED_AND_TESTED",
+      "integrated_pr_or_commit": {
+        "pr": 51,
+        "commit": "e64d8410245b1dadb9384d2ebd49e3504b550e13",
+        "note": "Selective functional integration, later repair commits and final squash PR are authoritative; not wholesale legacy branch merge."
+      },
+      "test_evidence_final": [
+        "Full backend H2/PG/bootstrap and frontend regression CI required before merge",
+        "independent-review.json",
+        "frontend/backend agent validation records"
+      ]
+    },
+    {
+      "original_sha": "a23df6d84162cd47da376cea3285e79a7971ea7b",
+      "subject": "feat(exam): add normal and slow Mandarin audio controls",
+      "intended_functional_contribution": "Exam normal/slow Mandarin speech controls and unsupported feedback",
+      "affected_source_files": [
+        "frontend/src/features/exam/ExamView.tsx",
+        "frontend/tests/unit/exam-audio-controls.test.tsx"
+      ],
+      "equivalent_functionality_on_main": [],
+      "patch_equivalent_to_main": false,
+      "final_tip_identical_files": [],
+      "risks_and_dependencies": {
+        "review": "Main lacks explicit slow control. Client speech does not alter server answer/scoring; device audio acceptance remains separate.",
+        "required_historical_changes": [
+          "8139667"
+        ]
+      },
+      "test_evidence": {
+        "historical_regression_files": [
+          "frontend/tests/unit/exam-audio-controls.test.tsx"
+        ],
+        "current_execution": "NOT_RUN_BY_READ_ONLY_HISTORY_AUDITOR; integration owner must attach fresh batch results",
+        "review_method": "Full Git file lists, branch tip semantic comparison and commit patch inspection for runtime changes; historical report contents are not current test results"
+      },
+      "initial_disposition": "READY_TO_INTEGRATE",
+      "final_disposition": "FIXED_AND_TESTED",
+      "integrated_pr_or_commit": {
+        "pr": 51,
+        "commit": "6367fb71726ec74ebccca8235e38d043aaa75554",
+        "note": "Selective functional integration, later repair commits and final squash PR are authoritative; not wholesale legacy branch merge."
+      },
+      "test_evidence_final": [
+        "Full backend H2/PG/bootstrap and frontend regression CI required before merge",
+        "independent-review.json",
+        "frontend/backend agent validation records"
+      ]
+    },
+    {
+      "original_sha": "645160671ccefc0db4453f3d3d30bc69ea61655d",
+      "subject": "fix(exam): clarify internal practice content and scoring labels",
+      "intended_functional_contribution": "Internal-practice scoring labels replace implied official certification",
+      "affected_source_files": [
+        "frontend/src/features/exam/ExamView.tsx"
+      ],
+      "equivalent_functionality_on_main": [],
+      "patch_equivalent_to_main": false,
+      "final_tip_identical_files": [],
+      "risks_and_dependencies": {
+        "review": "Main UI implies broader HSK scoring. Copy-only clarity; not evidence of curriculum completeness.",
+        "required_historical_changes": []
+      },
+      "test_evidence": {
+        "historical_regression_files": [],
+        "current_execution": "NOT_RUN_BY_READ_ONLY_HISTORY_AUDITOR; integration owner must attach fresh batch results",
+        "review_method": "Full Git file lists, branch tip semantic comparison and commit patch inspection for runtime changes; historical report contents are not current test results"
+      },
+      "initial_disposition": "READY_TO_INTEGRATE",
+      "final_disposition": "FIXED_AND_TESTED",
+      "integrated_pr_or_commit": {
+        "pr": 51,
+        "commit": "67e4d1f2f0d94b17ae08f0ca919db14cec69304d",
+        "note": "Selective functional integration, later repair commits and final squash PR are authoritative; not wholesale legacy branch merge."
+      },
+      "test_evidence_final": [
+        "Full backend H2/PG/bootstrap and frontend regression CI required before merge",
+        "independent-review.json",
+        "frontend/backend agent validation records"
+      ]
+    },
+    {
+      "original_sha": "c0aab1246628f1e20667563345ae3f72352e3e7e",
+      "subject": "fix(app): recover backend health after reconnect",
+      "intended_functional_contribution": "Backend health reconnect/manual retry with cancellation cleanup",
+      "affected_source_files": [
+        "frontend/src/app/AppShell.tsx",
+        "frontend/tests/unit/app-shell-reconnect.test.tsx"
+      ],
+      "equivalent_functionality_on_main": [],
+      "patch_equivalent_to_main": false,
+      "final_tip_identical_files": [],
+      "risks_and_dependencies": {
+        "review": "Main shell uses one-shot health probe. Tests cover aborted stale probes/listener cleanup; no production API requests authorized.",
+        "required_historical_changes": [
+          "ab49788"
+        ]
+      },
+      "test_evidence": {
+        "historical_regression_files": [
+          "frontend/tests/unit/app-shell-reconnect.test.tsx"
+        ],
+        "current_execution": "NOT_RUN_BY_READ_ONLY_HISTORY_AUDITOR; integration owner must attach fresh batch results",
+        "review_method": "Full Git file lists, branch tip semantic comparison and commit patch inspection for runtime changes; historical report contents are not current test results"
+      },
+      "initial_disposition": "READY_TO_INTEGRATE",
+      "final_disposition": "FIXED_AND_TESTED",
+      "integrated_pr_or_commit": {
+        "pr": 51,
+        "commit": "85dc779c83c13e15444e726980c88e7f33db96e7",
+        "note": "Selective functional integration, later repair commits and final squash PR are authoritative; not wholesale legacy branch merge."
+      },
+      "test_evidence_final": [
+        "Full backend H2/PG/bootstrap and frontend regression CI required before merge",
+        "independent-review.json",
+        "frontend/backend agent validation records"
+      ]
+    },
+    {
+      "original_sha": "a5120912d54ed54b668b17e4ddefef0c7104acf3",
+      "subject": "fix(speech): stop Mandarin playback on navigation and account changes",
+      "intended_functional_contribution": "Cancel Mandarin speech on route/query/account change and unmount",
+      "affected_source_files": [
+        "frontend/src/app/AppShell.tsx",
+        "frontend/tests/unit/speech-lifecycle.test.tsx"
+      ],
+      "equivalent_functionality_on_main": [],
+      "patch_equivalent_to_main": false,
+      "final_tip_identical_files": [],
+      "risks_and_dependencies": {
+        "review": "Main lacks lifecycle cancellation. Keep playback across unrelated renders/health retries.",
+        "required_historical_changes": [
+          "8139667"
+        ]
+      },
+      "test_evidence": {
+        "historical_regression_files": [
+          "frontend/tests/unit/speech-lifecycle.test.tsx"
+        ],
+        "current_execution": "NOT_RUN_BY_READ_ONLY_HISTORY_AUDITOR; integration owner must attach fresh batch results",
+        "review_method": "Full Git file lists, branch tip semantic comparison and commit patch inspection for runtime changes; historical report contents are not current test results"
+      },
+      "initial_disposition": "READY_TO_INTEGRATE",
+      "final_disposition": "FIXED_AND_TESTED",
+      "integrated_pr_or_commit": {
+        "pr": 51,
+        "commit": "5b8d4490ce4292dbd6755200d57ecb9414783536",
+        "note": "Selective functional integration, later repair commits and final squash PR are authoritative; not wholesale legacy branch merge."
+      },
+      "test_evidence_final": [
+        "Full backend H2/PG/bootstrap and frontend regression CI required before merge",
+        "independent-review.json",
+        "frontend/backend agent validation records"
+      ]
+    },
+    {
+      "original_sha": "c74fd94bdd9fd884085cb092d5cee6d102c1c70e",
+      "subject": "fix(api): bound request and refresh deadlines without losing cancellation",
+      "intended_functional_contribution": "Bound API/refresh deadlines including response bodies and retain cancellation",
+      "affected_source_files": [
+        "frontend/src/lib/api/client.ts",
+        "frontend/tests/unit/api.test.ts"
+      ],
+      "equivalent_functionality_on_main": [],
+      "patch_equivalent_to_main": false,
+      "final_tip_identical_files": [],
+      "risks_and_dependencies": {
+        "review": "Main response-body/refresh waits can hang. Preserve caller signal and refresh/session generation ownership. Test stalled bodies/refresh and audio.",
+        "required_historical_changes": []
+      },
+      "test_evidence": {
+        "historical_regression_files": [
+          "frontend/tests/unit/api.test.ts"
+        ],
+        "current_execution": "NOT_RUN_BY_READ_ONLY_HISTORY_AUDITOR; integration owner must attach fresh batch results",
+        "review_method": "Full Git file lists, branch tip semantic comparison and commit patch inspection for runtime changes; historical report contents are not current test results"
+      },
+      "initial_disposition": "READY_TO_INTEGRATE",
+      "final_disposition": "FIXED_AND_TESTED",
+      "integrated_pr_or_commit": {
+        "pr": 51,
+        "commit": "d3645887253317eaed932979542d7cec5893acce",
+        "note": "Selective functional integration, later repair commits and final squash PR are authoritative; not wholesale legacy branch merge."
+      },
+      "test_evidence_final": [
+        "Full backend H2/PG/bootstrap and frontend regression CI required before merge",
+        "independent-review.json",
+        "frontend/backend agent validation records"
+      ]
+    },
+    {
+      "original_sha": "84f49f8dd4f936b36f5d4e5feb6214d8a65e52ee",
+      "subject": "fix(dictionary): resolve reading notes through published vocabulary identities",
+      "intended_functional_contribution": "Resolve notebook reading additions through published vocabulary identity",
+      "affected_source_files": [
+        "frontend/src/features/dictionary/DictionaryNotebookView.tsx",
+        "frontend/tests/unit/reading-notebook.test.tsx"
+      ],
+      "equivalent_functionality_on_main": [],
+      "patch_equivalent_to_main": false,
+      "final_tip_identical_files": [],
+      "risks_and_dependencies": {
+        "review": "Main reading-note action uses unsuitable identity directly. Reject ambiguity/unpublished vocabulary and preserve account-scoped notebook contract.",
+        "required_historical_changes": []
+      },
+      "test_evidence": {
+        "historical_regression_files": [
+          "frontend/tests/unit/reading-notebook.test.tsx"
+        ],
+        "current_execution": "NOT_RUN_BY_READ_ONLY_HISTORY_AUDITOR; integration owner must attach fresh batch results",
+        "review_method": "Full Git file lists, branch tip semantic comparison and commit patch inspection for runtime changes; historical report contents are not current test results"
+      },
+      "initial_disposition": "READY_TO_INTEGRATE",
+      "final_disposition": "FIXED_AND_TESTED",
+      "integrated_pr_or_commit": {
+        "pr": 51,
+        "commit": "fd9e5eadb4e7fae1e563d12462dacbb735298d76",
+        "note": "Selective functional integration, later repair commits and final squash PR are authoritative; not wholesale legacy branch merge."
+      },
+      "test_evidence_final": [
+        "Full backend H2/PG/bootstrap and frontend regression CI required before merge",
+        "independent-review.json",
+        "frontend/backend agent validation records"
+      ]
+    },
+    {
+      "original_sha": "5155f0e5600bb042110fcedba71e2ebf1f576773",
+      "subject": "fix(flashcard): recover lesson practice and distinguish retryable loading failures",
+      "intended_functional_contribution": "Lesson practice recovery and retryable/error/empty distinction",
+      "affected_source_files": [
+        "frontend/src/features/flashcard/FlashcardView.tsx",
+        "frontend/src/features/flashcard/lessonPracticeSession.ts",
+        "frontend/tests/unit/flashcard-lifecycle.test.tsx",
+        "frontend/tests/unit/flashcard-m22.test.tsx",
+        "frontend/tests/unit/lesson-quiz-recovery.test.tsx"
+      ],
+      "equivalent_functionality_on_main": [],
+      "patch_equivalent_to_main": false,
+      "final_tip_identical_files": [],
+      "risks_and_dependencies": {
+        "review": "Main flashcard loses reload state and conflates request failures. Account-bound session restoration must include subsequent logout revocation.",
+        "required_historical_changes": [
+          "2b2fbf3"
+        ]
+      },
+      "test_evidence": {
+        "historical_regression_files": [
+          "frontend/tests/unit/flashcard-lifecycle.test.tsx",
+          "frontend/tests/unit/flashcard-m22.test.tsx",
+          "frontend/tests/unit/lesson-quiz-recovery.test.tsx"
+        ],
+        "current_execution": "NOT_RUN_BY_READ_ONLY_HISTORY_AUDITOR; integration owner must attach fresh batch results",
+        "review_method": "Full Git file lists, branch tip semantic comparison and commit patch inspection for runtime changes; historical report contents are not current test results"
+      },
+      "initial_disposition": "READY_TO_INTEGRATE",
+      "final_disposition": "FIXED_AND_TESTED",
+      "integrated_pr_or_commit": {
+        "pr": 51,
+        "commit": "62f6eba28675fd3956cb1d5fb666eb4cdacd0a41",
+        "note": "Selective functional integration, later repair commits and final squash PR are authoritative; not wholesale legacy branch merge."
+      },
+      "test_evidence_final": [
+        "Full backend H2/PG/bootstrap and frontend regression CI required before merge",
+        "independent-review.json",
+        "frontend/backend agent validation records"
+      ]
+    },
+    {
+      "original_sha": "4e8135e74145ba8a04a4cb4c1e5bd153ec328ff8",
+      "subject": "fix(grammar): clear retry feedback and clarify selected practice groups",
+      "intended_functional_contribution": "Clear grammar retry feedback and label internal selected groups",
+      "affected_source_files": [
+        "frontend/src/features/grammar/GrammarView.tsx",
+        "frontend/tests/unit/grammar-hsk.test.tsx",
+        "frontend/tests/unit/qa-batch-b.test.tsx"
+      ],
+      "equivalent_functionality_on_main": [],
+      "patch_equivalent_to_main": false,
+      "final_tip_identical_files": [],
+      "risks_and_dependencies": {
+        "review": "Main retains stale feedback on retry. Keep unchanged grammar correctness/data and score.",
+        "required_historical_changes": []
+      },
+      "test_evidence": {
+        "historical_regression_files": [
+          "frontend/tests/unit/grammar-hsk.test.tsx",
+          "frontend/tests/unit/qa-batch-b.test.tsx"
+        ],
+        "current_execution": "NOT_RUN_BY_READ_ONLY_HISTORY_AUDITOR; integration owner must attach fresh batch results",
+        "review_method": "Full Git file lists, branch tip semantic comparison and commit patch inspection for runtime changes; historical report contents are not current test results"
+      },
+      "initial_disposition": "READY_TO_INTEGRATE",
+      "final_disposition": "FIXED_AND_TESTED",
+      "integrated_pr_or_commit": {
+        "pr": 51,
+        "commit": "465525f60b2bf851cac8f92f232c32de13d63b41",
+        "note": "Selective functional integration, later repair commits and final squash PR are authoritative; not wholesale legacy branch merge."
+      },
+      "test_evidence_final": [
+        "Full backend H2/PG/bootstrap and frontend regression CI required before merge",
+        "independent-review.json",
+        "frontend/backend agent validation records"
+      ]
+    },
+    {
+      "original_sha": "dc67347438bc661d235531893e4bfcba4d29c03d",
+      "subject": "fix(hanzi): require server content and cancel detached writing callbacks",
+      "intended_functional_contribution": "Require server-authorized Hanzi content and cancel detached writer callbacks",
+      "affected_source_files": [
+        "frontend/src/features/hanzi/HanziStationView.tsx",
+        "frontend/src/lib/hanziWriter.ts",
+        "frontend/tests/unit/hanzi-hsk.test.tsx"
+      ],
+      "equivalent_functionality_on_main": [],
+      "patch_equivalent_to_main": false,
+      "final_tip_identical_files": [],
+      "risks_and_dependencies": {
+        "review": "Main includes fallback sample-content path and pending asynchronous writer lifecycle risk. Remove fallback from learner runtime; fixture content only in tests.",
+        "required_historical_changes": []
+      },
+      "test_evidence": {
+        "historical_regression_files": [
+          "frontend/tests/unit/hanzi-hsk.test.tsx"
+        ],
+        "current_execution": "NOT_RUN_BY_READ_ONLY_HISTORY_AUDITOR; integration owner must attach fresh batch results",
+        "review_method": "Full Git file lists, branch tip semantic comparison and commit patch inspection for runtime changes; historical report contents are not current test results"
+      },
+      "initial_disposition": "READY_TO_INTEGRATE",
+      "final_disposition": "FIXED_AND_TESTED",
+      "integrated_pr_or_commit": {
+        "pr": 51,
+        "commit": "f7006f95d1b9386e993e3b9b1bce2746fcdcd03d",
+        "note": "Selective functional integration, later repair commits and final squash PR are authoritative; not wholesale legacy branch merge."
+      },
+      "test_evidence_final": [
+        "Full backend H2/PG/bootstrap and frontend regression CI required before merge",
+        "independent-review.json",
+        "frontend/backend agent validation records"
+      ]
+    },
+    {
+      "original_sha": "32cb6d68322d11e177fc35a59ac953ba6819ca18",
+      "subject": "fix(curriculum): clarify selected content without publishing unverified coverage",
+      "intended_functional_contribution": "Honest selected-curriculum labels and validated dashboard goal storage",
+      "affected_source_files": [
+        "frontend/src/features/dashboard/DashboardView.tsx",
+        "frontend/src/features/dashboard/HskRoadmap.tsx",
+        "frontend/src/features/dashboard/LearningInsights.tsx",
+        "frontend/src/features/pinyin/PinyinStationView.tsx",
+        "frontend/tests/unit/dashboard-target.test.tsx"
+      ],
+      "equivalent_functionality_on_main": [],
+      "patch_equivalent_to_main": false,
+      "final_tip_identical_files": [],
+      "risks_and_dependencies": {
+        "review": "Main lacks these clarified labels. Also repairs NaN from original goal selector. Do not publish corpus or assert HSK coverage.",
+        "required_historical_changes": [
+          "220fb25"
+        ]
+      },
+      "test_evidence": {
+        "historical_regression_files": [
+          "frontend/tests/unit/dashboard-target.test.tsx"
+        ],
+        "current_execution": "NOT_RUN_BY_READ_ONLY_HISTORY_AUDITOR; integration owner must attach fresh batch results",
+        "review_method": "Full Git file lists, branch tip semantic comparison and commit patch inspection for runtime changes; historical report contents are not current test results"
+      },
+      "initial_disposition": "READY_TO_INTEGRATE",
+      "final_disposition": "FIXED_AND_TESTED",
+      "integrated_pr_or_commit": {
+        "pr": 51,
+        "commit": "cf3169b087da3b8d4f8c25b00f48c1cede5c003d",
+        "note": "Selective functional integration, later repair commits and final squash PR are authoritative; not wholesale legacy branch merge."
+      },
+      "test_evidence_final": [
+        "Full backend H2/PG/bootstrap and frontend regression CI required before merge",
+        "independent-review.json",
+        "frontend/backend agent validation records"
+      ]
+    },
+    {
+      "original_sha": "6677856f5ed038ad913723007f5fd5975350ad5e",
+      "subject": "fix(companion): keep learning usable when WebGL is unavailable",
+      "intended_functional_contribution": "WebGL failure fallback without breaking learning shell",
+      "affected_source_files": [
+        "frontend/src/features/companion/three/Companion3DCanvas.tsx",
+        "frontend/tests/unit/companion-webgl.test.tsx"
+      ],
+      "equivalent_functionality_on_main": [],
+      "patch_equivalent_to_main": false,
+      "final_tip_identical_files": [],
+      "risks_and_dependencies": {
+        "review": "Main canvas context failure can propagate. Constructor/contextlost recovery tests required; no new heavy library.",
+        "required_historical_changes": []
+      },
+      "test_evidence": {
+        "historical_regression_files": [
+          "frontend/tests/unit/companion-webgl.test.tsx"
+        ],
+        "current_execution": "NOT_RUN_BY_READ_ONLY_HISTORY_AUDITOR; integration owner must attach fresh batch results",
+        "review_method": "Full Git file lists, branch tip semantic comparison and commit patch inspection for runtime changes; historical report contents are not current test results"
+      },
+      "initial_disposition": "READY_TO_INTEGRATE",
+      "final_disposition": "FIXED_AND_TESTED",
+      "integrated_pr_or_commit": {
+        "pr": 51,
+        "commit": "fc79f5ed7da71473c56a83edcf2cf81da79b24ad",
+        "note": "Selective functional integration, later repair commits and final squash PR are authoritative; not wholesale legacy branch merge."
+      },
+      "test_evidence_final": [
+        "Full backend H2/PG/bootstrap and frontend regression CI required before merge",
+        "independent-review.json",
+        "frontend/backend agent validation records"
+      ]
+    },
+    {
+      "original_sha": "eaf053b1cd28ea1db1e3d8de4db6f1c67430dd5a",
+      "subject": "fix(ui): keep the decorative lantern above learning headings",
+      "intended_functional_contribution": "Move decorative lantern above text headings",
+      "affected_source_files": [
+        "frontend/src/components/OrientalDecorBackground.tsx"
+      ],
+      "equivalent_functionality_on_main": [],
+      "patch_equivalent_to_main": false,
+      "final_tip_identical_files": [],
+      "risks_and_dependencies": {
+        "review": "Main decorative position overlaps heading. Screenshot both themes/viewports; do not add distracting motion.",
+        "required_historical_changes": []
+      },
+      "test_evidence": {
+        "historical_regression_files": [],
+        "current_execution": "NOT_RUN_BY_READ_ONLY_HISTORY_AUDITOR; integration owner must attach fresh batch results",
+        "review_method": "Full Git file lists, branch tip semantic comparison and commit patch inspection for runtime changes; historical report contents are not current test results"
+      },
+      "initial_disposition": "READY_TO_INTEGRATE",
+      "final_disposition": "FIXED_AND_TESTED",
+      "integrated_pr_or_commit": {
+        "pr": 51,
+        "commit": "12e579dce7c7ba8549e2aa8cac4503b63d8e9fc4",
+        "note": "Selective functional integration, later repair commits and final squash PR are authoritative; not wholesale legacy branch merge."
+      },
+      "test_evidence_final": [
+        "Full backend H2/PG/bootstrap and frontend regression CI required before merge",
+        "independent-review.json",
+        "frontend/backend agent validation records"
+      ]
+    },
+    {
+      "original_sha": "80b214215ec21a78106a6cfb79edbfa37e998127",
+      "subject": "fix(admin): associate content form controls with accessible labels",
+      "intended_functional_contribution": "Admin content controls have associated accessible labels",
+      "affected_source_files": [
+        "frontend/src/features/admin/AdminView.tsx"
+      ],
+      "equivalent_functionality_on_main": [],
+      "patch_equivalent_to_main": false,
+      "final_tip_identical_files": [],
+      "risks_and_dependencies": {
+        "review": "Main fields lack explicit htmlFor/id associations. Preserve admin limit/authorization and validation.",
+        "required_historical_changes": []
+      },
+      "test_evidence": {
+        "historical_regression_files": [],
+        "current_execution": "NOT_RUN_BY_READ_ONLY_HISTORY_AUDITOR; integration owner must attach fresh batch results",
+        "review_method": "Full Git file lists, branch tip semantic comparison and commit patch inspection for runtime changes; historical report contents are not current test results"
+      },
+      "initial_disposition": "READY_TO_INTEGRATE",
+      "final_disposition": "FIXED_AND_TESTED",
+      "integrated_pr_or_commit": {
+        "pr": 51,
+        "commit": "fa61fcc6cc77ed0cc44b7f2c2960d027c3d063b2",
+        "note": "Selective functional integration, later repair commits and final squash PR are authoritative; not wholesale legacy branch merge."
+      },
+      "test_evidence_final": [
+        "Full backend H2/PG/bootstrap and frontend regression CI required before merge",
+        "independent-review.json",
+        "frontend/backend agent validation records"
+      ]
+    },
+    {
+      "original_sha": "5af44d60473520dd0f0f86047849669f5ac90ac3",
+      "subject": "test(frontend): align semantic queries and fixtures with current learning views",
+      "intended_functional_contribution": "Semantic UI test queries/fixtures compatible with new views",
+      "affected_source_files": [
+        "frontend/tests/unit/curriculum-m6.test.tsx",
+        "frontend/tests/unit/v21-edtech-ux.test.tsx"
+      ],
+      "equivalent_functionality_on_main": [],
+      "patch_equivalent_to_main": false,
+      "final_tip_identical_files": [],
+      "risks_and_dependencies": {
+        "review": "Required test-only alignment for220fb25 and selected-content labels; must not suppress failed assertions.",
+        "required_historical_changes": [
+          "220fb25",
+          "32cb6d6"
+        ]
+      },
+      "test_evidence": {
+        "historical_regression_files": [
+          "frontend/tests/unit/curriculum-m6.test.tsx",
+          "frontend/tests/unit/v21-edtech-ux.test.tsx"
+        ],
+        "current_execution": "NOT_RUN_BY_READ_ONLY_HISTORY_AUDITOR; integration owner must attach fresh batch results",
+        "review_method": "Full Git file lists, branch tip semantic comparison and commit patch inspection for runtime changes; historical report contents are not current test results"
+      },
+      "initial_disposition": "READY_TO_INTEGRATE",
+      "final_disposition": "FIXED_AND_TESTED",
+      "integrated_pr_or_commit": {
+        "pr": 51,
+        "commit": "8a65932315293fd70012e45c4c8afdd6c244d732",
+        "note": "Selective functional integration, later repair commits and final squash PR are authoritative; not wholesale legacy branch merge."
+      },
+      "test_evidence_final": [
+        "Full backend H2/PG/bootstrap and frontend regression CI required before merge",
+        "independent-review.json",
+        "frontend/backend agent validation records"
+      ]
+    },
+    {
+      "original_sha": "fdcc4c28eadd61be8df7350fadce04e9023e8dd1",
+      "subject": "build(frontend): patch vulnerable Vite and browser test dependencies",
+      "intended_functional_contribution": "Older dependency lock-only security refresh",
+      "affected_source_files": [
+        "frontend/package-lock.json"
+      ],
+      "equivalent_functionality_on_main": [
+        "abda3822091c93032faf091d39adb24bb3cd3263"
+      ],
+      "patch_equivalent_to_main": false,
+      "final_tip_identical_files": [],
+      "risks_and_dependencies": {
+        "review": "PR47 updates supported direct dependencies and lock to newer secure graph. Never overwrite main lock with historical feature lock.",
+        "required_historical_changes": []
+      },
+      "test_evidence": {
+        "historical_regression_files": [],
+        "current_execution": "NOT_RUN_BY_READ_ONLY_HISTORY_AUDITOR; integration owner must attach fresh batch results",
+        "review_method": "Full Git file lists, branch tip semantic comparison and commit patch inspection for runtime changes; historical report contents are not current test results"
+      },
+      "initial_disposition": "SUPERSEDED",
+      "final_disposition": "SUPERSEDED",
+      "integrated_pr_or_commit": {
+        "pr": 47,
+        "commit": "abda3822091c93032faf091d39adb24bb3cd3263"
+      }
+    },
+    {
+      "original_sha": "fffcbc924fcbaeda45bf3d3097acc07013954faf",
+      "subject": "docs(qa): record isolated cleanup validation and held release blockers",
+      "intended_functional_contribution": "Historical isolated-cleanup QA report",
+      "affected_source_files": [
+        "docs/QA/autonomous-cleanup-2026-10-26.json",
+        "docs/QA/autonomous-cleanup-2026-10-26.md"
+      ],
+      "equivalent_functionality_on_main": [],
+      "patch_equivalent_to_main": false,
+      "final_tip_identical_files": [],
+      "risks_and_dependencies": {
+        "review": "Evidence documents prior dates/constraints, not current CI. Preserve archive reference; do not treat as live release gate.",
+        "required_historical_changes": []
+      },
+      "test_evidence": {
+        "historical_regression_files": [],
+        "current_execution": "NOT_RUN_BY_READ_ONLY_HISTORY_AUDITOR; integration owner must attach fresh batch results",
+        "review_method": "Full Git file lists, branch tip semantic comparison and commit patch inspection for runtime changes; historical report contents are not current test results"
+      },
+      "initial_disposition": "RESEARCH_ONLY",
+      "final_disposition": "RESEARCH_ONLY_RETAINED",
+      "integrated_pr_or_commit": null
+    },
+    {
+      "original_sha": "84083bdae0de0378b231dddc533d763fcc6f7ce3",
+      "subject": "fix(backend): restore independently buildable digest test graph",
+      "intended_functional_contribution": "Independent digest test graph and frozen historicalV1 codec",
+      "affected_source_files": [
+        "backend/src/main/java/com/heyganba/service/VocabularyContentDigest.java",
+        "backend/src/main/java/com/heyganba/service/VocabularyLegacyDigest.java",
+        "backend/src/test/java/com/heyganba/service/VocabularyDigestV1CompatibilityTest.java"
+      ],
+      "equivalent_functionality_on_main": [],
+      "patch_equivalent_to_main": false,
+      "final_tip_identical_files": [],
+      "risks_and_dependencies": {
+        "review": "Repairs de31433 implicit dependency on unpublished service. Preserve golden vectors and Unicode semantics.",
+        "required_historical_changes": [
+          "de31433"
+        ]
+      },
+      "test_evidence": {
+        "historical_regression_files": [
+          "backend/src/test/java/com/heyganba/service/VocabularyDigestV1CompatibilityTest.java"
+        ],
+        "current_execution": "NOT_RUN_BY_READ_ONLY_HISTORY_AUDITOR; integration owner must attach fresh batch results",
+        "review_method": "Full Git file lists, branch tip semantic comparison and commit patch inspection for runtime changes; historical report contents are not current test results"
+      },
+      "initial_disposition": "READY_TO_INTEGRATE",
+      "final_disposition": "FIXED_AND_TESTED",
+      "integrated_pr_or_commit": {
+        "pr": 50,
+        "commit": "3334379d13cb2db073b6830fefbf66ecfe4eeee7",
+        "note": "Selective functional integration, later repair commits and final squash PR are authoritative; not wholesale legacy branch merge."
+      },
+      "test_evidence_final": [
+        "Full backend H2/PG/bootstrap and frontend regression CI required before merge",
+        "independent-review.json",
+        "frontend/backend agent validation records"
+      ]
+    },
+    {
+      "original_sha": "2b2fbf379d3eef56226dc193a0dc21d1c7b0cd80",
+      "subject": "fix(session): revoke private learning recovery after confirmed logout",
+      "intended_functional_contribution": "Logout revokes account-bound learning recovery and stale writers",
+      "affected_source_files": [
+        "frontend/src/app/AuthProvider.tsx",
+        "frontend/src/features/exam/activeAttempt.ts",
+        "frontend/src/features/flashcard/lessonPracticeSession.ts",
+        "frontend/src/lib/api/client.ts",
+        "frontend/src/lib/learningRecovery.ts",
+        "frontend/tests/unit/api.test.ts",
+        "frontend/tests/unit/auth-recovery-privacy.test.tsx",
+        "frontend/tests/unit/exam-attempt-recovery.test.ts",
+        "frontend/tests/unit/learning-recovery-privacy.test.ts"
+      ],
+      "equivalent_functionality_on_main": [],
+      "patch_equivalent_to_main": false,
+      "final_tip_identical_files": [],
+      "risks_and_dependencies": {
+        "review": "Main logout lacks recovery revocation generations. Requires exam/lesson recovery batch and API delayed logout result ownership checks; browser storage not atomic.",
+        "required_historical_changes": [
+          "7eab305",
+          "5155f0e",
+          "c74fd94"
+        ]
+      },
+      "test_evidence": {
+        "historical_regression_files": [
+          "frontend/tests/unit/api.test.ts",
+          "frontend/tests/unit/auth-recovery-privacy.test.tsx",
+          "frontend/tests/unit/exam-attempt-recovery.test.ts",
+          "frontend/tests/unit/learning-recovery-privacy.test.ts"
+        ],
+        "current_execution": "NOT_RUN_BY_READ_ONLY_HISTORY_AUDITOR; integration owner must attach fresh batch results",
+        "review_method": "Full Git file lists, branch tip semantic comparison and commit patch inspection for runtime changes; historical report contents are not current test results"
+      },
+      "initial_disposition": "READY_TO_INTEGRATE",
+      "final_disposition": "FIXED_AND_TESTED",
+      "integrated_pr_or_commit": {
+        "pr": 51,
+        "commit": "4034d183fd4c9b7bd0252781b04ae0ec8bb44e23",
+        "note": "Selective functional integration, later repair commits and final squash PR are authoritative; not wholesale legacy branch merge."
+      },
+      "test_evidence_final": [
+        "Full backend H2/PG/bootstrap and frontend regression CI required before merge",
+        "independent-review.json",
+        "frontend/backend agent validation records"
+      ]
+    },
+    {
+      "original_sha": "0c0e755dee9df179322627ea7ae40505eb3885a3",
+      "subject": "fix(security): enforce trusted vocabulary publication proofs",
+      "intended_functional_contribution": "Trusted signed vocabulary publication/read proofs across APIs",
+      "affected_source_files": [
+        "backend/docs/vocabulary-publication.md",
+        "backend/src/main/java/com/heyganba/dto/kanji/KanjiResponse.java",
+        "backend/src/main/java/com/heyganba/repository/AuditLogRepository.java",
+        "backend/src/main/java/com/heyganba/repository/SrsReviewRepository.java",
+        "backend/src/main/java/com/heyganba/repository/VocabularyRepository.java",
+        "backend/src/main/java/com/heyganba/service/AdminContentService.java",
+        "backend/src/main/java/com/heyganba/service/ContentReviewStatusService.java",
+        "backend/src/main/java/com/heyganba/service/DictionaryService.java",
+        "backend/src/main/java/com/heyganba/service/ExamService.java",
+        "backend/src/main/java/com/heyganba/service/FlashcardService.java",
+        "backend/src/main/java/com/heyganba/service/KanjiService.java",
+        "backend/src/main/java/com/heyganba/service/LearningInsightsService.java",
+        "backend/src/main/java/com/heyganba/service/VocabNotebookService.java",
+        "backend/src/main/java/com/heyganba/service/VocabularyPublicationAuthority.java",
+        "backend/src/main/java/com/heyganba/service/VocabularyService.java",
+        "backend/src/test/java/com/heyganba/AdminContentServiceTest.java",
+        "backend/src/test/java/com/heyganba/ContentReviewStatusApiTest.java",
+        "backend/src/test/java/com/heyganba/DictionaryNotebookApiTest.java",
+        "backend/src/test/java/com/heyganba/VocabNotebookServiceTest.java",
+        "backend/src/test/java/com/heyganba/VocabularyPublicationApiTest.java",
+        "backend/src/test/java/com/heyganba/service/VocabularyPublicationAuthorityTest.java",
+        "backend/src/test/java/com/heyganba/service/srs/FlashcardCacheMissFallbackTest.java",
+        "backend/src/test/java/com/heyganba/support/ContentApiTestBase.java",
+        "backend/src/test/java/com/heyganba/support/PublicationCatalogFixture.java"
+      ],
+      "equivalent_functionality_on_main": [],
+      "patch_equivalent_to_main": false,
+      "final_tip_identical_files": [],
+      "risks_and_dependencies": {
+        "review": "Main has review-status checks only, not evidence receipts/rights. Integrate fail-closed catalog +all content API projections, preserving jiayou bootstrap noAPPROVED constraints; tests must use explicit trusted fixtures and verify no catalog denies.",
+        "required_historical_changes": [
+          "de31433",
+          "9120947",
+          "84083bd"
+        ]
+      },
+      "test_evidence": {
+        "historical_regression_files": [
+          "backend/src/test/java/com/heyganba/AdminContentServiceTest.java",
+          "backend/src/test/java/com/heyganba/ContentReviewStatusApiTest.java",
+          "backend/src/test/java/com/heyganba/DictionaryNotebookApiTest.java",
+          "backend/src/test/java/com/heyganba/VocabNotebookServiceTest.java",
+          "backend/src/test/java/com/heyganba/VocabularyPublicationApiTest.java",
+          "backend/src/test/java/com/heyganba/service/VocabularyPublicationAuthorityTest.java",
+          "backend/src/test/java/com/heyganba/service/srs/FlashcardCacheMissFallbackTest.java",
+          "backend/src/test/java/com/heyganba/support/ContentApiTestBase.java",
+          "backend/src/test/java/com/heyganba/support/PublicationCatalogFixture.java"
+        ],
+        "current_execution": "NOT_RUN_BY_READ_ONLY_HISTORY_AUDITOR; integration owner must attach fresh batch results",
+        "review_method": "Full Git file lists, branch tip semantic comparison and commit patch inspection for runtime changes; historical report contents are not current test results"
+      },
+      "initial_disposition": "NEEDS_FIX",
+      "final_disposition": "FIXED_AND_TESTED",
+      "integrated_pr_or_commit": {
+        "pr": 50,
+        "commit": "e001a404f7487a3df79d4d5130a14fc5fa108048",
+        "note": "Selective functional integration, later repair commits and final squash PR are authoritative; not wholesale legacy branch merge."
+      },
+      "test_evidence_final": [
+        "Full backend H2/PG/bootstrap and frontend regression CI required before merge",
+        "independent-review.json",
+        "frontend/backend agent validation records"
+      ]
+    },
+    {
+      "original_sha": "00cfef1e37688a81814288cb3274230fd8169a66",
+      "subject": "fix(legacy): isolate historical Japanese audit fixtures from runtime",
+      "intended_functional_contribution": "Remove legacy Japanese dictionary data from runtime and isolate historical test profile",
+      "affected_source_files": [
+        "backend/pom.xml",
+        "backend/src/legacy-japanese/README.md",
+        "backend/src/main/java/com/heyganba/service/AssistedDictionaryCuration.java",
+        "backend/src/main/java/com/heyganba/service/DictionaryCuration.java",
+        "backend/src/main/java/com/heyganba/service/DictionaryService.java",
+        "backend/src/main/resources/db/migration-staging/dictionary-coverage-pilot.json",
+        "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-a.tsv",
+        "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-b.metadata.json",
+        "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-b.tsv",
+        "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-c.metadata.json",
+        "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-c.tsv",
+        "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-d.metadata.json",
+        "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-d.tsv",
+        "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-e.metadata.json",
+        "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-e.tsv",
+        "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-f.metadata.json",
+        "backend/src/main/resources/db/migration-staging/vietnamese-assisted-batch-f.tsv",
+        "backend/src/main/resources/db/migration-staging/vietnamese-assisted-exclusions.tsv",
+        "backend/src/main/resources/dictionary/README.md",
+        "backend/src/main/resources/dictionary/assisted-ja-vi.tsv",
+        "backend/src/main/resources/dictionary/curated-ja-vi.tsv",
+        "backend/src/main/resources/dictionary/jmdict.tsv.gz",
+        "backend/src/main/resources/dictionary/snapshot.json",
+        "backend/src/test/java/com/heyganba/AssistedDictionaryCurationIntegrityTest.java",
+        "backend/src/test/java/com/heyganba/ChineseDictionaryBoundaryTest.java",
+        "backend/src/test/java/com/heyganba/DictionaryCandidateSelectionTest.java",
+        "backend/src/test/java/com/heyganba/DictionaryCoverageSearchTest.java",
+        "backend/src/test/java/com/heyganba/DictionaryCurationIntegrityTest.java",
+        "backend/src/test/java/com/heyganba/DictionaryNotebookApiTest.java",
+        "backend/src/test/java/com/heyganba/DictionaryPilotPostgresRehearsalTest.java",
+        "backend/src/test/java/com/heyganba/service/AssistedDictionaryCuration.java",
+        "backend/src/test/java/com/heyganba/service/DictionaryCuration.java",
+        "backend/tools/materialize-legacy-audit.py"
+      ],
+      "equivalent_functionality_on_main": [],
+      "patch_equivalent_to_main": false,
+      "final_tip_identical_files": [],
+      "risks_and_dependencies": {
+        "review": "Main still packages Japanese dictionary assets and test-only curation classes despite disabled catalog. Adapt explicit legacy profile guard to actual constructors; preserve historical fixtures through git/manifest and do not silently skip required Chinese tests.",
+        "required_historical_changes": [
+          "0c0e755"
+        ]
+      },
+      "test_evidence": {
+        "historical_regression_files": [
+          "backend/src/test/java/com/heyganba/AssistedDictionaryCurationIntegrityTest.java",
+          "backend/src/test/java/com/heyganba/ChineseDictionaryBoundaryTest.java",
+          "backend/src/test/java/com/heyganba/DictionaryCandidateSelectionTest.java",
+          "backend/src/test/java/com/heyganba/DictionaryCoverageSearchTest.java",
+          "backend/src/test/java/com/heyganba/DictionaryCurationIntegrityTest.java",
+          "backend/src/test/java/com/heyganba/DictionaryNotebookApiTest.java",
+          "backend/src/test/java/com/heyganba/DictionaryPilotPostgresRehearsalTest.java",
+          "backend/src/test/java/com/heyganba/service/AssistedDictionaryCuration.java",
+          "backend/src/test/java/com/heyganba/service/DictionaryCuration.java"
+        ],
+        "current_execution": "NOT_RUN_BY_READ_ONLY_HISTORY_AUDITOR; integration owner must attach fresh batch results",
+        "review_method": "Full Git file lists, branch tip semantic comparison and commit patch inspection for runtime changes; historical report contents are not current test results"
+      },
+      "initial_disposition": "NEEDS_FIX",
+      "final_disposition": "FIXED_AND_TESTED",
+      "integrated_pr_or_commit": {
+        "pr": 50,
+        "commit": "53bff52",
+        "note": "Adapted Maven runtime exclusion and test-only helpers; retained all source resource bytes and historical SQL."
+      },
+      "test_evidence_final": [
+        "Full backend H2/PG/bootstrap and frontend regression CI required before merge",
+        "independent-review.json",
+        "frontend/backend agent validation records"
+      ]
+    },
+    {
+      "original_sha": "44a673fda970f70c0b9de9f8f487fd446b60c21d",
+      "subject": "fix(build): pin controlled migrations and verify production recovery",
+      "intended_functional_contribution": "Historical controlled-release migration/build artifact configuration",
+      "affected_source_files": [
+        ".gitattributes",
+        ".github/workflows/ci.yml",
+        "backend/pom.xml",
+        "backend/src/main/java/com/heyganba/config/ReleaseMigrationConfiguration.java",
+        "backend/src/main/resources/application-prod.yml",
+        "backend/src/main/resources/application.yml",
+        "backend/src/main/resources/db/migration-release/V10__learning_insights_and_sentence_order.sql",
+        "backend/src/main/resources/db/migration-release/V11__align_optional_content_nullability.sql",
+        "backend/src/main/resources/db/migration-release/V12__performance_indexes_and_constraints.sql",
+        "backend/src/main/resources/db/migration-release/V13__vocabulary_provenance_review_gate.sql",
+        "backend/src/main/resources/db/migration-release/V14__web_cross_check_evidence_policy.sql",
+        "backend/src/main/resources/db/migration-release/V4__sample_lesson_greetings.sql",
+        "backend/src/main/resources/db/migration-release/V5__hsk1_thematic_curriculum_expansion.sql",
+        "backend/src/main/resources/db/migration-release/V6__hsk1_standard_course_grammar_and_exams.sql",
+        "backend/src/main/resources/db/migration-release/V7__hsk1_complete_150_vocab_and_hanzi_radicals.sql",
+        "backend/src/main/resources/db/migration-release/V8__hsk2_standard_course_and_approve_all_curriculum.sql",
+        "backend/src/main/resources/db/migration-release/V9__hsk1_to_hsk6_complete_curriculum_and_grammar.sql",
+        "backend/src/main/resources/db/migration-staging/V12__performance_indexes_and_constraints.sql",
+        "backend/src/main/resources/db/migration-staging/V13__vocabulary_provenance_review_gate.sql",
+        "backend/src/main/resources/db/migration-staging/V14__web_cross_check_evidence_policy.sql",
+        "backend/src/main/resources/db/release-migrations-manifest.json",
+        "backend/src/test/java/com/heyganba/FlywayLocationsConfigTest.java",
+        "backend/src/test/java/com/heyganba/PostgresSchemaStagingRehearsalTest.java",
+        "backend/src/test/java/com/heyganba/ProductionMigrationSafetyTest.java",
+        "backend/src/test/java/com/heyganba/config/ReleaseMigrationConfigurationTest.java",
+        "backend/src/test/resources/application-test.yml",
+        "scripts/audit-production-artifact.py"
+      ],
+      "equivalent_functionality_on_main": [
+        "96cba89748b41b719d574b100d7b3a697059513a"
+      ],
+      "patch_equivalent_to_main": false,
+      "final_tip_identical_files": [],
+      "risks_and_dependencies": {
+        "review": "Global FlywayMigrationStrategy conflicts with JiayouBootstrapConfiguration; old prod locations/CI/resources must not replace independent lineage. Split any useful artifact-audit checks; preserve historicalSQL checksums and read-onlyPR48 sourcepreflight.",
+        "required_historical_changes": []
+      },
+      "test_evidence": {
+        "historical_regression_files": [
+          "backend/src/test/java/com/heyganba/FlywayLocationsConfigTest.java",
+          "backend/src/test/java/com/heyganba/PostgresSchemaStagingRehearsalTest.java",
+          "backend/src/test/java/com/heyganba/ProductionMigrationSafetyTest.java",
+          "backend/src/test/java/com/heyganba/config/ReleaseMigrationConfigurationTest.java",
+          "backend/src/test/resources/application-test.yml"
+        ],
+        "current_execution": "NOT_RUN_BY_READ_ONLY_HISTORY_AUDITOR; integration owner must attach fresh batch results",
+        "review_method": "Full Git file lists, branch tip semantic comparison and commit patch inspection for runtime changes; historical report contents are not current test results"
+      },
+      "initial_disposition": "UNSAFE_OR_UNVERIFIED",
+      "final_disposition": "BLOCKED_WITH_EVIDENCE",
+      "integrated_pr_or_commit": null,
+      "separate_contributions": [
+        {
+          "behavior": "Global legacy migration strategy/CI release locations",
+          "classification": "UNSAFE_OR_UNVERIFIED",
+          "reason": "Conflicts with independent bootstrap migration strategy and lineage; do not import historical publicationSQL"
+        },
+        {
+          "behavior": "Artifact packaging audit approach",
+          "classification": "NEEDS_FIX",
+          "reason": "Adapt to Jiayou lineage and current jar identity if necessary; no oldresourcebundles"
+        },
+        {
+          "behavior": "Historical SQL checksums and release evidence",
+          "classification": "RESEARCH_ONLY",
+          "reason": "Retain historical evidence, not livecompatibilityproof"
+        }
+      ]
+    },
+    {
+      "original_sha": "a237807c34d4ffafc3da0bf6eff2d2acb8969110",
+      "subject": "docs(release): reconcile foundation gates and remaining blockers",
+      "intended_functional_contribution": "Historical release-foundation reconciliation",
+      "affected_source_files": [
+        "docs/QA/foundation-recovery-final.md",
+        "docs/QA/foundation-recovery-inventory.json",
+        "docs/QA/release-blockers.md"
+      ],
+      "equivalent_functionality_on_main": [],
+      "patch_equivalent_to_main": false,
+      "final_tip_identical_files": [],
+      "risks_and_dependencies": {
+        "review": "Past constraints/evidence only. Current independent bootstrap and provider isolation supersede release assumptions.",
+        "required_historical_changes": []
+      },
+      "test_evidence": {
+        "historical_regression_files": [],
+        "current_execution": "NOT_RUN_BY_READ_ONLY_HISTORY_AUDITOR; integration owner must attach fresh batch results",
+        "review_method": "Full Git file lists, branch tip semantic comparison and commit patch inspection for runtime changes; historical report contents are not current test results"
+      },
+      "initial_disposition": "RESEARCH_ONLY",
+      "final_disposition": "RESEARCH_ONLY_RETAINED",
+      "integrated_pr_or_commit": null
+    },
+    {
+      "original_sha": "005dc1948eb2c11bc0ec205c996b5886b7d202a4",
+      "subject": "feat(content): add auditable vocabulary research and verification pipeline",
+      "intended_functional_contribution": "Offline vocabulary verification/import-planning research pipeline",
+      "affected_source_files": [
+        ".github/workflows/ci.yml",
+        "docs/Content/automated-source-registry.md",
+        "docs/Content/vocabulary-auto-verification-manifest.jsonl",
+        "docs/Content/vocabulary-verification-policy.md",
+        "docs/QA/vocabulary-auto-verification-report.md",
+        "scripts/vocabulary_pipeline/.gitignore",
+        "scripts/vocabulary_pipeline/ReceiptCompatibilityProbe.java",
+        "scripts/vocabulary_pipeline/__init__.py",
+        "scripts/vocabulary_pipeline/__main__.py",
+        "scripts/vocabulary_pipeline/assessors.py",
+        "scripts/vocabulary_pipeline/engine.py",
+        "scripts/vocabulary_pipeline/export-vocabulary.sql",
+        "scripts/vocabulary_pipeline/ingestion.py",
+        "scripts/vocabulary_pipeline/source-registry.json",
+        "scripts/vocabulary_pipeline/test_engine.py",
+        "scripts/vocabulary_pipeline/test_postgres.py",
+        "scripts/vocabulary_pipeline/test_receipt.py"
+      ],
+      "equivalent_functionality_on_main": [],
+      "patch_equivalent_to_main": false,
+      "final_tip_identical_files": [],
+      "risks_and_dependencies": {
+        "review": "No production authority: external acquisitions/license/source registrations and private pending imports need separate reproducibility/security review. Do not activate CI transports/live DB ingestion automatically.",
+        "required_historical_changes": [
+          "0c0e755"
+        ]
+      },
+      "test_evidence": {
+        "historical_regression_files": [
+          "scripts/vocabulary_pipeline/test_engine.py",
+          "scripts/vocabulary_pipeline/test_postgres.py",
+          "scripts/vocabulary_pipeline/test_receipt.py"
+        ],
+        "current_execution": "NOT_RUN_BY_READ_ONLY_HISTORY_AUDITOR; integration owner must attach fresh batch results",
+        "review_method": "Full Git file lists, branch tip semantic comparison and commit patch inspection for runtime changes; historical report contents are not current test results"
+      },
+      "initial_disposition": "RESEARCH_ONLY",
+      "final_disposition": "RESEARCH_ONLY_RETAINED",
+      "integrated_pr_or_commit": null
+    },
+    {
+      "original_sha": "7ca452c60664a97acccc0cd43c15bc7ea63d1a53",
+      "subject": "fix(vocabulary): improve real evidence parsing and assessor safety",
+      "intended_functional_contribution": "Source pronunciation parsing/assessor transport/pending correction research",
+      "affected_source_files": [
+        "docs/Content/automated-source-registry.md",
+        "docs/Content/vocabulary-verification-policy.md",
+        "scripts/vocabulary_pipeline/ReceiptCompatibilityProbe.java",
+        "scripts/vocabulary_pipeline/__main__.py",
+        "scripts/vocabulary_pipeline/assessors.py",
+        "scripts/vocabulary_pipeline/engine.py",
+        "scripts/vocabulary_pipeline/ingestion.py",
+        "scripts/vocabulary_pipeline/source-registry.json",
+        "scripts/vocabulary_pipeline/test_postgres.py",
+        "scripts/vocabulary_pipeline/test_unblock.py"
+      ],
+      "equivalent_functionality_on_main": [],
+      "patch_equivalent_to_main": false,
+      "final_tip_identical_files": [],
+      "risks_and_dependencies": {
+        "review": "Useful tooling correction, not learner runtime. Assessor secrets/network transports and source/licensing independence need evidence; pending-only unchanged.",
+        "required_historical_changes": [
+          "005dc19"
+        ]
+      },
+      "test_evidence": {
+        "historical_regression_files": [
+          "scripts/vocabulary_pipeline/test_postgres.py",
+          "scripts/vocabulary_pipeline/test_unblock.py"
+        ],
+        "current_execution": "NOT_RUN_BY_READ_ONLY_HISTORY_AUDITOR; integration owner must attach fresh batch results",
+        "review_method": "Full Git file lists, branch tip semantic comparison and commit patch inspection for runtime changes; historical report contents are not current test results"
+      },
+      "initial_disposition": "RESEARCH_ONLY",
+      "final_disposition": "RESEARCH_ONLY_RETAINED",
+      "integrated_pr_or_commit": null
+    },
+    {
+      "original_sha": "a927cfb28f97aee6d4deabb42cfa9aa17a5d844a",
+      "subject": "docs(vocabulary): record real evidence audit and remaining blockers",
+      "intended_functional_contribution": "Historical real-evidence source audit and blockers",
+      "affected_source_files": [
+        "docs/Content/vocabulary-unblock-manifest-2026-10-29.jsonl",
+        "docs/QA/vocabulary-unblock-2026-10-29.md"
+      ],
+      "equivalent_functionality_on_main": [],
+      "patch_equivalent_to_main": false,
+      "final_tip_identical_files": [],
+      "risks_and_dependencies": {
+        "review": "Evidence report not adoption/publication authorization; keep recoverable.",
+        "required_historical_changes": []
+      },
+      "test_evidence": {
+        "historical_regression_files": [],
+        "current_execution": "NOT_RUN_BY_READ_ONLY_HISTORY_AUDITOR; integration owner must attach fresh batch results",
+        "review_method": "Full Git file lists, branch tip semantic comparison and commit patch inspection for runtime changes; historical report contents are not current test results"
+      },
+      "initial_disposition": "RESEARCH_ONLY",
+      "final_disposition": "RESEARCH_ONLY_RETAINED",
+      "integrated_pr_or_commit": null
+    },
+    {
+      "original_sha": "5e2a1b56d82d3619a380c3485818d8a7a6b5a39e",
+      "subject": "feat(vocabulary): isolate verified core with auditable draft quarantine",
+      "intended_functional_contribution": "Pending verified-core projection and hidden optional-draft quarantine",
+      "affected_source_files": [
+        ".github/workflows/ci.yml",
+        "backend/docs/vocabulary-publication.md",
+        "backend/src/test/java/com/heyganba/VocabularyPublicationApiTest.java",
+        "backend/src/test/java/com/heyganba/service/VocabularyPublicationAuthorityTest.java",
+        "docs/Content/automated-source-registry.md",
+        "docs/Content/vocabulary-verification-policy.md",
+        "scripts/vocabulary_pipeline/ReceiptCompatibilityProbe.java",
+        "scripts/vocabulary_pipeline/__main__.py",
+        "scripts/vocabulary_pipeline/assessors.py",
+        "scripts/vocabulary_pipeline/engine.py",
+        "scripts/vocabulary_pipeline/ingestion.py",
+        "scripts/vocabulary_pipeline/projection.py",
+        "scripts/vocabulary_pipeline/test_core_projection.py",
+        "scripts/vocabulary_pipeline/test_postgres.py",
+        "scripts/vocabulary_pipeline/test_receipt.py",
+        "scripts/vocabulary_pipeline/test_unblock.py"
+      ],
+      "equivalent_functionality_on_main": [],
+      "patch_equivalent_to_main": false,
+      "final_tip_identical_files": [],
+      "risks_and_dependencies": {
+        "review": "Tooling/research must not publish. Its added Java publication boundary regression tests are independently useful after authorityintegration, separate component classified READY_TO_INTEGRATE.",
+        "required_historical_changes": [
+          "005dc19",
+          "0c0e755"
+        ]
+      },
+      "test_evidence": {
+        "historical_regression_files": [
+          "backend/src/test/java/com/heyganba/VocabularyPublicationApiTest.java",
+          "backend/src/test/java/com/heyganba/service/VocabularyPublicationAuthorityTest.java",
+          "scripts/vocabulary_pipeline/test_core_projection.py",
+          "scripts/vocabulary_pipeline/test_postgres.py",
+          "scripts/vocabulary_pipeline/test_receipt.py",
+          "scripts/vocabulary_pipeline/test_unblock.py"
+        ],
+        "current_execution": "NOT_RUN_BY_READ_ONLY_HISTORY_AUDITOR; integration owner must attach fresh batch results",
+        "review_method": "Full Git file lists, branch tip semantic comparison and commit patch inspection for runtime changes; historical report contents are not current test results"
+      },
+      "initial_disposition": "RESEARCH_ONLY",
+      "final_disposition": "RESEARCH_ONLY_RETAINED",
+      "integrated_pr_or_commit": null,
+      "separate_contributions": [
+        {
+          "behavior": "Research core-projection/import pipeline",
+          "classification": "RESEARCH_ONLY"
+        },
+        {
+          "behavior": "API/authority tests reject projected-away optional unverified fields",
+          "classification": "READY_TO_INTEGRATE",
+          "affected_files": [
+            "backend/src/test/java/com/heyganba/VocabularyPublicationApiTest.java",
+            "backend/src/test/java/com/heyganba/service/VocabularyPublicationAuthorityTest.java"
+          ]
+        }
+      ],
+      "split_contributions": [
+        {
+          "part": "Supplemental draft withholding Java/API regressions",
+          "disposition": "FIXED_AND_TESTED",
+          "pr": 50,
+          "commit": "35e4c6cad5a363f5d40779d43439b95f7b3d9711"
+        },
+        {
+          "part": "Research pipeline, corpus projections and editorial claims",
+          "disposition": "RESEARCH_ONLY_RETAINED",
+          "reason": "No production publication authority/rights inferred; retained on feature/archive refs."
+        }
+      ]
+    },
+    {
+      "original_sha": "d42db32386b4f364441457d8f8f4d23cc411768f",
+      "subject": "docs(vocabulary): record core verification results and publication blockers",
+      "intended_functional_contribution": "Historical core verification report and remaining publication blockers",
+      "affected_source_files": [
+        "docs/Content/vocabulary-core-verification-manifest-2026-10-29.jsonl",
+        "docs/QA/vocabulary-core-verification-2026-10-29.md"
+      ],
+      "equivalent_functionality_on_main": [],
+      "patch_equivalent_to_main": false,
+      "final_tip_identical_files": [],
+      "risks_and_dependencies": {
+        "review": "Not evidence of rights clearance or learner publication. Preserve historical record.",
+        "required_historical_changes": []
+      },
+      "test_evidence": {
+        "historical_regression_files": [],
+        "current_execution": "NOT_RUN_BY_READ_ONLY_HISTORY_AUDITOR; integration owner must attach fresh batch results",
+        "review_method": "Full Git file lists, branch tip semantic comparison and commit patch inspection for runtime changes; historical report contents are not current test results"
+      },
+      "initial_disposition": "RESEARCH_ONLY",
+      "final_disposition": "RESEARCH_ONLY_RETAINED",
+      "integrated_pr_or_commit": null
+    },
+    {
+      "original_sha": "03862a551f645d5fb56beec286abc2bca342b758",
+      "subject": "feat(vocabulary): admit source-supported pending HSK1 research drafts",
+      "intended_functional_contribution": "Private pending HSK1 draft admission path and candidate evidence",
+      "affected_source_files": [
+        ".github/workflows/ci.yml",
+        "backend/docs/vocabulary-publication.md",
+        "docs/Content/automated-source-registry.md",
+        "docs/Content/hsk1-pending-candidates-2026-10-30.json",
+        "docs/Content/vocabulary-content-expansion-manifest-2026-10-30.jsonl",
+        "docs/Content/vocabulary-editorial-proposals-2026-10-30.json",
+        "docs/Content/vocabulary-verification-policy.md",
+        "scripts/vocabulary_pipeline/__main__.py",
+        "scripts/vocabulary_pipeline/ingestion.py",
+        "scripts/vocabulary_pipeline/test_pending_research.py",
+        "scripts/vocabulary_pipeline/test_postgres.py"
+      ],
+      "equivalent_functionality_on_main": [],
+      "patch_equivalent_to_main": false,
+      "final_tip_identical_files": [],
+      "risks_and_dependencies": {
+        "review": "No receipts/publication rights. Preserve private pending drafts; schemaDB ingestion not part of productrelease.",
+        "required_historical_changes": [
+          "005dc19"
+        ]
+      },
+      "test_evidence": {
+        "historical_regression_files": [
+          "scripts/vocabulary_pipeline/test_pending_research.py",
+          "scripts/vocabulary_pipeline/test_postgres.py"
+        ],
+        "current_execution": "NOT_RUN_BY_READ_ONLY_HISTORY_AUDITOR; integration owner must attach fresh batch results",
+        "review_method": "Full Git file lists, branch tip semantic comparison and commit patch inspection for runtime changes; historical report contents are not current test results"
+      },
+      "initial_disposition": "RESEARCH_ONLY",
+      "final_disposition": "RESEARCH_ONLY_RETAINED",
+      "integrated_pr_or_commit": null
+    },
+    {
+      "original_sha": "b12dcc4d12a060e2d6b1d6167c0e899ab7bd5af2",
+      "subject": "docs(qa): record real HSK1 pending ingestion and verification limits",
+      "intended_functional_contribution": "Historical pending-ingestion QA and verification limits",
+      "affected_source_files": [
+        "docs/QA/vocabulary-content-expansion-2026-10-30.json",
+        "docs/QA/vocabulary-content-expansion-2026-10-30.md"
+      ],
+      "equivalent_functionality_on_main": [],
+      "patch_equivalent_to_main": false,
+      "final_tip_identical_files": [],
+      "risks_and_dependencies": {
+        "review": "Past local fixture evidence, not production completion.",
+        "required_historical_changes": []
+      },
+      "test_evidence": {
+        "historical_regression_files": [],
+        "current_execution": "NOT_RUN_BY_READ_ONLY_HISTORY_AUDITOR; integration owner must attach fresh batch results",
+        "review_method": "Full Git file lists, branch tip semantic comparison and commit patch inspection for runtime changes; historical report contents are not current test results"
+      },
+      "initial_disposition": "RESEARCH_ONLY",
+      "final_disposition": "RESEARCH_ONLY_RETAINED",
+      "integrated_pr_or_commit": null
+    },
+    {
+      "original_sha": "486171e2951c08ddd4732d7ef1a134cfd8f6f569",
+      "subject": "docs(vocabulary): audit real Wikidata and COW evidence for 30 words",
+      "intended_functional_contribution": "Wikidata/COW source audit for30words",
+      "affected_source_files": [
+        "docs/Content/automated-source-registry.md",
+        "docs/Content/source-notices/cow-1.1-LICENSE.txt",
+        "docs/Content/vocabulary-real-evidence-matrix-2026-10-30.json",
+        "docs/QA/vocabulary-real-evidence-recovery-2026-10-30.json",
+        "docs/QA/vocabulary-real-evidence-recovery-2026-10-30.md"
+      ],
+      "equivalent_functionality_on_main": [],
+      "patch_equivalent_to_main": false,
+      "final_tip_identical_files": [],
+      "risks_and_dependencies": {
+        "review": "Independent lexical votes/licensing and Vietnamese field evidence remain constrained; no release promotion.",
+        "required_historical_changes": []
+      },
+      "test_evidence": {
+        "historical_regression_files": [],
+        "current_execution": "NOT_RUN_BY_READ_ONLY_HISTORY_AUDITOR; integration owner must attach fresh batch results",
+        "review_method": "Full Git file lists, branch tip semantic comparison and commit patch inspection for runtime changes; historical report contents are not current test results"
+      },
+      "initial_disposition": "RESEARCH_ONLY",
+      "final_disposition": "RESEARCH_ONLY_RETAINED",
+      "integrated_pr_or_commit": null
+    },
+    {
+      "original_sha": "7f6e7fbe89a4cfb57ca369b10df0acd09a90f658",
+      "subject": "feat(content-research): evaluate a bounded editorial learning pilot",
+      "intended_functional_contribution": "Two-seed bounded editorial pilot/offline closed-fixture evaluator",
+      "affected_source_files": [
+        "docs/Content/editorial-learning-pilot-2026-10-30.json",
+        "docs/Content/editorial-pilot-source-facts-2026-10-30.json",
+        "docs/Content/editorial-validation-policy-proposal-v0.1.md",
+        "docs/QA/editorial-learning-strategy-2026-10-30.md",
+        "docs/QA/editorial-pilot-benchmark-2026-10-30.json",
+        "docs/QA/editorial-pilot-results-2026-10-30.json",
+        "scripts/evaluate_editorial_pilot.py"
+      ],
+      "equivalent_functionality_on_main": [],
+      "patch_equivalent_to_main": false,
+      "final_tip_identical_files": [],
+      "risks_and_dependencies": {
+        "review": "Proposal-only workflow, not adopted semantic validator. No independent quality certification; preserve evaluationfixtures.",
+        "required_historical_changes": []
+      },
+      "test_evidence": {
+        "historical_regression_files": [],
+        "current_execution": "NOT_RUN_BY_READ_ONLY_HISTORY_AUDITOR; integration owner must attach fresh batch results",
+        "review_method": "Full Git file lists, branch tip semantic comparison and commit patch inspection for runtime changes; historical report contents are not current test results"
+      },
+      "initial_disposition": "RESEARCH_ONLY",
+      "final_disposition": "RESEARCH_ONLY_RETAINED",
+      "integrated_pr_or_commit": null
+    },
+    {
+      "original_sha": "9e8f3d789448c3d30e991bfd02de0f31785ffa1e",
+      "subject": "docs(content): freeze editorial pilot and evaluate ten HSK1 drafts",
+      "intended_functional_contribution": "Frozen two-seed pilot and10draft/36case transfer evaluation",
+      "affected_source_files": [
+        "docs/Content/editorial-learner-route-proposal-v0.1.md",
+        "docs/Content/hsk1-editorial-drafts-10-2026-10-30.json",
+        "docs/QA/editorial-hsk1-transfer-2026-10-30.md",
+        "docs/QA/editorial-hsk1-transfer-results-2026-10-30.json",
+        "docs/QA/editorial-untuned-transfer-set-2026-10-30.json",
+        "docs/QA/editorial-v01-freeze-2026-10-30.json"
+      ],
+      "equivalent_functionality_on_main": [],
+      "patch_equivalent_to_main": false,
+      "final_tip_identical_files": [],
+      "risks_and_dependencies": {
+        "review": "Historical report explicitly failed transfer gate, lacks blind/independent semantic ground truth and has CRLF pin reproducibility limitation. Keep nonpublicpending/archived; no authority changes.",
+        "required_historical_changes": [
+          "7f6e7fb"
+        ]
+      },
+      "test_evidence": {
+        "historical_regression_files": [],
+        "current_execution": "NOT_RUN_BY_READ_ONLY_HISTORY_AUDITOR; integration owner must attach fresh batch results",
+        "review_method": "Full Git file lists, branch tip semantic comparison and commit patch inspection for runtime changes; historical report contents are not current test results"
+      },
+      "initial_disposition": "RESEARCH_ONLY",
+      "final_disposition": "RESEARCH_ONLY_RETAINED",
+      "integrated_pr_or_commit": null
+    }
+  ],
+  "limitation": "Initial qualification, not a claim any proposed change passed final integration gates. No source or refs mutated.",
+  "candidate_source_sha": "243fe1f2abe79fdfd9ae3aa7143d6f54cbf26186"
+}

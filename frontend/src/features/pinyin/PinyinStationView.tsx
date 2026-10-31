@@ -69,9 +69,9 @@ export const PinyinStationView: React.FC = () => {
         <div className="flex items-center gap-2">
           <ShieldCheck size={16} className="text-jade-ink shrink-0" />
           <div>
-            <span className="font-bold text-jade-ink">Giáo trình Ngữ âm: {PINYIN_METADATA.reviewStatus}</span>
+            <span className="font-bold text-jade-ink">Pinyin · Tham chiếu Đề án Hán ngữ 1958</span>
             <span className="text-jade-ink block sm:inline sm:ml-2">
-              (Chuẩn Đề án Pinyin Hán ngữ 1958 · Mở toàn bộ cho người học)
+              (Phần giải thích và ví dụ cần thẩm định học thuật độc lập)
             </span>
           </div>
         </div>
@@ -140,7 +140,7 @@ export const PinyinStationView: React.FC = () => {
             <div>
               <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-cinnabar-ink">
                 <span className="inline-block h-2 w-2 rounded-full bg-cinnabar" />
-                Trạm 1 · 拼音与发音 · Pinyin & Phát âm · [Giáo trình Chuẩn HSK]
+                Trạm 1 · 拼音与发音 · Pinyin & Phát âm · [Nội dung chọn lọc]
               </div>
               <h1 className="mt-1 font-serif text-3xl font-bold tracking-tight text-fg">
                 Pinyin & Phát âm

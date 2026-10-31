@@ -1,0 +1,38 @@
+[
+  {
+    "family": "NotoSerifSC",
+    "weight": null,
+    "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/notoserifsc/NotoSerifSC%5Bwght%5D.ttf",
+    "sha256_matches": true
+  },
+  {
+    "family": "NotoSansSC",
+    "weight": null,
+    "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/notosanssc/NotoSansSC%5Bwght%5D.ttf",
+    "sha256_matches": true
+  },
+  {
+    "family": "Be Vietnam Pro",
+    "weight": 400,
+    "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/bevietnampro/BeVietnamPro-Regular.ttf",
+    "sha256_matches": true
+  },
+  {
+    "family": "Be Vietnam Pro",
+    "weight": 500,
+    "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/bevietnampro/BeVietnamPro-Medium.ttf",
+    "sha256_matches": true
+  },
+  {
+    "family": "Be Vietnam Pro",
+    "weight": 600,
+    "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/bevietnampro/BeVietnamPro-SemiBold.ttf",
+    "sha256_matches": true
+  },
+  {
+    "family": "Be Vietnam Pro",
+    "weight": 700,
+    "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/bevietnampro/BeVietnamPro-Bold.ttf",
+    "sha256_matches": true
+  }
+]

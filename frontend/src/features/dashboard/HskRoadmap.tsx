@@ -4,12 +4,12 @@ import { OrientalCard } from '../../components/OrientalCard';
 const stages = [
   { tag: 'Chặng 1 · 拼音入门', title: 'Nhập môn Ngữ âm', subtitle: 'Pinyin & Thanh điệu',
     description: 'Làm quen âm đọc, thanh điệu và luyện phát âm trước khi học từ.', levels: [] },
-  { tag: 'Chặng 2 · 初级', title: 'Sơ cấp HSK 1 – HSK 2', subtitle: 'Nền tảng giao tiếp · Thang 200đ',
-    description: 'Học từ theo chủ đề, chữ Hán và các mẫu câu giao tiếp hằng ngày.', levels: [1, 2] },
-  { tag: 'Chặng 3 · 中级', title: 'Trung cấp HSK 3 – HSK 4', subtitle: 'Đời sống & Công việc · Thang 300đ',
-    description: 'Mở rộng cách diễn đạt, đọc hiểu và luyện cấu trúc trong ngữ cảnh.', levels: [3, 4] },
-  { tag: 'Chặng 4 · 高级', title: 'Cao cấp & Tinh thông HSK 5 – HSK 6', subtitle: 'Thành ngữ & Học thuật · Thang 300đ',
-    description: 'Luyện lập luận, văn viết, thành ngữ và làm bài thi thử theo cấp độ.', levels: [5, 6] },
+  { tag: 'Chặng 2 · 初级', title: 'HSK 1 · Nội dung chọn lọc', subtitle: 'Nhóm học liệu nội bộ',
+    description: 'Học liệu hiện có là nhóm nội bộ chọn lọc, đang được bổ sung và chưa bao phủ toàn cấp.', levels: [1] },
+  { tag: 'Chặng 3 · 初级', title: 'HSK 2 · Nội dung chọn lọc', subtitle: 'Nhóm học liệu nội bộ',
+    description: 'Học liệu hiện có là nhóm nội bộ chọn lọc, đang được bổ sung và chưa bao phủ toàn cấp.', levels: [2] },
+  { tag: 'Chặng 4 · 中高级', title: 'HSK 3–6 · Đang bổ sung', subtitle: 'Bộ học liệu chọn lọc',
+    description: 'Các nhóm bài học là tuyển chọn nội bộ, đang được bổ sung và chưa hoàn chỉnh.', levels: [3, 4, 5, 6] },
 ];
 
 const linkClass = 'inline-flex min-w-0 items-center justify-center border border-rule-strong px-3 py-2 text-center text-[12.5px] leading-relaxed text-fg-60 hover:bg-fg hover:text-bg';
@@ -17,8 +17,9 @@ const linkClass = 'inline-flex min-w-0 items-center justify-center border border
 export function HskRoadmap() {
   return (
     <section className="mt-12 min-w-0" aria-labelledby="hsk-roadmap-title">
-      <h2 id="hsk-roadmap-title" className="text-[24px] font-semibold leading-relaxed text-fg">Bản đồ Lộ trình Chinh phục HSK</h2>
-      <p className="mt-2 text-[13.5px] leading-relaxed text-fg-60">Từ Pinyin đến HSK 6 · Từ vựng, ngữ pháp, chữ Hán, đọc hiểu và thi thử.</p>
+      <h2 id="hsk-roadmap-title" className="text-[24px] font-semibold leading-relaxed text-fg">Lộ trình học tiếng Trung theo cấp</h2>
+      <p className="mt-2 text-[13.5px] leading-relaxed text-fg-60">HSK 1–6 · Học liệu chọn lọc, đang bổ sung.</p>
+      <p className="mt-2 text-[12.5px] leading-relaxed text-fg-60">Nhóm bài học là phân nhóm nội bộ, không xác nhận độ phủ chương trình HSK chính thức.</p>
       <div data-hsk-roadmap className="mt-6 grid min-w-0 grid-cols-1 gap-7 md:grid-cols-2 xl:grid-cols-4">
         {stages.map((stage, index) => (
           <OrientalCard key={stage.tag} tag={stage.tag} className="flex min-w-0 flex-col">
@@ -27,7 +28,7 @@ export function HskRoadmap() {
             <p className="mt-4 text-[13.5px] leading-relaxed text-fg-60">{stage.description}</p>
             <div className="mt-auto flex flex-col gap-2 pt-7">
               {index === 0 && <Link className={linkClass} to="/pinyin">Vào Trạm Pinyin →</Link>}
-              {stage.levels.map(level => <Link key={level} className={linkClass} to={`/vocabulary?level=HSK${level}`}>Học từ vựng HSK {level} →</Link>)}
+              {stage.levels.map(level => <Link key={level} className={linkClass} to={`/vocabulary?level=HSK${level}`}>Học nhóm chọn lọc {level} →</Link>)}
               {index === 3 && <Link className={linkClass} to="/exam">Vào phòng Thi thử HSK →</Link>}
             </div>
           </OrientalCard>

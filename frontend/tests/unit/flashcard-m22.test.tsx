@@ -163,8 +163,9 @@ describe('Milestone M2.2 - Thematic Curriculum & Flashcard Features', () => {
     );
 
     expect(
-      await screen.findByText(/Từ vựng HSK 1–6 · Nội dung đã duyệt/)
+      await screen.findByText(/Từ vựng cấp 1–6 · Giáo trình nội bộ/)
     ).toBeInTheDocument();
+    expect(screen.getByText(/Chỉ nội dung đã duyệt được mở cho người học/)).toBeInTheDocument();
 
     expect(screen.getByText(/Trạm 2 · 词汇与记忆 · Từ vựng & Sổ từ · \[M2.2 Hoạt động thật\]/)).toBeInTheDocument();
   });
@@ -184,10 +185,10 @@ describe('Milestone M2.2 - Thematic Curriculum & Flashcard Features', () => {
 
     // Check milestone badge differentiation
     expect(screen.getAllByText('Nhập môn').length).toBeGreaterThan(0);
-    expect(screen.getAllByText('HSK 1').length).toBeGreaterThanOrEqual(3);
+    expect(screen.getAllByText('Nhóm chọn lọc 1').length).toBeGreaterThanOrEqual(3);
 
     // Filter by HSK 1
-    const hsk1FilterButton = screen.getByRole('button', { name: /HSK 1 \(3\)/ });
+    const hsk1FilterButton = screen.getByRole('button', { name: /Nhóm chọn lọc 1 \(3\)/ });
     fireEvent.click(hsk1FilterButton);
 
     // "Chào hỏi cơ bản" (Nhập môn) should no longer be displayed
@@ -275,7 +276,7 @@ describe('Milestone M2.2 - Thematic Curriculum & Flashcard Features', () => {
     expect(screen.getByText(/Điểm: 0/)).toBeInTheDocument();
 
     // Check if input or multiple choice is rendered
-    const pinyinInput = screen.queryByPlaceholderText(/Ví dụ: ni3 hao3 hoặc nǐ hǎo/);
+    const pinyinInput = screen.queryByRole('textbox', { name: /^Nhập Pinyin/ });
     if (pinyinInput) {
       fireEvent.change(pinyinInput, { target: { value: 'ba4ba' } });
       const submitBtn = screen.getByRole('button', { name: 'Xác nhận đáp án' });

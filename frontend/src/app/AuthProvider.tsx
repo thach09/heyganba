@@ -5,6 +5,7 @@ import { AuthContext } from './useAuth';
 import { useNavigate } from 'react-router-dom';
 import { clearTokens, getSavedUser, invalidateTabSession, saveUser } from '../lib/api/session';
 import { logoutApi } from '../lib/api/client';
+import { handleRecoveryRevocation, revokeLearningRecovery } from '../lib/learningRecovery';
 import type { AuthResponse } from '../lib/api/types';
 import { AuthModal } from '../features/auth/AuthModal';
 import { ChangePasswordModal } from '../features/auth/ChangePasswordModal';
@@ -28,9 +29,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       });
     };
     window.addEventListener('storage', reconcile);
+    window.addEventListener('storage', handleRecoveryRevocation);
     window.addEventListener('heyganba:session-changed', reconcile);
     return () => {
       window.removeEventListener('storage', reconcile);
+      window.removeEventListener('storage', handleRecoveryRevocation);
       window.removeEventListener('heyganba:session-changed', reconcile);
     };
   }, [user?.userId]);
@@ -46,22 +49,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const logout = async () => {
-    if (!await logoutApi()) {
+    const owner = user?.userId;
+    const success = await logoutApi();
+    if (getSavedUser()?.userId !== owner) return;
+    if (!success) {
       setNotice('Chưa đăng xuất được khỏi máy chủ. Vui lòng kiểm tra mạng rồi thử lại.');
       return;
     }
+    if (owner) revokeLearningRecovery(owner);
     clearTokens();
     setUser(null);
     setPasswordOpen(false);
     setNotice('');
     navigate('/');
   };
-  const updateProfile = (profile: AuthResponse) => { saveUser(profile); setUser(profile); };
+  const updateProfile = (profile: AuthResponse) => {
+    if (user && profile.userId !== user.userId) revokeLearningRecovery(user.userId);
+    saveUser(profile); setUser(profile);
+  };
 
   return <AuthContext.Provider value={{ user, requireLogin: () => setAuthOpen(true), logout,
     changePassword: () => setPasswordOpen(true), updateProfile }}>
     <Fragment key={user?.userId ?? 'guest'}>{children}</Fragment>
     {passwordOpen && user && <ChangePasswordModal onClose={() => setPasswordOpen(false)} onChanged={() => {
+      revokeLearningRecovery(user.userId);
       setPasswordOpen(false); setUser(null);
       setNotice('Đã đổi mật khẩu. Vui lòng đăng nhập lại bằng mật khẩu mới.'); setAuthOpen(true);
     }} />}

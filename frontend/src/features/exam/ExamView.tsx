@@ -16,7 +16,7 @@ import { MascotBadge } from '../../components/MascotBadge';
 import { RedSealStamp } from '../../components/RedSealStamp';
 import { updateClassCode } from '../account/api';
 import type { AuthResponse } from '../../lib/api/types';
-import { isChineseSpeechSupported, speakChinese } from '../../services/chineseSpeech';
+import { speakChinese } from '../../services/chineseSpeech';
 import { Modal } from '../../components/Modal';
 import { learningKeyboardBlocked } from '../../lib/learningKeyboard';
 
@@ -232,14 +232,25 @@ export const ExamView: React.FC = () => {
   };
 
   /** Play question audio via browser Mandarin TTS */
-  const playQuestionAudio = (question: ExamQuestion, event: React.MouseEvent) => {
+  const playQuestionAudio = (question: ExamQuestion, event: React.MouseEvent, slow = false) => {
     event.stopPropagation();
     const text = question.audioText ?? (question as unknown as { audioPrompt?: string }).audioPrompt ?? question.questionText;
-    if (isChineseSpeechSupported()) {
-      speakChinese(text);
-    } else {
-      setClassMessage('Trình duyệt không hỗ trợ đọc Quan thoại tiếng Trung (Web Speech API).');
-    }
+    const failed = (message: string) => {
+      setFeedback({
+        type: 'error',
+        title: 'Chưa phát được âm thanh',
+        message,
+      });
+    };
+    setFeedback(null);
+    const status = speakChinese(text, { slow, onError: error => {
+      // Starting another utterance intentionally cancels the previous one.
+      if (['canceled', 'interrupted'].includes((error as { error?: string })?.error ?? '')) return;
+      failed('Chưa phát được âm thanh. Bấm nghe để thử lại.');
+    } });
+    if (status === 'unsupported') failed('Trình duyệt chưa hỗ trợ đọc tiếng Trung. Hãy thử trình duyệt khác.');
+    else if (status === 'no-voice') failed('Thiết bị chưa có giọng Quan thoại. Hãy cài giọng tiếng Trung rồi thử lại.');
+    else if (status === 'error') failed('Chưa phát được âm thanh. Bấm nghe để thử lại.');
   };
 
   const startExam = async () => {
@@ -380,7 +391,7 @@ export const ExamView: React.FC = () => {
       <div className="mx-auto flex w-full max-w-[560px] flex-col items-center pt-16 text-center">
         <span className="font-serif text-[38px] font-bold leading-none text-fg">模拟考</span>
         <p className="mt-5 text-[13px] leading-[1.9] text-fg-60">
-          Đăng nhập để luyện thi HSK 1–6, chấm điểm tự động và xếp hạng theo lớp. Đề được tạo từ nội dung đã duyệt theo cấp độ.
+          Đăng nhập để làm bài luyện tiếng Trung, chấm điểm tự động và theo dõi kết quả theo tài khoản. Nội dung hiện có là tuyển chọn nội bộ.
         </p>
         <div className="mt-7">
           <SubmitButton onClick={onRequireLogin}>Đăng nhập / Đăng ký</SubmitButton>
@@ -391,7 +402,7 @@ export const ExamView: React.FC = () => {
 
   const currentUserId = user?.userId;
 
-  // Scaled HSK score on official 200-point scale
+  // Internal practice score scale; it does not report an official HSK result.
   const maximumScore = result?.maximumScore ?? exam?.maximumScore ?? (hskLevel <= 2 ? 200 : 300);
   const passingScore = result?.passingScore ?? maximumScore * 0.6;
   const scaledHskScore = result?.scaledScore ?? (result ? Math.round(result.scorePercent * maximumScore / 100) : 0);
@@ -404,13 +415,13 @@ export const ExamView: React.FC = () => {
         <div>
           <div className="flex min-w-0 flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-wider text-cinnabar-ink">
             <span className="inline-block h-2 w-2 rounded-full bg-cinnabar" />
-            Trạm 5 · 模拟考试 · Phòng Thi Thử HSK · [Hoạt động thật]
+            Trạm 5 · 模拟考试 · Bài luyện tiếng Trung · [Hoạt động thật]
           </div>
           <h1 className="mt-1 font-serif text-3xl font-bold tracking-tight text-fg">
-            Thi Thử HSK &amp; Đánh Giá Năng Lực
+            Bài Luyện &amp; Đánh Giá Tiến Độ
           </h1>
           <p className="mt-1.5 max-w-2xl text-xs leading-relaxed text-fg-60">
-            Luyện theo cấp độ HSK 1–6: thang 200 điểm cho HSK 1–2, thang 300 điểm cho HSK 3–6. Đây là bài luyện nội bộ, không cấp chứng chỉ HSK.
+            Bài luyện nội bộ từ ngân hàng câu hỏi hiện có. Các nhóm và thang điểm chỉ phục vụ luyện tập; nội dung không đại diện đầy đủ cho kỳ thi HSK chính thức và không cấp chứng chỉ HSK.
           </p>
         </div>
         <button
@@ -456,22 +467,22 @@ export const ExamView: React.FC = () => {
               <div className="flex flex-wrap items-center justify-between gap-4 border-b border-rule pb-4">
                 <div>
                   <h3 className="font-serif text-lg font-bold text-fg">
-                    Bài luyện thi HSK {hskLevel}
+                    Bài luyện nội bộ · Nhóm {hskLevel}
                   </h3>
                   <p className="text-xs text-fg-60 mt-0.5">
-                    Thang điểm HSK: <b>{hskLevel <= 2 ? 200 : 300} điểm</b> · Ngưỡng đạt chuẩn: <b>{hskLevel <= 2 ? 120 : 180} / {hskLevel <= 2 ? 200 : 300} điểm (≥ 60%)</b>
+                    Thang điểm bài luyện: <b>{hskLevel <= 2 ? 200 : 300} điểm</b> · Mốc hoàn thành nội bộ: <b>{hskLevel <= 2 ? 120 : 180} / {hskLevel <= 2 ? 200 : 300} điểm (≥ 60%)</b>
                   </p>
                 </div>
                 <div className="flex min-w-0 flex-wrap items-center gap-2">
                   <span className="rounded bg-cinnabar/10 border border-cinnabar/30 px-2.5 py-1 text-xs font-semibold text-cinnabar-ink">
-                    HSK {hskLevel} · Bài luyện nội bộ
+                    Nhóm {hskLevel} · Bài luyện nội bộ
                   </span>
                 </div>
               </div>
 
-              <div className="flex flex-wrap gap-2" aria-label="Cấp độ đề thi">
+              <div className="flex flex-wrap gap-2" aria-label="Nhóm bài luyện">
                 {[1, 2, 3, 4, 5, 6].map(level => <button key={level} type="button" aria-pressed={hskLevel === level}
-                  className={chipClass(hskLevel === level)} onClick={() => setHskLevel(level)}>HSK {level}</button>)}
+                  className={chipClass(hskLevel === level)} onClick={() => setHskLevel(level)}>Nhóm {level}</button>)}
               </div>
               <p className="text-[12.5px] leading-relaxed text-fg-60">{hskLevel <= 2 ? 'Nghe 100 + Đọc 100' : 'Nghe 100 + Đọc 100 + Ngữ pháp 100'}. Phần nghe dùng TTS, phần ngữ pháp thay cho viết tự luận trong bài luyện này.</p>
               <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
@@ -629,9 +640,9 @@ export const ExamView: React.FC = () => {
               <table className="w-full border-collapse text-[12.5px]">
                 <thead>
                   <tr>
-                    <th className={thClass}>Đề thi</th>
+                    <th className={thClass}>Bài luyện</th>
                     <th className={thNumClass}>Số câu đúng</th>
-                    <th className={thNumClass}>Điểm HSK quy đổi</th>
+                    <th className={thNumClass}>Điểm luyện quy đổi</th>
                     <th className={thNumClass}>Thời gian làm</th>
                     <th className={thClass}>Nộp lúc</th>
                   </tr>
@@ -745,15 +756,24 @@ export const ExamView: React.FC = () => {
                       </span>
                     </div>
 
-                    <div className="flex min-w-0 flex-wrap items-center gap-2">
+                    <div className="flex min-w-0 flex-wrap items-center gap-1.5">
                       <button
                         type="button"
-                        onClick={(event) => playQuestionAudio(question, event)}
-                        title="Nghe câu hỏi bằng giọng Quan thoại"
+                        onClick={(event) => playQuestionAudio(question, event, false)}
+                        title="Nghe câu hỏi bằng giọng Quan thoại chuẩn (0.95x)"
                         className="flex cursor-pointer items-center gap-1.5 rounded border border-cinnabar/40 bg-cinnabar/10 px-2.5 py-1 text-[11px] font-semibold text-cinnabar-ink hover:bg-cinnabar/20 transition-colors"
                       >
                         <Volume2 size={13} />
                         <span>Phát âm Quan thoại</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(event) => playQuestionAudio(question, event, true)}
+                        title="Nghe chậm (0.75x)"
+                        className="flex cursor-pointer items-center gap-1 rounded border border-rule bg-card px-2 py-1 text-[11px] font-medium text-fg-60 hover:text-fg hover:border-rule-strong transition-colors"
+                      >
+                        <span>🐢</span>
+                        <span>0.75x</span>
                       </button>
                       {selected && (
                         <span className="rounded bg-jade/10 border border-jade/30 px-2 py-0.5 text-[10.5px] font-medium text-jade-ink">
@@ -804,7 +824,7 @@ export const ExamView: React.FC = () => {
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 border-b border-rule pb-6">
             <div>
               <div className="flex min-w-0 flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-wider text-cinnabar-ink">
-                Báo cáo Kết quả Kỳ thi HSK Chuẩn
+                Kết quả bài luyện
               </div>
               <h3 className="mt-2 font-serif text-3xl font-bold text-fg">
                 Kết quả: <span className="text-gold-ink">{scaledHskScore} / {maximumScore}</span> điểm
@@ -917,10 +937,10 @@ export const ExamView: React.FC = () => {
           containFocus
         >
           <h3 ref={helpHeading} tabIndex={-1} className="text-[15px] font-bold focus:outline-none">
-            Hướng dẫn thi thử HSK Chuẩn
+            Hướng dẫn bài luyện nội bộ
           </h3>
           <p className="mt-3 text-[13px] leading-[1.8] text-fg-60">
-            Chọn số câu hỏi và thời gian để bắt đầu làm bài. Đề thi được sinh ngẫu nhiên từ ngân hàng câu hỏi ngữ pháp, pinyin và chữ Hán HSK đã kiểm duyệt. Chấm điểm tại máy chủ: HSK 1–2 đạt 120/200, HSK 3–6 đạt 180/300. Bài luyện ngữ pháp thay cho viết tự luận, không tương đương đề HSK chính thức.
+            Chọn số câu hỏi và thời gian để bắt đầu làm bài. Đề luyện được sinh từ ngân hàng ngữ pháp, Pinyin và chữ Hán hiện có; nội dung đang bổ sung và không đại diện toàn bộ syllabus. Máy chủ chấm theo mốc nội bộ 60%. Bài luyện ngữ pháp thay cho viết tự luận, không tương đương đề HSK chính thức.
             <br /><br />
             Phím tắt: bấm phím 1–4 để chọn nhanh đáp án, mũi tên trái/phải để chuyển câu. Khi hết giờ, bài làm sẽ tự động được nộp.
           </p>

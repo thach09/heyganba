@@ -123,3 +123,5 @@ export const ALL_READING_PASSAGES: ReadingPassageItem[] = [
   ...m6Readings,
 ];
 
+// DRAFT RESEARCH FIXTURES: no publication, licensing or linguistic approval implied.
+// The learner UI can access these only through the explicit development-only gate.

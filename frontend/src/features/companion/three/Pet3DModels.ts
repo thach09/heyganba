@@ -8,7 +8,7 @@ import type { GrowthStage, PetId } from '../types';
  * Supports 4 pets (panda, red_panda, golden_monkey, imperial_cat) across 3 growth stages (baby, junior, adult).
  */
 
-// Shared Palette Materials
+// Immutable palette templates. Each returned model owns cloned render resources.
 const matVoxelWhite = new THREE.MeshStandardMaterial({ color: 0xf5f5f0, roughness: 0.3, metalness: 0.05 });
 const matVoxelBlack = new THREE.MeshStandardMaterial({ color: 0x18191a, roughness: 0.4, metalness: 0.1 });
 const matVoxelBlush = new THREE.MeshStandardMaterial({ color: 0xf43f5e, roughness: 0.4 });
@@ -22,6 +22,29 @@ const matVoxelRedPandaCream = new THREE.MeshStandardMaterial({ color: 0xfef3c7, 
 const matVoxelMonkeyFur = new THREE.MeshStandardMaterial({ color: 0xd97706, roughness: 0.35, metalness: 0.2 });
 const matVoxelMonkeySkin = new THREE.MeshStandardMaterial({ color: 0xfde68a, roughness: 0.4 });
 const matVoxelBronze = new THREE.MeshStandardMaterial({ color: 0x78350f, roughness: 0.4, metalness: 0.5 }); // Three Kingdoms Bronze
+
+function ownModelMaterials(group: THREE.Group): THREE.Group {
+  const materials = new Map<THREE.Material, THREE.Material>();
+  const textures = new Map<THREE.Texture, THREE.Texture>();
+  const ownMaterial = (source: THREE.Material): THREE.Material => {
+    const existing = materials.get(source);
+    if (existing) return existing;
+    const owned = source.clone();
+    materials.set(source, owned);
+    for (const [property, value] of Object.entries(owned)) {
+      if (!(value instanceof THREE.Texture)) continue;
+      let texture = textures.get(value);
+      if (!texture) { texture = value.clone(); textures.set(value, texture); }
+      (owned as unknown as Record<string, unknown>)[property] = texture;
+    }
+    return owned;
+  };
+  group.traverse(object => {
+    if (!(object instanceof THREE.Mesh)) return;
+    object.material = Array.isArray(object.material) ? object.material.map(ownMaterial) : ownMaterial(object.material);
+  });
+  return group;
+}
 
 function addBlock(
   group: THREE.Group,
@@ -62,7 +85,7 @@ export function create3DPetModel(petId: PetId, stage: GrowthStage): THREE.Group 
 
   // Position center slightly
   root.position.y = -0.2;
-  return root;
+  return ownModelMaterials(root);
 }
 
 // ==========================================
@@ -389,5 +412,5 @@ export function create3DFoodModel(foodIcon: string): THREE.Group {
     }
   }
 
-  return foodGroup;
+  return ownModelMaterials(foodGroup);
 }

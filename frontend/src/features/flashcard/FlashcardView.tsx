@@ -31,9 +31,11 @@ import { useSearchParams } from 'react-router-dom';
 import type { VocabNotebook } from '../dictionary/types';
 import { speakChinese, stopChineseSpeech } from '../../services/chineseSpeech';
 import { RedSealStamp } from '../../components/RedSealStamp';
+import { Modal } from '../../components/Modal';
 import { StudyPetCompanion } from '../companion/StudyPetCompanion';
 import { useCompanion } from '../companion/useCompanionStore';
 import { checkPinyinAnswer } from '../pinyin/pinyinData';
+import { lastPracticeLesson, readLessonPractice, rememberPracticeLesson, saveLessonPractice } from './lessonPracticeSession';
 
 type MainViewMode = 'LESSONS' | 'SRS';
 type LessonSubMode = 'LIST' | 'STUDY' | 'QUIZ';
@@ -80,7 +82,13 @@ export const FlashcardView: React.FC = () => {
   };
 
   // Top Tabs
-  const [mainMode, setMainMode] = useState<MainViewMode>('LESSONS');
+  const mainMode: MainViewMode = searchParams.get('mode') === 'srs' ? 'SRS' : 'LESSONS';
+  const setMainMode = (mode: MainViewMode) => {
+    const params = new URLSearchParams(searchParams);
+    if (mode === 'SRS') params.set('mode', 'srs');
+    else params.delete('mode');
+    setSearchParams(params);
+  };
 
   // Lesson Catalog State
   const [lessons, setLessons] = useState<VocabularyLesson[]>([]);
@@ -133,6 +141,7 @@ export const FlashcardView: React.FC = () => {
   const [quizIsCorrect, setQuizIsCorrect] = useState<boolean | null>(null);
   const [quizFinished, setQuizFinished] = useState(false);
   const [selectedChoice, setSelectedChoice] = useState<string | null>(null);
+  const [loadedLessonSlug, setLoadedLessonSlug] = useState<string | null>(null);
 
   // Stop Chinese TTS audio when navigating away or unmounting
   useEffect(() => {
@@ -169,23 +178,32 @@ export const FlashcardView: React.FC = () => {
   const loadSelectedLessonWords = useCallback(async (slug: string) => {
     setLessonWordsLoading(true);
     setLessonWordsError(null);
+    setLoadedLessonSlug(null);
 
-    const res = await run('load-lesson-words', signal => vocabularyApi.lessonWords(slug, { signal })).catch(error => ({ success: false, data: undefined, message: error instanceof Error ? error.message : 'Kh?ng t?i ???c b?i h?c.' }));
+    const res = await run('load-lesson-words', signal => vocabularyApi.lessonWords(slug, { signal })).catch(error => ({ success: false, data: undefined, message: error instanceof Error ? error.message : 'Không tải được bài học.' }));
+    if (!res) return; // A cancelled older request must not clear the current lesson.
+    const saved = res.success && res.data ? readLessonPractice(user?.userId, slug, res.data) : null;
     if (res && res.success && res.data) {
       setLessonWords(res.data);
+      setLoadedLessonSlug(slug);
     } else {
       setLessonWords([]);
       if (res && !res.success) {
         setLessonWordsError(res.message || 'Không thể tải danh sách từ vựng của bài học.');
       }
     }
-    setStudyWordIndex(0);
-    setStudyFlipped(false);
-    setQuizIndex(0);
-    setQuizFinished(false);
-    setQuizScore(0);
+    setLessonSubMode(saved?.mode ?? 'LIST');
+    setStudyWordIndex(saved?.studyIndex ?? 0);
+    setStudyFlipped(saved?.studyFlipped ?? false);
+    setQuizIndex(saved?.quizIndex ?? 0);
+    setQuizFinished(saved?.quizFinished ?? false);
+    setQuizScore(saved?.quizScore ?? 0);
+    setQuizSubmitted(saved?.quizSubmitted ?? false);
+    setQuizIsCorrect(saved?.quizIsCorrect ?? null);
+    setQuizAnswer(saved?.quizAnswer ?? '');
+    setSelectedChoice(saved?.selectedChoice ?? null);
     setLessonWordsLoading(false);
-  }, [run]);
+  }, [run, user?.userId]);
 
   // 3. Refresh Stats only (Does NOT reset or advance current SRS card session)
   const refreshStats = useCallback(async () => {
@@ -293,19 +311,28 @@ export const FlashcardView: React.FC = () => {
   const handleSwitchToSrs = () => {
     stopChineseSpeech();
     setMainMode('SRS');
-    if (user && dueItems.length === 0 && !srsSessionFinished) {
-      void loadSrsData();
-    }
   };
 
+  // A direct due-review link must select and load the same session as the tab.
+  useEffect(() => {
+    if (mainMode === 'SRS' && user && dueItems.length === 0 && !srsSessionFinished && !srsLoading && !srsError) {
+      // oxlint-disable-next-line react/set-state-in-effect -- synchronize an explicit URL-selected session with its API data.
+      void loadSrsData();
+    }
+  }, [mainMode, user, dueItems.length, srsSessionFinished, srsLoading, srsError, loadSrsData]);
+
   // URL is the source of truth, including back/forward and removing the filter.
-  const rawLevel = (searchParams.get('level') || '').trim().toUpperCase().replace(/\s/g, '');
+  // Legacy query aliases filter the internal lesson grouping, not official CTI levels.
+  const rawLevel = (searchParams.get('level') || searchParams.get('hsk') || '').trim().toUpperCase().replace(/\s/g, '');
   const selectedLevelFilter = /^(HSK)?[1-6]$/.test(rawLevel)
     ? `HSK ${rawLevel.slice(-1)}` : rawLevel === 'INTRO' ? 'Nhập môn' : 'ALL';
   const [catalogSearchQuery, setCatalogSearchQuery] = useState<string>('');
   const availableLevels = ['Nhập môn', ...[1, 2, 3, 4, 5, 6].map(n => `HSK ${n}`)];
+  const internalLevelLabel = (level: string | null | undefined) =>
+    level?.startsWith('HSK ') ? `Nhóm chọn lọc ${level.slice(-1)}` : level || 'Nhập môn';
   const setSelectedLevelFilter = (level: string) => {
     const params = new URLSearchParams(searchParams);
+    params.delete('hsk');
     if (level === 'ALL') params.delete('level');
     else params.set('level', level === 'Nhập môn' ? 'INTRO' : level.replace(' ', ''));
     setSearchParams(params);
@@ -335,10 +362,20 @@ export const FlashcardView: React.FC = () => {
   useEffect(() => {
     if (!displayedLessons.some(lesson => lesson.id === selectedLesson?.id)) {
       // oxlint-disable-next-line react/set-state-in-effect
-      setSelectedLesson(displayedLessons[0] ?? null);
+      setSelectedLesson(displayedLessons.find(lesson => lesson.slug === lastPracticeLesson(user?.userId, selectedLevelFilter)) ?? displayedLessons[0] ?? null);
       setLessonWords([]);
     }
-  }, [displayedLessons, selectedLesson?.id]);
+  }, [displayedLessons, selectedLesson?.id, user?.userId, selectedLevelFilter]);
+
+  useEffect(() => {
+    if (!selectedLesson || loadedLessonSlug !== selectedLesson.slug || lessonWordsLoading || lessonWordsError || !lessonWords.length) return;
+    rememberPracticeLesson(user?.userId, selectedLevelFilter, selectedLesson.slug);
+    saveLessonPractice(user?.userId, selectedLesson.slug, lessonWords, {
+      mode: lessonSubMode, studyIndex: studyWordIndex, studyFlipped,
+      quizIndex, quizScore, quizAnswer, quizSubmitted, quizIsCorrect, quizFinished, selectedChoice,
+    });
+  }, [user?.userId, selectedLevelFilter, selectedLesson, loadedLessonSlug, lessonWordsLoading, lessonWordsError,
+    lessonWords, lessonSubMode, studyWordIndex, studyFlipped, quizIndex, quizScore, quizAnswer, quizSubmitted, quizIsCorrect, quizFinished, selectedChoice]);
 
   // Filtered lesson words for list view
   const filteredLessonWords = useMemo(() => {
@@ -419,7 +456,8 @@ export const FlashcardView: React.FC = () => {
       let targetId: number;
       if (selectedNotebookId === 'NEW') {
         const title = newNotebookTitle.trim() || 'Sổ từ mới';
-        const createRes = await notebookApi.create({ title, description: 'Sổ lưu từ vựng cá nhân' });
+        const createRes = await run('notebook-create', signal => notebookApi.create({ title, description: 'Sổ lưu từ vựng cá nhân' }, { signal }));
+        if (!createRes) return;
         if (!createRes.success || !createRes.data) {
           throw new Error(createRes.message || 'Không thể tạo sổ từ mới.');
         }
@@ -431,7 +469,8 @@ export const FlashcardView: React.FC = () => {
         targetId = selectedNotebookId;
       }
 
-      const addRes = await notebookApi.addWord(targetId, { vocabularyId: wordToSave.id });
+      const addRes = await run('notebook-add', signal => notebookApi.addWord(targetId, { vocabularyId: wordToSave.id }, { signal }));
+      if (!addRes) return;
       if (addRes.success) {
         setNotebookFeedback({
           type: 'success',
@@ -556,19 +595,19 @@ export const FlashcardView: React.FC = () => {
   }, [lessonWords]);
 
   const currentQuizItem = quizPool[quizIndex];
-  const isTypingQuestion = quizIndex % 2 === 1;
 
   const quizChoices = useMemo(() => {
     if (!currentQuizItem) return [];
-    const correct = currentQuizItem.meaningVi || '';
-    const distractors = lessonWords
+    const correct = (currentQuizItem.meaningVi || '').trim();
+    if (!correct) return [];
+    const distractors = [...new Set(lessonWords
       .filter(w => w.id !== currentQuizItem.id)
-      .map(w => w.meaningVi || '')
-      .filter(Boolean)
-      .slice(0, 3);
+      .map(w => (w.meaningVi || '').trim())
+      .filter(meaning => meaning && meaning !== correct))].slice(0, 3);
     const pool = [correct, ...distractors];
     return pool.sort((a, b) => a.localeCompare(b));
   }, [currentQuizItem, lessonWords]);
+  const isTypingQuestion = quizIndex % 2 === 1 || quizChoices.length < 2;
 
   const handleQuizSubmit = () => {
     if (quizSubmitted || !currentQuizItem) return;
@@ -579,7 +618,7 @@ export const FlashcardView: React.FC = () => {
       const expected = currentQuizItem.pinyin || '';
       correct = checkPinyinAnswer(quizAnswer, expected);
     } else {
-      const expected = currentQuizItem.meaningVi || '';
+      const expected = (currentQuizItem.meaningVi || '').trim();
       correct = selectedChoice === expected;
     }
 
@@ -614,9 +653,9 @@ export const FlashcardView: React.FC = () => {
         <div className="flex items-center gap-2">
           <ShieldCheck size={16} className="text-jade-ink shrink-0" />
           <div>
-            <span className="font-bold text-jade-ink">Từ vựng HSK 1–6 · Nội dung đã duyệt</span>
+            <span className="font-bold text-jade-ink">Từ vựng cấp 1–6 · Giáo trình nội bộ</span>
             <span className="text-jade-ink block sm:inline sm:ml-2">
-              (Học theo chủ đề và ôn tập SRS theo cấp độ)
+              (Chỉ nội dung đã duyệt được mở cho người học)
             </span>
           </div>
         </div>
@@ -661,33 +700,33 @@ export const FlashcardView: React.FC = () => {
       )}
 
       {catalogError && (
-        <div className="flex items-center justify-between rounded border border-cinnabar/30 bg-cinnabar/10 p-3 text-xs text-cinnabar-ink">
+        <div role="alert" className="flex items-center justify-between rounded border border-cinnabar/30 bg-cinnabar/10 p-3 text-xs text-cinnabar-ink">
           <div className="flex items-center gap-2">
             <AlertTriangle size={15} className="shrink-0 text-cinnabar-ink" />
             <span>{catalogError}</span>
           </div>
           <button
             type="button"
-            onClick={() => setCatalogError(null)}
+            onClick={() => void loadLessons()}
             className="text-cinnabar-ink hover:text-cinnabar-ink cursor-pointer"
           >
-            <X size={14} />
+            Thử lại
           </button>
         </div>
       )}
 
       {lessonWordsError && (
-        <div className="flex items-center justify-between rounded border border-cinnabar/30 bg-cinnabar/10 p-3 text-xs text-cinnabar-ink">
+        <div role="alert" className="flex items-center justify-between rounded border border-cinnabar/30 bg-cinnabar/10 p-3 text-xs text-cinnabar-ink">
           <div className="flex items-center gap-2">
             <AlertTriangle size={15} className="shrink-0 text-cinnabar-ink" />
             <span>{lessonWordsError}</span>
           </div>
           <button
             type="button"
-            onClick={() => setLessonWordsError(null)}
+            onClick={() => selectedLesson && void loadSelectedLessonWords(selectedLesson.slug)}
             className="text-cinnabar-ink hover:text-cinnabar-ink cursor-pointer"
           >
-            <X size={14} />
+            Thử lại
           </button>
         </div>
       )}
@@ -767,11 +806,13 @@ export const FlashcardView: React.FC = () => {
          ======================================================== */}
       {mainMode === 'LESSONS' && (
         <div className="flex flex-col gap-6">
+          {catalogLoading && <p role="status" className="text-sm text-fg-60">Đang tải bài học...</p>}
+          {lessonWordsLoading && <p role="status" className="text-sm text-fg-60">Đang tải từ vựng...</p>}
           {/* Level Filter & Catalog Search */}
           {lessons.length > 0 && (
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-surface/40 p-3 rounded border border-rule/60">
               <div className="flex flex-wrap items-center gap-2">
-                <span className="text-xs font-semibold text-fg-60 mr-1">Cấp độ:</span>
+                <span className="text-xs font-semibold text-fg-60 mr-1">Nhóm học liệu:</span>
                 <button
                   type="button"
                   onClick={() => setSelectedLevelFilter('ALL')}
@@ -796,7 +837,7 @@ export const FlashcardView: React.FC = () => {
                           : 'border border-rule bg-card text-fg-60 hover:text-fg'
                       }`}
                     >
-                      {lvl} ({count})
+                  {lvl === 'Nhập môn' ? lvl : `Nhóm chọn lọc ${lvl.slice(-1)}`} ({count})
                     </button>
                   );
                 })}
@@ -823,6 +864,11 @@ export const FlashcardView: React.FC = () => {
               </div>
             </div>
           )}
+          {lessons.length > 0 && (
+            <p className="text-xs leading-relaxed text-fg-60">
+              Các nhóm này thuộc bộ học liệu nội bộ, chưa đại diện đầy đủ cho nội dung HSK chính thức.
+            </p>
+          )}
 
           {/* Lesson Selector Card Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -845,7 +891,7 @@ export const FlashcardView: React.FC = () => {
                   <div>
                     <div className="flex min-w-0 flex-wrap items-center justify-between gap-2 text-[11px] text-fg-38">
                       <span className="font-semibold text-cinnabar-ink uppercase tracking-wider">
-                        {lesson.curriculumLevel}
+                        {internalLevelLabel(lesson.curriculumLevel)}
                       </span>
                       <span>{lesson.wordCount} từ vựng</span>
                     </div>
@@ -858,7 +904,7 @@ export const FlashcardView: React.FC = () => {
                   </div>
                   <div className="mt-4 flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-rule/50 text-xs">
                     <span className="text-[11px] font-sans text-fg-60">
-                      {lesson.curriculumLevel || 'Nhập môn'}
+                      {internalLevelLabel(lesson.curriculumLevel)}
                     </span>
                     <span className="font-medium text-cinnabar-ink flex items-center gap-1 text-[11px]">
                       {isSelected ? 'Đang chọn' : 'Xem bài'} →
@@ -889,16 +935,16 @@ export const FlashcardView: React.FC = () => {
           )}
 
           {/* Regular user warning if no approved lessons are visible */}
-          {displayedLessons.length === 0 && lessons.length === 0 && (!isAdmin || !adminPreviewActive) && (
+          {!catalogLoading && !catalogError && displayedLessons.length === 0 && lessons.length === 0 && (!isAdmin || !adminPreviewActive) && (
             <div className="flex flex-col items-center justify-center rounded border border-rule bg-card p-10 text-center">
               <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-gold/10 text-gold-ink mb-3">
                 <AlertTriangle size={24} />
               </div>
               <h3 className="font-serif text-lg font-bold text-fg">
-                Chưa có bài học nào được phê duyệt chính thức
+                Chưa có bài học đã xuất bản
               </h3>
               <p className="mt-2 max-w-md text-xs leading-relaxed text-fg-60">
-                Nội dung từ vựng M2.1 & M2.2 hiện đang trong quy trình thẩm định học thuật (<b>PENDING_REVIEW</b>). Theo quy định an toàn dữ liệu học thuật, học viên sẽ được mở bài ngay khi chuyên gia hoàn tất ký duyệt.
+                Hãy thử lại sau. Bài học sẽ mở khi có nội dung được xác minh và xuất bản.
               </p>
               {isAdmin ? (
                 <button
@@ -928,7 +974,7 @@ export const FlashcardView: React.FC = () => {
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="rounded bg-cinnabar/10 px-2 py-0.5 font-serif text-[11px] font-bold text-cinnabar-ink border border-cinnabar/30">
-                      {selectedLesson.curriculumLevel}
+                      {internalLevelLabel(selectedLesson.curriculumLevel)}
                     </span>
                     <h2 className="font-serif text-xl font-bold text-fg">
                       {selectedLesson.title}
@@ -976,9 +1022,6 @@ export const FlashcardView: React.FC = () => {
                     onClick={() => {
                       stopChineseSpeech();
                       setLessonSubMode('QUIZ');
-                      setQuizIndex(0);
-                      setQuizScore(0);
-                      setQuizFinished(false);
                     }}
                     className={`px-3 py-1 text-xs font-semibold rounded cursor-pointer transition-colors ${
                       lessonSubMode === 'QUIZ'
@@ -1031,7 +1074,7 @@ export const FlashcardView: React.FC = () => {
                                 </span>
                                 {word.reviewStatus === 'PENDING_REVIEW' && (
                                   <span
-                                    title="Nội dung chờ chuyên gia học thuật ký duyệt"
+                                    title="Nội dung chưa được xuất bản"
                                     className="rounded bg-gold/10 border border-gold/30 px-1.5 py-0.5 text-[10px] font-sans text-gold-ink"
                                   >
                                     Chờ duyệt
@@ -1049,7 +1092,7 @@ export const FlashcardView: React.FC = () => {
                             </td>
                             <td className="p-3">
                               <div className="font-semibold text-gold-ink text-sm">{word.pinyin}</div>
-                              <div className="text-[11px] text-fg-38 uppercase">HV: {word.hanViet}</div>
+                              {word.hanViet && <div className="text-[11px] text-fg-38 uppercase">HV: {word.hanViet}</div>}
                             </td>
                             <td className="p-3">
                               <span className="inline-block rounded bg-tint px-1.5 py-0.5 text-[10px] text-fg-60 font-medium mb-1">
@@ -1140,16 +1183,30 @@ export const FlashcardView: React.FC = () => {
 
                         <div className="flex min-w-0 flex-wrap items-center justify-between gap-2 text-[11px] text-fg-38">
                           <span>Bấm để lật xem phiên âm & ngữ cảnh</span>
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              speakChinese(currentStudyWord.word);
-                            }}
-                            className="inline-flex items-center gap-1 text-fg-60 hover:text-cinnabar-ink"
-                          >
-                            <Volume2 size={13} /> Nghe phát âm
-                          </button>
+                          <div className="flex items-center gap-2">
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                speakChinese(currentStudyWord.word);
+                              }}
+                              className="inline-flex cursor-pointer items-center gap-1 text-fg-60 hover:text-cinnabar-ink transition-colors"
+                              title="Nghe phát âm chuẩn (1.0x)"
+                            >
+                              <Volume2 size={13} /> Nghe
+                            </button>
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                speakChinese(currentStudyWord.word, { slow: true });
+                              }}
+                              className="inline-flex cursor-pointer items-center gap-1 rounded bg-tint px-1.5 py-0.5 text-[10.5px] font-medium text-fg-60 hover:text-cinnabar-ink hover:bg-cinnabar/10 transition-colors"
+                              title="Nghe chậm (0.75x)"
+                            >
+                              <span>🐢</span> 0.75x
+                            </button>
+                          </div>
                         </div>
                       </div>
 
@@ -1164,14 +1221,26 @@ export const FlashcardView: React.FC = () => {
                                 e.stopPropagation();
                                 speakChinese(currentStudyWord.word);
                               }}
-                              className="text-fg-60 hover:text-cinnabar-ink"
+                              className="cursor-pointer text-fg-60 hover:text-cinnabar-ink transition-colors"
+                              title="Nghe phát âm chuẩn (1.0x)"
                             >
                               <Volume2 size={14} />
                             </button>
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                speakChinese(currentStudyWord.word, { slow: true });
+                              }}
+                              className="cursor-pointer rounded bg-tint px-1.5 py-0.5 text-[10.5px] font-medium text-fg-60 hover:text-cinnabar-ink hover:bg-cinnabar/10 transition-colors"
+                              title="Nghe chậm (0.75x)"
+                            >
+                              <span>🐢</span> 0.75x
+                            </button>
                           </div>
-                          <span className="rounded border border-cinnabar/30 bg-cinnabar/10 px-2 py-0.5 text-xs font-semibold text-cinnabar-ink uppercase">
+                          {currentStudyWord.hanViet && <span className="rounded border border-cinnabar/30 bg-cinnabar/10 px-2 py-0.5 text-xs font-semibold text-cinnabar-ink uppercase">
                             Hán Việt: {currentStudyWord.hanViet}
-                          </span>
+                          </span>}
                         </div>
 
                         <div className="my-auto flex flex-col items-center text-center">
@@ -1188,17 +1257,30 @@ export const FlashcardView: React.FC = () => {
                                 <span className="font-serif text-xs font-medium text-fg/90">
                                   {currentStudyWord.exampleZh}
                                 </span>
-                                <button
-                                  type="button"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    speakChinese(currentStudyWord.exampleZh!);
-                                  }}
-                                  title="Nghe câu ví dụ"
-                                  className="text-fg-38 hover:text-cinnabar-ink"
-                                >
-                                  <Volume2 size={13} />
-                                </button>
+                                <div className="flex items-center gap-1.5">
+                                  <button
+                                    type="button"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      speakChinese(currentStudyWord.exampleZh!);
+                                    }}
+                                    title="Nghe câu ví dụ"
+                                    className="cursor-pointer text-fg-38 hover:text-cinnabar-ink transition-colors"
+                                  >
+                                    <Volume2 size={13} />
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      speakChinese(currentStudyWord.exampleZh!, { slow: true });
+                                    }}
+                                    title="Nghe chậm câu ví dụ (0.75x)"
+                                    className="cursor-pointer text-[10px] text-fg-38 hover:text-cinnabar-ink transition-colors"
+                                  >
+                                    🐢
+                                  </button>
+                                </div>
                               </div>
                               <div className="text-[11px] text-gold-ink">{currentStudyWord.examplePinyin}</div>
                               <div className="text-[11px] text-fg-60">{currentStudyWord.exampleVi}</div>
@@ -1304,18 +1386,20 @@ export const FlashcardView: React.FC = () => {
                       {/* Question Answer Inputs */}
                       {isTypingQuestion ? (
                         <div className="flex flex-col gap-2">
-                          <label className="text-xs text-fg-60">
-                            Nhập Pinyin (hỗ trợ cả dấu `nǐ hǎo` hoặc số thanh `ni3 hao3`):
+                          {quizIndex % 2 === 0 && quizChoices.length < 2 && <p role="status" className="text-xs text-fg-60">Bài còn ít từ, chuyển sang luyện gõ Pinyin.</p>}
+                          <label htmlFor="lesson-quiz-pinyin" className="text-xs text-fg-60">
+                            Nhập Pinyin (dùng dấu thanh hoặc số thanh):
                           </label>
                           <input
                             type="text"
+                            id="lesson-quiz-pinyin"
                             value={quizAnswer}
                             disabled={quizSubmitted}
                             onChange={e => setQuizAnswer(e.target.value)}
                             onKeyDown={e => {
                               if (e.key === 'Enter') handleQuizSubmit();
                             }}
-                            placeholder="Ví dụ: ni3 hao3 hoặc nǐ hǎo..."
+                            placeholder="Nhập Pinyin bằng dấu hoặc số thanh…"
                             className="rounded border border-rule bg-surface p-3 font-sans text-sm text-fg placeholder:text-fg-38 focus:border-cinnabar focus:outline-none"
                           />
                         </div>
@@ -1332,7 +1416,7 @@ export const FlashcardView: React.FC = () => {
                                   ? 'border-cinnabar bg-cinnabar/10 text-cinnabar-ink font-semibold'
                                   : 'border-rule bg-surface hover:border-fg-38 text-fg-90'
                               } ${
-                                quizSubmitted && choice === currentQuizItem.meaningVi
+                                quizSubmitted && choice === currentQuizItem.meaningVi?.trim()
                                   ? 'border-jade bg-jade/10 text-jade-ink font-bold'
                                   : ''
                               }`}
@@ -1395,6 +1479,9 @@ export const FlashcardView: React.FC = () => {
                           setQuizScore(0);
                           setQuizFinished(false);
                           setQuizSubmitted(false);
+                          setQuizIsCorrect(null);
+                          setQuizAnswer('');
+                          setSelectedChoice(null);
                         }}
                         className="mt-5 inline-flex items-center gap-1.5 rounded border border-cinnabar bg-cinnabar px-5 py-2 text-xs font-semibold text-on-accent cursor-pointer"
                       >
@@ -1433,6 +1520,13 @@ export const FlashcardView: React.FC = () => {
               >
                 Đăng nhập để bắt đầu ôn tập
               </button>
+            </div>
+          ) : srsLoading ? (
+            <p role="status" className="text-sm text-fg-60">Đang tải thẻ cần ôn...</p>
+          ) : srsError && !currentSrsItem ? (
+            <div role="alert" className="w-full border border-rule bg-card p-5 text-sm text-fg">
+              <p>{srsError}</p>
+              <button type="button" onClick={() => void loadSrsData()} className="mt-3 cursor-pointer border border-rule-strong px-3 py-2">Thử lại</button>
             </div>
           ) : !srsSessionFinished && currentSrsItem ? (
             <div className="flex w-full flex-col items-center gap-5">
@@ -1500,14 +1594,26 @@ export const FlashcardView: React.FC = () => {
                             e.stopPropagation();
                             speakChinese(currentSrsItem.word);
                           }}
-                          className="text-fg-60 hover:text-cinnabar-ink"
+                          className="cursor-pointer text-fg-60 hover:text-cinnabar-ink transition-colors"
+                          title="Nghe phát âm chuẩn (1.0x)"
                         >
                           <Volume2 size={14} />
                         </button>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            speakChinese(currentSrsItem.word, { slow: true });
+                          }}
+                          className="cursor-pointer rounded bg-tint px-1.5 py-0.5 text-[10.5px] font-medium text-fg-60 hover:text-cinnabar-ink hover:bg-cinnabar/10 transition-colors"
+                          title="Nghe chậm (0.75x)"
+                        >
+                          <span>🐢</span> 0.75x
+                        </button>
                       </div>
-                      <span className="rounded border border-cinnabar/30 bg-cinnabar/10 px-2 py-0.5 text-xs font-semibold text-cinnabar-ink uppercase">
-                        Hán Việt: {currentSrsItem.hanViet || currentSrsItem.sinoVietnamese || 'Đang cập nhật'}
-                      </span>
+                      {(currentSrsItem.hanViet || currentSrsItem.sinoVietnamese) && <span className="rounded border border-cinnabar/30 bg-cinnabar/10 px-2 py-0.5 text-xs font-semibold text-cinnabar-ink uppercase">
+                        Hán Việt: {currentSrsItem.hanViet || currentSrsItem.sinoVietnamese}
+                      </span>}
                     </div>
 
                     <div className="my-auto flex flex-col items-center text-center">
@@ -1638,10 +1744,10 @@ export const FlashcardView: React.FC = () => {
                 <CheckCircle2 size={32} />
               </div>
               <h2 className="font-serif text-2xl font-bold text-fg">
-                Xong phiên ôn tập hôm nay!
+                {srsReviewedCount > 0 ? 'Xong phiên ôn tập hôm nay!' : 'Chưa có thẻ cần ôn'}
               </h2>
               <p className="mt-2 text-xs text-fg-60 max-w-sm leading-relaxed">
-                Bạn đã ôn xong <b>{srsReviewedCount} thẻ</b> trong phiên này. Thuật toán SM-2 đã cập nhật ngày ôn tiếp theo cho từng từ.
+                {srsReviewedCount > 0 ? <>Bạn đã ôn xong <b>{srsReviewedCount} thẻ</b> trong phiên này. Lịch ôn tiếp theo đã được lưu.</> : 'Bạn có thể học theo bài hoặc quay lại kiểm tra lịch ôn sau.'}
               </p>
 
               {lastSrsResult && (
@@ -1679,18 +1785,10 @@ export const FlashcardView: React.FC = () => {
           MODAL: LƯU TỪ VÀO SỔ CÁ NHÂN (NOTEBOOK MODAL)
          ======================================================== */}
       {notebookModalOpen && wordToSave && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-scrim/60 p-4 backdrop-blur-xs">
-          <div className="relative w-full max-w-md rounded border border-rule bg-card p-6 shadow-2xl">
-            <button
-              type="button"
-              onClick={() => {
-                setNotebookModalOpen(false);
-                setNotebookFeedback(null);
-              }}
-              className="absolute right-4 top-4 text-fg-38 hover:text-fg"
-            >
-              <X size={16} />
-            </button>
+        <Modal title="Lưu vào Sổ từ vựng cá nhân" containFocus maxWidthClass="max-w-[448px]" onClose={() => {
+          setNotebookModalOpen(false);
+          setNotebookFeedback(null);
+        }}>
 
             <div className="flex items-center gap-2">
               <BookmarkPlus size={20} className="text-cinnabar-ink" />
@@ -1711,6 +1809,7 @@ export const FlashcardView: React.FC = () => {
             {/* Feedback Message */}
             {notebookFeedback && (
               <div
+                role={notebookFeedback.type === 'error' ? 'alert' : 'status'}
                 className={`mt-3 rounded p-2.5 text-xs ${
                   notebookFeedback.type === 'success'
                     ? 'border border-jade/30 bg-jade/10 text-jade-ink'
@@ -1828,8 +1927,7 @@ export const FlashcardView: React.FC = () => {
                 {notebookSaveLoading ? 'Đang lưu...' : 'Xác nhận lưu'}
               </button>
             </div>
-          </div>
-        </div>
+        </Modal>
       )}
     </div>
   );

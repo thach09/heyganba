@@ -131,9 +131,6 @@ export function CompanionWidget() {
               showSpeechBubble={true}
             />
           </Suspense>
-          <span className="mt-1 text-[10px] text-fg-38 tracking-wide">
-            ✦ Bấm hoặc kéo xoay 360°
-          </span>
         </div>
 
         {/* Pet Stats & Evolution Area */}

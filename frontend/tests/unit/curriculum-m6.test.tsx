@@ -43,7 +43,7 @@ test('roadmap tags use normal flow, with exactly one combined tag per stage and 
   const { container } = mount(<HskRoadmap />);
   expect(container.querySelectorAll('[data-card-tag]')).toHaveLength(4);
   for (const tag of container.querySelectorAll('[data-card-tag]')) expect(tag.className).not.toContain('absolute');
-  for (const n of levels) expect(screen.getByRole('link', { name: `Học từ vựng HSK ${n} →` }).getAttribute('href')).toBe(`/vocabulary?level=HSK${n}`);
+  for (const n of levels) expect(screen.getByRole('link', { name: `Học nhóm chọn lọc ${n} →` }).getAttribute('href')).toBe(`/vocabulary?level=HSK${n}`);
   expect(container.querySelectorAll('[data-hsk-roadmap] h3')).toHaveLength(4);
 });
 test('shared card reserves space before arbitrary child headers', () => {
@@ -68,7 +68,7 @@ function Navigation() {
 test('vocabulary level buttons update URL and back restores the earlier filter', async () => {
   mount(<><Navigation /><FlashcardView /></>, '/vocabulary?level=HSK3&preview=0');
   await screen.findByText('Topic 3');
-  fireEvent.click(screen.getByRole('button', { name: /^HSK 6 \(/ }));
+  fireEvent.click(screen.getByRole('button', { name: /^Nhóm chọn lọc 6 \(/ }));
   await screen.findByText('Topic 6');
   expect(screen.getByTestId('url').textContent).toContain('level=HSK6');
   expect(screen.getByTestId('url').textContent).toContain('preview=0');
@@ -77,13 +77,13 @@ test('vocabulary level buttons update URL and back restores the earlier filter',
 });
 test.each(levels)('grammar level %i displays its rule and accurate count', async n => {
   mount(<GrammarView />); await screen.findByText('Rule 1');
-  fireEvent.click(screen.getByRole('button', { name: `HSK ${n} (1)` }));
+  fireEvent.click(screen.getByRole('button', { name: `Nhóm ${n} (1)` }));
   expect(screen.getByText(`Rule ${n}`)).toBeTruthy();
   for(const other of levels.filter(level => level!==n)) expect(screen.queryByText(`Rule ${other}`)).toBeNull();
 });
 test.each(levels)('Hanzi level %i requests the correct server filter', async n => {
   mount(<HanziStationView />); await waitFor(() => expect(f.hanzi).toHaveBeenCalled());
-  fireEvent.click(screen.getByRole('button', { name: `HSK ${n}` }));
+  fireEvent.click(screen.getByRole('button', { name: `Nhóm ${n}` }));
   await waitFor(() => expect(f.hanzi).toHaveBeenLastCalledWith(`hsk=${n}`, expect.any(Object)));
   await screen.findAllByText(['人','好','环','律','谦','履'][n-1]);
 });
@@ -93,7 +93,7 @@ test.each(levels)('exam level %i sends its level and displays server scoring met
     startedAt:new Date().toISOString(), expiresAt:new Date(Date.now()+1200000).toISOString(), questions:[{index:0,type:'LISTENING',questionText:'Question',options:['A','B']}] }));
   f.submit.mockResolvedValue(ok({ examId:17,hskLevel:n,maximumScore:max,passingScore:pass,scaledScore:pass,correctCount:3,totalCount:5,scorePercent:60,currentStreak:1,details:[] }));
   mount(<ExamView />);
-  fireEvent.click(screen.getByRole('button', {name:`HSK ${n}`}));
+  fireEvent.click(screen.getByRole('button', {name:`Nhóm ${n}`}));
   expect(screen.getByText(`${pass} / ${max} điểm (≥ 60%)`)).toBeTruthy();
   fireEvent.click(screen.getByRole('button', {name:/Bắt đầu thi thử/}));
   await screen.findByText('Question');
