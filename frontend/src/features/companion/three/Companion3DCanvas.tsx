@@ -26,6 +26,8 @@ export function Companion3DCanvas({
   className = '',
 }: Companion3DCanvasProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const fallbackIcon = petId === 'panda' ? '🐼' : petId === 'golden_monkey' ? '🐒' : petId === 'imperial_cat' ? '🐈' : '🐾';
+  const motionQuery = '(prefers-reduced-motion: reduce)';
   const [webGlUnavailable, setWebGlUnavailable] = useState(false);
   const [currentQuote, setCurrentQuote] = useState<PetQuote>(() => {
     const pet = PET_DEFINITIONS[petId] || PET_DEFINITIONS.panda;
@@ -54,6 +56,8 @@ export function Companion3DCanvas({
 
     const width = size;
     const height = size;
+    const motion = window.matchMedia?.(motionQuery);
+    let reducedMotion = motion?.matches ?? false;
 
     // 1. Scene, Camera, Renderer
     const scene = new THREE.Scene();
@@ -126,6 +130,7 @@ export function Companion3DCanvas({
       const deltaX = clientX - prevMouseX;
       targetRotationY += deltaX * 0.012;
       prevMouseX = clientX;
+      if (reducedMotion) animate();
     };
 
     const onPointerUp = () => {
@@ -147,6 +152,7 @@ export function Companion3DCanvas({
       if (onPetClick) {
         onPetClick();
       }
+      if (reducedMotion) animate();
     };
 
     const dom = renderer.domElement;
@@ -159,29 +165,30 @@ export function Companion3DCanvas({
     dom.addEventListener('click', onClick);
 
     // 5. Animation Loop
-    let animId: number;
-    let clock = new THREE.Clock();
+    let animId: number | undefined;
+    const animationStart = performance.now();
 
-    const animate = () => {
-      animId = requestAnimationFrame(animate);
-      const elapsed = clock.getElapsedTime();
+    function animate() {
+      animId = reducedMotion ? undefined : requestAnimationFrame(animate);
+      const elapsed = (performance.now() - animationStart) / 1000;
 
       // Smooth Rotation Damping
-      if (!isDragging) {
+      if (!isDragging && !reducedMotion) {
         // Slow gentle idle auto-turn
         targetRotationY += 0.003;
       }
-      rotationY += (targetRotationY - rotationY) * 0.08;
+      rotationY = reducedMotion ? targetRotationY : rotationY + (targetRotationY - rotationY) * 0.08;
       petModelGroup.rotation.y = rotationY;
 
       // Floating Bobbing & Breathing
-      const floatOffset = Math.sin(elapsed * 2.4) * 0.05;
-      const breathScale = 1 + Math.sin(elapsed * 3.2) * 0.012;
+      const floatOffset = reducedMotion ? 0 : Math.sin(elapsed * 2.4) * 0.05;
+      const breathScale = reducedMotion ? 1 : 1 + Math.sin(elapsed * 3.2) * 0.012;
 
       // Squash and stretch physics
       squashY += squashVel;
       squashVel += (1 - squashY) * 0.25;
       squashVel *= 0.72; // friction damping
+      if (reducedMotion) { squashY = 1; squashVel = 0; }
 
       petModelGroup.position.y = -0.15 + floatOffset;
       petModelGroup.scale.set(
@@ -192,22 +199,32 @@ export function Companion3DCanvas({
 
       // Handle Food animation during eating mood
       if (foodMesh) {
-        foodMesh.position.y = Math.max(0.8, foodMesh.position.y - 0.025);
-        foodMesh.rotation.y += 0.04;
-        foodMesh.rotation.x += 0.02;
-        if (foodMesh.position.y <= 0.85) {
-          foodMesh.scale.multiplyScalar(0.92);
+        if (reducedMotion) foodMesh.position.y = 0.8;
+        else {
+          foodMesh.position.y = Math.max(0.8, foodMesh.position.y - 0.025);
+          foodMesh.rotation.y += 0.04;
+          foodMesh.rotation.x += 0.02;
+          if (foodMesh.position.y <= 0.85) {
+            foodMesh.scale.multiplyScalar(0.92);
+          }
         }
       }
 
       renderer.render(scene, camera);
+    }
+    const changeMotion = () => {
+      reducedMotion = motion?.matches ?? false;
+      if (animId !== undefined) cancelAnimationFrame(animId);
+      animate();
     };
+    motion?.addEventListener('change', changeMotion);
 
     animate();
 
     // Cleanup
     return () => {
-      cancelAnimationFrame(animId);
+      if (animId !== undefined) cancelAnimationFrame(animId);
+      motion?.removeEventListener('change', changeMotion);
       dom.removeEventListener('mousedown', onPointerDown);
       window.removeEventListener('mousemove', onPointerMove);
       window.removeEventListener('mouseup', onPointerUp);
@@ -215,6 +232,20 @@ export function Companion3DCanvas({
       window.removeEventListener('touchmove', onPointerMove);
       window.removeEventListener('touchend', onPointerUp);
       dom.removeEventListener('click', onClick);
+      const geometries = new Set<THREE.BufferGeometry>();
+      const materials = new Set<THREE.Material>();
+      const textures = new Set<THREE.Texture>();
+      scene.traverse(object => {
+        if (!(object instanceof THREE.Mesh)) return;
+        geometries.add(object.geometry);
+        for (const material of Array.isArray(object.material) ? object.material : [object.material]) {
+          materials.add(material);
+          for (const value of Object.values(material)) if (value instanceof THREE.Texture) textures.add(value);
+        }
+      });
+      textures.forEach(texture => texture.dispose());
+      materials.forEach(material => material.dispose());
+      geometries.forEach(geometry => geometry.dispose());
       renderer.dispose();
     };
   }, [petId, stage, mood, size, interactive, onPetClick]);
@@ -222,7 +253,7 @@ export function Companion3DCanvas({
   return (
     <div className={`relative inline-flex flex-col items-center select-none ${className}`}>
       {/* Speech Bubble */}
-      {showSpeechBubble && (
+      {showSpeechBubble && !webGlUnavailable && (
         <div
           className={`pointer-events-none mb-2 max-w-[210px] rounded-xl border border-rule bg-card/95 px-3 py-1.5  backdrop-blur-md transition-all duration-300 ${
             mood === 'happy' ? 'border-gold/60 ' : ''
@@ -240,11 +271,19 @@ export function Companion3DCanvas({
       )}
 
       {/* Three.js Canvas Container */}
-      {webGlUnavailable && <p role="status" className="text-center text-[12.5px] text-fg-60" style={{ width: size }}>Thiết bị chưa hỗ trợ 3D. Bạn vẫn có thể tiếp tục học và chăm sóc linh vật.</p>}
+      {webGlUnavailable && <>
+        <span role="status" className="sr-only">Thiết bị chưa hỗ trợ 3D. Bạn vẫn có thể tiếp tục học và chăm sóc linh vật.</span>
+        {interactive && onPetClick ? <button type="button" aria-label="Bấm để cổ vũ linh vật" onClick={onPetClick}
+          className="flex items-center justify-center text-fg" style={{ width: Math.min(size, 96), height: Math.min(size, 96) }}>
+          <span aria-hidden="true" className="text-[32px]">{fallbackIcon}</span>
+        </button> : <div role="img" aria-label="Linh vật đồng hành" className="flex items-center justify-center text-fg"
+          style={{ width: Math.min(size, 96), height: Math.min(size, 96) }}><span aria-hidden="true" className="text-[32px]">{fallbackIcon}</span></div>}
+      </>}
       <div
         ref={containerRef}
-        role={interactive ? 'button' : undefined}
-        tabIndex={interactive ? 0 : undefined}
+        hidden={webGlUnavailable}
+        role={interactive && !webGlUnavailable ? 'button' : undefined}
+        tabIndex={interactive && !webGlUnavailable ? 0 : undefined}
         title="Bấm hoặc kéo để tương tác với Linh Thú 3D"
         className={`relative cursor-grab active:cursor-grabbing transition-transform duration-200 active:scale-95 ${
           interactive ? 'hover:scale-105' : ''
