@@ -33,16 +33,15 @@ public class ContentReviewStatusService {
     private static final Logger log = LoggerFactory.getLogger(ContentReviewStatusService.class);
     private static final String STAGING_MIGRATION_PATTERN = "classpath:db/migration-staging/*.sql";
 
-    private static final String NOTE = "Nội dung seed là BẢN NHÁP do người soạn tự viết, CHƯA được duyệt bởi người "
-            + "biết tiếng Trung. Migration trong db/migration-staging chỉ chạy ở local/staging — production chỉ nhận "
-            + "migration trong db/migration sau khi nội dung được duyệt (promote = chuyển file sang db/migration). "
-            + "Số `needsHumanCheck` là các item AI tự soạn nhưng CHƯA đối chiếu được nguồn (hoặc có thể có hơn 1 đáp "
-            + "án đúng theo ngữ cảnh) — xem tab \"Cần kiểm\" trong admin panel (GET /admin/review-queue).";
+    private static final String NOTE = "Từ vựng chỉ được phát hành khi có bằng chứng được xác thực và quyền sử dụng phù hợp. "
+            + "Đối chiếu web hợp lệ không bắt buộc người duyệt. Trạng thái APPROVED đơn lẻ không đủ; "
+            + "mục thiếu bằng chứng hoặc bị thu hồi vẫn chưa sẵn sàng. Các nội dung khác giữ quy trình kiểm tra riêng.";
 
     @org.springframework.beans.factory.annotation.Value("${app.legacy-phonetics-enabled:false}")
     private boolean legacyPhoneticsEnabled;
     private final KanaRepository kanaRepository;
     private final VocabularyRepository vocabularyRepository;
+    private final VocabularyPublicationAuthority publication;
     private final KanjiRepository kanjiRepository;
     private final GrammarRuleRepository grammarRuleRepository;
     private final GrammarExerciseRepository grammarExerciseRepository;
@@ -50,11 +49,13 @@ public class ContentReviewStatusService {
 
     @Transactional(readOnly = true)
     public ContentReviewStatusResponse getStatus() {
+        var words = vocabularyRepository.findAll().stream().filter(v -> v.getReviewStatus() != ReviewStatus.ARCHIVED).toList();
+        long publishedWords = words.stream().filter(v -> v.getReviewStatus() == ReviewStatus.APPROVED && publication.proof(v).isPresent()).count();
         List<ContentTypeReviewStatus> types = List.of(
                 statusOf("KANA", kanaRepository.count(), kanaRepository.countByReviewStatus(ReviewStatus.PENDING_REVIEW),
                         kanaRepository.countByNeedsHumanCheckTrue()),
-                statusOf("VOCABULARY", vocabularyRepository.count(),
-                        vocabularyRepository.countByReviewStatus(ReviewStatus.PENDING_REVIEW),
+                statusOf("VOCABULARY", words.size(),
+                        words.size() - publishedWords,
                         vocabularyRepository.countByNeedsHumanCheckTrue()),
                 statusOf("HANZI", kanjiRepository.count(),
                         kanjiRepository.countByReviewStatus(ReviewStatus.PENDING_REVIEW),

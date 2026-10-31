@@ -50,6 +50,7 @@ class VocabNotebookServiceTest {
     @Mock
     private com.heyganba.repository.NotebookPracticeSessionRepository practiceSessionRepository;
 
+    @Mock private com.heyganba.service.VocabularyPublicationAuthority publication;
     private VocabNotebookService notebookService;
     private User testUser;
 
@@ -59,6 +60,7 @@ class VocabNotebookServiceTest {
                 notebookRepository,
                 itemRepository,
                 vocabularyRepository,
+                publication,
                 userRepository,
                 studyActivityService,
                 expService,
@@ -101,6 +103,7 @@ class VocabNotebookServiceTest {
                 )))
                 .build();
 
+        when(publication.canRead(v1)).thenReturn(true);
         when(notebookRepository.findById(99L)).thenReturn(Optional.of(sample));
         when(userRepository.getReferenceById(10L)).thenReturn(testUser);
         when(notebookRepository.save(any(VocabNotebook.class))).thenAnswer(invocation -> {

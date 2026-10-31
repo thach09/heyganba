@@ -17,7 +17,16 @@ import java.util.regex.Pattern;
 public class DictionaryService {
     @org.springframework.beans.factory.annotation.Value("${app.dictionary.legacy-catalog-enabled:false}")
     private boolean legacyCatalogEnabled;
+    @org.springframework.beans.factory.annotation.Autowired
+    private org.springframework.core.env.Environment environment;
+
+    @jakarta.annotation.PostConstruct
+    void requireExplicitLegacyProfile() {
+        if (legacyCatalogEnabled && !environment.acceptsProfiles(org.springframework.core.env.Profiles.of("legacy-japanese")))
+            throw new IllegalStateException("Japanese catalog requires the isolated legacy-japanese profile");
+    }
     private final VocabularyRepository vocabularyRepository;
+    private final VocabularyPublicationAuthority publication;
     private final KanjiRepository kanjiRepository;
     private final DictionaryEntryRepository dictionaryEntryRepository;
     private static final int PAGE_SIZE = 20;
@@ -39,7 +48,7 @@ public class DictionaryService {
             word = dictionaryWord(d);
         } else {
             Vocabulary v = vocabularyRepository.findById(id).orElseThrow(() -> new com.heyganba.common.exception.ResourceNotFoundException("Vocabulary", "id", id));
-            ContentAccess.requireVisible(v.getReviewStatus(), "Vocabulary", id);
+            publication.requireVisible(v);
             word = Word.from(v);
         }
         return new Lookup(word, kanjiRepository.findAllWithDetails().stream()
@@ -61,7 +70,7 @@ public class DictionaryService {
         Pattern englishToken = tokenPattern(normalized);
         Pattern vietnameseToken = tokenPattern(vietnameseSearch);
         List<RankedWord> matchedCourse = vocabularyRepository.findCourseWords().stream()
-                .filter(v -> ContentAccess.isVisible(v.getReviewStatus()))
+                .filter(v -> publication.canRead(v))
                 .map(v -> new RankedWord(Word.from(v), relevance(v.getWord(), v.getReading(), v.getMeaning(), null,
                         v.getSinoVietnamese(), normalized, vietnameseSearch, toneSensitive), 1000))
                 .filter(candidate -> candidate.relevance() < 9)
@@ -160,7 +169,7 @@ public class DictionaryService {
     public Vocabulary resolveNotebookWord(Long id) {
         if (id >= 0) {
             Vocabulary v = vocabularyRepository.findById(id).orElseThrow(() -> new BadRequestException("Không tìm thấy từ vựng"));
-            ContentAccess.requireVisible(v.getReviewStatus(), "Vocabulary", id);
+            publication.requireVisible(v);
             return v;
         }
         if (id == Long.MIN_VALUE) throw new BadRequestException("ID từ điển không hợp lệ");

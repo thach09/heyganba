@@ -18,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
@@ -39,6 +40,7 @@ class AdminContentServiceTest {
     @Mock
     private AuditLogService auditLogService;
 
+    @Mock private com.heyganba.service.VocabularyPublicationAuthority publication;
     private AdminContentService adminContentService;
     private User admin;
 
@@ -47,6 +49,7 @@ class AdminContentServiceTest {
         adminContentService = new AdminContentService(
                 kanaRepository,
                 vocabularyRepository,
+                publication,
                 kanjiRepository,
                 grammarExerciseRepository,
                 grammarRuleRepository,
@@ -90,6 +93,7 @@ class AdminContentServiceTest {
                 .character("日")
                 .strokeCount(4)
                 .meaning("mặt trời")
+                .reviewStatus(com.heyganba.model.enums.ReviewStatus.APPROVED)
                 .build();
 
         AdminKanjiRequest req = AdminKanjiRequest.builder()
@@ -105,7 +109,47 @@ class AdminContentServiceTest {
         Kanji result = adminContentService.updateKanji(admin, 50L, req);
 
         assertThat(result.getMeaning()).isEqualTo("mặt trời, ngày");
+        assertThat(result.getReviewStatus()).isEqualTo(com.heyganba.model.enums.ReviewStatus.PENDING_REVIEW);
+        assertThat(result.getNeedsHumanCheck()).isTrue();
         verify(auditLogService).logAction(eq(admin), eq("kanji"), eq(50L), eq("UPDATE"), anyString(), anyString());
+    }
+
+    @Test void newlyAuthoredHanziIsAlwaysAnUnpublishedDraft() {
+        when(kanjiRepository.save(any(Kanji.class))).thenAnswer(call -> call.getArgument(0));
+        var result = adminContentService.createKanji(admin, AdminKanjiRequest.builder()
+                .character("TEST_ONLY").meaning("Synthetic fixture").strokeCount(1).build());
+        assertThat(result.getReviewStatus()).isEqualTo(com.heyganba.model.enums.ReviewStatus.PENDING_REVIEW);
+        assertThat(result.getNeedsHumanCheck()).isTrue();
+    }
+
+    @Test void creatingAndEditingExercisesCannotImplicitlyPublishThem() {
+        var rule = GrammarRule.builder().id(9L).build();
+        when(grammarRuleRepository.findById(9L)).thenReturn(Optional.of(rule));
+        when(grammarExerciseRepository.save(any(GrammarExercise.class))).thenAnswer(call -> call.getArgument(0));
+        var request = AdminExerciseRequest.builder().grammarRuleId(9L).questionText("Synthetic fixture")
+                .optionsJson("[\"A\",\"B\"]").correctAnswer("A").build();
+        var draft = adminContentService.createExercise(admin, request);
+        assertThat(draft.getReviewStatus()).isEqualTo(com.heyganba.model.enums.ReviewStatus.PENDING_REVIEW);
+        assertThat(draft.getNeedsHumanCheck()).isTrue();
+        draft.setReviewStatus(com.heyganba.model.enums.ReviewStatus.APPROVED);
+        when(grammarExerciseRepository.findById(7L)).thenReturn(Optional.of(draft));
+        var edited = adminContentService.updateExercise(admin, 7L, request);
+        assertThat(edited.getReviewStatus()).isEqualTo(com.heyganba.model.enums.ReviewStatus.PENDING_REVIEW);
+        assertThat(edited.getNeedsHumanCheck()).isTrue();
+    }
+
+    @Test void initialJiayouLineageRejectsIndividualAndBulkApprovalBeforeAnyWrite() {
+        var environment = new org.springframework.mock.env.MockEnvironment();
+        environment.setActiveProfiles("jiayou-prod");
+        org.springframework.test.util.ReflectionTestUtils.setField(adminContentService, "environment", environment);
+        for (String type : java.util.List.of("VOCABULARY", "HANZI", "GRAMMAR_EXERCISE", "KANA")) {
+            assertThatThrownBy(() -> adminContentService.approveContent(admin, type, 1L, null))
+                    .isInstanceOf(com.heyganba.common.exception.BadRequestException.class);
+        }
+        assertThatThrownBy(() -> adminContentService.approveAllPending(admin))
+                .isInstanceOf(com.heyganba.common.exception.BadRequestException.class);
+        verifyNoInteractions(kanaRepository, vocabularyRepository, kanjiRepository,
+                grammarExerciseRepository, grammarRuleRepository, auditLogService, publication);
     }
 
     @Test
@@ -131,12 +175,16 @@ class AdminContentServiceTest {
     @Test
     @DisplayName("Admin duyệt tất cả các mục PENDING_REVIEW và ghi nhận audit log")
     void approveAllPending_updatesAllAndLogsAction() {
-        Vocabulary vocabulary = Vocabulary.builder().reviewStatus(com.heyganba.model.enums.ReviewStatus.PENDING_REVIEW).build();
+        Vocabulary vocabulary = Vocabulary.builder().id(44L).reviewStatus(com.heyganba.model.enums.ReviewStatus.PENDING_REVIEW).build();
         Kanji hanzi = Kanji.builder().reviewStatus(com.heyganba.model.enums.ReviewStatus.PENDING_REVIEW).build();
         GrammarExercise exercise = GrammarExercise.builder().reviewStatus(com.heyganba.model.enums.ReviewStatus.PENDING_REVIEW).build();
         com.heyganba.model.entity.GrammarRule rule = com.heyganba.model.entity.GrammarRule.builder().reviewStatus(com.heyganba.model.enums.ReviewStatus.PENDING_REVIEW).build();
         com.heyganba.model.entity.Kana kana = com.heyganba.model.entity.Kana.builder().reviewStatus(com.heyganba.model.enums.ReviewStatus.PENDING_REVIEW).build();
         when(vocabularyRepository.findAll()).thenReturn(java.util.List.of(vocabulary));
+        when(vocabularyRepository.findByIdForUpdate(44L)).thenReturn(Optional.of(vocabulary));
+        var proof = new com.heyganba.service.VocabularyPublicationAuthority.Proof("synthetic", "synthetic");
+        when(publication.proof(vocabulary)).thenReturn(Optional.of(proof));
+        when(publication.requireEligible(vocabulary)).thenReturn(proof);
         when(kanjiRepository.findAll()).thenReturn(java.util.List.of(hanzi));
         when(grammarExerciseRepository.findAll()).thenReturn(java.util.List.of(exercise));
         when(grammarRuleRepository.findAll()).thenReturn(java.util.List.of(rule));

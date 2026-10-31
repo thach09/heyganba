@@ -11,6 +11,7 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+@org.junit.jupiter.api.Tag("legacy-japanese")
 class AssistedDictionaryCurationIntegrityTest {
     private static final String BATCH_PREFIX = "/db/migration-staging/vietnamese-assisted-batch-";
     private static final String RUNTIME_RESOURCE = "/dictionary/assisted-ja-vi.tsv";

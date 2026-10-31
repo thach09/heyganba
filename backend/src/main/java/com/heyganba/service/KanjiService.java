@@ -30,6 +30,9 @@ import java.util.stream.Collectors;
 public class KanjiService {
 
     private final KanjiRepository kanjiRepository;
+    private final VocabularyPublicationAuthority publication;
+    private final com.heyganba.repository.VocabularyRepository vocabularyRepository;
+    private final com.fasterxml.jackson.databind.ObjectMapper json;
     private final RadicalRepository radicalRepository;
     private final KanjiPracticeProgressRepository progressRepository;
     private final UserRepository userRepository;
@@ -71,8 +74,9 @@ public class KanjiService {
         kanji = ContentAccess.visibleOnly(kanji, Kanji::getReviewStatus);
 
         Map<Long, Integer> practiceCounts = practiceCountsByKanjiId(userId);
+        var publishedWords = publishedWordsByText();
         return kanji.stream()
-                .map(item -> KanjiResponse.from(item, practiceCounts.getOrDefault(item.getId(), 0)))
+                .map(item -> KanjiResponse.from(item, practiceCounts.getOrDefault(item.getId(), 0), publishedCompounds(item, publishedWords)))
                 .toList();
     }
 
@@ -87,7 +91,30 @@ public class KanjiService {
                 .map(KanjiPracticeProgress::getPracticeCount)
                 .orElse(0);
 
-        return KanjiResponse.from(kanji, practiceCount);
+        return KanjiResponse.from(kanji, practiceCount, publishedCompounds(kanji, publishedWordsByText()));
+    }
+
+    private Map<String, com.heyganba.model.entity.Vocabulary> publishedWordsByText() {
+        return vocabularyRepository.findCourseWords().stream()
+                .filter(v -> v.getReviewStatus() == com.heyganba.model.enums.ReviewStatus.APPROVED && publication.proof(v).isPresent())
+                .collect(Collectors.toMap(com.heyganba.model.entity.Vocabulary::getWord,
+                        java.util.function.Function.identity(), (first, duplicate) -> first));
+    }
+
+    private String publishedCompounds(Kanji character, Map<String, com.heyganba.model.entity.Vocabulary> words) {
+        if (character.getExampleWordsJson() == null) return "[]";
+        try {
+            var candidates = json.readTree(character.getExampleWordsJson());
+            var result = json.createArrayNode();
+            if (!candidates.isArray()) return "[]";
+            for (var candidate : candidates) {
+                var word = words.get(candidate.path("word").asText());
+                if (word != null && word.getWord().contains(character.getCharacter())) {
+                    result.addObject().put("word", word.getWord()).put("pinyin", word.getReading()).put("vi", word.getMeaning());
+                }
+            }
+            return json.writeValueAsString(result);
+        } catch (com.fasterxml.jackson.core.JsonProcessingException ignored) { return "[]"; }
     }
 
     @Transactional(readOnly = true)

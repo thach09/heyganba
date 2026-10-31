@@ -10,6 +10,7 @@ import static org.assertj.core.api.Assertions.*;
 
 /** Opt-in disposable PostgreSQL ONLY. This migration is test-source code, never packaged/deployed. */
 @EnabledIfSystemProperty(named = "dictionary.pilot.rehearsal", matches = "true")
+@org.junit.jupiter.api.Tag("legacy-japanese")
 class DictionaryPilotPostgresRehearsalTest {
     @Test void rehearseFullAssistedReleaseThroughFlywayWithoutCurriculumMutation() throws Exception {
         String url = System.getProperty("dictionary.pilot.jdbc", "jdbc:postgresql://127.0.0.1:15439/dictionary_pilot");

@@ -16,10 +16,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @org.springframework.test.context.TestPropertySource(properties="app.dictionary.legacy-catalog-enabled=true")
+@org.junit.jupiter.api.Tag("legacy-japanese")
+@org.springframework.test.context.ActiveProfiles("legacy-japanese")
 class DictionaryNotebookApiTest extends ContentApiTestBase {
     @Autowired MockMvc mvc;
     @Autowired ObjectMapper json;
     @Autowired DictionaryEntryRepository dictionary;
+    @Autowired com.heyganba.service.DictionaryService dictionaryService;
     String token;
     Long userId;
     long notebookId;
@@ -212,6 +215,8 @@ class DictionaryNotebookApiTest extends ContentApiTestBase {
     }
 
     long addWord(long id) throws Exception {
+        // A synthetic receipt is required for the materialized test row too; legacy status alone cannot publish it.
+        if (id < 0) persistApprovedVocabulary(dictionaryService.resolveNotebookWord(id));
         return json.readTree(mvc.perform(post("/notebooks/"+notebookId+"/items").header("Authorization","Bearer "+token)
                 .contentType(MediaType.APPLICATION_JSON).content("{\"vocabularyId\":"+id+"}"))
                 .andExpect(status().isOk()).andReturn().getResponse().getContentAsString()).at("/data/items/0/vocabularyId").asLong();
