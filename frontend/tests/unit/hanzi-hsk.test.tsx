@@ -326,3 +326,19 @@ test('writer download failure survives a late content response and can be retrie
   await waitFor(() => expect((window as any).HanziWriter.create).toHaveBeenCalled());
   expect(screen.queryByTestId('calligraphy-reference-card')).not.toBeInTheDocument();
 });
+
+test('an empty selected group offers a path back to available characters', async () => {
+  fixture.user = { userId: 1, role: 'ROLE_USER', fullName: 'Learner' };
+  vi.mocked(hanziApi.list).mockImplementation(async (query) => ({
+    success: true, data: new URLSearchParams(query).get('hsk') === '6' ? [] : SAMPLE_CHARACTERS,
+  }) as any);
+  (window as any).HanziWriter = { create: vi.fn(() => fixture.writerMock) };
+  render(<MemoryRouter><HanziStationView /></MemoryRouter>);
+  await screen.findAllByText('人');
+  fireEvent.click(screen.getByRole('button', { name: 'Nhóm 6' }));
+  await screen.findByText('Chưa có chữ Hán đã duyệt ở cấp này.');
+  fireEvent.click(screen.getByRole('button', { name: 'Quay về nhóm 1' }));
+  await screen.findAllByText('人');
+  expect(hanziApi.list).toHaveBeenLastCalledWith('hsk=1', expect.objectContaining({ signal: expect.any(AbortSignal) }));
+  expect(screen.getByRole('button', { name: 'Nhóm 6' })).toBeInTheDocument();
+});

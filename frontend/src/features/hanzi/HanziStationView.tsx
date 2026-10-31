@@ -268,7 +268,13 @@ const HanziStationSession: React.FC = () => {
     <p>Chưa tải được chữ Hán. Không hiển thị dữ liệu mẫu thay cho nội dung đã duyệt.</p>
     <button type="button" onClick={() => void loadCharacters()} className="mt-4 border border-rule-strong px-4 py-2">Thử lại</button>
   </div>;
-  if (!characters.length) return <p role="status" className="py-8 text-[13px] text-fg-60">Chưa có chữ Hán đã duyệt ở cấp này.</p>;
+  if (!characters.length) return <div className="space-y-4 py-8 text-[13px] text-fg-60">
+    <p role="status">Chưa có chữ Hán đã duyệt ở cấp này.</p>
+    <div className="flex flex-wrap gap-3">
+      {hskFilter !== 1 && <button type="button" onClick={() => setHskFilter(1)} className="border border-rule-strong px-3 py-2">Quay về nhóm 1</button>}
+      {hskFilter !== 'ALL' && <button type="button" onClick={() => setHskFilter('ALL')} className="border border-rule-strong px-3 py-2">Xem tất cả nhóm chữ</button>}
+    </div>
+  </div>;
 
   return (
     <div className="mx-auto flex w-full max-w-[1100px] flex-col gap-6">
