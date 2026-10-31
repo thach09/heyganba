@@ -26,6 +26,7 @@ export function Companion3DCanvas({
   className = '',
 }: Companion3DCanvasProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const unavailableForMount = useRef(false);
   const fallbackIcon = petId === 'panda' ? '🐼' : petId === 'golden_monkey' ? '🐒' : petId === 'imperial_cat' ? '🐈' : '🐾';
   const motionQuery = '(prefers-reduced-motion: reduce)';
   const [webGlUnavailable, setWebGlUnavailable] = useState(false);
@@ -49,7 +50,7 @@ export function Companion3DCanvas({
   // Three.js Scene Setup & Loop
   useEffect(() => {
     const container = containerRef.current;
-    if (!container) return;
+    if (!container || unavailableForMount.current) return;
 
     // Clean previous children if any
     container.innerHTML = '';
@@ -69,6 +70,9 @@ export function Companion3DCanvas({
     let renderer: THREE.WebGLRenderer;
     try { renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true }); }
     catch {
+      // Keep this mounted instance on the working static path; do not create a
+      // hidden renderer/idle loop when later mood or callback props change.
+      unavailableForMount.current = true;
       // oxlint-disable-next-line react/set-state-in-effect -- an external renderer can synchronously reject unavailable WebGL.
       setWebGlUnavailable(true);
       return;
