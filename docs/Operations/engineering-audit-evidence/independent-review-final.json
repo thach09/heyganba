@@ -1,0 +1,74 @@
+{
+  "review": "Independent Pass B final source/regression review",
+  "reviewer": "final_review agent; no source edits; local test fixtures only",
+  "date": "2026-10-31",
+  "snapshot": {
+    "head": "243fe1f2abe79fdfd9ae3aa7143d6f54cbf26186",
+    "base": "7ed0e5dd6c63bb0db161cb8e39511ffaecbcbcf8",
+    "diff_sha256_including_working_tree": "40be7f0996896a76bc115d826f83d43f34e071742e79e8c85ec82fc02244db1c"
+  },
+  "decision": "APPROVED_SOURCE_AND_TARGETED_TESTS_SUBJECT_TO_FULL_CI_BROWSER_AND_PRESERVATION_GATES",
+  "findings": [
+    {
+      "id": "B01",
+      "status": "RESOLVED",
+      "area": "Static reading publication bypass",
+      "evidence": "readingFixtures uses compile-time import.meta.env.DEV AND explicit opt-in before dynamically importing corpus; production has no allowed path even if VITE flag is true. Default empty reading UI retained. Gate/reading tests pass."
+    },
+    {
+      "id": "B02",
+      "status": "RESOLVED",
+      "area": "Empty Hanzi navigation trap",
+      "evidence": "Empty group exposes reset/back action; populated-to-empty-to-back regression in hanzi-hsk tests passes."
+    },
+    {
+      "id": "B03",
+      "status": "RESOLVED",
+      "area": "Exam speech failures",
+      "evidence": "Exam handles unsupported/no-voice/error synchronously and async onError; interrupted cancellation excluded. Errors report accessible feedback without changing answers/checkpoint."
+    },
+    {
+      "id": "B04",
+      "status": "RESOLVED_PREVIOUS_BACKEND_BATCH",
+      "area": "Active DTO branding",
+      "evidence": "Chinese DTO source is Jiayou; historical JMdict compatibility identifier preserved."
+    },
+    {
+      "id": "B05",
+      "status": "RESOLVED_PREVIOUS_BACKEND_BATCH",
+      "area": "Generated legacy test output",
+      "evidence": "Generated output was excluded from reviewed source; explicit historical fixture CI remains separate from runtime packaging."
+    },
+    {
+      "id": "B06",
+      "status": "FOUND_AND_RESOLVED_DURING_THIS_REVIEW",
+      "severity": "MEDIUM_RESOURCE_LIFECYCLE",
+      "area": "Invisible WebGL retry after initialization failure",
+      "evidence": "Initially unavailable state remained true when later prop changes retried a successful renderer. Root fixed unavailableForMount ref guard and regression: constructor attempted once across mood/callback rerenders; fallback remains visible, no hidden renderer/idle loop."
+    }
+  ],
+  "additional_checks": [
+    "Each returned pet/food model clones material/texture palette per model; deduplicates within that model. Concurrent canvas test confirms disposing one does not invalidate the other.",
+    "Renderer teardown deduplicates geometry/material/texture disposal and removes event/animation/media listeners. Reduced-motion branch renders without scheduling idle RAF; pointer interaction still explicit.",
+    "WebGL keyboard Enter/Space invoke interactive action and prevent scrolling; noninteractive controls do not claim button role. Fallback uses native button and compact layout.",
+    "Pinyin stepper now has 24px hit area, explicit accessible names and aria-current step; selected-step/return regression passes. Actual browser dimensions remain parent gate.",
+    "New container workflow has contents:read, builds local tags only, no registry push/remote host/service operation; isolated runs use --network none and default missing authorization. Compose checker invokes config only and asserts no host ports, external storage and validate mode.",
+    "Legacy CI fetches immutable historical commit and materializes hash-verified fixtures in runner.temp; separate Maven output avoids replacing normal test reports. Bootstrap workflow adds main validation, no deploy step.",
+    "No backend SQL/bootstrap resource diff against current main; no production credentials or host access used by this review."
+  ],
+  "executed_tests": {
+    "command": "node frontend/node_modules/vitest/vitest.mjs run --root frontend [8 selected reading/audio/Hanzi/Pinyin/companion test files] --reporter=json --outputFile=.../final-review-tests.json",
+    "exit": 0,
+    "total": 35,
+    "passed": 35,
+    "failed": 0,
+    "pending": 0,
+    "report": "final-review-tests.json"
+  },
+  "limitations": [
+    "Approval concerns reviewed source and targeted regressions, not exhaustive security certification or live production/database compatibility.",
+    "No independent production/provider/host investigation; parent must verify deployment isolation and complete CI, browser and preservation gates.",
+    "Static corpus gate and cryptographic proof checking do not establish linguistic correctness, licensing or publication rights.",
+    "No source deletion or architecture change was performed by reviewer."
+  ]
+}

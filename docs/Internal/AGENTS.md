@@ -1,5 +1,11 @@
 # AI Agent Working Guidelines — Chinese Learning Platform
 
+> Current release guidance (31/10/2026): start with README, HANDOVER and
+> `docs/Operations/FINAL-ENGINEERING-AUDIT.md`. Vercel/Render deployment recipes
+> below are historical lessons, not active Jiayou deployment instructions.
+> CI validates only; fonts are served from `/fonts/`. No production/host operation
+> follows from these notes. Keep historical evidence and checksums intact.
+
 Tài liệu này dùng để brief cho agent code (Claude Code hoặc tương đương) trước khi bắt tay vào bất kỳ phase nào trong `roadmap.md`.
 
 ## Vai trò tổng hợp

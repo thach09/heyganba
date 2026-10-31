@@ -1,0 +1,5201 @@
+{
+  "phase": "final",
+  "results": [
+    {
+      "name": "dashboard",
+      "route": "/",
+      "width": 390,
+      "theme": "light",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Mục tiêu hiện tại: HSK 1",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 10548,
+          "decodedBytes": 10248
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 52156,
+          "decodedBytes": 51856
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 6550,
+          "decodedBytes": 50959
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 11200,
+          "decodedBytes": 10900
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 11236,
+          "decodedBytes": 10936
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 11304,
+          "decodedBytes": 11004
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 23128,
+          "decodedBytes": 22828
+        },
+        {
+          "path": "/fonts/NotoSerifSC-pets.woff2",
+          "transferBytes": 76836,
+          "decodedBytes": 76536
+        }
+      ]
+    },
+    {
+      "name": "pinyin",
+      "route": "/pinyin",
+      "width": 390,
+      "theme": "light",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Pinyin & Phát âm",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-pets.woff2",
+          "transferBytes": 59216,
+          "decodedBytes": 58916
+        },
+        {
+          "path": "/fonts/NotoSansSC-9.woff2",
+          "transferBytes": 34604,
+          "decodedBytes": 34304
+        },
+        {
+          "path": "/fonts/BeVietnamPro-400-rest.woff2",
+          "transferBytes": 11072,
+          "decodedBytes": 10772
+        },
+        {
+          "path": "/fonts/NotoSansSC-22.woff2",
+          "transferBytes": 311224,
+          "decodedBytes": 310924
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700-rest.woff2",
+          "transferBytes": 11760,
+          "decodedBytes": 11460
+        },
+        {
+          "path": "/fonts/NotoSansSC-0.woff2",
+          "transferBytes": 32064,
+          "decodedBytes": 31764
+        }
+      ]
+    },
+    {
+      "name": "vocabulary",
+      "route": "/vocabulary",
+      "width": 390,
+      "theme": "light",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Từ vựng & Ôn tập SRS",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-23.woff2",
+          "transferBytes": 284688,
+          "decodedBytes": 284388
+        },
+        {
+          "path": "/fonts/NotoSansSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        }
+      ]
+    },
+    {
+      "name": "hanzi",
+      "route": "/hanzi",
+      "width": 390,
+      "theme": "light",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        }
+      ]
+    },
+    {
+      "name": "grammar",
+      "route": "/grammar",
+      "width": 390,
+      "theme": "light",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Ngữ pháp & Luyện phản xạ",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-21.woff2",
+          "transferBytes": 256384,
+          "decodedBytes": 256084
+        },
+        {
+          "path": "/fonts/NotoSansSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-20.woff2",
+          "transferBytes": 283776,
+          "decodedBytes": 283476
+        }
+      ]
+    },
+    {
+      "name": "dictionary",
+      "route": "/dictionary",
+      "width": 390,
+      "theme": "light",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Tra cứu Từ điển & Kho từ vựng cá nhân",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        }
+      ]
+    },
+    {
+      "name": "exam",
+      "route": "/exam",
+      "width": 390,
+      "theme": "light",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Bài Luyện & Đánh Giá Tiến Độ",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-32.woff2",
+          "transferBytes": 285852,
+          "decodedBytes": 285552
+        },
+        {
+          "path": "/fonts/NotoSansSC-26.woff2",
+          "transferBytes": 345596,
+          "decodedBytes": 345296
+        },
+        {
+          "path": "/fonts/NotoSansSC-24.woff2",
+          "transferBytes": 298444,
+          "decodedBytes": 298144
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700-rest.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-400-rest.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        }
+      ]
+    },
+    {
+      "name": "admin",
+      "route": "/admin",
+      "width": 390,
+      "theme": "light",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Khu vực Quản trị Hệ thống",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        }
+      ]
+    },
+    {
+      "check": "auth-escape-close",
+      "width": 390,
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "name": "dashboard",
+      "route": "/",
+      "width": 768,
+      "theme": "light",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Mục tiêu hiện tại: HSK 1",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 10248
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 51856
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 50959
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 10900
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 10936
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 11004
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 22828
+        },
+        {
+          "path": "/fonts/NotoSerifSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 76536
+        }
+      ]
+    },
+    {
+      "name": "pinyin",
+      "route": "/pinyin",
+      "width": 768,
+      "theme": "light",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Pinyin & Phát âm",
+      "smallTargets": 5,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 58916
+        },
+        {
+          "path": "/fonts/NotoSansSC-9.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 34304
+        },
+        {
+          "path": "/fonts/BeVietnamPro-400-rest.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 10772
+        },
+        {
+          "path": "/fonts/NotoSansSC-22.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 310924
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700-rest.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 11460
+        },
+        {
+          "path": "/fonts/NotoSansSC-0.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 31764
+        }
+      ]
+    },
+    {
+      "name": "vocabulary",
+      "route": "/vocabulary",
+      "width": 768,
+      "theme": "light",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Từ vựng & Ôn tập SRS",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-23.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 284388
+        }
+      ]
+    },
+    {
+      "name": "hanzi",
+      "route": "/hanzi",
+      "width": 768,
+      "theme": "light",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        }
+      ]
+    },
+    {
+      "name": "grammar",
+      "route": "/grammar",
+      "width": 768,
+      "theme": "light",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Ngữ pháp & Luyện phản xạ",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-21.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 256084
+        },
+        {
+          "path": "/fonts/NotoSansSC-20.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 283476
+        },
+        {
+          "path": "/fonts/NotoSansSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        }
+      ]
+    },
+    {
+      "name": "dictionary",
+      "route": "/dictionary",
+      "width": 768,
+      "theme": "light",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Tra cứu Từ điển & Kho từ vựng cá nhân",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        }
+      ]
+    },
+    {
+      "name": "exam",
+      "route": "/exam",
+      "width": 768,
+      "theme": "light",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Bài Luyện & Đánh Giá Tiến Độ",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-32.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 285552
+        },
+        {
+          "path": "/fonts/NotoSansSC-26.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 345296
+        },
+        {
+          "path": "/fonts/NotoSansSC-24.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 298144
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700-rest.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-400-rest.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        }
+      ]
+    },
+    {
+      "name": "admin",
+      "route": "/admin",
+      "width": 768,
+      "theme": "light",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Khu vực Quản trị Hệ thống",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        }
+      ]
+    },
+    {
+      "check": "auth-escape-close",
+      "width": 768,
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "name": "dashboard",
+      "route": "/",
+      "width": 1024,
+      "theme": "light",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Mục tiêu hiện tại: HSK 1",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 10248
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 50959
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 51856
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 10900
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 10936
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 11004
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 22828
+        },
+        {
+          "path": "/fonts/NotoSerifSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 76536
+        }
+      ]
+    },
+    {
+      "name": "pinyin",
+      "route": "/pinyin",
+      "width": 1024,
+      "theme": "light",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Pinyin & Phát âm",
+      "smallTargets": 5,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 58916
+        },
+        {
+          "path": "/fonts/NotoSansSC-9.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 34304
+        },
+        {
+          "path": "/fonts/BeVietnamPro-400-rest.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 10772
+        },
+        {
+          "path": "/fonts/NotoSansSC-22.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 310924
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700-rest.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 11460
+        },
+        {
+          "path": "/fonts/NotoSansSC-0.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 31764
+        }
+      ]
+    },
+    {
+      "name": "vocabulary",
+      "route": "/vocabulary",
+      "width": 1024,
+      "theme": "light",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Từ vựng & Ôn tập SRS",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-23.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 284388
+        },
+        {
+          "path": "/fonts/NotoSansSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        }
+      ]
+    },
+    {
+      "name": "hanzi",
+      "route": "/hanzi",
+      "width": 1024,
+      "theme": "light",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        }
+      ]
+    },
+    {
+      "name": "grammar",
+      "route": "/grammar",
+      "width": 1024,
+      "theme": "light",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Ngữ pháp & Luyện phản xạ",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-21.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 256084
+        },
+        {
+          "path": "/fonts/NotoSansSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-20.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 283476
+        }
+      ]
+    },
+    {
+      "name": "dictionary",
+      "route": "/dictionary",
+      "width": 1024,
+      "theme": "light",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Tra cứu Từ điển & Kho từ vựng cá nhân",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        }
+      ]
+    },
+    {
+      "name": "exam",
+      "route": "/exam",
+      "width": 1024,
+      "theme": "light",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Bài Luyện & Đánh Giá Tiến Độ",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-32.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 285552
+        },
+        {
+          "path": "/fonts/NotoSansSC-26.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 345296
+        },
+        {
+          "path": "/fonts/NotoSansSC-24.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 298144
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700-rest.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-400-rest.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        }
+      ]
+    },
+    {
+      "name": "admin",
+      "route": "/admin",
+      "width": 1024,
+      "theme": "light",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Khu vực Quản trị Hệ thống",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        }
+      ]
+    },
+    {
+      "check": "auth-escape-close",
+      "width": 1024,
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "name": "dashboard",
+      "route": "/",
+      "width": 1440,
+      "theme": "light",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Mục tiêu hiện tại: HSK 1",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 10248
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 51856
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 50959
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 10900
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 10936
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 11004
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 22828
+        },
+        {
+          "path": "/fonts/NotoSerifSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 76536
+        }
+      ]
+    },
+    {
+      "name": "pinyin",
+      "route": "/pinyin",
+      "width": 1440,
+      "theme": "light",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Pinyin & Phát âm",
+      "smallTargets": 5,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 58916
+        },
+        {
+          "path": "/fonts/NotoSansSC-9.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 34304
+        },
+        {
+          "path": "/fonts/BeVietnamPro-400-rest.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 10772
+        },
+        {
+          "path": "/fonts/NotoSansSC-22.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 310924
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700-rest.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 11460
+        },
+        {
+          "path": "/fonts/NotoSansSC-0.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 31764
+        }
+      ]
+    },
+    {
+      "name": "vocabulary",
+      "route": "/vocabulary",
+      "width": 1440,
+      "theme": "light",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Từ vựng & Ôn tập SRS",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-23.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 284388
+        }
+      ]
+    },
+    {
+      "name": "hanzi",
+      "route": "/hanzi",
+      "width": 1440,
+      "theme": "light",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        }
+      ]
+    },
+    {
+      "name": "grammar",
+      "route": "/grammar",
+      "width": 1440,
+      "theme": "light",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Ngữ pháp & Luyện phản xạ",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-21.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 256084
+        },
+        {
+          "path": "/fonts/NotoSansSC-20.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 283476
+        },
+        {
+          "path": "/fonts/NotoSansSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        }
+      ]
+    },
+    {
+      "name": "dictionary",
+      "route": "/dictionary",
+      "width": 1440,
+      "theme": "light",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Tra cứu Từ điển & Kho từ vựng cá nhân",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        }
+      ]
+    },
+    {
+      "name": "exam",
+      "route": "/exam",
+      "width": 1440,
+      "theme": "light",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Bài Luyện & Đánh Giá Tiến Độ",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-32.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 285552
+        },
+        {
+          "path": "/fonts/NotoSansSC-26.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 345296
+        },
+        {
+          "path": "/fonts/NotoSansSC-24.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 298144
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700-rest.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-400-rest.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        }
+      ]
+    },
+    {
+      "name": "admin",
+      "route": "/admin",
+      "width": 1440,
+      "theme": "light",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Khu vực Quản trị Hệ thống",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        }
+      ]
+    },
+    {
+      "check": "auth-escape-close",
+      "width": 1440,
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "name": "dashboard",
+      "route": "/",
+      "width": 390,
+      "theme": "dark",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Mục tiêu hiện tại: HSK 1",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 10248
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 51856
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 50959
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 10900
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 10936
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 11004
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 22828
+        },
+        {
+          "path": "/fonts/NotoSerifSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 76536
+        }
+      ]
+    },
+    {
+      "name": "pinyin",
+      "route": "/pinyin",
+      "width": 390,
+      "theme": "dark",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Pinyin & Phát âm",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 58916
+        },
+        {
+          "path": "/fonts/NotoSansSC-9.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 34304
+        },
+        {
+          "path": "/fonts/BeVietnamPro-400-rest.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 10772
+        },
+        {
+          "path": "/fonts/NotoSansSC-22.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 310924
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700-rest.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 11460
+        },
+        {
+          "path": "/fonts/NotoSansSC-0.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 31764
+        }
+      ]
+    },
+    {
+      "name": "vocabulary",
+      "route": "/vocabulary",
+      "width": 390,
+      "theme": "dark",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Từ vựng & Ôn tập SRS",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-23.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 284388
+        },
+        {
+          "path": "/fonts/NotoSansSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        }
+      ]
+    },
+    {
+      "name": "hanzi",
+      "route": "/hanzi",
+      "width": 390,
+      "theme": "dark",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        }
+      ]
+    },
+    {
+      "name": "grammar",
+      "route": "/grammar",
+      "width": 390,
+      "theme": "dark",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Ngữ pháp & Luyện phản xạ",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-21.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 256084
+        },
+        {
+          "path": "/fonts/NotoSansSC-20.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 283476
+        }
+      ]
+    },
+    {
+      "name": "dictionary",
+      "route": "/dictionary",
+      "width": 390,
+      "theme": "dark",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Tra cứu Từ điển & Kho từ vựng cá nhân",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        }
+      ]
+    },
+    {
+      "name": "exam",
+      "route": "/exam",
+      "width": 390,
+      "theme": "dark",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Bài Luyện & Đánh Giá Tiến Độ",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-32.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 285552
+        },
+        {
+          "path": "/fonts/NotoSansSC-26.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 345296
+        },
+        {
+          "path": "/fonts/NotoSansSC-24.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 298144
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700-rest.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-400-rest.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        }
+      ]
+    },
+    {
+      "name": "admin",
+      "route": "/admin",
+      "width": 390,
+      "theme": "dark",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Khu vực Quản trị Hệ thống",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        }
+      ]
+    },
+    {
+      "check": "auth-escape-close",
+      "width": 390,
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "name": "dashboard",
+      "route": "/",
+      "width": 768,
+      "theme": "dark",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Mục tiêu hiện tại: HSK 1",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 10248
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 50959
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 51856
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 10900
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 10936
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 11004
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 22828
+        },
+        {
+          "path": "/fonts/NotoSerifSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 76536
+        }
+      ]
+    },
+    {
+      "name": "pinyin",
+      "route": "/pinyin",
+      "width": 768,
+      "theme": "dark",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Pinyin & Phát âm",
+      "smallTargets": 5,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 58916
+        },
+        {
+          "path": "/fonts/NotoSansSC-9.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 34304
+        },
+        {
+          "path": "/fonts/BeVietnamPro-400-rest.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 10772
+        },
+        {
+          "path": "/fonts/NotoSansSC-22.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 310924
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700-rest.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 11460
+        },
+        {
+          "path": "/fonts/NotoSansSC-0.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 31764
+        }
+      ]
+    },
+    {
+      "name": "vocabulary",
+      "route": "/vocabulary",
+      "width": 768,
+      "theme": "dark",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Từ vựng & Ôn tập SRS",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-23.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 284388
+        },
+        {
+          "path": "/fonts/NotoSansSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        }
+      ]
+    },
+    {
+      "name": "hanzi",
+      "route": "/hanzi",
+      "width": 768,
+      "theme": "dark",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        }
+      ]
+    },
+    {
+      "name": "grammar",
+      "route": "/grammar",
+      "width": 768,
+      "theme": "dark",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Ngữ pháp & Luyện phản xạ",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-21.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 256084
+        },
+        {
+          "path": "/fonts/NotoSansSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-20.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 283476
+        }
+      ]
+    },
+    {
+      "name": "dictionary",
+      "route": "/dictionary",
+      "width": 768,
+      "theme": "dark",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Tra cứu Từ điển & Kho từ vựng cá nhân",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        }
+      ]
+    },
+    {
+      "name": "exam",
+      "route": "/exam",
+      "width": 768,
+      "theme": "dark",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Bài Luyện & Đánh Giá Tiến Độ",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-32.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 285552
+        },
+        {
+          "path": "/fonts/NotoSansSC-24.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 298144
+        },
+        {
+          "path": "/fonts/NotoSansSC-26.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 345296
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700-rest.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-400-rest.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        }
+      ]
+    },
+    {
+      "name": "admin",
+      "route": "/admin",
+      "width": 768,
+      "theme": "dark",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Khu vực Quản trị Hệ thống",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        }
+      ]
+    },
+    {
+      "check": "auth-escape-close",
+      "width": 768,
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "name": "dashboard",
+      "route": "/",
+      "width": 1024,
+      "theme": "dark",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Mục tiêu hiện tại: HSK 1",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 10248
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 50959
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 51856
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 10900
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 10936
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 11004
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 22828
+        },
+        {
+          "path": "/fonts/NotoSerifSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 76536
+        }
+      ]
+    },
+    {
+      "name": "pinyin",
+      "route": "/pinyin",
+      "width": 1024,
+      "theme": "dark",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Pinyin & Phát âm",
+      "smallTargets": 5,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 58916
+        },
+        {
+          "path": "/fonts/NotoSansSC-9.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 34304
+        },
+        {
+          "path": "/fonts/BeVietnamPro-400-rest.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 10772
+        },
+        {
+          "path": "/fonts/NotoSansSC-22.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 310924
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700-rest.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 11460
+        },
+        {
+          "path": "/fonts/NotoSansSC-0.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 31764
+        }
+      ]
+    },
+    {
+      "name": "vocabulary",
+      "route": "/vocabulary",
+      "width": 1024,
+      "theme": "dark",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Từ vựng & Ôn tập SRS",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-23.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 284388
+        },
+        {
+          "path": "/fonts/NotoSansSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        }
+      ]
+    },
+    {
+      "name": "hanzi",
+      "route": "/hanzi",
+      "width": 1024,
+      "theme": "dark",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        }
+      ]
+    },
+    {
+      "name": "grammar",
+      "route": "/grammar",
+      "width": 1024,
+      "theme": "dark",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Ngữ pháp & Luyện phản xạ",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-21.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 256084
+        },
+        {
+          "path": "/fonts/NotoSansSC-20.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 283476
+        },
+        {
+          "path": "/fonts/NotoSansSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        }
+      ]
+    },
+    {
+      "name": "dictionary",
+      "route": "/dictionary",
+      "width": 1024,
+      "theme": "dark",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Tra cứu Từ điển & Kho từ vựng cá nhân",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        }
+      ]
+    },
+    {
+      "name": "exam",
+      "route": "/exam",
+      "width": 1024,
+      "theme": "dark",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Bài Luyện & Đánh Giá Tiến Độ",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-32.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 285552
+        },
+        {
+          "path": "/fonts/NotoSansSC-26.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 345296
+        },
+        {
+          "path": "/fonts/NotoSansSC-24.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 298144
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700-rest.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-400-rest.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        }
+      ]
+    },
+    {
+      "name": "admin",
+      "route": "/admin",
+      "width": 1024,
+      "theme": "dark",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Khu vực Quản trị Hệ thống",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        }
+      ]
+    },
+    {
+      "check": "auth-escape-close",
+      "width": 1024,
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "name": "dashboard",
+      "route": "/",
+      "width": 1440,
+      "theme": "dark",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Mục tiêu hiện tại: HSK 1",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 10248
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 51856
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 50959
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 10900
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 10936
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 11004
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 22828
+        },
+        {
+          "path": "/fonts/NotoSerifSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 76536
+        }
+      ]
+    },
+    {
+      "name": "pinyin",
+      "route": "/pinyin",
+      "width": 1440,
+      "theme": "dark",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Pinyin & Phát âm",
+      "smallTargets": 5,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 58916
+        },
+        {
+          "path": "/fonts/NotoSansSC-9.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 34304
+        },
+        {
+          "path": "/fonts/BeVietnamPro-400-rest.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 10772
+        },
+        {
+          "path": "/fonts/NotoSansSC-22.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 310924
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700-rest.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 11460
+        },
+        {
+          "path": "/fonts/NotoSansSC-0.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 31764
+        }
+      ]
+    },
+    {
+      "name": "vocabulary",
+      "route": "/vocabulary",
+      "width": 1440,
+      "theme": "dark",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Từ vựng & Ôn tập SRS",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-23.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 284388
+        }
+      ]
+    },
+    {
+      "name": "hanzi",
+      "route": "/hanzi",
+      "width": 1440,
+      "theme": "dark",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        }
+      ]
+    },
+    {
+      "name": "grammar",
+      "route": "/grammar",
+      "width": 1440,
+      "theme": "dark",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Ngữ pháp & Luyện phản xạ",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-21.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 256084
+        },
+        {
+          "path": "/fonts/NotoSansSC-20.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 283476
+        },
+        {
+          "path": "/fonts/NotoSansSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        }
+      ]
+    },
+    {
+      "name": "dictionary",
+      "route": "/dictionary",
+      "width": 1440,
+      "theme": "dark",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Tra cứu Từ điển & Kho từ vựng cá nhân",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        }
+      ]
+    },
+    {
+      "name": "exam",
+      "route": "/exam",
+      "width": 1440,
+      "theme": "dark",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Bài Luyện & Đánh Giá Tiến Độ",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-32.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 285552
+        },
+        {
+          "path": "/fonts/NotoSansSC-26.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 345296
+        },
+        {
+          "path": "/fonts/NotoSansSC-24.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 298144
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700-rest.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-400-rest.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        }
+      ]
+    },
+    {
+      "name": "admin",
+      "route": "/admin",
+      "width": 1440,
+      "theme": "dark",
+      "title": "Jiayou — Nền tảng học tiếng Trung cho người Việt",
+      "overflow": false,
+      "errorBoundary": false,
+      "heading": "Khu vực Quản trị Hệ thống",
+      "smallTargets": 0,
+      "fontRequests": [
+        {
+          "path": "/fonts/BeVietnamPro-400.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-700.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-500.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/BeVietnamPro-600.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSansSC-ui.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        },
+        {
+          "path": "/fonts/NotoSerifSC-pets.woff2",
+          "transferBytes": 300,
+          "decodedBytes": 0
+        }
+      ]
+    },
+    {
+      "check": "auth-escape-close",
+      "width": 1440,
+      "theme": "dark",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "requests": [
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/insights",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/insights",
+      "method": "GET"
+    },
+    {
+      "path": "/streak/heatmap",
+      "method": "GET"
+    },
+    {
+      "path": "/flashcard/stats",
+      "method": "GET"
+    },
+    {
+      "path": "/exp",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/vocabulary/lessons",
+      "method": "GET"
+    },
+    {
+      "path": "/flashcard/stats",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/hanzi",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/mastery",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/grammar/rules",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/exam/history",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/streak/heatmap",
+      "method": "GET"
+    },
+    {
+      "path": "/leaderboard",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/status",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/users",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/audit-logs",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/insights",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/insights",
+      "method": "GET"
+    },
+    {
+      "path": "/streak/heatmap",
+      "method": "GET"
+    },
+    {
+      "path": "/flashcard/stats",
+      "method": "GET"
+    },
+    {
+      "path": "/exp",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/vocabulary/lessons",
+      "method": "GET"
+    },
+    {
+      "path": "/flashcard/stats",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/hanzi",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/mastery",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/grammar/rules",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/exam/history",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/streak/heatmap",
+      "method": "GET"
+    },
+    {
+      "path": "/leaderboard",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/status",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/users",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/audit-logs",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/insights",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/insights",
+      "method": "GET"
+    },
+    {
+      "path": "/streak/heatmap",
+      "method": "GET"
+    },
+    {
+      "path": "/flashcard/stats",
+      "method": "GET"
+    },
+    {
+      "path": "/exp",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/vocabulary/lessons",
+      "method": "GET"
+    },
+    {
+      "path": "/flashcard/stats",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/hanzi",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/mastery",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/grammar/rules",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/exam/history",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/streak/heatmap",
+      "method": "GET"
+    },
+    {
+      "path": "/leaderboard",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/status",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/users",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/audit-logs",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/insights",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/insights",
+      "method": "GET"
+    },
+    {
+      "path": "/streak/heatmap",
+      "method": "GET"
+    },
+    {
+      "path": "/flashcard/stats",
+      "method": "GET"
+    },
+    {
+      "path": "/exp",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/vocabulary/lessons",
+      "method": "GET"
+    },
+    {
+      "path": "/flashcard/stats",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/hanzi",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/mastery",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/grammar/rules",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/exam/history",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/streak/heatmap",
+      "method": "GET"
+    },
+    {
+      "path": "/leaderboard",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/status",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/users",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/audit-logs",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/insights",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/insights",
+      "method": "GET"
+    },
+    {
+      "path": "/streak/heatmap",
+      "method": "GET"
+    },
+    {
+      "path": "/flashcard/stats",
+      "method": "GET"
+    },
+    {
+      "path": "/exp",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/vocabulary/lessons",
+      "method": "GET"
+    },
+    {
+      "path": "/flashcard/stats",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/hanzi",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/mastery",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/grammar/rules",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/exam/history",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/streak/heatmap",
+      "method": "GET"
+    },
+    {
+      "path": "/leaderboard",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/status",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/users",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/audit-logs",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/insights",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/insights",
+      "method": "GET"
+    },
+    {
+      "path": "/streak/heatmap",
+      "method": "GET"
+    },
+    {
+      "path": "/flashcard/stats",
+      "method": "GET"
+    },
+    {
+      "path": "/exp",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/vocabulary/lessons",
+      "method": "GET"
+    },
+    {
+      "path": "/flashcard/stats",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/hanzi",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/mastery",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/grammar/rules",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/exam/history",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/streak/heatmap",
+      "method": "GET"
+    },
+    {
+      "path": "/leaderboard",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/status",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/users",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/audit-logs",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/insights",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/insights",
+      "method": "GET"
+    },
+    {
+      "path": "/streak/heatmap",
+      "method": "GET"
+    },
+    {
+      "path": "/flashcard/stats",
+      "method": "GET"
+    },
+    {
+      "path": "/exp",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/vocabulary/lessons",
+      "method": "GET"
+    },
+    {
+      "path": "/flashcard/stats",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/hanzi",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/mastery",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/grammar/rules",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/exam/history",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/streak/heatmap",
+      "method": "GET"
+    },
+    {
+      "path": "/leaderboard",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/status",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/users",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/audit-logs",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/insights",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/insights",
+      "method": "GET"
+    },
+    {
+      "path": "/streak/heatmap",
+      "method": "GET"
+    },
+    {
+      "path": "/flashcard/stats",
+      "method": "GET"
+    },
+    {
+      "path": "/exp",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/vocabulary/lessons",
+      "method": "GET"
+    },
+    {
+      "path": "/flashcard/stats",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/hanzi",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/mastery",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/progress/companion/wallet",
+      "method": "GET"
+    },
+    {
+      "path": "/grammar/rules",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/exam/history",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/streak/heatmap",
+      "method": "GET"
+    },
+    {
+      "path": "/leaderboard",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    },
+    {
+      "path": "/streak",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/status",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/users",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/audit-logs",
+      "method": "GET"
+    },
+    {
+      "path": "/health",
+      "method": "GET"
+    }
+  ],
+  "limitations": "Synthetic empty API fixtures only. No production requests. WebGL disabled to exercise fallback. Does not prove backend persistence/auth."
+}

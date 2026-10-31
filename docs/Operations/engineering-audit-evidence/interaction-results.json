@@ -1,0 +1,65 @@
+{
+  "results": [
+    {
+      "width": 390,
+      "check": "guest-login-form-session",
+      "pass": true
+    },
+    {
+      "width": 390,
+      "check": "password-modal-labels-and-escape",
+      "pass": true
+    },
+    {
+      "width": 390,
+      "check": "exam-answer-checkpoint-revalidated-after-reload",
+      "pass": true
+    },
+    {
+      "width": 390,
+      "check": "missing-mandarin-voice-feedback-retains-answer",
+      "pass": true
+    },
+    {
+      "width": 390,
+      "check": "theme-switch-persists-reload",
+      "pass": true
+    },
+    {
+      "width": 390,
+      "check": "confirmed-logout-removes-private-exam-recovery",
+      "pass": true
+    },
+    {
+      "width": 1440,
+      "check": "guest-login-form-session",
+      "pass": true
+    },
+    {
+      "width": 1440,
+      "check": "password-modal-labels-and-escape",
+      "pass": true
+    },
+    {
+      "width": 1440,
+      "check": "exam-answer-checkpoint-revalidated-after-reload",
+      "pass": true
+    },
+    {
+      "width": 1440,
+      "check": "missing-mandarin-voice-feedback-retains-answer",
+      "pass": true
+    },
+    {
+      "width": 1440,
+      "check": "theme-switch-persists-reload",
+      "pass": true
+    },
+    {
+      "width": 1440,
+      "check": "confirmed-logout-removes-private-exam-recovery",
+      "pass": true
+    }
+  ],
+  "scope": "Local browser with synthetic intercepted API; tests frontend behavior, not live auth/persistence. No production request."
+}
