@@ -16,6 +16,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @org.springframework.test.context.TestPropertySource(properties="app.dictionary.legacy-catalog-enabled=true")
+@org.junit.jupiter.api.Tag("legacy-japanese")
+@org.springframework.test.context.ActiveProfiles("legacy-japanese")
 class DictionaryNotebookApiTest extends ContentApiTestBase {
     @Autowired MockMvc mvc;
     @Autowired ObjectMapper json;

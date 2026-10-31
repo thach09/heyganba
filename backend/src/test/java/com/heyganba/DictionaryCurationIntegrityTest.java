@@ -11,6 +11,7 @@ import java.util.*;
 import java.util.zip.GZIPInputStream;
 import static org.assertj.core.api.Assertions.*;
 
+@org.junit.jupiter.api.Tag("legacy-japanese")
 class DictionaryCurationIntegrityTest {
     static final String PILOT = "/db/migration-staging/dictionary-coverage-pilot.json";
     static JsonNode pilot() throws IOException {
