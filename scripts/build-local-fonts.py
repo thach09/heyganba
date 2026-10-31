@@ -100,6 +100,9 @@ def main():
         url = f'https://raw.githubusercontent.com/google/fonts/main/ofl/bevietnampro/BeVietnamPro-{style}.ttf'
         source = args.cache/f'BeVietnamPro-{style}.ttf'
         data = fetch(url,source)
+        expected = {400:'cd1ef6e9d7db28ad5cdb88a65ccbe693870e60d340b791f349d248342b4fe4c3',500:'b60832bfa0fcd015158112c64d7e3fdad3b0c6287d1823f85a3103636e845268',600:'bd8e27eb02720b9d91e59e4f10a90878643219f25ce6a8d9a4f06a8a88d3bb71',700:'7f738fe5c43c8872807b20e2d30d42163618de8a4daf7f48a939adac32c16847'}[weight]
+        if hashlib.sha256(data).hexdigest() != expected:
+            raise SystemExit('Source checksum changed: inspect before regenerating BeVietnamPro ' + str(weight))
         options = subset.Options(); options.flavor='woff2'; options.recalc_timestamp=False; options.hinting=False
         font = subset.load_font(str(source),options)
         coverage=set(font.getBestCmap());font.close()
@@ -115,7 +118,7 @@ def main():
         manifest.append({'family':'Be Vietnam Pro','weight':weight,'source':url,'sha256':hashlib.sha256(data).hexdigest(),'license':'SIL OFL 1.1','fallbackComplete':True})
     (out/'BeVietnamPro-OFL.txt').write_bytes(fetch('https://raw.githubusercontent.com/google/fonts/main/ofl/bevietnampro/OFL.txt',args.cache/'BeVietnamPro-OFL.txt'))
     (out/'fonts.css').write_text('\n'.join(css)+'\n',encoding='utf-8')
-    (out/'manifest.json').write_text(json.dumps({'generator':'scripts/build-local-fonts.py','accessed':'2026-10-20','fonts':manifest},indent=2)+'\n',encoding='utf-8')
+    (out/'manifest.json').write_text(json.dumps({'generator':'scripts/build-local-fonts.py','accessed':'2026-10-20','fonts':manifest,'assets':{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(out.iterdir()) if p.name!='manifest.json'}},indent=2)+'\n',encoding='utf-8')
     print(json.dumps({'files':len(list(out.iterdir())),'bytes':sum(p.stat().st_size for p in out.iterdir()),'fonts':manifest}))
 
 
