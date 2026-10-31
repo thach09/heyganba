@@ -14,6 +14,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
   const [user, setUser] = useState<AuthResponse | null>(getSavedUser);
   const [authOpen, setAuthOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<'login'|'register'>('login');
   const [passwordOpen, setPasswordOpen] = useState(false);
   const [notice, setNotice] = useState('');
 
@@ -68,18 +69,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     saveUser(profile); setUser(profile);
   };
 
-  return <AuthContext.Provider value={{ user, requireLogin: () => setAuthOpen(true), logout,
+  return <AuthContext.Provider value={{ user, requireLogin: () => {setAuthMode('login');setAuthOpen(true);}, openRegistration:()=>{setAuthMode('register');setAuthOpen(true);}, logout,
     changePassword: () => setPasswordOpen(true), updateProfile }}>
     <Fragment key={user?.userId ?? 'guest'}>{children}</Fragment>
     {passwordOpen && user && <ChangePasswordModal onClose={() => setPasswordOpen(false)} onChanged={() => {
       revokeLearningRecovery(user.userId);
       setPasswordOpen(false); setUser(null);
-      setNotice('Đã đổi mật khẩu. Vui lòng đăng nhập lại bằng mật khẩu mới.'); setAuthOpen(true);
+      setNotice('Đã đổi mật khẩu. Vui lòng đăng nhập lại bằng mật khẩu mới.'); setAuthMode('login'); setAuthOpen(true);
     }} />}
     {notice && <div role="status" className="fixed bottom-4 right-4 z-[120] max-w-[calc(100%-32px)] bg-card p-4 text-[12.5px] text-fg">
       {notice}<button type="button" aria-label="Đóng thông báo" onClick={() => setNotice('')} className="ml-4 cursor-pointer">×</button>
     </div>}
-    {authOpen && <AuthModal isOpen onClose={() => setAuthOpen(false)} onAuthSuccess={profile => {
+    {authOpen && <AuthModal key={authMode} initialMode={authMode} isOpen onClose={() => setAuthOpen(false)} onAuthSuccess={profile => {
       updateProfile(profile); setNotice('');
     }} />}
   </AuthContext.Provider>;

@@ -2,6 +2,14 @@
 
 Hệ thị giác "mực trên giấy", đảo tối. Chữ Hán là nhân vật chính, chữ Việt là sàn đọc, Pinyin là chúu thích.
 
+## Cập nhật owner 31/10/2026 — thương hiệu và điều hướng
+
+- Tên hiển thị chính xác **Jiayou**. Dùng PNG owner duyệt trong `docs/Design/brand/`; không vẽ lại, không gọi PNG là vector.
+- Không có dòng phụ dưới logo. Wordmark trắng đặt trên nền cố định của màu thẻ tối đã có (`#1C1B19`, chữ dự phòng `#F5F2EB`) ở cả hai theme; token `brand-surface`/`brand-ink` chỉ dành cho artwork này.
+- Điều hướng phẳng, tiếng Việt: Hôm nay, Pinyin, Chữ Hán, Từ vựng, Từ điển, Ngữ pháp, Luyện tập, Tôi; Quản trị chỉ hiện cho admin. Quy tắc này thay thế nhãn song ngữ/flyout cũ bên dưới.
+- Tiếng Trung giữ trong nội dung học có giá trị; bỏ nhãn giao diện trùng tiếng Trung và watermark chữ trang trí. Không đổi dữ liệu học/migration để làm sạch chữ giao diện.
+- Trang Tôi dùng token, thông tin chỉ đọc và API tài khoản có sẵn; thao tác riêng tư luôn cần xác thực. Nội dung chờ duyệt không được mở để lấp trạng thái rỗng.
+
 ---
 
 ## 1. Nền tảng

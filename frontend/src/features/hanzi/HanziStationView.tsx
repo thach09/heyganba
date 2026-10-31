@@ -65,12 +65,11 @@ const HanziStationSession: React.FC = () => {
   const [writerRetry, setWriterRetry] = useState(0);
   const [writerReady, setWriterReady] = useState(() => Boolean((window as any).HanziWriter));
   useEffect(() => {
-    if (!user) return;
     let cancelled = false;
     void loadHanziWriter().then(() => { if (!cancelled) setWriterReady(true); })
       .catch(() => { if (!cancelled) setWriterLoadFailed(true); });
     return () => { cancelled = true; };
-  }, [user, writerRetry]);
+  }, [writerRetry]);
   const [loadState, setLoadState] = useState<'loading' | 'loaded' | 'error'>('loading');
   const { triggerReaction, rewardBamboo } = useCompanion();
 
@@ -80,7 +79,6 @@ const HanziStationSession: React.FC = () => {
 
   // Load Hanzi from backend API
   const loadCharacters = useCallback(async () => {
-    if (!user) return;
     setLoadState('loading');
     const params = new URLSearchParams();
     if (hskFilter !== 'ALL') params.append('hsk', String(hskFilter));
@@ -89,7 +87,7 @@ const HanziStationSession: React.FC = () => {
     );
     if (!res) return;
     if (res.success && Array.isArray(res.data)) {
-      const visible = user.role === 'ROLE_ADMIN' ? res.data : res.data.filter(item => item.reviewStatus === 'APPROVED');
+      const visible = user?.role === 'ROLE_ADMIN' ? res.data : res.data.filter(item => item.reviewStatus === 'APPROVED');
       setCharacters(visible);
       setSelectedChar(visible[0] ?? EMPTY_CHARACTER);
       setStrokeDataError(false);
@@ -98,6 +96,7 @@ const HanziStationSession: React.FC = () => {
     } else { setCharacters([]); setLoadState('error'); return; }
 
     // Load user character mastery
+    if (!user) {setMasteryScores({});return;}
     try {
       const masteryRes = await run('hanzi.mastery', signal => progressApi.mastery('HANZI', { signal }));
       if (!masteryRes) return;
@@ -134,7 +133,7 @@ const HanziStationSession: React.FC = () => {
   const completePractice = useCallback(async () => {
     setIsQuizCompleted(true);
     triggerReaction('happy');
-    if (!user) { setPracticeNotice('Đăng nhập để lưu lượt luyện viết.'); return; }
+    if (!user) { setPracticeNotice('Đăng nhập để lưu lượt luyện viết.'); requireLogin(); return; }
     const response = await run('hanzi.practice', signal => progressApi.practice({ targetType: 'HANZI', targetKey: selectedChar.character, isCorrect: true }, { signal }));
     if (!response) return;
     if (response.success && response.data) {
@@ -144,7 +143,7 @@ const HanziStationSession: React.FC = () => {
       rewardBamboo(0);
       void confetti({ particleCount: 70, spread: 60, origin: { y: 0.6 } });
     } else setPracticeNotice(response.message || 'Chưa lưu được lượt viết. Vui lòng thử lại.');
-  }, [user, selectedChar.character, run, triggerReaction, rewardBamboo]);
+  }, [user, selectedChar.character, run, triggerReaction, rewardBamboo, requireLogin]);
 
   // Initialize or update HanziWriter when character or mode changes
   useEffect(() => {
@@ -258,11 +257,6 @@ const HanziStationSession: React.FC = () => {
 
   const currentScore = masteryScores[selectedChar.character] ?? 0;
 
-  if (!user) return <div className="mx-auto max-w-[520px] pt-16 text-center text-fg">
-    <h2 className="font-serif text-[24px]">Chữ Hán & Luyện viết</h2>
-    <p className="mt-4 text-[13px] leading-relaxed text-fg-60">Đăng nhập để học nội dung chữ Hán đã duyệt và lưu tiến độ.</p>
-    <button type="button" onClick={requireLogin} className="mt-5 border border-rule-strong px-4 py-2 text-[12.5px]">Đăng nhập / Đăng ký</button>
-  </div>;
   if (loadState === 'loading') return <p role="status" className="py-8 text-[13px] text-fg-60">Đang tải chữ Hán...</p>;
   if (loadState === 'error') return <div role="alert" className="py-8 text-[13px] text-fg">
     <p>Chưa tải được chữ Hán. Không hiển thị dữ liệu mẫu thay cho nội dung đã duyệt.</p>
@@ -286,13 +280,13 @@ const HanziStationSession: React.FC = () => {
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-cinnabar-ink">
             <span className="inline-block h-2 w-2 rounded-full bg-cinnabar" />
-            Trạm Chữ Hán & Bộ Thủ · 汉字笔顺与部首
+            Chữ Hán và bộ thủ
           </div>
           <h1 className="mt-1 font-serif text-3xl font-bold tracking-tight text-fg">
-            Học Chữ Hán (Hanzi) & Tập viết 米字格
+            Chữ Hán và tập viết
           </h1>
           <p className="mt-1 max-w-2xl text-xs leading-relaxed text-fg-60">
-            Khám phá quy tắc bút thuận, kết cấu chiết tự, âm Hán Việt chuẩn xác và luyện viết tay tương tác trên khung 米字格 (Mễ Tự Cách).
+            Tra cứu chữ đã duyệt và luyện viết từng nét trên khung tập viết.
           </p>
         </div>
 

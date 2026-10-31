@@ -127,7 +127,7 @@ describe('Hanzi & Radicals Station (Trạm Chữ Hán HSK 1)', () => {
     );
 
     // Header & title
-    expect(await screen.findByText(/Học Chữ Hán \(Hanzi\) & Tập viết 米字格/i)).toBeInTheDocument();
+    expect(await screen.findByText('Chữ Hán và tập viết')).toBeInTheDocument();
 
     // Foundational Radicals Bar
     expect(screen.getByText('亻 Nhân')).toBeInTheDocument();
@@ -150,13 +150,14 @@ describe('Hanzi & Radicals Station (Trạm Chữ Hán HSK 1)', () => {
     expect(screen.queryByText('Chờ duyệt')).not.toBeInTheDocument();
   });
 
-  test('guest is prompted to sign in without requesting protected character data', async () => {
+  test('guest can read approved characters without requesting private progress', async () => {
     fixture.user = null;
     render(<MemoryRouter><HanziStationView /></MemoryRouter>);
-    expect(screen.getByRole('button', { name: 'Đăng nhập / Đăng ký' })).toBeInTheDocument();
-    await new Promise(resolve => setTimeout(resolve, 10));
-    expect(hanziApi.list).not.toHaveBeenCalled();
-    expect(screen.queryByText('人')).not.toBeInTheDocument();
+    expect((await screen.findAllByText('人'))[0]).toBeInTheDocument();
+    expect(hanziApi.list).toHaveBeenCalled();
+    expect(progressApi.mastery).not.toHaveBeenCalled();
+    expect(progressApi.practice).not.toHaveBeenCalled();
+    expect(screen.queryByRole('button', { name: /^你 / })).not.toBeInTheDocument();
   });
 
   test('API failure shows retry and never substitutes a local academic dataset', async () => {
@@ -265,7 +266,7 @@ describe('Hanzi & Radicals Station (Trạm Chữ Hán HSK 1)', () => {
     await fixture.lastQuizOptions.onComplete();
 
     // Red seal stamp should appear: <RedSealStamp text="通" />
-    expect(await screen.findByText('通')).toBeInTheDocument();
+    expect(await screen.findByText('Xong')).toBeInTheDocument();
 
     // Backend progress API called honestly
     expect(progressApi.practice).toHaveBeenCalledWith(

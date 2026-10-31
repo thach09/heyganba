@@ -2,13 +2,13 @@ import { Link } from 'react-router-dom';
 import { OrientalCard } from '../../components/OrientalCard';
 
 const stages = [
-  { tag: 'Chặng 1 · 拼音入门', title: 'Nhập môn Ngữ âm', subtitle: 'Pinyin & Thanh điệu',
+  { tag: 'Chặng 1', title: 'Nhập môn Ngữ âm', subtitle: 'Pinyin & Thanh điệu',
     description: 'Làm quen âm đọc, thanh điệu và luyện phát âm trước khi học từ.', levels: [] },
-  { tag: 'Chặng 2 · 初级', title: 'HSK 1 · Nội dung chọn lọc', subtitle: 'Nhóm học liệu nội bộ',
+  { tag: 'Chặng 2', title: 'HSK 1 · Nội dung chọn lọc', subtitle: 'Nhóm học liệu nội bộ',
     description: 'Học liệu hiện có là nhóm nội bộ chọn lọc, đang được bổ sung và chưa bao phủ toàn cấp.', levels: [1] },
-  { tag: 'Chặng 3 · 初级', title: 'HSK 2 · Nội dung chọn lọc', subtitle: 'Nhóm học liệu nội bộ',
+  { tag: 'Chặng 3', title: 'HSK 2 · Nội dung chọn lọc', subtitle: 'Nhóm học liệu nội bộ',
     description: 'Học liệu hiện có là nhóm nội bộ chọn lọc, đang được bổ sung và chưa bao phủ toàn cấp.', levels: [2] },
-  { tag: 'Chặng 4 · 中高级', title: 'HSK 3–6 · Đang bổ sung', subtitle: 'Bộ học liệu chọn lọc',
+  { tag: 'Chặng 4', title: 'HSK 3–6 · Đang bổ sung', subtitle: 'Bộ học liệu chọn lọc',
     description: 'Các nhóm bài học là tuyển chọn nội bộ, đang được bổ sung và chưa hoàn chỉnh.', levels: [3, 4, 5, 6] },
 ];
 
@@ -27,7 +27,7 @@ export function HskRoadmap() {
             <p className="mt-2 text-[12.5px] leading-relaxed text-fg-60">{stage.subtitle}</p>
             <p className="mt-4 text-[13.5px] leading-relaxed text-fg-60">{stage.description}</p>
             <div className="mt-auto flex flex-col gap-2 pt-7">
-              {index === 0 && <Link className={linkClass} to="/pinyin">Vào Trạm Pinyin →</Link>}
+              {index === 0 && <Link className={linkClass} to="/pinyin">Học Pinyin →</Link>}
               {stage.levels.map(level => <Link key={level} className={linkClass} to={`/vocabulary?level=HSK${level}`}>Học nhóm chọn lọc {level} →</Link>)}
               {index === 3 && <Link className={linkClass} to="/exam">Vào phòng Thi thử HSK →</Link>}
             </div>

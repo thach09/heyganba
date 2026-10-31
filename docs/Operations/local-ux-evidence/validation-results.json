@@ -1,0 +1,33 @@
+{
+  "h2": {
+    "tests": 537,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 7
+  },
+  "postgres-api": {
+    "tests": 537,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 7
+  },
+  "legacy-rehearsal": {
+    "tests": 3,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "jiayou-bootstrap": {
+    "tests": 24,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "frontend": {
+    "node_tests": 9,
+    "vitest_tests": 303,
+    "failures": 0,
+    "audit_vulnerabilities": 0,
+    "node": "24.21.0"
+  }
+}

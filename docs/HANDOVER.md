@@ -7,7 +7,8 @@ handover. Jiayou has no selected domain and must use its own hostname and stack.
 
 ## Source and build contract
 
-The repository is https://github.com/thach09/jiayou. Read
+The repository is https://github.com/thach09/jiayou. For the current brand/account
+acceptance workflow read `docs/Operations/LOCAL-UX-AND-ACCOUNT-QA.md`. Also read
 `docs/Operations/FINAL-ENGINEERING-AUDIT.md` and its evidence index for the reviewed
 release; verify the current main SHA with Git, not an uncommitted research worktree.
 Frontend lives in frontend/, backend in

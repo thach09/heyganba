@@ -27,7 +27,7 @@ export const GrammarRulePage: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   const loadRule = useCallback(async () => {
-    if (!user || !ruleId) {
+    if (!ruleId) {
       return;
     }
     setLoading(true);
@@ -70,7 +70,7 @@ export const GrammarRulePage: React.FC = () => {
       }
     }
     setOthers(picked.slice(0, OTHERS_LIMIT));
-  }, [user, ruleId, run]);
+  }, [ruleId, run]);
 
   useEffect(() => {
     // oxlint-disable-next-line react/set-state-in-effect
@@ -84,20 +84,6 @@ export const GrammarRulePage: React.FC = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [ruleId]);
-
-  if (!user) {
-    return (
-      <div className="mx-auto flex w-full max-w-[560px] flex-col items-center pt-16 text-center">
-        <span className="font-serif text-[34px] font-light leading-none text-fg">文法</span>
-        <p className="mt-5 text-[13px] leading-[1.9] text-fg-60">
-          Đăng nhập để xem chi tiết điểm ngữ pháp và luyện bài tập.
-        </p>
-        <div className="mt-7">
-          <SubmitButton onClick={onRequireLogin}>Đăng nhập / Đăng ký</SubmitButton>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <article className="mx-auto flex w-full max-w-[720px] flex-col">
@@ -127,7 +113,7 @@ export const GrammarRulePage: React.FC = () => {
           )}
 
           <div className="mt-9">
-            <SubmitButton onClick={() => navigate(`/grammar?practice=${rule.id}`)}>Luyện tập phần này</SubmitButton>
+            <SubmitButton onClick={() => user?navigate(`/grammar?practice=${rule.id}`):onRequireLogin()}>Luyện tập phần này</SubmitButton>
           </div>
         </>
       )}

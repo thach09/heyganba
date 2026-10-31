@@ -20,7 +20,7 @@ const response = (data: unknown) => new Response(JSON.stringify({ success: true,
 beforeEach(() => {
   vi.stubGlobal('fetch', vi.fn((url: string) => Promise.resolve(response(url.endsWith('/auth/login')
     ? { ...profile, accessToken: 'test-access', refreshToken: 'test-refresh' }
-    : { status: 'UP', currentStreak: 0 }))));
+    : url.endsWith('/users/me') ? {...profile,id:profile.userId,createdAt:'2026-10-31T00:00:00Z',isActive:true} : { status: 'UP', currentStreak: 0 }))));
 });
 const mount = (path = '/') => render(<MemoryRouter initialEntries={[path]}><App /></MemoryRouter>);
 
@@ -55,8 +55,8 @@ test('logout clears credentials and redirects to the public dashboard', async ()
   localStorage.setItem('heyganba_user', JSON.stringify(profile));
   localStorage.setItem('heyganba_access_token', 'test-access');
   localStorage.setItem('heyganba_refresh_token', 'test-refresh');
-  mount('/exam');
-  fireEvent.click(screen.getByRole('button', { name: 'Đăng xuất' }));
+  mount('/toi');
+  fireEvent.click(await screen.findByRole('button', { name: 'Đăng xuất' }));
   await waitFor(() => expect(screen.getByText('Dashboard station')).toBeTruthy());
   expect(localStorage.getItem('heyganba_user')).toBeNull();
   expect(localStorage.getItem('heyganba_access_token')).toBeNull();
@@ -83,9 +83,9 @@ test('logout network failure retains the profile and offers a retry', async () =
   localStorage.setItem('heyganba_user', JSON.stringify(profile));
   localStorage.setItem('heyganba_access_token', 'test-access');
   vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new TypeError('offline')));
-  mount();
-  fireEvent.click(screen.getByRole('button', { name: 'Đăng xuất' }));
-  await waitFor(() => expect(screen.getByRole('status').textContent).toContain('Chưa đăng xuất được'));
+  mount('/toi');
+  fireEvent.click(await screen.findByRole('button', { name: 'Đăng xuất' }));
+  await screen.findByText(/Chưa đăng xuất được/);
   expect(screen.getByText('Local learner')).toBeTruthy();
   expect(localStorage.getItem('heyganba_user')).not.toBeNull();
 });

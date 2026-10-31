@@ -1,0 +1,28 @@
+{
+  "reviewed_on": "2026-10-31",
+  "method": "Separate read-only final diff pass by the implementing agent; not an external human approval or a second-agent review",
+  "base": "ce80be4b9adf780aee2bb387bb26e93770df7243",
+  "findings_resolved": [
+    "Lossy servlet writers replaced for security401/403, admin429 and payload413 without changing rate limits",
+    "Anonymous approved Hanzi reads skip personal practice queries; pending list/detail filters remain server-side",
+    "Grammar GET whitelist does not permit private exercises, check POSTs or admin endpoints",
+    "Profile shape/owner validation, account-keyed unmount and scoped cancellation reject malformed/previous-owner data",
+    "Account controls remain available during profile-load errors; failed logout retains session",
+    "Guest primary button conflicting foreground classes corrected after visual inspection",
+    "Mobile resize and theme transition screenshots captured after layout settles; open/Escape/focus return verified",
+    "Historical test labels updated to intentional Vietnamese UI; scoring and private-write assertions retained",
+    "Obsolete icons archived only after reference search; owner raster original and derivative hashes retained"
+  ],
+  "scope_guards": [
+    "No dependency, historical SQL, jiayou-prod YAML, bootstrap guard, CI protection, content approval or production provider mutation",
+    "No new profile endpoint, admin seed, universal demo account or auth bypass",
+    "No blanket audit exception; existing runtime reachability exclusions remain visible in report"
+  ],
+  "open_limitations": [
+    "Real browser QA uses Windows Chrome; no Safari/Firefox certification",
+    "No real local admin browser session; isolated automated RBAC fixtures only",
+    "Legacy dev fixtures are not newly approved Jiayou production curriculum",
+    "Protected GitHub CI and preservation verification remain independent mandatory integration gates"
+  ],
+  "blocking_source_findings": []
+}

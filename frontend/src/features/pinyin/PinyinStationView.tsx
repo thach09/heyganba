@@ -89,11 +89,10 @@ export const PinyinStationView: React.FC = () => {
             <AlertTriangle size={28} />
           </div>
           <h2 className="font-serif text-2xl font-bold text-fg">
-            Giáo trình Pinyin đang trong luồng kiểm duyệt
+            Pinyin đang được chuẩn bị
           </h2>
           <p className="mt-2.5 max-w-lg text-xs leading-relaxed text-fg-60">
-            Nội dung phát âm M1 được biên soạn đối chiếu theo <b>Đề án Pinyin Hán ngữ 1958</b> và đang ở trạng thái <span className="font-sans text-gold-ink font-semibold">PENDING_REVIEW</span>.
-            Theo quy tắc an toàn dữ liệu học thuật của nền tảng Jiayou, nội dung chưa mở tự do cho học viên đại trà khi chưa được phê duyệt chính thức (<span className="font-sans text-jade-ink">APPROVED</span>).
+            Các bài học đang chờ duyệt trước khi mở cho người học. Bạn có thể khám phá từ điển và các nội dung đã phát hành trong lúc chờ.
           </p>
 
           {/* Cảnh báo nếu học viên thông thường cố tình gắn ?preview=1 */}
@@ -116,7 +115,7 @@ export const PinyinStationView: React.FC = () => {
                 onClick={togglePreview}
                 className="inline-flex items-center gap-1.5 border border-cinnabar bg-cinnabar px-5 py-2 font-serif text-xs font-semibold text-on-accent transition-opacity hover:opacity-90 cursor-pointer"
               >
-                <Eye size={14} /> Mở chế độ Xem trước (Admin Preview)
+                <Eye size={14} /> Xem trước bản nháp
               </button>
             ) : !user ? (
               <button
@@ -124,11 +123,11 @@ export const PinyinStationView: React.FC = () => {
                 onClick={requireLogin}
                 className="inline-flex items-center gap-1.5 border border-cinnabar bg-cinnabar px-5 py-2 font-serif text-xs font-semibold text-on-accent transition-opacity hover:opacity-90 cursor-pointer"
               >
-                <ShieldCheck size={14} /> Đăng nhập tài khoản Quản trị viên (Admin)
+                <ShieldCheck size={14} /> Đăng nhập
               </button>
             ) : (
               <div className="text-xs text-fg-60">
-                Tài khoản: <b className="text-fg">{user.email}</b> (Học viên) — Vui lòng chờ quản trị viên và giáo viên phê duyệt chính thức.
+                Bài học sẽ xuất hiện tại đây sau khi được duyệt.
               </div>
             )}
           </div>
@@ -140,7 +139,7 @@ export const PinyinStationView: React.FC = () => {
             <div>
               <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-cinnabar-ink">
                 <span className="inline-block h-2 w-2 rounded-full bg-cinnabar" />
-                Trạm 1 · 拼音与发音 · Pinyin & Phát âm · [Nội dung chọn lọc]
+                Pinyin và phát âm · Nội dung chọn lọc
               </div>
               <h1 className="mt-1 font-serif text-3xl font-bold tracking-tight text-fg">
                 Pinyin & Phát âm

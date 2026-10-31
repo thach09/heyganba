@@ -12,6 +12,7 @@ const Grammar = lazy(() => import('../features/grammar/GrammarView').then(m => (
 const GrammarRule = lazy(() => import('../features/grammar/GrammarRulePage').then(m => ({ default: m.GrammarRulePage })));
 const Exam = lazy(() => import('../features/exam/ExamView').then(m => ({ default: m.ExamView })));
 const Admin = lazy(() => import('../features/admin/AdminView').then(m => ({ default: m.AdminView })));
+const Account = lazy(()=>import('../features/account/AccountView').then(m=>({default:m.AccountView})));
 
 function AdminRoute() {
   const { user } = useAuth();
@@ -37,11 +38,11 @@ export function AppRoutes() {
       <Route path="/grammar/:ruleId" element={<GrammarRule />} />
       <Route path="/exam" element={<Exam />} />
       <Route path="/admin" element={<AdminRoute />} />
+      <Route path="/toi" element={<Account />} />
       {/* Legacy routes: redirect so old deep links stay functional */}
       <Route path="/flashcards" element={<Navigate to="/vocabulary" replace />} />
       <Route path="/flashcard" element={<Navigate to="/vocabulary" replace />} />
       <Route path="/kana" element={<Navigate to="/pinyin" replace />} />
-      <Route path="/hanzi" element={<Navigate to="/hanzi" replace />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   </Suspense></ErrorBoundary>;

@@ -5,6 +5,8 @@
 @theme inline {
   --color-*: initial;
   --color-bg: var(--paper-bg);
+  --color-brand-surface: var(--paper-brand-surface);
+  --color-brand-ink: var(--paper-brand-ink);
   --color-fg: var(--paper-ink);
   --color-fg-60: var(--paper-muted);
   --color-fg-38: var(--paper-muted);

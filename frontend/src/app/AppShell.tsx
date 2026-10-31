@@ -7,7 +7,8 @@ import { progressApi } from '../features/progress/api';
 import { isRequestCancelled } from '../lib/api/client';
 import { OrientalDecorBackground } from '../components/OrientalDecorBackground';
 import { ThemeToggle } from '../components/ThemeToggle';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import {BrandLogo} from '../components/BrandLogo';
 import { stopChineseSpeech } from '../services/chineseSpeech';
 
 /** The breakpoint must match the `@media (max-width: 900px)` query in index.css. */
@@ -187,21 +188,22 @@ export function AppShell() {
       />
 
       {/* Mobile: drawer opener button (desktop uses the edge tab attached to the sidebar) */}
-      {isMobileLayout && !isSidebarOpen && (
+      {isMobileLayout && <header inert={isSidebarOverlay?true:undefined} className="fixed inset-x-0 top-0 z-40 flex h-14 items-center justify-between gap-2 bg-bg/95 px-2">
         <button
           ref={mobileOpenerRef}
           type="button"
           onClick={toggleSidebar}
           title="Mở thanh điều hướng"
           aria-label="Mở thanh điều hướng"
-          className="fixed left-2 top-2 z-40 inline-flex h-8 w-8 cursor-pointer items-center justify-center border-0 bg-transparent text-fg-38 transition-colors hover:text-fg focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-[3px] focus-visible:outline-fg-38"
+          aria-expanded={isSidebarOpen}
+          className="inline-flex h-11 w-11 cursor-pointer items-center justify-center border-0 bg-transparent text-fg-60"
         >
           <Menu size={18} />
         </button>
-      )}
+        <Link to="/" aria-label="Jiayou — Trang chủ"><BrandLogo /></Link><ThemeToggle />
+      </header>}
 
       {/* Main Content Area */}
-      {isMobileLayout && <div className="fixed left-12 top-2 z-40"><ThemeToggle /></div>}
       <div
         className={`flex min-h-screen min-w-0 flex-1 flex-col transition-[margin] duration-150 ${
           isSidebarOpen ? 'ml-[216px] max-[900px]:ml-0' : 'ml-0'

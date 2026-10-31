@@ -417,7 +417,7 @@ const DictionaryNotebookSessionView: React.FC = () => {
                 maxLength={100}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="汉字, chữ Hán, Pinyin, nghĩa tiếng Việt…"
+                placeholder="Chữ Hán, Pinyin hoặc nghĩa tiếng Việt…"
                 className="w-full border border-rule bg-card px-4 py-3 pl-10 text-[13.5px] text-fg placeholder:text-fg-38 focus:border-fg-60 focus:outline-none"
               />
               <Search size={16} className="absolute left-3.5 top-3.5 text-fg-38" />

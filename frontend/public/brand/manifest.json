@@ -1,0 +1,43 @@
+{
+  "source": "docs/Design/brand/jiayou-logo-approved.png",
+  "source_sha256": "8ea10c5e31017d9bad370051195b817654dbe472b32b3597b1d19e01752acbab",
+  "authorization": "Owner supplied approved artwork; raster derivatives only",
+  "operations": "Crop, transparent padding, proportional Lanczos downsampling; original colors retained",
+  "assets": [
+    {
+      "path": "/brand/jiayou-wordmark.png",
+      "width": 612,
+      "height": 196,
+      "bytes": 113188,
+      "sha256": "f70139c9580bd991935c5c9cb3ad43a8be4f46f8f375b5eab6486d5c3942dbe9"
+    },
+    {
+      "path": "/brand/jiayou-wordmark-small.png",
+      "width": 306,
+      "height": 98,
+      "bytes": 36020,
+      "sha256": "1c3b989bd409073339ba0594785df9d43cd86beddf31af8a32b93f21406164bd"
+    },
+    {
+      "path": "/brand/jiayou-icon.png",
+      "width": 128,
+      "height": 128,
+      "bytes": 16604,
+      "sha256": "aba954e1f05f6e9b401dfadebad6c66cb67f8f55c3e7999d2849e01828c7abef"
+    },
+    {
+      "path": "/brand/favicon-32.png",
+      "width": 32,
+      "height": 32,
+      "bytes": 1922,
+      "sha256": "c9842a2acd69c69d3c041320f1a082ad5cef4babcbb6819aca2de082f837acf3"
+    },
+    {
+      "path": "/brand/apple-touch-icon.png",
+      "width": 180,
+      "height": 180,
+      "bytes": 29620,
+      "sha256": "ba377924d2d4d3302c3dfdea4a121c90a6dedf21038a7d777503d82e7c1a31a5"
+    }
+  ]
+}

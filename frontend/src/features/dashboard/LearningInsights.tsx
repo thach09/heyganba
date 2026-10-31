@@ -44,7 +44,7 @@ function LearningInsightsSession({ section }: { section: 'quests' | 'mastery' })
     } catch { setError('Chưa nhận được thưởng. Bạn có thể thử lại.'); }
     finally { setBusy(false); }
   };
-  return <OrientalCard className="h-full p-6" tag={section === 'quests' ? '每日任务' : '学而时习之'} tagVariant="gold">
+  return <OrientalCard className="h-full p-6" tag={section === 'quests' ? 'Nhiệm vụ hằng ngày' : 'Tiến độ học tập'} tagVariant="gold">
     <h3 className="font-serif text-xl font-bold">{section === 'quests' ? 'Nhiệm vụ Hằng ngày' : 'Tiến độ học liệu hiện có'}</h3>
     <p className="mt-2 text-sm text-fg-60">{section === 'quests' ? 'Nhận EXP và măng trúc sau khi hoàn thành. Làm mới mỗi ngày theo giờ Việt Nam.' : 'Từ đã ôn nhớ và điểm ngữ pháp đã trả lời đúng. Đây là tiến độ luyện tập trong ứng dụng.'}</p>
     {!user ? <p className="mt-4 text-sm text-fg-60">Đăng nhập để xem tiến độ và nhận thưởng.</p> : error ? <p role="alert" className="mt-4 text-sm text-cinnabar-ink">{error} <button type="button" onClick={() => void load()} className="underline">Tải lại</button></p> : !data ? <p role="status" className="mt-4 text-sm text-fg-60">Đang tải tiến độ…</p> : section === 'quests' ? <div className="mt-5 space-y-3">

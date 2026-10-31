@@ -1,0 +1,23 @@
+[
+  {
+    "check": "compose-validate",
+    "exit": 0
+  },
+  {
+    "check": "backend-container-build",
+    "exit": 0
+  },
+  {
+    "check": "frontend-container-build",
+    "exit": 0
+  },
+  {
+    "check": "nginx-offline",
+    "exit": 0
+  },
+  {
+    "check": "backend-offline-fail-closed",
+    "expected_nonzero": 1,
+    "pass": true
+  }
+]

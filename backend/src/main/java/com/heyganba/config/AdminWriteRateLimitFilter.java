@@ -9,7 +9,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -70,14 +69,12 @@ public class AdminWriteRateLimitFilter extends OncePerRequestFilter {
                 : "admin-write:ip:" + ClientIpResolver.resolve(request);
 
         if (!rateLimiterService.tryConsume(key, ADMIN_WRITE_RATE_LIMIT, ADMIN_WRITE_RATE_WINDOW)) {
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            response.setStatus(HTTP_TOO_MANY_REQUESTS);
             ApiResponse<Void> body = ApiResponse.<Void>builder()
                     .success(false)
                     .message("Quá nhiều thao tác quản trị trong một phút. Vui lòng thử lại sau.")
                     .error("TOO_MANY_REQUESTS")
                     .build();
-            response.getWriter().write(objectMapper.writeValueAsString(body));
+            com.heyganba.common.response.JsonHttpResponse.write(response, HTTP_TOO_MANY_REQUESTS, body, objectMapper);
             return;
         }
 

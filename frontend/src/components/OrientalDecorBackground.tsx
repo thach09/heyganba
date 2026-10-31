@@ -60,10 +60,6 @@ export function OrientalDecorBackground() {
               {/* Inner Flame Core */}
               <ellipse cx="24" cy="42" rx="6" ry="7" fill="#FEF08A" opacity="0.9" />
               <ellipse cx="24" cy="42" rx="3" ry="4" fill="#FFFFFF" opacity="0.95" />
-              {/* Character '志' (Ambition / Chí) */}
-              <text x="24" y="32" textAnchor="middle" fill="#78350F" opacity="0.4" fontSize="11" fontFamily="'Noto Serif SC', serif">
-                志
-              </text>
               {/* Bottom fire ring & tassel */}
               <rect x="18" y="50" width="12" height="3" rx="1.5" fill="#B91C1C" opacity="0.8" />
               <line x1="24" y1="53" x2="24" y2="62" stroke="#B91C1C" strokeWidth="1" opacity="0.7" />
@@ -265,18 +261,6 @@ export function OrientalDecorBackground() {
         </svg>
       </div>
 
-      {/* 5. Authentic Vermilion Seal Watermark (朱红御印: 志在千里 - Chí Tại Thiên Lý) */}
-      <div className="absolute right-8 bottom-6 flex flex-col items-center opacity-[0.05] pointer-events-none select-none">
-        <div className="relative flex h-16 w-16 items-center justify-center rounded-sm border-2 border-cinnabar p-1 rotate-[-3deg] ">
-          <div className="absolute inset-0.5 rounded-[1px] border border-cinnabar/60" />
-          <div className="grid grid-cols-2 gap-1 text-center font-serif text-[12.5px] font-bold leading-none text-cinnabar-ink">
-            <span>志</span>
-            <span>在</span>
-            <span>千</span>
-            <span>里</span>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }

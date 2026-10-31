@@ -389,7 +389,7 @@ export const ExamView: React.FC = () => {
   if (!user) {
     return (
       <div className="mx-auto flex w-full max-w-[560px] flex-col items-center pt-16 text-center">
-        <span className="font-serif text-[38px] font-bold leading-none text-fg">模拟考</span>
+        <h1 className="text-[30px] font-semibold text-fg">Luyện tập</h1>
         <p className="mt-5 text-[13px] leading-[1.9] text-fg-60">
           Đăng nhập để làm bài luyện tiếng Trung, chấm điểm tự động và theo dõi kết quả theo tài khoản. Nội dung hiện có là tuyển chọn nội bộ.
         </p>
@@ -415,7 +415,7 @@ export const ExamView: React.FC = () => {
         <div>
           <div className="flex min-w-0 flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-wider text-cinnabar-ink">
             <span className="inline-block h-2 w-2 rounded-full bg-cinnabar" />
-            Trạm 5 · 模拟考试 · Bài luyện tiếng Trung · [Hoạt động thật]
+            Bài luyện tiếng Trung
           </div>
           <h1 className="mt-1 font-serif text-3xl font-bold tracking-tight text-fg">
             Bài Luyện &amp; Đánh Giá Tiến Độ
@@ -437,7 +437,7 @@ export const ExamView: React.FC = () => {
 
       <p className="mt-6 text-[11.5px] text-fg-38">
         Hôm nay: <span className="text-fg-60">{streak?.todaySrsReviews ?? 0}</span> hoạt động
-        {streak?.todayQualified ? ' · đã tính streak' : ' · chưa đủ ngưỡng'} ·{' '}
+        {streak?.todayQualified ? ' · đã ghi nhận chuỗi học' : ' · chưa đủ ngưỡng'} ·{' '}
         <span className="text-fg-60">{history.length}</span> lượt thi
       </p>
 
@@ -573,7 +573,7 @@ export const ExamView: React.FC = () => {
                     <th className={thClass}>#</th>
                     <th className={thClass}>Học viên</th>
                     <th className={thNumClass}>Từ đã thuộc</th>
-                    <th className={thNumClass}>Streak</th>
+                    <th className={thNumClass}>Chuỗi học</th>
                     <th className={thNumClass}>Điểm thi cao nhất</th>
                     <th className={thNumClass}>Điểm xếp hạng</th>
                   </tr>
@@ -752,7 +752,7 @@ export const ExamView: React.FC = () => {
                     <div className="flex min-w-0 flex-wrap items-center gap-3">
                       <span className="text-[11.5px] font-bold text-fg">Câu {index + 1}</span>
                       <span className="rounded bg-tint px-2 py-0.5 text-[10.5px] font-medium text-fg-60">
-                        {isListening ? 'Phần 1: Nghe hiểu (听力)' : question.type === 'GRAMMAR' && maximumScore === 300 ? 'Phần 3: Ngữ pháp (语法)' : 'Phần 2: Đọc hiểu & Ngữ pháp (阅读)'}
+                        {isListening ? 'Phần 1: Nghe hiểu' : question.type === 'GRAMMAR' && maximumScore === 300 ? 'Phần 3: Ngữ pháp' : 'Phần 2: Đọc hiểu và ngữ pháp'}
                       </span>
                     </div>
 
@@ -830,11 +830,11 @@ export const ExamView: React.FC = () => {
                 Kết quả: <span className="text-gold-ink">{scaledHskScore} / {maximumScore}</span> điểm
               </h3>
               <p className="mt-1 text-sm text-fg-60">
-                Đúng {result.correctCount}/{result.totalCount} câu ({result.scorePercent}%) · Chuỗi streak {result.currentStreak} ngày 🔥
+                Đúng {result.correctCount}/{result.totalCount} câu ({result.scorePercent}%) · Chuỗi học {result.currentStreak} ngày 🔥
               </p>
               <div className="mt-2">
                 <span className={`text-sm font-bold ${isHskPassed ? 'text-jade-ink' : 'text-cinnabar-ink'}`}>
-                  {isHskPassed ? `「合格」 Đạt chuẩn bài luyện (≥ ${passingScore} điểm)` : `「未过」 Cần ôn luyện thêm (< ${passingScore} điểm)`}
+                  {isHskPassed ? `Hoàn thành bài luyện (≥ ${passingScore} điểm)` : `Cần ôn luyện thêm (< ${passingScore} điểm)`}
                 </span>
               </div>
             </div>

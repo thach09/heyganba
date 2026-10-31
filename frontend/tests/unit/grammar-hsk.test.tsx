@@ -218,7 +218,7 @@ describe('HSK Grammar Lab (GrammarView)', () => {
     await screen.findByText('Chính xác');
     expect(mockGrammarApi.check).toHaveBeenCalledTimes(1);
     expect(mockRewardBamboo).toHaveBeenCalledWith(2);
-    expect(screen.getByText('通')).toBeTruthy();
+    expect(screen.getByText('Xong')).toBeTruthy();
     expect(mockTriggerReaction).toHaveBeenCalledWith('happy');
   });
 });

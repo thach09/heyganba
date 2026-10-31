@@ -139,7 +139,7 @@ export function CompanionWidget() {
             <div className="flex items-center justify-between">
               <div className="flex flex-wrap items-center gap-2">
                 <h3 className="font-serif text-[18px] font-bold text-fg">
-                  {activePet.nameZh} · {activePet.nameVi}
+                  {activePet.nameVi}
                 </h3>
                 {/* Growth Stage Badge */}
                 <span className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 font-serif text-[10.5px] font-semibold ${currentStageInfo.badgeTone}`}>
@@ -284,7 +284,7 @@ export function CompanionWidget() {
                     </div>
                     <div className="min-w-0 flex-1 text-left">
                       <div className="font-serif text-[13px] font-bold text-fg leading-snug">
-                        {pet.id === 'golden_monkey' ? '小悟空 · Ngộ Không' : `${pet.nameZh} · ${pet.nameVi}`}
+                        {pet.nameVi}
                       </div>
                       <div className="mt-0.5 flex flex-wrap items-center gap-1.5">
                         <span className="text-[11px] text-jade-ink">
