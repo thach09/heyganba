@@ -72,7 +72,7 @@ class HealthReadinessTest {
         return MockMvcBuilders.standaloneSetup(new HealthController(endpoint)).build().perform(get("/health"))
                 .andExpect(header().string("Cache-Control", "no-store"))
                 .andExpect(jsonPath("$.data").value(aMapWithSize(4)))
-                .andExpect(jsonPath("$.data.service").value("heyganba-backend"))
+                .andExpect(jsonPath("$.data.service").value("jiayou-backend"))
                 .andExpect(jsonPath("$.data.version").value("0.0.1-SNAPSHOT"))
                 .andExpect(jsonPath("$.data.timestamp").isNotEmpty())
                 .andExpect(jsonPath("$.timestamp").isNotEmpty())

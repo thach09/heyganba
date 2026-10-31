@@ -26,7 +26,7 @@ public class HealthController {
         boolean ready = Status.UP.equals(healthEndpoint.health().getStatus());
         Map<String, Object> healthInfo = Map.of(
                 "status", ready ? "UP" : "DOWN",
-                "service", "heyganba-backend",
+                "service", "jiayou-backend",
                 "version", "0.0.1-SNAPSHOT",
                 "timestamp", Instant.now().toString()
         );
