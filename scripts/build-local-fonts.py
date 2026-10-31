@@ -118,7 +118,10 @@ def main():
         manifest.append({'family':'Be Vietnam Pro','weight':weight,'source':url,'sha256':hashlib.sha256(data).hexdigest(),'license':'SIL OFL 1.1','fallbackComplete':True})
     (out/'BeVietnamPro-OFL.txt').write_bytes(fetch('https://raw.githubusercontent.com/google/fonts/main/ofl/bevietnampro/OFL.txt',args.cache/'BeVietnamPro-OFL.txt'))
     (out/'fonts.css').write_text('\n'.join(css)+'\n',encoding='utf-8')
-    (out/'manifest.json').write_text(json.dumps({'generator':'scripts/build-local-fonts.py','accessed':'2026-10-20','fonts':manifest,'assets':{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(out.iterdir()) if p.name!='manifest.json'},'assets':{p.name:hashlib.sha256(p.read_bytes().replace(b'\r\n',b'\n') if p.suffix in ['.txt','.css'] else p.read_bytes()).hexdigest() for p in sorted(out.iterdir()) if p.name!='manifest.json'}},indent=2)+'\n',encoding='utf-8')
+    assets = {p.name: hashlib.sha256(
+        p.read_bytes().replace(b'\r\n', b'\n') if p.suffix in ['.txt', '.css'] else p.read_bytes()
+    ).hexdigest() for p in sorted(out.iterdir()) if p.name != 'manifest.json'}
+    (out/'manifest.json').write_text(json.dumps({'generator':'scripts/build-local-fonts.py','accessed':'2026-10-20','fonts':manifest,'assets':assets},indent=2)+'\n',encoding='utf-8')
     print(json.dumps({'files':len(list(out.iterdir())),'bytes':sum(p.stat().st_size for p in out.iterdir()),'fonts':manifest}))
 
 
