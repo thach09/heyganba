@@ -290,3 +290,18 @@ test('M2.1.1: Unauthenticated guests viewing SRS mode see a login prompt without
   // No authenticated due or stats endpoints should have been called for guests
   expect(fixture.due).not.toHaveBeenCalled();
 });
+
+
+test('direct due-review navigation loads one owned SRS session rather than the lesson catalog', async () => {
+  render(<MemoryRouter initialEntries={['/vocabulary?mode=srs']}><FlashcardView /></MemoryRouter>);
+  await screen.findByText('Thẻ 1 / 2');
+  expect(fixture.due).toHaveBeenCalledTimes(1);
+  expect(screen.queryByRole('heading', { name: 'Chào hỏi', level: 2 })).not.toBeInTheDocument();
+});
+
+test('direct guest due-review navigation does not query private queues', async () => {
+  fixture.user = null;
+  render(<MemoryRouter initialEntries={['/vocabulary?mode=srs']}><FlashcardView /></MemoryRouter>);
+  expect(await screen.findByRole('button', { name: 'Đăng nhập để bắt đầu ôn tập' })).toBeInTheDocument();
+  expect(fixture.due).not.toHaveBeenCalled();
+});

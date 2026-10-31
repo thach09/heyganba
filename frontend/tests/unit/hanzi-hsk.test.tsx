@@ -307,3 +307,22 @@ describe('Hanzi & Radicals Station (Trạm Chữ Hán HSK 1)', () => {
     expect(screen.queryByText(/999 EXP/)).toBeNull();
   });
 });
+
+
+test('writer download failure survives a late content response and can be retried', async () => {
+  delete (window as any).HanziWriter;
+  let finish!: (result: unknown) => void;
+  vi.mocked(hanziApi.list).mockImplementationOnce(() => new Promise(resolve => { finish = resolve; }) as any);
+  render(<MemoryRouter><HanziStationView /></MemoryRouter>);
+  await waitFor(() => expect(hanziApi.list).toHaveBeenCalled());
+  const script = document.querySelector('script[src="/vendor/hanzi-writer-3.5.0.min.js"]')!;
+  expect(script).not.toBeNull();
+  fireEvent.error(script);
+  finish({ success: true, data: SAMPLE_CHARACTERS });
+  expect(await screen.findByTestId('calligraphy-reference-card')).toBeInTheDocument();
+  expect(screen.getByText('Chưa tải được dữ liệu nét viết')).toBeInTheDocument();
+  (window as any).HanziWriter = { create: vi.fn(() => fixture.writerMock) };
+  fireEvent.click(screen.getByRole('button', { name: 'Thử tải nét viết lại' }));
+  await waitFor(() => expect((window as any).HanziWriter.create).toHaveBeenCalled());
+  expect(screen.queryByTestId('calligraphy-reference-card')).not.toBeInTheDocument();
+});

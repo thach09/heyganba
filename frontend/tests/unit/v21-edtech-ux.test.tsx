@@ -316,8 +316,8 @@ describe('v2.1 EdTech UX & Stability Improvements', () => {
         await waitFor(() => {
           const fallbackCard = screen.getByTestId('calligraphy-reference-card');
           expect(fallbackCard).toBeInTheDocument();
-          expect(fallbackCard.textContent).toContain('Thẻ đối chiếu thư pháp chuẩn');
-          expect(screen.getByText('Dữ liệu nét vẽ động đang được bổ sung')).toBeInTheDocument();
+          expect(fallbackCard.textContent).toContain('Chữ tham khảo');
+          expect(screen.getByText('Chưa tải được dữ liệu nét viết')).toBeInTheDocument();
         });
       } finally {
         global.fetch = originalFetch;

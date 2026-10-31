@@ -43,3 +43,9 @@ test('pending EXP request has a loading state without fabricated progress', () =
   expect(screen.getByRole('status').textContent).toContain('Đang tải EXP');
   expect(screen.queryByText('Lên cấp:')).not.toBeInTheDocument();
 });
+
+
+test('the due-review shortcut selects the due session explicitly', () => {
+  render(<MemoryRouter><DashboardView /></MemoryRouter>);
+  expect(screen.getByRole('link', { name: 'Ôn tập đến hạn' }).getAttribute('href')).toBe('/vocabulary?mode=srs');
+});

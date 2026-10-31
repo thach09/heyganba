@@ -82,7 +82,13 @@ export const FlashcardView: React.FC = () => {
   };
 
   // Top Tabs
-  const [mainMode, setMainMode] = useState<MainViewMode>('LESSONS');
+  const mainMode: MainViewMode = searchParams.get('mode') === 'srs' ? 'SRS' : 'LESSONS';
+  const setMainMode = (mode: MainViewMode) => {
+    const params = new URLSearchParams(searchParams);
+    if (mode === 'SRS') params.set('mode', 'srs');
+    else params.delete('mode');
+    setSearchParams(params);
+  };
 
   // Lesson Catalog State
   const [lessons, setLessons] = useState<VocabularyLesson[]>([]);
@@ -305,10 +311,15 @@ export const FlashcardView: React.FC = () => {
   const handleSwitchToSrs = () => {
     stopChineseSpeech();
     setMainMode('SRS');
-    if (user && dueItems.length === 0 && !srsSessionFinished) {
+  };
+
+  // A direct due-review link must select and load the same session as the tab.
+  useEffect(() => {
+    if (mainMode === 'SRS' && user && dueItems.length === 0 && !srsSessionFinished && !srsLoading && !srsError) {
+      // oxlint-disable-next-line react/set-state-in-effect -- synchronize an explicit URL-selected session with its API data.
       void loadSrsData();
     }
-  };
+  }, [mainMode, user, dueItems.length, srsSessionFinished, srsLoading, srsError, loadSrsData]);
 
   // URL is the source of truth, including back/forward and removing the filter.
   // Legacy query aliases filter the internal lesson grouping, not official CTI levels.

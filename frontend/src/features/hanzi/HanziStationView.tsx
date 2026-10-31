@@ -61,14 +61,16 @@ const HanziStationSession: React.FC = () => {
   const [showExpReward, setShowExpReward] = useState(false);
   const [masteryScores, setMasteryScores] = useState<Record<string, number>>({});
   const [strokeDataError, setStrokeDataError] = useState(false);
+  const [writerLoadFailed, setWriterLoadFailed] = useState(false);
+  const [writerRetry, setWriterRetry] = useState(0);
   const [writerReady, setWriterReady] = useState(() => Boolean((window as any).HanziWriter));
   useEffect(() => {
     if (!user) return;
     let cancelled = false;
     void loadHanziWriter().then(() => { if (!cancelled) setWriterReady(true); })
-      .catch(() => { if (!cancelled) setStrokeDataError(true); });
+      .catch(() => { if (!cancelled) setWriterLoadFailed(true); });
     return () => { cancelled = true; };
-  }, [user]);
+  }, [user, writerRetry]);
   const [loadState, setLoadState] = useState<'loading' | 'loaded' | 'error'>('loading');
   const { triggerReaction, rewardBamboo } = useCompanion();
 
@@ -175,7 +177,7 @@ const HanziStationSession: React.FC = () => {
         onLoadCharDataError: () => {
           if (!active) return;
           setStrokeDataError(true);
-          setPracticeNotice('Chưa có dữ liệu nét viết động. Đang hiển thị thẻ đối chiếu thư pháp.');
+          setPracticeNotice('Chưa có dữ liệu nét viết động. Đang hiển thị chữ tham khảo.');
         },
         showOutline: true,
         strokeAnimationSpeed: 1.2,
@@ -210,7 +212,7 @@ const HanziStationSession: React.FC = () => {
       if (writerRef.current === writer) writerRef.current = null;
       if (quizCompletion.current === onComplete) quizCompletion.current = null;
     };
-  }, [selectedChar, mode, completePractice, theme, loadState, writerReady, cancel]);
+  }, [selectedChar, mode, completePractice, theme, loadState, writerReady, writerRetry, cancel]);
 
   const handlePlayAudio = (textToSpeak?: string) => {
     setAudioNotice('');
@@ -460,7 +462,7 @@ const HanziStationSession: React.FC = () => {
               </svg>
 
               {/* Graceful Fallback: High-resolution Calligraphy Reference Card */}
-              {strokeDataError ? (
+              {strokeDataError || writerLoadFailed ? (
                 <div
                   data-testid="calligraphy-reference-card"
                   className="relative z-10 flex h-[260px] w-[260px] flex-col items-center justify-center p-3 text-center"
@@ -473,7 +475,7 @@ const HanziStationSession: React.FC = () => {
                     <span className="text-fg-38">·</span>
                     <span className="font-semibold text-fg-60">{selectedChar.strokeCount} nét</span>
                   </div>
-                  <span className="mt-1 text-[10.5px] text-fg-38">Thẻ đối chiếu thư pháp chuẩn</span>
+                  <span className="mt-1 text-[10.5px] text-fg-38">Chữ tham khảo</span>
                 </div>
               ) : (
                 /* HanziWriter target SVG canvas */
@@ -490,12 +492,13 @@ const HanziStationSession: React.FC = () => {
 
             {/* Quiz Instructions / Action feedback */}
             <div className="mt-4 text-center">
-              {strokeDataError ? (
+              {strokeDataError || writerLoadFailed ? (
                 <div className="flex flex-col items-center gap-1 text-xs text-fg-60">
-                  <span className="font-semibold text-gold-ink">Dữ liệu nét vẽ động đang được bổ sung</span>
+                  <span className="font-semibold text-gold-ink">Chưa tải được dữ liệu nét viết</span>
                   <p className="text-[11.5px] text-fg-60">
-                    Luyện viết dựa trên chữ thư pháp chuẩn phía trên theo chiết tự: {selectedChar.decomposition || `${selectedChar.radical} (${selectedChar.strokeCount} nét)`}
+                    Chưa thể luyện viết tương tác. Chữ phía trên không thay thế hướng dẫn thứ tự nét.
                   </p>
+                  <button type="button" onClick={() => { setWriterLoadFailed(false); setStrokeDataError(false); setWriterRetry(value => value + 1); }} className="mt-2 border border-rule-strong px-3 py-2">Thử tải nét viết lại</button>
                 </div>
               ) : mode === 'ANIMATE' ? (
                 <p className="text-xs text-fg-60">

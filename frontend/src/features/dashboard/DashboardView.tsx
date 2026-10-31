@@ -275,8 +275,8 @@ export const DashboardView: React.FC = () => {
       </header>
 
       {/* Target HSK Level Selector & Smart Next-Action Banner */}
-      <section className="mt-6 rounded-2xl border border-rule bg-card p-5 shadow-xs">
-        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-rule/50 pb-4">
+      <section className="mt-7 space-y-5">
+        <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-2.5">
             <Target className="h-5 w-5 text-cinnabar-ink" />
             <div>
@@ -297,10 +297,10 @@ export const DashboardView: React.FC = () => {
                 type="button"
                 onClick={() => handleSelectTargetHsk(lvl)}
                 aria-pressed={targetHsk === lvl}
-                className={`cursor-pointer rounded-lg px-3 py-1 text-xs font-semibold transition-all ${
+                className={`cursor-pointer border px-3 py-2 text-[12.5px] font-semibold transition-opacity motion-reduce:transition-none ${
                   targetHsk === lvl
-                    ? 'bg-cinnabar text-on-accent shadow-sm ring-2 ring-cinnabar/40'
-                    : 'border border-rule bg-tint text-fg-60 hover:border-rule-strong hover:text-fg'
+                    ? 'border-fg bg-fg text-bg'
+                    : 'border-rule-strong text-fg-60 hover:border-fg hover:text-fg'
                 }`}
               >
                 HSK {lvl}
@@ -313,14 +313,14 @@ export const DashboardView: React.FC = () => {
         <div className="mt-4 flex flex-wrap items-center justify-between gap-4">
           <div className="max-w-xl">
             <p className="text-xs text-fg-60 leading-relaxed">
-              HSK {targetHsk} là mục tiêu học. Nhóm bài học hiện có là tuyển chọn nội bộ, chưa bao phủ toàn bộ nội dung HSK chính thức.
+              Bài học chọn lọc theo nhóm; chưa phải chương trình HSK đầy đủ.
             </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-2.5">
             <Link
               to={`/vocabulary?level=HSK${targetHsk}`}
-              className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-cinnabar bg-cinnabar px-4 py-2 text-xs font-semibold text-on-accent transition-all hover:opacity-90 shadow-sm"
+              className="inline-flex cursor-pointer items-center gap-2 border border-fg bg-fg px-4 py-2 text-xs font-semibold text-bg transition-opacity hover:opacity-90 motion-reduce:transition-none"
             >
               <BookOpen size={14} />
               <span>Học nhóm chọn lọc đang có</span>
@@ -328,8 +328,8 @@ export const DashboardView: React.FC = () => {
             </Link>
 
             <Link
-              to="/vocabulary"
-              className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl border border-rule bg-card px-3 py-2 text-xs font-medium text-fg-60 hover:text-fg hover:border-rule-strong transition-colors"
+              to="/vocabulary?mode=srs"
+              className="inline-flex cursor-pointer items-center gap-1.5 border border-rule-strong bg-card px-3 py-2 text-xs font-medium text-fg-60 hover:text-fg hover:border-rule-strong transition-colors"
             >
               <Clock size={13} />
               <span>Ôn tập đến hạn</span>
@@ -337,7 +337,7 @@ export const DashboardView: React.FC = () => {
 
             <Link
               to="/hanzi"
-              className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl border border-rule bg-card px-3 py-2 text-xs font-medium text-fg-60 hover:text-fg hover:border-rule-strong transition-colors"
+              className="inline-flex cursor-pointer items-center gap-1.5 border border-rule-strong bg-card px-3 py-2 text-xs font-medium text-fg-60 hover:text-fg hover:border-rule-strong transition-colors"
             >
               <PenTool size={13} />
               <span>Viết chữ Hán</span>
