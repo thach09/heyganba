@@ -119,6 +119,7 @@ Evidence: [browser checks](local-ux-evidence/real-browser-results.json),
 [static review](local-ux-evidence/static-review.json),
 [PostgreSQL checks](local-ux-evidence/postgres-checks.json),
 [container checks](local-ux-evidence/container-checks.json),
+[preservation verification](local-ux-evidence/preservation-summary.json),
 [separate final diff review](local-ux-evidence/final-diff-review.json).
 Private local runtime files, passwords, JWTs and raw debug logs stay outside Git.
 
